@@ -19,6 +19,8 @@
 | `layers.json` | **采集任务表原料** | 60,694 个图层，每层一条：state / title / url / 服务类型 / 几何 / 要素数 / 覆盖度 / 是否有门牌字段 / 提供方 / 许可 |
 | `samples.csv.gz` | **每层字段 + 3 条样本** | 41,662 层取到样本；含完整字段名列表与原始记录前 3 行（未做任何清洗） |
 | `清单-精简.md` | 州级概览 | 每州：图层数 / 有样本 / 含门牌样本 / 最大单层要素数 |
+| `clean.csv.gz` | 去重后的图层全表 | 60,694 行的 CSV 压缩版，程序化查询用（字段与 layers.json 同源，含字段名与样本摘要） |
+| `us_states.json` | 州界多边形 | 供几何归州 / 覆盖度计算使用 |
 | `scripts/harvest.py` | 全国线索收割 | AGOL 全库搜索 + Hub + Socrata 目录，产出 `items.json` |
 | `scripts/probe_shard.py` | 分片探针 | 取几何类型 / 要素数 / 字段 / 范围，产出 `shard_*.json` |
 | `scripts/portals.py` | 逐州官方门户 | 自动识别 Socrata / CKAN / ArcGIS Hub，抓全部相关数据集 |
