@@ -1,0 +1,41 @@
+name: collect-watchdog
+# 兜底看守：采摘机器人一停就叫醒执行者。
+# 两道保险：① 每个采集 workflow 末尾 if:always() 调 herald
+#           ② 本 workflow 每 30 分钟查一次：有 run 卡死 / 账本与现实不符 → 也叫
+on:
+  schedule: [{ cron: "*/30 * * * *" }]
+  workflow_dispatch:
+permissions: { contents: write, issues: write, actions: write, actions2: read }
+jobs:
+  watchdog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: 自检 + 补跑报工员
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 scripts/herald.py --selftest
+          # 账本说 running 但当前步骤没有活着/最近的 run → 视为卡死，报工
+          python3 - <<'EOF'
+          import json, os, subprocess
+          st = json.load(open("collect/state.json"))
+          step = st.get("current_step")
+          if st.get("status") == "running" and step:
+              out = subprocess.run(["gh","run","list","--repo",os.environ.get("GITHUB_REPOSITORY"),
+                                    "--limit","10","--json","name,status,conclusion,updatedAt"],
+                                   capture_output=True,text=True).stdout
+              runs = json.loads(out or "[]")
+              alive = [r for r in runs if r["status"] in ("in_progress","queued")]
+              print("current_step", step, "alive_runs", len(alive))
+              if not alive:
+                  subprocess.run(["python3","scripts/herald.py","--step",step,"--status","cancelled",
+                                  "--note","账本 running 但无活着的 run（疑似卡死）"])
+              else:
+                  print("SKIP: 有 run 在跑，不触发")
+          else:
+              print("SKIP: 账本状态", st.get("status"))
+          EOF

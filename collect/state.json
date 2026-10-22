@@ -1,0 +1,9 @@
+{
+ "project": "world-map-data-33 collect",
+ "current_step": "00",
+ "status": "idle",
+ "last_run_id": null,
+ "steps": {},
+ "budget": {"minutes_used": 0, "minutes_cap": 1800},
+ "last_triggered": {"step": null, "run_id": null}
+}
