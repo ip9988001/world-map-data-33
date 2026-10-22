@@ -1,0 +1,10 @@
+# 普查过程件（原始件见 Release survey-ng911-2026-10-22）
+*.log
+probe_cache.json
+raw.json
+result.json
+items.json
+shard_*.json
+portal_*.json
+samp_*.json
+inventory.csv
