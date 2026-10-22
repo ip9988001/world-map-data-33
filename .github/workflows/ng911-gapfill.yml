@@ -1,0 +1,66 @@
+name: NG911 Gap Fill
+on: { workflow_dispatch: }
+permissions: { contents: write }
+jobs:
+  nocount:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy: { fail-fast: false, matrix: { shard: [0,1,2,3,4,5,6,7,8,9] } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: python3 scripts/gapfill.py --task nocount --shard ${{ matrix.shard }} --n 10
+        working-directory: survey/ng911
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gap-nocount-${{ matrix.shard }}
+          path: survey/ng911/gap_nocount_${{ matrix.shard }}.json
+          retention-days: 14
+  agol:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: python3 scripts/gapfill.py --task agol
+        working-directory: survey/ng911
+      - uses: actions/upload-artifact@v4
+        with: { name: gap-agol, path: survey/ng911/gap_agol.json, retention-days: 14 }
+  dirs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        st: [AL,AK,AZ,AR,CA,CO,CT,DE,DC,FL,GA,HI,ID,IL,IN,IA,KS,KY,LA,ME,MD,MA,MI,MN,MS,MO,MT,NE,NV,NH,NJ,NM,NY,NC,ND,OH,OK,OR,PA,RI,SC,SD,TN,TX,UT,VT,VA,WA,WV,WI,WY]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: python3 scripts/gapfill.py --task dir --state ${{ matrix.st }}
+        working-directory: survey/ng911
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gap-dir-${{ matrix.st }}
+          path: survey/ng911/gap_dir_${{ matrix.st }}.json
+          retention-days: 14
+  merge:
+    needs: [nocount, agol, dirs]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - uses: actions/download-artifact@v4
+        with: { path: survey/ng911, pattern: "gap-*", merge-multiple: true }
+      - run: python3 scripts/gapmerge.py && python3 scripts/make_summary.py
+        working-directory: survey/ng911
+      - run: |
+          git config user.name ng911-bot
+          git config user.email bot@users.noreply.github.com
+          git add -A
+          git commit -m "survey: 补漏 $(date -u +%F) — 无count重试 + AGOL换排序 + Server目录探测" || echo nochange
+          git push || true
