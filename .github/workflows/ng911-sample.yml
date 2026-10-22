@@ -1,0 +1,43 @@
+name: NG911 Sample Pass
+on: { workflow_dispatch: { inputs: { shards: { default: "20" } } } }
+permissions: { contents: write }
+jobs:
+  sample:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: Sample shard ${{ matrix.shard }}
+        working-directory: survey/ng911
+        run: python3 reloc.py ${{ matrix.shard }} 20
+      - uses: actions/upload-artifact@v4
+        with:
+          name: samp-${{ matrix.shard }}
+          path: survey/ng911/samp_${{ matrix.shard }}.json
+          retention-days: 14
+  merge2:
+    needs: sample
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - uses: actions/download-artifact@v4
+        with: { path: survey/ng911, pattern: "samp-*", merge-multiple: true }
+      - name: Merge samples
+        working-directory: survey/ng911
+        run: python3 merge2.py
+      - name: Commit
+        run: |
+          git config user.name ng911-bot
+          git config user.email bot@users.noreply.github.com
+          git add survey/ng911/清单-全量-含样本.md survey/ng911/samples.csv.gz || true
+          git commit -m "survey: 第二轮逐层取样 $(date -u +%F)" || echo nochange
+          git push || true
