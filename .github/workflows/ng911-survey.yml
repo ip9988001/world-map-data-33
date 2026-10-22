@@ -1,0 +1,105 @@
+name: NG911 Inventory Survey
+on:
+  workflow_dispatch:
+    inputs:
+      shards:
+        description: "探针分片数"
+        default: "10"
+permissions:
+  contents: write
+jobs:
+  harvest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: Harvest
+        working-directory: survey/ng911
+        run: python3 harvest.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: items
+          path: survey/ng911/items.json
+          retention-days: 14
+
+  probe:
+    needs: harvest
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - uses: actions/download-artifact@v4
+        with:
+          name: items
+          path: survey/ng911
+      - name: Probe shard ${{ matrix.shard }}
+        working-directory: survey/ng911
+        run: python3 probe_shard.py --shard ${{ matrix.shard }} --n 10
+      - uses: actions/upload-artifact@v4
+        with:
+          name: shard-${{ matrix.shard }}
+          path: survey/ng911/shard_${{ matrix.shard }}.json
+          retention-days: 14
+
+  portals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        st: [AL,AK,AZ,AR,CA,CO,CT,DE,DC,FL,GA,HI,ID,IL,IN,IA,KS,KY,LA,ME,MD,MA,MI,MN,MS,MO,MT,NE,NV,NH,NJ,NM,NY,NC,ND,OH,OK,OR,PA,RI,SC,SD,TN,TX,UT,VT,VA,WA,WV,WI,WY]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: Portal ${{ matrix.st }}
+        working-directory: survey/ng911
+        run: python3 portals.py --state ${{ matrix.st }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: portal-${{ matrix.st }}
+          path: survey/ng911/portal_${{ matrix.st }}.json
+          retention-days: 14
+
+  merge:
+    needs: [probe, portals]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - uses: actions/download-artifact@v4
+        with:
+          path: survey/ng911
+          pattern: shard-*
+          merge-multiple: true
+      - uses: actions/download-artifact@v4
+        with:
+          path: survey/ng911
+          pattern: portal-*
+          merge-multiple: true
+      - name: Merge
+        working-directory: survey/ng911
+        run: python3 merge.py && ls -la inventory.csv 清单.md
+      - name: Commit
+        run: |
+          git config user.name "ng911-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add survey/ng911/inventory.csv "survey/ng911/清单.md"
+          git commit -m "survey: NG911 可得性清单 $(date -u +%F)" || echo "no change"
+          git push
+      - uses: actions/upload-artifact@v4
+        with:
+          name: inventory
+          path: |
+            survey/ng911/inventory.csv
+            survey/ng911/清单.md

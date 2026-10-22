@@ -1,0 +1,7 @@
+out/
+items.json
+shard_*.json
+portal_*.json
+probe_cache.json
+raw.json
+run*.log

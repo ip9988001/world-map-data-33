@@ -1,0 +1,53 @@
+AK Alaska                 全州    n=513       cov=0.991 SNAP Retailers
+AL Alabama                全州    n=84271     cov=1.0   E911Online2Temp
+AR Arkansas               未验证   n=None      cov=1.0   Address Points - Arkansas (Registered)
+AZ Arizona                未验证   n=None      cov=1.0   Address Points, Rice County, Minnesota
+CA California             全州    n=309       cov=0.783 SNAP Ed Program Sites and Participation - CFHL C
+CO Colorado               全州    n=5861      cov=1.0   INFRASTRUCTURE (View)
+CT Connecticut            全州    n=6583495   cov=1.0   NYS Address Points
+DC District of Columbia   未验证   n=None      cov=1.0   Address Points
+DE Delaware               全州    n=262       cov=1.0   Estimated percent of all families receiving Food
+FL Florida                未验证   n=None      cov=0.999 Florida 911 Regions
+GA Georgia                未验证   n=None      cov=0.629 Address Points
+HI Hawaii                 未验证   n=None      cov=0.688 Address Points
+IA Iowa                   全州    n=99        cov=1.0   Iowa NG911 GIS Status
+ID Idaho                  全州    n=66233     cov=1.0   Site Structure Address Points
+IL Illinois               全州    n=22251     cov=1.0   Address Points
+IN Indiana                未验证   n=None      cov=1.0   Address Points of Indiana Current
+KS Kansas                 全州    n=1035861   cov=1.0   Kansas NG911 Address Points
+KY Kentucky               仅县市   n=60554     cov=0.017 Address Points
+LA Louisiana              未验证   n=None      cov=0.009 Site Address Point
+MA Massachusetts          未验证   n=None      cov=0.009 Address Points
+MD Maryland               未验证   n=None      cov=1.0   Address Points
+ME Maine                  全州    n=801786    cov=0.998 Address Points
+MI Michigan               全州    n=2772      cov=1.0   SNAP
+MN Minnesota              未验证   n=None      cov=1.0   Minnesota NG911 GIS Hub
+MO Missouri               未验证   n=None      cov=1.0   NG911
+MS Mississippi            全州    n=94        cov=1.0   MS_911PSAP_2025
+MT Montana                全州    n=674469    cov=1.0   Montana Structures and Addresses Framework
+NC North Carolina         全州    n=6279866   cov=0.986 NC Address Points - AddressNC
+ND North Dakota           全州    n=176614    cov=1.0   NDGISHUB Roads NG911
+NE Nebraska               未验证   n=None      cov=1.0   Address Points
+NH New Hampshire          未验证   n=None      cov=1.0   ADM_Addressing_MERLINCOPY_to_Pubview_2026
+NJ New Jersey             全州    n=3758585   cov=1.0   Address Points for NJ, Hosted, 3424 - AddressPoi
+NM New Mexico             全州    n=76802     cov=1.0   RR_AddressPoints
+NV Nevada                 全州    n=774       cov=0.972 SNAP Retailers
+NY New York               未验证   n=None      cov=1.0   SAM Address Points
+OH Ohio                   全州    n=92        cov=1.0   5201SP25_L02_part2_smith_14911_WFL1
+OK Oklahoma               全州    n=1928880   cov=1.0   NG911 Address Points
+OR Oregon                 未验证   n=None      cov=0.996 Oregon Address Points
+PA Pennsylvania           未验证   n=None      cov=0.98  Address Points
+PR Puerto Rico            全州    n=78        cov=1.0   SNAP 2019 _FAMILIA_
+RI Rhode Island           全州    n=3715904   cov=1.0   MassGIS Master Address Points
+SC South Carolina         未验证   n=None      cov=0.999 PSAPs NG911 Dashboard
+SD South Dakota           全州    n=67        cov=1.0   SD NG911 Benchmark Status
+TN Tennessee              未验证   n=None      cov=1.0   Address Points View
+TX Texas                  全州    n=24401     cov=0.604 Site Addressing Points
+UT Utah                   未验证   n=None      cov=1.0   Bluffdale Address Points (Corrupt)
+VA Virginia               未验证   n=None      cov=0.591 Next Generation 9-1-1 RCL Snap Points in Virgini
+VT Vermont                仅县市   n=11462     cov=0.003 BTV e911 Address Layers
+WA Washington             全州    n=4945      cov=0.997 Washington State SNAP Retailers With Nutrition P
+WI Wisconsin              全州    n=2550488   cov=1.0   WI NG911 Site Structure Address Points
+WV West Virginia          全州    n=1         cov=0.982 City of Richmond NG911 Boundaries_WFL1
+WY Wyoming                全州    n=245382    cov=1.0   Wyoming Structures Built Date - (2023 Lead Servi
+ok rows= 52
