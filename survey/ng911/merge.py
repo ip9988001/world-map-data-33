@@ -3,7 +3,12 @@
 """合并所有产物 → inventory.csv + 清单.md"""
 import glob, json, os, re, csv
 from collections import defaultdict
+from ng911_inventory import state_bbox, ABBR
 HERE = os.path.dirname(os.path.abspath(__file__))
+
+def num(v):
+    try: return int(v)
+    except Exception: return 0
 
 def load(pat):
     rows = []
@@ -17,9 +22,16 @@ def load(pat):
 
 def main():
     rows = load("shard_*.json") + load("portal_*.json")
+    BB = {ab: state_bbox(ab) for ab in set(ABBR.values())}
+    for r in rows:
+        bb, st = r.get("bbox"), r.get("state")
+        if bb and st in BB and BB[st]:
+            a1,b1,a2,b2 = BB[st]; x1,y1,x2,y2 = bb
+            iw = max(0, min(a2,x2)-max(a1,x1)); ih = max(0, min(b2,y2)-max(b1,y1))
+            r["cov"] = round(iw*ih/max((a2-a1)*(b2-b1),1e-9), 3)
     seen, uniq = set(), []
     for r in rows:
-        k = (str(r.get("url") or "") + "|" + str(r.get("title") or "")).lower()
+        k = (str(r.get("api") or r.get("url") or "") + "|" + str(r.get("title") or "")).lower()
         if k in seen: continue
         seen.add(k); uniq.append(r)
 
@@ -48,7 +60,7 @@ def main():
     with open(os.path.join(HERE, "inventory.csv"), "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=cols, extrasaction="ignore")
         w.writeheader()
-        for r in sorted(uniq, key=lambda x: ((x.get("state") or "ZZ"), -(x.get("count") or 0))):
+        for r in sorted(uniq, key=lambda x: ((x.get("state") or "ZZ"), -num(x.get("count")))):
             flds = ";".join("%s:%s" % (x.get("name"), x.get("type")) for x in (r.get("fields") or [])[:120])
             w.writerow({"state": r.get("state") or "未定位", "title": r.get("title"),
                         "provider": r.get("owner"), "level": level(r), "service": svc(r),
@@ -70,12 +82,12 @@ def main():
     tot = sorted(by.items())
     lines += ["## 概览", "", "| 州 | 条目 | 已探明要素数合计 | 含全州级 |", "|---|---|---|---|"]
     for st, rs in tot:
-        s = sum(x.get("count") or 0 for x in rs if isinstance(x.get("count"), int))
+        s = sum(num(x.get("count")) for x in rs)
         sw = sum(1 for x in rs if (x.get("cov") or 0) >= 0.5)
         lines.append("| %s | %d | %s | %d |" % (st, len(rs), format(s, ","), sw))
     for st, rs in tot:
         lines += ["", "## %s" % st, "", "| 要素数 | 层级 | 标题 | 提供方 | 类型 | 点/号段/单元 | 覆盖 |", "|---|---|---|---|---|---|---|"]
-        for x in sorted(rs, key=lambda y: -(y.get("count") or 0))[:40]:
+        for x in sorted(rs, key=lambda y: -num(y.get("count")))[:40]:
             flag = "%s%s%s" % ("点" if x.get("has_point") else "-",
                                "号段" if x.get("has_range") else "",
                                "单元" if x.get("has_unit") else "")
