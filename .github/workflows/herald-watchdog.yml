@@ -5,7 +5,7 @@ name: collect-watchdog
 on:
   schedule: [{ cron: "*/30 * * * *" }]
   workflow_dispatch:
-permissions: { contents: write, issues: write, actions: write, actions2: read }
+permissions: { contents: write, issues: write, actions: write }
 jobs:
   watchdog:
     runs-on: ubuntu-latest
