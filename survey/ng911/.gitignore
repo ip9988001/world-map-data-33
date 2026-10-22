@@ -1,9 +1,15 @@
-out/
+# 一次性中间产物（原始件见 Release: survey-ng911-2026-10-22）
+*.log
 items.json
 shard_*.json
 portal_*.json
+samp_*.json
 probe_cache.json
 raw.json
-run*.log
+out/
+__pycache__/
+# 大文件不进 Git
 inventory.csv
 clean.csv
+清单-全量.md
+清单-全量-含样本.md
