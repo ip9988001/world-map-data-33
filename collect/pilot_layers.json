@@ -37,10 +37,9 @@
   "svc": "FeatureServer",
   "state": "DE",
   "expect": 184716,
-  "title": "Delaware SUSS Address Points",
-  "url": "https://services1.arcgis.com/jjVcwHv9AQEq3DH3/arcgis/rest/services/SUSS_Address_Points/FeatureServer/0",
-  "note": "2026-10-23 原 URL 返回 Invalid URL（服务下线），待找替代源",
-  "upstream_down": true
+  "title": "Delaware SUSS Address Points（layer 132）",
+  "url": "https://services1.arcgis.com/jjVcwHv9AQEq3DH3/arcgis/rest/services/SUSS_Address_Points/FeatureServer/132",
+  "note": "2026-10-23 实测：该 FeatureServer 的 layer 编号是 132 不是 0（原配置写 /0 报 'layerId: 0 not found'）。打 /132 返回 count=184,716，与 expect 完全一致，objectIdField=OBJECTID。"
  },
  {
   "id": "yngstown",
