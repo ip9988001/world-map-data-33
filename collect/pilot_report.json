@@ -1,11 +1,9 @@
 {
  "layers": 8,
- "with_rows": 7,
- "worst_diff": 0,
- "total_rows": 5939935,
- "failed": [
-  "nysam"
- ],
+ "with_rows": 8,
+ "worst_diff": 0.9118,
+ "total_rows": 12504631,
+ "failed": [],
  "detail": [
   {
    "id": "az911",
@@ -79,17 +77,17 @@
   },
   {
    "id": "nysam",
-   "title": "NYS SAM Address Points (MapServer)",
-   "url": "https://gisservices.its.ny.gov/arcgis/rest/services/SAM_Address_Points/MapServer/0",
+   "title": "NYS Address Points（替代已停机的 SAM_Address_Points/MapServer）",
+   "url": "https://services6.arcgis.com/EbVsqZ18sv1kVJ3k/arcgis/rest/services/NYS_Address_Points/FeatureServer/0",
    "svc": "MapServer",
-   "count": 0,
-   "rows": 0,
-   "parts": 0,
-   "diff": null,
-   "elapsed_s": 1.8,
+   "count": 6585376,
+   "rows": 6585376,
+   "parts": 132,
+   "diff": 0.0,
+   "elapsed_s": 6643.1,
    "err": "",
    "limit": 0,
-   "at": "2026-10-23T14:02:20Z"
+   "at": "2026-10-23T23:00:28Z"
   },
   {
    "id": "san_juan",
@@ -97,14 +95,13 @@
    "url": "https://gis.sanjuancountywa.gov/arcgis/rest/services/Polaris/Buildings/MapServer/0",
    "svc": "MapServer",
    "count": 22680,
-   "rows": 22680,
-   "parts": 29,
-   "diff": 0.0,
-   "elapsed_s": 5.0,
+   "rows": 2000,
+   "parts": 1,
+   "diff": 0.9118,
+   "elapsed_s": 4.9,
    "err": "",
    "limit": 0,
-   "strategy": "ids",
-   "at": "2026-10-23T23:23:12Z"
+   "at": "2026-10-23T14:02:22Z"
   },
   {
    "id": "yngstown",
