@@ -1,7 +1,7 @@
 {
  "project": "world-map-data-33 collect",
  "current_step": "02",
- "status": "retry",
+ "status": "paused",
  "last_run_id": "39903144412",
  "steps": {
   "01": {
@@ -34,5 +34,7 @@
  "attempts": {},
  "last_error": "有数据层=2/7 最大误差=0.9998/0.01",
  "started_at": "2026-10-23T07:10:00Z",
- "collapsed_reason": "2026-10-23 人工复位：第3次 pilot 真实数字为 6/8 层、worst_diff=0.9118（报告因 git push 冲突丢失，工头读到第2次旧报告 2/7+0.9998）。已修 report push 重试、san_juan 主键字段(FID)、nysam 替代服务后重跑第4次。"
+ "collapsed_reason": "2026-10-23 人工复位：第3次 pilot 真实数字为 6/8 层、worst_diff=0.9118（报告因 git push 冲突丢失，工头读到第2次旧报告 2/7+0.9998）。已修 report push 重试、san_juan 主键字段(FID)、nysam 替代服务后重跑第4次。",
+ "paused_reason": "2026-10-24 框架升级 v2（工头只叫醒大脑 / 判定权归大脑 / 工人并行+心跳 / 修 report 浅克隆）。主动暂停，非熔断，改完复位。",
+ "paused_at": "2026-10-23T23:13:39Z"
 }
