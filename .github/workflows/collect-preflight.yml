@@ -1,0 +1,58 @@
+name: collect-preflight
+on: { workflow_dispatch: }
+permissions: { contents: write, issues: write, actions: write }
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy: { fail-fast: false, matrix: { shard: [0,1,2,3,4,5,6,7,8,9,10,11] } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: python3 collect/preflight.py --shard ${{ matrix.shard }} --n 12
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plan-${{ matrix.shard }}
+          path: collect/plan_${{ matrix.shard }}.csv
+          retention-days: 7
+  merge:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - uses: actions/download-artifact@v4
+        with: { path: collect/_parts, pattern: "plan-*", merge-multiple: true }
+      - name: 合并施工单
+        run: |
+          python3 - <<'EOF'
+          import glob, csv
+          rows = []
+          cols = None
+          for f in sorted(glob.glob("collect/_parts/plan_*.csv")):
+              with open(f, encoding="utf-8") as fh:
+                  r = csv.DictReader(fh)
+                  cols = r.fieldnames
+                  rows += list(r)
+          with open("collect/layer_plan.csv", "w", newline="", encoding="utf-8") as fh:
+              w = csv.DictWriter(fh, fieldnames=cols); w.writeheader(); w.writerows(rows)
+          from collections import Counter
+          print("rows", len(rows), Counter(x["plan"] for x in rows))
+          EOF
+      - name: 报工 + 落账
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 scripts/herald.py --step 01 --status ${{ job.status == 'success' && 'success' || 'failure' }} --run-id ${{ github.run_id }}
+      - name: 提交
+        if: always()
+        run: |
+          git config user.name ng911-bot
+          git config user.email bot@users.noreply.github.com
+          git add collect/layer_plan.csv collect/state.json || true
+          git commit -m "collect: STEP01 施工单 layer_plan.csv" || echo nochange
+          git push || true

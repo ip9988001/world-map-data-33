@@ -9,7 +9,7 @@ NG911 / 州级地址数据 —— 全量摸排器（单州模式）
 import argparse, json, os, re, sys, time, urllib.parse, urllib.request, urllib.error
 from concurrent.futures import ThreadPoolExecutor
 
-HERE = os.path.dirname(os.path.abspath(__file__))
+HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # scripts/ 的上一级
 OUT = os.path.join(HERE, "out")
 UA = {"User-Agent": "ng911-inventory/2.0 (research)"}
 GEO = json.load(open(os.path.join(HERE, "us_states.json")))
