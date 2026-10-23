@@ -97,6 +97,7 @@ def collect_arcgis(url, limit=0, log=print):
     if m and not m.group(2):
         api += "/0"
     ps, maxrc, meta = page_size_for(api)
+    oid_field = meta.get("objectIdField") or meta.get("objectIdFieldName") or "OBJECTID"
     count = int((meta.get("definitionExpression") and 0) or 0)
     cnt = get_json(api + "/query?where=1%3D1&returnCountOnly=true&f=json", timeout=60)
     count = int(cnt.get("count") or 0)
@@ -122,12 +123,12 @@ def collect_arcgis(url, limit=0, log=print):
         buf = []
 
     while True:
-        where = where0 if last_oid is None else f"OBJECTID>{last_oid}"
+        where = where0 if last_oid is None else f"{oid_field}>{last_oid}"
         if defexpr:
             where = f"({defexpr}) AND {where}" if last_oid is not None else defexpr
         q = {"where": where, "outFields": "*", "returnGeometry": "true",
              "outSR": "4326", "f": "json", "resultRecordCount": ps,
-             "orderByFields": "OBJECTID"}
+             "orderByFields": oid_field}
         u = api + "/query?" + urllib.parse.urlencode(q)
         d = get_json(u, timeout=90)
         if "__error__" in d:
@@ -142,7 +143,12 @@ def collect_arcgis(url, limit=0, log=print):
             rec.update({"src_layer": CUR["id"], "src_title": CUR["title"], "raw": a})
             buf.append(rec)
             rows += 1
-            oid = a.get("OBJECTID") or a.get("OBJECTID_1") or a.get("FID")
+            oid = a.get(oid_field)
+            if oid is None:
+                for k in ("OBJECTID", "OBJECTID_1", "FID", "OID"):
+                    if k in a:
+                        oid = a[k]
+                        break
             if oid is not None:
                 last_oid = oid
         if len(buf) >= CHUNK:
@@ -240,6 +246,9 @@ def main():
            "elapsed_s": elapsed, "err": err, "limit": a.limit,
            "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
     with open(os.path.join(OUTBASE, CUR["id"], "_manifest.json"), "w", encoding="utf-8") as f:
+        json.dump(man, f, ensure_ascii=False, indent=1)
+    os.makedirs(os.path.join(ROOT, "collect", "reports"), exist_ok=True)
+    with open(os.path.join(ROOT, "collect", "reports", CUR["id"] + ".json"), "w", encoding="utf-8") as f:
         json.dump(man, f, ensure_ascii=False, indent=1)
     log("done rows=%d count=%d diff=%s err=%s %.1fs" % (rows, count, diff, err or "-", elapsed))
     return 0 if (rows > 0 and not err) else 1

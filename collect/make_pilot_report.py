@@ -3,8 +3,17 @@
 import glob, json, os
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ms = []
-for f in glob.glob(os.path.join(ROOT, "collect", "out", "*", "_manifest.json")):
-    ms.append(json.load(open(f, encoding="utf-8")))
+seen = set()
+for f in sorted(glob.glob(os.path.join(ROOT, "collect", "reports", "*.json")) +
+                glob.glob(os.path.join(ROOT, "collect", "out", "*", "_manifest.json"))):
+    try:
+        m = json.load(open(f, encoding="utf-8"))
+    except Exception:
+        continue
+    if m.get("id") in seen:
+        continue
+    seen.add(m.get("id"))
+    ms.append(m)
 ok = [m for m in ms if (m.get("rows") or 0) > 0 and not m.get("err")]
 worst = max([(m.get("diff") or 0) for m in ok], default=0)
 rep = {"layers": len(ms), "with_rows": len(ok),

@@ -3,7 +3,7 @@ name: collect-supervisor
 on:
   schedule: [{ cron: "*/10 * * * *" }]
   workflow_dispatch:
-permissions: { contents: write, issues: write, actions: read }
+permissions: { contents: write, issues: write, actions: write }
 concurrency:
   group: collect-supervisor
   cancel-in-progress: false

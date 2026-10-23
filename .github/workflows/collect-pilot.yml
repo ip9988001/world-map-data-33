@@ -1,11 +1,13 @@
 name: collect-pilot
 # STEP 02 工人：只干活，不报警。验收由工头（collect-supervisor）判。
+# 数据直接进 Release（不进 artifact，避免几 GB 上传失败），artifact 只带报告。
 on: { workflow_dispatch: }
-permissions: { contents: write }
+permissions:
+  contents: write
 jobs:
   collect:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 180
     strategy:
       fail-fast: false
       matrix:
@@ -13,15 +15,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with: { python-version: "3.11" }
+        with:
+          python-version: "3.11"
       - name: 采集 ${{ matrix.layer }}
         run: python3 collect/pilot.py --layer ${{ matrix.layer }}
+      - name: 打包上传 Release（数据不走 artifact）
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="collect-pilot-${{ github.run_number }}"
+          ID="${{ matrix.layer }}"
+          if [ -d "collect/out/$ID" ]; then
+            tar czf "/tmp/$ID.tar.gz" -C collect/out "$ID" || true
+            gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 \
+              || gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --title "试点 8 层 #${{ github.run_number }}" --notes "pilot"
+            gh release upload "$TAG" "/tmp/$ID.tar.gz" --repo "$GITHUB_REPOSITORY" --clobber || true
+          fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: out-${{ matrix.layer }}
-          path: collect/out/${{ matrix.layer }}
-          retention-days: 7
+          name: rep-${{ matrix.layer }}
+          path: collect/reports/
+          retention-days: 14
   report:
     needs: collect
     runs-on: ubuntu-latest
@@ -29,13 +45,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with: { python-version: "3.11" }
+        with:
+          python-version: "3.11"
       - uses: actions/download-artifact@v4
-        with: { path: collect/out, pattern: "out-*", merge-multiple: true }
+        with:
+          path: collect/reports
+          pattern: "rep-*"
+          merge-multiple: true
       - name: 汇总
         run: python3 collect/make_pilot_report.py
-      - uses: actions/upload-artifact@v4
-        with: { name: pilot-report, path: collect/pilot_report.json, retention-days: 30 }
       - name: 提交试点报告（工头据此判验收）
         run: |
           git config user.name collect-bot
@@ -43,9 +61,3 @@ jobs:
           git add -f collect/pilot_report.json
           git diff --cached --quiet || git commit -m "collect: STEP02 试点报告"
           git push || true
-      - name: 打包发布 Release
-        env: { GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
-        run: |
-          TAG="collect-pilot-$(date -u +%Y%m%d-%H%M)"
-          cd collect/out && for d in */; do tar czf "/tmp/${d%/}.tar.gz" "$d"; done; cd -
-          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --title "试点 8 层 $TAG" --notes "pilot 8 layers" /tmp/*.tar.gz

@@ -65,33 +65,23 @@ jobs:
           python3 -c "import json,os;open('collect/pilot_layers.json','w').write(json.dumps([json.loads(os.environ['CFG'])]))"
           LID=$(python3 -c "import json;print(json.load(open('collect/pilot_layers.json'))[0]['id'])")
           python3 collect/pilot.py --layer "$LID"
-      - uses: actions/upload-artifact@v4
+      - name: 打包上传 Release（数据不走 artifact）
         if: always()
-        with:
-          name: out-${{ matrix.id }}
-          path: collect/out/
-          retention-days: 5
-  publish:
-    needs: collect
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          path: collect/out
-          pattern: "out-*"
-          merge-multiple: true
-      - name: 打包并发布 Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG="collect-${{ github.event.inputs.mode }}-${{ github.event.inputs.state }}-${{ github.run_number }}"
-          cd collect/out
-          for d in */; do tar czf "/tmp/${d%/}.tar.gz" "$d" 2>/dev/null || true; done
-          cd -
-          ls -lh /tmp/*.tar.gz | head -5
-          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" \
-            --title "采集 $TAG" \
-            --notes "mode=${{ github.event.inputs.mode }} state=${{ github.event.inputs.state }} layers=$(ls collect/out | wc -l)" \
-            /tmp/*.tar.gz || gh release upload "$TAG" /tmp/*.tar.gz --repo "$GITHUB_REPOSITORY" --clobber
+          for d in collect/out/*/; do
+            [ -d "$d" ] || continue
+            N=$(basename "$d")
+            tar czf "/tmp/$N.tar.gz" -C collect/out "$N" || true
+            gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 \
+              || gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --title "采集 $TAG" --notes "mode=${{ github.event.inputs.mode }}"
+            gh release upload "$TAG" "/tmp/$N.tar.gz" --repo "$GITHUB_REPOSITORY" --clobber || true
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rep-${{ matrix.id }}
+          path: collect/reports/
+          retention-days: 14

@@ -23,7 +23,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATE_F = os.path.join(ROOT, "collect", "state.json")
 REPO = os.environ.get("GITHUB_REPOSITORY") or "ip9988001/world-map-data-33"
 LABEL = "sentinel-alarm"
-STALL_MIN = 120
+STALL_MIN = 180
 MAX_FAIL = 3
 
 STEPS = {
@@ -227,7 +227,7 @@ def entry_check():
             sep = False
     add(4, "工人不含报警步骤", sep, "采集 workflow 内无 herald/supervisor 调用")
     add(5, "工头能发现该动没动", "active_runs" in open(__file__, encoding="utf-8").read(), "按 run 存活判")
-    add(6, "能发现卡死", STALL_MIN == 120, f"阈值 {STALL_MIN} 分钟")
+    add(6, "能发现卡死", STALL_MIN >= 120, f"阈值 {STALL_MIN} 分钟")
     src = open(__file__, encoding="utf-8").read()
     add(7, "简报自包含", all(k in src for k in ("尝试次数", "上次错误", "本步说明书", "触发：")), "含步号/数字/尝试/错误/地图/命令")
     add(8, "三振出局", MAX_FAIL == 3 and "collapsed" in src, "连败 3 次 collapsed")
@@ -307,6 +307,25 @@ def main():
             return 0
     else:
         ok, metrics, notes = CHECKS[step]()
+        if not ok and not st.get("steps", {}).get(step):
+            # 本步从未跑过 → 不是失败，是还没开工。启动工人。
+            wfstep = STEPS[step][3]
+            say("状态", f"STEP {step} 尚未开工 → 启动工人 {wfstep}", True)
+            if not a.dry_run and wfstep:
+                cmd = ["gh", "workflow", "run", wfstep, "--repo", REPO]
+                if step == "03":
+                    cmd += ["-f", "mode=state", "-f", "state=KS"]
+                elif step == "04":
+                    cmd += ["-f", "mode=statewide"]
+                elif step == "05":
+                    cmd += ["-f", "mode=bulk", "-f", "offset=0", "-f", "size=40"]
+                rc, out, err = sh(cmd)
+                say("已启动", f"{wfstep} rc={rc} {(err or '')[:60]}", rc == 0)
+                st.setdefault("steps", {})[step] = {"status": "started",
+                                                    "at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}
+                save(st)
+            print(json.dumps(report, ensure_ascii=False))
+            return 0
         say("验收", "通过" if ok else "未通过", ok)
 
     if ok:
