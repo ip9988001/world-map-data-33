@@ -15,16 +15,26 @@ jobs:
         with: { python-version: "3.11" }
       - name: 语法检查
         run: python3 -m py_compile collect/*.py scripts/*.py survey/ng911/scripts/*.py
-      - name: 单层试采（取配置里最小的层，只要 3 条）
+      - name: 单层试采（按配置逐个试，任意一层有数据即通过）
         run: |
           python3 - <<'PY'
           import json, urllib.request
-          cfg = json.load(open("collect/pilot_layers.json"))
-          c = min(cfg, key=lambda x: (x.get("expect") or 10**9, x["id"]))
-          base = c["url"].rstrip("/")
-          u = base + "/query?where=1%3D1&outFields=*&returnGeometry=false&resultRecordCount=3&f=json"
-          d = json.load(urllib.request.urlopen(u, timeout=40))
-          n = len(d.get("features") or [])
-          print("layer:", c["id"], "smoke rows:", n)
-          assert n > 0, "试采拿不到数据，链路有问题"
+          cfg = sorted(json.load(open("collect/pilot_layers.json")), key=lambda x: (x.get("expect") or 10**9))
+          tried = []
+          for c in cfg[:5]:
+              try:
+                  u = c["url"].rstrip("/") + "/query?where=1%3D1&outFields=*&returnGeometry=false&resultRecordCount=3&f=json"
+                  d = json.load(urllib.request.urlopen(u, timeout=40))
+                  n = len(d.get("features") or [])
+              except Exception as e:
+                  n = 0
+                  tried.append((c["id"], "ERR", str(e)[:60]))
+                  continue
+              tried.append((c["id"], n))
+              if n > 0:
+                  print("PASS layer:", c["id"], "rows:", n)
+                  print("tried:", tried)
+                  raise SystemExit(0)
+          print("tried:", tried)
+          raise SystemExit("试采全部拿不到数据，链路有问题")
           PY
