@@ -243,6 +243,7 @@ def entry_check():
     add(15, "数据进 Release", "gh release create" in ptxt, "artifact 7 天过期，必须落 Release")
     add(16, "03~05 工人存在", os.path.exists(os.path.join(ROOT, ".github", "workflows", "collect-batch.yml")), "collect-batch.yml 通用工人")
     add(17, "自动触发下一步", "自动触发" in src, "工头放行即触发")
+    add(18, "DS 余额守护", os.path.exists(os.path.join(ROOT, "ops", "ds_balance.py")), "低于 ¥5 连推 3 次")
     return C
 
 

@@ -26,6 +26,7 @@
 | 10 | 额度闸门 | 账本记 `minutes_used`，超 80% 减速、超 95% 停止放量 |
 | 11 | 改动自检 | 脚本改动先跑 smoke（单层 3 条记录），过了才允许放量 |
 | 12 | 自检可验证 | `supervisor.py --dry-run` 输出 READY/BLOCKED 清单，不改任何东西 |
+| 18 | **DS 余额守护** | `ops/ds_balance.py` 每 30 分钟查余额，低于 ¥5 连推 3 次企微，充值后自动复位 |
 
 ---
 
@@ -43,6 +44,11 @@
 |---|---|---|---|
 | 工人 | `.github/workflows/collect-*.yml` | 只干活，不报警 | 干完即死 |
 | 工头 | `.github/workflows/collect-supervisor.yml` + `scripts/supervisor.py` | 每 10 分钟巡逻：判验收 / 记账 / 叫人 / 递下一步 | 常驻 |
+
+## 命脉监控（不依赖我自己）
+
+pi 跑在 DS 的 key 上，余额耗尽 = 直接失能。所以余额检查**必须由本机 cron 做**，
+不能靠我自己查（那是悖论）。低于 ¥5 → 企微连推 3 次 → 充值后自动复位。
 
 ## 谁叫醒我
 

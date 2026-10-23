@@ -1,2 +1,4 @@
 __pycache__/
 *.pyc
+ops/.ds_balance_state.json
+ops/*.log
