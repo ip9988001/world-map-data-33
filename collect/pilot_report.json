@@ -1,10 +1,9 @@
 {
  "layers": 8,
- "with_rows": 6,
+ "with_rows": 7,
  "worst_diff": 0.9118,
- "total_rows": 5734539,
+ "total_rows": 5919255,
  "failed": [
-  "de_suss",
   "nysam"
  ],
  "detail": [
@@ -38,17 +37,17 @@
   },
   {
    "id": "de_suss",
-   "title": "Delaware SUSS Address Points",
-   "url": "https://services1.arcgis.com/jjVcwHv9AQEq3DH3/arcgis/rest/services/SUSS_Address_Points/FeatureServer/0",
+   "title": "Delaware SUSS Address Points（layer 132）",
+   "url": "https://services1.arcgis.com/jjVcwHv9AQEq3DH3/arcgis/rest/services/SUSS_Address_Points/FeatureServer/132",
    "svc": "FeatureServer",
-   "count": 0,
-   "rows": 0,
-   "parts": 0,
-   "diff": null,
-   "elapsed_s": 0.5,
+   "count": 184716,
+   "rows": 184716,
+   "parts": 4,
+   "diff": 0.0,
+   "elapsed_s": 19.7,
    "err": "",
    "limit": 0,
-   "at": "2026-10-23T14:02:18Z"
+   "at": "2026-10-23T23:17:20Z"
   },
   {
    "id": "ks911",
