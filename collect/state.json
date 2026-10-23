@@ -12,10 +12,14 @@
     "plan_empty": 0,
     "count_rate": 0.787
    }
+  },
+  "02": {
+   "status": "started",
+   "at": "2026-10-23T07:04:49Z"
   }
  },
  "budget": {
-  "minutes_used": 0,
+  "minutes_used": 526,
   "minutes_cap": 1800,
   "warn_ratio": 0.8,
   "stop_ratio": 0.95
