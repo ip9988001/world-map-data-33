@@ -1,41 +1,53 @@
 #!/usr/bin/env bash
-# 三仓工头兜底点火器 —— 治「GitHub schedule 丢事件导致自研链路静默停摆」
+# 三仓工头兜底闹钟（v2 · 2026-10-24）
 #
-# 背景（2026-10-23）：collect-supervisor 配 cron */10，但从 10:25 之后 3.5 小时一次没跑，
-# STEP02 停在 retry 没人递活。GitHub 的 schedule 事件本身不保证送达。
-# 本脚本由本机 cron 每 15 分钟跑一次：发现「该动没动」就直接 dispatch 工头。
+# v2 铁律：**点火工人只有大脑能下**。本脚本不再看 status=retry 就点火，
+# 唯一职责是「保证工头活着」——工头掉了就补一脚，让工头去叫醒大脑。
+# 它不看验收、不判死、不 dispatch 任何工人。
 #
-# 判据（全部满足才点火）：
-#   1. mode = self-drive
-#   2. collapsed != true（三振收摊了就别再叫）
-#   3. 当前步 status in (running, started, retry)
-#   4. 近 40 分钟内没有任何 in_progress / queued 的 run（工人和工头都没在动）
+# 由本机 cron 每 15 分钟跑一次（GitHub schedule 事件不保证送达，双闹钟之一）。
 set -u
 REPO="ip9988001/world-map-data-33"
 STATE=$(gh api "repos/$REPO/contents/collect/state.json" -q '.content' 2>/dev/null | base64 -d 2>/dev/null)
 [ -z "$STATE" ] && { echo "$(date -u +%FT%TZ) SKIP 读不到 state.json"; exit 0; }
 
-read -r MODE COLLAPSED STEP STATUS <<<"$(python3 - <<PY
+read -r MODE STATUS AWAIT <<<"$(python3 - <<PY
 import json
 d=json.loads('''$STATE''')
-print(d.get("mode",""), d.get("collapsed",False), d.get("current_step",""), d.get("steps",{}).get(d.get("current_step",""),{}).get("status",""))
+print(d.get("mode",""), d.get("status",""), d.get("awaiting_brain",False))
 PY
 )"
 
-[ "$MODE" != "self-drive" ] && { echo "$(date -u +%FT%TZ) SKIP 非自研模式($MODE)"; exit 0; }
-[ "$COLLAPSED" = "True" ] && { echo "$(date -u +%FT%TZ) SKIP 已收摊(collapsed)"; exit 0; }
-case "$STATUS" in
-  running|started|retry) ;;
-  *) echo "$(date -u +%FT%TZ) SKIP STEP$STEP 状态=$STATUS 不需要点火"; exit 0 ;;
+case "$MODE" in
+  self-drive|self-drive-v2) ;;
+  *) echo "$(date -u +%FT%TZ) SKIP 非自研模式($MODE)"; exit 0 ;;
 esac
+[ "$STATUS" = "paused" ] && { echo "$(date -u +%FT%TZ) SKIP paused（大脑按了暂停）"; exit 0; }
+[ "$AWAIT" = "True" ] && echo "$(date -u +%FT%TZ) NOTE 正在等大脑判验收（工头已叫过，不重复叫）"
 
-ALIVE=$(gh api "repos/$REPO/actions/runs?per_page=20" \
-  -q '[.workflow_runs[]|select(.status=="in_progress" or .status=="queued" or .status=="pending")]|length' 2>/dev/null)
-ALIVE=${ALIVE:-99}
-if [ "$ALIVE" -gt 0 ]; then
-  echo "$(date -u +%FT%TZ) SKIP STEP$STEP 有 $ALIVE 个活着的 run，不重复点火"
+LAST=$(gh api "repos/$REPO/actions/workflows/collect-supervisor.yml/runs?per_page=1" \
+  -q '.workflow_runs[0].created_at // ""' 2>/dev/null)
+AGE=$(python3 - "$LAST" <<'PY'
+import sys, datetime
+try:
+    t = datetime.datetime.strptime(sys.argv[1], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=datetime.timezone.utc)
+    print(int((datetime.datetime.now(datetime.timezone.utc) - t).total_seconds() // 60))
+except Exception:
+    print(9999)
+PY
+)
+
+if [ "${AGE:-9999}" -lt 20 ]; then
+  echo "$(date -u +%FT%TZ) SKIP 工头 ${AGE} 分钟前刚跑过"
   exit 0
 fi
 
-echo "$(date -u +%FT%TZ) KICK STEP$STEP status=$STATUS 无活 run → dispatch collect-supervisor"
+ALIVE=$(gh api "repos/$REPO/actions/runs?per_page=20" \
+  -q '[.workflow_runs[]|select(.status=="in_progress" or .status=="queued" or .status=="pending")]|length' 2>/dev/null)
+if [ "${ALIVE:-0}" -gt 0 ]; then
+  echo "$(date -u +%FT%TZ) SKIP 有 $ALIVE 个活着的 run（含工头自己），不重复叫"
+  exit 0
+fi
+
+echo "$(date -u +%FT%TZ) KICK 工头已 ${AGE} 分钟没跑 → dispatch collect-supervisor"
 gh workflow run collect-supervisor.yml --repo "$REPO" 2>&1 | tail -1

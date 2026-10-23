@@ -1,0 +1,5 @@
+{
+ "schema": "v2",
+ "note": "两次不解决就记档跳过——这里是事实记录，不是判断。字段：id/layer/fail_count/evidence/skip_after",
+ "items": []
+}

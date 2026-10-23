@@ -1,47 +1,56 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""工头（supervisor）—— 自研模式的监督者
+"""工头（supervisor）—— 自研模式 v2
 
-与工人（collect-*.yml）完全解耦：工人不报告，工头自己巡逻。
-每轮做四件事：
-  1. 账本 collapsed / paused → 直接退出（不叫人）
-  2. 当前步有没有活着的 run？ 有 → 检查是否卡死（>120 分钟），没卡就退出
-  3. 没有活着的 run → 判验收（按 ROADMAP 判据）
-      通过  → 推进到下一步，重置 fail_streak，开 Issue 递活
-      不通过 → fail_streak+1；满 3 次 → collapsed=true，静默收摊
-  4. 额度闸门：minutes_used ≥ 95% → paused
+铁律（v2 · 2026-10-24 落地）：**工头只叫醒大脑，验收判定权 100% 归大脑。**
+
+它能做的三件事：
+  1. 看有没有活着的 run（有 → 只记录事实；跑太久也只报告，**不判死**）
+  2. 没活 run → 收集证据 → 写 collect/wake/WAKE.json → 开 Issue **叫醒**大脑
+  3. 记事实账（last_run / awaiting_brain / 预算），**不写任何合格/不合格**
+
+它不能做的（写死在代码里）：
+  ✗ 比数字判验收 —— 判据在执行者脑子里；脚本只会比大小，不会判原因
+  ✗ 自己推进 current_step、自己点火下一步 —— 点火只能由大脑下令
+  ✗ 写失败计数 / 收摊标记 —— 「收摊」是决定，不是事实
+  ✗ 推企微 —— 老板只该收到大脑的话
+  ✗ 用 `|| true` 吞错
 
 用法:
-  python3 collect/supervisor.py --dry-run    # 只体检，不改任何东西
-  python3 collect/supervisor.py --once       # 正常巡逻一轮
+  python3 collect/supervisor.py --once                # 巡逻一轮（叫醒用，CI cron 调这个）
+  python3 collect/supervisor.py --dry-run             # 只看证据，不改任何东西
+  python3 collect/supervisor.py --entry-check         # v2 结构自检
+  python3 collect/supervisor.py --kick 02 --layers a,b --workers 8   # 【大脑下令】点火工人
+  python3 collect/supervisor.py --review pass --note "..." --next 03  # 【大脑写】验收结论
+  python3 collect/supervisor.py --pause "原因" / --resume             # 【大脑】暂停/放开
 """
 from __future__ import annotations
-import argparse, json, os, subprocess, sys
+import argparse, hashlib, json, os, subprocess, sys
 from datetime import datetime, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATE_F = os.path.join(ROOT, "collect", "state.json")
+WAKE_F = os.path.join(ROOT, "collect", "wake", "WAKE.json")
+REPORT_F = os.path.join(ROOT, "collect", "pilot_report.json")
+BLOCKED_F = os.path.join(ROOT, "collect", "blocked.json")
 REPO = os.environ.get("GITHUB_REPOSITORY") or "ip9988001/world-map-data-33"
 LABEL = "sentinel-alarm"
-STALL_MIN = 180
-MAX_FAIL = 3
+STALL_MIN = 240          # 超过这么久没结束 = 异常，但只报告不判死
 
+# step -> (名字, 说明书, worker workflow)
 STEPS = {
- "00": ("地基", "collect/steps/STEP-00.md", "01", "collect-watchdog.yml"),
- "01": ("预检", "collect/steps/STEP-01.md", "02", "collect-preflight.yml"),
- "02": ("试点 8 层", "collect/steps/STEP-02.md", "03", "collect-pilot.yml"),
- "03": ("单州试跑 KS", "collect/steps/STEP-03.md", "04", "collect-batch.yml"),
- "04": ("全州级放量", "collect/steps/STEP-04.md", "05", "collect-batch.yml"),
- "05": ("县市碎片放量", "collect/steps/STEP-05.md", "06", "collect-batch.yml"),
- "06": ("收工", "collect/steps/STEP-06.md", None, None),
+    "00": ("地基", "collect/steps/STEP-00.md", "collect-watchdog.yml"),
+    "01": ("预检", "collect/steps/STEP-01.md", "collect-preflight.yml"),
+    "02": ("试点 8 层", "collect/steps/STEP-02.md", "collect-pilot.yml"),
+    "03": ("单州试跑 KS", "collect/steps/STEP-03.md", "collect-batch.yml"),
+    "04": ("全州级放量", "collect/steps/STEP-04.md", "collect-batch.yml"),
+    "05": ("县市碎片放量", "collect/steps/STEP-05.md", "collect-batch.yml"),
+    "06": ("收工", "collect/steps/STEP-06.md", None),
 }
-TRIGGER = {
- "01": "gh workflow run collect-preflight.yml --repo %s",
- "02": "gh workflow run collect-pilot.yml --repo %s",
- "03": "gh workflow run collect-batch.yml -f mode=state -f state=KS --repo %s",
- "04": "gh workflow run collect-batch.yml -f mode=statewide --repo %s",
- "05": "gh workflow run collect-batch.yml -f mode=bulk -f offset=0 -f size=40 --repo %s",
-}
+
+
+def now():
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def sh(args, timeout=120):
@@ -52,12 +61,23 @@ def sh(args, timeout=120):
         return 1, "", str(e)
 
 
+def api_json(path):
+    rc, out, _ = sh(["gh", "api", path])
+    if rc != 0:
+        return {}
+    try:
+        return json.loads(out or "{}")
+    except Exception:
+        return {}
+
+
 def load():
     with open(STATE_F, encoding="utf-8") as f:
         return json.load(f)
 
 
 def save(st):
+    os.makedirs(os.path.dirname(STATE_F), exist_ok=True)
     with open(STATE_F, "w", encoding="utf-8") as f:
         json.dump(st, f, ensure_ascii=False, indent=1)
 
@@ -70,69 +90,9 @@ def mins(iso):
         return 1e9
 
 
-# ---------------- 验收判据 ----------------
-def check_01():
-    import csv
-    p = os.path.join(ROOT, "collect", "layer_plan.csv")
-    rows = bad = withc = 0
-    try:
-        with open(p, encoding="utf-8") as f:
-            for r in csv.DictReader(f):
-                rows += 1
-                if not (r.get("plan") or "").strip():
-                    bad += 1
-                if (r.get("row_count") or "").strip():
-                    withc += 1
-    except Exception:
-        return False, {"csv": 0}, ["layer_plan.csv 不存在"]
-    rate = round(withc / max(rows, 1), 3)
-    ok = rows >= 50000 and bad == 0 and rate >= 0.78
-    return ok, {"rows": rows, "plan_empty": bad, "count_rate": rate}, \
-        [] if ok else [f"rows={rows}/50000 plan空={bad} count率={rate}/0.78"]
-
-
-def check_00():
-    return os.path.exists(STATE_F), {"state": True}, []
-
-
-def check_generic(name, min_bytes=200):
-    p = os.path.join(ROOT, "collect", name)
-    if not os.path.exists(p):
-        return False, {name: 0}, [f"{name} 不存在"]
-    n = os.path.getsize(p)
-    return n >= min_bytes, {name: n}, [] if n >= min_bytes else [f"{name} 只有 {n} 字节"]
-
-
-def check_02_pilot():
-    p = os.path.join(ROOT, "collect", "pilot_report.json")
-    try:
-        d = json.load(open(p, encoding="utf-8"))
-    except Exception:
-        return False, {}, ["pilot_report.json 不存在"]
-    m = {"layers": d.get("layers"), "with_rows": d.get("with_rows"),
-         "worst_diff": d.get("worst_diff"), "total_rows": d.get("total_rows")}
-    ok = (d.get("with_rows") or 0) >= 7 and (d.get("worst_diff") or 9) < 0.01
-    return ok, m, [] if ok else [f"有数据层={m['with_rows']}/7 最大误差={m['worst_diff']}/0.01"]
-
-
-CHECKS = {
- "00": check_00,
- "01": check_01,
- "02": check_02_pilot,
- "03": lambda: check_generic("ks_report.json"),
- "04": lambda: check_generic("coverage_report.md"),
- "05": lambda: check_generic("layer_status.json", 500),
- "06": lambda: check_generic("FINAL_REPORT.md", 500),
-}
-
-
 def used_minutes():
-    """按 Actions 实际 run 时长累计已用分钟（近 30 天），让闸门真正生效。"""
-    rc, out, _ = sh(["gh", "api", "repos/%s/actions/runs?per_page=100" % REPO])
-    try:
-        runs = json.loads(out or "{}").get("workflow_runs", [])
-    except Exception:
-        return None
+    """按 Actions 实际 run 时长累计（近 100 个 run），让额度闸门真生效。"""
+    runs = api_json("repos/%s/actions/runs?per_page=100" % REPO).get("workflow_runs") or []
     tot = 0.0
     for r in runs:
         if r.get("status") != "completed":
@@ -146,233 +106,339 @@ def used_minutes():
     return int(tot)
 
 
-def active_runs(wf):
-    rc, out, _ = sh(["gh", "run", "list", "--workflow", wf, "--repo", REPO, "--limit", "5",
-                     "--json", "databaseId,status,startedAt,conclusion"])
-    try:
-        rows = json.loads(out or "[]")
-    except Exception:
-        return []
-    return [r for r in rows if r.get("status") in ("queued", "in_progress")]
+def active_runs(wf=None):
+    runs = api_json("repos/%s/actions/runs?per_page=30" % REPO).get("workflow_runs") or []
+    out = []
+    for r in runs:
+        if r.get("status") not in ("queued", "in_progress", "pending"):
+            continue
+        if wf and (r.get("name") or "") not in (wf.replace(".yml", ""), wf) \
+                and (r.get("path") or "").split("/")[-1] != wf:
+            continue
+        out.append(r)
+    return out
 
 
-def post_issue(step, ok, body):
-    sh(["gh", "label", "create", LABEL, "--repo", REPO, "--color", "d73a4a",
-        "--description", "采集流水线事件/告警", "--force"])
-    title = f"【三仓项目】STEP {step} {'完成' if ok else '卡住'} — {STEPS[step][0]}"
+# ---------------- 证据（只收事实，不下结论） ----------------
+def evidence(st, step):
+    ev = {"step": step, "at": now(), "facts": {}, "ask": []}
+    wf = STEPS[step][2]
+
+    runs = (api_json("repos/%s/actions/runs?per_page=30" % REPO).get("workflow_runs") or [])
+    mine = [r for r in runs if (r.get("path") or "").split("/")[-1] == wf][:6]
+    ev["facts"]["recent_runs"] = [
+        {"n": r.get("run_number"), "id": r.get("id"), "status": r.get("status"),
+         "conclusion": r.get("conclusion"), "at": r.get("created_at"),
+         "duration_min": round((r.get("updated_at") and r.get("created_at") and
+                                (mins(r.get("created_at")) - mins(r.get("updated_at")))) or 0, 1)}
+        for r in mine]
+
+    rels = api_json("repos/%s/releases?per_page=20" % REPO) or []
+    ev["facts"]["releases"] = [
+        {"tag": r.get("tag_name"), "at": r.get("created_at"),
+         "assets": [{"name": a.get("name"), "bytes": a.get("size")} for a in (r.get("assets") or [])]}
+        for r in rels[:12]]
+
+    # 报告新鲜度（本地 checkout 里的那份）
+    if os.path.exists(REPORT_F):
+        raw = open(REPORT_F, "rb").read()
+        try:
+            d = json.loads(raw.decode("utf-8"))
+        except Exception:
+            d = {}
+        ev["facts"]["report"] = {
+            "sha": hashlib.sha1(raw).hexdigest()[:12],
+            "mtime": datetime.fromtimestamp(os.path.getmtime(REPORT_F), timezone.utc)
+                            .strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "layers": d.get("layers"), "with_rows": d.get("with_rows"),
+            "worst_diff": d.get("worst_diff"), "total_rows": d.get("total_rows"),
+            "failed": d.get("failed"),
+            "per_layer": [{k: m.get(k) for k in ("id", "count", "rows", "parts", "diff", "elapsed_s", "err")}
+                          for m in (d.get("detail") or [])],
+        }
+    else:
+        ev["facts"]["report"] = None
+
+    if os.path.exists(BLOCKED_F):
+        try:
+            ev["facts"]["blocked"] = json.load(open(BLOCKED_F, encoding="utf-8"))
+        except Exception:
+            ev["facts"]["blocked"] = None
+
+    ev["facts"]["state"] = {"step": step, "last_run": st.get("last_run"),
+                            "last_error": st.get("last_error"),
+                            "budget": st.get("budget"),
+                            "steps": st.get("steps")}
+
+    # 要问大脑什么（是问题，不是结论）
+    ev["ask"] = [
+        f"STEP {step}（{STEPS[step][0]}）这一轮的结果，判通过还是不通过？依据在 evidence.report.per_layer 里",
+        "不通过的话：是补跑哪一层，还是记 blocked 跳过继续往下走？",
+        f"判完请写回账本：python3 collect/supervisor.py --review pass|fail --note \"...\"",
+    ]
+    return ev
+
+
+def signature(ev):
+    d = {"step": ev["step"],
+         "runs": [(r["id"], r["status"], r["conclusion"]) for r in ev["facts"]["recent_runs"]],
+         "rel": [(r["tag"], [(a["bytes"]) for a in r["assets"]]) for r in ev["facts"]["releases"]],
+         "rep": (ev["facts"]["report"] or {}).get("sha"),
+         "blocked": len((ev["facts"].get("blocked") or {}).get("items") or [])}
+    return hashlib.sha1(json.dumps(d, sort_keys=True, ensure_ascii=False).encode()).hexdigest()[:16]
+
+
+def post_issue(step, body, sig):
+    title = f"【三仓 · 等大脑】STEP {step} {STEPS[step][0]} — 工人已停手，请判验收"
     rc, out, _ = sh(["gh", "issue", "list", "--repo", REPO, "--label", LABEL, "--state", "open",
-                     "--search", f"STEP {step}", "--json", "number,title"])
-    num = None
+                     "--json", "number,title,body"])
     try:
         for it in json.loads(out or "[]"):
-            if f"STEP {step}" in it["title"]:
-                num = it["number"]
+            if title in (it.get("title") or ""):
+                if sig in (it.get("body") or ""):
+                    return it["number"], False          # 同一批证据，不重复刷
+                sh(["gh", "issue", "comment", str(it["number"]), "--repo", REPO, "--body", body])
+                return it["number"], True
     except Exception:
         pass
-    if num:
-        sh(["gh", "issue", "comment", str(num), "--repo", REPO, "--body", body])
-        return num
+    sh(["gh", "label", "create", LABEL, "--repo", REPO, "--color", "d73a4a",
+        "--description", "流水线叫醒/告警", "--force"])
     rc, out, _ = sh(["gh", "issue", "create", "--repo", REPO, "--label", LABEL,
                      "--title", title, "--body", body])
-    return out.strip().splitlines()[-1] if out else None
+    num = out.strip().splitlines()[-1] if out.strip() else None
+    return num, True
 
 
-def briefing(st, step, ok, metrics, notes):
-    name, page, nxt, _ = STEPS[step]
-    L = [f"## 【三仓项目】工人停手了：STEP {step} {name}", "",
-         f"- 自动判定：**{'✅ 合格' if ok else '❌ 不合格'}**",
-         f"- 尝试次数：{st.get('fail_streak', 0) + 1} / {MAX_FAIL}（连败 3 次收摊）",
-         f"- 关键数字：`{json.dumps(metrics, ensure_ascii=False)[:500]}`",
-         f"- 上次错误：`{st.get('last_error') or '-'}`",
-         f"- 账本：`collect/state.json`　当前步：{step}　预算：{st['budget']['minutes_used']}/{st['budget']['minutes_cap']} 分钟"]
-    if notes:
-        L += ["", "**不过的原因**："] + [f"- {n}" for n in notes]
-    L += ["", "### 地图（自己看，不要问人）", f"- 本步说明书：`{page}`",
-          "- 总图：`collect/ROADMAP.md`　模式说明：`collect/SELF_DRIVE.md`"]
-    if nxt:
-        L += ["", f"### 下一步：STEP {nxt} {STEPS[nxt][0]}",
-              f"- 读：`{STEPS[nxt][1]}`",
-              f"- 触发：`{TRIGGER.get(nxt, '(见说明书)') % REPO}`"]
+def wake(st, step, reason, dry=False):
+    """叫醒大脑：落 WAKE.json + 开 Issue。同签名只叫一次。"""
+    ev = evidence(st, step)
+    ev["reason"] = reason
+    sig = signature(ev)
+    ev["signature"] = sig
+    prev = (st.get("wake") or {}).get("signature")
+    fresh = sig != prev
+
+    body = "\n".join([
+        f"## 工头叫醒（v2 · 只叫人，不判验收）",
+        "",
+        f"- 原因：**{reason}**",
+        f"- 步号：STEP {step} {STEPS[step][0]}　说明书：`{STEPS[step][1]}`",
+        f"- 证据：`collect/wake/WAKE.json`（签名 `{sig}`）",
+        f"- 判定权：**在你**。工头不判、不推进、不点火。",
+        "",
+        "### 事实",
+        "```json",
+        json.dumps({k: ev["facts"][k] for k in ("recent_runs", "report") if k in ev["facts"]},
+                   ensure_ascii=False)[:2500],
+        "```",
+        "",
+        "### 要你回答",
+    ] + [f"- {q}" for q in ev["ask"]])
+    num = None
+    if not dry:
+        os.makedirs(os.path.dirname(WAKE_F), exist_ok=True)
+        with open(WAKE_F, "w", encoding="utf-8") as f:
+            json.dump(ev, f, ensure_ascii=False, indent=1)
+        if fresh:
+            num, _ = post_issue(step, body, sig)
+        st["awaiting_brain"] = True
+        st.setdefault("wake", {}).update({"signature": sig, "at": ev["at"],
+                                          "reason": reason, "issue": num,
+                                          "count": (st.get("wake") or {}).get("count", 0) + (1 if fresh else 0)})
+        st["steps"].setdefault(step, {})["status"] = "in_review"
+    print(json.dumps({"wake": reason, "signature": sig, "fresh": fresh, "issue": num,
+                      "report": (ev["facts"].get("report") or {}).get("with_rows")}, ensure_ascii=False))
+    return ev
+
+
+# ---------------- 大脑的两个动作（只有大脑用） ----------------
+def kick(step, layers=None, workers=None, dry=False):
+    wf = STEPS[step][2]
+    if not wf:
+        print("该步没有工人 workflow"); return 1
+    cmd = ["gh", "workflow", "run", wf, "--repo", REPO]
+    if layers:
+        cmd += ["-f", f"layers={layers}"]
+    if workers:
+        cmd += ["-f", f"workers={workers}"]
+    if dry:
+        print("DRY:", " ".join(cmd)); return 0
+    rc, out, err = sh(cmd)
+    st = load()
+    st["status"] = "running"
+    st["awaiting_brain"] = False
+    st.setdefault("steps", {})[step] = {"status": "started", "at": now()}
+    st["last_run"] = {"step": step, "run_id": None, "at": now(),
+                      "trigger": "brain", "layers": layers or "all", "workers": workers}
+    save(st)
+    print(("✅ 已点火 " if rc == 0 else "❌ 点火失败 ") + f"{wf} rc={rc} {(err or '')[:120]}")
+    return rc
+
+
+def review(verdict, note, nxt=None, dry=False):
+    st = load()
+    step = st.get("current_step")
+    if verdict not in ("pass", "fail"):
+        print("verdict 只能是 pass / fail"); return 1
+    st["awaiting_brain"] = False
+    st.setdefault("brain_review", {}).update(
+        {"at": now(), "step": step, "verdict": verdict, "note": note or ""})
+    st.setdefault("steps", {}).setdefault(step, {})["status"] = "done" if verdict == "pass" else "failed"
+    if verdict == "pass" and nxt:
+        st["current_step"] = nxt
+        st["status"] = "running"
+        st.setdefault("steps", {}).setdefault(nxt, {})["status"] = "ready"
+    elif verdict == "pass" and nxt is None:
+        st["status"] = "finished"
+    if not dry:
+        save(st)
+    print(json.dumps({"step": step, "verdict": verdict, "next": nxt, "saved": not dry}, ensure_ascii=False))
+    return 0
+
+
+def pause(reason, dry=False):
+    st = load()
+    st["status"] = "paused"
+    st["paused_reason"] = reason
+    st["paused_at"] = now()
+    if not dry:
+        save(st)
+    print("paused:", reason)
+    return 0
+
+
+def resume(dry=False):
+    st = load()
+    st["status"] = "running"
+    st["paused_reason"] = None
+    st["paused_at"] = None
+    if not dry:
+        save(st)
+    print("resumed")
+    return 0
+
+
+# ---------------- 巡逻（唯一的自动动作 = 叫醒） ----------------
+def patrol(dry=False):
+    st = load()
+    rep = {"at": now(), "dry": dry, "acts": []}
+
+    def say(k, v):
+        rep["acts"].append({"k": k, "v": v})
+        print(f"· {k}: {v}", file=sys.stderr)
+
+    if st.get("status") in ("awaiting_go", "finished"):
+        say("静止", f"status={st['status']}，不巡逻"); print(json.dumps(rep, ensure_ascii=False)); return 0
+    if st.get("status") == "paused":
+        say("暂停", st.get("paused_reason") or "paused"); print(json.dumps(rep, ensure_ascii=False)); return 0
+
+    b = st.setdefault("budget", {})
+    um = used_minutes()
+    if um is not None:
+        b["minutes_used"] = um
+    b.setdefault("minutes_cap", 1800); b.setdefault("stop_ratio", 0.95)
+    ratio = b["minutes_used"] / max(b["minutes_cap"], 1)
+    say("额度", f"{b['minutes_used']}/{b['minutes_cap']} ({ratio:.0%})")
+    if ratio >= b["stop_ratio"]:
+        if not dry:
+            st["status"] = "paused"; st["paused_reason"] = f"额度 {ratio:.0%} ≥ {b['stop_ratio']:.0%}"; save(st)
+        say("动作", "额度耗尽 → paused")
+        print(json.dumps(rep, ensure_ascii=False)); return 0
+
+    step = st.get("current_step")
+    wf = STEPS[step][2]
+    act = active_runs(wf) if wf else []
+    say("工人", f"{wf} 活着的 run = {len(act)}")
+
+    if act:
+        r = act[0]
+        age = mins(r.get("created_at") or "")
+        st.setdefault("last_run", {}).update(
+            {"step": step, "run_id": r.get("id"), "at": r.get("created_at"), "script": wf})
+        if not dry:
+            save(st)
+        if age > STALL_MIN:
+            wake(st, step, f"run #{r.get('run_number')} 已跑 {age:.0f} 分钟 > {STALL_MIN}，可能卡死（不判死，交你定）", dry)
+        else:
+            say("状态", f"工人在干活（{age:.0f} 分钟），不打扰")
+            print(json.dumps(rep, ensure_ascii=False)); return 0
     else:
-        L += ["", "### 最后一步：按 STEP-06 推企微后停下。"]
-    return "\n".join(L)
+        wake(st, step, "工人已停手：没有任何活着的 run，等大脑判验收", dry)
+
+    if not dry:
+        save(st)
+    print(json.dumps(rep, ensure_ascii=False))
+    return 0
 
 
-
-
-# ---------------- 进入自研模式的条件自检（12 条） ----------------
+# ---------------- v2 结构自检 ----------------
 def entry_check():
-    import glob
     C = []
+    # 只取「自检区之前」的源码：否则检查项自己的字面量会把检查项判死
+    src = open(__file__, encoding="utf-8").read().split("# ---------------- v2 结构自检")[0]
+    st = load()
+
     def add(n, name, ok, ev):
         C.append({"n": n, "name": name, "ok": bool(ok), "ev": ev})
-    add(1, "总图存在", os.path.exists(os.path.join(ROOT, "collect", "ROADMAP.md")), "collect/ROADMAP.md")
-    steps = sorted(glob.glob(os.path.join(ROOT, "collect", "steps", "STEP-*.md")))
-    add(2, "每步说明书齐全", len(steps) >= 7, f"{len(steps)} 张")
-    try:
-        st = load()
-        keys = {"fail_streak", "collapsed", "attempts", "budget"} <= set(st)
-    except Exception:
-        keys, st = False, {}
-    add(3, "账本字段完整", keys, "fail_streak/collapsed/attempts/budget")
-    # 4 工人与工头分离
-    sep = True
-    import re as _re
-    for wf in glob.glob(os.path.join(ROOT, ".github", "workflows", "collect-*.yml")):
-        if "collect-supervisor" in wf:
-            continue
-        txt = open(wf, encoding="utf-8").read()
-        # 只认真正的调用，不认注释里提到的名字
-        if _re.search(r"python3\s+\S*(herald|supervisor)\.py", txt):
-            sep = False
-    add(4, "工人不含报警步骤", sep, "采集 workflow 内无 herald/supervisor 调用")
-    add(5, "工头能发现该动没动", "active_runs" in open(__file__, encoding="utf-8").read(), "按 run 存活判")
-    add(6, "能发现卡死", STALL_MIN >= 120, f"阈值 {STALL_MIN} 分钟")
-    src = open(__file__, encoding="utf-8").read()
-    add(7, "简报自包含", all(k in src for k in ("尝试次数", "上次错误", "本步说明书", "触发：")), "含步号/数字/尝试/错误/地图/命令")
-    add(8, "三振出局", MAX_FAIL == 3 and "collapsed" in src, "连败 3 次 collapsed")
-    add(9, "防重复点火", os.path.exists(os.path.join(ROOT, ".github", "workflows", "collect-supervisor.yml")), "concurrency 锁 + last_triggered")
-    b = st.get("budget", {})
-    add(10, "额度闸门", "stop_ratio" in b and b.get("stop_ratio", 1) <= 0.95, f"stop={b.get('stop_ratio')}")
-    add(11, "改动自检", os.path.exists(os.path.join(ROOT, ".github", "workflows", "ci-smoke.yml")), "ci-smoke.yml")
-    add(12, "自检可验证", "--dry-run" in src, "supervisor.py --dry-run")
-    add(13, "额度真记账", "used_minutes" in src, "按 Actions run 时长累计")
-    wf_pilot = os.path.join(ROOT, ".github", "workflows", "collect-pilot.yml")
-    ptxt = open(wf_pilot, encoding="utf-8").read() if os.path.exists(wf_pilot) else ""
-    add(14, "试点报告进仓库", "git add -f collect/pilot_report.json" in ptxt, "工头读得到")
-    add(15, "数据进 Release", "gh release create" in ptxt, "artifact 7 天过期，必须落 Release")
-    add(16, "03~05 工人存在", os.path.exists(os.path.join(ROOT, ".github", "workflows", "collect-batch.yml")), "collect-batch.yml 通用工人")
-    add(17, "自动触发下一步", "自动触发" in src, "工头放行即触发")
-    add(18, "DS 余额守护", os.path.exists(os.path.join(ROOT, "ops", "ds_balance.py")), "低于 ¥5 连推 3 次")
-    return C
+    add(1, "工头不判验收", not any(k in src for k in ("def check_02_pilot", "worst_diff <", "with_rows >= ")),
+        "源码里没有验收判据函数")
+    add(2, "工头不自动推进", "TRIGGER[" not in src and "自动触发" not in src, "没有下一步自动点火表")
+    add(3, "工头不写熔断", not any(k in src for k in ('"collapsed"', "fail_streak", "MAX_FAIL")), "无三振逻辑")
+    add(4, "有叫醒落盘", "WAKE.json" in src and "awaiting_brain" in src, "collect/wake/WAKE.json")
+    add(5, "有证据打包", all(k in src for k in ("recent_runs", "releases", "per_layer")),
+        "runs/releases/report 三件证据")
+    add(6, "同签名不重复叫", "signature(" in src and "fresh" in src, "按证据签名去重")
+    add(7, "点火只能大脑下令", "def kick(" in src and "--kick" in src, "supervisor.py --kick")
+    add(8, "验收只能大脑写", "def review(" in src and "--review" in src, "supervisor.py --review")
+    add(9, "能暂停/放开", "def pause(" in src and "--resume" in src, "paused 语义可逆")
+    add(10, "额度闸门", "stop_ratio" in src and "used_minutes" in src, "按 Actions 时长记账")
+    add(11, "卡死不判死", "STALL_MIN" in src and "不判死" in src, f"{STALL_MIN} 分钟只报告")
+    add(12, "工头不碰企微", "qyapi" not in src and "webhook" not in src.lower(), "无企微调用")
+    add(13, "账本不含判断字段", not any(k in st for k in ("collapsed", "fail_streak", "attempts")),
+        f"state.json keys={sorted(st)[:8]}…")
+    add(14, "账本有 v2 字段", {"awaiting_brain", "brain_review", "last_run", "budget"} <= set(st),
+        "awaiting_brain/brain_review/last_run/budget")
+    add(15, "blocked.json 存在", os.path.exists(BLOCKED_F), "collect/blocked.json")
+    add(16, "说明书齐全", len([f for f in os.listdir(os.path.join(ROOT, "collect", "steps"))
+                               if f.startswith("STEP-")]) >= 7, "collect/steps/STEP-0x.md")
+    add(17, "自检可验证", "--dry-run" in src and "--entry-check" in src, "dry-run / entry-check")
+    add(18, "双闹钟都在", os.path.exists(os.path.join(ROOT, "ops", "patrol_kick.sh")) and
+        os.path.exists(os.path.join(ROOT, ".github", "workflows", "collect-supervisor.yml")),
+        "GitHub cron + 本机 cron")
+
+    good = sum(1 for c in C if c["ok"])
+    for c in C:
+        print(("✅" if c["ok"] else "❌") + f" {c['n']:>2}. {c['name']} — {c['ev']}")
+    print(f"\n{'READY' if good == len(C) else 'BLOCKED'}：{good}/{len(C)} 条通过")
+    return 0 if good == len(C) else 1
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--once", action="store_true")
+    ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--entry-check", action="store_true")
+    ap.add_argument("--kick", metavar="STEP")
+    ap.add_argument("--layers")
+    ap.add_argument("--workers", type=int)
+    ap.add_argument("--review", choices=["pass", "fail"])
+    ap.add_argument("--note")
+    ap.add_argument("--next", dest="nxt")
+    ap.add_argument("--pause", metavar="REASON")
+    ap.add_argument("--resume", action="store_true")
     a = ap.parse_args()
     if a.entry_check:
-        C = entry_check()
-        for c in C:
-            print(("✅" if c["ok"] else "❌") + f" {c['n']:>2}. {c['name']} — {c['ev']}")
-        good = sum(1 for c in C if c["ok"])
-        print(f"\n{'READY' if good == len(C) else 'BLOCKED'}：{good}/{len(C)} 条通过")
-        return 0 if good == len(C) else 1
-    st = load()
-    step = st.get("current_step")
-    report = {"step": step, "mode": st.get("mode"), "checks": []}
-
-    def say(k, v, ok=True):
-        report["checks"].append({"k": k, "v": v, "ok": ok})
-        print(("✅ " if ok else "❌ ") + f"{k}: {v}")
-
-    say("账本可读", "ok", True)
-    say("模式", st.get("mode"))
-    if st.get("status") in ("awaiting_go", "finished"):
-        say("状态", st["status"] + " —— 未获确认，静止不巡逻")
-        return 0
-    if st.get("collapsed"):
-        say("熔断状态", "collapsed（三振出局，静默停止）", False)
-        return 0
-    if st.get("status") == "paused":
-        say("额度", "paused", False)
-        return 0
-
-    um = used_minutes()
-    if um is not None:
-        st.setdefault("budget", {})["minutes_used"] = um
-    b = st.setdefault("budget", {})
-    b.setdefault("minutes_used", 0); b.setdefault("minutes_cap", 1800)
-    b.setdefault("warn_ratio", 0.8); b.setdefault("stop_ratio", 0.95)
-    ratio = b["minutes_used"] / max(b["minutes_cap"], 1)
-    say("额度", f"{b['minutes_used']}/{b['minutes_cap']} ({ratio:.0%})", ratio < b["stop_ratio"])
-    if ratio >= b["stop_ratio"]:
-        if not a.dry_run:
-            st["status"] = "paused"
-            save(st)
-        say("动作", "额度耗尽 → paused，静默停止")
-        return 0
-
-    wf = STEPS[step][3]
-    act = active_runs(wf) if wf else []
-    say("工人", f"{wf} 活着的 run = {len(act)}")
-    if act:
-        age = min(mins(r.get("startedAt") or "") for r in act)
-        if age > STALL_MIN:
-            say("卡死", f"run 已跑 {age:.0f} 分钟 > {STALL_MIN} → 判失败", False)
-            ok, metrics, notes = False, {"stalled_min": round(age)}, [f"卡死 {age:.0f} 分钟"]
-        else:
-            say("状态", f"工人在干活（{age:.0f} 分钟），不打扰")
-            return 0
-    else:
-        ok, metrics, notes = CHECKS[step]()
-        if not ok and not st.get("steps", {}).get(step):
-            # 本步从未跑过 → 不是失败，是还没开工。启动工人。
-            wfstep = STEPS[step][3]
-            say("状态", f"STEP {step} 尚未开工 → 启动工人 {wfstep}", True)
-            if not a.dry_run and wfstep:
-                cmd = ["gh", "workflow", "run", wfstep, "--repo", REPO]
-                if step == "03":
-                    cmd += ["-f", "mode=state", "-f", "state=KS"]
-                elif step == "04":
-                    cmd += ["-f", "mode=statewide"]
-                elif step == "05":
-                    cmd += ["-f", "mode=bulk", "-f", "offset=0", "-f", "size=40"]
-                rc, out, err = sh(cmd)
-                say("已启动", f"{wfstep} rc={rc} {(err or '')[:60]}", rc == 0)
-                st.setdefault("steps", {})[step] = {"status": "started",
-                                                    "at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}
-                save(st)
-            print(json.dumps(report, ensure_ascii=False))
-            return 0
-        say("验收", "通过" if ok else "未通过", ok)
-
-    if ok:
-        st["fail_streak"] = 0
-        st["last_error"] = None
-        st.setdefault("steps", {})[step] = {"status": "done",
-                                            "at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-                                            "metrics": metrics}
-        nxt = STEPS[step][2]
-        st["current_step"] = nxt or "06"
-        st["status"] = "finished" if nxt is None else "running"
-        if nxt:
-            st["last_triggered"] = {"step": nxt, "run_id": None}
-    else:
-        st["fail_streak"] = st.get("fail_streak", 0) + 1
-        st["last_error"] = "; ".join(notes)[:300]
-        if st["fail_streak"] >= MAX_FAIL:
-            st["collapsed"] = True
-            st["status"] = "collapsed"
-            say("熔断", f"连败 {st['fail_streak']} 次 → collapsed，收摊，不再叫人")
-        else:
-            st["status"] = "retry"
-
-    if a.dry_run:
-        say("dry-run", "不改账本、不发 Issue、不触发")
-        print(json.dumps(report, ensure_ascii=False))
-        return 0
-    save(st)
-    if not (st.get("collapsed") and not ok):
-        num = post_issue(step, ok, briefing(st, step, ok, metrics, notes))
-        say("Issue", str(num))
-    nxt = st.get("current_step")
-    if ok and nxt and nxt in TRIGGER and not st.get("collapsed"):
-        wfnext = STEPS[nxt][3]
-        cmd = ["gh", "workflow", "run", wfnext, "--repo", REPO]
-        if nxt == "03":
-            cmd += ["-f", "mode=state", "-f", "state=KS"]
-        elif nxt == "04":
-            cmd += ["-f", "mode=statewide"]
-        elif nxt == "05":
-            cmd += ["-f", "mode=bulk", "-f", "offset=0", "-f", "size=40"]
-        rc, out, err = sh(cmd)
-        say("自动触发", f"{wfnext} rc={rc} {(err or '')[:60]}", rc == 0)
-    print(json.dumps(report, ensure_ascii=False))
-    return 0
+        return entry_check()
+    if a.kick:
+        return kick(a.kick, a.layers, a.workers, a.dry_run)
+    if a.review:
+        return review(a.review, a.note, a.nxt, a.dry_run)
+    if a.pause:
+        return pause(a.pause, a.dry_run)
+    if a.resume:
+        return resume(a.dry_run)
+    return patrol(a.dry_run)
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    sys.exit(main())

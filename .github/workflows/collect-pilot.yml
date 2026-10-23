@@ -7,6 +7,9 @@ on:
       layers:
         description: "只跑这几层（逗号分隔，留空=全部 8 层）"
         default: ""
+      workers:
+        description: "每层内部并发线程数（1=不并发；靠 OID 区间切片）"
+        default: "4"
 permissions:
   contents: write
 jobs:
@@ -42,7 +45,9 @@ jobs:
         with:
           python-version: "3.11"
       - name: 采集 ${{ matrix.layer }}
-        run: python3 collect/pilot.py --layer ${{ matrix.layer }}
+        env:
+          PILOT_HEARTBEAT_PUSH: "1"
+        run: python3 collect/run_step_02.py --layer ${{ matrix.layer }} --workers ${{ github.event.inputs.workers || '4' }}
       - name: 上传 Release（每层独立 tag，不抢）
         if: always()
         env:
@@ -51,10 +56,12 @@ jobs:
           TAG="collect-pilot-${{ github.run_number }}-${{ matrix.layer }}"
           ID="${{ matrix.layer }}"
           if [ -d "collect/out/$ID" ]; then
-            tar czf "/tmp/$ID.tar.gz" -C collect/out "$ID" || true
+            tar czf "/tmp/$ID.tar.gz" -C collect/out "$ID"
+            # ★ 禁止 || true 吞错：数据没进 Release 等于这层白跑，必须显式报错
             gh release create "$TAG" --repo "$GITHUB_REPOSITORY" \
               --title "试点 $ID #${{ github.run_number }}" --notes "pilot $ID" "/tmp/$ID.tar.gz" \
-              || gh release upload "$TAG" "/tmp/$ID.tar.gz" --repo "$GITHUB_REPOSITORY" --clobber || true
+              || gh release upload "$TAG" "/tmp/$ID.tar.gz" --repo "$GITHUB_REPOSITORY" --clobber \
+              || { echo "❌ $ID 数据没进 Release，这层等于白跑"; exit 1; }
           fi
       - uses: actions/upload-artifact@v4
         if: always()
@@ -68,7 +75,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      # ★ fetch-depth: 0 —— 2026-10-24 确诊：默认浅克隆下 git rebase 无法重放，
+      #   push 5 次全被拒、报告静默丢失（老代码 || true 又把它吞了）。
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"

@@ -1,5 +1,6 @@
 name: collect-supervisor
-# 工头：独立巡逻，与工人解耦。工人不报告，工头自己看。
+# 工头（v2）：只叫醒大脑，不判验收、不点火、不推进。
+# 工人不报告，工头自己看；没有活 run 就把证据打包落盘 + 开 Issue 叫大脑。
 on:
   schedule: [{ cron: "*/10 * * * *" }]
   workflow_dispatch:
@@ -12,17 +13,30 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      # fetch-depth: 0 —— 浅克隆里 git rebase 无法重放，push 必被拒（2026-10-24 确诊）
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with: { python-version: "3.11" }
-      - name: 巡逻一轮
+      - name: 巡逻一轮（只叫醒，不判）
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python3 collect/supervisor.py --once
-      - name: 落账
+      - name: 落账（禁止 || true 吞错）
         run: |
           git config user.name collect-bot
           git config user.email bot@users.noreply.github.com
           git add collect/state.json || true
+          git add -f collect/wake/ 2>/dev/null || true
           git diff --cached --quiet || git commit -m "state: 工头巡逻 $(date -u +%FT%TZ)"
-          git push || true
+          ok=0
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main || true
+            git rebase -q origin/main 2>/dev/null || git rebase --abort 2>/dev/null || true
+            if git push -q origin HEAD:main 2>/dev/null; then ok=1; echo "✅ 账本已推送（第 $i 次）"; break; fi
+            echo "⚠️ push 第 $i 次被拒，重试…"; sleep $((i*4))
+          done
+          if [ "$ok" = "0" ]; then
+            echo "❌ 账本推送失败：工头状态没落库，会重复叫醒，需人工介入"; exit 1
+          fi

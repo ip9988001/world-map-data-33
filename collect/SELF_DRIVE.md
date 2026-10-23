@@ -1,56 +1,64 @@
-# 自研模式（Self-Drive Mode）
+# 自研模式（Self-Drive）— v2 摘要
 
-> **定义**：把我自己当成一个不需要人盯的研发员 —— 拿到总目标，自己拆步骤、自己写脚本、
-> 自己跑、自己判验收、自己接着往下做，直到整个项目跑通。
+> **当前有效版本：v2**（2026-10-24 落地）。完整施工图在 [`SELF-DRIVE-v2.md`](SELF-DRIVE-v2.md)。
+> 本文只是随身速查卡，与本文件冲突时以 `SELF-DRIVE-v2.md` 为准。
 
 ## 一句话
 
-**工人只管干，工头只管看；工人一停手（不管干完还是干砸），工头递上下一步的活；
-同一个活连砸三次，工头收摊，不再喊人。**
+**工人只干活，工头只叫醒，大脑才判验收。**
+工人一停手（干完或干砸都一样），工头把**证据**打包好叫醒大脑；
+判通过、判不通过、要不要补跑、要不要跳过 —— 全是大脑的决定，脚本不碰。
 
----
+## 三个角色的边界（越界即事故）
 
-## 进入条件（12 条，全绿才算进得去）
-
-| # | 条件 | 判据 |
-|---|---|---|
-| 1 | 总图存在 | `collect/ROADMAP.md` 有总目标 + 每步验收判据 |
-| 2 | 每步有说明书 | `collect/steps/STEP-00..06.md` 齐全 |
-| 3 | 账本可读写 | `collect/state.json` 含 fail_streak / collapsed / attempts / budget |
-| 4 | **工人与工头分离** | 采集 workflow 里**不含**任何报警步骤；工头是独立 workflow |
-| 5 | 工头能发现"该动没动" | supervisor 查「当前步有没有活着的 run」，没有就宣判 |
-| 6 | 工头能发现"卡死" | 单个 run 超过 120 分钟仍在跑 → 判卡死 |
-| 7 | 简报自包含 | Issue 正文含：步骤、数字、尝试次数、上次错误、下一步读哪个文件、触发命令、当前 commit |
-| 8 | 三振出局 | 同一步连续失败 3 次 → `collapsed=true`，不再巡逻、不再叫人、不重试 |
-| 9 | 防重复点火 | supervisor 用 concurrency 锁 + 账本 `last_triggered` 时间窗 |
-| 10 | 额度闸门 | 账本记 `minutes_used`，超 80% 减速、超 95% 停止放量 |
-| 11 | 改动自检 | 脚本改动先跑 smoke（单层 3 条记录），过了才允许放量 |
-| 12 | 自检可验证 | `supervisor.py --dry-run` 输出 READY/BLOCKED 清单，不改任何东西 |
-| 18 | **DS 余额守护** | `ops/ds_balance.py` 每 30 分钟查余额，低于 ¥5 连推 3 次企微，充值后自动复位 |
-
----
-
-## 退出条件（三种）
-
-1. **正常完成**：STEP 06 跑完 → 推企微「可以全面开搞了」→ `status=finished`，等人
-2. **三振出局**：同一步连败 3 次 → `collapsed=true`，静默停止
-3. **额度耗尽**：`minutes_used ≥ 95% cap` → `status=paused`，静默停止
-
----
-
-## 角色分工
-
-| 角色 | 文件 | 职责 | 寿命 |
+| 角色 | 谁 | 只准做的事 | 绝对不准 |
 |---|---|---|---|
-| 工人 | `.github/workflows/collect-*.yml` | 只干活，不报警 | 干完即死 |
-| 工头 | `.github/workflows/collect-supervisor.yml` + `scripts/supervisor.py` | 每 10 分钟巡逻：判验收 / 记账 / 叫人 / 递下一步 | 常驻 |
+| 工人 | `.github/workflows/collect-*.yml` + `run_step_0X.py` | 采集、落证据、传 Release、写 `_manifest.json` | 判合格 / 报警 / 推企微 / 决定跳层 |
+| 工头 | `collect/supervisor.py`（GitHub cron `*/10`）+ `ops/patrol_kick.sh`（本机 cron `*/15`） | ① 看有没有活 run ② 没活 run 就写 `collect/wake/WAKE.json` + 开 Issue 叫醒 ③ 记事实账 | 比数字判验收 / 推进 `current_step` / 自己点火下一步 / 写 `fail_streak` `collapsed` / 推企微 |
+| 大脑 | 我 | 判验收、下令点火、写 `brain_review`、记 `blocked.json`、向老板汇报 | 让脚本代替判断 |
 
-## 命脉监控（不依赖我自己）
+## 工头的四个口令（只有大脑能用）
 
-pi 跑在 DS 的 key 上，余额耗尽 = 直接失能。所以余额检查**必须由本机 cron 做**，
-不能靠我自己查（那是悖论）。低于 ¥5 → 企微连推 3 次 → 充值后自动复位。
+```bash
+python3 collect/supervisor.py --once          # 巡逻一轮（CI 用；只叫醒，不判）
+python3 collect/supervisor.py --dry-run       # 只看证据，一个字节都不写
+python3 collect/supervisor.py --entry-check   # 18 条结构自检，READY/BLOCKED
+python3 collect/supervisor.py --kick 02 --layers de_suss,san_juan --workers 8   # 点火
+python3 collect/supervisor.py --review pass --note "..." --next 03              # 写验收
+python3 collect/supervisor.py --pause "原因" / --resume                          # 暂停/放开
+```
 
-## 谁叫醒我
+## 失败分型：两次不解决就记档跳过
 
-工头开 Issue（label=`sentinel-alarm`）→ 本机 `inbox.py` 每 2 分钟轮询（**已接双仓**）→ 唤醒我。
-我醒来只做三件事：看结果 → 推企微（哨兵机器人 3fe13dd9，标题带【三仓项目】）→ 发下一个活。
+| 第几次 | 动作 |
+|---|---|
+| 第 1 次 | 改脚本重跑 |
+| 第 2 次 | 先把原始证据（HTTP 码 / `error.message` / `count vs rows`）写进 `collect/blocked.json`，**再**改 |
+| 第 3 次 | **禁止再改**。该层/该步标 `blocked`，带着缺口往下走，结尾在报告里列清楚 |
+
+v1 的「三振出局 → collapsed 收摊」**已废止**：收摊是决定，账本只记事实。
+
+## 通知通道（不许混）
+
+| 通道 | 用途 | 谁发 | 到哪 |
+|---|---|---|---|
+| 内部唤醒 | 叫醒大脑 | 工头 | Issue（label `sentinel-alarm`）→ 本机 `inbox.py` 轮询 → 唤醒 |
+| 企微汇报 | 向老板报进度 | **大脑** | 企微，只在「一步跑完 / 需要决策」时发 |
+
+**工头不碰企微。老板收到的每一条都应该是大脑在说话。**
+
+## 硬规则（今天踩出来的）
+
+1. 禁止 `|| true` 静默吞错（`git push || true` 让报告消失、工头读旧账误判）
+2. 禁止让脚本判「合格/不合格」
+3. 禁止用单一数字判空壳（`<2KB` ≠ 坏）
+4. 禁止用会混邻州的 `count` 判「有没有数据」
+5. 任何 `git push` 都要 fetch+rebase+retry，失败显式 `exit 1`
+6. 一次改多处必须先用 1~2 个单元灰度，再放量
+7. 跳过/收摊必须留 `blocked.json` 证据，否则等于假装没发生过
+8. 浅克隆（`fetch-depth: 1`）里 `git rebase` 无法重放 → report job 必须 `fetch-depth: 0`
+
+## 命脉监控
+
+pi 跑在 DS 的 key 上，余额耗尽 = 直接失能。所以余额检查**由本机 cron 做**（`ops/ds_balance.py`，每 30 分钟），
+不能靠我自己查。低于 ¥5 → 企微连推 3 次 → 充值后自动复位。

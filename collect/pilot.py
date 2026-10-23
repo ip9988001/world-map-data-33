@@ -14,8 +14,9 @@
   python3 collect/pilot.py --list
 """
 from __future__ import annotations
-import argparse, gzip, hashlib, json, os, re, sys, time
+import argparse, gzip, hashlib, json, os, re, subprocess, sys, threading, time
 import urllib.parse, urllib.request
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CFG = os.path.join(ROOT, "collect", "pilot_layers.json")
@@ -229,10 +230,257 @@ def collect_socrata(url, limit=0, log=print):
 CUR = {}
 
 
+# =============== v2：并行采集（按 OID 区间切片） ===============
+# 为什么能并行：分页是 OID 键集游标（WHERE oid > last ORDER BY oid），
+# 把 oid 的 [min,max] 切成 N 段，各段独立跑同一套循环 → 段间不重叠、不加锁、不丢行。
+# 计费：逻辑放在同一个 job 内的线程池，不是 matrix —— Actions 按 job 墙钟计费，
+#       8 个 job 各 25 分钟 = 200 分钟；1 个 job 8 线程 25 分钟 = 25 分钟。
+PROG_DIR = os.path.join(ROOT, "collect", "progress")
+TS = lambda: time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+
+
+def _q(api, params, timeout=180):
+    return get_json(api + "/query?" + urllib.parse.urlencode(params), timeout=timeout)
+
+
+def _git(args, timeout=90):
+    try:
+        r = subprocess.run(["git", "-C", ROOT] + args, capture_output=True, text=True, timeout=timeout)
+        return r.returncode, (r.stdout or "") + (r.stderr or "")
+    except Exception as e:
+        return 1, str(e)[:120]
+
+
+def _oid_bounds(api, oid_field):
+    """取 min/max OID；拿不到就返回 None（调用方退回单线程，绝不猜）"""
+    q = {"where": "1=1", "f": "json", "outStatistics": json.dumps([
+        {"statisticType": "min", "onStatisticField": oid_field, "outStatisticFieldName": "mn"},
+        {"statisticType": "max", "onStatisticField": oid_field, "outStatisticFieldName": "mx"}])}
+    d = _q(api, q, timeout=90)
+    if "__error__" in d:
+        return None, None, d["__error__"]
+    try:
+        at = (d.get("features") or [{}])[0].get("attributes") or {}
+        if at.get("mn") is None or at.get("mx") is None:
+            return None, None, "no_min_max"
+        return int(at["mn"]), int(at["mx"]), ""
+    except Exception as e:
+        return None, None, str(e)[:80]
+
+
+def _write_progress(prog):
+    os.makedirs(PROG_DIR, exist_ok=True)
+    prog["ts"] = TS()
+    d = os.path.join(OUTBASE, prog["id"])
+    prog["parts"] = len([f for f in os.listdir(d) if f.endswith(".gz")]) if os.path.isdir(d) else 0
+    p = os.path.join(PROG_DIR, prog["id"] + ".json")
+    with open(p + ".tmp", "w", encoding="utf-8") as f:
+        json.dump(prog, f, ensure_ascii=False, indent=1)
+    os.replace(p + ".tmp", p)
+    return p
+
+
+def _push_progress(prog, log):
+    """心跳进仓库（只为一个目的：长尾层能被 curl 看到，不用等 job 结束）。
+       失败不致命 —— 心跳是辅助证据，不能因为它把数据 job 干掉。"""
+    rel = "collect/progress/%s.json" % prog["id"]
+    for i in range(3):
+        _git(["add", "-f", rel])
+        rc, out = _git(["-c", "user.name=collect-bot", "-c", "user.email=bot@users.noreply.github.com",
+                        "commit", "-q", "-m", "progress: %s %s/%s" % (prog["id"], prog["rows"], prog["count"])])
+        if rc != 0 and "nothing to commit" not in out:
+            time.sleep(2)
+            continue
+        _git(["fetch", "-q", "origin", "main"])
+        rc2, _ = _git(["rebase", "-q", "origin/main"])
+        if rc2 != 0:
+            _git(["rebase", "--abort"])
+            time.sleep(2 * (i + 1))
+            continue
+        rc3, out3 = _git(["push", "-q", "origin", "HEAD:main"])
+        if rc3 == 0:
+            log("  ♥ progress pushed %s/%s" % (prog["rows"], prog["count"]))
+            return True
+        time.sleep(2 * (i + 1))
+    log("  ♥ progress 推送失败（不影响采集）")
+    return False
+
+
+def _heartbeat(prog, lock, stop, log, interval=20, push_every=180):
+    do_push = os.environ.get("GITHUB_ACTIONS") == "true" and os.environ.get("PILOT_HEARTBEAT_PUSH", "1") != "0"
+    last_push = time.time()
+    while not stop.is_set():
+        try:
+            with lock:
+                snap = dict(prog)
+                _write_progress(snap)
+            if do_push and time.time() - last_push >= push_every:
+                _push_progress(snap, log)
+                last_push = time.time()
+        except Exception as e:
+            log("  ♥ heartbeat err %s" % str(e)[:80])
+        stop.wait(interval)
+
+
+def _worker(api, oid_field, defexpr, lo, hi, wid, ps, limit, log, prog, lock):
+    """采一个 OID 区间。返回 (rows, err)。"""
+    conds = []
+    if defexpr:
+        conds.append("(%s)" % defexpr)
+    if lo is not None:
+        conds.append("%s>=%s" % (oid_field, lo))
+    if hi is not None:
+        conds.append("%s<=%s" % (oid_field, hi))
+    w0 = " AND ".join(conds) or "1=1"
+    c = _q(api, {"where": w0, "returnCountOnly": "true", "f": "json"}, timeout=90)
+    try:
+        expect = int(c.get("count") or 0)
+    except Exception:
+        expect = 0
+    base = {"where": w0, "outFields": "*", "returnGeometry": "true", "outSR": "4326", "f": "json"}
+    if expect == 0:
+        log("  w%d 区间 %s~%s 空，跳过" % (wid, lo, hi))
+        return 0, ""
+    d = os.path.join(OUTBASE, CUR["id"])
+    os.makedirs(d, exist_ok=True)
+    rows = part_no = 0
+    buf, last, off, mode = [], None, 0, "keyset"
+
+    def flush():
+        nonlocal buf, part_no
+        if not buf:
+            return
+        p = os.path.join(d, "part-w%d-%05d.ndjson.gz" % (wid, part_no))
+        with gzip.open(p, "wt", encoding="utf-8") as f:
+            for r in buf:
+                f.write(json.dumps(r, ensure_ascii=False) + "\n")
+        part_no += 1
+        buf = []
+
+    while True:
+        if mode == "keyset":
+            w = w0 if last is None else "%s AND %s>%s" % (w0, oid_field, last)
+            q = dict(base, where=w, resultRecordCount=ps, orderByFields=oid_field)
+        else:
+            q = dict(base, resultOffset=off, resultRecordCount=ps, orderByFields=oid_field)
+        r = _q(api, q)
+        if "__error__" in r:
+            flush()
+            return rows, "query_fail:" + r["__error__"]
+        feats = r.get("features") or []
+        if not feats:
+            if rows == 0 and last is None and mode == "keyset":
+                q2 = {k: v for k, v in q.items() if k != "orderByFields"}   # 有服务不认 orderBy
+                r = _q(api, q2)
+                feats = r.get("features") or []
+            if not feats:
+                # ★ san_juan 兜底：keyset 翻不动（服务端不把主键当可过滤字段，
+                #   `FID>n` 被当成空条件 → 第二页 0 行）但 count 还没拿够 → 换 resultOffset 续翻。
+                if mode == "keyset" and rows > 0 and rows < expect:
+                    mode, off = "offset", rows
+                    log("  w%d keyset 停在 %d/%d → 切 resultOffset" % (wid, rows, expect))
+                    continue
+                break
+        for ft in feats:
+            at = ft.get("attributes") or {}
+            g = ft.get("geometry") or {}
+            rec = normalize(at, g.get("y"), g.get("x"))
+            rec.update({"src_layer": CUR["id"], "src_title": CUR["title"], "raw": at})
+            buf.append(rec)
+            rows += 1
+            oid = at.get(oid_field)
+            if oid is None:
+                for k in ("OBJECTID", "OBJECTID_1", "FID", "OID"):
+                    if k in at:
+                        oid = at[k]
+                        break
+            if oid is not None:
+                last = oid
+        if len(buf) >= CHUNK:
+            flush()
+        with lock:
+            prog["workers"][str(wid)] = rows
+            prog["rows"] = sum(prog["workers"].values())
+        if limit and rows >= limit:
+            break
+        if mode == "offset":
+            off += len(feats)
+        if not r.get("exceededTransferLimit") and len(feats) < ps:
+            break
+        time.sleep(0.1)
+    flush()
+    return rows, ""
+
+
+def collect_arcgis_v2(url, limit=0, log=print, workers=1):
+    m = re.search(r"/(FeatureServer|MapServer)(/\d+)?$", url.rstrip("/"))
+    api = url.split("?")[0].rstrip("/")
+    if m and not m.group(2):
+        api += "/0"
+    ps, maxrc, meta = page_size_for(api)
+    oid_field = meta.get("objectIdField") or meta.get("objectIdFieldName")
+    if not oid_field:
+        fns = [f.get("name") for f in (meta.get("fields") or [])]
+        oid_field = next((k for k in ("OBJECTID", "OBJECTID_1", "FID", "OID", "OBJECTID_12")
+                          if k in fns), "OBJECTID")
+    defexpr = meta.get("definitionExpression") or ""
+    cnt = get_json(api + "/query?where=1%3D1&returnCountOnly=true&f=json", timeout=60)
+    count = int(cnt.get("count") or 0)
+    log("  api=%s count=%d pagesize=%d workers=%d" % (api, count, ps, workers))
+
+    ranges = [(None, None)]
+    if workers > 1:
+        mn, mx, e = _oid_bounds(api, oid_field)
+        if mn is None or mx is None or mx <= mn:
+            log("  OID 区间拿不到（%s）→ 退回单线程" % (e or "flat"))
+            workers = 1
+        else:
+            step = max(1, (mx - mn + workers) // workers)
+            ranges, a0 = [], mn
+            while a0 <= mx:
+                ranges.append((a0, min(a0 + step - 1, mx)))
+                a0 += step
+            log("  OID %d~%d 切 %d 段" % (mn, mx, len(ranges)))
+
+    prog = {"id": CUR["id"], "ts": TS(), "api": api, "count": count, "rows": 0,
+            "parts": 0, "workers": {}, "ranges": [[lo, hi] for lo, hi in ranges],
+            "done": False}
+    lock = threading.Lock()
+    stop = threading.Event()
+    hb = threading.Thread(target=_heartbeat, args=(prog, lock, stop, log), daemon=True)
+    hb.start()
+    rows_total, errs = 0, []
+    try:
+        if workers <= 1:
+            r_, e_ = _worker(api, oid_field, defexpr, None, None, 0, ps, limit, log, prog, lock)
+            rows_total += r_
+            if e_:
+                errs.append(e_)
+        else:
+            with ThreadPoolExecutor(max_workers=workers) as ex:
+                futs = [ex.submit(_worker, api, oid_field, defexpr, lo, hi, i, ps, limit, log, prog, lock)
+                        for i, (lo, hi) in enumerate(ranges)]
+                for f in as_completed(futs):
+                    r_, e_ = f.result()
+                    rows_total += r_
+                    if e_:
+                        errs.append(e_)
+    finally:
+        with lock:
+            prog["rows"] = rows_total
+            prog["done"] = True
+            _write_progress(prog)
+        stop.set()
+    d = os.path.join(OUTBASE, CUR["id"])
+    parts = len([f for f in os.listdir(d) if f.endswith(".gz")]) if os.path.isdir(d) else 0
+    return rows_total, count, (";".join(errs) if errs else ""), parts
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--layer")
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--workers", type=int, default=int(os.environ.get("PILOT_WORKERS", "1")))
     ap.add_argument("--list", action="store_true")
     a = ap.parse_args()
     cfg = json.load(open(CFG, encoding="utf-8"))
@@ -249,7 +497,7 @@ def main():
     log = lambda m: print("[%s] %s" % (CUR["id"], m), flush=True)
     log("start %s" % CUR["url"][:90])
     if CUR["svc"] in ("FeatureServer", "MapServer"):
-        rows, count, err, parts = collect_arcgis(CUR["url"], a.limit, log)
+        rows, count, err, parts = collect_arcgis_v2(CUR["url"], a.limit, log, a.workers)
     elif CUR["svc"] == "Socrata":
         rows, count, err, parts = collect_socrata(CUR["url"], a.limit, log)
     else:

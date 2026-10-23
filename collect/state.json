@@ -1,8 +1,26 @@
 {
  "project": "world-map-data-33 collect",
  "current_step": "02",
- "status": "paused",
- "last_run_id": "39903144412",
+ "mode": "self-drive-v2",
+ "budget": {
+  "minutes_used": 600,
+  "minutes_cap": 1800,
+  "warn_ratio": 0.8,
+  "stop_ratio": 0.95
+ },
+ "last_run": {
+  "step": "02",
+  "run_id": 40024675586,
+  "at": "2026-10-23T21:09:28Z",
+  "script": "collect-pilot.yml"
+ },
+ "awaiting_brain": true,
+ "brain_review": {
+  "at": null,
+  "step": null,
+  "verdict": null,
+  "note": "v2 落地：STEP02 第4次试点 8 层工人全部 success，等大脑判验收（de_suss 空包 / san_juan 2000/22680 两处待补）"
+ },
  "steps": {
   "01": {
    "status": "done",
@@ -14,27 +32,13 @@
    }
   },
   "02": {
-   "status": "started",
-   "at": "2026-10-23T07:04:49Z"
+   "status": "in_review",
+   "at": "2026-10-23T21:09:28Z"
   }
  },
- "budget": {
-  "minutes_used": 600,
-  "minutes_cap": 1800,
-  "warn_ratio": 0.8,
-  "stop_ratio": 0.95
- },
- "last_triggered": {
-  "step": "02",
-  "run_id": null
- },
- "mode": "self-drive",
- "fail_streak": 0,
- "collapsed": false,
- "attempts": {},
- "last_error": "有数据层=2/7 最大误差=0.9998/0.01",
- "started_at": "2026-10-23T07:10:00Z",
- "collapsed_reason": "2026-10-23 人工复位：第3次 pilot 真实数字为 6/8 层、worst_diff=0.9118（报告因 git push 冲突丢失，工头读到第2次旧报告 2/7+0.9998）。已修 report push 重试、san_juan 主键字段(FID)、nysam 替代服务后重跑第4次。",
- "paused_reason": "2026-10-24 框架升级 v2（工头只叫醒大脑 / 判定权归大脑 / 工人并行+心跳 / 修 report 浅克隆）。主动暂停，非熔断，改完复位。",
- "paused_at": "2026-10-23T23:13:39Z"
+ "blocked_count": 0,
+ "status": "paused",
+ "paused_reason": "框架升级 v2（2026-10-24）：工头改造期间不巡逻、不点火",
+ "paused_at": "2026-10-23T23:14:35Z",
+ "last_error": null
 }
