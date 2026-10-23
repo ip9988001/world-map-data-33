@@ -1,0 +1,79 @@
+name: collect-batch
+# STEP 03/04/05 通用工人：动态生成 matrix，一个 job 搬一个图层
+on:
+  workflow_dispatch:
+    inputs:
+      mode: { description: "state | statewide | bulk", default: "state" }
+      state: { description: "州代码（mode=state 时用）", default: "KS" }
+      offset: { description: "bulk 起始偏移", default: "0" }
+      size: { description: "bulk 每批层数", default: "40" }
+permissions: { contents: write }
+concurrency:
+  group: collect-batch-${{ github.event.inputs.mode }}-${{ github.event.inputs.state }}-${{ github.event.inputs.offset }}
+  cancel-in-progress: false
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.gen.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - id: gen
+        run: |
+          set -e
+          M=$(python3 collect/batch.py --mode "${{ github.event.inputs.mode }}" \
+              --state "${{ github.event.inputs.state }}" \
+              --offset "${{ github.event.inputs.offset }}" \
+              --size "${{ github.event.inputs.size }}" --list-matrix 2>/dev/null)
+          python3 - <<EOF > /tmp/m.json
+          import json, os
+          d = json.loads(os.environ["M"])[:40]
+          print(json.dumps({"include": d}))
+          EOF
+          echo "matrix=$(cat /tmp/m.json)" >> $GITHUB_OUTPUT
+        env:
+          M: ${{ steps.gen.outputs.matrix }}
+  collect:
+    needs: plan
+    if: ${{ needs.plan.outputs.matrix != '' && needs.plan.outputs.matrix != '{"include": []}' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: 搬 ${{ matrix.id }}
+        env:
+          CFG: ${{ toJson(matrix) }}
+        run: |
+          python3 -c "import json,os;open('collect/pilot_layers.json','w').write(json.dumps([json.loads(os.environ['CFG'])]))"
+          python3 collect/pilot.py --layer "$(python3 -c "import json;print(json.load(open('collect/pilot_layers.json'))[0]['id'])")"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: out-${{ matrix.id }}
+          path: collect/out/
+          retention-days: 5
+  publish:
+    needs: collect
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { path: collect/out, pattern: "out-*", merge-multiple: true }
+      - name: 打包并发布 Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="collect-${{ github.event.inputs.mode }}-${{ github.event.inputs.state }}-${{ github.run_number }}"
+          cd collect/out && for d in */; do tar czf "/tmp/${d%/}.tar.gz" "$d"; done; cd -
+          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --title "采集 $TAG" \
+            --notes "mode=${{ github.event.inputs.mode }} state=${{ github.event.inputs.state }} layers=$(ls collect/out | wc -l)" \
+            /tmp/*.tar.gz || gh release upload "$TAG" /tmp/*.tar.gz --repo "$GITHUB_REPOSITORY" --clobber
+          echo "published $TAG"

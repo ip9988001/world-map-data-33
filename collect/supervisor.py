@@ -103,15 +103,47 @@ def check_generic(name, min_bytes=200):
     return n >= min_bytes, {name: n}, [] if n >= min_bytes else [f"{name} 只有 {n} 字节"]
 
 
+def check_02_pilot():
+    p = os.path.join(ROOT, "collect", "pilot_report.json")
+    try:
+        d = json.load(open(p, encoding="utf-8"))
+    except Exception:
+        return False, {}, ["pilot_report.json 不存在"]
+    m = {"layers": d.get("layers"), "with_rows": d.get("with_rows"),
+         "worst_diff": d.get("worst_diff"), "total_rows": d.get("total_rows")}
+    ok = (d.get("with_rows") or 0) >= 7 and (d.get("worst_diff") or 9) < 0.01
+    return ok, m, [] if ok else [f"有数据层={m['with_rows']}/7 最大误差={m['worst_diff']}/0.01"]
+
+
 CHECKS = {
  "00": check_00,
  "01": check_01,
- "02": lambda: check_generic("pilot_report.json"),
+ "02": check_02_pilot,
  "03": lambda: check_generic("ks_report.json"),
  "04": lambda: check_generic("coverage_report.md"),
  "05": lambda: check_generic("layer_status.json", 500),
  "06": lambda: check_generic("FINAL_REPORT.md", 500),
 }
+
+
+def used_minutes():
+    """按 Actions 实际 run 时长累计已用分钟（近 30 天），让闸门真正生效。"""
+    rc, out, _ = sh(["gh", "api", "repos/%s/actions/runs?per_page=100" % REPO])
+    try:
+        runs = json.loads(out or "{}").get("workflow_runs", [])
+    except Exception:
+        return None
+    tot = 0.0
+    for r in runs:
+        if r.get("status") != "completed":
+            continue
+        try:
+            a = datetime.strptime(r["created_at"].replace("Z", "+0000"), "%Y-%m-%dT%H:%M:%S%z")
+            b = datetime.strptime(r["updated_at"].replace("Z", "+0000"), "%Y-%m-%dT%H:%M:%S%z")
+            tot += max((b - a).total_seconds() / 60.0, 0)
+        except Exception:
+            pass
+    return int(tot)
 
 
 def active_runs(wf):
@@ -240,6 +272,9 @@ def main():
         say("额度", "paused", False)
         return 0
 
+    um = used_minutes()
+    if um is not None:
+        st.setdefault("budget", {})["minutes_used"] = um
     b = st.setdefault("budget", {})
     b.setdefault("minutes_used", 0); b.setdefault("minutes_cap", 1800)
     b.setdefault("warn_ratio", 0.8); b.setdefault("stop_ratio", 0.95)
@@ -289,13 +324,21 @@ def main():
             st["status"] = "retry"
 
     if a.dry_run:
-        say("dry-run", "不改账本、不发 Issue")
+        say("dry-run", "不改账本、不发 Issue、不触发")
         print(json.dumps(report, ensure_ascii=False))
         return 0
     save(st)
     if not (st.get("collapsed") and not ok):
         num = post_issue(step, ok, briefing(st, step, ok, metrics, notes))
         say("Issue", str(num))
+    nxt = st.get("current_step")
+    if ok and nxt and nxt in TRIGGER and not st.get("collapsed"):
+        wfnext = STEPS[nxt][3]
+        cmd = ["gh", "workflow", "run", wfnext, "--repo", REPO]
+        if nxt == "03":
+            cmd += ["-f", "mode=state", "-f", "state=KS"]
+        rc, out, err = sh(cmd)
+        say("自动触发", f"{wfnext} rc={rc} {(err or '')[:60]}", rc == 0)
     print(json.dumps(report, ensure_ascii=False))
     return 0
 

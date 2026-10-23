@@ -1,0 +1,28 @@
+name: collect-finish
+# STEP 06 工人：出最终报告（覆盖率表）
+on: { workflow_dispatch: }
+permissions: { contents: write }
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: 拉最近采集产物
+        env: { GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: |
+          mkdir -p collect/out
+          for tag in $(gh release list --repo "$GITHUB_REPOSITORY" --limit 40 --json tagName -q '.[].tagName' | grep '^collect-'); do
+            gh release download "$tag" --repo "$GITHUB_REPOSITORY" --dir /tmp/dl --clobber || true
+          done
+          for f in /tmp/dl/*.tar.gz; do [ -e "$f" ] && tar xzf "$f" -C collect/out; done
+          ls collect/out | wc -l
+      - run: python3 collect/final_report.py
+      - name: 提交
+        run: |
+          git config user.name collect-bot
+          git config user.email bot@users.noreply.github.com
+          git add collect/FINAL_REPORT.md collect/layer_status.json || true
+          git diff --cached --quiet || git commit -m "collect: 最终报告"
+          git push || true

@@ -1,7 +1,7 @@
 name: collect-pilot
 # STEP 02 工人：只干活，不报警。验收由工头（collect-supervisor）判。
 on: { workflow_dispatch: }
-permissions: { contents: read }
+permissions: { contents: write }
 jobs:
   collect:
     runs-on: ubuntu-latest
@@ -36,3 +36,16 @@ jobs:
         run: python3 collect/make_pilot_report.py
       - uses: actions/upload-artifact@v4
         with: { name: pilot-report, path: collect/pilot_report.json, retention-days: 30 }
+      - name: 提交试点报告（工头据此判验收）
+        run: |
+          git config user.name collect-bot
+          git config user.email bot@users.noreply.github.com
+          git add -f collect/pilot_report.json
+          git diff --cached --quiet || git commit -m "collect: STEP02 试点报告"
+          git push || true
+      - name: 打包发布 Release
+        env: { GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: |
+          TAG="collect-pilot-$(date -u +%Y%m%d-%H%M)"
+          cd collect/out && for d in */; do tar czf "/tmp/${d%/}.tar.gz" "$d"; done; cd -
+          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --title "试点 8 层 $TAG" --notes "pilot 8 layers" /tmp/*.tar.gz
