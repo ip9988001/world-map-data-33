@@ -21,10 +21,17 @@
  },
  "budget": {
   "minutes_used": 0,
-  "minutes_cap": 1800
+  "minutes_cap": 1800,
+  "warn_ratio": 0.8,
+  "stop_ratio": 0.95
  },
  "last_triggered": {
   "step": null,
   "run_id": null
- }
+ },
+ "mode": "self-drive",
+ "fail_streak": 0,
+ "collapsed": false,
+ "attempts": {},
+ "last_error": null
 }

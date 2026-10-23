@@ -236,7 +236,9 @@ def main():
         say("额度", "paused", False)
         return 0
 
-    b = st["budget"]
+    b = st.setdefault("budget", {})
+    b.setdefault("minutes_used", 0); b.setdefault("minutes_cap", 1800)
+    b.setdefault("warn_ratio", 0.8); b.setdefault("stop_ratio", 0.95)
     ratio = b["minutes_used"] / max(b["minutes_cap"], 1)
     say("额度", f"{b['minutes_used']}/{b['minutes_cap']} ({ratio:.0%})", ratio < b["stop_ratio"])
     if ratio >= b["stop_ratio"]:
