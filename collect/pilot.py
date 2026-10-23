@@ -15,7 +15,7 @@
 """
 from __future__ import annotations
 import argparse, gzip, hashlib, json, os, re, subprocess, sys, threading, time
-import urllib.parse, urllib.request
+import urllib.error, urllib.parse, urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,11 +27,23 @@ TARGET_BYTES = 2_000_000
 
 
 def get_json(url, timeout=180, tries=3):
+    """★ 保留服务端原始报文：400 的 body 往往就是答案
+       （例如 `{"error":{"message":"Pagination is not supported."}}`），
+       以前只剩 `HTTP Error 400`，同一个坑要走三轮才定位。"""
     last = ""
     for i in range(tries):
         try:
             with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=timeout) as r:
                 return json.loads(r.read().decode("utf-8", "replace"))
+        except urllib.error.HTTPError as e:
+            try:
+                body = e.read().decode("utf-8", "replace")
+            except Exception:
+                body = ""
+            last = "http%d:%s" % (e.code, body[:300])
+            if e.code in (400, 401, 403, 404):   # 请求本身错了，重试无意义
+                return {"__error__": last}
+            time.sleep(1.5 * (i + 1))
         except Exception as e:  # 429 / 5xx 退避
             last = str(e)[:120]
             time.sleep(1.5 * (i + 1))
@@ -412,7 +424,64 @@ def _worker(api, oid_field, defexpr, lo, hi, wid, ps, limit, log, prog, lock):
     return rows, ""
 
 
+STRATEGY = "keyset"
+
+
+def _probe_pagination(api, log):
+    """探针：有的 MapServer 直接 400 `Pagination is not supported.`，
+       那种服务只能走 ids 通道（一次拿全量 objectIds，再按批取记录）。"""
+    r = _q(api, {"where": "1=1", "resultRecordCount": "1", "f": "json"}, timeout=60)
+    e = str(r.get("__error__") or "")
+    if "pagination" in e.lower():
+        return False, "服务不支持分页(Pagination is not supported)"
+    if "__error__" in r:
+        return False, e[:100]
+    return True, ""
+
+
+def _collect_by_ids(api, ids, log, prog, lock, workers):
+    """无分页服务专用：objectIds 分批并发取，每批落一个 part。"""
+    B = 800
+    batches = [ids[i:i + B] for i in range(0, len(ids), B)]
+    log("  ids 策略：%d 个 OID → %d 批（每批 ≤%d）" % (len(ids), len(batches), B))
+    d = os.path.join(OUTBASE, CUR["id"])
+    os.makedirs(d, exist_ok=True)
+    errs = []
+
+    def one(idx, batch):
+        q = {"objectIds": ",".join(str(x) for x in batch), "outFields": "*",
+             "returnGeometry": "true", "outSR": "4326", "f": "json"}
+        r = _q(api, q)
+        if "__error__" in r:
+            return 0, "batch%d:%s" % (idx, str(r["__error__"])[:120])
+        recs = []
+        for ft in (r.get("features") or []):
+            at = ft.get("attributes") or {}
+            g = ft.get("geometry") or {}
+            rec = normalize(at, g.get("y"), g.get("x"))
+            rec.update({"src_layer": CUR["id"], "src_title": CUR["title"], "raw": at})
+            recs.append(rec)
+        with gzip.open(os.path.join(d, "part-b%05d.ndjson.gz" % idx), "wt", encoding="utf-8") as f:
+            for rec in recs:
+                f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+        return len(recs), ""
+
+    rows = 0
+    with ThreadPoolExecutor(max_workers=max(1, workers)) as ex:
+        futs = [ex.submit(one, i, b) for i, b in enumerate(batches)]
+        for f in as_completed(futs):
+            n, e = f.result()
+            rows += n
+            if e:
+                errs.append(e)
+            with lock:
+                prog["rows"] = rows
+                prog["batches_done"] = prog.get("batches_done", 0) + 1
+    return rows, (";".join(errs) if errs else "")
+
+
 def collect_arcgis_v2(url, limit=0, log=print, workers=1):
+    global STRATEGY
     m = re.search(r"/(FeatureServer|MapServer)(/\d+)?$", url.rstrip("/"))
     api = url.split("?")[0].rstrip("/")
     if m and not m.group(2):
@@ -424,47 +493,65 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1):
         oid_field = next((k for k in ("OBJECTID", "OBJECTID_1", "FID", "OID", "OBJECTID_12")
                           if k in fns), "OBJECTID")
     defexpr = meta.get("definitionExpression") or ""
+    w_all = "(%s)" % defexpr if defexpr else "1=1"
     cnt = get_json(api + "/query?where=1%3D1&returnCountOnly=true&f=json", timeout=60)
     count = int(cnt.get("count") or 0)
-    log("  api=%s count=%d pagesize=%d workers=%d" % (api, count, ps, workers))
 
-    ranges = [(None, None)]
-    if workers > 1:
-        mn, mx, e = _oid_bounds(api, oid_field)
-        if mn is None or mx is None or mx <= mn:
-            log("  OID 区间拿不到（%s）→ 退回单线程" % (e or "flat"))
-            workers = 1
-        else:
-            step = max(1, (mx - mn + workers) // workers)
-            ranges, a0 = [], mn
-            while a0 <= mx:
-                ranges.append((a0, min(a0 + step - 1, mx)))
-                a0 += step
-            log("  OID %d~%d 切 %d 段" % (mn, mx, len(ranges)))
+    ok_page, why = _probe_pagination(api, log)
+    STRATEGY = "keyset" if ok_page else "ids"
+    log("  api=%s count=%d pagesize=%d workers=%d strategy=%s%s"
+        % (api, count, ps, workers, STRATEGY, "" if ok_page else "（%s）" % why))
 
     prog = {"id": CUR["id"], "ts": TS(), "api": api, "count": count, "rows": 0,
-            "parts": 0, "workers": {}, "ranges": [[lo, hi] for lo, hi in ranges],
-            "done": False}
+            "parts": 0, "workers": {}, "strategy": STRATEGY,
+            "ranges": [], "done": False}
     lock = threading.Lock()
     stop = threading.Event()
     hb = threading.Thread(target=_heartbeat, args=(prog, lock, stop, log), daemon=True)
     hb.start()
     rows_total, errs = 0, []
     try:
-        if workers <= 1:
-            r_, e_ = _worker(api, oid_field, defexpr, None, None, 0, ps, limit, log, prog, lock)
+        if STRATEGY == "ids":
+            r_ids = _q(api, {"where": w_all, "returnIdsOnly": "true", "f": "json"}, timeout=180)
+            ids = r_ids.get("objectIds") or []
+            if not ids:
+                log("  returnIdsOnly 失败（%s）→ 退回 keyset" % str(r_ids.get("__error__"))[:80])
+                STRATEGY = "keyset"
+                prog["strategy"] = "keyset(fallback)"
+        if STRATEGY == "ids":
+            r_, e_ = _collect_by_ids(api, ids, log, prog, lock, workers)
             rows_total += r_
             if e_:
                 errs.append(e_)
         else:
-            with ThreadPoolExecutor(max_workers=workers) as ex:
-                futs = [ex.submit(_worker, api, oid_field, defexpr, lo, hi, i, ps, limit, log, prog, lock)
-                        for i, (lo, hi) in enumerate(ranges)]
-                for f in as_completed(futs):
-                    r_, e_ = f.result()
-                    rows_total += r_
-                    if e_:
-                        errs.append(e_)
+            ranges = [(None, None)]
+            if workers > 1:
+                mn, mx, e = _oid_bounds(api, oid_field)
+                if mn is None or mx is None or mx <= mn:
+                    log("  OID 区间拿不到（%s）→ 退回单线程" % (e or "flat"))
+                    workers = 1
+                else:
+                    step = max(1, (mx - mn + workers) // workers)
+                    ranges, a0 = [], mn
+                    while a0 <= mx:
+                        ranges.append((a0, min(a0 + step - 1, mx)))
+                        a0 += step
+                    log("  OID %d~%d 切 %d 段" % (mn, mx, len(ranges)))
+            prog["ranges"] = [[lo, hi] for lo, hi in ranges]
+            if workers <= 1:
+                r_, e_ = _worker(api, oid_field, defexpr, None, None, 0, ps, limit, log, prog, lock)
+                rows_total += r_
+                if e_:
+                    errs.append(e_)
+            else:
+                with ThreadPoolExecutor(max_workers=workers) as ex:
+                    futs = [ex.submit(_worker, api, oid_field, defexpr, lo, hi, i, ps, limit, log, prog, lock)
+                            for i, (lo, hi) in enumerate(ranges)]
+                    for f in as_completed(futs):
+                        r_, e_ = f.result()
+                        rows_total += r_
+                        if e_:
+                            errs.append(e_)
     finally:
         with lock:
             prog["rows"] = rows_total
@@ -506,7 +593,7 @@ def main():
     diff = round(abs(rows - count) / count, 4) if count else None
     man = {"id": CUR["id"], "title": CUR["title"], "url": CUR["url"], "svc": CUR["svc"],
            "count": count, "rows": rows, "parts": parts, "diff": diff,
-           "elapsed_s": elapsed, "err": err, "limit": a.limit,
+           "elapsed_s": elapsed, "err": err, "limit": a.limit, "strategy": STRATEGY,
            "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
     with open(os.path.join(OUTBASE, CUR["id"], "_manifest.json"), "w", encoding="utf-8") as f:
         json.dump(man, f, ensure_ascii=False, indent=1)
