@@ -3,11 +3,20 @@ name: collect-batch
 on:
   workflow_dispatch:
     inputs:
-      mode: { description: "state | statewide | bulk", default: "state" }
-      state: { description: "州代码（mode=state 时用）", default: "KS" }
-      offset: { description: "bulk 起始偏移", default: "0" }
-      size: { description: "bulk 每批层数", default: "40" }
-permissions: { contents: write }
+      mode:
+        description: "state | statewide | bulk"
+        default: "state"
+      state:
+        description: "州代码（mode=state 时用）"
+        default: "KS"
+      offset:
+        description: "bulk 起始偏移"
+        default: "0"
+      size:
+        description: "bulk 每批层数"
+        default: "40"
+permissions:
+  contents: write
 concurrency:
   group: collect-batch-${{ github.event.inputs.mode }}-${{ github.event.inputs.state }}-${{ github.event.inputs.offset }}
   cancel-in-progress: false
@@ -16,28 +25,29 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.gen.outputs.matrix }}
+      count: ${{ steps.gen.outputs.count }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with: { python-version: "3.11" }
+        with:
+          python-version: "3.11"
       - id: gen
+        name: 生成 matrix
         run: |
           set -e
-          M=$(python3 collect/batch.py --mode "${{ github.event.inputs.mode }}" \
-              --state "${{ github.event.inputs.state }}" \
-              --offset "${{ github.event.inputs.offset }}" \
-              --size "${{ github.event.inputs.size }}" --list-matrix 2>/dev/null)
-          python3 - <<EOF > /tmp/m.json
-          import json, os
-          d = json.loads(os.environ["M"])[:40]
-          print(json.dumps({"include": d}))
-          EOF
-          echo "matrix=$(cat /tmp/m.json)" >> $GITHUB_OUTPUT
-        env:
-          M: ${{ steps.gen.outputs.matrix }}
+          python3 collect/batch.py --mode "${{ github.event.inputs.mode }}" \
+            --state "${{ github.event.inputs.state }}" \
+            --offset "${{ github.event.inputs.offset }}" \
+            --size "${{ github.event.inputs.size }}" --list-matrix > /tmp/raw.json
+          python3 -c "import json;d=json.load(open('/tmp/raw.json'))[:40];print(json.dumps({'include':d}))" > /tmp/m.json
+          python3 -c "import json;print(len(json.load(open('/tmp/m.json'))['include']))" > /tmp/count.txt
+          {
+            echo "matrix=$(cat /tmp/m.json)"
+            echo "count=$(cat /tmp/count.txt)"
+          } >> "$GITHUB_OUTPUT"
   collect:
     needs: plan
-    if: ${{ needs.plan.outputs.matrix != '' && needs.plan.outputs.matrix != '{"include": []}' }}
+    if: needs.plan.outputs.count != '0'
     runs-on: ubuntu-latest
     timeout-minutes: 180
     strategy:
@@ -46,13 +56,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with: { python-version: "3.11" }
+        with:
+          python-version: "3.11"
       - name: 搬 ${{ matrix.id }}
         env:
           CFG: ${{ toJson(matrix) }}
         run: |
           python3 -c "import json,os;open('collect/pilot_layers.json','w').write(json.dumps([json.loads(os.environ['CFG'])]))"
-          python3 collect/pilot.py --layer "$(python3 -c "import json;print(json.load(open('collect/pilot_layers.json'))[0]['id'])")"
+          LID=$(python3 -c "import json;print(json.load(open('collect/pilot_layers.json'))[0]['id'])")
+          python3 collect/pilot.py --layer "$LID"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -66,14 +78,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
-        with: { path: collect/out, pattern: "out-*", merge-multiple: true }
+        with:
+          path: collect/out
+          pattern: "out-*"
+          merge-multiple: true
       - name: 打包并发布 Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG="collect-${{ github.event.inputs.mode }}-${{ github.event.inputs.state }}-${{ github.run_number }}"
-          cd collect/out && for d in */; do tar czf "/tmp/${d%/}.tar.gz" "$d"; done; cd -
-          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --title "采集 $TAG" \
+          cd collect/out
+          for d in */; do tar czf "/tmp/${d%/}.tar.gz" "$d" 2>/dev/null || true; done
+          cd -
+          ls -lh /tmp/*.tar.gz | head -5
+          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" \
+            --title "采集 $TAG" \
             --notes "mode=${{ github.event.inputs.mode }} state=${{ github.event.inputs.state }} layers=$(ls collect/out | wc -l)" \
             /tmp/*.tar.gz || gh release upload "$TAG" /tmp/*.tar.gz --repo "$GITHUB_REPOSITORY" --clobber
-          echo "published $TAG"

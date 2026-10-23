@@ -30,17 +30,17 @@ STEPS = {
  "00": ("地基", "collect/steps/STEP-00.md", "01", "collect-watchdog.yml"),
  "01": ("预检", "collect/steps/STEP-01.md", "02", "collect-preflight.yml"),
  "02": ("试点 8 层", "collect/steps/STEP-02.md", "03", "collect-pilot.yml"),
- "03": ("单州试跑 KS", "collect/steps/STEP-03.md", "04", "collect-state.yml"),
- "04": ("全州级放量", "collect/steps/STEP-04.md", "05", "collect-statewide.yml"),
- "05": ("县市碎片放量", "collect/steps/STEP-05.md", "06", "collect-bulk.yml"),
+ "03": ("单州试跑 KS", "collect/steps/STEP-03.md", "04", "collect-batch.yml"),
+ "04": ("全州级放量", "collect/steps/STEP-04.md", "05", "collect-batch.yml"),
+ "05": ("县市碎片放量", "collect/steps/STEP-05.md", "06", "collect-batch.yml"),
  "06": ("收工", "collect/steps/STEP-06.md", None, None),
 }
 TRIGGER = {
  "01": "gh workflow run collect-preflight.yml --repo %s",
  "02": "gh workflow run collect-pilot.yml --repo %s",
- "03": "gh workflow run collect-state.yml -f state=KS --repo %s",
- "04": "gh workflow run collect-statewide.yml --repo %s",
- "05": "gh workflow run collect-bulk.yml --repo %s",
+ "03": "gh workflow run collect-batch.yml -f mode=state -f state=KS --repo %s",
+ "04": "gh workflow run collect-batch.yml -f mode=statewide --repo %s",
+ "05": "gh workflow run collect-batch.yml -f mode=bulk -f offset=0 -f size=40 --repo %s",
 }
 
 
@@ -236,6 +236,13 @@ def entry_check():
     add(10, "额度闸门", "stop_ratio" in b and b.get("stop_ratio", 1) <= 0.95, f"stop={b.get('stop_ratio')}")
     add(11, "改动自检", os.path.exists(os.path.join(ROOT, ".github", "workflows", "ci-smoke.yml")), "ci-smoke.yml")
     add(12, "自检可验证", "--dry-run" in src, "supervisor.py --dry-run")
+    add(13, "额度真记账", "used_minutes" in src, "按 Actions run 时长累计")
+    wf_pilot = os.path.join(ROOT, ".github", "workflows", "collect-pilot.yml")
+    ptxt = open(wf_pilot, encoding="utf-8").read() if os.path.exists(wf_pilot) else ""
+    add(14, "试点报告进仓库", "git add -f collect/pilot_report.json" in ptxt, "工头读得到")
+    add(15, "数据进 Release", "gh release create" in ptxt, "artifact 7 天过期，必须落 Release")
+    add(16, "03~05 工人存在", os.path.exists(os.path.join(ROOT, ".github", "workflows", "collect-batch.yml")), "collect-batch.yml 通用工人")
+    add(17, "自动触发下一步", "自动触发" in src, "工头放行即触发")
     return C
 
 
@@ -337,6 +344,10 @@ def main():
         cmd = ["gh", "workflow", "run", wfnext, "--repo", REPO]
         if nxt == "03":
             cmd += ["-f", "mode=state", "-f", "state=KS"]
+        elif nxt == "04":
+            cmd += ["-f", "mode=statewide"]
+        elif nxt == "05":
+            cmd += ["-f", "mode=bulk", "-f", "offset=0", "-f", "size=40"]
         rc, out, err = sh(cmd)
         say("自动触发", f"{wfnext} rc={rc} {(err or '')[:60]}", rc == 0)
     print(json.dumps(report, ensure_ascii=False))
