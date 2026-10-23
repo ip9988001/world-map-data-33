@@ -185,10 +185,14 @@ def entry_check():
     add(3, "账本字段完整", keys, "fail_streak/collapsed/attempts/budget")
     # 4 工人与工头分离
     sep = True
+    import re as _re
     for wf in glob.glob(os.path.join(ROOT, ".github", "workflows", "collect-*.yml")):
-        if "herald" in open(wf, encoding="utf-8").read() or "supervisor" in open(wf, encoding="utf-8").read():
-            if "collect-supervisor" not in wf:
-                sep = False
+        if "collect-supervisor" in wf:
+            continue
+        txt = open(wf, encoding="utf-8").read()
+        # 只认真正的调用，不认注释里提到的名字
+        if _re.search(r"python3\s+\S*(herald|supervisor)\.py", txt):
+            sep = False
     add(4, "工人不含报警步骤", sep, "采集 workflow 内无 herald/supervisor 调用")
     add(5, "工头能发现该动没动", "active_runs" in open(__file__, encoding="utf-8").read(), "按 run 存活判")
     add(6, "能发现卡死", STALL_MIN == 120, f"阈值 {STALL_MIN} 分钟")
