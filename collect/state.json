@@ -1,6 +1,6 @@
 {
  "project": "world-map-data-33 collect",
- "current_step": "02",
+ "current_step": "03",
  "mode": "self-drive-v2",
  "budget": {
   "minutes_used": 600,
@@ -18,10 +18,10 @@
  },
  "awaiting_brain": false,
  "brain_review": {
-  "at": null,
-  "step": null,
-  "verdict": null,
-  "note": "v2 落地：STEP02 第4次试点 8 层工人全部 success，等大脑判验收（de_suss 空包 / san_juan 2000/22680 两处待补）"
+  "at": "2026-10-23T23:26:45Z",
+  "step": "02",
+  "verdict": "pass",
+  "note": "STEP02 试点 8 层全部 rows==count（12,525,311 行，worst_diff=0）。修复三处真因：① de_suss layer 0→132 上轮未生效（run 冻旧 SHA）② san_juan 服务用 HTTP 200 包 {\"error\":\"Pagination is not supported\"}，静默退化成 2000 行，已加 200-error 识别 + ids 通道（returnIdsOnly+objectIds 分批并发）③ 报告 artifact 打包整个 reports 目录导致 merge 非确定性覆盖。附带：工人支持 OID 区间并发、心跳进仓库、report/工头补 fetch-depth:0。"
  },
  "steps": {
   "01": {
@@ -34,12 +34,23 @@
    }
   },
   "02": {
-   "status": "started",
-   "at": "2026-10-23T23:22:51Z"
+   "status": "done",
+   "at": "2026-10-23T23:22:51Z",
+   "metrics": {
+    "layers": 8,
+    "with_rows": 8,
+    "worst_diff": 0.0,
+    "total_rows": 12525311
+   }
+  },
+  "03": {
+   "status": "ready",
+   "at": null,
+   "note": "KS 全州单州试跑，等放量指令"
   }
  },
  "blocked_count": 0,
- "status": "running",
+ "status": "awaiting_go",
  "paused_reason": "框架升级 v2（2026-10-24）：工头改造期间不巡逻、不点火",
  "paused_at": "2026-10-23T23:14:35Z",
  "last_error": null
