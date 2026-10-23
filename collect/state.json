@@ -1,7 +1,7 @@
 {
  "project": "world-map-data-33 collect",
  "current_step": "02",
- "status": "retry",
+ "status": "collapsed",
  "last_run_id": "39903144412",
  "steps": {
   "01": {
@@ -29,8 +29,8 @@
   "run_id": null
  },
  "mode": "self-drive",
- "fail_streak": 2,
- "collapsed": false,
+ "fail_streak": 3,
+ "collapsed": true,
  "attempts": {},
  "last_error": "有数据层=2/7 最大误差=0.9998/0.01",
  "started_at": "2026-10-23T07:10:00Z"
