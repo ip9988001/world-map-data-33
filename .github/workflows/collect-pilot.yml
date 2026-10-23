@@ -80,9 +80,21 @@ jobs:
       - name: 汇总
         run: python3 collect/make_pilot_report.py
       - name: 提交试点报告（工头据此判验收）
+        # ★ 2026-10-23 事故：这里原本是 `git push || true`，撞上工头同时推 collect/state.json
+        #   时 non-fast-forward 被拒，报告静默丢失 → 工头读到上一轮旧报告 → 误判「未通过」
+        #   → 连败 3 次熔断收摊（实际 8 层全采集成功）。改成 rebase 重试 + 失败显式报错。
         run: |
           git config user.name collect-bot
           git config user.email bot@users.noreply.github.com
           git add -f collect/pilot_report.json
           git diff --cached --quiet || git commit -m "collect: STEP02 试点报告"
-          git push || true
+          ok=0
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main || true
+            git rebase -q origin/main 2>/dev/null || git rebase --abort 2>/dev/null || true
+            if git push -q origin HEAD:main 2>/dev/null; then ok=1; echo "✅ 报告已推送（第 $i 次尝试）"; break; fi
+            echo "⚠️ push 第 $i 次被拒，重试…"; sleep $((i*4))
+          done
+          if [ "$ok" = "0" ]; then
+            echo "❌ 报告推送失败：工头会读到旧报告而误判，必须人工介入"; exit 1
+          fi

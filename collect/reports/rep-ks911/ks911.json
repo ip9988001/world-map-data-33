@@ -1,0 +1,14 @@
+{
+ "id": "ks911",
+ "title": "Kansas NG911 Address Points",
+ "url": "https://services6.arcgis.com/7XhimSpf8B7lHIMy/arcgis/rest/services/AddressPoints_NG911_ALL_GCS/FeatureServer/0",
+ "svc": "FeatureServer",
+ "count": 1035861,
+ "rows": 1035861,
+ "parts": 21,
+ "diff": 0.0,
+ "elapsed_s": 572.4,
+ "err": "",
+ "limit": 0,
+ "at": "2026-10-23T14:11:50Z"
+}

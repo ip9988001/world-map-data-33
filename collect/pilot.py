@@ -97,7 +97,13 @@ def collect_arcgis(url, limit=0, log=print):
     if m and not m.group(2):
         api += "/0"
     ps, maxrc, meta = page_size_for(api)
-    oid_field = meta.get("objectIdField") or meta.get("objectIdFieldName") or "OBJECTID"
+    oid_field = meta.get("objectIdField") or meta.get("objectIdFieldName")
+    if not oid_field:
+        # ★ 2026-10-23 san_juan：MapServer 的 objectIdField 为 null，实际主键叫 FID。
+        #   原来直接兜底 "OBJECTID" → orderByFields=OBJECTID 报 400 → 只拿到第一页 2000 行。
+        fns = [f.get("name") for f in (meta.get("fields") or [])]
+        oid_field = next((k for k in ("OBJECTID", "OBJECTID_1", "FID", "OID", "OBJECTID_12")
+                          if k in fns), "OBJECTID")
     count = int((meta.get("definitionExpression") and 0) or 0)
     cnt = get_json(api + "/query?where=1%3D1&returnCountOnly=true&f=json", timeout=60)
     count = int(cnt.get("count") or 0)

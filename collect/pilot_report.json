@@ -1,12 +1,41 @@
 {
- "layers": 3,
- "with_rows": 2,
- "worst_diff": 0.9998,
- "total_rows": 3500,
+ "layers": 8,
+ "with_rows": 6,
+ "worst_diff": 0.9118,
+ "total_rows": 5734539,
  "failed": [
-  "de_suss"
+  "de_suss",
+  "nysam"
  ],
  "detail": [
+  {
+   "id": "az911",
+   "title": "AZ911 AddressPoints",
+   "url": "https://services6.arcgis.com/clPWQMwZfdWn4MQZ/arcgis/rest/services/AZ911_AddressPoints_Hosted/FeatureServer/0",
+   "svc": "FeatureServer",
+   "count": 3734802,
+   "rows": 3734802,
+   "parts": 75,
+   "diff": 0.0,
+   "elapsed_s": 2180.9,
+   "err": "",
+   "limit": 0,
+   "at": "2026-10-23T14:38:37Z"
+  },
+  {
+   "id": "boco_addr",
+   "title": "Boulder County Addresses（Socrata）",
+   "url": "https://data.colorado.gov/d/gxsf-be8c",
+   "svc": "Socrata",
+   "count": 139812,
+   "rows": 139812,
+   "parts": 3,
+   "diff": 0.0,
+   "elapsed_s": 80.3,
+   "err": "",
+   "limit": 0,
+   "at": "2026-10-23T14:03:38Z"
+  },
   {
    "id": "de_suss",
    "title": "Delaware SUSS Address Points",
@@ -16,24 +45,52 @@
    "rows": 0,
    "parts": 0,
    "diff": null,
-   "elapsed_s": 0.6,
+   "elapsed_s": 0.5,
    "err": "",
    "limit": 0,
-   "at": "2026-10-23T08:59:04Z"
+   "at": "2026-10-23T14:02:18Z"
+  },
+  {
+   "id": "ks911",
+   "title": "Kansas NG911 Address Points",
+   "url": "https://services6.arcgis.com/7XhimSpf8B7lHIMy/arcgis/rest/services/AddressPoints_NG911_ALL_GCS/FeatureServer/0",
+   "svc": "FeatureServer",
+   "count": 1035861,
+   "rows": 1035861,
+   "parts": 21,
+   "diff": 0.0,
+   "elapsed_s": 572.4,
+   "err": "",
+   "limit": 0,
+   "at": "2026-10-23T14:11:50Z"
+  },
+  {
+   "id": "me_addr",
+   "title": "Maine Addresses",
+   "url": "https://services1.arcgis.com/RbMX0mRVOFNTdLzd/arcgis/rest/services/Addresses/FeatureServer/0",
+   "svc": "FeatureServer",
+   "count": 792091,
+   "rows": 792091,
+   "parts": 16,
+   "diff": 0.0,
+   "elapsed_s": 303.8,
+   "err": "",
+   "limit": 0,
+   "at": "2026-10-23T14:07:21Z"
   },
   {
    "id": "nysam",
    "title": "NYS SAM Address Points (MapServer)",
    "url": "https://gisservices.its.ny.gov/arcgis/rest/services/SAM_Address_Points/MapServer/0",
    "svc": "MapServer",
-   "count": 6583495,
-   "rows": 1500,
-   "parts": 1,
-   "diff": 0.9998,
-   "elapsed_s": 450.5,
+   "count": 0,
+   "rows": 0,
+   "parts": 0,
+   "diff": null,
+   "elapsed_s": 1.8,
    "err": "",
    "limit": 0,
-   "at": "2026-10-23T09:06:35Z"
+   "at": "2026-10-23T14:02:20Z"
   },
   {
    "id": "san_juan",
@@ -44,10 +101,24 @@
    "rows": 2000,
    "parts": 1,
    "diff": 0.9118,
-   "elapsed_s": 5.5,
+   "elapsed_s": 4.9,
    "err": "",
    "limit": 0,
-   "at": "2026-10-23T08:59:08Z"
+   "at": "2026-10-23T14:02:22Z"
+  },
+  {
+   "id": "yngstown",
+   "title": "City of Youngstown Address Points（小层）",
+   "url": "https://services.arcgis.com/gORY92nokTWIHlwT/arcgis/rest/services/CityofYoungstownADDRESS_POINTS/FeatureServer/0",
+   "svc": "FeatureServer",
+   "count": 29973,
+   "rows": 29973,
+   "parts": 1,
+   "diff": 0.0,
+   "elapsed_s": 8.0,
+   "err": "",
+   "limit": 0,
+   "at": "2026-10-23T14:02:24Z"
   }
  ]
 }

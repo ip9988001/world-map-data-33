@@ -1,0 +1,14 @@
+{
+ "id": "az911",
+ "title": "AZ911 AddressPoints",
+ "url": "https://services6.arcgis.com/clPWQMwZfdWn4MQZ/arcgis/rest/services/AZ911_AddressPoints_Hosted/FeatureServer/0",
+ "svc": "FeatureServer",
+ "count": 3734802,
+ "rows": 3734802,
+ "parts": 75,
+ "diff": 0.0,
+ "elapsed_s": 2180.9,
+ "err": "",
+ "limit": 0,
+ "at": "2026-10-23T14:38:37Z"
+}

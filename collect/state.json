@@ -29,9 +29,10 @@
   "run_id": null
  },
  "mode": "self-drive",
- "fail_streak": 3,
- "collapsed": true,
+ "fail_streak": 0,
+ "collapsed": false,
  "attempts": {},
  "last_error": "有数据层=2/7 最大误差=0.9998/0.01",
- "started_at": "2026-10-23T07:10:00Z"
+ "started_at": "2026-10-23T07:10:00Z",
+ "collapsed_reason": "2026-10-23 人工复位：第3次 pilot 真实数字为 6/8 层、worst_diff=0.9118（报告因 git push 冲突丢失，工头读到第2次旧报告 2/7+0.9998）。已修 report push 重试、san_juan 主键字段(FID)、nysam 替代服务后重跑第4次。"
 }
