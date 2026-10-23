@@ -14,7 +14,7 @@
   python3 collect/pilot.py --list
 """
 from __future__ import annotations
-import argparse, gzip, hashlib, json, os, re, subprocess, sys, threading, time
+import argparse, gzip, hashlib, json, math, os, re, subprocess, sys, threading, time
 import urllib.error, urllib.parse, urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -339,8 +339,159 @@ def _heartbeat(prog, lock, stop, log, interval=20, push_every=180):
         stop.wait(interval)
 
 
-def _worker(api, oid_field, defexpr, lo, hi, wid, ps, limit, log, prog, lock):
-    """采一个 OID 区间。返回 (rows, err)。"""
+STRATEGY = "keyset"
+CKPT_VER = 2
+UNIT_ROWS = int(os.environ.get("PILOT_UNIT_ROWS", "500000"))   # 一个「单元」目标行数
+IDS_BATCH = 800                                                # 单次 objectIds 请求最多多少个
+
+
+# ---------------- 断点续传的底座：单元 / 检查点 / 分批发 ----------------
+def _tag():
+    """Release tag：由 workflow 传入（collect-<run>-<layer>），本地跑则用 local- 前缀。"""
+    return os.environ.get("PILOT_RELEASE_TAG") or ("collect-local-%s" % CUR["id"])
+
+
+def _ckpt_path():
+    return os.path.join(OUTBASE, CUR["id"], "_checkpoint.json")
+
+
+def _save_ckpt(ck):
+    p = _ckpt_path()
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    with open(p + ".tmp", "w", encoding="utf-8") as f:
+        json.dump(ck, f, ensure_ascii=False, indent=1)
+    os.replace(p + ".tmp", p)
+
+
+def _load_ckpt(plan_hash):
+    p = _ckpt_path()
+    if not os.path.exists(p):
+        return None
+    try:
+        d = json.load(open(p, encoding="utf-8"))
+    except Exception:
+        return None
+    if d.get("ver") != CKPT_VER or d.get("plan_hash") != plan_hash or d.get("url") != CUR.get("url"):
+        return None          # 切分方案变了 → 旧检查点作废，绝不硬续
+    return d
+
+
+def _pub(cmd, timeout=600):
+    try:
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+        return r.returncode, ((r.stdout or "") + (r.stderr or ""))[:300]
+    except Exception as e:
+        return 1, str(e)[:200]
+
+
+def _upload(files, log, tag=None):
+    """把一个单元的 part 打成 tar 传上 Release。成功返回 True；失败只记证据，不抛。"""
+    tag = tag or _tag()
+    files = [f for f in files if os.path.exists(f)]
+    if not files:
+        return False
+    rep = os.environ.get("GITHUB_REPOSITORY")
+    if not rep:
+        log("  ↑ 非 CI 环境，跳过上传（%d 个 part）" % len(files))
+        return False
+    d = os.path.dirname(files[0])
+    uid = os.path.basename(files[0]).split("-")[1] if "-" in os.path.basename(files[0]) else "x"
+    name = "%s-%s.tar.gz" % (CUR["id"], uid)
+    tmp = os.path.join("/tmp", name)
+    rc, o = _pub(["tar", "czf", tmp, "-C", d] + [os.path.basename(f) for f in files])
+    if rc != 0:
+        log("  ✗ 打包失败 %s" % o[:120])
+        return False
+    rc, o = _pub(["gh", "release", "create", tag, "--repo", rep,
+                  "--title", "采集 %s（分批发）" % CUR["id"], "--notes", "unit upload", tmp])
+    if rc != 0:
+        rc, o = _pub(["gh", "release", "upload", tag, tmp, "--repo", rep, "--clobber"])
+    try:
+        os.remove(tmp)
+    except Exception:
+        pass
+    if rc != 0:
+        log("  ✗ 上传失败 %s" % o[:150])
+        return False
+    log("  ↑ 已发布 %s（%d 个 part）" % (name, len(files)))
+    return True
+
+
+def _publish_ckpt(ck, log):
+    """把检查点本身也传上 Release（同一个 tag，--clobber 覆盖）。
+       没有这一步，断点续传只在「同一个 job 内重启」有效；换一次 run 就归零。"""
+    rep = os.environ.get("GITHUB_REPOSITORY")
+    if not rep:
+        return False
+    tmp = "/tmp/%s-checkpoint.json" % CUR["id"]
+    try:
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(ck, f, ensure_ascii=False)
+    except Exception:
+        return False
+    rc, o = _pub(["gh", "release", "upload", _tag(), tmp, "--repo", rep, "--clobber"], timeout=180)
+    if rc != 0:
+        log("  ✗ 检查点上传失败 %s" % o[:120])
+    return rc == 0
+
+
+def _fetch_ckpt_asset(plan_hash, log):
+    """本地没有检查点（新 run）→ 从 Release 把上一轮的检查点捞回来。"""
+    rep = os.environ.get("GITHUB_REPOSITORY")
+    if not rep:
+        return None
+    name = "%s-checkpoint.json" % CUR["id"]
+    d = "/tmp/ck_%s" % CUR["id"]
+    os.makedirs(d, exist_ok=True)
+    pth = os.path.join(d, name)
+    rc, o = _pub(["gh", "release", "download", _tag(), "-p", name, "-D", d, "--clobber"], timeout=180)
+    if rc != 0 or not os.path.exists(pth):
+        return None
+    try:
+        d2 = json.load(open(pth, encoding="utf-8"))
+    except Exception:
+        return None
+    if d2.get("ver") != CKPT_VER or d2.get("plan_hash") != plan_hash or d2.get("url") != CUR.get("url"):
+        log("  ⟲ 上一轮检查点与本次切分不一致 → 忽略")
+        return None
+    os.makedirs(os.path.join(OUTBASE, CUR["id"]), exist_ok=True)
+    _save_ckpt(d2)
+    log("  ⟲ 已从 Release 恢复检查点：%d 个单元已完成" % len(d2.get("done_units") or []))
+    return d2
+
+
+def _probe_pagination(api, log):
+    """探针：有的 MapServer 直接报 `Pagination is not supported.`，
+       那种服务只能走 ids 通道（一次拿全量 objectIds，再按批取记录）。"""
+    r = _q(api, {"where": "1=1", "resultRecordCount": "1", "f": "json"}, timeout=60)
+    e = str(r.get("__error__") or "")
+    if "pagination" in e.lower():
+        return False, "服务不支持分页(Pagination is not supported)"
+    if "__error__" in r:
+        return False, e[:100]
+    return True, ""
+
+
+def _record_unit(ck, idx, rows, files):
+    ck.setdefault("unit_rows", {})[str(idx)] = rows
+    ck.setdefault("unit_files", {})[str(idx)] = [os.path.basename(f) for f in files]
+    ck.setdefault("done_units", [])
+    if idx not in ck["done_units"]:
+        ck["done_units"].append(idx)
+    ck["done_units"].sort()
+
+
+def _purge(files):
+    for f in files:
+        try:
+            os.remove(f)
+        except Exception:
+            pass
+
+
+# ---------------- 单元采集 ----------------
+def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock, ck):
+    """一个 OID 区间单元。返回 (rows, files, err)。"""
     conds = []
     if defexpr:
         conds.append("(%s)" % defexpr)
@@ -355,22 +506,23 @@ def _worker(api, oid_field, defexpr, lo, hi, wid, ps, limit, log, prog, lock):
     except Exception:
         expect = 0
     base = {"where": w0, "outFields": "*", "returnGeometry": "true", "outSR": "4326", "f": "json"}
-    if expect == 0:
-        log("  w%d 区间 %s~%s 空，跳过" % (wid, lo, hi))
-        return 0, ""
     d = os.path.join(OUTBASE, CUR["id"])
     os.makedirs(d, exist_ok=True)
+    if expect == 0:
+        return 0, [], ""
     rows = part_no = 0
     buf, last, off, mode = [], None, 0, "keyset"
+    files = []
 
     def flush():
         nonlocal buf, part_no
         if not buf:
             return
-        p = os.path.join(d, "part-w%d-%05d.ndjson.gz" % (wid, part_no))
+        p = os.path.join(d, "part-u%05d-%03d.ndjson.gz" % (idx, part_no))
         with gzip.open(p, "wt", encoding="utf-8") as f:
             for r in buf:
                 f.write(json.dumps(r, ensure_ascii=False) + "\n")
+        files.append(p)
         part_no += 1
         buf = []
 
@@ -383,19 +535,18 @@ def _worker(api, oid_field, defexpr, lo, hi, wid, ps, limit, log, prog, lock):
         r = _q(api, q)
         if "__error__" in r:
             flush()
-            return rows, "query_fail:" + r["__error__"]
+            return rows, files, "query_fail:" + str(r["__error__"])[:160]
         feats = r.get("features") or []
         if not feats:
             if rows == 0 and last is None and mode == "keyset":
-                q2 = {k: v for k, v in q.items() if k != "orderByFields"}   # 有服务不认 orderBy
+                q2 = {k: v for k, v in q.items() if k != "orderByFields"}
                 r = _q(api, q2)
                 feats = r.get("features") or []
             if not feats:
-                # ★ san_juan 兜底：keyset 翻不动（服务端不把主键当可过滤字段，
-                #   `FID>n` 被当成空条件 → 第二页 0 行）但 count 还没拿够 → 换 resultOffset 续翻。
+                # keyset 翻不动（服务端把「主键>n」当空条件）但 count 没拿够 → 换 resultOffset 续翻
                 if mode == "keyset" and rows > 0 and rows < expect:
                     mode, off = "offset", rows
-                    log("  w%d keyset 停在 %d/%d → 切 resultOffset" % (wid, rows, expect))
+                    log("  u%d keyset 停在 %d/%d → 切 resultOffset" % (idx, rows, expect))
                     continue
                 break
         for ft in feats:
@@ -416,7 +567,7 @@ def _worker(api, oid_field, defexpr, lo, hi, wid, ps, limit, log, prog, lock):
         if len(buf) >= CHUNK:
             flush()
         with lock:
-            prog["workers"][str(wid)] = rows
+            prog["workers"][str(idx)] = rows
             prog["rows"] = sum(prog["workers"].values())
         if limit and rows >= limit:
             break
@@ -426,39 +577,21 @@ def _worker(api, oid_field, defexpr, lo, hi, wid, ps, limit, log, prog, lock):
             break
         time.sleep(0.1)
     flush()
-    return rows, ""
+    return rows, files, ""
 
 
-STRATEGY = "keyset"
-
-
-def _probe_pagination(api, log):
-    """探针：有的 MapServer 直接 400 `Pagination is not supported.`，
-       那种服务只能走 ids 通道（一次拿全量 objectIds，再按批取记录）。"""
-    r = _q(api, {"where": "1=1", "resultRecordCount": "1", "f": "json"}, timeout=60)
-    e = str(r.get("__error__") or "")
-    if "pagination" in e.lower():
-        return False, "服务不支持分页(Pagination is not supported)"
-    if "__error__" in r:
-        return False, e[:100]
-    return True, ""
-
-
-def _collect_by_ids(api, ids, log, prog, lock, workers):
-    """无分页服务专用：objectIds 分批并发取，每批落一个 part。"""
-    B = 800
-    batches = [ids[i:i + B] for i in range(0, len(ids), B)]
-    log("  ids 策略：%d 个 OID → %d 批（每批 ≤%d）" % (len(ids), len(batches), B))
+def _unit_ids(api, batches, idx, log, prog, lock):
+    """一个 ids 单元（若干 objectIds 批，顺序取）。返回 (rows, files, err)。"""
     d = os.path.join(OUTBASE, CUR["id"])
     os.makedirs(d, exist_ok=True)
-    errs = []
-
-    def one(idx, batch):
+    rows, files, errs = 0, [], []
+    for bi, batch in batches:
         q = {"objectIds": ",".join(str(x) for x in batch), "outFields": "*",
              "returnGeometry": "true", "outSR": "4326", "f": "json"}
         r = _q(api, q)
         if "__error__" in r:
-            return 0, "batch%d:%s" % (idx, str(r["__error__"])[:120])
+            errs.append("batch%d:%s" % (bi, str(r["__error__"])[:120]))
+            continue
         recs = []
         for ft in (r.get("features") or []):
             at = ft.get("attributes") or {}
@@ -466,27 +599,22 @@ def _collect_by_ids(api, ids, log, prog, lock, workers):
             rec = normalize(at, g.get("y"), g.get("x"))
             rec.update({"src_layer": CUR["id"], "src_title": CUR["title"], "raw": at})
             recs.append(rec)
-        with gzip.open(os.path.join(d, "part-b%05d.ndjson.gz" % idx), "wt", encoding="utf-8") as f:
+        if not recs:
+            continue
+        p = os.path.join(d, "part-u%05d-b%05d.ndjson.gz" % (idx, bi))
+        with gzip.open(p, "wt", encoding="utf-8") as f:
             for rec in recs:
                 f.write(json.dumps(rec, ensure_ascii=False) + "\n")
-        return len(recs), ""
-
-    rows = 0
-    with ThreadPoolExecutor(max_workers=max(1, workers)) as ex:
-        futs = [ex.submit(one, i, b) for i, b in enumerate(batches)]
-        for f in as_completed(futs):
-            n, e = f.result()
-            rows += n
-            if e:
-                errs.append(e)
-            with lock:
-                prog["rows"] = rows
-                prog["batches_done"] = prog.get("batches_done", 0) + 1
-    return rows, (";".join(errs) if errs else "")
+        files.append(p)
+        rows += len(recs)
+        with lock:
+            prog["workers"][str(idx)] = rows
+            prog["rows"] = sum(prog["workers"].values())
+    return rows, files, (";".join(errs) if errs else "")
 
 
-def collect_arcgis_v2(url, limit=0, log=print, workers=1):
-    global STRATEGY
+def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False):
+    global STRATEGY, UNIT_ROWS
     m = re.search(r"/(FeatureServer|MapServer)(/\d+)?$", url.rstrip("/"))
     api = url.split("?")[0].rstrip("/")
     if m and not m.group(2):
@@ -507,65 +635,126 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1):
     log("  api=%s count=%d pagesize=%d workers=%d strategy=%s%s"
         % (api, count, ps, workers, STRATEGY, "" if ok_page else "（%s）" % why))
 
-    prog = {"id": CUR["id"], "ts": TS(), "api": api, "count": count, "rows": 0,
-            "parts": 0, "workers": {}, "strategy": STRATEGY,
-            "ranges": [], "done": False}
+    # ---- 切分方案（决定断点能不能续：切分必须确定） ----
+    ids, units, plan = None, [], {}
+    if STRATEGY == "ids":
+        r_ids = _q(api, {"where": w_all, "returnIdsOnly": "true", "f": "json"}, timeout=180)
+        ids = r_ids.get("objectIds") or []
+        if not ids:
+            log("  returnIdsOnly 失败（%s）→ 退回 keyset" % str(r_ids.get("__error__"))[:80])
+            STRATEGY = "keyset"
+    if STRATEGY == "ids":
+        bl, cur = [], []
+        for i in range(0, len(ids), IDS_BATCH):
+            cur.append((i // IDS_BATCH, ids[i:i + IDS_BATCH]))
+            if len(cur) * IDS_BATCH >= UNIT_ROWS:
+                bl.append(cur)
+                cur = []
+        if cur:
+            bl.append(cur)
+        units = bl
+        plan = {"kind": "ids", "n_ids": len(ids), "batch": IDS_BATCH,
+                "units": [[b[0] for b in u] for u in units]}
+    else:
+        mn, mx, e = _oid_bounds(api, oid_field) if workers > 1 or count > UNIT_ROWS else (None, None, "small")
+        if mn is not None and mx is not None and mx > mn:
+            n_units = max(1, int(math.ceil(count / float(UNIT_ROWS)))) if count else 1
+            span = max(1, int(math.ceil((mx - mn + 1) / float(n_units))))
+            a0 = mn
+            while a0 <= mx:
+                units.append((a0, min(a0 + span - 1, mx)))
+                a0 += span
+            plan = {"kind": "range", "units": units}
+        else:
+            units = [(None, None)]
+            plan = {"kind": "single", "units": [[None, None]]}
+
+    plan_hash = hashlib.sha1(json.dumps(plan, sort_keys=True).encode()).hexdigest()[:16]
+    ck = None if fresh else _load_ckpt(plan_hash)
+    if ck is None and not fresh:
+        ck = _fetch_ckpt_asset(plan_hash, log)
+    done = set()
+    if ck:
+        done = set(ck.get("done_units") or [])
+        log("  ⟲ 续跑：检查点签名 %s，已完成单元 %d/%d（%s 行）"
+            % (plan_hash, len(done), len(units), sum((ck.get("unit_rows") or {}).values())))
+        # 已完成但没传上去的，先补传（本地文件还在的话）
+        for k, fs in (ck.get("unit_files") or {}).items():
+            if int(k) in done and ck.get("unit_uploaded", {}).get(str(k)) is False:
+                paths = [os.path.join(OUTBASE, CUR["id"], f) for f in fs]
+                if all(os.path.exists(p) for p in paths) and _upload(paths, log):
+                    ck.setdefault("unit_uploaded", {})[str(k)] = True
+                    _purge(paths)
+                    _save_ckpt(ck)
+    else:
+        ck = {"ver": CKPT_VER, "url": CUR.get("url"), "plan_hash": plan_hash,
+              "unit_rows": {}, "unit_files": {}, "unit_uploaded": {},
+              "done_units": [], "tag": _tag()}
+    ck.setdefault("unit_uploaded", {})
+    ck.setdefault("unit_rows", {})
+    ck.setdefault("unit_files", {})
+
+    prog = {"id": CUR["id"], "ts": TS(), "api": api, "count": count,
+            "rows": sum((ck.get("unit_rows") or {}).values()),
+            "parts": sum(len(v) for v in ck["unit_files"].values()), "workers": {},
+            "strategy": STRATEGY, "units": len(units), "done_units": len(done),
+            "unit_rows_target": UNIT_ROWS, "done": False}
     lock = threading.Lock()
+    up_lock = threading.Lock()
     stop = threading.Event()
     hb = threading.Thread(target=_heartbeat, args=(prog, lock, stop, log), daemon=True)
     hb.start()
-    rows_total, errs = 0, []
-    try:
+    rows_new, errs = 0, []
+    todo = [(i, u) for i, u in enumerate(units) if i not in done]
+
+    def one(i, u):
         if STRATEGY == "ids":
-            r_ids = _q(api, {"where": w_all, "returnIdsOnly": "true", "f": "json"}, timeout=180)
-            ids = r_ids.get("objectIds") or []
-            if not ids:
-                log("  returnIdsOnly 失败（%s）→ 退回 keyset" % str(r_ids.get("__error__"))[:80])
-                STRATEGY = "keyset"
-                prog["strategy"] = "keyset(fallback)"
-        if STRATEGY == "ids":
-            r_, e_ = _collect_by_ids(api, ids, log, prog, lock, workers)
-            rows_total += r_
-            if e_:
-                errs.append(e_)
+            rows, files, err = _unit_ids(api, u, i, log, prog, lock)
         else:
-            ranges = [(None, None)]
-            if workers > 1:
-                mn, mx, e = _oid_bounds(api, oid_field)
-                if mn is None or mx is None or mx <= mn:
-                    log("  OID 区间拿不到（%s）→ 退回单线程" % (e or "flat"))
-                    workers = 1
-                else:
-                    step = max(1, (mx - mn + workers) // workers)
-                    ranges, a0 = [], mn
-                    while a0 <= mx:
-                        ranges.append((a0, min(a0 + step - 1, mx)))
-                        a0 += step
-                    log("  OID %d~%d 切 %d 段" % (mn, mx, len(ranges)))
-            prog["ranges"] = [[lo, hi] for lo, hi in ranges]
-            if workers <= 1:
-                r_, e_ = _worker(api, oid_field, defexpr, None, None, 0, ps, limit, log, prog, lock)
-                rows_total += r_
+            lo, hi = u
+            rows, files, err = _unit_range(api, oid_field, defexpr, lo, hi, i, ps, limit, log, prog, lock, ck)
+        ok = False
+        if files:
+            with up_lock:
+                ok = _upload(files, log)
+        with lock:
+            _record_unit(ck, i, rows, files)
+            ck["unit_uploaded"][str(i)] = ok
+            _save_ckpt(ck)
+            if ok:
+                _purge(files)
+                _publish_ckpt(ck, log)
+        return rows, err
+
+    try:
+        if len(todo) == 1 or workers <= 1:
+            for i, u in todo:
+                r_, e_ = one(i, u)
+                rows_new += r_
                 if e_:
                     errs.append(e_)
-            else:
-                with ThreadPoolExecutor(max_workers=workers) as ex:
-                    futs = [ex.submit(_worker, api, oid_field, defexpr, lo, hi, i, ps, limit, log, prog, lock)
-                            for i, (lo, hi) in enumerate(ranges)]
-                    for f in as_completed(futs):
-                        r_, e_ = f.result()
-                        rows_total += r_
-                        if e_:
-                            errs.append(e_)
+        else:
+            with ThreadPoolExecutor(max_workers=max(1, workers)) as ex:
+                futs = [ex.submit(one, i, u) for i, u in todo]
+                for f in as_completed(futs):
+                    r_, e_ = f.result()
+                    rows_new += r_
+                    if e_:
+                        errs.append(e_)
     finally:
         with lock:
+            rows_total = sum((ck.get("unit_rows") or {}).values())
             prog["rows"] = rows_total
             prog["done"] = True
+            prog["done_units"] = len(ck.get("done_units") or [])
             _write_progress(prog)
+            _save_ckpt(ck)
         stop.set()
-    d = os.path.join(OUTBASE, CUR["id"])
-    parts = len([f for f in os.listdir(d) if f.endswith(".gz")]) if os.path.isdir(d) else 0
-    return rows_total, count, (";".join(errs) if errs else ""), parts
+    parts = sum(len(v) for v in (ck.get("unit_files") or {}).values())
+    resumed = len(done)
+    if resumed and not errs:
+        log("  ⟲ 本次续跑：跳过 %d 个已完成单元，新采 %d 行" % (resumed, rows_new))
+    return sum((ck.get("unit_rows") or {}).values()), count, (";".join(errs) if errs else ""), parts
 
 
 def main():
@@ -573,6 +762,8 @@ def main():
     ap.add_argument("--layer")
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--workers", type=int, default=int(os.environ.get("PILOT_WORKERS", "1")))
+    ap.add_argument("--unit-rows", type=int, default=int(os.environ.get("PILOT_UNIT_ROWS", "500000")))
+    ap.add_argument("--fresh", action="store_true", help="忽略检查点，从头重采")
     ap.add_argument("--list", action="store_true")
     a = ap.parse_args()
     cfg = json.load(open(CFG, encoding="utf-8"))
@@ -583,13 +774,15 @@ def main():
     L = [x for x in cfg if x["id"] == a.layer]
     if not L:
         print("unknown layer"); return 2
+    global UNIT_ROWS
+    UNIT_ROWS = a.unit_rows
     CUR.update(L[0])
     os.makedirs(os.path.join(OUTBASE, CUR["id"]), exist_ok=True)
     t0 = time.time()
     log = lambda m: print("[%s] %s" % (CUR["id"], m), flush=True)
     log("start %s" % CUR["url"][:90])
     if CUR["svc"] in ("FeatureServer", "MapServer"):
-        rows, count, err, parts = collect_arcgis_v2(CUR["url"], a.limit, log, a.workers)
+        rows, count, err, parts = collect_arcgis_v2(CUR["url"], a.limit, log, a.workers, a.fresh)
     elif CUR["svc"] == "Socrata":
         rows, count, err, parts = collect_socrata(CUR["url"], a.limit, log)
     else:

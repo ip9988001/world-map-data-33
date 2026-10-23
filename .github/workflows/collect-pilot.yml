@@ -8,8 +8,11 @@ on:
         description: "只跑这几层（逗号分隔，留空=全部 8 层）"
         default: ""
       workers:
-        description: "每层内部并发线程数（1=不并发；靠 OID 区间切片）"
+        description: "每层内部并发线程数（1=不并发）"
         default: "4"
+      unit_rows:
+        description: "一个采集单元的目标行数；单元完成即打包发布一次（断点续传粒度）"
+        default: "500000"
 permissions:
   contents: write
 jobs:
@@ -44,22 +47,35 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: 采集 ${{ matrix.layer }}
+      - name: 采集 ${{ matrix.layer }}（单元级断点续传）
         env:
           PILOT_HEARTBEAT_PUSH: "1"
-        run: python3 collect/run_step_02.py --layer ${{ matrix.layer }} --workers ${{ github.event.inputs.workers || '4' }}
-      - name: 上传 Release（每层独立 tag，不抢）
+          # ★ tag 按层固定，不带 run_number —— 这样下一轮 run 能从这个 tag 里
+          #   把 <layer>-checkpoint.json 捞回来，接着上次的进度跑，而不是从 0 开始。
+          #   tag 内的资产：<layer>-u00001.tar.gz（每单元一个）+ <layer>-checkpoint.json
+          PILOT_RELEASE_TAG: collect-pilot-${{ matrix.layer }}
+        run: |
+          python3 collect/run_step_02.py --layer ${{ matrix.layer }} \
+            --workers ${{ github.event.inputs.workers || '4' }} \
+            --unit-rows ${{ github.event.inputs.unit_rows || '500000' }}
+      - name: 兜底上传（只有 pilot 一个单元都没发成功时才做）
         if: always()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ID: ${{ matrix.layer }}
         run: |
-          TAG="collect-pilot-${{ github.run_number }}-${{ matrix.layer }}"
-          ID="${{ matrix.layer }}"
-          if [ -d "collect/out/$ID" ]; then
+          # pilot.py 自己是发布者：每个单元完成 → 立刻 tar + gh release upload（--clobber）
+          # 这里只在「它一次都没发成功」时兜底，避免同一份数据重复传两遍。
+          TAG="collect-pilot-$ID"
+          N=$(python3 -c "import json,os;p='collect/out/%s/_checkpoint.json'%os.environ['ID'];print(len(json.load(open(p)).get('done_units') or []) if os.path.exists(p) else 0)")
+          if [ "${N:-0}" -gt 0 ]; then
+            echo "✅ pilot 已分批发 ${N} 个单元到 $TAG，跳过兜底上传"
+            exit 0
+          fi
+          if [ -d "collect/out/$ID" ] && [ -n "$(ls -A "collect/out/$ID" 2>/dev/null)" ]; then
             tar czf "/tmp/$ID.tar.gz" -C collect/out "$ID"
-            # ★ 禁止 || true 吞错：数据没进 Release 等于这层白跑，必须显式报错
             gh release create "$TAG" --repo "$GITHUB_REPOSITORY" \
-              --title "试点 $ID #${{ github.run_number }}" --notes "pilot $ID" "/tmp/$ID.tar.gz" \
+              --title "试点 $ID #${{ github.run_number }}" --notes "fallback full payload" "/tmp/$ID.tar.gz" \
               || gh release upload "$TAG" "/tmp/$ID.tar.gz" --repo "$GITHUB_REPOSITORY" --clobber \
               || { echo "❌ $ID 数据没进 Release，这层等于白跑"; exit 1; }
           fi

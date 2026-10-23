@@ -58,6 +58,25 @@ v1 的「三振出局 → collapsed 收摊」**已废止**：收摊是决定，�
 7. 跳过/收摊必须留 `blocked.json` 证据，否则等于假装没发生过
 8. 浅克隆（`fetch-depth: 1`）里 `git rebase` 无法重放 → report job 必须 `fetch-depth: 0`
 
+## 断点续传（v2.1 · 2026-10-24）
+
+**粒度 = 单元（默认 50 万行）**，单元一完成就打包上传，不等整个 job 跑完。
+
+| 环节 | 做法 |
+|---|---|
+| 切分 | keyset 层按 OID 区间切成 N 个单元；无分页服务（`Pagination is not supported`）按 `returnIdsOnly` 的 batch 分组切单元。切分必须**确定**，否则续不上 |
+| 发布 | 每个单元完成 → `tar` → `gh release upload <tag> <layer>-uNNNNN.tar.gz --clobber` |
+| 检查点 | `collect/out/<layer>/_checkpoint.json` 记 `plan_hash / done_units / unit_rows / unit_uploaded`，**同时作为资产传到同一个 tag** |
+| 跨 run 恢复 | 新 run 起来先看本地有无检查点 → 没有就 `gh release download <layer>-checkpoint.json` 捞回来；`plan_hash` 不符则作废（绝不硬续） |
+| 幂等 | 单元文件名固定 `part-u{单元号}-{序号}`，tar 名固定 `<layer>-u{单元号}`，重跑用 `--clobber` 覆盖，不会重复堆资产 |
+| 已传即删 | 上传成功立刻删本地 part，省 runner 磁盘（STEP03 放量必须） |
+| tag 固定不带 run_number | `collect-pilot-<layer>`，这样换一次 run 还能接上 |
+
+验证方式（mock，不起 workflow）：模拟第 3 个单元崩掉 → 断言检查点只记了已完成的单元 → 重启后跳过已完成单元继续 →
+最终**总行数 == count、FID 无重无缺**。keyset / ids 两条通道都通过。
+
+想看进度不用等：`collect/progress/<layer>.json` 每 20 秒刷新、每 3 分钟推仓库。
+
 ## 命脉监控
 
 pi 跑在 DS 的 key 上，余额耗尽 = 直接失能。所以余额检查**由本机 cron 做**（`ops/ds_balance.py`，每 30 分钟），
