@@ -1,17 +1,41 @@
 name: collect-pilot
 # STEP 02 工人：只干活，不报警。验收由工头（collect-supervisor）判。
-# 数据直接进 Release（不进 artifact，避免几 GB 上传失败），artifact 只带报告。
-on: { workflow_dispatch: }
+# 数据直接进 Release（每层独立 tag，避免并发抢同一个 release），artifact 只带报告。
+on:
+  workflow_dispatch:
+    inputs:
+      layers:
+        description: "只跑这几层（逗号分隔，留空=全部 8 层）"
+        default: ""
 permissions:
   contents: write
 jobs:
-  collect:
+  plan:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    outputs:
+      matrix: ${{ steps.gen.outputs.matrix }}
+      empty: ${{ steps.gen.outputs.empty }}
+    steps:
+      - id: gen
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os
+          raw = os.environ.get("LAYERS", "").strip()
+          all8 = ["ks911", "az911", "nysam", "me_addr", "de_suss", "yngstown", "boco_addr", "san_juan"]
+          layers = [x.strip() for x in raw.split(",") if x.strip()] or all8
+          print("matrix=" + json.dumps({"include": [{"layer": x} for x in layers]}))
+          print("empty=" + ("1" if not layers else "0"))
+          PY
+        env:
+          LAYERS: ${{ github.event.inputs.layers }}
+  collect:
+    needs: plan
+    if: needs.plan.outputs.empty != '1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
     strategy:
       fail-fast: false
-      matrix:
-        layer: [ks911, az911, nysam, me_addr, de_suss, yngstown, boco_addr, san_juan]
+      matrix: ${{ fromJson(needs.plan.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -19,18 +43,18 @@ jobs:
           python-version: "3.11"
       - name: 采集 ${{ matrix.layer }}
         run: python3 collect/pilot.py --layer ${{ matrix.layer }}
-      - name: 打包上传 Release（数据不走 artifact）
+      - name: 上传 Release（每层独立 tag，不抢）
         if: always()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="collect-pilot-${{ github.run_number }}"
+          TAG="collect-pilot-${{ github.run_number }}-${{ matrix.layer }}"
           ID="${{ matrix.layer }}"
           if [ -d "collect/out/$ID" ]; then
             tar czf "/tmp/$ID.tar.gz" -C collect/out "$ID" || true
-            gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 \
-              || gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --title "试点 8 层 #${{ github.run_number }}" --notes "pilot"
-            gh release upload "$TAG" "/tmp/$ID.tar.gz" --repo "$GITHUB_REPOSITORY" --clobber || true
+            gh release create "$TAG" --repo "$GITHUB_REPOSITORY" \
+              --title "试点 $ID #${{ github.run_number }}" --notes "pilot $ID" "/tmp/$ID.tar.gz" \
+              || gh release upload "$TAG" "/tmp/$ID.tar.gz" --repo "$GITHUB_REPOSITORY" --clobber || true
           fi
       - uses: actions/upload-artifact@v4
         if: always()
@@ -40,6 +64,7 @@ jobs:
           retention-days: 14
   report:
     needs: collect
+    if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

@@ -25,7 +25,7 @@ CHUNK = 50000          # 每个 part 最多多少行
 TARGET_BYTES = 2_000_000
 
 
-def get_json(url, timeout=60, tries=3):
+def get_json(url, timeout=180, tries=3):
     last = ""
     for i in range(tries):
         try:
@@ -130,12 +130,21 @@ def collect_arcgis(url, limit=0, log=print):
              "outSR": "4326", "f": "json", "resultRecordCount": ps,
              "orderByFields": oid_field}
         u = api + "/query?" + urllib.parse.urlencode(q)
-        d = get_json(u, timeout=90)
+        d = get_json(u, timeout=180)
         if "__error__" in d:
             return rows, count, "query_fail:" + d["__error__"], part_no
         feats = d.get("features") or []
         if not feats:
-            break
+            if rows == 0 and not d.get("exceededTransferLimit"):
+                # 首查空但 count>0：去掉排序/游标再试一次（有的服务不支持 orderBy）
+                q2 = {"where": where0, "outFields": "*", "returnGeometry": "true",
+                      "outSR": "4326", "f": "json"}
+                d2 = get_json(api + "/query?" + urllib.parse.urlencode(q2), timeout=180)
+                feats = (d2.get("features") or []) if "__error__" not in d2 else []
+                if not feats:
+                    return rows, count, "", part_no
+            else:
+                break
         for ft in feats:
             a = ft.get("attributes") or {}
             g = (ft.get("geometry") or {})
@@ -251,6 +260,9 @@ def main():
     with open(os.path.join(ROOT, "collect", "reports", CUR["id"] + ".json"), "w", encoding="utf-8") as f:
         json.dump(man, f, ensure_ascii=False, indent=1)
     log("done rows=%d count=%d diff=%s err=%s %.1fs" % (rows, count, diff, err or "-", elapsed))
+    if count == 0 and not err:
+        log("empty layer（count=0），按空层处理，不算失败")
+        return 0
     return 0 if (rows > 0 and not err) else 1
 
 
