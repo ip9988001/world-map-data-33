@@ -67,6 +67,7 @@ jobs:
           # pilot.py 自己是发布者：每个单元完成 → 立刻 tar + gh release upload（--clobber）
           # 这里只在「它一次都没发成功」时兜底，避免同一份数据重复传两遍。
           TAG="collect-pilot-$ID"
+          export ID   # 给下面 python -c 读（env: 里的 ID 已注入，这行是双保险）
           N=$(python3 -c "import json,os;p='collect/out/%s/_checkpoint.json'%os.environ['ID'];print(len(json.load(open(p)).get('done_units') or []) if os.path.exists(p) else 0)")
           if [ "${N:-0}" -gt 0 ]; then
             echo "✅ pilot 已分批发 ${N} 个单元到 $TAG，跳过兜底上传"
