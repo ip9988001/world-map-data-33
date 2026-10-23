@@ -1,7 +1,7 @@
 {
  "project": "world-map-data-33 collect",
  "current_step": "02",
- "status": "running",
+ "status": "awaiting_go",
  "last_run_id": "39903144412",
  "steps": {
   "01": {
