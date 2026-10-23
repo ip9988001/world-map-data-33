@@ -1,0 +1,28 @@
+name: collect-supervisor
+# 工头：独立巡逻，与工人解耦。工人不报告，工头自己看。
+on:
+  schedule: [{ cron: "*/10 * * * *" }]
+  workflow_dispatch:
+permissions: { contents: write, issues: write, actions: read }
+concurrency:
+  group: collect-supervisor
+  cancel-in-progress: false
+jobs:
+  patrol:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: 巡逻一轮
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 collect/supervisor.py --once
+      - name: 落账
+        run: |
+          git config user.name collect-bot
+          git config user.email bot@users.noreply.github.com
+          git add collect/state.json || true
+          git diff --cached --quiet || git commit -m "state: 工头巡逻 $(date -u +%FT%TZ)"
+          git push || true

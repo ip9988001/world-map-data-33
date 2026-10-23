@@ -1,0 +1,28 @@
+name: ci-smoke
+# 改动自检：任何 push 到 collect/ 或 scripts/ 的改动，先单层跑 3 条记录，过不了就别放量。
+on:
+  push:
+    paths: ["collect/**", "scripts/**", "survey/ng911/scripts/**"]
+  workflow_dispatch:
+permissions: { contents: read }
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: 语法检查
+        run: python3 -m py_compile collect/*.py scripts/*.py survey/ng911/scripts/*.py
+      - name: 单层试采（Kansas NG911，只要 3 条）
+        run: |
+          python3 - <<'EOF'
+          import json, urllib.request, urllib.parse
+          base = "https://services1.arcgis.com/99lldx1TgUjRvFzN/arcgis/rest/services/Kansas_NG911_Address_Points/FeatureServer/0"
+          u = base + "/query?where=1%3D1&outFields=*&returnGeometry=false&resultRecordCount=3&f=json"
+          d = json.load(urllib.request.urlopen(u, timeout=40))
+          n = len(d.get("features") or [])
+          print("smoke rows:", n)
+          assert n > 0, "试采拿不到数据，链路有问题"
+          EOF

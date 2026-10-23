@@ -42,12 +42,6 @@ jobs:
           from collections import Counter
           print("rows", len(rows), Counter(x["plan"] for x in rows))
           EOF
-      - name: 报工 + 落账
-        if: always()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          python3 scripts/herald.py --step 01 --status ${{ job.status == 'success' && 'success' || 'failure' }} --run-id ${{ github.run_id }}
       - name: 提交
         if: always()
         run: |
