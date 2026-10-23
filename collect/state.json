@@ -19,7 +19,7 @@
   }
  },
  "budget": {
-  "minutes_used": 562,
+  "minutes_used": 600,
   "minutes_cap": 1800,
   "warn_ratio": 0.8,
   "stop_ratio": 0.95
@@ -29,7 +29,7 @@
   "run_id": null
  },
  "mode": "self-drive",
- "fail_streak": 1,
+ "fail_streak": 2,
  "collapsed": false,
  "attempts": {},
  "last_error": "有数据层=2/7 最大误差=0.9998/0.01",
