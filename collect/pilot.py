@@ -34,7 +34,12 @@ def get_json(url, timeout=180, tries=3):
     for i in range(tries):
         try:
             with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=timeout) as r:
-                return json.loads(r.read().decode("utf-8", "replace"))
+                d = json.loads(r.read().decode("utf-8", "replace"))
+                # ★ 2026-10-24 实测：有的服务用 HTTP 200 包着 {"error":{...}} 报错
+                #   （san_juan MapServer 就是这样，于是「成功」却只有 2000 行，err 一直是空）。
+                if isinstance(d, dict) and d.get("error"):
+                    return {"__error__": "svcerr:%s" % json.dumps(d["error"], ensure_ascii=False)[:300]}
+                return d
         except urllib.error.HTTPError as e:
             try:
                 body = e.read().decode("utf-8", "replace")

@@ -10,11 +10,13 @@
  },
  "last_run": {
   "step": "02",
-  "run_id": 40024675586,
-  "at": "2026-10-23T21:09:28Z",
-  "script": "collect-pilot.yml"
+  "run_id": null,
+  "at": "2026-10-23T23:20:53Z",
+  "trigger": "brain",
+  "layers": "san_juan",
+  "workers": 4
  },
- "awaiting_brain": true,
+ "awaiting_brain": false,
  "brain_review": {
   "at": null,
   "step": null,
@@ -32,12 +34,12 @@
    }
   },
   "02": {
-   "status": "in_review",
-   "at": "2026-10-23T21:09:28Z"
+   "status": "started",
+   "at": "2026-10-23T23:20:53Z"
   }
  },
  "blocked_count": 0,
- "status": "paused",
+ "status": "running",
  "paused_reason": "框架升级 v2（2026-10-24）：工头改造期间不巡逻、不点火",
  "paused_at": "2026-10-23T23:14:35Z",
  "last_error": null
