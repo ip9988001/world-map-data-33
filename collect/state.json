@@ -1,22 +1,17 @@
 {
  "project": "world-map-data-33 collect",
- "current_step": "01",
- "status": "blocked",
+ "current_step": "02",
+ "status": "running",
  "last_run_id": "39903144412",
  "steps": {
   "01": {
-   "status": "blocked",
-   "at": "2026-10-23T05:13:21Z",
-   "wf": "success",
-   "run_id": "39903144412",
+   "status": "done",
+   "at": "2026-10-23T05:23:39Z",
    "metrics": {
     "rows": 60695,
     "plan_empty": 0,
     "count_rate": 0.787
-   },
-   "notes": [
-    "判据未过：rows=60695/50000 plan空=0 有count率=0.787/0.95"
-   ]
+   }
   }
  },
  "budget": {
@@ -26,7 +21,7 @@
   "stop_ratio": 0.95
  },
  "last_triggered": {
-  "step": null,
+  "step": "02",
   "run_id": null
  },
  "mode": "self-drive",
