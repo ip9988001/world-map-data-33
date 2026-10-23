@@ -1,0 +1,38 @@
+name: collect-pilot
+# STEP 02 工人：只干活，不报警。验收由工头（collect-supervisor）判。
+on: { workflow_dispatch: }
+permissions: { contents: read }
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        layer: [ks911, az911, nysam, me_addr, de_suss, yngstown, boco_addr, san_juan]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: 采集 ${{ matrix.layer }}
+        run: python3 collect/pilot.py --layer ${{ matrix.layer }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: out-${{ matrix.layer }}
+          path: collect/out/${{ matrix.layer }}
+          retention-days: 7
+  report:
+    needs: collect
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - uses: actions/download-artifact@v4
+        with: { path: collect/out, pattern: "out-*", merge-multiple: true }
+      - name: 汇总
+        run: python3 collect/make_pilot_report.py
+      - uses: actions/upload-artifact@v4
+        with: { name: pilot-report, path: collect/pilot_report.json, retention-days: 30 }
