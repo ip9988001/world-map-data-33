@@ -245,6 +245,106 @@
      "--review pass --note \"收工\""
     ]
    }
+  },
+  "07": {
+   "kind": "collect",
+   "title": "碎片补齐",
+   "desc": "补上 05 因行数门槛排掉的小层（<5000 行）与软词地址层 —— 完整性，不是扩口径",
+   "select": {
+    "mode": "bulk",
+    "batch": 120,
+    "order": "rows_asc",
+    "rows_min": 1,
+    "rows_max": 4999,
+    "skip_blocked": true,
+    "state_exclude": [
+     "未定位",
+     ""
+    ],
+    "title_include": "address|addr\\b|situs|e-?911|ng911|mailing|delivery point|location point"
+   },
+   "workers": 4,
+   "unit_rows": 100000,
+   "tag": "collect-step07-{layer}",
+   "evidence": [
+    "report",
+    "releases",
+    "checkpoint"
+   ],
+   "accept": {
+    "failed_rate_max": 0.2,
+    "layers_min": 250,
+    "layers_max": 1500
+   },
+   "supervise": {
+    "stall_min": 300,
+    "doc": "collect/steps/STEP-07.md",
+    "wf": "worker-07.yml",
+    "wake_reason": "碎片补齐：工人已停手，等大脑判验收",
+    "cmds": [
+     "--review pass --next 08",
+     "--kick 07 --workers 4 --offset 0 --size 120"
+    ]
+   }
+  },
+  "08": {
+   "kind": "analyze",
+   "title": "去重与真实地址数",
+   "desc": "全量流式读 Release 里的 parts，按 addr_key 精确去重，算独立地址数与重复来源",
+   "source": "releases",
+   "tag_prefixes": [
+    "collect-step03-",
+    "collect-step04-",
+    "collect-step05-",
+    "collect-step07-"
+   ],
+   "evidence": [
+    "FINAL_REPORT.md"
+   ],
+   "accept": {
+    "states_min": 40,
+    "unique_rows_min": 30000000,
+    "dup_rate_max": 0.9
+   },
+   "supervise": {
+    "stall_min": 120,
+    "doc": "collect/steps/STEP-08.md",
+    "wf": "worker-08.yml",
+    "wake_reason": "去重报告：工人已停手，等大脑判验收",
+    "cmds": [
+     "--review pass --next 07",
+     "--kick 08"
+    ]
+   }
+  },
+  "09": {
+   "kind": "delta",
+   "title": "增量同步",
+   "desc": "探测编辑时间字段，只对探到的层拉变更；独立 delta tag，绝不覆盖全量",
+   "select": {
+    "source": "collected",
+    "batch": 20
+   },
+   "since_days": 90,
+   "tag": "collect-delta-{layer}-{date}",
+   "evidence": [
+    "report",
+    "releases"
+   ],
+   "accept": {
+    "field_rate_min": 0.1,
+    "failed_rate_max": 0.2
+   },
+   "supervise": {
+    "stall_min": 180,
+    "doc": "collect/steps/STEP-09.md",
+    "wf": "worker-09.yml",
+    "wake_reason": "增量同步：工人已停手，等大脑判验收",
+    "cmds": [
+     "--review pass --note \"项目收尾\"",
+     "--kick 09"
+    ]
+   }
   }
  }
 }

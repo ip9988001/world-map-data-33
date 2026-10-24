@@ -1,0 +1,74 @@
+{
+ "layers": 6,
+ "total_layer_unique": 121547,
+ "total_unique": 121547,
+ "states": 6,
+ "detail": {
+  "KY": {
+   "layers": 1,
+   "layer_unique_sum": 77940,
+   "unique": 77940,
+   "per_layer": [
+    {
+     "layer": "zxvnVEjzQ6xuSXS_arcgis_rest_services_Address_FeatureServer_0",
+     "unique": 77940
+    }
+   ]
+  },
+  "MO": {
+   "layers": 1,
+   "layer_unique_sum": 28047,
+   "unique": 28047,
+   "per_layer": [
+    {
+     "layer": "zUpjDtspiBG0j_arcgis_rest_services_E911_Copy_FeatureServer_0",
+     "unique": 28047
+    }
+   ]
+  },
+  "SC": {
+   "layers": 1,
+   "layer_unique_sum": 0,
+   "unique": 0,
+   "per_layer": [
+    {
+     "layer": "zOpn2_arcgis_rest_services_Streets_Buidlings_FeatureServer_0",
+     "unique": 0
+    }
+   ]
+  },
+  "VA": {
+   "layers": 1,
+   "layer_unique_sum": 126,
+   "unique": 126,
+   "per_layer": [
+    {
+     "layer": "yvfv_arcgis_rest_services_Mercer_SiteAddress_FeatureServer_0",
+     "unique": 126
+    }
+   ]
+  },
+  "OH": {
+   "layers": 1,
+   "layer_unique_sum": 15434,
+   "unique": 15434,
+   "per_layer": [
+    {
+     "layer": "ysZUz_arcgis_rest_services_Carroll_Addresses_FeatureServer_0",
+     "unique": 15434
+    }
+   ]
+  },
+  "TX": {
+   "layers": 1,
+   "layer_unique_sum": 0,
+   "unique": 0,
+   "per_layer": [
+    {
+     "layer": "yjVw1fpWcwy7h_arcgis_rest_services_ADDRESSES_FeatureServer_0",
+     "unique": 0
+    }
+   ]
+  }
+ }
+}

@@ -599,8 +599,12 @@ def entry_check():
     add(14, "账本有 v2 字段", {"awaiting_brain", "brain_review", "last_run", "budget"} <= set(st),
         "awaiting_brain/brain_review/last_run/budget")
     add(15, "blocked.json 存在", os.path.exists(BLOCKED_F), "collect/blocked.json")
-    add(16, "说明书齐全", len([f for f in os.listdir(os.path.join(ROOT, "collect", "steps"))
-                               if f.startswith("STEP-")]) >= 7, "collect/steps/STEP-0x.md")
+    d = cfg()
+    S = d.get("steps") or {}
+    want_docs = {"STEP-%s.md" % k for k in S}
+    have_docs = set(os.listdir(os.path.join(ROOT, "collect", "steps")))
+    add(16, "说明书齐全", want_docs <= have_docs,
+        f"{len(want_docs)} 步说明书齐（steps.json 有几步就要几份）")
     add(17, "自检可验证", "--dry-run" in src and "--entry-check" in src, "dry-run / entry-check")
     add(18, "双闹钟都在", os.path.exists(os.path.join(ROOT, "ops", "patrol_kick.sh")) and
         os.path.exists(os.path.join(ROOT, ".github", "workflows", "collect-supervisor.yml")),
@@ -609,15 +613,18 @@ def entry_check():
     # ---- 19~24：v2.1 本轮新增（steps.json 单源 / 清单驱动取证 / 简报四件套 / fail 闭环）----
     d = cfg()
     S = d.get("steps") or {}
-    add(19, "steps.json 是唯一参数源", d.get("schema") == "v2.1" and sorted(S) == ["0%d" % i for i in range(7)],
-        f"schema={d.get('schema')} steps={len(S)} 份")
+    nums = sorted(int(k) for k in S if str(k).isdigit())
+    contiguous = nums == list(range(0, len(nums))) and len(nums) == len(S)
+    add(19, "steps.json 是唯一参数源", d.get("schema") == "v2.1" and contiguous and len(S) >= 7,
+        f"schema={d.get('schema')} steps={len(S)} 连续={contiguous}")
 
     profs = []
     for k in S:
         fp = os.path.join(ROOT, "collect", "supervisors", "step_%s.py" % k)
         profs.append(open(fp, encoding="utf-8").read() if os.path.exists(fp) else "")
-    add(20, "7 份工头只报步号", len(profs) == 7 and all("core.profile_of(" in t for t in profs)
-        and not any("PROFILE = {" in t for t in profs), "supervisors/step_0X.py ← steps.json")
+    add(20, "每步一份工头且只报步号", len(profs) == len(S) and len(S) >= 7
+        and all("core.profile_of(" in t for t in profs) and not any("PROFILE = {" in t for t in profs),
+        f"{len(profs)}/{len(S)} 份工头 ← steps.json")
 
     miss = {k: [e for e in (s.get("evidence") or []) if e not in COLLECTORS] for k, s in S.items()}
     miss = {k: v for k, v in miss.items() if v}

@@ -1,0 +1,72 @@
+{
+ "since": "2026-07-26",
+ "probed": 12,
+ "with_field": 4,
+ "changed_rows": 0,
+ "detail": [
+  {
+   "id": "az911",
+   "field": null,
+   "err": "no_url"
+  },
+  {
+   "id": "boco_addr",
+   "field": null,
+   "err": "no_url"
+  },
+  {
+   "id": "de_suss",
+   "field": null,
+   "err": "no_url"
+  },
+  {
+   "id": "ks911",
+   "field": null,
+   "err": "no_url"
+  },
+  {
+   "id": "me_addr",
+   "field": null,
+   "err": "no_url"
+  },
+  {
+   "id": "nysam",
+   "field": null,
+   "err": "no_url"
+  },
+  {
+   "id": "san_juan",
+   "field": null,
+   "err": "no_url"
+  },
+  {
+   "id": "yngstown",
+   "field": null,
+   "err": "no_url"
+  },
+  {
+   "id": "2km_arcgis_rest_services_CloudCoKSwebGIS_gdb_FeatureServer_3",
+   "field": "l_update",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "3k5_arcgis_rest_services_Address_Points_View_FeatureServer_0",
+   "field": "l_update",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "4yYSBGZ9_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "field": "l_update",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "F_arcgis_rest_services_AddressPoints01312025_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  }
+ ]
+}

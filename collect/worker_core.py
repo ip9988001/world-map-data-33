@@ -395,6 +395,16 @@ def run(step, argv=None):
         rc = subprocess.call([sys.executable, os.path.join(HERE, "final_report.py")])
         return rc
 
+    if kind == "analyze":
+        # STEP 08：只读自家 Release，不动数据。dedup.py 自己做全部事。
+        rc = subprocess.call([sys.executable, os.path.join(HERE, "dedup.py")] + argv)
+        return rc
+
+    if kind == "delta":
+        # STEP 09：探测编辑时间字段 + 统计变更量（不落地数据，先验证机制）
+        rc = subprocess.call([sys.executable, os.path.join(HERE, "delta.py")] + argv)
+        return rc
+
     # ---- 默认：collect ----
     pol = _eff(step, a)
     layers = select_layers(step, limit=a.max_layers, policy=pol)
