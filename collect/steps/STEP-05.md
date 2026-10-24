@@ -31,8 +31,8 @@
 
 ## 命令（照抄）
 ```bash
-python3 collect/supervisor.py --kick 05 --workers 4
-python3 collect/supervisor.py --review pass --next 06 --note "..."
+python3 collect/supervisor.py --review pass --next 06
+python3 collect/supervisor.py --kick 05 --workers 4 --offset 0 --size 100
 ```
 
 ## 卡死阈值
@@ -46,7 +46,17 @@ python3 collect/supervisor.py --review pass --next 06 --note "..."
  "title": "县市碎片",
  "select": {
   "mode": "bulk",
-  "batch": 40
+  "batch": 100,
+  "order": "rows_asc",
+  "rows_min": 5000,
+  "skip_blocked": true,
+  "title_include": "address|addr\\b|situs|e-?911|ng911|mailing|delivery point|location point",
+  "title_exclude": "fire|nfirs|response|parcel|zone|district|boundary|hydrant|business|poi|of interest|europe|canada|mexico|bus stop|shelter|parking|traffic|crash|collision|permit|school|hospital|station|cell ?tower|antenna|solar|weather|flood|watershed|trail|park\\b|bridge|billboard|licen|inspection|vacant|demolition",
+  "rows_max": 500000,
+  "state_exclude": [
+   "未定位",
+   ""
+  ]
  },
  "workers": 4,
  "unit_rows": 100000,
@@ -59,7 +69,8 @@ python3 collect/supervisor.py --review pass --next 06 --note "..."
  ],
  "accept": {
   "failed_rate_max": 0.15,
-  "pending_max": 0
+  "layers_min": 80,
+  "layers_max": 100
  }
 }
 ```

@@ -18,6 +18,12 @@ on:
       unit_rows:
         description: "单元行数（断点续传粒度）"
         default: "100000"
+      offset:
+        description: "批量游标起点（第几层开始，跳过已采层后计数）"
+        default: "0"
+      size:
+        description: "本批层数（steps.json select.batch）"
+        default: "40"
 permissions: { contents: write, actions: write }
 concurrency:
   group: worker-05
@@ -31,5 +37,7 @@ jobs:
       max_layers: ${{ github.event.inputs.max_layers || '0' }}
       workers: ${{ github.event.inputs.workers || '4' }}
       unit_rows: ${{ github.event.inputs.unit_rows || '100000' }}
+      offset: ${{ github.event.inputs.offset || '0' }}
+      size: ${{ github.event.inputs.size || '40' }}
       report: "true"
       single: "false"

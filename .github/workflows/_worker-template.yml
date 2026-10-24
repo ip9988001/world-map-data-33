@@ -9,6 +9,8 @@ on:
       workers:     { type: string, default: "4" }
       unit_rows:   { type: string, default: "500000" }
       max_layers:  { type: string, default: "0" }
+      offset:      { type: string, default: "0" }
+      size:        { type: string, default: "40" }
       report:      { type: string, default: "false" }
       # single=true → 不是按层跑（bootstrap / preflight / report 这三类步）
       single:      { type: string, default: "false" }
@@ -53,7 +55,8 @@ jobs:
           set -e
           python3 collect/run_step_${{ inputs.step }}.py --validate
           python3 collect/run_step_${{ inputs.step }}.py --list-matrix \
-            --layers "${{ inputs.layers }}" --max-layers "${{ inputs.max_layers }}" > /tmp/m.json
+            --layers "${{ inputs.layers }}" --max-layers "${{ inputs.max_layers }}" \
+            --offset "${{ inputs.offset }}" --size "${{ inputs.size }}" > /tmp/m.json
           N=$(python3 -c "import json;print(len(json.load(open('/tmp/m.json'))['include']))")
           echo "matrix=$(cat /tmp/m.json)" >> "$GITHUB_OUTPUT"
           echo "count=$N" >> "$GITHUB_OUTPUT"

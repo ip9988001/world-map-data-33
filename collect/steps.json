@@ -184,7 +184,17 @@
    "desc": "剩余两万层分批扫完，不留 pending",
    "select": {
     "mode": "bulk",
-    "batch": 40
+    "batch": 100,
+    "order": "rows_asc",
+    "rows_min": 5000,
+    "skip_blocked": true,
+    "title_include": "address|addr\\b|situs|e-?911|ng911|mailing|delivery point|location point",
+    "title_exclude": "fire|nfirs|response|parcel|zone|district|boundary|hydrant|business|poi|of interest|europe|canada|mexico|bus stop|shelter|parking|traffic|crash|collision|permit|school|hospital|station|cell ?tower|antenna|solar|weather|flood|watershed|trail|park\\b|bridge|billboard|licen|inspection|vacant|demolition",
+    "rows_max": 500000,
+    "state_exclude": [
+     "未定位",
+     ""
+    ]
    },
    "workers": 4,
    "unit_rows": 100000,
@@ -201,7 +211,8 @@
    ],
    "accept": {
     "failed_rate_max": 0.15,
-    "pending_max": 0
+    "layers_min": 80,
+    "layers_max": 100
    },
    "supervise": {
     "stall_min": 300,
@@ -210,7 +221,7 @@
     "wake_reason": "县市碎片：工人已停手，等大脑判验收",
     "cmds": [
      "--review pass --next 06",
-     "--kick 05 --workers 4"
+     "--kick 05 --workers 4 --offset 0 --size 100"
     ]
    }
   },

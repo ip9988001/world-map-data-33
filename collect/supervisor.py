@@ -391,7 +391,7 @@ def wake(st, step, reason, dry=False, profile=None):
 
 
 # ---------------- 大脑的两个动作（只有大脑用） ----------------
-def kick(step, layers=None, workers=None, dry=False, max_layers=None):
+def kick(step, layers=None, workers=None, dry=False, max_layers=None, offset=None, size=None):
     wf = STEPS[step][2]
     if not wf:
         print("该步没有工人 workflow"); return 1
@@ -402,6 +402,10 @@ def kick(step, layers=None, workers=None, dry=False, max_layers=None):
         cmd += ["-f", f"workers={workers}"]
     if max_layers:
         cmd += ["-f", f"max_layers={max_layers}"]
+    if offset is not None:
+        cmd += ["-f", f"offset={offset}"]
+    if size is not None:
+        cmd += ["-f", f"size={size}"]
     if dry:
         print("DRY:", " ".join(cmd)); return 0
     rc, out, err = sh(cmd)
@@ -640,6 +644,8 @@ def main():
     ap.add_argument("--layers")
     ap.add_argument("--workers", type=int)
     ap.add_argument("--max-layers", type=int, help="灰度：只跑前 N 层（steps.json gate.gray_layers）")
+    ap.add_argument("--offset", type=int, help="批量游标起点（STEP-05 分批）")
+    ap.add_argument("--size", type=int, help="本批层数（STEP-05 分批）")
     ap.add_argument("--review", choices=["pass", "fail"])
     ap.add_argument("--note")
     ap.add_argument("--next", dest="nxt")
@@ -651,7 +657,7 @@ def main():
     if a.tick:
         return tick(a.dry_run)
     if a.kick:
-        return kick(a.kick, a.layers, a.workers, a.dry_run, a.max_layers)
+        return kick(a.kick, a.layers, a.workers, a.dry_run, a.max_layers, a.offset, a.size)
     if a.review:
         return review(a.review, a.note, a.nxt, a.dry_run)
     if a.pause:

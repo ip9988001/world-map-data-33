@@ -141,10 +141,6 @@ def select_layers(step, limit=0, policy=None):
             out = [r for r in out if r["state"] == sel["state"]]
         if sel.get("where"):
             out = [r for r in out if _cmp(r, sel["where"])]
-        if sel.get("mode") == "bulk":
-            off = int(sel.get("offset") or 0)
-            size = int(sel.get("batch") or pol.get("batch") or 40)
-            out = out[off:off + size]
         if sel.get("layers"):
             want = set(sel["layers"])
             out = [r for r in out if r["id"] in want]
@@ -179,6 +175,14 @@ def select_layers(step, limit=0, policy=None):
         if allow:
             allow = {str(x).lower() for x in allow}
             out = [r for r in out if (r.get("geom") or "").lower() in allow]
+        # ★ 排序与分批窗口必须放在所有过滤之后：
+        #   上一版先切 [off:off+size] 再过滤，40 层切出来只剩 1 层（过滤把窗口里的都杀了）。
+        if sel.get("order") in ("rows_desc", "rows_asc"):
+            out = sorted(out, key=lambda r: (r.get("expect") or 0), reverse=(sel["order"] == "rows_desc"))
+        if sel.get("mode") == "bulk":
+            off = int(sel.get("offset") or 0)
+            size = int(sel.get("batch") or pol.get("batch") or 40)
+            out = out[off:off + size]
     # 缺 url 的一律剔除（不能带病执行）
     out = [r for r in out if r.get("url")]
     if not limit:
