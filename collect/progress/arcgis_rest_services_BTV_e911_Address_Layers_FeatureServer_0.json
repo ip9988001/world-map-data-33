@@ -1,0 +1,17 @@
+{
+ "id": "arcgis_rest_services_BTV_e911_Address_Layers_FeatureServer_0",
+ "ts": "2026-10-24T03:36:46Z",
+ "api": "https://services1.arcgis.com/1bO0c7PxQdsGidPK/arcgis/rest/services/BTV_e911_Address_Layers/FeatureServer/0",
+ "count": 11462,
+ "base_rows": 0,
+ "rows": 9500,
+ "parts": 0,
+ "workers": {
+  "0": 9500
+ },
+ "strategy": "keyset",
+ "units": 1,
+ "done_units": 0,
+ "unit_rows_target": 100000,
+ "done": false
+}
