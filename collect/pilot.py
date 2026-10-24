@@ -14,7 +14,7 @@
   python3 collect/pilot.py --list
 """
 from __future__ import annotations
-import argparse, gzip, hashlib, json, math, os, re, subprocess, sys, threading, time
+import argparse, gzip, hashlib, json, math, os, random, re, subprocess, sys, threading, time
 import urllib.error, urllib.parse, urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -276,9 +276,12 @@ def _push_progress(prog, log):
     return False
 
 
-def _heartbeat(prog, lock, stop, log, interval=20, push_every=180):
+def _heartbeat(prog, lock, stop, log, interval=20, push_every=None):
+    # ★ 2026-10-24：100 个并行 job 每 3 分钟各推一次 main，报告 job 连推 5 次全被拒。
+    #   现在默认 6 分钟 + 0~120 秒随机抖动，把推送打散。
+    push_every = push_every or int(os.environ.get("PILOT_HEARTBEAT_EVERY", "360"))
     do_push = os.environ.get("GITHUB_ACTIONS") == "true" and os.environ.get("PILOT_HEARTBEAT_PUSH", "1") != "0"
-    last_push = time.time()
+    last_push = time.time() - random.uniform(0, 120)
     while not stop.is_set():
         try:
             with lock:

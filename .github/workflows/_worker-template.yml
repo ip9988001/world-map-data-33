@@ -133,10 +133,11 @@ jobs:
           git add -f collect/pilot_report.json
           git diff --cached --quiet || git commit -m "collect: step${{ inputs.step }} 报告"
           ok=0
-          for i in 1 2 3 4 5; do
+          # ★ 并行 job 心跳也在推 main，报告必须更能抢：pull --rebase + 10 次 + 抖动
+          for i in $(seq 1 10); do
             git fetch -q origin main || true
-            git rebase -q origin/main 2>/dev/null || git rebase --abort 2>/dev/null || true
+            git -c rebase.autostash=true pull -q --rebase origin main >/dev/null 2>&1 || git rebase --abort >/dev/null 2>&1 || true
             if git push -q origin HEAD:main 2>/dev/null; then ok=1; echo "✅ 报告已推送（第 $i 次）"; break; fi
-            echo "⚠️ push 第 $i 次被拒，重试…"; sleep $((i*4))
+            echo "⚠️ push 第 $i 次被拒，重试…"; sleep $((i*5 + RANDOM % 7))
           done
           if [ "$ok" = "0" ]; then echo "❌ 报告推送失败，需人工介入"; exit 1; fi
