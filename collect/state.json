@@ -1,9 +1,9 @@
 {
  "project": "world-map-data-33 collect",
- "current_step": "08",
+ "current_step": "09",
  "mode": "self-drive-v2",
  "budget": {
-  "minutes_used": 285,
+  "minutes_used": 836,
   "minutes_cap": 1800,
   "warn_ratio": 0.8,
   "stop_ratio": 0.95
@@ -16,12 +16,12 @@
   "layers": "all",
   "workers": 4
  },
- "awaiting_brain": true,
+ "awaiting_brain": false,
  "brain_review": {
-  "at": "2026-10-24T16:20:16Z",
-  "step": "07",
+  "at": "2026-10-24T18:59:56Z",
+  "step": "08",
   "verdict": "pass",
-  "note": "STEP-07 碎片补齐：池 437 层，437 层全部入报告（100%），实收 613,888 行，failed_rate 0.0023 ≤0.2；唯一失败 1 层 MapServer 上游返回 0 行（count=3821 但查询空）。报告总数 1117 层 / 84,201,583 行。"
+  "note": "STEP-08 去重：1,151 层 / 扫描 79,958,767 行（无键 0.3%）/ 层内合计 67,420,578 → 跨层独立 47,182,251（重复率 30.0%）/ 47 州。判据 states 47≥40、unique 4,718 万≥3,000 万、dup_rate 0.300≤0.9 全过。修掉三个真因：只翻 8 页 release（800 封顶）、只下 tar.gz 漏 ndjson.gz、addr_key 缺失行无兜底键。"
  },
  "steps": {
   "01": {
@@ -62,7 +62,10 @@
    "status": "done"
   },
   "08": {
-   "status": "in_review"
+   "status": "done"
+  },
+  "09": {
+   "status": "ready"
   }
  },
  "blocked_count": 0,
@@ -71,10 +74,10 @@
  "paused_at": "2026-10-23T23:14:35Z",
  "last_error": null,
  "wake": {
-  "signature": "1647a34dc8ed9507",
-  "at": "2026-10-24T18:46:29Z",
-  "reason": "去重报告：工人已停手，等大脑判验收",
+  "signature": "8f7e33fb9c399c45",
+  "at": "2026-10-24T09:01:22Z",
+  "reason": "县市碎片：工人已停手，等大脑判验收",
   "issue": null,
-  "count": 9
+  "count": 8
  }
 }

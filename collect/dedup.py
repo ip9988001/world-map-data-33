@@ -83,7 +83,7 @@ def state_of(layer, plan):
 def list_releases(prefixes):
     rels = []
     page = 1
-    while page <= 8:
+    while page <= 40:          # 原来只翻 8 页 = 800 个 release，1117 层时后面全被截断
         rc, out, err = gh(["api", "repos/%s/releases?per_page=100&page=%d" % (REPO, page)])
         if rc != 0:
             print("⚠️ 列 release 失败：%s" % err[:120])
