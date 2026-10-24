@@ -583,6 +583,14 @@ def entry_check():
     add(24, "fail 有闭环", '"closed"' in src and "awaiting_go" in src and 'pop("closed"' in src,
         "fail→awaiting_go + 关单；--kick 解封")
 
+    rc, out, _ = sh([sys.executable, os.path.join(ROOT, "collect", "check_docs.py"), "--json"])
+    try:
+        docs = json.loads(out or "{}")
+    except Exception:
+        docs = {}
+    add(25, "判据卡与 steps.json 一致", rc == 0 and docs.get("ready") is True,
+        f"check_docs.py → {docs.get('docs')} 份判据卡 / {len(docs.get('problems') or [])} 条问题")
+
     good = sum(1 for c in C if c["ok"])
     for c in C:
         print(("✅" if c["ok"] else "❌") + f" {c['n']:>2}. {c['name']} — {c['ev']}")

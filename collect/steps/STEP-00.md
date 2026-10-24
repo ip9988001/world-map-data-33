@@ -1,22 +1,52 @@
 # STEP 00 — 地基
 
-**目标**：把「图纸 + 账本 + 报工员 + 兜底看守」四件东西立起来，保证后面每一步都有人叫醒执行者。
+> **判据卡 v2.1**　工头：`collect/supervisors/step_00.py`　工人：`.github/workflows/worker-00.yml`
+> 参数唯一来源是 `collect/steps.json`。**本文件底部的机器块是它的镜像，不许手改数字**——
+> 改参数只改 steps.json，然后跑 `python3 collect/check_docs.py` 校验一致。
 
-**方法**
-1. `ROADMAP.md` 定总图与验收判据
-2. `state.json` 建账本
-3. `scripts/herald.py` 造报工员（读账本 → 判验收 → 开 Issue，自带地图）
-4. `.github/workflows/herald-watchdog.yml` 造兜底看守（每 30 分钟查：有没有 workflow 卡死 / 账本和现实对不上）
+## 目标
+把「引擎 + 工头 + 账本 + 自检 + 单测」立起来：后面六步全跑在这套骨架上，骨架不自洽就不许往下走。
 
-**产出**：4 个文件 + 1 个 workflow
+## 输入
+无（这一步不碰网络、不碰数据源）
 
-**验收判据（机器判）**
-- `state.json` 能被 herald 读出 step 00 且状态可写
-- herald 自检模式（`--selftest`）能成功创建一个 Issue 并读到它
-- watchdog 在 Actions 上跑一次 exit 0
+## 产出 / 证据（工头只递这些事实）
+`collect/supervisor.py`（工头，24 条结构自检）、`collect/worker_core.py`（引擎）、`collect/state.json`（账本）、`collect/tests/`（26 条单测）
 
-**失败怎么办**：token 权限不够就改 `permissions:`；Issue 建不出来就换 `gh api` 直连；都没有就写文件到仓库代替 Issue。
+证据清单：`selftest`、`unit_tests`、`state`
 
-**本步一停必须叫醒我。**
+## 怎么做
+- 本步无采集动作。`--entry-check` 逐条核对 v2.1 红线（工头不判验收 / 不自动推进 / 不写熔断 / 简报四件套 / fail 闭环 / steps.json 单源）
+- `python3 -m pytest collect/tests -q` 覆盖选层、单元切分、schema 映射、checkpoint 合并
+- 账本必须可读写；`awaiting_brain` / `brain_review` / `last_run` / `budget` 四个 v2 字段必须在
 
-**下一步**：`STEP-01.md`（预检）
+## 验收判据（机器判；**判定权在大脑，工头只递事实不判**）
+| 指标 | 阈值 | 说明 |
+|---|---|---|
+
+## 失败怎么办
+自检红哪条就修哪条；单测红了先看 worker_core 的契约有没有被改坏，不许改测试迁就代码。
+
+## 命令（照抄）
+```bash
+python3 collect/supervisor.py --kick 00
+python3 collect/supervisor.py --review pass --next 01 --note "..."
+python3 collect/supervisor.py --entry-check
+```
+
+## 卡死阈值
+`stall_min = 120` 分钟：超过只报告（写进叫醒简报），**不判死、不重跑**。
+
+<!-- steps.json 镜像（只读；校验器 check_docs.py 逐字段比对） -->
+```json
+{
+ "step": "00",
+ "kind": "bootstrap",
+ "title": "地基",
+ "evidence": [
+  "selftest",
+  "unit_tests",
+  "state"
+ ]
+}
+```

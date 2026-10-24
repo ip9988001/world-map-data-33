@@ -1,36 +1,65 @@
-# STEP 02 — 试点 8 层（试搬一户）
+# STEP 02 — 试点 8 层
 
-**目标**：用 8 个柜子把运货链路全部打通，验证「搬得动、运得走、数得清」。
+> **判据卡 v2.1**　工头：`collect/supervisors/step_02.py`　工人：`.github/workflows/worker-02.yml`
+> 参数唯一来源是 `collect/steps.json`。**本文件底部的机器块是它的镜像，不许手改数字**——
+> 改参数只改 steps.json，然后跑 `python3 collect/check_docs.py` 校验一致。
 
-**选样（覆盖三种形态 × 三档规模）**
-| 层 | 形态 | 规模 |
+## 目标
+8 个典型层各采一遍，验证三条通道（keyset / resultOffset 兜底 / ids）与断点续传在真实数据上成立。
+
+## 输入
+`collect/pilot_layers.json`（8 层：三种形态 × 三档规模）
+
+## 产出 / 证据（工头只递这些事实）
+每层 `part-*.ndjson.gz` + `<layer>-checkpoint.json`，全部落 Release `collect-step02-<layer>`；`collect/pilot_report.json`
+
+证据清单：`report`、`releases`、`checkpoint`、`short_units`
+
+## 怎么做
+- 单元粒度 `unit_rows`，单元完成即 `gh release upload`（本机不留盘）
+- 检查点随 tag 固定（不带 run_number），换 run 也能接上
+- `returnIdsOnly` + `objectIds` 兜底：服务用 HTTP 200 包 `{"error":...}` 时必须识别，不许静默退化成 2000 行
+
+## 验收判据（机器判；**判定权在大脑，工头只递事实不判**）
+| 指标 | 阈值 | 说明 |
 |---|---|---|
-| Kansas NG911 Address Points | FeatureServer | 104 万 |
-| AZ911 AddressPoints | FeatureServer | 374 万 |
-| DE SUSS Address Points | FeatureServer | 18 万 |
-| ME Addresses | FeatureServer | 79 万 |
-| 一个县层（< 5 万） | FeatureServer | 小 |
-| 一个 Socrata 层 | Socrata | 中 |
-| 一个 CKAN 包 | 文件下载 | 中 |
-| 一个 MapServer 层 | MapServer | 小 |
+| `with_rows_min` | ≥ 8 | 产出行数 > 0 的层数下限 |
+| `diff_max` | ≤ 0.01 | 「实收 / 声明 count」误差上限 |
 
-**方法**
-- FeatureServer：keyset 游标 `where=OBJECTID>{last} orderBy OBJECTID resultRecordCount={pagesize}`
-- 判断有没有下一页看 `exceededTransferLimit`，不靠数到 count
-- `f=geojson` 优先；不支持就 esriJSON + `outSR=4326` 自己转
-- 每采 20~50 层打一个包传 Release，本机不留盘
-- 每行算 `addr_key = hash(add_num|st_name|zip 归一化)`
+## 失败怎么办
+某层换抓法重试；同一单元连续两次 short 且行数一致 → 记 ack（上游真缺）不再无限重试；仍失败记 `blocked.json`，用替补层补位。
 
-**产出**：8 层 ndjson.gz + `_manifest.json`（count/实收/耗时/错误）+ Release 资产
+## 命令（照抄）
+```bash
+python3 collect/supervisor.py --kick 02 --workers 4
+python3 collect/supervisor.py --review pass --next 03 --note "..."
+python3 collect/supervisor.py --review pass --next 03
+```
 
-**验收判据（机器判）**
-- 8 层里至少 7 层产出行数 > 0
-- 每层「实收行数 / 声明的 count」误差 < 1%，否则标 `partial`
-- `addr_key` 空值率 < 2%
-- Release 里能看到资产，且本地无残留文件
+## 卡死阈值
+`stall_min = 240` 分钟：超过只报告（写进叫醒简报），**不判死、不重跑**。
 
-**失败怎么办**：某层失败就换该层的抓法重试；仍失败记录下来，用替补层补上，不因为一层卡住整体。
-
-**本步一停必须叫醒我。**
-
-**下一步**：`STEP-03.md`（单州试跑）
+<!-- steps.json 镜像（只读；校验器 check_docs.py 逐字段比对） -->
+```json
+{
+ "step": "02",
+ "kind": "collect",
+ "title": "试点 8 层",
+ "select": {
+  "source": "pilot_layers"
+ },
+ "workers": 4,
+ "unit_rows": 500000,
+ "tag": "collect-step02-{layer}",
+ "evidence": [
+  "report",
+  "releases",
+  "checkpoint",
+  "short_units"
+ ],
+ "accept": {
+  "with_rows_min": 8,
+  "diff_max": 0.01
+ }
+}
+```

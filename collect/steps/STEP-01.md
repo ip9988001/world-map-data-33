@@ -1,28 +1,62 @@
-# STEP 01 — 预检（探路队）
+# STEP 01 — 预检
 
-**目标**：给 6 万个图层做一次体检，把「空壳子」和「假门」挑出来，同时量出每个层该怎么搬。
+> **判据卡 v2.1**　工头：`collect/supervisors/step_01.py`　工人：`.github/workflows/worker-01.yml`
+> 参数唯一来源是 `collect/steps.json`。**本文件底部的机器块是它的镜像，不许手改数字**——
+> 改参数只改 steps.json，然后跑 `python3 collect/check_docs.py` 校验一致。
 
-**方法**
-1. 读 `survey/ng911/layers.json` + `clean.csv.gz`
-2. 每层发一次 `returnCountOnly` 拿真实行数
-3. 每层读元数据抓四个关键参数：
-   - `supportsPagination`（能不能翻页，不能就得换招）
-   - `definitionExpression`（有没有自带过滤条件，有就必须原样带上）
-   - `maxRecordCount`（一次最多给多少行）
-   - 字段数（字段太多要减小页大小）
-4. 按行数分档算页大小：目标每次响应 ≤ 2MB
-5. 产出 `collect/layer_plan.csv`
+## 目标
+给全量图层体检一遍，产出一张「每层该怎么搬」的施工图 `layer_plan.csv`，后续所有步骤都从它选层。
 
-**产出**：`layer_plan.csv`，每行一个层：`layer_id,state,url,row_count,pagination,defexpr,pagesize,plan(keyset/offset/package/skip),svc`
+## 输入
+`survey/ng911/`（普查结果）+ 数据源 API（只调 `count`，不取数据）
 
-**验收判据（机器判）**
-- `layer_plan.csv` 行数 ≥ 50,000
-- `plan` 列无空值
-- `skip`（空层）比例有记录
-- 至少 78% 的层拿到了真实 `row_count`（实测上限：11,342 层 403/超时/需 token，不可能 100%）
+## 产出 / 证据（工头只递这些事实）
+`collect/layer_plan.csv`（每层：state / layer_id / svc / url / row_count / geom / 采法参数 / skip 原因）
 
-**失败怎么办**：403 就换 UA/加 referer；超时就重试 3 次退避；仍失败标 `unknown` 继续跑，不卡住。
+证据清单：`layer_plan.csv`、`count_rate`
 
-**本步一停必须叫醒我。**
+## 怎么做
+- 按 `shards` 切成 12 份，并行 count；同一域名限速 2 并发
+- 空层标 `empty`、几何不支持标 `skip`、count 被拒标 `count_na`（不许猜数字）
+- 几何白名单 `point / multipoint / socrata / na`；Polygon/Polyline 直接 skip（带不进地址字段）
 
-**下一步**：`STEP-02.md`（试点 8 层）
+## 验收判据（机器判；**判定权在大脑，工头只递事实不判**）
+| 指标 | 阈值 | 说明 |
+|---|---|---|
+| `plan_rows_min` | ≥ 50000 | layer_plan.csv 行数下限 |
+| `plan_empty_max` | ≤ 0 | plan 里空值单元格上限 |
+| `count_rate_min` | ≥ 0.78 | count 成功率下限 |
+
+## 失败怎么办
+429 降并发；count 失败重试 2 次后记 `count_na` 继续，不许卡在全量预检上；count 率低于判据就换第 3 条通道（ids 抽样）补。
+
+## 命令（照抄）
+```bash
+python3 collect/supervisor.py --kick 01
+python3 collect/supervisor.py --review pass --next 02 --note "..."
+python3 collect/supervisor.py --review pass --next 02
+```
+
+## 卡死阈值
+`stall_min = 180` 分钟：超过只报告（写进叫醒简报），**不判死、不重跑**。
+
+<!-- steps.json 镜像（只读；校验器 check_docs.py 逐字段比对） -->
+```json
+{
+ "step": "01",
+ "kind": "preflight",
+ "title": "预检",
+ "select": {
+  "source": "survey"
+ },
+ "evidence": [
+  "layer_plan.csv",
+  "count_rate"
+ ],
+ "accept": {
+  "plan_rows_min": 50000,
+  "plan_empty_max": 0,
+  "count_rate_min": 0.78
+ }
+}
+```
