@@ -140,7 +140,14 @@
    "title": "全州放量",
    "desc": "覆盖整州的大层全部搬回，一次拿到大部分人口",
    "select": {
-    "where": "row_count>300000"
+    "where": "row_count>300000",
+    "state_exclude": [
+     "未定位",
+     ""
+    ],
+    "title_include": "address|addr\\b|situs|e-?911|ng911|mailing|delivery point|location point",
+    "title_exclude": "fire|nfirs|response|parcel|zone|district|boundary|hydrant|business|poi|of interest|europe|canada|mexico|bus stop|shelter|parking|traffic|crash|collision|permit|school|hospital|station|cell ?tower|antenna|solar|weather|flood|watershed|trail|park\\b|bridge|billboard|licen|inspection|vacant|demolition",
+    "rows_max": 5000000
    },
    "workers": 4,
    "unit_rows": 1000000,
@@ -152,7 +159,10 @@
     "unit_errors"
    ],
    "accept": {
-    "total_rows_min": 30000000
+    "total_rows_min": 30000000,
+    "layers_min": 40,
+    "layers_max": 60,
+    "per_layer_rows_max": 5000000
    },
    "supervise": {
     "stall_min": 300,
@@ -161,9 +171,11 @@
     "wake_reason": "全州放量：工人已停手，等大脑判验收",
     "cmds": [
      "--review pass --next 05",
+     "--kick 04 --workers 4 --max-layers 10",
      "--kick 04 --workers 4"
     ]
-   }
+   },
+   "batch": 60
   },
   "05": {
    "kind": "collect",

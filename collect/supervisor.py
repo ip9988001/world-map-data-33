@@ -25,7 +25,7 @@
   python3 collect/supervisor.py --pause "原因" / --resume             # 【大脑】暂停/放开
 """
 from __future__ import annotations
-import argparse, hashlib, json, os, subprocess, sys
+import argparse, hashlib, json, os, re, subprocess, sys
 from datetime import datetime, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -35,7 +35,8 @@ REPORT_F = os.path.join(ROOT, "collect", "pilot_report.json")
 BLOCKED_F = os.path.join(ROOT, "collect", "blocked.json")
 REPO = os.environ.get("GITHUB_REPOSITORY") or "ip9988001/world-map-data-33"
 LABEL = "sentinel-alarm"
-STALL_MIN = 240          # 超过这么久没结束 = 异常，但只报告不判死
+STALL_MIN = 240
+JOB_RUNS_MAX = 15        # 预算严格算法只看最近 15 个 run（每 run 1~3 次 API）          # 超过这么久没结束 = 异常，但只报告不判死
 
 # ★ 唯一参数源：collect/steps.json。工头不再自带一份参数副本。
 STEPS_JSON = os.path.join(ROOT, "collect", "steps.json")
@@ -116,18 +117,29 @@ def mins(iso):
 
 
 def used_minutes():
-    """按 Actions 实际 run 时长累计（近 100 个 run），让额度闸门真生效。"""
-    runs = api_json("repos/%s/actions/runs?per_page=100" % REPO).get("workflow_runs") or []
+    """按真实计费口径累加：每个 job 的时长（不是 run 的墙钟）。
+
+    ★ 2026-10-24 事故：老实现累加 run 的 created→updated。111 个并行 job 的 run 墙钟只有 ~20 分钟，
+      而 job 分钟和是 52 分钟 —— 并行度越高，账面越乐观，1800 的闸门等于没有。
+    """
+    runs = api_json("repos/%s/actions/runs?per_page=30" % REPO).get("workflow_runs") or []
+    done = [r for r in runs if r.get("status") == "completed"][:JOB_RUNS_MAX]
+    fmt = "%Y-%m-%dT%H:%M:%SZ"
     tot = 0.0
-    for r in runs:
-        if r.get("status") != "completed":
-            continue
-        try:
-            a = datetime.strptime(r["created_at"].replace("Z", "+0000"), "%Y-%m-%dT%H:%M:%S%z")
-            b = datetime.strptime(r["updated_at"].replace("Z", "+0000"), "%Y-%m-%dT%H:%M:%S%z")
-            tot += max((b - a).total_seconds() / 60.0, 0)
-        except Exception:
-            pass
+    for r in done:
+        for page in (1, 2, 3):        # 一个 run 可能上百个 job
+            js = api_json("repos/%s/actions/runs/%s/jobs?per_page=100&page=%d"
+                          % (REPO, r.get("id"), page)).get("jobs") or []
+            for j in js:
+                a, b = j.get("started_at"), j.get("completed_at")
+                if not (a and b):
+                    continue
+                try:
+                    tot += max((datetime.strptime(b, fmt) - datetime.strptime(a, fmt)).total_seconds() / 60.0, 0)
+                except Exception:
+                    pass
+            if len(js) < 100:
+                break
     return int(tot)
 
 
@@ -151,7 +163,17 @@ def _sources(st, step):
     wf = STEPS.get(step, (None, None, None))[2]
     runs = (api_json("repos/%s/actions/runs?per_page=30" % REPO).get("workflow_runs") or [])
     mine = [r for r in runs if wf and (r.get("path") or "").split("/")[-1] == wf][:6]
-    reps = api_json("repos/%s/releases?per_page=20" % REPO) or []
+    # ★ 只看 20 个 release 时，49 层的放量步骤只能看到 20 层证据 → 分页拉全，再按本步 tag 过滤
+    reps = []
+    for page in (1, 2, 3):
+        batch = api_json("repos/%s/releases?per_page=100&page=%d" % (REPO, page)) or []
+        reps += batch
+        if len(batch) < 100:
+            break
+    prefix = "collect-step%s-" % step
+    only = [r for r in reps if (r.get("tag_name") or "").startswith(prefix)]
+    # 本步还没产出 release 时保持空（不能拿上一步的资产冒充本步证据）
+    reps = only if only else []
 
     rep = None
     if os.path.exists(REPORT_F):
@@ -195,9 +217,17 @@ def _sources(st, step):
 
 
 def _ck_assets(S):
-    return [{"tag": r["tag"], "name": a["name"], "bytes": a["bytes"]}
-            for r in S["releases"] for a in (r.get("assets") or [])
-            if (a.get("name") or "").endswith("-checkpoint.json")]
+    """checkpoint 只给聚合 + 抽样清单：49 层全列会把叫醒简报撑爆，聚合数字才是判据要的。"""
+    items = [{"tag": r["tag"], "name": a["name"], "bytes": a["bytes"]}
+             for r in S["releases"] for a in (r.get("assets") or [])
+             if (a.get("name") or "").endswith("-checkpoint.json")]
+    units = sum(1 for r in S["releases"] for a in (r.get("assets") or [])
+                if re.search(r"-u\d{5}\.tar\.gz$", a.get("name") or ""))
+    return {"layers_with_checkpoint": len(items),
+            "releases_seen": len(S["releases"]),
+            "units_uploaded": units,
+            "bytes": sum(i["bytes"] or 0 for i in items),
+            "sample": items[:5]}
 
 
 def _short_units(S):

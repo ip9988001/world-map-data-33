@@ -94,14 +94,26 @@ def _norm_plan_row(r):
             "geom": r.get("geom") or ""}
 
 
+# where 表达式里的字段名 → plan 行里的真实字段（写 row_count 但行里叫 expect，曾让过滤静默失效）
+FIELD_ALIAS = {"row_count": "expect", "count": "expect", "rows": "expect", "layer_id": "id", "state_name": "state"}
+
+
 def _cmp(row, expr):
-    """只支持「字段>数字」「字段<数字」「字段=值」—— 不发明 DSL"""
-    import re
-    m = re.match(r"^\s*(\w+)\s*(>=|<=|>|<|=)\s*(.+?)\s*$", expr or "")
+    """只支持「字段>数字」「字段<数字」「字段=值」—— 不发明 DSL
+
+    ★ 2026-10-24 事故：STEP-04 写的 `where: row_count>300000` 因为字段名对不上（行里叫 expect），
+      float(None) 抛错被吞进 except，函数返回 True → 过滤从未生效，19,116 层（全量点层）被当成
+      「州级大层」。现在字段找不到一律判 False：宁可少采，不许靠猜乱采。
+    """
+    import re as _re
+    m = _re.match(r"^\s*(\w+)\s*(>=|<=|>|<|=)\s*(.+?)\s*$", expr or "")
     if not m:
         return True
     field, op, val = m.group(1), m.group(2), m.group(3).strip()
+    field = FIELD_ALIAS.get(field, field)
     cur = row.get(field)
+    if cur is None:
+        return False
     try:
         cur_n, val_n = float(cur), float(val)
     except (TypeError, ValueError):
@@ -136,6 +148,22 @@ def select_layers(step, limit=0, policy=None):
         if sel.get("layers"):
             want = set(sel["layers"])
             out = [r for r in out if r["id"] in want]
+        # ---- 04 放量专用口径：全州级大层里只要真·地址层 ----
+        # 实测：row_count>300000 一条能筛出 19,116 层 / 14.4 亿行，其中火警出警记录、
+        # 欧洲 OSM、parcels/zones 占 42% 的行 —— 靠标题关键词和行数上限收窄。
+        if sel.get("state_exclude"):
+            bad = {str(x) for x in sel["state_exclude"]}
+            out = [r for r in out if r["state"] not in bad]
+        if sel.get("title_include"):
+            rx = re.compile(sel["title_include"], re.I)
+            out = [r for r in out if rx.search(r.get("title") or "")]
+        if sel.get("title_exclude"):
+            rx = re.compile(sel["title_exclude"], re.I)
+            out = [r for r in out if not rx.search(r.get("title") or "")]
+        if sel.get("rows_max"):
+            out = [r for r in out if (r.get("expect") or 0) <= int(sel["rows_max"])]
+        if sel.get("rows_min"):
+            out = [r for r in out if (r.get("expect") or 0) >= int(sel["rows_min"])]
         # 几何白名单：Poligon/Polyline 是边界和道路层，采地址时纯属浪费额度
         allow = pol.get("geom_in")
         if allow:
@@ -187,6 +215,12 @@ def cli(argv=None, step=None):
     if a.list_matrix:
         pol = _eff(step, a)
         layers = select_layers(step, limit=a.max_layers, policy=pol)
+        if len(layers) > 256:
+            # ★ GitHub matrix 硬上限 256 job / run；超了不是慢，是直接跑不起来
+            print(json.dumps({"err": "matrix_too_big", "layers": len(layers), "max": 256,
+                              "hint": "用 --max-layers 分批，或收窄 steps.json 的 select"},
+                             ensure_ascii=False))
+            return 3
         print(json.dumps({"include": [{"layer": r["id"]} for r in layers]}, ensure_ascii=False))
         return 0
     return run(step, argv)

@@ -44,7 +44,14 @@ python3 collect/supervisor.py --review pass --next 05 --note "..."
  "kind": "collect",
  "title": "全州放量",
  "select": {
-  "where": "row_count>300000"
+  "where": "row_count>300000",
+  "state_exclude": [
+   "未定位",
+   ""
+  ],
+  "title_include": "address|addr\\b|situs|e-?911|ng911|mailing|delivery point|location point",
+  "title_exclude": "fire|nfirs|response|parcel|zone|district|boundary|hydrant|business|poi|of interest|europe|canada|mexico|bus stop|shelter|parking|traffic|crash|collision|permit|school|hospital|station|cell ?tower|antenna|solar|weather|flood|watershed|trail|park\\b|bridge|billboard|licen|inspection|vacant|demolition",
+  "rows_max": 5000000
  },
  "workers": 4,
  "unit_rows": 1000000,
@@ -56,7 +63,10 @@ python3 collect/supervisor.py --review pass --next 05 --note "..."
   "unit_errors"
  ],
  "accept": {
-  "total_rows_min": 30000000
+  "total_rows_min": 30000000,
+  "layers_min": 40,
+  "layers_max": 60,
+  "per_layer_rows_max": 5000000
  }
 }
 ```
