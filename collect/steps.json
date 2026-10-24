@@ -312,7 +312,7 @@
     "wf": "worker-08.yml",
     "wake_reason": "去重报告：工人已停手，等大脑判验收",
     "cmds": [
-     "--review pass --next 07",
+     "--review pass --next 09",
      "--kick 08"
     ]
    }
@@ -323,7 +323,7 @@
    "desc": "探测编辑时间字段，只对探到的层拉变更；独立 delta tag，绝不覆盖全量",
    "select": {
     "source": "collected",
-    "batch": 20
+    "batch": 1200
    },
    "since_days": 90,
    "tag": "collect-delta-{layer}-{date}",

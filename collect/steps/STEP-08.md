@@ -52,13 +52,6 @@ python3 collect/supervisor.py --kick 08
   "states_min": 40,
   "unique_rows_min": 30000000,
   "dup_rate_max": 0.9
- },
- "source": "releases",
- "tag_prefixes": [
-  "collect-step03-",
-  "collect-step04-",
-  "collect-step05-",
-  "collect-step07-"
- ]
+ }
 }
 ```

@@ -46,7 +46,7 @@ python3 collect/supervisor.py --kick 09
  "title": "增量同步",
  "select": {
   "source": "collected",
-  "batch": 20
+  "batch": 1200
  },
  "tag": "collect-delta-{layer}-{date}",
  "evidence": [
@@ -56,7 +56,6 @@ python3 collect/supervisor.py --kick 09
  "accept": {
   "field_rate_min": 0.1,
   "failed_rate_max": 0.2
- },
- "since_days": 90
+ }
 }
 ```
