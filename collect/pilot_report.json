@@ -175,11 +175,11 @@
    "rows": 3409,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.4,
+   "elapsed_s": 1.7,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:33Z"
+   "at": "2026-10-24T12:05:28Z"
   },
   {
    "id": "_services_OPEN_DATA_cdphe_ems_ambulance_agencies_MapServer_0",
@@ -310,11 +310,11 @@
    "rows": 2253,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.8,
+   "elapsed_s": 2.0,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:24Z"
+   "at": "2026-10-24T12:05:12Z"
   },
   {
    "id": "is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0",
@@ -760,11 +760,11 @@
    "rows": 2381,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.4,
+   "elapsed_s": 1.4,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:00Z"
+   "at": "2026-10-24T12:05:14Z"
   },
   {
    "id": "XhimSpf8B7lHIMy_arcgis_rest_services_Bridges_FeatureServer_0",
@@ -955,11 +955,11 @@
    "rows": 2517,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 4.3,
+   "elapsed_s": 1.7,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:07Z"
+   "at": "2026-10-24T12:05:37Z"
   },
   {
    "id": "arcgis_rest_services_One58_Plaza_Update_6_25_FeatureServer_0",
@@ -1135,11 +1135,11 @@
    "rows": 1077,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.2,
+   "elapsed_s": 1.6,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:19Z"
+   "at": "2026-10-24T12:04:44Z"
   },
   {
    "id": "est_services_Voting_Information_Map_New_WFL1_FeatureServer_0",
@@ -15040,11 +15040,11 @@
    "rows": 906,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 3.0,
+   "elapsed_s": 2.1,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:45Z"
+   "at": "2026-10-24T12:04:24Z"
   },
   {
    "id": "37YZHYH0_arcgis_rest_services_Address_Points_FeatureServer_0",
@@ -15055,11 +15055,11 @@
    "rows": 1058,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.0,
+   "elapsed_s": 1.7,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:20Z"
+   "at": "2026-10-24T12:04:24Z"
   },
   {
    "id": "3oxsPnVw4fnW9_arcgis_rest_services_Addresses_FeatureServer_1",
@@ -15070,11 +15070,11 @@
    "rows": 948,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.7,
+   "elapsed_s": 1.4,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:43Z"
+   "at": "2026-10-24T12:04:22Z"
   },
   {
    "id": "4C5C_arcgis_rest_services_address_points_apb_FeatureServer_0",
@@ -15085,11 +15085,11 @@
    "rows": 2653,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.7,
+   "elapsed_s": 3.0,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:16Z"
+   "at": "2026-10-24T12:05:28Z"
   },
   {
    "id": "4JC_arcgis_rest_services_Rutland_County_E911_FeatureServer_0",
@@ -15100,11 +15100,11 @@
    "rows": 1171,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 3.5,
+   "elapsed_s": 1.4,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:33Z"
+   "at": "2026-10-24T12:04:35Z"
   },
   {
    "id": "4XSFR9wSzw_arcgis_rest_services_ADDRESS_DATA_FeatureServer_0",
@@ -15115,11 +15115,11 @@
    "rows": 3371,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 3.1,
+   "elapsed_s": 4.3,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:07Z"
+   "at": "2026-10-24T12:05:43Z"
   },
   {
    "id": "5IxwbSz_arcgis_rest_services_AddressesOnline_FeatureServer_0",
@@ -15130,11 +15130,11 @@
    "rows": 1166,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.9,
+   "elapsed_s": 3.3,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:41Z"
+   "at": "2026-10-24T12:04:54Z"
   },
   {
    "id": "6FlIW_arcgis_rest_services_NP_Address_Points_FeatureServer_0",
@@ -15149,7 +15149,7 @@
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:24Z"
+   "at": "2026-10-24T12:05:14Z"
   },
   {
    "id": "ASGpv7gPaTEUL_arcgis_rest_services_Addresses_FeatureServer_1",
@@ -15160,11 +15160,11 @@
    "rows": 1606,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.7,
+   "elapsed_s": 2.3,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:42Z"
+   "at": "2026-10-24T12:04:40Z"
   },
   {
    "id": "Blhlg_arcgis_rest_services_RHUEnochAddresses_FeatureServer_0",
@@ -15175,11 +15175,11 @@
    "rows": 2356,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 4.3,
+   "elapsed_s": 1.8,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:06Z"
+   "at": "2026-10-24T12:05:08Z"
   },
   {
    "id": "Blhlg_arcgis_rest_services_UtahAddressPoints_FeatureServer_0",
@@ -15190,11 +15190,11 @@
    "rows": 2355,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.5,
+   "elapsed_s": 1.3,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:10Z"
+   "at": "2026-10-24T12:05:19Z"
   },
   {
    "id": "CDFVQ_arcgis_rest_services_Address_Points_C2_FeatureServer_0",
@@ -15205,11 +15205,11 @@
    "rows": 1146,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.3,
+   "elapsed_s": 3.6,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:31Z"
+   "at": "2026-10-24T12:04:25Z"
   },
   {
    "id": "CjdNui_arcgis_rest_services_addresses_030317_FeatureServer_0",
@@ -15220,11 +15220,11 @@
    "rows": 3417,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.1,
+   "elapsed_s": 2.0,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:18Z"
+   "at": "2026-10-24T12:05:26Z"
   },
   {
    "id": "DCrBlhlg_arcgis_rest_services_EnochAddresses_FeatureServer_0",
@@ -15235,11 +15235,11 @@
    "rows": 2208,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.9,
+   "elapsed_s": 1.6,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:04Z"
+   "at": "2026-10-24T12:05:11Z"
   },
   {
    "id": "Dl4j6iT0i_arcgis_rest_services_AddressPoints_FeatureServer_0",
@@ -15250,11 +15250,11 @@
    "rows": 1437,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.2,
+   "elapsed_s": 2.1,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:19Z"
+   "at": "2026-10-24T12:04:53Z"
   },
   {
    "id": "DlIH33l3_arcgis_rest_services_Address_Points_FeatureServer_0",
@@ -15265,11 +15265,11 @@
    "rows": 2092,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.0,
+   "elapsed_s": 1.8,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:54Z"
+   "at": "2026-10-24T12:04:48Z"
   },
   {
    "id": "FwVI_arcgis_rest_services_9_1_1_Site_Address_FeatureServer_1",
@@ -15280,11 +15280,11 @@
    "rows": 1238,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 3.2,
+   "elapsed_s": 4.2,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:20Z"
+   "at": "2026-10-24T12:04:44Z"
   },
   {
    "id": "Fx_arcgis_rest_services_Anna_ETJ_Addresses_FeatureServer_157",
@@ -15295,11 +15295,11 @@
    "rows": 2499,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.3,
+   "elapsed_s": 3.8,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:03Z"
+   "at": "2026-10-24T12:05:30Z"
   },
   {
    "id": "GAlRIIIg_arcgis_rest_services_Address_Points_FeatureServer_0",
@@ -15310,11 +15310,11 @@
    "rows": 2056,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.6,
+   "elapsed_s": 1.5,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:18Z"
+   "at": "2026-10-24T12:04:35Z"
   },
   {
    "id": "GTj4xmYDtu_arcgis_rest_services_911addresses_FeatureServer_0",
@@ -15325,11 +15325,11 @@
    "rows": 2386,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 3.9,
+   "elapsed_s": 1.9,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:04Z"
+   "at": "2026-10-24T12:05:30Z"
   },
   {
    "id": "GtVEXzaX_arcgis_rest_services_Address_Point2_FeatureServer_0",
@@ -15340,11 +15340,11 @@
    "rows": 1342,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 4.6,
+   "elapsed_s": 1.6,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:35Z"
+   "at": "2026-10-24T12:04:59Z"
   },
   {
    "id": "HgyUvYRWd_arcgis_rest_services_AddressPoints_FeatureServer_0",
@@ -15355,11 +15355,11 @@
    "rows": 1748,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 3.2,
+   "elapsed_s": 2.4,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:49Z"
+   "at": "2026-10-24T12:05:00Z"
   },
   {
    "id": "HoWNZ_arcgis_rest_services_Village_Addresses_FeatureServer_0",
@@ -15370,11 +15370,11 @@
    "rows": 2874,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.9,
+   "elapsed_s": 1.9,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:08Z"
+   "at": "2026-10-24T12:05:16Z"
   },
   {
    "id": "HtVstUaG_arcgis_rest_services_Address_Points_FeatureServer_0",
@@ -15385,11 +15385,11 @@
    "rows": 3438,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.0,
+   "elapsed_s": 1.6,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:17Z"
+   "at": "2026-10-24T12:05:29Z"
   },
   {
    "id": "Hyco_Boat_Docks_with_Parcel_and_Address_Data_FeatureServer_0",
@@ -15400,11 +15400,11 @@
    "rows": 910,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.5,
+   "elapsed_s": 3.6,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:48Z"
+   "at": "2026-10-24T12:04:25Z"
   },
   {
    "id": "J7UaClOw_arcgis_rest_services_Address_Points_FeatureServer_0",
@@ -15415,11 +15415,11 @@
    "rows": 3077,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.5,
+   "elapsed_s": 3.5,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:29Z"
+   "at": "2026-10-24T12:05:39Z"
   },
   {
    "id": "Klwi2PRa_arcgis_rest_services_Address_Points_FeatureServer_0",
@@ -15430,11 +15430,11 @@
    "rows": 2631,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 7.6,
+   "elapsed_s": 2.2,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:27Z"
+   "at": "2026-10-24T12:05:02Z"
   },
   {
    "id": "QE7iy_arcgis_rest_services_Addresses_Mar2024_FeatureServer_0",
@@ -15445,11 +15445,11 @@
    "rows": 1150,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.2,
+   "elapsed_s": 1.7,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:19Z"
+   "at": "2026-10-24T12:04:48Z"
   },
   {
    "id": "QGbyiuCh_arcgis_rest_services_Address_Points_FeatureServer_0",
@@ -15460,11 +15460,11 @@
    "rows": 931,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.6,
+   "elapsed_s": 4.0,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:49Z"
+   "at": "2026-10-24T12:04:27Z"
   },
   {
    "id": "RTu_arcgis_rest_services_Sample_Addresses_bd_FeatureServer_0",
@@ -15475,11 +15475,11 @@
    "rows": 969,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.1,
+   "elapsed_s": 2.0,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:20Z"
+   "at": "2026-10-24T12:04:23Z"
   },
   {
    "id": "SpUPMP3Z_arcgis_rest_services_Address_Points_FeatureServer_0",
@@ -15490,11 +15490,11 @@
    "rows": 3022,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 4.0,
+   "elapsed_s": 1.7,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:28Z"
+   "at": "2026-10-24T12:05:09Z"
   },
   {
    "id": "U4FaQtqrjGWfU_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -15505,11 +15505,11 @@
    "rows": 2770,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.2,
+   "elapsed_s": 1.9,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:16Z"
+   "at": "2026-10-24T12:05:31Z"
   },
   {
    "id": "W9xjDnZ35_arcgis_rest_services_911_Addresses_FeatureServer_0",
@@ -15520,11 +15520,11 @@
    "rows": 1772,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.8,
+   "elapsed_s": 2.3,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:18Z"
+   "at": "2026-10-24T12:04:49Z"
   },
   {
    "id": "XcE_arcgis_rest_services_911Address_20141030_FeatureServer_0",
@@ -15535,11 +15535,11 @@
    "rows": 2313,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 3.2,
+   "elapsed_s": 1.9,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:10Z"
+   "at": "2026-10-24T12:04:46Z"
   },
   {
    "id": "YDMVmmxMeM_arcgis_rest_services_Crash_Points_FeatureServer_0",
@@ -15550,11 +15550,11 @@
    "rows": 1234,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.8,
+   "elapsed_s": 1.7,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:20Z"
+   "at": "2026-10-24T12:04:34Z"
   },
   {
    "id": "YDtu_arcgis_rest_services_PHYSICAL_ADDRESSES_FeatureServer_0",
@@ -15565,11 +15565,11 @@
    "rows": 2408,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.1,
+   "elapsed_s": 1.9,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:07Z"
+   "at": "2026-10-24T12:05:13Z"
   },
   {
    "id": "YeF6EBJ1_arcgis_rest_services_Addresses_View_FeatureServer_0",
@@ -15580,11 +15580,11 @@
    "rows": 2917,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.0,
+   "elapsed_s": 1.8,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:54Z"
+   "at": "2026-10-24T12:05:37Z"
   },
   {
    "id": "_arcgis_rest_services_AddresspointsDuplicate_FeatureServer_0",
@@ -15595,11 +15595,11 @@
    "rows": 1154,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.1,
+   "elapsed_s": 2.5,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:52Z"
+   "at": "2026-10-24T12:04:26Z"
   },
   {
    "id": "_arcgis_rest_services_Cesar_Chavez_Addresses_FeatureServer_0",
@@ -15610,11 +15610,11 @@
    "rows": 1752,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 3.5,
+   "elapsed_s": 3.2,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:32Z"
+   "at": "2026-10-24T12:04:41Z"
   },
   {
    "id": "_rest_services_COAHOMA_COUNTY_ADDRESS_POINTS_FeatureServer_0",
@@ -15625,11 +15625,11 @@
    "rows": 2464,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.1,
+   "elapsed_s": 2.7,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:03Z"
+   "at": "2026-10-24T12:05:06Z"
   },
   {
    "id": "_rest_services_E911Roads_flowlines_intersect_FeatureServer_0",
@@ -15640,11 +15640,11 @@
    "rows": 2413,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.7,
+   "elapsed_s": 1.5,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:20Z"
+   "at": "2026-10-24T12:05:23Z"
   },
   {
    "id": "_services_Parcel_and_Address_Data_Civic_Plus_FeatureServer_1",
@@ -15655,11 +15655,11 @@
    "rows": 2917,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.6,
+   "elapsed_s": 1.5,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:27Z"
+   "at": "2026-10-24T12:05:19Z"
   },
   {
    "id": "aiian_Gardens_CA_Master_Address_Table__View_FeatureServer_10",
@@ -15670,11 +15670,11 @@
    "rows": 2528,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 5.1,
+   "elapsed_s": 2.0,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:26Z"
+   "at": "2026-10-24T12:05:15Z"
   },
   {
    "id": "akSFUjJ_arcgis_rest_services_Address_Points_FeatureServer_15",
@@ -15685,11 +15685,11 @@
    "rows": 3458,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.9,
+   "elapsed_s": 1.9,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:34Z"
+   "at": "2026-10-24T12:05:31Z"
   },
   {
    "id": "arcgis_rest_services_Property_Address_Points_FeatureServer_0",
@@ -15700,11 +15700,11 @@
    "rows": 2662,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.8,
+   "elapsed_s": 1.7,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:29Z"
+   "at": "2026-10-24T12:05:04Z"
   },
   {
    "id": "arcgis_rest_services_Unincorp_Address_Points_FeatureServer_0",
@@ -15715,11 +15715,11 @@
    "rows": 2365,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.1,
+   "elapsed_s": 3.6,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:02Z"
+   "at": "2026-10-24T12:05:17Z"
   },
   {
    "id": "arcgis_rest_services_mclean_readdress_points_FeatureServer_0",
@@ -15730,11 +15730,11 @@
    "rows": 1695,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.5,
+   "elapsed_s": 1.5,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:31Z"
+   "at": "2026-10-24T12:04:36Z"
   },
   {
    "id": "aytLCyS0D_arcgis_rest_services_AddressPoints_FeatureServer_0",
@@ -15745,11 +15745,11 @@
    "rows": 3312,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.0,
+   "elapsed_s": 1.5,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:22Z"
+   "at": "2026-10-24T12:05:14Z"
   },
   {
    "id": "ble_Lake_Address_Points_Master_for_Collector_FeatureServer_0",
@@ -15760,11 +15760,11 @@
    "rows": 1558,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.6,
+   "elapsed_s": 2.4,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:35Z"
+   "at": "2026-10-24T12:05:02Z"
   },
   {
    "id": "ces_WA_Old_Trails_Wildfire_of_2026_Addresses_FeatureServer_0",
@@ -15775,11 +15775,11 @@
    "rows": 1746,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 3.2,
+   "elapsed_s": 2.1,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:46Z"
+   "at": "2026-10-24T12:04:36Z"
   },
   {
    "id": "cgis_rest_services_AddressPoints_Provisional_FeatureServer_0",
@@ -15790,11 +15790,11 @@
    "rows": 2926,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 3.1,
+   "elapsed_s": 2.7,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:01Z"
+   "at": "2026-10-24T12:05:36Z"
   },
   {
    "id": "cgis_rest_services_Bronxville_Address_Points_FeatureServer_0",
@@ -15805,11 +15805,11 @@
    "rows": 2700,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.5,
+   "elapsed_s": 2.2,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:15Z"
+   "at": "2026-10-24T12:05:24Z"
   },
   {
    "id": "cgis_rest_services_Hosted_Address_Point__HFV_FeatureServer_0",
@@ -15820,11 +15820,11 @@
    "rows": 2628,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.4,
+   "elapsed_s": 2.6,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:21Z"
+   "at": "2026-10-24T12:05:33Z"
   },
   {
    "id": "cgis_rest_services_NG911_RCL___SSAP_Examples_FeatureServer_1",
@@ -15835,11 +15835,11 @@
    "rows": 2080,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.7,
+   "elapsed_s": 3.4,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:31Z"
+   "at": "2026-10-24T12:05:01Z"
   },
   {
    "id": "cgis_rest_services_Rubbertown_Addresses_WFL1_FeatureServer_0",
@@ -15850,11 +15850,11 @@
    "rows": 978,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.6,
+   "elapsed_s": 1.6,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:21Z"
+   "at": "2026-10-24T12:04:35Z"
   },
   {
    "id": "dZd_arcgis_rest_services_Address_Points_Test_FeatureServer_0",
@@ -15865,11 +15865,11 @@
    "rows": 3282,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.5,
+   "elapsed_s": 1.9,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:57Z"
+   "at": "2026-10-24T12:05:24Z"
   },
   {
    "id": "ermits_Peak_Damage_Assessment_Address_Points_FeatureServer_0",
@@ -15880,11 +15880,11 @@
    "rows": 1042,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.7,
+   "elapsed_s": 2.0,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:18Z"
+   "at": "2026-10-24T12:04:23Z"
   },
   {
    "id": "est_services_20171228_Kakaako_Address_Points_FeatureServer_0",
@@ -15895,11 +15895,11 @@
    "rows": 2266,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.7,
+   "elapsed_s": 1.5,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:21Z"
+   "at": "2026-10-24T12:05:19Z"
   },
   {
    "id": "est_services_Address_and_OpenGOV_Permit_Join_FeatureServer_0",
@@ -15910,11 +15910,11 @@
    "rows": 1525,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.3,
+   "elapsed_s": 1.8,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:51Z"
+   "at": "2026-10-24T12:04:44Z"
   },
   {
    "id": "est_services_CaseStudySchuylerMcAuliffe_WFL1_FeatureServer_0",
@@ -15925,11 +15925,11 @@
    "rows": 2968,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.9,
+   "elapsed_s": 3.4,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:18Z"
+   "at": "2026-10-24T12:04:50Z"
   },
   {
    "id": "est_services_Crownpoint_address_point_update_FeatureServer_0",
@@ -15940,11 +15940,11 @@
    "rows": 1146,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.6,
+   "elapsed_s": 1.9,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:29Z"
+   "at": "2026-10-24T12:04:23Z"
   },
   {
    "id": "est_services_Location_SITUS_ADDRESS_PT_point_FeatureServer_0",
@@ -15955,11 +15955,11 @@
    "rows": 2793,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.3,
+   "elapsed_s": 3.9,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:21Z"
+   "at": "2026-10-24T12:05:24Z"
   },
   {
    "id": "gis_rest_services_BV_Site_Addresses_20240719_FeatureServer_0",
@@ -15974,7 +15974,7 @@
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:31Z"
+   "at": "2026-10-24T12:05:07Z"
   },
   {
    "id": "gis_rest_services_Defiance_County_Addresses_FeatureServer_83",
@@ -15985,11 +15985,11 @@
    "rows": 2634,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.0,
+   "elapsed_s": 1.8,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:16Z"
+   "at": "2026-10-24T12:05:00Z"
   },
   {
    "id": "gis_rest_services_Lake_Address_Points_Master_FeatureServer_0",
@@ -16000,11 +16000,11 @@
    "rows": 1558,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.9,
+   "elapsed_s": 3.2,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:33Z"
+   "at": "2026-10-24T12:04:49Z"
   },
   {
    "id": "gis_rest_services_Residential_Address_Points_FeatureServer_0",
@@ -16015,11 +16015,11 @@
    "rows": 2578,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.9,
+   "elapsed_s": 1.5,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:03Z"
+   "at": "2026-10-24T12:05:17Z"
   },
   {
    "id": "h9A9gmot5dRco_arcgis_rest_services_Addresses_FeatureServer_3",
@@ -16030,11 +16030,11 @@
    "rows": 958,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.9,
+   "elapsed_s": 1.8,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:19Z"
+   "at": "2026-10-24T12:04:24Z"
   },
   {
    "id": "ices_Barre_City_Infill_Housing_Analysis_WFL1_FeatureServer_8",
@@ -16045,11 +16045,11 @@
    "rows": 2983,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 4.7,
+   "elapsed_s": 2.3,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:25Z"
+   "at": "2026-10-24T12:05:18Z"
   },
   {
    "id": "ices_Meagher_County_Address_Points_June_2025_FeatureServer_0",
@@ -16060,11 +16060,11 @@
    "rows": 2158,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.3,
+   "elapsed_s": 1.8,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:14Z"
+   "at": "2026-10-24T12:05:27Z"
   },
   {
    "id": "is_rest_services_Address_TaxLienAuction_2024_FeatureServer_0",
@@ -16075,11 +16075,11 @@
    "rows": 1551,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.0,
+   "elapsed_s": 1.6,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:57Z"
+   "at": "2026-10-24T12:04:35Z"
   },
   {
    "id": "is_rest_services_Carmel_AddressPoints_050626_FeatureServer_0",
@@ -16090,11 +16090,11 @@
    "rows": 3145,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.4,
+   "elapsed_s": 2.3,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:10Z"
+   "at": "2026-10-24T12:05:06Z"
   },
   {
    "id": "is_rest_services_Find_Clusters_for_Addresses_FeatureServer_0",
@@ -16105,11 +16105,11 @@
    "rows": 1550,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.9,
+   "elapsed_s": 2.6,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:32Z"
+   "at": "2026-10-24T12:04:25Z"
   },
   {
    "id": "is_rest_services_Flooded_FACILITY_Sites_E911_FeatureServer_0",
@@ -16120,11 +16120,11 @@
    "rows": 2673,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.7,
+   "elapsed_s": 1.9,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:10Z"
+   "at": "2026-10-24T12:05:27Z"
   },
   {
    "id": "is_rest_services_Independence_Addresses_WFL1_FeatureServer_0",
@@ -16135,11 +16135,11 @@
    "rows": 3273,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.7,
+   "elapsed_s": 1.8,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:01Z"
+   "at": "2026-10-24T12:05:32Z"
   },
   {
    "id": "is_rest_services_Sierra_FTTH___e911_ALL_PONS_FeatureServer_0",
@@ -16150,11 +16150,11 @@
    "rows": 1961,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.0,
+   "elapsed_s": 1.9,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:47Z"
+   "at": "2026-10-24T12:04:46Z"
   },
   {
    "id": "jn17FVjr_arcgis_rest_services_Address_Points_FeatureServer_0",
@@ -16165,11 +16165,11 @@
    "rows": 2715,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.6,
+   "elapsed_s": 2.1,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:31Z"
+   "at": "2026-10-24T12:05:30Z"
   },
   {
    "id": "jtv_arcgis_rest_services_Lake_Address_Points_FeatureServer_0",
@@ -16180,11 +16180,11 @@
    "rows": 1321,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.4,
+   "elapsed_s": 2.1,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:30Z"
+   "at": "2026-10-24T12:04:54Z"
   },
   {
    "id": "lbd_arcgis_rest_services_Address_Points_view_FeatureServer_0",
@@ -16195,11 +16195,11 @@
    "rows": 1037,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.9,
+   "elapsed_s": 1.8,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:19Z"
+   "at": "2026-10-24T12:04:23Z"
   },
   {
    "id": "m2tY5bzqz10C_arcgis_rest_services_E911Points_FeatureServer_0",
@@ -16210,11 +16210,11 @@
    "rows": 2923,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.1,
+   "elapsed_s": 4.4,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:10Z"
+   "at": "2026-10-24T12:05:32Z"
   },
   {
    "id": "mc98J4JC_arcgis_rest_services_MH_e911Addison_FeatureServer_0",
@@ -16229,7 +16229,7 @@
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:33Z"
+   "at": "2026-10-24T12:04:45Z"
   },
   {
    "id": "nia_VRP_Potential_Brownfields_Site_Addresses_FeatureServer_0",
@@ -16240,11 +16240,11 @@
    "rows": 1743,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.6,
+   "elapsed_s": 2.0,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:46Z"
+   "at": "2026-10-24T12:04:51Z"
   },
   {
    "id": "ov_arcgis2_rest_services_ADDRESS_POINTS_COMM_FeatureServer_0",
@@ -16255,11 +16255,11 @@
    "rows": 1649,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 4.5,
+   "elapsed_s": 2.7,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:35Z"
+   "at": "2026-10-24T12:05:03Z"
   },
   {
    "id": "p1M_arcgis_rest_services_SnowPlowedAddresses_FeatureServer_0",
@@ -16270,11 +16270,11 @@
    "rows": 3046,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.4,
+   "elapsed_s": 3.5,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:13Z"
+   "at": "2026-10-24T12:05:19Z"
   },
   {
    "id": "pn2_arcgis_rest_services_2023_Address_points_FeatureServer_0",
@@ -16285,11 +16285,11 @@
    "rows": 1091,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.2,
+   "elapsed_s": 1.7,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:42Z"
+   "at": "2026-10-24T12:04:23Z"
   },
   {
    "id": "rcgis_rest_services_Hanover_NG911_Exceptions_FeatureServer_0",
@@ -16300,11 +16300,11 @@
    "rows": 1007,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.2,
+   "elapsed_s": 2.0,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:20Z"
+   "at": "2026-10-24T12:04:23Z"
   },
   {
    "id": "rcgis_rest_services_Town_of_Groton_Addresses_FeatureServer_0",
@@ -16315,11 +16315,11 @@
    "rows": 1584,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.0,
+   "elapsed_s": 4.4,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:55Z"
+   "at": "2026-10-24T12:04:43Z"
   },
   {
    "id": "rest_services_AddresseditSchema22_publicview_FeatureServer_0",
@@ -16330,11 +16330,11 @@
    "rows": 1324,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.8,
+   "elapsed_s": 2.2,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:31Z"
+   "at": "2026-10-24T12:04:38Z"
   },
   {
    "id": "rest_services_Curbside_Addressing_Final_WFL1_FeatureServer_0",
@@ -16345,11 +16345,11 @@
    "rows": 3233,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.2,
+   "elapsed_s": 1.9,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:33Z"
+   "at": "2026-10-24T12:05:16Z"
   },
   {
    "id": "rest_services_Hinesburg_Planning_Zoning_WFL1_FeatureServer_2",
@@ -16360,11 +16360,11 @@
    "rows": 2092,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.6,
+   "elapsed_s": 4.3,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:35Z"
+   "at": "2026-10-24T12:04:57Z"
   },
   {
    "id": "rest_services_Lake_Address_Points_by_Section_FeatureServer_0",
@@ -16375,11 +16375,11 @@
    "rows": 1558,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.5,
+   "elapsed_s": 3.9,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:45Z"
+   "at": "2026-10-24T12:05:00Z"
   },
   {
    "id": "rest_services_Surfside_Parcles_and_Addresses_FeatureServer_0",
@@ -16390,11 +16390,11 @@
    "rows": 1339,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.8,
+   "elapsed_s": 2.0,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:34Z"
+   "at": "2026-10-24T12:04:56Z"
   },
   {
    "id": "rvices_Camas_County_Roads_and_Address_Points_FeatureServer_0",
@@ -16405,11 +16405,11 @@
    "rows": 1260,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.6,
+   "elapsed_s": 1.9,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:42Z"
+   "at": "2026-10-24T12:04:36Z"
   },
   {
    "id": "s93fmcFMug_arcgis_rest_services_Address_View_FeatureServer_0",
@@ -16420,11 +16420,11 @@
    "rows": 1243,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.2,
+   "elapsed_s": 4.0,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:47Z"
+   "at": "2026-10-24T12:04:51Z"
   },
   {
    "id": "s_Addresses__2025_09_02__Gramercy_Community_FeatureServer_21",
@@ -16435,11 +16435,11 @@
    "rows": 1774,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.3,
+   "elapsed_s": 1.9,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:20Z"
+   "at": "2026-10-24T12:04:47Z"
   },
   {
    "id": "s_rest_services_Addressing_Addressing_public_FeatureServer_0@MN-2",
@@ -16450,11 +16450,11 @@
    "rows": 1205,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 3.7,
+   "elapsed_s": 2.8,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:48Z"
+   "at": "2026-10-24T12:04:25Z"
   },
   {
    "id": "s_rest_services_CCCFPD_Draft_Address_Points_FeatureServer_14",
@@ -16465,11 +16465,11 @@
    "rows": 2035,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.6,
+   "elapsed_s": 1.8,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:57Z"
+   "at": "2026-10-24T12:04:38Z"
   },
   {
    "id": "s_rest_services_Shenandoah_Address_Map_WFL1_FeatureServer_11",
@@ -16480,11 +16480,11 @@
    "rows": 1670,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 3.6,
+   "elapsed_s": 2.1,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:36Z"
+   "at": "2026-10-24T12:04:38Z"
   },
   {
    "id": "s_rest_services_Sioux_County_Addressing_WFL1_FeatureServer_2",
@@ -16495,11 +16495,11 @@
    "rows": 1720,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.6,
+   "elapsed_s": 2.1,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:21Z"
+   "at": "2026-10-24T12:04:37Z"
   },
   {
    "id": "services_AddressLayer_Census9706_Residential_FeatureServer_0",
@@ -16510,11 +16510,11 @@
    "rows": 1888,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 4.0,
+   "elapsed_s": 1.5,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:49Z"
+   "at": "2026-10-24T12:04:34Z"
   },
   {
    "id": "sses_public_f42ca5814db04f79a8d83bc0f50b5212_FeatureServer_0",
@@ -16525,11 +16525,11 @@
    "rows": 2493,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.2,
+   "elapsed_s": 1.7,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:49Z"
+   "at": "2026-10-24T12:05:27Z"
   },
   {
    "id": "tMi_arcgis_rest_services_Address_Points_view_FeatureServer_0",
@@ -16540,11 +16540,11 @@
    "rows": 2804,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.2,
+   "elapsed_s": 1.8,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:26Z"
+   "at": "2026-10-24T12:05:02Z"
   },
   {
    "id": "tVX_arcgis_rest_services_RPZ_Address_Points2_FeatureServer_0",
@@ -16559,7 +16559,7 @@
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:58Z"
+   "at": "2026-10-24T12:05:02Z"
   },
   {
    "id": "t_services_Address_Points_Layers_WFL1_Public_FeatureServer_0",
@@ -16570,11 +16570,11 @@
    "rows": 2419,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.8,
+   "elapsed_s": 1.9,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:08Z"
+   "at": "2026-10-24T12:05:14Z"
   },
   {
    "id": "t_services_Hanover_BEAD_Grant_Address_Points_FeatureServer_0",
@@ -16585,11 +16585,11 @@
    "rows": 2357,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.4,
+   "elapsed_s": 2.7,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:19Z"
+   "at": "2026-10-24T12:05:04Z"
   },
   {
    "id": "teAddresses_78438353268d48b3ae6eb590e09a6c1a_FeatureServer_0",
@@ -16600,11 +16600,11 @@
    "rows": 1379,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.1,
+   "elapsed_s": 6.9,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:21Z"
+   "at": "2026-10-24T12:04:31Z"
   },
   {
    "id": "tjNW10pz_arcgis_rest_services_Address_Points_FeatureServer_0",
@@ -16615,11 +16615,11 @@
    "rows": 1497,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.0,
+   "elapsed_s": 1.8,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:33Z"
+   "at": "2026-10-24T12:04:55Z"
   },
   {
    "id": "vices_GISC_Publish_CMV_FGDB_202204_gdb_view_FeatureServer_33",
@@ -16630,11 +16630,11 @@
    "rows": 2762,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 3.0,
+   "elapsed_s": 3.1,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:31Z"
+   "at": "2026-10-24T12:05:11Z"
   },
   {
    "id": "vices_MammothLakes_Address_Verification_WFL1_FeatureServer_0",
@@ -16645,11 +16645,11 @@
    "rows": 1730,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.8,
+   "elapsed_s": 2.7,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:52Z"
+   "at": "2026-10-24T12:05:02Z"
   },
   {
    "id": "vices_Meagher_County_Addressing_Basemap_WFL1_FeatureServer_0",
@@ -16660,11 +16660,11 @@
    "rows": 2125,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 4.0,
+   "elapsed_s": 1.5,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:01Z"
+   "at": "2026-10-24T12:05:11Z"
   },
   {
    "id": "vices_Ridgeside_Labels_StreetAddresses_WFL1_FeatureServer_27",
@@ -16675,11 +16675,11 @@
    "rows": 1064,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.2,
+   "elapsed_s": 1.5,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:20Z"
+   "at": "2026-10-24T12:04:22Z"
   },
   {
    "id": "w5d_arcgis_rest_services_Calais_VT_Resources_FeatureServer_4",
@@ -16690,11 +16690,11 @@
    "rows": 978,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.8,
+   "elapsed_s": 4.0,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:18Z"
+   "at": "2026-10-24T12:04:25Z"
   },
   {
    "id": "wSRRTu_arcgis_rest_services_Sample_Addresses_FeatureServer_0",
@@ -16705,11 +16705,11 @@
    "rows": 969,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.9,
+   "elapsed_s": 1.5,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:19Z"
+   "at": "2026-10-24T12:04:33Z"
   },
   {
    "id": "y_arcgis_rest_services_SheridanAddresses2023_FeatureServer_0",
@@ -16720,11 +16720,11 @@
    "rows": 1890,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 4.2,
+   "elapsed_s": 2.0,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:35Z"
+   "at": "2026-10-24T12:04:59Z"
   },
   {
    "id": "ytLCyS0D_arcgis_rest_services_Address_Points_FeatureServer_0",
@@ -16735,11 +16735,11 @@
    "rows": 3327,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 1.6,
+   "elapsed_s": 4.0,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:51:29Z"
+   "at": "2026-10-24T12:05:25Z"
   },
   {
    "id": "ze4GYYo_arcgis_rest_services_Addresses_No_BB_FeatureServer_0",
@@ -16750,11 +16750,11 @@
    "rows": 1780,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 2.2,
+   "elapsed_s": 2.3,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-24T11:50:47Z"
+   "at": "2026-10-24T12:04:24Z"
   }
  ]
 }
