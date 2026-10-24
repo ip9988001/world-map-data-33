@@ -9,14 +9,14 @@
   "stop_ratio": 0.95
  },
  "last_run": {
-  "step": "03",
+  "step": "04",
   "run_id": null,
-  "at": "2026-10-24T00:59:15Z",
+  "at": "2026-10-24T01:47:49Z",
   "trigger": "brain",
-  "layers": "m_qIZBeaKoXYwn3kjH_arcgis_rest_services_ERP_FeatureServer_29,kvZmS4_arcgis_rest_services_DamageAssessment_FeatureServer_0,is_rest_services_Points_of_Interest_RTD_WFL1_FeatureServer_0,_services_OPEN_DATA_cdphe_ems_ambulance_agencies_MapServer_0,q_arcgis_rest_services_Facility_Site_Point_2_FeatureServer_1",
+  "layers": "all",
   "workers": 4
  },
- "awaiting_brain": true,
+ "awaiting_brain": false,
  "brain_review": {
   "at": "2026-10-24T01:29:45Z",
   "step": "03",
@@ -48,7 +48,8 @@
    "at": "2026-10-24T00:59:15Z"
   },
   "04": {
-   "status": "in_review"
+   "status": "started",
+   "at": "2026-10-24T01:47:49Z"
   }
  },
  "blocked_count": 0,

@@ -151,6 +151,16 @@ def select_layers(step, limit=0, policy=None):
         # ---- 04 放量专用口径：全州级大层里只要真·地址层 ----
         # 实测：row_count>300000 一条能筛出 19,116 层 / 14.4 亿行，其中火警出警记录、
         # 欧洲 OSM、parcels/zones 占 42% 的行 —— 靠标题关键词和行数上限收窄。
+        if sel.get("skip_blocked"):
+            try:
+                blk = json.load(open(os.path.join(HERE, "blocked.json"), encoding="utf-8"))
+                ids = {x.get("id") for x in (blk.get("items") or [])}
+                out = [r for r in out if r["id"] not in ids]
+            except Exception as e:
+                print("⚠️ blocked.json 读不动，跳过 skip_blocked：%s" % str(e)[:80])
+        if sel.get("svc_exclude"):
+            bad = {str(x).lower() for x in sel["svc_exclude"]}
+            out = [r for r in out if (r.get("svc") or "").lower() not in bad]
         if sel.get("state_exclude"):
             bad = {str(x) for x in sel["state_exclude"]}
             out = [r for r in out if r["state"] not in bad]

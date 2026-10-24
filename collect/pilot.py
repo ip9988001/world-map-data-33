@@ -640,6 +640,7 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False):
     lock = threading.Lock()
     up_lock = threading.Lock()
     stop = threading.Event()
+    _set_prog(prog)
     hb = threading.Thread(target=_heartbeat, args=(prog, lock, stop, log), daemon=True)
     hb.start()
     rows_new, errs = 0, []
@@ -734,6 +735,44 @@ def verdict(rows, count, err, limit=0):
     return 0, ""
 
 
+# ---------------- 无进展看门狗 ----------------
+# 2026-10-24 事故：STEP-04 有一层（MapServer + keyset）跑了 91 分钟、一个单元都没上传，
+# 只能人工 cancel。并行度一高这种空转最贵，所以让工人自己判死自己。
+STALL_MIN = int(os.environ.get("PILOT_STALL_MIN", "12"))
+_PROG = {"p": None}
+_WD = {"at": time.time()}
+
+
+def _set_prog(prog):
+    _PROG["p"] = prog
+    _WD["at"] = time.time()
+
+
+def _watchdog(log, stall_min=None):
+    stall = (stall_min or STALL_MIN) * 60
+    last = None
+    while True:
+        time.sleep(30)
+        p = _PROG.get("p")
+        if not p:
+            continue
+        sig = (p.get("parts"), p.get("rows"), p.get("done"))
+        if sig != last:
+            last = sig
+            _WD["at"] = time.time()
+        elif time.time() - _WD["at"] > stall:
+            log("❌ 无进展 %d 分钟（parts=%s rows=%s，共 %s 单元）→ 主动退出，记为 no_progress"
+                % (stall // 60, p.get("parts"), p.get("rows"), p.get("units")))
+            sys.stdout.flush()
+            os._exit(3)
+
+
+def _start_watchdog(log):
+    th = threading.Thread(target=_watchdog, args=(log,), daemon=True)
+    th.start()
+    return th
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--layer")
@@ -759,6 +798,7 @@ def main():
     t0 = time.time()
     log = lambda m: print("[%s] %s" % (CUR["id"], m), flush=True)
     log("start %s" % CUR["url"][:90])
+    _start_watchdog(log)
     if CUR["svc"] in ("FeatureServer", "MapServer"):
         rows, count, err, parts = collect_arcgis_v2(CUR["url"], a.limit, log, a.workers, a.fresh)
     elif CUR["svc"] == "Socrata":

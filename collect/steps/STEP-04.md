@@ -30,8 +30,9 @@
 
 ## 命令（照抄）
 ```bash
+python3 collect/supervisor.py --review pass --next 05
+python3 collect/supervisor.py --kick 04 --workers 4 --max-layers 10
 python3 collect/supervisor.py --kick 04 --workers 4
-python3 collect/supervisor.py --review pass --next 05 --note "..."
 ```
 
 ## 卡死阈值
@@ -51,7 +52,8 @@ python3 collect/supervisor.py --review pass --next 05 --note "..."
   ],
   "title_include": "address|addr\\b|situs|e-?911|ng911|mailing|delivery point|location point",
   "title_exclude": "fire|nfirs|response|parcel|zone|district|boundary|hydrant|business|poi|of interest|europe|canada|mexico|bus stop|shelter|parking|traffic|crash|collision|permit|school|hospital|station|cell ?tower|antenna|solar|weather|flood|watershed|trail|park\\b|bridge|billboard|licen|inspection|vacant|demolition",
-  "rows_max": 5000000
+  "rows_max": 5000000,
+  "skip_blocked": true
  },
  "workers": 4,
  "unit_rows": 1000000,

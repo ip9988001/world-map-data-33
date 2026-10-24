@@ -1,5 +1,15 @@
 {
  "schema": "v2",
  "note": "两次不解决就记档跳过——这里是事实记录，不是判断。字段：id/layer/fail_count/evidence/skip_after",
- "items": []
+ "items": [
+  {
+   "id": "_rgv911_org_server_rest_services_Public_Map_MIL1_MapServer_1",
+   "state": "TX",
+   "row_count": 302920,
+   "reason": "no_progress_91min: MapServer+keyset 游标不前进也不报错，0 个单元上传",
+   "at": "2026-10-24T03:30:00Z",
+   "step": "04"
+  }
+ ],
+ "count": 1
 }
