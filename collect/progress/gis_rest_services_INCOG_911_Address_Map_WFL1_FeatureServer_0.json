@@ -1,0 +1,17 @@
+{
+ "id": "gis_rest_services_INCOG_911_Address_Map_WFL1_FeatureServer_0",
+ "ts": "2026-10-24T01:40:43Z",
+ "api": "https://services2.arcgis.com/yvplvZXPdeJQfw7F/arcgis/rest/services/INCOG_911_Address_Map_WFL1/FeatureServer/0",
+ "count": 417781,
+ "base_rows": 0,
+ "rows": 195000,
+ "parts": 3,
+ "workers": {
+  "0": 195000
+ },
+ "strategy": "keyset",
+ "units": 1,
+ "done_units": 0,
+ "unit_rows_target": 1000000,
+ "done": false
+}
