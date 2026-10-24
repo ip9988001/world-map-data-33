@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import csv
 import gzip
+import hashlib
 import json
 import os
 import subprocess
@@ -107,9 +108,32 @@ def list_releases(prefixes):
     return keep
 
 
+FULL_FIELDS = ("FULLADDR", "FULL_ADDR", "FULL_ADDRESS", "ADDRESS", "SITE_ADDRESS", "LOCATION")
+
+
+def _fallback_key(rec):
+    """addr_key 只在「门牌号+街道名」都有值时才生成；实测 2/3 的行没有 addr_key。
+    这些行用「完整地址串」或「经纬度」做哈希兜底，否则去重等于把它们当透明。"""
+    raw = rec.get("raw") or {}
+    full = ""
+    for f in FULL_FIELDS:
+        v = raw.get(f) or raw.get(f.lower()) or raw.get(f.title())
+        if v:
+            full = str(v).strip().upper()
+            break
+    if not full:
+        lat, lon = rec.get("lat"), rec.get("lon")
+        if lat is not None and lon is not None:
+            full = "%.5f,%.5f" % (float(lat), float(lon))
+    if not full:
+        return None
+    return "fb:" + hashlib.md5(full.encode("utf-8", "replace")).hexdigest()[:16]
+
+
 def digests_from_tar(path, tmpdir):
-    """从一个 tar.gz 里抠出该层的 addr_key 集合（16 位 hex）。"""
+    """从一个 tar.gz 里抠出该层的去重键集合 + 统计（总行 / 无键行）。"""
     keys = set()
+    stats = {"rows": 0, "no_key": 0}
     try:
         with tarfile.open(path, "r:gz") as tf:
             for m in tf.getmembers():
@@ -131,12 +155,15 @@ def digests_from_tar(path, tmpdir):
                         rec = json.loads(line)
                     except Exception:
                         continue
-                    k = rec.get("addr_key")
+                    stats["rows"] += 1
+                    k = rec.get("addr_key") or _fallback_key(rec)
                     if k:
                         keys.add(k)
+                    else:
+                        stats["no_key"] += 1
     except Exception as e:
         print("  ⚠️ 解包失败 %s：%s" % (os.path.basename(path), str(e)[:80]))
-    return keys
+    return keys, stats
 
 
 def main(argv=None):
@@ -164,28 +191,39 @@ def main(argv=None):
         layers = by_state[st]
         keys = set()
         raw = 0
+        saw_rows = 0
+        no_key = 0
         per_layer = []
         for r in layers:
             tag = r["tag"]
             rc, out, err = gh(["release", "download", tag, "--repo", REPO,
                               "--pattern", "*.tar.gz", "--dir", tmpdir, "--clobber"])
             got = set()
+            st_rows = 0
             if rc == 0:
                 for fn in os.listdir(tmpdir):
                     if fn.startswith(r["layer"]) and fn.endswith(".tar.gz"):
-                        got |= digests_from_tar(os.path.join(tmpdir, fn), tmpdir)
+                        g, stt = digests_from_tar(os.path.join(tmpdir, fn), tmpdir)
+                        got |= g
+                        st_rows += stt["rows"]
+                        no_key += stt["no_key"]
                         os.remove(os.path.join(tmpdir, fn))
+            saw_rows += st_rows
             per_layer.append({"layer": r["layer"], "unique": len(got)})
             keys |= got
             raw += len(got)
-        result[st] = {"layers": len(layers), "layer_unique_sum": raw,
-                      "unique": len(keys), "per_layer": per_layer[:5]}
+        result[st] = {"layers": len(layers), "rows_scanned": saw_rows, "rows_no_key": no_key,
+                      "layer_unique_sum": raw, "unique": len(keys), "per_layer": per_layer[:5]}
         print("  %s: %d 层 / 层内合计 %s / 州内独立 %s" % (st, len(layers), format(raw, ","), format(len(keys), ",")))
 
+    total_scanned = sum(v["rows_scanned"] for v in result.values())
+    total_no_key = sum(v["rows_no_key"] for v in result.values())
     total_raw = sum(v["layer_unique_sum"] for v in result.values())
     total_unique = sum(v["unique"] for v in result.values())
     lines = ["# 三仓采集 · 去重报告（addr_key 精确去重）", "",
              "- 参与层数：**%d**" % len(rels),
+             "- 扫描行数：**%s**（其中无任何去重键 %s 行）" % (
+                 format(total_scanned, ","), format(total_no_key, ",")),
              "- 层内去重后行数合计：**%s**" % format(total_raw, ","),
              "- 跨层去重后独立地址：**%s**" % format(total_unique, ","),
              "- 重复量：%s（重复率 %.1f%%）" % (format(total_raw - total_unique, ","),
@@ -207,10 +245,12 @@ def main(argv=None):
               "- `真实覆盖率` = 独立地址 ÷ Census 住房单元数（>100% 说明该州有非住宅地址点或跨州数据）"]
     os.makedirs(os.path.dirname(OUT_MD), exist_ok=True)
     open(OUT_MD, "w", encoding="utf-8").write("\n".join(lines) + "\n")
-    json.dump({"layers": len(rels), "total_layer_unique": total_raw,
+    json.dump({"layers": len(rels), "rows_scanned": total_scanned, "rows_no_key": total_no_key,
+               "total_layer_unique": total_raw,
                "total_unique": total_unique, "states": len(result), "detail": result},
               open(OUT_JSON, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
-    print(json.dumps({"layers": len(rels), "unique": total_unique, "dup_rate":
+    print(json.dumps({"layers": len(rels), "scanned": total_scanned, "no_key": total_no_key,
+                      "unique": total_unique, "dup_rate":
                       round(1 - total_unique / max(total_raw, 1), 4), "states": len(result)},
                      ensure_ascii=False))
     return 0
