@@ -12,10 +12,11 @@
   python3 scripts/herald.py --step 02 --status success --run-id 123
   python3 scripts/herald.py --selftest
 """
-【2026-10-24 已废止】v1 工头。自研模式 v2 起，工头只叫醒大脑、不判验收：
-改看 collect/supervisor.py + collect/supervisors/step_0X.py。
-本文件保留仅为考古，运行会被下面的守卫拦下。
-"""
+# 【2026-10-24 已废止】v1 工头。自研模式 v2 起，工头只叫醒大脑、不判验收：
+# 改看 collect/supervisor.py + collect/supervisors/step_0X.py。
+# 本文件保留仅为考古；直接运行会被下面的守卫拦下。
+# ★ 废止标记必须写成注释 —— 上一版把中文正文塞进 docstring 外面，
+#   导致 py_compile 报 invalid character '【'，把 ci-smoke 连续 4 次刷成假红。
 from __future__ import annotations
 import argparse, json, os, subprocess
 from datetime import datetime, timezone
