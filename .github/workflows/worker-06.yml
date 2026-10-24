@@ -1,0 +1,35 @@
+name: worker-06
+# STEP 06 —— 收工（出总表，企微由大脑发）
+# 这里只声明本步的默认参数；执行机制全在 _worker-template.yml。
+# 要只改这一步的差异（并发/单元大小/超时/地图），改这个文件；
+# 要改所有步的执行方式，改模板。
+on:
+  workflow_dispatch:
+    inputs:
+      layers:
+        description: "只跑这些层（逗号分隔，留空=按 policy 自动选）"
+        default: ""
+      max_layers:
+        description: "只跑前 N 层（灰度用，0=全部）"
+        default: "0"
+      workers:
+        description: "并发线程数"
+        default: "4"
+      unit_rows:
+        description: "单元行数（断点续传粒度）"
+        default: "500000"
+permissions: { contents: write, actions: write }
+concurrency:
+  group: worker-06
+  cancel-in-progress: false
+jobs:
+  run:
+    uses: ./.github/workflows/_worker-template.yml
+    with:
+      step: "06"
+      layers: ${{ github.event.inputs.layers || '' }}
+      max_layers: ${{ github.event.inputs.max_layers || '0' }}
+      workers: ${{ github.event.inputs.workers || '4' }}
+      unit_rows: ${{ github.event.inputs.unit_rows || '500000' }}
+      report: "false"
+      single: "true"

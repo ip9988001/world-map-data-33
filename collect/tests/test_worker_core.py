@@ -74,5 +74,37 @@ class TestSelect(unittest.TestCase):
         self.assertEqual(W.select_layers("03", policy=self.pol(select={"state": "KS"})), [])
 
 
+
+class TestStepsConfig(unittest.TestCase):
+    """C1：steps.json 是唯一参数来源，校验器必须真的拦得住错配置"""
+
+    def test_real_config_is_valid(self):
+        ok, errs = W.validate(W.STEPS_F)
+        self.assertTrue(ok, errs)
+
+    def test_catches_bad_kind(self):
+        import tempfile
+        d = tempfile.mkdtemp()
+        p = os.path.join(d, "steps.json")
+        cfg = json.load(open(W.STEPS_F, encoding="utf-8"))
+        cfg["steps"]["03"]["kind"] = "whatever"
+        json.dump(cfg, open(p, "w"))
+        ok, errs = W.validate(p)
+        self.assertFalse(ok)
+        self.assertTrue(any("kind" in e for e in errs))
+
+    def test_catches_missing_layer_placeholder_in_tag(self):
+        import tempfile
+        d = tempfile.mkdtemp()
+        p = os.path.join(d, "steps.json")
+        cfg = json.load(open(W.STEPS_F, encoding="utf-8"))
+        cfg["steps"]["04"]["tag"] = "collect-step04"          # 少了 {layer} → 7 个层会共用一个 tag
+        json.dump(cfg, open(p, "w"))
+        ok, errs = W.validate(p)
+        self.assertFalse(ok)
+        self.assertTrue(any("{layer}" in e for e in errs))
+
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

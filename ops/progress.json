@@ -1,10 +1,10 @@
 {
- "step": "B",
- "sub": "B3",
- "done": 3,
+ "step": "C",
+ "sub": "C2",
+ "done": 2,
  "total": 5,
  "status": "working",
- "ts": "2026-10-24T00:20:10Z",
- "eta_left_min": 35,
- "note": "worker_core + 7 个工人入口"
+ "ts": "2026-10-24T00:30:59Z",
+ "eta_left_min": 70,
+ "note": "steps.json + validate + show 完成"
 }

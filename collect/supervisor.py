@@ -39,13 +39,13 @@ STALL_MIN = 240          # 超过这么久没结束 = 异常，但只报告不�
 
 # step -> (名字, 说明书, worker workflow)
 STEPS = {
-    "00": ("地基", "collect/steps/STEP-00.md", "collect-watchdog.yml"),
-    "01": ("预检", "collect/steps/STEP-01.md", "collect-preflight.yml"),
-    "02": ("试点 8 层", "collect/steps/STEP-02.md", "collect-pilot.yml"),
-    "03": ("单州试跑 KS", "collect/steps/STEP-03.md", "collect-batch.yml"),
-    "04": ("全州级放量", "collect/steps/STEP-04.md", "collect-batch.yml"),
-    "05": ("县市碎片放量", "collect/steps/STEP-05.md", "collect-batch.yml"),
-    "06": ("收工", "collect/steps/STEP-06.md", None),
+    "00": ("地基", "collect/steps/STEP-00.md", "worker-00.yml"),
+    "01": ("预检", "collect/steps/STEP-01.md", "worker-01.yml"),
+    "02": ("试点 8 层", "collect/steps/STEP-02.md", "worker-02.yml"),
+    "03": ("单州试跑 KS", "collect/steps/STEP-03.md", "worker-03.yml"),
+    "04": ("全州级放量", "collect/steps/STEP-04.md", "worker-04.yml"),
+    "05": ("县市碎片放量", "collect/steps/STEP-05.md", "worker-05.yml"),
+    "06": ("收工", "collect/steps/STEP-06.md", "worker-06.yml"),
 }
 
 

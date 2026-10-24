@@ -1,0 +1,83 @@
+{
+ "schema": "v2.1",
+ "_comment": "自研模式 v2.1 的唯一参数来源。7 个工人入口读它，7 个工头读它，STEP-0X.md 与它交叉校验。改参数只改这里。",
+ "engine": {
+  "channels": ["keyset", "ids", "offset"],
+  "default_unit_rows": 500000,
+  "default_workers": 4,
+  "geom_allow": ["point", "multipoint", "socrata", "na"]
+ },
+ "steps": {
+  "00": {
+   "kind": "bootstrap",
+   "title": "地基",
+   "desc": "引擎 + 工头 + 账本 + 自检 + 单测立起来",
+   "evidence": ["selftest", "unit_tests", "state"],
+   "cmds": ["--entry-check"]
+  },
+  "01": {
+   "kind": "preflight",
+   "title": "预检",
+   "desc": "给全量图层体检，产出 layer_plan.csv（每层该怎么搬）",
+   "shards": 12,
+   "select": {"source": "survey"},
+   "evidence": ["layer_plan.csv", "count_rate"],
+   "accept": {"plan_rows_min": 50000, "plan_empty_max": 0, "count_rate_min": 0.78}
+  },
+  "02": {
+   "kind": "collect",
+   "title": "试点 8 层",
+   "desc": "8 种典型层各采一遍，验证三条通道与断点续传",
+   "select": {"source": "pilot_layers"},
+   "workers": 4,
+   "unit_rows": 500000,
+   "tag": "collect-step02-{layer}",
+   "report": "pilot",
+   "evidence": ["report", "releases", "checkpoint", "short_units"],
+   "accept": {"with_rows_min": 8, "diff_max": 0.01}
+  },
+  "03": {
+   "kind": "collect",
+   "title": "单州试跑 KS",
+   "desc": "一个州的所有地址点层跑一遍，验证批量/并发/打包/续传在真实规模下不崩",
+   "select": {"state": "KS"},
+   "workers": 4,
+   "unit_rows": 200000,
+   "tag": "collect-step03-{layer}",
+   "gate": {"gray_layers": 20},
+   "evidence": ["releases", "checkpoint", "unit_errors", "short_units"],
+   "accept": {"done_rate_min": 0.85, "failed_rate_max": 0.15}
+  },
+  "04": {
+   "kind": "collect",
+   "title": "全州放量",
+   "desc": "覆盖整州的大层全部搬回，一次拿到大部分人口",
+   "select": {"where": "row_count>300000"},
+   "workers": 4,
+   "unit_rows": 1000000,
+   "tag": "collect-step04-{layer}",
+   "evidence": ["releases", "checkpoint", "unit_errors"],
+   "accept": {"total_rows_min": 30000000}
+  },
+  "05": {
+   "kind": "collect",
+   "title": "县市碎片",
+   "desc": "剩余两万层分批扫完，不留 pending",
+   "select": {"mode": "bulk", "batch": 40},
+   "workers": 4,
+   "unit_rows": 100000,
+   "tag": "collect-step05-{layer}",
+   "roll": {"mode": "batches", "max_per_authorization": 5},
+   "evidence": ["releases", "checkpoint", "blocked"],
+   "accept": {"failed_rate_max": 0.15, "pending_max": 0}
+  },
+  "06": {
+   "kind": "report",
+   "title": "收工",
+   "desc": "汇总覆盖率总表（只出报告，不推企微 —— 企微由大脑发）",
+   "source": "checkpoints",
+   "evidence": ["FINAL_REPORT.md"],
+   "cmds": ["--review pass"]
+  }
+ }
+}

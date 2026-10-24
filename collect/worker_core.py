@@ -140,8 +140,30 @@ def _parse(argv):
     ap.add_argument("--cfg")
     ap.add_argument("--max-layers", type=int, default=0, help="只跑前 N 层（灰度用）")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--validate", action="store_true", help="校验 steps.json")
+    ap.add_argument("--show", metavar="STEP", help="展开该步的完整参数")
+    ap.add_argument("--list-matrix", action="store_true", help="输出 matrix JSON（给 workflow 用）")
     a, _ = ap.parse_known_args(argv)
     return a
+
+
+def cli(argv=None, step=None):
+    """7 个 run_step_0X.py 的统一 CLI 入口（含 --validate / --show）。"""
+    a = _parse(argv)
+    if a.validate:
+        ok, errs = validate()
+        for e in errs:
+            print("❌ " + e)
+        print(("%s：%d 条" % ("READY" if ok else "BLOCKED", len(errs))))
+        return 0 if ok else 1
+    if a.show:
+        return show(a.show, limit=a.max_layers)
+    if a.list_matrix:
+        pol = _eff(step, a)
+        layers = select_layers(step, limit=a.max_layers, policy=pol)
+        print(json.dumps({"include": [{"layer": r["id"]} for r in layers]}, ensure_ascii=False))
+        return 0
+    return run(step, argv)
 
 
 def _pilot_cmd(cfg_file, layer, a):
@@ -154,6 +176,81 @@ def _pilot_cmd(cfg_file, layer, a):
     if a.limit:
         cmd += ["--limit", str(a.limit)]
     return cmd
+
+
+# ---------------- 配置校验 / 展开（steps.json 是唯一参数来源） ----------------
+KINDS = ("bootstrap", "preflight", "collect", "report")
+
+
+def validate(path=None):
+    """校验 steps.json。返回 (ok, errs)。CI 与工人启动前都会用它。"""
+    path = path or STEPS_F
+    errs = []
+    if not os.path.exists(path):
+        return False, ["steps.json 不存在：%s" % path]
+    try:
+        cfg = json.load(open(path, encoding="utf-8"))
+    except Exception as e:
+        return False, ["steps.json 解析失败：%s" % str(e)[:150]]
+    if cfg.get("schema") != "v2.1":
+        errs.append("schema 必须是 v2.1（实际 %r）" % cfg.get("schema"))
+    eng = cfg.get("engine") or {}
+    if not eng.get("channels"):
+        errs.append("engine.channels 缺失（应为 keyset/ids/offset）")
+    steps = cfg.get("steps") or {}
+    for st in ("00", "01", "02", "03", "04", "05", "06"):
+        if st not in steps:
+            errs.append("缺 STEP %s 的 policy" % st)
+            continue
+        pol = steps[st] or {}
+        if pol.get("kind") not in KINDS:
+            errs.append("STEP %s kind 非法：%r（只允许 %s）" % (st, pol.get("kind"), "/".join(KINDS)))
+        if not pol.get("title"):
+            errs.append("STEP %s 缺 title" % st)
+        if pol.get("kind") == "collect":
+            if not pol.get("select"):
+                errs.append("STEP %s 是 collect 但没有 select" % st)
+            if "{layer}" not in (pol.get("tag") or ""):
+                errs.append("STEP %s 的 tag 必须含 {layer}：%r" % (st, pol.get("tag")))
+            if int(pol.get("unit_rows") or 0) <= 0:
+                errs.append("STEP %s unit_rows 必须 > 0" % st)
+            if int(pol.get("workers") or 0) <= 0:
+                errs.append("STEP %s workers 必须 > 0" % st)
+        allow = set(str(x).lower() for x in (eng.get("geom_allow") or []))
+        for g in (pol.get("geom_in") or []):
+            if str(g).lower() not in allow:
+                errs.append("STEP %s geom_in 含未登记几何：%r" % (st, g))
+    return (not errs), errs
+
+
+def show(step, limit=0):
+    """展开某一步的完整参数（人读+机读）。工头叫醒话术、判据卡都引用这里的输出。"""
+    pol = load_policy(step)
+    layers = []
+    try:
+        layers = select_layers(step, limit=limit, policy=pol)
+    except Exception as e:
+        pol["_select_error"] = str(e)[:150]
+    expanded = dict(pol)
+    expanded["_selected_layers"] = len(layers)
+    expanded["_sample"] = [r.get("id") for r in layers[:5]]
+    print(json.dumps(expanded, ensure_ascii=False, indent=1))
+    return 0
+
+
+def _eff(step, a):
+    """把 CLI 覆盖合并进 policy（select.state/offset/batch/layers）。"""
+    pol = load_policy(step)
+    sel = dict(pol.get("select") or {})
+    if getattr(a, "state", None):
+        sel["state"] = a.state
+    if getattr(a, "offset", None) is not None:
+        sel["offset"] = a.offset
+    if getattr(a, "size", None) is not None:
+        sel["batch"] = a.size
+    if getattr(a, "layers", None):
+        sel["layers"] = [x.strip() for x in a.layers.split(",") if x.strip()]
+    return dict(pol, select=sel)
 
 
 def run(step, argv=None):
@@ -190,17 +287,7 @@ def run(step, argv=None):
         return rc
 
     # ---- 默认：collect ----
-    sel = dict(pol.get("select") or {})
-    if a.state:
-        sel["state"] = a.state
-    if a.offset is not None:
-        sel["offset"] = a.offset
-    if a.size is not None:
-        sel["batch"] = a.size
-    if a.layers:
-        sel["layers"] = [x.strip() for x in a.layers.split(",") if x.strip()]
-    pol = dict(pol, select=sel)
-
+    pol = _eff(step, a)
     layers = select_layers(step, limit=a.max_layers, policy=pol)
     print("[step %s] %s：选中 %d 层，workers=%s unit_rows=%s"
           % (step, pol.get("title"), len(layers), a.workers or pol.get("workers"),

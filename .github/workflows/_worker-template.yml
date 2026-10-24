@@ -1,0 +1,139 @@
+name: _worker-template
+# 7 个工人共用的执行骨架（reusable workflow）。
+# 只改某一步的差异 → 改 worker-0X.yml；想改所有步的执行机制 → 改这里。
+on:
+  workflow_call:
+    inputs:
+      step:        { type: string, required: true }
+      layers:      { type: string, default: "" }
+      workers:     { type: string, default: "4" }
+      unit_rows:   { type: string, default: "500000" }
+      max_layers:  { type: string, default: "0" }
+      report:      { type: string, default: "false" }
+      # single=true → 不是按层跑（bootstrap / preflight / report 这三类步）
+      single:      { type: string, default: "false" }
+permissions: { contents: write, actions: write }
+jobs:
+  direct:
+    if: inputs.single == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: 跑 STEP ${{ inputs.step }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 collect/run_step_${{ inputs.step }}.py --validate
+          python3 collect/run_step_${{ inputs.step }}.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rep-${{ inputs.step }}-step
+          path: collect/reports/
+          if-no-files-found: warn
+          retention-days: 14
+
+  plan:
+    if: inputs.single != 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.gen.outputs.matrix }}
+      count:  ${{ steps.gen.outputs.count }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - id: gen
+        name: 校验配置 + 生成 matrix
+        run: |
+          set -e
+          python3 collect/run_step_${{ inputs.step }}.py --validate
+          python3 collect/run_step_${{ inputs.step }}.py --list-matrix \
+            --layers "${{ inputs.layers }}" --max-layers "${{ inputs.max_layers }}" > /tmp/m.json
+          N=$(python3 -c "import json;print(len(json.load(open('/tmp/m.json'))['include']))")
+          echo "matrix=$(cat /tmp/m.json)" >> "$GITHUB_OUTPUT"
+          echo "count=$N" >> "$GITHUB_OUTPUT"
+          echo "本步选中 $N 层"
+
+  collect:
+    needs: plan
+    if: inputs.single != 'true' && needs.plan.outputs.count != '0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: 采 ${{ matrix.layer }}
+        env:
+          # ★ pilot.py 里所有 gh 调用都靠这个（checkout 只给 git 塞 extraheader，gh 不认）
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PILOT_HEARTBEAT_PUSH: "1"
+          # tag 与 steps.json 一致：collect-stepNN-<layer>，不带 run_number → 换 run 能续跑
+          PILOT_RELEASE_TAG: collect-step${{ inputs.step }}-${{ matrix.layer }}
+        run: |
+          python3 collect/run_step_${{ inputs.step }}.py --layer ${{ matrix.layer }} \
+            --workers ${{ inputs.workers }} --unit-rows ${{ inputs.unit_rows }}
+      - name: 兜底上传（只有 pilot 一个单元都没发成功时才做）
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ID: ${{ matrix.layer }}
+        run: |
+          TAG="collect-step${{ inputs.step }}-$ID"
+          export ID
+          N=$(python3 -c "import json,os;p='collect/out/%s/_checkpoint.json'%os.environ['ID'];print(sum(1 for v in json.load(open(p)).get('unit_uploaded',{}).values() if v) if os.path.exists(p) else 0)")
+          if [ "${N:-0}" -gt 0 ]; then echo "✅ pilot 已发布 ${N} 个单元到 $TAG，跳过兜底"; exit 0; fi
+          if [ -d "collect/out/$ID" ] && [ -n "$(ls -A "collect/out/$ID" 2>/dev/null)" ]; then
+            tar czf "/tmp/$ID.tar.gz" -C collect/out "$ID"
+            gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --title "step${{ inputs.step }} $ID" \
+              --notes "fallback full payload" "/tmp/$ID.tar.gz" \
+              || gh release upload "$TAG" "/tmp/$ID.tar.gz" --repo "$GITHUB_REPOSITORY" --clobber \
+              || { echo "❌ $ID 数据没进 Release，这层等于白跑"; exit 1; }
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rep-${{ inputs.step }}-${{ matrix.layer }}
+          path: collect/reports/${{ matrix.layer }}.json
+          if-no-files-found: warn
+          retention-days: 14
+
+  report:
+    needs: collect
+    if: always() && inputs.report == 'true' && inputs.single != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }     # 浅克隆里 git rebase 无法重放 → push 必被拒
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - uses: actions/download-artifact@v4
+        with:
+          path: collect/reports
+          pattern: "rep-${{ inputs.step }}-*"
+          merge-multiple: true
+      - name: 汇总
+        run: python3 collect/make_pilot_report.py
+      - name: 提交报告（禁止 || true 吞错）
+        run: |
+          git config user.name collect-bot
+          git config user.email bot@users.noreply.github.com
+          git add -f collect/pilot_report.json
+          git diff --cached --quiet || git commit -m "collect: step${{ inputs.step }} 报告"
+          ok=0
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main || true
+            git rebase -q origin/main 2>/dev/null || git rebase --abort 2>/dev/null || true
+            if git push -q origin HEAD:main 2>/dev/null; then ok=1; echo "✅ 报告已推送（第 $i 次）"; break; fi
+            echo "⚠️ push 第 $i 次被拒，重试…"; sleep $((i*4))
+          done
+          if [ "$ok" = "0" ]; then echo "❌ 报告推送失败，需人工介入"; exit 1; fi
