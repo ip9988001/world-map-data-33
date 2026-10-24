@@ -1,6 +1,6 @@
 {
  "step": "04",
- "at": "2026-10-24T01:45:29Z",
+ "at": "2026-10-24T03:27:36Z",
  "want": [
   "report",
   "releases",
@@ -9,12 +9,12 @@
  ],
  "facts": {
   "report": {
-   "sha": "120fb7736422",
-   "freshest": "2026-10-24T01:44:13Z",
-   "layers": 129,
-   "with_rows": 129,
+   "sha": "26153aa8e311",
+   "freshest": "2026-10-24T03:24:09Z",
+   "layers": 165,
+   "with_rows": 165,
    "worst_diff": 0,
-   "total_rows": 24130471,
+   "total_rows": 55593400,
    "failed": [],
    "per_layer": [
     {
@@ -903,9 +903,9 @@
      "id": "rcgis_rest_services_Lake_County_IL_Addresses_FeatureServer_0",
      "count": 325394,
      "rows": 325394,
-     "parts": 8,
+     "parts": 7,
      "diff": 0.0,
-     "elapsed_s": 52.8,
+     "elapsed_s": 8.7,
      "err": ""
     },
     {
@@ -948,9 +948,9 @@
      "id": "rest_services_Sacramento_County_CA_Addresses_FeatureServer_0",
      "count": 662634,
      "rows": 662634,
-     "parts": 16,
+     "parts": 14,
      "diff": 0.0,
-     "elapsed_s": 51.1,
+     "elapsed_s": 4.3,
      "err": ""
     },
     {
@@ -1094,7 +1094,7 @@
      "rows": 1006136,
      "parts": 22,
      "diff": 0.0,
-     "elapsed_s": 236.8,
+     "elapsed_s": 2.9,
      "err": ""
     },
     {
@@ -1103,7 +1103,7 @@
      "rows": 1041510,
      "parts": 22,
      "diff": 0.0,
-     "elapsed_s": 185.2,
+     "elapsed_s": 1.6,
      "err": ""
     },
     {
@@ -1112,7 +1112,7 @@
      "rows": 792091,
      "parts": 16,
      "diff": 0.0,
-     "elapsed_s": 374.0,
+     "elapsed_s": 1.7,
      "err": ""
     },
     {
@@ -1121,7 +1121,7 @@
      "rows": 363257,
      "parts": 8,
      "diff": 0.0,
-     "elapsed_s": 205.1,
+     "elapsed_s": 1.6,
      "err": ""
     },
     {
@@ -1130,7 +1130,7 @@
      "rows": 342507,
      "parts": 7,
      "diff": 0.0,
-     "elapsed_s": 140.5,
+     "elapsed_s": 2.1,
      "err": ""
     },
     {
@@ -1139,7 +1139,7 @@
      "rows": 417781,
      "parts": 9,
      "diff": 0.0,
-     "elapsed_s": 391.5,
+     "elapsed_s": 2.1,
      "err": ""
     },
     {
@@ -1148,7 +1148,7 @@
      "rows": 831320,
      "parts": 17,
      "diff": 0.0,
-     "elapsed_s": 269.4,
+     "elapsed_s": 1.9,
      "err": ""
     },
     {
@@ -1157,7 +1157,7 @@
      "rows": 614279,
      "parts": 13,
      "diff": 0.0,
-     "elapsed_s": 129.8,
+     "elapsed_s": 3.3,
      "err": ""
     },
     {
@@ -1166,7 +1166,7 @@
      "rows": 397598,
      "parts": 8,
      "diff": 0.0,
-     "elapsed_s": 103.9,
+     "elapsed_s": 1.9,
      "err": ""
     },
     {
@@ -1175,12 +1175,350 @@
      "rows": 397598,
      "parts": 8,
      "diff": 0.0,
-     "elapsed_s": 114.8,
+     "elapsed_s": 2.2,
+     "err": ""
+    },
+    {
+     "id": "4G_arcgis_rest_services_NM911_Address_202205_FeatureServer_0",
+     "count": 1007421,
+     "rows": 1007421,
+     "parts": 22,
+     "diff": 0.0,
+     "elapsed_s": 1.6,
+     "err": ""
+    },
+    {
+     "id": "9xEgP_arcgis_rest_services_Zanna_E911_Sites_FeatureServer_10",
+     "count": 346678,
+     "rows": 346678,
+     "parts": 7,
+     "diff": 0.0,
+     "elapsed_s": 2.0,
+     "err": ""
+    },
+    {
+     "id": "Dyf_arcgis_rest_services_Master_Address_File_FeatureServer_0",
+     "count": 569802,
+     "rows": 569802,
+     "parts": 12,
+     "diff": 0.0,
+     "elapsed_s": 2.0,
+     "err": ""
+    },
+    {
+     "id": "JJqLK0A_arcgis_rest_services_NG911_Addresses_FeatureServer_0",
+     "count": 2078539,
+     "rows": 2078539,
+     "parts": 42,
+     "diff": 0.0,
+     "elapsed_s": 2.1,
+     "err": ""
+    },
+    {
+     "id": "Ny_arcgis_rest_services_GeoAddressWCondo_gdb_FeatureServer_0",
+     "count": 1165626,
+     "rows": 1165626,
+     "parts": 24,
+     "diff": 0.0,
+     "elapsed_s": 2.2,
+     "err": ""
+    },
+    {
+     "id": "Oy_arcgis_rest_services_Address_Lookup1_WFL1_FeatureServer_0",
+     "count": 542647,
+     "rows": 542647,
+     "parts": 11,
+     "diff": 0.0,
+     "elapsed_s": 1.7,
+     "err": ""
+    },
+    {
+     "id": "PLlPw_arcgis_rest_services_Situs_20Addresses_FeatureServer_0",
+     "count": 801871,
+     "rows": 801871,
+     "parts": 17,
+     "diff": 0.0,
+     "elapsed_s": 2.0,
+     "err": ""
+    },
+    {
+     "id": "STLCO_NG911_Schema_Attributes_081326_gdb_zip_FeatureServer_0",
+     "count": 538285,
+     "rows": 538285,
+     "parts": 11,
+     "diff": 0.0,
+     "elapsed_s": 2.2,
+     "err": ""
+    },
+    {
+     "id": "WClLJZr3s_arcgis_rest_services_YorkAddresses_FeatureServer_0",
+     "count": 365389,
+     "rows": 365389,
+     "parts": 8,
+     "diff": 0.0,
+     "elapsed_s": 1.9,
+     "err": ""
+    },
+    {
+     "id": "Xd1_arcgis_rest_services_Boston_MA_Addresses_FeatureServer_0",
+     "count": 396923,
+     "rows": 396923,
+     "parts": 8,
+     "diff": 0.0,
+     "elapsed_s": 1.8,
+     "err": ""
+    },
+    {
+     "id": "YtAMoyYT_arcgis_rest_services_Master_Address_FeatureServer_0",
+     "count": 304965,
+     "rows": 304965,
+     "parts": 7,
+     "diff": 0.0,
+     "elapsed_s": 3.6,
+     "err": ""
+    },
+    {
+     "id": "_arcgis_rest_services_Nashville_110623B_WFL1_FeatureServer_0",
+     "count": 442066,
+     "rows": 442066,
+     "parts": 9,
+     "diff": 0.0,
+     "elapsed_s": 5.4,
+     "err": ""
+    },
+    {
+     "id": "arcgis_rest_services_Maine_E911_NG_ADDRESSES_FeatureServer_0",
+     "count": 767171,
+     "rows": 767171,
+     "parts": 16,
+     "diff": 0.0,
+     "elapsed_s": 2.1,
+     "err": ""
+    },
+    {
+     "id": "arcgis_rest_services_ParcelsJoin_SpatialJoin_FeatureServer_0",
+     "count": 768258,
+     "rows": 768258,
+     "parts": 16,
+     "diff": 0.0,
+     "elapsed_s": 2.0,
+     "err": ""
+    },
+    {
+     "id": "arcgis_rest_services_Search_Addresses_Public_FeatureServer_0",
+     "count": 684018,
+     "rows": 684018,
+     "parts": 14,
+     "diff": 0.0,
+     "elapsed_s": 2.1,
+     "err": ""
+    },
+    {
+     "id": "auma_Centers_for_VT_E911_Site_Locations_WFL1_FeatureServer_0",
+     "count": 341074,
+     "rows": 341074,
+     "parts": 7,
+     "diff": 0.0,
+     "elapsed_s": 1.7,
+     "err": ""
+    },
+    {
+     "id": "ccH_arcgis_rest_services_SiteAddress20231227_FeatureServer_0",
+     "count": 567521,
+     "rows": 567521,
+     "parts": 12,
+     "diff": 0.0,
+     "elapsed_s": 2.3,
+     "err": ""
+    },
+    {
+     "id": "ces_Maine_E911_Addresses_5882121085363306039_FeatureServer_0",
+     "count": 773232,
+     "rows": 773232,
+     "parts": 16,
+     "diff": 0.0,
+     "elapsed_s": 1.8,
+     "err": ""
+    },
+    {
+     "id": "cgis_rest_services_NM911_Address_202601_FGDC_FeatureServer_0",
+     "count": 1045665,
+     "rows": 1045665,
+     "parts": 22,
+     "diff": 0.0,
+     "elapsed_s": 1.8,
+     "err": ""
+    },
+    {
+     "id": "cgis_rest_services_SaltLake_County_Addresses_FeatureServer_0",
+     "count": 540688,
+     "rows": 540688,
+     "parts": 11,
+     "diff": 0.0,
+     "elapsed_s": 1.9,
+     "err": ""
+    },
+    {
+     "id": "d5Ku_arcgis_rest_services_address_pnts_units_FeatureServer_0",
+     "count": 328484,
+     "rows": 328484,
+     "parts": 7,
+     "diff": 0.0,
+     "elapsed_s": 2.0,
+     "err": ""
+    },
+    {
+     "id": "d_arcgis_rest_services_OC_Addresses_20260811_FeatureServer_0",
+     "count": 1180322,
+     "rows": 1180322,
+     "parts": 24,
+     "diff": 0.0,
+     "elapsed_s": 2.2,
+     "err": ""
+    },
+    {
+     "id": "dyB05xBau1dNQ_arcgis_rest_services_Addresses_FeatureServer_0",
+     "count": 808355,
+     "rows": 808355,
+     "parts": 17,
+     "diff": 0.0,
+     "elapsed_s": 1.7,
+     "err": ""
+    },
+    {
+     "id": "es_us_mn_state_mngeo_loc_addresses_zip9_open_FeatureServer_0",
+     "count": 1929626,
+     "rows": 1929626,
+     "parts": 40,
+     "diff": 0.0,
+     "elapsed_s": 13.2,
+     "err": ""
+    },
+    {
+     "id": "ffxXvGX_arcgis_rest_services_KISD_Addresses_FeatureServer_15",
+     "count": 421425,
+     "rows": 421425,
+     "parts": 9,
+     "diff": 0.0,
+     "elapsed_s": 2.3,
+     "err": ""
+    },
+    {
+     "id": "g5s_arcgis_rest_services_Tidewater_addresses_FeatureServer_0",
+     "count": 2181621,
+     "rows": 2181621,
+     "parts": 45,
+     "diff": 0.0,
+     "elapsed_s": 4.0,
+     "err": ""
+    },
+    {
+     "id": "gis_rest_services_ShelbyTN_Addresses_AGOHost_FeatureServer_0",
+     "count": 341685,
+     "rows": 341685,
+     "parts": 7,
+     "diff": 0.0,
+     "elapsed_s": 2.0,
+     "err": ""
+    },
+    {
+     "id": "gov_gisweb01_rest_services_EGIS_HOUSTON_CITYINFO_MapServer_0",
+     "count": 1549689,
+     "rows": 1549689,
+     "parts": 32,
+     "diff": 0.0,
+     "elapsed_s": 2.7,
+     "err": ""
+    },
+    {
+     "id": "king_Water_Systems_by_Address_in_New_Jersey_FeatureServer_38",
+     "count": 3697833,
+     "rows": 3697833,
+     "parts": 76,
+     "diff": 0.0,
+     "elapsed_s": 1.4,
+     "err": ""
+    },
+    {
+     "id": "lMUcWvuPRM_arcgis_rest_services_E911Agol_gdb_FeatureServer_0",
+     "count": 779660,
+     "rows": 779660,
+     "parts": 16,
+     "diff": 0.0,
+     "elapsed_s": 1.9,
+     "err": ""
+    },
+    {
+     "id": "ps_com_od_rest_services_COP_OpenData_Property_MapServer_1272",
+     "count": 895154,
+     "rows": 895154,
+     "parts": 18,
+     "diff": 0.0,
+     "elapsed_s": 15.0,
+     "err": ""
+    },
+    {
+     "id": "rest_services_SiteAddressPoints_Distribution_FeatureServer_0",
+     "count": 675497,
+     "rows": 675497,
+     "parts": 14,
+     "diff": 0.0,
+     "elapsed_s": 1.9,
+     "err": ""
+    },
+    {
+     "id": "s_rest_services_Maine_E911_Addresses_Feature_FeatureServer_0@ME-2",
+     "count": 746521,
+     "rows": 746521,
+     "parts": 15,
+     "diff": 0.0,
+     "elapsed_s": 1.9,
+     "err": ""
+    },
+    {
+     "id": "s_rest_services_SanDiego_County_CA_Addresses_FeatureServer_1",
+     "count": 421499,
+     "rows": 421499,
+     "parts": 9,
+     "diff": 0.0,
+     "elapsed_s": 2.1,
+     "err": ""
+    },
+    {
+     "id": "st_services_Address_Points_SAMs_Lite_1030896_FeatureServer_0",
+     "count": 1068846,
+     "rows": 1068846,
+     "parts": 22,
+     "diff": 0.0,
+     "elapsed_s": 2.1,
+     "err": ""
+    },
+    {
+     "id": "xVN2oUE9EYLSnPE_arcgis_rest_services_Address_FeatureServer_0",
+     "count": 388873,
+     "rows": 388873,
+     "parts": 8,
+     "diff": 0.0,
+     "elapsed_s": 2.2,
      "err": ""
     }
    ]
   },
   "releases": [
+   {
+    "tag": "collect-step04-xVN2oUE9EYLSnPE_arcgis_rest_services_Address_FeatureServer_0",
+    "at": "2026-10-24T01:51:14Z",
+    "assets": [
+     {
+      "name": "xVN2oUE9EYLSnPE_arcgis_rest_services_Address_FeatureServer_0-checkpoint.json",
+      "bytes": 614
+     },
+     {
+      "name": "xVN2oUE9EYLSnPE_arcgis_rest_services_Address_FeatureServer_0-u00000.tar.gz",
+      "bytes": 41341087
+     }
+    ]
+   },
    {
     "tag": "collect-step04-teAddresses_84b35cee615045ffbebd93e11cdb072e_FeatureServer_0",
     "at": "2026-10-24T01:37:13Z",
@@ -1192,6 +1530,24 @@
      {
       "name": "teAddresses_84b35cee615045ffbebd93e11cdb072e_FeatureServer_0-u00000.tar.gz",
       "bytes": 19998327
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-st_services_Address_Points_SAMs_Lite_1030896_FeatureServer_0",
+    "at": "2026-10-24T01:45:31Z",
+    "assets": [
+     {
+      "name": "st_services_Address_Points_SAMs_Lite_1030896_FeatureServer_0-checkpoint.json",
+      "bytes": 1092
+     },
+     {
+      "name": "st_services_Address_Points_SAMs_Lite_1030896_FeatureServer_0-u00000.tar.gz",
+      "bytes": 22829900
+     },
+     {
+      "name": "st_services_Address_Points_SAMs_Lite_1030896_FeatureServer_0-u00001.tar.gz",
+      "bytes": 16508602
      }
     ]
    },
@@ -1210,6 +1566,34 @@
     ]
    },
    {
+    "tag": "collect-step04-s_rest_services_SanDiego_County_CA_Addresses_FeatureServer_1",
+    "at": "2026-10-24T01:51:14Z",
+    "assets": [
+     {
+      "name": "s_rest_services_SanDiego_County_CA_Addresses_FeatureServer_1-checkpoint.json",
+      "bytes": 664
+     },
+     {
+      "name": "s_rest_services_SanDiego_County_CA_Addresses_FeatureServer_1-u00000.tar.gz",
+      "bytes": 10906056
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-s_rest_services_Maine_E911_Addresses_Feature_FeatureServer_0@ME-2",
+    "at": "2026-10-24T01:51:14Z",
+    "assets": [
+     {
+      "name": "s_rest_services_Maine_E911_Addresses_Feature_FeatureServer_0@ME-2-checkpoint.json",
+      "bytes": 843
+     },
+     {
+      "name": "s_rest_services_Maine_E911_Addresses_Feature_FeatureServer_0@ME-2-u00000.tar.gz",
+      "bytes": 87122728
+     }
+    ]
+   },
+   {
     "tag": "collect-step04-sYuxx9Ny_arcgis_rest_services_GeoAddress_gdb_FeatureServer_0",
     "at": "2026-10-24T01:37:13Z",
     "assets": [
@@ -1220,6 +1604,134 @@
      {
       "name": "sYuxx9Ny_arcgis_rest_services_GeoAddress_gdb_FeatureServer_0-u00000.tar.gz",
       "bytes": 72759085
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-rest_services_SiteAddressPoints_Distribution_FeatureServer_0",
+    "at": "2026-10-24T01:51:14Z",
+    "assets": [
+     {
+      "name": "rest_services_SiteAddressPoints_Distribution_FeatureServer_0-checkpoint.json",
+      "bytes": 810
+     },
+     {
+      "name": "rest_services_SiteAddressPoints_Distribution_FeatureServer_0-u00000.tar.gz",
+      "bytes": 67257673
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-rest_services_Sacramento_County_CA_Addresses_FeatureServer_0",
+    "at": "2026-10-24T01:51:14Z",
+    "assets": [
+     {
+      "name": "rest_services_Sacramento_County_CA_Addresses_FeatureServer_0-checkpoint.json",
+      "bytes": 811
+     },
+     {
+      "name": "rest_services_Sacramento_County_CA_Addresses_FeatureServer_0-u00000.tar.gz",
+      "bytes": 15849824
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-rcgis_rest_services_Lake_County_IL_Addresses_FeatureServer_0",
+    "at": "2026-10-24T01:51:14Z",
+    "assets": [
+     {
+      "name": "rcgis_rest_services_Lake_County_IL_Addresses_FeatureServer_0-checkpoint.json",
+      "bytes": 602
+     },
+     {
+      "name": "rcgis_rest_services_Lake_County_IL_Addresses_FeatureServer_0-u00000.tar.gz",
+      "bytes": 9756719
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-ps_com_od_rest_services_COP_OpenData_Property_MapServer_1272",
+    "at": "2026-10-24T01:51:14Z",
+    "assets": [
+     {
+      "name": "ps_com_od_rest_services_COP_OpenData_Property_MapServer_1272-checkpoint.json",
+      "bytes": 896
+     },
+     {
+      "name": "ps_com_od_rest_services_COP_OpenData_Property_MapServer_1272-u00000.tar.gz",
+      "bytes": 75046211
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-lMUcWvuPRM_arcgis_rest_services_E911Agol_gdb_FeatureServer_0",
+    "at": "2026-10-24T01:51:14Z",
+    "assets": [
+     {
+      "name": "lMUcWvuPRM_arcgis_rest_services_E911Agol_gdb_FeatureServer_0-checkpoint.json",
+      "bytes": 851
+     },
+     {
+      "name": "lMUcWvuPRM_arcgis_rest_services_E911Agol_gdb_FeatureServer_0-u00000.tar.gz",
+      "bytes": 91420773
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-king_Water_Systems_by_Address_in_New_Jersey_FeatureServer_38",
+    "at": "2026-10-24T01:51:14Z",
+    "assets": [
+     {
+      "name": "king_Water_Systems_by_Address_in_New_Jersey_FeatureServer_38-checkpoint.json",
+      "bytes": 2778
+     },
+     {
+      "name": "king_Water_Systems_by_Address_in_New_Jersey_FeatureServer_38-u00000.tar.gz",
+      "bytes": 34188161
+     },
+     {
+      "name": "king_Water_Systems_by_Address_in_New_Jersey_FeatureServer_38-u00001.tar.gz",
+      "bytes": 36562976
+     },
+     {
+      "name": "king_Water_Systems_by_Address_in_New_Jersey_FeatureServer_38-u00002.tar.gz",
+      "bytes": 39784915
+     },
+     {
+      "name": "king_Water_Systems_by_Address_in_New_Jersey_FeatureServer_38-u00003.tar.gz",
+      "bytes": 39347406
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-gov_gisweb01_rest_services_EGIS_HOUSTON_CITYINFO_MapServer_0",
+    "at": "2026-10-24T01:51:14Z",
+    "assets": [
+     {
+      "name": "gov_gisweb01_rest_services_EGIS_HOUSTON_CITYINFO_MapServer_0-checkpoint.json",
+      "bytes": 1353
+     },
+     {
+      "name": "gov_gisweb01_rest_services_EGIS_HOUSTON_CITYINFO_MapServer_0-u00000.tar.gz",
+      "bytes": 180041693
+     },
+     {
+      "name": "gov_gisweb01_rest_services_EGIS_HOUSTON_CITYINFO_MapServer_0-u00001.tar.gz",
+      "bytes": 146617408
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-gis_rest_services_ShelbyTN_Addresses_AGOHost_FeatureServer_0",
+    "at": "2026-10-24T01:45:31Z",
+    "assets": [
+     {
+      "name": "gis_rest_services_ShelbyTN_Addresses_AGOHost_FeatureServer_0-checkpoint.json",
+      "bytes": 604
+     },
+     {
+      "name": "gis_rest_services_ShelbyTN_Addresses_AGOHost_FeatureServer_0-u00000.tar.gz",
+      "bytes": 52077766
      }
     ]
    },
@@ -1252,6 +1764,106 @@
     ]
    },
    {
+    "tag": "collect-step04-g5s_arcgis_rest_services_Tidewater_addresses_FeatureServer_0",
+    "at": "2026-10-24T01:51:14Z",
+    "assets": [
+     {
+      "name": "g5s_arcgis_rest_services_Tidewater_addresses_FeatureServer_0-checkpoint.json",
+      "bytes": 1793
+     },
+     {
+      "name": "g5s_arcgis_rest_services_Tidewater_addresses_FeatureServer_0-u00000.tar.gz",
+      "bytes": 23548817
+     },
+     {
+      "name": "g5s_arcgis_rest_services_Tidewater_addresses_FeatureServer_0-u00001.tar.gz",
+      "bytes": 23080824
+     },
+     {
+      "name": "g5s_arcgis_rest_services_Tidewater_addresses_FeatureServer_0-u00002.tar.gz",
+      "bytes": 22509796
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-ffxXvGX_arcgis_rest_services_KISD_Addresses_FeatureServer_15",
+    "at": "2026-10-24T01:51:14Z",
+    "assets": [
+     {
+      "name": "ffxXvGX_arcgis_rest_services_KISD_Addresses_FeatureServer_15-checkpoint.json",
+      "bytes": 651
+     },
+     {
+      "name": "ffxXvGX_arcgis_rest_services_KISD_Addresses_FeatureServer_15-u00000.tar.gz",
+      "bytes": 26956869
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-es_us_mn_state_mngeo_loc_addresses_zip9_open_FeatureServer_0",
+    "at": "2026-10-24T01:51:14Z",
+    "assets": [
+     {
+      "name": "es_us_mn_state_mngeo_loc_addresses_zip9_open_FeatureServer_0-checkpoint.json",
+      "bytes": 1611
+     },
+     {
+      "name": "es_us_mn_state_mngeo_loc_addresses_zip9_open_FeatureServer_0-u00000.tar.gz",
+      "bytes": 131556802
+     },
+     {
+      "name": "es_us_mn_state_mngeo_loc_addresses_zip9_open_FeatureServer_0-u00001.tar.gz",
+      "bytes": 109621890
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-dyB05xBau1dNQ_arcgis_rest_services_Addresses_FeatureServer_0",
+    "at": "2026-10-24T01:51:14Z",
+    "assets": [
+     {
+      "name": "dyB05xBau1dNQ_arcgis_rest_services_Addresses_FeatureServer_0-checkpoint.json",
+      "bytes": 876
+     },
+     {
+      "name": "dyB05xBau1dNQ_arcgis_rest_services_Addresses_FeatureServer_0-u00000.tar.gz",
+      "bytes": 75617932
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-d_arcgis_rest_services_OC_Addresses_20260811_FeatureServer_0",
+    "at": "2026-10-24T01:51:14Z",
+    "assets": [
+     {
+      "name": "d_arcgis_rest_services_OC_Addresses_20260811_FeatureServer_0-checkpoint.json",
+      "bytes": 1139
+     },
+     {
+      "name": "d_arcgis_rest_services_OC_Addresses_20260811_FeatureServer_0-u00000.tar.gz",
+      "bytes": 18147780
+     },
+     {
+      "name": "d_arcgis_rest_services_OC_Addresses_20260811_FeatureServer_0-u00001.tar.gz",
+      "bytes": 18488163
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-d5Ku_arcgis_rest_services_address_pnts_units_FeatureServer_0",
+    "at": "2026-10-24T01:45:31Z",
+    "assets": [
+     {
+      "name": "d5Ku_arcgis_rest_services_address_pnts_units_FeatureServer_0-checkpoint.json",
+      "bytes": 596
+     },
+     {
+      "name": "d5Ku_arcgis_rest_services_address_pnts_units_FeatureServer_0-u00000.tar.gz",
+      "bytes": 13384931
+     }
+    ]
+   },
+   {
     "tag": "collect-step04-d1_arcgis_rest_services_Vermont_US_Addresses_FeatureServer_1",
     "at": "2026-10-24T01:37:13Z",
     "assets": [
@@ -1262,6 +1874,122 @@
      {
       "name": "d1_arcgis_rest_services_Vermont_US_Addresses_FeatureServer_1-u00000.tar.gz",
       "bytes": 17079022
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-cgis_rest_services_SaltLake_County_Addresses_FeatureServer_0",
+    "at": "2026-10-24T01:45:31Z",
+    "assets": [
+     {
+      "name": "cgis_rest_services_SaltLake_County_Addresses_FeatureServer_0-checkpoint.json",
+      "bytes": 719
+     },
+     {
+      "name": "cgis_rest_services_SaltLake_County_Addresses_FeatureServer_0-u00000.tar.gz",
+      "bytes": 22155811
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-cgis_rest_services_NM911_Address_202601_FGDC_FeatureServer_0",
+    "at": "2026-10-24T01:45:31Z",
+    "assets": [
+     {
+      "name": "cgis_rest_services_NM911_Address_202601_FGDC_FeatureServer_0-checkpoint.json",
+      "bytes": 1085
+     },
+     {
+      "name": "cgis_rest_services_NM911_Address_202601_FGDC_FeatureServer_0-u00000.tar.gz",
+      "bytes": 19111096
+     },
+     {
+      "name": "cgis_rest_services_NM911_Address_202601_FGDC_FeatureServer_0-u00001.tar.gz",
+      "bytes": 21212921
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-ces_Maine_E911_Addresses_5882121085363306039_FeatureServer_0",
+    "at": "2026-10-24T01:51:14Z",
+    "assets": [
+     {
+      "name": "ces_Maine_E911_Addresses_5882121085363306039_FeatureServer_0-checkpoint.json",
+      "bytes": 879
+     },
+     {
+      "name": "ces_Maine_E911_Addresses_5882121085363306039_FeatureServer_0-u00000.tar.gz",
+      "bytes": 87760601
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-ccH_arcgis_rest_services_SiteAddress20231227_FeatureServer_0",
+    "at": "2026-10-24T01:51:14Z",
+    "assets": [
+     {
+      "name": "ccH_arcgis_rest_services_SiteAddress20231227_FeatureServer_0-checkpoint.json",
+      "bytes": 741
+     },
+     {
+      "name": "ccH_arcgis_rest_services_SiteAddress20231227_FeatureServer_0-u00000.tar.gz",
+      "bytes": 50440773
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-auma_Centers_for_VT_E911_Site_Locations_WFL1_FeatureServer_0",
+    "at": "2026-10-24T01:45:31Z",
+    "assets": [
+     {
+      "name": "auma_Centers_for_VT_E911_Site_Locations_WFL1_FeatureServer_0-checkpoint.json",
+      "bytes": 654
+     },
+     {
+      "name": "auma_Centers_for_VT_E911_Site_Locations_WFL1_FeatureServer_0-u00000.tar.gz",
+      "bytes": 59667126
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-arcgis_rest_services_Search_Addresses_Public_FeatureServer_0",
+    "at": "2026-10-24T01:51:14Z",
+    "assets": [
+     {
+      "name": "arcgis_rest_services_Search_Addresses_Public_FeatureServer_0-checkpoint.json",
+      "bytes": 804
+     },
+     {
+      "name": "arcgis_rest_services_Search_Addresses_Public_FeatureServer_0-u00000.tar.gz",
+      "bytes": 36088174
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-arcgis_rest_services_ParcelsJoin_SpatialJoin_FeatureServer_0",
+    "at": "2026-10-24T01:51:14Z",
+    "assets": [
+     {
+      "name": "arcgis_rest_services_ParcelsJoin_SpatialJoin_FeatureServer_0-checkpoint.json",
+      "bytes": 862
+     },
+     {
+      "name": "arcgis_rest_services_ParcelsJoin_SpatialJoin_FeatureServer_0-u00000.tar.gz",
+      "bytes": 34432767
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-arcgis_rest_services_Maine_E911_NG_ADDRESSES_FeatureServer_0",
+    "at": "2026-10-24T01:51:14Z",
+    "assets": [
+     {
+      "name": "arcgis_rest_services_Maine_E911_NG_ADDRESSES_FeatureServer_0-checkpoint.json",
+      "bytes": 862
+     },
+     {
+      "name": "arcgis_rest_services_Maine_E911_NG_ADDRESSES_FeatureServer_0-u00000.tar.gz",
+      "bytes": 86660568
      }
     ]
    },
@@ -1280,6 +2008,48 @@
     ]
    },
    {
+    "tag": "collect-step04-_arcgis_rest_services_Nashville_110623B_WFL1_FeatureServer_0",
+    "at": "2026-10-24T01:45:31Z",
+    "assets": [
+     {
+      "name": "_arcgis_rest_services_Nashville_110623B_WFL1_FeatureServer_0-checkpoint.json",
+      "bytes": 658
+     },
+     {
+      "name": "_arcgis_rest_services_Nashville_110623B_WFL1_FeatureServer_0-u00000.tar.gz",
+      "bytes": 28224208
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-YtAMoyYT_arcgis_rest_services_Master_Address_FeatureServer_0",
+    "at": "2026-10-24T01:51:14Z",
+    "assets": [
+     {
+      "name": "YtAMoyYT_arcgis_rest_services_Master_Address_FeatureServer_0-checkpoint.json",
+      "bytes": 592
+     },
+     {
+      "name": "YtAMoyYT_arcgis_rest_services_Master_Address_FeatureServer_0-u00000.tar.gz",
+      "bytes": 19351402
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-Xd1_arcgis_rest_services_Boston_MA_Addresses_FeatureServer_0",
+    "at": "2026-10-24T01:45:31Z",
+    "assets": [
+     {
+      "name": "Xd1_arcgis_rest_services_Boston_MA_Addresses_FeatureServer_0-checkpoint.json",
+      "bytes": 626
+     },
+     {
+      "name": "Xd1_arcgis_rest_services_Boston_MA_Addresses_FeatureServer_0-u00000.tar.gz",
+      "bytes": 7549002
+     }
+    ]
+   },
+   {
     "tag": "collect-step04-X0mRVOFNTdLzd_arcgis_rest_services_Addresses_FeatureServer_0",
     "at": "2026-10-24T01:43:45Z",
     "assets": [
@@ -1290,6 +2060,20 @@
      {
       "name": "X0mRVOFNTdLzd_arcgis_rest_services_Addresses_FeatureServer_0-u00000.tar.gz",
       "bytes": 97089058
+     }
+    ]
+   },
+   {
+    "tag": "collect-step04-WClLJZr3s_arcgis_rest_services_YorkAddresses_FeatureServer_0",
+    "at": "2026-10-24T01:51:14Z",
+    "assets": [
+     {
+      "name": "WClLJZr3s_arcgis_rest_services_YorkAddresses_FeatureServer_0-checkpoint.json",
+      "bytes": 620
+     },
+     {
+      "name": "WClLJZr3s_arcgis_rest_services_YorkAddresses_FeatureServer_0-u00000.tar.gz",
+      "bytes": 27459295
      }
     ]
    },
@@ -1312,34 +2096,40 @@
     ]
    },
    {
-    "tag": "collect-step04-4G_arcgis_rest_services_NM911_Address_202203_FeatureServer_0",
-    "at": "2026-10-24T01:40:43Z",
+    "tag": "collect-step04-STLCO_NG911_Schema_Attributes_081326_gdb_zip_FeatureServer_0",
+    "at": "2026-10-24T01:51:14Z",
     "assets": [
      {
-      "name": "4G_arcgis_rest_services_NM911_Address_202203_FeatureServer_0-checkpoint.json",
-      "bytes": 1080
+      "name": "STLCO_NG911_Schema_Attributes_081326_gdb_zip_FeatureServer_0-checkpoint.json",
+      "bytes": 738
      },
      {
-      "name": "4G_arcgis_rest_services_NM911_Address_202203_FeatureServer_0-u00000.tar.gz",
-      "bytes": 20394651
-     },
-     {
-      "name": "4G_arcgis_rest_services_NM911_Address_202203_FeatureServer_0-u00001.tar.gz",
-      "bytes": 18891988
+      "name": "STLCO_NG911_Schema_Attributes_081326_gdb_zip_FeatureServer_0-u00000.tar.gz",
+      "bytes": 47768811
      }
     ]
    }
   ],
   "checkpoint": {
-   "layers_with_checkpoint": 10,
-   "releases_seen": 10,
-   "units_uploaded": 12,
-   "bytes": 7866,
+   "layers_with_checkpoint": 40,
+   "releases_seen": 40,
+   "units_uploaded": 51,
+   "bytes": 35210,
    "sample": [
+    {
+     "tag": "collect-step04-xVN2oUE9EYLSnPE_arcgis_rest_services_Address_FeatureServer_0",
+     "name": "xVN2oUE9EYLSnPE_arcgis_rest_services_Address_FeatureServer_0-checkpoint.json",
+     "bytes": 614
+    },
     {
      "tag": "collect-step04-teAddresses_84b35cee615045ffbebd93e11cdb072e_FeatureServer_0",
      "name": "teAddresses_84b35cee615045ffbebd93e11cdb072e_FeatureServer_0-checkpoint.json",
      "bytes": 653
+    },
+    {
+     "tag": "collect-step04-st_services_Address_Points_SAMs_Lite_1030896_FeatureServer_0",
+     "name": "st_services_Address_Points_SAMs_Lite_1030896_FeatureServer_0-checkpoint.json",
+     "bytes": 1092
     },
     {
      "tag": "collect-step04-sses_public_84b35cee615045ffbebd93e11cdb072e_FeatureServer_0",
@@ -1347,19 +2137,9 @@
      "bytes": 660
     },
     {
-     "tag": "collect-step04-sYuxx9Ny_arcgis_rest_services_GeoAddress_gdb_FeatureServer_0",
-     "name": "sYuxx9Ny_arcgis_rest_services_GeoAddress_gdb_FeatureServer_0-checkpoint.json",
-     "bytes": 765
-    },
-    {
-     "tag": "collect-step04-gis_rest_services_Riverside_County_Addresses_FeatureServer_0",
-     "name": "gis_rest_services_Riverside_County_Addresses_FeatureServer_0-checkpoint.json",
-     "bytes": 894
-    },
-    {
-     "tag": "collect-step04-gis_rest_services_INCOG_911_Address_Map_WFL1_FeatureServer_0",
-     "name": "gis_rest_services_INCOG_911_Address_Map_WFL1_FeatureServer_0-checkpoint.json",
-     "bytes": 662
+     "tag": "collect-step04-s_rest_services_SanDiego_County_CA_Addresses_FeatureServer_1",
+     "name": "s_rest_services_SanDiego_County_CA_Addresses_FeatureServer_1-checkpoint.json",
+     "bytes": 664
     }
    ]
   },
@@ -1397,5 +2177,5 @@
   "判完写回账本：python3 collect/supervisor.py --review pass|fail --note \"...\""
  ],
  "reason": "全州放量：工人已停手，等大脑判验收",
- "signature": "aeaefe42354a4385"
+ "signature": "baf0de8f339f5791"
 }

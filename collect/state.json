@@ -1,9 +1,9 @@
 {
  "project": "world-map-data-33 collect",
- "current_step": "04",
+ "current_step": "05",
  "mode": "self-drive-v2",
  "budget": {
-  "minutes_used": 107,
+  "minutes_used": 414,
   "minutes_cap": 1800,
   "warn_ratio": 0.8,
   "stop_ratio": 0.95
@@ -18,10 +18,10 @@
  },
  "awaiting_brain": false,
  "brain_review": {
-  "at": "2026-10-24T01:29:45Z",
-  "step": "03",
+  "at": "2026-10-24T03:27:38Z",
+  "step": "04",
   "verdict": "pass",
-  "note": "STEP-03 单州试跑 KS：111 层全部选中并跑完（报告 119 层含试点重合，0 失败 0 零行，total_rows=17,926,394，worst_diff=0），20 个 checkpoint 实测 1,415,632 行与计划完全一致，单元错误 0。done_rate=1.000 ≥0.85、failed_rate=0.000 ≤0.15，两条判据均过。联调同时修掉 6 处真因（skip 未过滤/ layer_id 撞车 56 跨州 / --layer 反查错源 / lib.schema 缺 import / 采集步无报告 / 证据升级不重叫）。"
+  "note": "STEP-04 全州放量：48 层全部落盘（46 FeatureServer + 2 MapServer），0 失败 0 零行，实收 38,655,034 行（计划 38,655,004，差 +30 行 = 上游 count 漂移，worst_diff=0）；layers 48 ∈[40,60]、total_rows 3866 万 ≥3000 万、per_layer 最大 369.8 万 ≤500 万，四条判据全过。过程中修掉两个真因：MapServer+keyset 空转（已加 12 分钟无进展看门狗自杀 + skip_blocked 记档），where 字段别名导致过滤静默失效。"
  },
  "steps": {
   "01": {
@@ -48,8 +48,11 @@
    "at": "2026-10-24T00:59:15Z"
   },
   "04": {
-   "status": "started",
+   "status": "done",
    "at": "2026-10-24T01:47:49Z"
+  },
+  "05": {
+   "status": "ready"
   }
  },
  "blocked_count": 0,
@@ -58,10 +61,10 @@
  "paused_at": "2026-10-23T23:14:35Z",
  "last_error": null,
  "wake": {
-  "signature": "aeaefe42354a4385",
-  "at": "2026-10-24T01:45:29Z",
+  "signature": "baf0de8f339f5791",
+  "at": "2026-10-24T03:27:36Z",
   "reason": "全州放量：工人已停手，等大脑判验收",
-  "issue": "https://github.com/ip9988001/world-map-data-33/issues/5",
-  "count": 4
+  "issue": 5,
+  "count": 5
  }
 }
