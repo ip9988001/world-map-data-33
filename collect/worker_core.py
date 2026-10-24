@@ -143,7 +143,14 @@ def select_layers(step, limit=0, policy=None):
             out = [r for r in out if (r.get("geom") or "").lower() in allow]
     # 缺 url 的一律剔除（不能带病执行）
     out = [r for r in out if r.get("url")]
-    return out[:limit] if limit else out
+    if not limit:
+        return out
+    if pol.get("limit_mode") == "spread" and len(out) > limit:
+        # 灰度抽样：按 row_count 排序后等距取 limit 个 → 小/中/大三档都在里面
+        pool = sorted(out, key=lambda r: r.get("expect") or 0)
+        gap = (len(pool) - 1) / float(limit - 1) if limit > 1 else 0
+        return [pool[int(round(i * gap))] for i in range(limit)]
+    return out[:limit]
 
 
 def _parse(argv):

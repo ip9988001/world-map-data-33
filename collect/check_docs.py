@@ -109,7 +109,30 @@ def check_steps_json(steps):
     return bad
 
 
+def sync_docs():
+    """把判据卡里的镜像块按 steps.json 重写（只动机器块，正文一个字不碰）。"""
+    steps = load_steps()
+    n = 0
+    for k, v in steps.items():
+        rel = ((v.get("supervise") or {}).get("doc") or "collect/steps/STEP-%s.md" % k)
+        fp = os.path.join(ROOT, rel)
+        if not os.path.exists(fp):
+            continue
+        m = MIRROR_RE.search(open(fp, encoding="utf-8").read())
+        if not m:
+            continue
+        mirror = {"step": k, **{f: v.get(f) for f in WANT_FIELDS if v.get(f) is not None}}
+        block = "```json\n" + json.dumps(mirror, ensure_ascii=False, indent=1) + "\n```"
+        text = open(fp, encoding="utf-8").read()
+        open(fp, "w", encoding="utf-8").write(text[:m.start()] + "<!-- steps.json 镜像（只读；校验器 check_docs.py 逐字段比对） -->\n" + block + text[m.end():])
+        n += 1
+    print("已同步 %d 份判据卡的镜像块" % n)
+    return 0
+
+
 def main():
+    if "--sync" in sys.argv:
+        return sync_docs()
     as_json = "--json" in sys.argv
     steps = load_steps()
     flags = supervisor_flags()

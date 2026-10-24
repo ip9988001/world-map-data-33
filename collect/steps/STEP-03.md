@@ -31,8 +31,8 @@
 
 ## 命令（照抄）
 ```bash
-python3 collect/supervisor.py --kick 03 --workers 4
-python3 collect/supervisor.py --review pass --next 04 --note "..."
+python3 collect/supervisor.py --review pass --next 04
+python3 collect/supervisor.py --kick 03 --workers 4 --max-layers 20
 ```
 
 ## 卡死阈值
@@ -51,7 +51,8 @@ python3 collect/supervisor.py --review pass --next 04 --note "..."
  "unit_rows": 200000,
  "tag": "collect-step03-{layer}",
  "gate": {
-  "gray_layers": 20
+  "gray_layers": 20,
+  "limit_mode": "spread"
  },
  "evidence": [
   "releases",

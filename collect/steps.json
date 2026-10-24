@@ -110,7 +110,8 @@
    "unit_rows": 200000,
    "tag": "collect-step03-{layer}",
    "gate": {
-    "gray_layers": 20
+    "gray_layers": 20,
+    "limit_mode": "spread"
    },
    "evidence": [
     "releases",
@@ -129,7 +130,7 @@
     "wake_reason": "单州试跑 KS：工人已停手，等大脑判验收",
     "cmds": [
      "--review pass --next 04",
-     "--kick 03 --workers 4"
+     "--kick 03 --workers 4 --max-layers 20"
     ]
    }
   },
