@@ -18,84 +18,23 @@ import argparse, gzip, hashlib, json, math, os, re, subprocess, sys, threading, 
 import urllib.error, urllib.parse, urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+# ---- v2.1：公共层已抽到 collect/lib/，这里保留同名引用（测试 patch pilot.xxx 仍生效）----
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from lib import units                                      # noqa: E402
+from lib.fetch import UA, get_json                      # noqa: E402
+from lib.schema import (F_ADD, F_FULL, F_PRE, F_ST, F_SUF, F_POST, F_UNIT,  # noqa: E402
+                        F_CITY, F_ZIP, F_ESN, pick, normalize)
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CFG = os.path.join(ROOT, "collect", "pilot_layers.json")
 OUTBASE = os.path.join(ROOT, "collect", "out")
-UA = {"User-Agent": "Mozilla/5.0 (compatible; collect-pilot/1.0)"}
 CHUNK = 50000          # 每个 part 最多多少行
 TARGET_BYTES = 2_000_000
 
 
-def get_json(url, timeout=180, tries=3):
-    """★ 保留服务端原始报文：400 的 body 往往就是答案
-       （例如 `{"error":{"message":"Pagination is not supported."}}`），
-       以前只剩 `HTTP Error 400`，同一个坑要走三轮才定位。"""
-    last = ""
-    for i in range(tries):
-        try:
-            with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=timeout) as r:
-                d = json.loads(r.read().decode("utf-8", "replace"))
-                # ★ 2026-10-24 实测：有的服务用 HTTP 200 包着 {"error":{...}} 报错
-                #   （san_juan MapServer 就是这样，于是「成功」却只有 2000 行，err 一直是空）。
-                if isinstance(d, dict) and d.get("error"):
-                    return {"__error__": "svcerr:%s" % json.dumps(d["error"], ensure_ascii=False)[:300]}
-                return d
-        except urllib.error.HTTPError as e:
-            try:
-                body = e.read().decode("utf-8", "replace")
-            except Exception:
-                body = ""
-            last = "http%d:%s" % (e.code, body[:300])
-            if e.code in (400, 401, 403, 404):   # 请求本身错了，重试无意义
-                return {"__error__": last}
-            time.sleep(1.5 * (i + 1))
-        except Exception as e:  # 429 / 5xx 退避
-            last = str(e)[:120]
-            time.sleep(1.5 * (i + 1))
-    return {"__error__": last}
 
 
 # ---------------- 字段归一化 ----------------
-F_ADD = ("ADD_NUM", "ADDRNUM", "ADDRESS_NUMBER", "HOUSE_NUM", "HOUSENUM", "STREET_NUM", "ADDR_NO")
-F_FULL = ("FULLADDR", "FULL_ADDR", "FULL_ADDRESS", "ADDRESS", "SITE_ADDRESS", "LOCATION")
-F_PRE = ("PRE_DIR", "PREDIR", "PRE_DIRECTION")
-F_ST = ("ST_NAME", "STREET", "STREET_NAME", "ROAD_NAME", "STR_NAME")
-F_SUF = ("ST_SUF", "STTYPE", "STREET_TYPE", "SUFFIX")
-F_POST = ("POST_DIR", "POSTDIR")
-F_UNIT = ("SUBNUM", "UNIT", "UNIT_NUM", "SUITE", "APT", "BLDG", "UNITID")
-F_CITY = ("CITY", "COMMUNITY", "MUNICIPALITY", "POST_CITY", "TOWN", "PLACE")
-F_ZIP = ("ZIP", "ZIPCODE", "ZIP_CODE", "POSTAL_CODE", "ZIP5")
-F_ESN = ("ESN", "ESN_ID", "ESNID")
-
-
-def pick(attrs, names):
-    up = {k.upper(): k for k in attrs}
-    for n in names:
-        if n in up:
-            return str(attrs[up[n]] or "").strip()
-    return ""
-
-
-def normalize(attrs, lat, lon):
-    add = pick(attrs, F_ADD)
-    st = pick(attrs, F_ST)
-    zipc = pick(attrs, F_ZIP)
-    full = pick(attrs, F_FULL)
-    if not add and full:
-        m = re.match(r"\s*(\d+[\w-]*)", full)
-        add = m.group(1) if m else ""
-    if not st and full:
-        parts = re.sub(r"^\s*\d+[\w-]*\s*", "", full).split(",")
-        st = parts[0].strip() if parts else ""
-    key = hashlib.md5(("%s|%s|%s" % (add.lower(), st.lower(), zipc)).encode()).hexdigest()[:16] if (add and st) else ""
-    return {
-        "add_num": add, "pre_dir": pick(attrs, F_PRE), "st_name": st,
-        "st_suf": pick(attrs, F_SUF), "post_dir": pick(attrs, F_POST),
-        "unit": pick(attrs, F_UNIT), "city": pick(attrs, F_CITY), "zip": zipc,
-        "esn": pick(attrs, F_ESN), "lat": lat, "lon": lon, "addr_key": key,
-    }
-
-
 def page_size_for(api):
     """自适应页大小：字段多就少给点，避免响应过大"""
     meta = get_json(api + "?f=json", timeout=25)
@@ -255,6 +194,30 @@ CUR = {}
 PROG_DIR = os.path.join(ROOT, "collect", "progress")
 TS = lambda: time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
+# ---- 断点续传底座已移到 lib/units.py，这里保留同名薄包装（显式传 outbase/进度目录）----
+def _ckpt_path():
+    return units.ckpt_path(OUTBASE, CUR["id"])
+
+
+def _save_ckpt(ck):
+    return units.save_ckpt(ck, OUTBASE, CUR["id"])
+
+
+def _load_ckpt(plan_hash):
+    return units.load_ckpt(plan_hash, OUTBASE, CUR["id"], CUR.get("url"), CKPT_VER)
+
+
+def _write_progress(prog):
+    return units.write_progress(prog, OUTBASE, PROG_DIR)
+
+
+def _purge(files):
+    return units.purge(files)
+
+
+def _record_unit(ck, idx, rows, files):
+    return units.record_unit(ck, idx, rows, files)
+
 
 def _q(api, params, timeout=180):
     return get_json(api + "/query?" + urllib.parse.urlencode(params), timeout=timeout)
@@ -285,16 +248,6 @@ def _oid_bounds(api, oid_field):
         return None, None, str(e)[:80]
 
 
-def _write_progress(prog):
-    os.makedirs(PROG_DIR, exist_ok=True)
-    prog["ts"] = TS()
-    d = os.path.join(OUTBASE, prog["id"])
-    prog["parts"] = len([f for f in os.listdir(d) if f.endswith(".gz")]) if os.path.isdir(d) else 0
-    p = os.path.join(PROG_DIR, prog["id"] + ".json")
-    with open(p + ".tmp", "w", encoding="utf-8") as f:
-        json.dump(prog, f, ensure_ascii=False, indent=1)
-    os.replace(p + ".tmp", p)
-    return p
 
 
 def _push_progress(prog, log):
@@ -351,29 +304,10 @@ def _tag():
     return os.environ.get("PILOT_RELEASE_TAG") or ("collect-local-%s" % CUR["id"])
 
 
-def _ckpt_path():
-    return os.path.join(OUTBASE, CUR["id"], "_checkpoint.json")
 
 
-def _save_ckpt(ck):
-    p = _ckpt_path()
-    os.makedirs(os.path.dirname(p), exist_ok=True)
-    with open(p + ".tmp", "w", encoding="utf-8") as f:
-        json.dump(ck, f, ensure_ascii=False, indent=1)
-    os.replace(p + ".tmp", p)
 
 
-def _load_ckpt(plan_hash):
-    p = _ckpt_path()
-    if not os.path.exists(p):
-        return None
-    try:
-        d = json.load(open(p, encoding="utf-8"))
-    except Exception:
-        return None
-    if d.get("ver") != CKPT_VER or d.get("plan_hash") != plan_hash or d.get("url") != CUR.get("url"):
-        return None          # 切分方案变了 → 旧检查点作废，绝不硬续
-    return d
 
 
 def _pub(cmd, timeout=600):
@@ -476,21 +410,8 @@ def _probe_pagination(api, log):
     return True, ""
 
 
-def _record_unit(ck, idx, rows, files):
-    ck.setdefault("unit_rows", {})[str(idx)] = rows
-    ck.setdefault("unit_files", {})[str(idx)] = [os.path.basename(f) for f in files]
-    ck.setdefault("done_units", [])
-    if idx not in ck["done_units"]:
-        ck["done_units"].append(idx)
-    ck["done_units"].sort()
 
 
-def _purge(files):
-    for f in files:
-        try:
-            os.remove(f)
-        except Exception:
-            pass
 
 
 # ---------------- 单元采集 ----------------
@@ -821,8 +742,9 @@ def main():
     ap.add_argument("--unit-rows", type=int, default=int(os.environ.get("PILOT_UNIT_ROWS", "500000")))
     ap.add_argument("--fresh", action="store_true", help="忽略检查点，从头重采")
     ap.add_argument("--list", action="store_true")
+    ap.add_argument("--cfg", help="图层配置文件（默认 collect/pilot_layers.json）")
     a = ap.parse_args()
-    cfg = json.load(open(CFG, encoding="utf-8"))
+    cfg = json.load(open(a.cfg or CFG, encoding="utf-8"))
     if a.list:
         for x in cfg:
             print("%-10s %-10s %10s  %s" % (x["id"], x["svc"], x.get("expect"), x["title"][:50]))

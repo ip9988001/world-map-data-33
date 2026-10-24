@@ -22,7 +22,8 @@ jobs:
       - name: 巡逻一轮（只叫醒，不判）
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python3 collect/supervisor.py --once
+        # cron 唯一入口：读账本当前步 → 交给对应的单步工头（7 个工头只占一次 cron）
+        run: python3 collect/supervisor.py --tick
       - name: 落账（禁止 || true 吞错）
         run: |
           git config user.name collect-bot

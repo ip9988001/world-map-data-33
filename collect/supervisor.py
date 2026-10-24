@@ -210,10 +210,12 @@ def post_issue(step, body, sig):
     return num, True
 
 
-def wake(st, step, reason, dry=False):
+def wake(st, step, reason, dry=False, profile=None):
     """叫醒大脑：落 WAKE.json + 开 Issue。同签名只叫一次。"""
     ev = evidence(st, step)
     ev["reason"] = reason
+    if profile:
+        ev["profile"] = {k: profile.get(k) for k in ("step", "title", "stall_min", "cmds", "evidence")}
     sig = signature(ev)
     ev["signature"] = sig
     prev = (st.get("wake") or {}).get("signature")
@@ -320,7 +322,8 @@ def resume(dry=False):
 
 
 # ---------------- 巡逻（唯一的自动动作 = 叫醒） ----------------
-def patrol(dry=False):
+def patrol(dry=False, step=None, profile=None):
+    profile = profile or {}
     st = load()
     rep = {"at": now(), "dry": dry, "acts": []}
 
@@ -347,7 +350,8 @@ def patrol(dry=False):
         say("动作", "额度耗尽 → paused")
         print(json.dumps(rep, ensure_ascii=False)); return 0
 
-    step = st.get("current_step")
+    step = step or st.get("current_step")
+    stall = int(profile.get("stall_min") or STALL_MIN)
     wf = STEPS[step][2]
     act = active_runs(wf) if wf else []
     say("工人", f"{wf} 活着的 run = {len(act)}")
@@ -359,18 +363,36 @@ def patrol(dry=False):
             {"step": step, "run_id": r.get("id"), "at": r.get("created_at"), "script": wf})
         if not dry:
             save(st)
-        if age > STALL_MIN:
-            wake(st, step, f"run #{r.get('run_number')} 已跑 {age:.0f} 分钟 > {STALL_MIN}，可能卡死（不判死，交你定）", dry)
+        if age > stall:
+            wake(st, step, f"run #{r.get('run_number')} 已跑 {age:.0f} 分钟 > {stall}，可能卡死（不判死，交你定）", dry, profile)
         else:
             say("状态", f"工人在干活（{age:.0f} 分钟），不打扰")
             print(json.dumps(rep, ensure_ascii=False)); return 0
     else:
-        wake(st, step, "工人已停手：没有任何活着的 run，等大脑判验收", dry)
+        wake(st, step, profile.get("wake_reason") or "工人已停手：没有任何活着的 run，等大脑判验收", dry, profile)
 
     if not dry:
         save(st)
     print(json.dumps(rep, ensure_ascii=False))
     return 0
+
+
+def patrol_step(profile, dry=False):
+    """单步工头入口：7 个 supervisors/step_0X.py 各自调它，差异全在 profile 里。"""
+    return patrol(dry=dry, step=profile.get("step"), profile=profile)
+
+
+def tick(dry=False):
+    """cron 的唯一入口：读账本当前步 → 交给对应的单步工头。"""
+    st = load()
+    step = st.get("current_step") or "02"
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    try:
+        mod = __import__("supervisors.step_%s" % step, fromlist=["run"])
+    except Exception as e:
+        print(json.dumps({"tick": "error", "step": step, "err": str(e)[:200]}, ensure_ascii=False))
+        return 1
+    return mod.run(dry)
 
 
 # ---------------- v2 结构自检 ----------------
@@ -418,6 +440,7 @@ def entry_check():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--once", action="store_true")
+    ap.add_argument("--tick", action="store_true", help="cron 入口：按当前步分派到 supervisors/step_0X.py")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--entry-check", action="store_true")
     ap.add_argument("--kick", metavar="STEP")
@@ -431,6 +454,8 @@ def main():
     a = ap.parse_args()
     if a.entry_check:
         return entry_check()
+    if a.tick:
+        return tick(a.dry_run)
     if a.kick:
         return kick(a.kick, a.layers, a.workers, a.dry_run)
     if a.review:

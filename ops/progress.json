@@ -1,10 +1,10 @@
 {
- "step": "A",
- "sub": "A8",
- "done": 6,
- "total": 11,
+ "step": "B",
+ "sub": "B3",
+ "done": 3,
+ "total": 5,
  "status": "working",
- "ts": "2026-10-24T00:16:21Z",
- "eta_left_min": 34,
- "note": "A4~A8 完成，18 用例全绿"
+ "ts": "2026-10-24T00:20:10Z",
+ "eta_left_min": 35,
+ "note": "worker_core + 7 个工人入口"
 }
