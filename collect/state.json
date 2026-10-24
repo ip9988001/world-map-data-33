@@ -3,7 +3,7 @@
  "current_step": "05",
  "mode": "self-drive-v2",
  "budget": {
-  "minutes_used": 414,
+  "minutes_used": 527,
   "minutes_cap": 1800,
   "warn_ratio": 0.8,
   "stop_ratio": 0.95
@@ -16,7 +16,7 @@
   "layers": "all",
   "workers": 4
  },
- "awaiting_brain": false,
+ "awaiting_brain": true,
  "brain_review": {
   "at": "2026-10-24T03:27:38Z",
   "step": "04",
@@ -52,7 +52,7 @@
    "at": "2026-10-24T01:47:49Z"
   },
   "05": {
-   "status": "ready"
+   "status": "in_review"
   }
  },
  "blocked_count": 0,
@@ -61,10 +61,10 @@
  "paused_at": "2026-10-23T23:14:35Z",
  "last_error": null,
  "wake": {
-  "signature": "baf0de8f339f5791",
-  "at": "2026-10-24T03:27:36Z",
-  "reason": "全州放量：工人已停手，等大脑判验收",
-  "issue": 5,
-  "count": 5
+  "signature": "eea52004866905a0",
+  "at": "2026-10-24T03:45:45Z",
+  "reason": "县市碎片：工人已停手，等大脑判验收",
+  "issue": "https://github.com/ip9988001/world-map-data-33/issues/6",
+  "count": 6
  }
 }
