@@ -1,1058 +1,1258 @@
 {
- "layers": 714,
- "total_layer_unique": 27995904,
- "total_unique": 19507349,
- "states": 44,
+ "layers": 800,
+ "rows_scanned": 23918154,
+ "rows_no_key": 232733,
+ "total_layer_unique": 21058198,
+ "total_unique": 16993472,
+ "states": 46,
  "detail": {
-  "KS": {
-   "layers": 127,
-   "layer_unique_sum": 35613,
-   "unique": 35473,
-   "per_layer": [
-    {
-     "layer": "s_rest_services_Marathon_County_WI_Addresses_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "rcgis_rest_services_OsageCoKS_NG911Addresses_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "rcgis_rest_services_Lake_County_IL_Addresses_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "is_rest_services_Forsyth_County_GA_Addresses_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "is_rest_services_Chester_County_PA_Addresses_FeatureServer_0",
-     "unique": 0
-    }
-   ]
-  },
   "CA": {
-   "layers": 56,
-   "layer_unique_sum": 1263659,
-   "unique": 1152624,
+   "layers": 66,
+   "rows_scanned": 2396633,
+   "rows_no_key": 0,
+   "layer_unique_sum": 1693803,
+   "unique": 1581564,
    "per_layer": [
     {
-     "layer": "wY8_arcgis_rest_services_Address_Ranges_WFL1_FeatureServer_0",
-     "unique": 0
+     "layer": "wSRRTu_arcgis_rest_services_Sample_Addresses_FeatureServer_0",
+     "unique": 627
     },
     {
-     "layer": "tg2A1_arcgis_rest_services_vw_dist_addresses_FeatureServer_0",
-     "unique": 0
+     "layer": "vices_MammothLakes_Address_Verification_WFL1_FeatureServer_0",
+     "unique": 1725
     },
     {
-     "layer": "teAddresses_176dcf6d135741fcbc3bf17da5aa7aff_FeatureServer_0",
-     "unique": 8651
+     "layer": "vices_Catalina_Points_of_Interest_by_Address_FeatureServer_0",
+     "unique": 20
     },
     {
-     "layer": "st_services_City_of_Pittsburg_Address_Public_FeatureServer_0",
-     "unique": 25564
+     "layer": "u_arcgis_rest_services_Prospective_Addresses_FeatureServer_0",
+     "unique": 5
     },
     {
-     "layer": "sez_arcgis_rest_services_Tyler_Property_Data_FeatureServer_1",
-     "unique": 0
-    }
-   ]
-  },
-  "FL": {
-   "layers": 48,
-   "layer_unique_sum": 2464641,
-   "unique": 1855055,
-   "per_layer": [
-    {
-     "layer": "xLqeJd2jOX_arcgis_rest_services_VC_Addresses_FeatureServer_0",
-     "unique": 252053
-    },
-    {
-     "layer": "wbCJ2GMP_arcgis_rest_services_E911calls_2020_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "vices_BaseLayers_BaseLayers_for_BackdropPurposes_MapServer_1",
-     "unique": 0
-    },
-    {
-     "layer": "u6oHu4Z_arcgis_rest_services_SITUS_PUB_CBB_2_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "tUCmxaVKdPC5e_arcgis_rest_services_Addresses_FeatureServer_0",
-     "unique": 110534
+     "layer": "sses_submit_bbba9069ed4649d8bd079495d8f47f07_FeatureServer_0",
+     "unique": 8
     }
    ]
   },
   "NY": {
-   "layers": 37,
-   "layer_unique_sum": 509271,
-   "unique": 281713,
+   "layers": 51,
+   "rows_scanned": 583260,
+   "rows_no_key": 8473,
+   "layer_unique_sum": 494330,
+   "unique": 345721,
    "per_layer": [
     {
-     "layer": "y_us_arcgis_rest_services_Addresses_WC_2022_FeatureServer_54",
-     "unique": 0
+     "layer": "uyler_County_Single_Parcel_Addresses_Updated_FeatureServer_0",
+     "unique": 2
     },
     {
-     "layer": "yHixJV_arcgis_rest_services_Master_Addresses_FeatureServer_0",
-     "unique": 0
+     "layer": "t_services_Shamokin_Address_Points_June_2019_FeatureServer_0",
+     "unique": 4133
     },
     {
-     "layer": "wFbS_arcgis_rest_services_Chemungaddress_pts_FeatureServer_0",
-     "unique": 0
+     "layer": "s_Lodgings___Hotels__Inns__BnBs__E911_Data__FeatureServer_32",
+     "unique": 15
     },
     {
-     "layer": "vF0A_arcgis_rest_services_AddressSearchLayer_FeatureServer_0",
-     "unique": 37655
+     "layer": "rest_services_Hinesburg_Planning_Zoning_WFL1_FeatureServer_2",
+     "unique": 2092
     },
     {
-     "layer": "s_rest_services_OPENNewmarket_Address_3_view_FeatureServer_0",
-     "unique": 0
+     "layer": "rest_services_Architectural_Legacy_Addresses_FeatureServer_0",
+     "unique": 232
+    }
+   ]
+  },
+  "FL": {
+   "layers": 45,
+   "rows_scanned": 2414292,
+   "rows_no_key": 10369,
+   "layer_unique_sum": 2120549,
+   "unique": 1304063,
+   "per_layer": [
+    {
+     "layer": "t_services_EM_Building_Damage_Address_Export_FeatureServer_0",
+     "unique": 172
+    },
+    {
+     "layer": "st_services_NewSiteFinityParks2AGOL4EELsView_FeatureServer_0",
+     "unique": 22
+    },
+    {
+     "layer": "rest_services_Surfside_Parcles_and_Addresses_FeatureServer_0",
+     "unique": 1339
+    },
+    {
+     "layer": "rest_services_Hialeah_Gardens_Address_points_FeatureServer_0",
+     "unique": 4342
+    },
+    {
+     "layer": "rest_services_Curbside_Addressing_Final_WFL1_FeatureServer_0",
+     "unique": 3231
     }
    ]
   },
   "VA": {
-   "layers": 26,
-   "layer_unique_sum": 716725,
-   "unique": 495088,
+   "layers": 41,
+   "rows_scanned": 726981,
+   "rows_no_key": 1008,
+   "layer_unique_sum": 678967,
+   "unique": 618421,
    "per_layer": [
     {
-     "layer": "yvfv_arcgis_rest_services_Mercer_SiteAddress_FeatureServer_0",
-     "unique": 126
+     "layer": "v_quest_arcgis_rest_services_Franklin_Public_FeatureServer_1",
+     "unique": 3763
     },
     {
-     "layer": "vices_Campbell_County__VA_Broadband_Map_WFL1_FeatureServer_0",
-     "unique": 27421
+     "layer": "tments_to_Multi_Family_Residential_Addresses_FeatureServer_0",
+     "unique": 5
     },
     {
-     "layer": "s_rest_services_Raleigh_Co_EOC_Address_Sites_FeatureServer_0",
-     "unique": 784
+     "layer": "tjNW10pz_arcgis_rest_services_Address_Points_FeatureServer_0",
+     "unique": 1476
     },
     {
-     "layer": "s_rest_services_Fayette_County_911_Addresses_FeatureServer_1",
-     "unique": 22718
+     "layer": "tersect_of_Address_Points_and_buff1mi_rivers_FeatureServer_0",
+     "unique": 4919
     },
     {
-     "layer": "rcgis_rest_services_Res_Address_Demographics_FeatureServer_1",
-     "unique": 39114
-    }
-   ]
-  },
-  "TX": {
-   "layers": 26,
-   "layer_unique_sum": 2796040,
-   "unique": 2286572,
-   "per_layer": [
-    {
-     "layer": "yjVw1fpWcwy7h_arcgis_rest_services_ADDRESSES_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "ycSVzMEzm7ey_arcgis_rest_services_Addressing_FeatureServer_0",
-     "unique": 22041
-    },
-    {
-     "layer": "wu_arcgis_rest_services_CoStafford_Addresses_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "uTYf_arcgis_rest_services_Bell_AddressPoints_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "t_services_Katy_ISD_Harris_County_Addresses_FeatureServer_68",
-     "unique": 82137
-    }
-   ]
-  },
-  "MO": {
-   "layers": 25,
-   "layer_unique_sum": 729601,
-   "unique": 361814,
-   "per_layer": [
-    {
-     "layer": "zUpjDtspiBG0j_arcgis_rest_services_E911_Copy_FeatureServer_0",
-     "unique": 28047
-    },
-    {
-     "layer": "yYd7fCfTTiVp8_arcgis_rest_services_Addresses_FeatureServer_0",
-     "unique": 24058
-    },
-    {
-     "layer": "teAddresses_b786541565b5475593a786a08ba6b3e2_FeatureServer_0",
-     "unique": 49044
-    },
-    {
-     "layer": "teAddresses_33e99042997a472fa1a25a8b6f4465cf_FeatureServer_0",
-     "unique": 49044
-    },
-    {
-     "layer": "st_services_Springfield_address_density_WFL1_FeatureServer_2",
-     "unique": 97257
-    }
-   ]
-  },
-  "GA": {
-   "layers": 24,
-   "layer_unique_sum": 1035252,
-   "unique": 624163,
-   "per_layer": [
-    {
-     "layer": "xVN2oUE9EYLSnPE_arcgis_rest_services_Address_FeatureServer_0",
-     "unique": 387726
-    },
-    {
-     "layer": "xLBcrikqFM0vkoy_arcgis_rest_services_Address_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "unty__GA_Online_911_Addresses_and_Roads_WFL1_FeatureServer_1",
-     "unique": 0
-    },
-    {
-     "layer": "teAddresses_1a8d5e9d05674ad599c70df5dfdd4265_FeatureServer_0",
-     "unique": 12597
-    },
-    {
-     "layer": "t3XQ_arcgis_rest_services_AddressPt_20230629_FeatureServer_0",
-     "unique": 0
-    }
-   ]
-  },
-  "AL": {
-   "layers": 24,
-   "layer_unique_sum": 337435,
-   "unique": 322710,
-   "per_layer": [
-    {
-     "layer": "wLs3iGyK80EW_arcgis_rest_services_911Address_FeatureServer_0",
-     "unique": 32422
-    },
-    {
-     "layer": "t_services_Perry_County_Address_Geocode_v1_1_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "st_services_A4_Landscape_addressverification_FeatureServer_1",
-     "unique": 49669
-    },
-    {
-     "layer": "services_CountyServices_Municipal_Addressing_FeatureServer_2",
-     "unique": 0
-    },
-    {
-     "layer": "s_rest_services_CityAddresses2022bu_CHE_view_FeatureServer_0",
-     "unique": 0
-    }
-   ]
-  },
-  "OR": {
-   "layers": 22,
-   "layer_unique_sum": 1494336,
-   "unique": 1462405,
-   "per_layer": [
-    {
-     "layer": "t_server_rest_services_Public_Roseburg_Addresses_MapServer_0",
-     "unique": 10758
-    },
-    {
-     "layer": "server_rest_services_Intermap_Situs_address_WMAS_MapServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "s_rest_services_Rural_Addresses__Label_Only__FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "s_rest_services_CTSI_Address_Check_2023_WFL1_FeatureServer_0",
-     "unique": 31039
-    },
-    {
-     "layer": "rcgis_rest_services_TLWaddressInternetAccess_FeatureServer_0",
-     "unique": 0
-    }
-   ]
-  },
-  "NM": {
-   "layers": 21,
-   "layer_unique_sum": 29504,
-   "unique": 28772,
-   "per_layer": [
-    {
-     "layer": "s_rest_services_NM911_Address_01_2026_SC_Web_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "ow3ofS_arcgis_rest_services_NM_911_Addresses_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "ofS_arcgis_rest_services_Taos_E911_Addresses_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "l_Assessor_parcel_Map_June_06_09_2023_WFL1_FeatureServer_219",
-     "unique": 0
-    },
-    {
-     "layer": "is_rest_services_NM911_Address_202301_SC_Web_FeatureServer_0",
-     "unique": 0
+     "layer": "t_services_Hanover_BEAD_Grant_Address_Points_FeatureServer_0",
+     "unique": 2357
     }
    ]
   },
   "CO": {
-   "layers": 20,
-   "layer_unique_sum": 2218893,
-   "unique": 816310,
+   "layers": 38,
+   "rows_scanned": 1448603,
+   "rows_no_key": 0,
+   "layer_unique_sum": 1374915,
+   "unique": 944427,
    "per_layer": [
     {
-     "layer": "ye4IXyXsdIpPb_arcgis_rest_services_Addresses_FeatureServer_0",
-     "unique": 0
+     "layer": "st_services_Address_Points_Appogee_On_Quincy_FeatureServer_0",
+     "unique": 43
     },
     {
-     "layer": "unty_com_arcgis_rest_services_Hosted_Address_FeatureServer_0",
-     "unique": 10366
+     "layer": "sdIpPb_arcgis_rest_services_Addresses_Public_FeatureServer_0",
+     "unique": 4725
     },
     {
-     "layer": "tkincounty_com_arcgis_rest_services_Full_Address_MapServer_1",
-     "unique": 9421
+     "layer": "s_rest_services_CCCFPD_Draft_Address_Points_FeatureServer_14",
+     "unique": 2014
     },
     {
-     "layer": "teAddresses_84b35cee615045ffbebd93e11cdb072e_FeatureServer_0",
-     "unique": 397569
+     "layer": "s_Address_Points_without_Readdressing_Points_FeatureServer_0",
+     "unique": 4089
     },
     {
-     "layer": "t_services_SummitCntyCO_Addresses_Pictometry_FeatureServer_0",
-     "unique": 0
+     "layer": "jn17FVjr_arcgis_rest_services_Address_Points_FeatureServer_0",
+     "unique": 2715
     }
    ]
   },
-  "IL": {
-   "layers": 20,
-   "layer_unique_sum": 1414169,
-   "unique": 1119780,
+  "TX": {
+   "layers": 36,
+   "rows_scanned": 1103026,
+   "rows_no_key": 93,
+   "layer_unique_sum": 1049340,
+   "unique": 1031730,
    "per_layer": [
     {
-     "layer": "vN_arcgis_rest_services_SiteAddresses_public_FeatureServer_0",
-     "unique": 49044
+     "layer": "s_rest_services_Shenandoah_Address_Map_WFL1_FeatureServer_11",
+     "unique": 1604
     },
     {
-     "layer": "teAddresses_ecd2ff39fbb34f39a2ec415fd784331b_FeatureServer_0",
-     "unique": 49044
+     "layer": "s_rest_services_Grapevine_Parcels_addresses__FeatureServer_0",
+     "unique": 57
     },
     {
-     "layer": "teAddresses_25f96256e2164540bc18abbff8a9d5c2_FeatureServer_0",
-     "unique": 49044
+     "layer": "s_rest_services_Fairview_Address_Points_2024_FeatureServer_5",
+     "unique": 4180
     },
     {
-     "layer": "teAddresses_1809c74f027741ce815587367a5cfd68_FeatureServer_0",
-     "unique": 49044
+     "layer": "rest_services_Lake_Address_Points_by_Section_FeatureServer_0",
+     "unique": 1544
     },
     {
-     "layer": "st_services_Lincoln_City_Addresses_View_Only_FeatureServer_0",
-     "unique": 6170
+     "layer": "rcgis_rest_services_HP_Shops_addresses_units_FeatureServer_0",
+     "unique": 350
+    }
+   ]
+  },
+  "MO": {
+   "layers": 33,
+   "rows_scanned": 749727,
+   "rows_no_key": 69,
+   "layer_unique_sum": 728833,
+   "unique": 410293,
+   "per_layer": [
+    {
+     "layer": "teAddresses_1fda33ac1a5a463cabffde7c226afa69_FeatureServer_0",
+     "unique": 4
+    },
+    {
+     "layer": "teAddresses_1dc5c3405972470c9380408c90f4a4f5_FeatureServer_0@MO-1",
+     "unique": 2
+    },
+    {
+     "layer": "sses_public_f42ca5814db04f79a8d83bc0f50b5212_FeatureServer_0",
+     "unique": 2493
+    },
+    {
+     "layer": "sses_public_e6294e415150477cabab0e6e58c126a2_FeatureServer_0",
+     "unique": 4493
+    },
+    {
+     "layer": "is_rest_services_Find_Clusters_for_Addresses_FeatureServer_0",
+     "unique": 1399
+    }
+   ]
+  },
+  "NC": {
+   "layers": 29,
+   "rows_scanned": 233688,
+   "rows_no_key": 0,
+   "layer_unique_sum": 224763,
+   "unique": 223933,
+   "per_layer": [
+    {
+     "layer": "vices_Little_Raleigh_Address_Points_4_Higher_FeatureServer_0",
+     "unique": 76
+    },
+    {
+     "layer": "t_services_Rutherford_College_Address_Points_FeatureServer_0",
+     "unique": 887
+    },
+    {
+     "layer": "qI_arcgis_rest_services_t_ng911_psaps_backup_FeatureServer_0",
+     "unique": 6
+    },
+    {
+     "layer": "qI_arcgis_rest_services_NG911_GDH_GIS_Status_FeatureServer_0",
+     "unique": 113
+    },
+    {
+     "layer": "ices_Customer_Irrigation_Address_Points_WFL1_FeatureServer_0",
+     "unique": 337
     }
    ]
   },
   "MN": {
-   "layers": 19,
-   "layer_unique_sum": 93967,
-   "unique": 74679,
+   "layers": 28,
+   "rows_scanned": 288612,
+   "rows_no_key": 693,
+   "layer_unique_sum": 257423,
+   "unique": 228905,
    "per_layer": [
     {
-     "layer": "st_services_WinonaCounty_DBO_CountyAddresses_FeatureServer_0",
-     "unique": 19298
+     "layer": "s_rest_services_Addressing_Addressing_public_FeatureServer_0@MN-2",
+     "unique": 1204
     },
     {
-     "layer": "s_rest_services_Richland_County_ND_Addresses_FeatureServer_1",
+     "layer": "rcgis_rest_services_Addressing_Addressing_public_MapServer_0",
      "unique": 0
     },
     {
-     "layer": "s_rest_services_Addressing_Addressing_public_FeatureServer_0@MN-3",
-     "unique": 0
+     "layer": "rcgis_rest_services_Addressing_AddressPoints_FeatureServer_0",
+     "unique": 3712
     },
     {
-     "layer": "s_rest_services_Addressing_Addressing_public_FeatureServer_0@MN-1",
-     "unique": 0
+     "layer": "gis_rest_services_Address_points_within_NSMZ_FeatureServer_0",
+     "unique": 122
     },
     {
-     "layer": "rest_services_Addresses_Clark_County_WI_2019_FeatureServer_0",
-     "unique": 16371
+     "layer": "gis_rest_services_Address_Points_Update_WFL1_FeatureServer_0",
+     "unique": 4541
+    }
+   ]
+  },
+  "IL": {
+   "layers": 27,
+   "rows_scanned": 491998,
+   "rows_no_key": 2,
+   "layer_unique_sum": 482621,
+   "unique": 187634,
+   "per_layer": [
+    {
+     "layer": "zdgNZuVG0_arcgis_rest_services_NG911_Chicago_FeatureServer_0",
+     "unique": 9
+    },
+    {
+     "layer": "xaminer_to_July_24_2020_to_Addresses__Points_FeatureServer_0",
+     "unique": 31
+    },
+    {
+     "layer": "vices_GISC_Publish_CMV_FGDB_202204_gdb_view_FeatureServer_33",
+     "unique": 2377
+    },
+    {
+     "layer": "t_services_Address_Points_Layers_WFL1_Public_FeatureServer_0",
+     "unique": 2419
+    },
+    {
+     "layer": "rest_services_Greene_Calhoun_addresses_roads_FeatureServer_1",
+     "unique": 3642
+    }
+   ]
+  },
+  "GA": {
+   "layers": 27,
+   "rows_scanned": 987652,
+   "rows_no_key": 8,
+   "layer_unique_sum": 976960,
+   "unique": 816325,
+   "per_layer": [
+    {
+     "layer": "t_services_Tax_Sales_Addresses_December_2025_FeatureServer_0",
+     "unique": 357
+    },
+    {
+     "layer": "t_services_PDK_Addresses_and_Centerline_WFL1_FeatureServer_0",
+     "unique": 465
+    },
+    {
+     "layer": "services_Fairfield_Blythewood_Address_Points_FeatureServer_0",
+     "unique": 154
+    },
+    {
+     "layer": "services_AddressLayer_Census9706_Residential_FeatureServer_0",
+     "unique": 1403
+    },
+    {
+     "layer": "rcgis_rest_services_CCPK_AddressPoints_WGS84_FeatureServer_0",
+     "unique": 4899
+    }
+   ]
+  },
+  "OR": {
+   "layers": 24,
+   "rows_scanned": 944282,
+   "rows_no_key": 2,
+   "layer_unique_sum": 803285,
+   "unique": 770536,
+   "per_layer": [
+    {
+     "layer": "y_arcgis_rest_services_SheridanAddresses2023_FeatureServer_0",
+     "unique": 646
+    },
+    {
+     "layer": "rest_services_Hood_River_Site_Address_Public_FeatureServer_0",
+     "unique": 4505
+    },
+    {
+     "layer": "maps_com_arcgis_rest_services_Public_BDS_Address_MapServer_9",
+     "unique": 354
+    },
+    {
+     "layer": "ial_Addresses_Economic_Development_6_17_26V2_FeatureServer_0",
+     "unique": 1798
+    },
+    {
+     "layer": "est_services_Address_and_OpenGOV_Permit_Join_FeatureServer_0",
+     "unique": 954
+    }
+   ]
+  },
+  "NM": {
+   "layers": 24,
+   "rows_scanned": 567883,
+   "rows_no_key": 2513,
+   "layer_unique_sum": 561001,
+   "unique": 211005,
+   "per_layer": [
+    {
+     "layer": "rest_services_ToT_E911_Road_and_Address_Data_FeatureServer_0",
+     "unique": 4476
+    },
+    {
+     "layer": "rcgis_rest_services_E_Gateway_Address_Points_FeatureServer_0",
+     "unique": 24
+    },
+    {
+     "layer": "lbd_arcgis_rest_services_Address_Points_view_FeatureServer_0",
+     "unique": 1037
+    },
+    {
+     "layer": "is_rest_services_Sierra_FTTH___e911_ALL_PONS_FeatureServer_0",
+     "unique": 1961
+    },
+    {
+     "layer": "est_services_Crownpoint_address_point_update_FeatureServer_0",
+     "unique": 979
+    }
+   ]
+  },
+  "MD": {
+   "layers": 20,
+   "rows_scanned": 112388,
+   "rows_no_key": 2,
+   "layer_unique_sum": 80506,
+   "unique": 57224,
+   "per_layer": [
+    {
+     "layer": "ze4GYYo_arcgis_rest_services_Addresses_No_BB_FeatureServer_0",
+     "unique": 1780
+    },
+    {
+     "layer": "t_services_E911_Grid_Origin_NAD83_2011__Feet_FeatureServer_0",
+     "unique": 1
+    },
+    {
+     "layer": "services_Walston_OP_Address_05Mile_Points8ft_FeatureServer_0",
+     "unique": 40
+    },
+    {
+     "layer": "s_Find_Locations_in_Address_Points_centrvle2_FeatureServer_0",
+     "unique": 3832
+    },
+    {
+     "layer": "rvices_Find_Locations_in_Address_Points_filt_FeatureServer_0",
+     "unique": 492
+    }
+   ]
+  },
+  "AL": {
+   "layers": 20,
+   "rows_scanned": 1116975,
+   "rows_no_key": 207687,
+   "layer_unique_sum": 828898,
+   "unique": 641529,
+   "per_layer": [
+    {
+     "layer": "vices_Baldwin911Addresses__Fire_Station_View_FeatureServer_2",
+     "unique": 71
+    },
+    {
+     "layer": "s_TCECD_Site_Address_Points_Outside_County_FeatureServer_176",
+     "unique": 68
+    },
+    {
+     "layer": "arcgis_rest_services_Addresses_and_responses_FeatureServer_0",
+     "unique": 240
+    },
+    {
+     "layer": "_rest_services_Grayton_Parcels_and_Addresses_FeatureServer_0",
+     "unique": 281
+    },
+    {
+     "layer": "wLs3iGyK80EW_arcgis_rest_services_911Address_FeatureServer_0",
+     "unique": 71656
+    }
+   ]
+  },
+  "LA": {
+   "layers": 20,
+   "rows_scanned": 251183,
+   "rows_no_key": 865,
+   "layer_unique_sum": 221410,
+   "unique": 200808,
+   "per_layer": [
+    {
+     "layer": "services_911_Addresses_Restoration_Park_ONLY_FeatureServer_0",
+     "unique": 1
+    },
+    {
+     "layer": "s_rest_services_Thomas_Poree_Story_Map_FINAL_FeatureServer_0",
+     "unique": 16
+    },
+    {
+     "layer": "s_Addresses__2025_09_02__Gramercy_Community_FeatureServer_21",
+     "unique": 975
+    },
+    {
+     "layer": "rcgis_rest_services_Address_Viewer_Map_Notes_FeatureServer_0",
+     "unique": 844
+    },
+    {
+     "layer": "lZg_arcgis_rest_services_TensasAddressPoints_FeatureServer_0",
+     "unique": 4954
+    }
+   ]
+  },
+  "KS": {
+   "layers": 18,
+   "rows_scanned": 934133,
+   "rows_no_key": 0,
+   "layer_unique_sum": 807321,
+   "unique": 807097,
+   "per_layer": [
+    {
+     "layer": "gis_rest_services_Seneca_Nation_NY_Addresses_FeatureServer_0",
+     "unique": 2253
+    },
+    {
+     "layer": "est_services_New_Mexico_State_Univ_Addresses_FeatureServer_0",
+     "unique": 1009
+    },
+    {
+     "layer": "cgis_rest_services_Address_Points_030126_shp_FeatureServer_0",
+     "unique": 3737
+    },
+    {
+     "layer": "arcgis_rest_services_ltar_address_p_geocoded_FeatureServer_1",
+     "unique": 49
+    },
+    {
+     "layer": "arcgis_rest_services_Meade_Co_Address_Points_FeatureServer_0",
+     "unique": 2517
+    }
+   ]
+  },
+  "WA": {
+   "layers": 17,
+   "rows_scanned": 173549,
+   "rows_no_key": 4,
+   "layer_unique_sum": 161905,
+   "unique": 158211,
+   "per_layer": [
+    {
+     "layer": "vices_WA_Fairview_Wildfire_of_2026_Addresses_FeatureServer_0",
+     "unique": 68
+    },
+    {
+     "layer": "st_services_Town_of_Sidney_Address_Data_WFL1_FeatureServer_0",
+     "unique": 4142
+    },
+    {
+     "layer": "nTr_arcgis_rest_services_Address_Points_2021_FeatureServer_0",
+     "unique": 3468
+    },
+    {
+     "layer": "mage_Assessment___Parcel_Address_Rollup_view_FeatureServer_0",
+     "unique": 3198
+    },
+    {
+     "layer": "jBW_arcgis_rest_services_DSTT_Address_Points_FeatureServer_0",
+     "unique": 665
     }
    ]
   },
   "MA": {
    "layers": 17,
-   "layer_unique_sum": 612091,
-   "unique": 495382,
+   "rows_scanned": 672187,
+   "rows_no_key": 3,
+   "layer_unique_sum": 651420,
+   "unique": 534480,
    "per_layer": [
     {
-     "layer": "t_services_Public_20Notification_20Addresses_FeatureServer_0",
-     "unique": 10605
+     "layer": "vOamkQCWQM5KB8_arcgis_rest_services_E911_SLR_FeatureServer_0",
+     "unique": 4360
     },
     {
-     "layer": "st_services_Arlington_Addresses_current_view_FeatureServer_0",
-     "unique": 12280
+     "layer": "teAddresses_122036ab99c2454a9d989f68934b19b0_FeatureServer_0",
+     "unique": 3483
     },
     {
-     "layer": "rcgis_rest_services_Facility_Sites_E911_Clip_FeatureServer_0",
-     "unique": 0
+     "layer": "arcgis_rest_services_Address_Points_Display2_FeatureServer_0",
+     "unique": 1
     },
     {
-     "layer": "rcgis_rest_services_Buildings_and_Addresses_FeatureServer_17",
-     "unique": 28720
+     "layer": "_arcgis_rest_services_Vulnerable_e911_sites__FeatureServer_0",
+     "unique": 9
     },
     {
-     "layer": "jyn_arcgis_rest_services_Full_Street_Address_FeatureServer_0",
-     "unique": 0
+     "layer": "OMrvu25KcUX35_arcgis_rest_services_Addresses_FeatureServer_0",
+     "unique": 459
     }
    ]
   },
-  "OH": {
-   "layers": 15,
-   "layer_unique_sum": 373375,
-   "unique": 337027,
+  "AR": {
+   "layers": 17,
+   "rows_scanned": 819061,
+   "rows_no_key": 0,
+   "layer_unique_sum": 651423,
+   "unique": 616889,
    "per_layer": [
     {
-     "layer": "ysZUz_arcgis_rest_services_Carroll_Addresses_FeatureServer_0",
-     "unique": 15434
+     "layer": "services_Memphis_Synagogues_Addresses_202603_FeatureServer_0",
+     "unique": 21
     },
     {
-     "layer": "unty_oh_gov_arcgisdev_rest_services_WMAS_Address_MapServer_0",
-     "unique": 38627
+     "layer": "rest_services_Addresses_within_Fire_District_FeatureServer_0",
+     "unique": 3734
     },
     {
-     "layer": "t_services_NG911_Map__Lake_County__Ohio_WFL1_FeatureServer_0",
-     "unique": 0
+     "layer": "on_Meeting_Using_GIS_to_Facilitate_the_NG911_FeatureServer_0",
+     "unique": 62
     },
     {
-     "layer": "tBHQoYlrmJI_arcgis_rest_services_address_pts_FeatureServer_1",
-     "unique": 0
+     "layer": "est_services_Location_SITUS_ADDRESS_PT_point_FeatureServer_0",
+     "unique": 2792
     },
     {
-     "layer": "rcgis_rest_services_Addressing_RoadsAndAddresses_MapServer_0",
-     "unique": 172234
+     "layer": "_rest_services_COAHOMA_COUNTY_ADDRESS_POINTS_FeatureServer_0",
+     "unique": 2142
+    }
+   ]
+  },
+  "MI": {
+   "layers": 15,
+   "rows_scanned": 168816,
+   "rows_no_key": 3,
+   "layer_unique_sum": 168127,
+   "unique": 164041,
+   "per_layer": [
+    {
+     "layer": "x_arcgis_rest_services_DSMIParcelsAddressPts_FeatureServer_0",
+     "unique": 4072
+    },
+    {
+     "layer": "t_services_DBO_OntarioCollege_GeocodeAddress_FeatureServer_0",
+     "unique": 25
+    },
+    {
+     "layer": "tG_arcgis_rest_services_Address_Point_Errors_FeatureServer_0",
+     "unique": 345
+    },
+    {
+     "layer": "s_rest_services_DHN_All_Addresses_Aug_4_2023_FeatureServer_7",
+     "unique": 23
+    },
+    {
+     "layer": "rest_services_OntarioColleges_GeocodeAddress_FeatureServer_0",
+     "unique": 25
     }
    ]
   },
   "AZ": {
    "layers": 15,
-   "layer_unique_sum": 157681,
-   "unique": 112107,
+   "rows_scanned": 762525,
+   "rows_no_key": 0,
+   "layer_unique_sum": 716155,
+   "unique": 705295,
    "per_layer": [
     {
-     "layer": "vices_Yuma_911_Data_Roads_and_Addresses_WFL1_FeatureServer_0",
-     "unique": 36556
+     "layer": "vices_Ridgeside_Labels_StreetAddresses_WFL1_FeatureServer_27",
+     "unique": 1064
     },
     {
-     "layer": "s___Pulse_of_OC_Updated_Draft___Site_Address_FeatureServer_0",
-     "unique": 916
+     "layer": "services_NCI_CancerCenter_Address_spring2025_FeatureServer_0",
+     "unique": 77
     },
     {
-     "layer": "kFjYDrl_arcgis_rest_services_Address11292023_FeatureServer_0",
-     "unique": 0
+     "layer": "is_rest_services_NCI_Cancer_Center_Addresses_FeatureServer_0",
+     "unique": 73
     },
     {
-     "layer": "kFjYDrl_arcgis_rest_services_Address06192026_FeatureServer_0",
-     "unique": 11216
+     "layer": "is_rest_services_Address_TaxLienAuction_2024_FeatureServer_0",
+     "unique": 1546
     },
     {
-     "layer": "kFjYDrl_arcgis_rest_services_Address02202025_FeatureServer_0",
-     "unique": 10812
+     "layer": "hr_arcgis_rest_services_NCI_Center_Addresses_FeatureServer_0",
+     "unique": 73
     }
    ]
   },
-  "LA": {
-   "layers": 14,
-   "layer_unique_sum": 439987,
-   "unique": 420024,
+  "OH": {
+   "layers": 15,
+   "rows_scanned": 679871,
+   "rows_no_key": 0,
+   "layer_unique_sum": 647841,
+   "unique": 646959,
    "per_layer": [
     {
-     "layer": "wlO_arcgis_rest_services_Master_Address_List_FeatureServer_0",
-     "unique": 11924
+     "layer": "is_rest_services_Independence_Addresses_WFL1_FeatureServer_0",
+     "unique": 3273
     },
     {
-     "layer": "ses_public_3336c922d00a441e8f588e16c3dc2577_FeatureServer_10",
-     "unique": 7529
+     "layer": "gis_rest_services_Defiance_County_Addresses_FeatureServer_83",
+     "unique": 2528
     },
     {
-     "layer": "sKPeG_arcgis_rest_services_Address_ViewLayer_FeatureServer_0",
-     "unique": 24496
+     "layer": "_arcgis_rest_services_Remote_Address_Points_FeatureServer_10",
+     "unique": 141
     },
     {
-     "layer": "rest_services_Site_Addresses_06012022_public_FeatureServer_2",
-     "unique": 7124
+     "layer": "Dl4j6iT0i_arcgis_rest_services_AddressPoints_FeatureServer_0",
+     "unique": 1437
     },
     {
-     "layer": "rXp_arcgis_rest_services_LPG_Address_Records_FeatureServer_0",
-     "unique": 0
-    }
-   ]
-  },
-  "NC": {
-   "layers": 13,
-   "layer_unique_sum": 870747,
-   "unique": 870548,
-   "per_layer": [
-    {
-     "layer": "roY6O3ncx_arcgis_rest_services_MS4_addresses_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "rest_services_Cherokee_Address_Analysis_WFL1_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "rest_services_Addresses_With_Voting_Precinct_FeatureServer_0",
-     "unique": 24387
-    },
-    {
-     "layer": "es_City_Buildings_and_Address_Locations_WFL1_FeatureServer_4",
-     "unique": 0
-    },
-    {
-     "layer": "eeeoWYqSyV5I_arcgis_rest_services_E911_gdb__FeatureServer_11",
-     "unique": 51008
-    }
-   ]
-  },
-  "AR": {
-   "layers": 13,
-   "layer_unique_sum": 838667,
-   "unique": 468510,
-   "per_layer": [
-    {
-     "layer": "is_rest_services_Barry_County_E911_Map_WFL1_FeatureServer_29",
-     "unique": 117592
-    },
-    {
-     "layer": "ieS2ld_arcgis_rest_services_Searcy_NG911_gdb_FeatureServer_2",
-     "unique": 0
-    },
-    {
-     "layer": "gis_rest_services_ShelbyTN_Addresses_AGOHost_FeatureServer_0",
-     "unique": 341630
-    },
-    {
-     "layer": "eajjke_arcgis_rest_services_Addresses_Rogers_FeatureServer_0",
-     "unique": 31229
-    },
-    {
-     "layer": "dlWlBxzX_arcgis_rest_services_Searcy_Address_FeatureServer_0",
-     "unique": 0
-    }
-   ]
-  },
-  "MD": {
-   "layers": 12,
-   "layer_unique_sum": 194805,
-   "unique": 172139,
-   "per_layer": [
-    {
-     "layer": "ttesville_org_cvgisweb_rest_services_OpenData_1_MapServer_76",
-     "unique": 0
-    },
-    {
-     "layer": "rcgis_rest_services_Mailing_Address_Map_WFL1_FeatureServer_1",
-     "unique": 11333
-    },
-    {
-     "layer": "gis_rest_services_Mailing_Address_Map___WFL1_FeatureServer_1",
-     "unique": 11333
-    },
-    {
-     "layer": "gis_rest_services_Mailing_Address_Map_2_WFL1_FeatureServer_1",
-     "unique": 11333
-    },
-    {
-     "layer": "esses_In_Refuse_Recycle_Routes_WFL1_July2019_FeatureServer_0",
-     "unique": 4885
-    }
-   ]
-  },
-  "IA": {
-   "layers": 11,
-   "layer_unique_sum": 164624,
-   "unique": 164312,
-   "per_layer": [
-    {
-     "layer": "vlQFEpKtV_arcgis_rest_services_DOUGLASCOUNTY_FeatureServer_0",
-     "unique": 8194
-    },
-    {
-     "layer": "st_services_Winneshiek_County_Address_Points_FeatureServer_1",
-     "unique": 9105
-    },
-    {
-     "layer": "s_rest_services_ElectionsPollingPlaceAddress_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "rest_services_Pella_Address_Data_Public_View_FeatureServer_2",
-     "unique": 7187
-    },
-    {
-     "layer": "oXVtxM_arcgis_rest_services_CountyAddresses_FeatureServer_23",
-     "unique": 9096
-    }
-   ]
-  },
-  "NH": {
-   "layers": 11,
-   "layer_unique_sum": 0,
-   "unique": 0,
-   "per_layer": [
-    {
-     "layer": "services_Zanna_E911_Sites_Within_8min_Buffer_FeatureServer_1",
-     "unique": 0
-    },
-    {
-     "layer": "rcgis_rest_services_VT_Data___E911_Landmarks_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "m_jOKMO9vKmc98J4JC_arcgis_rest_services_E911_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "ervices_Zanna_E911_Sites_Outside_8min_Buffer_FeatureServer_2",
-     "unique": 0
-    },
-    {
-     "layer": "d1_arcgis_rest_services_Vermont_US_Addresses_FeatureServer_1",
-     "unique": 0
-    }
-   ]
-  },
-  "WA": {
-   "layers": 10,
-   "layer_unique_sum": 113044,
-   "unique": 113044,
-   "per_layer": [
-    {
-     "layer": "u0_arcgis_rest_services_Address_OfflineCopy_FeatureServer_21",
-     "unique": 0
-    },
-    {
-     "layer": "st_services_Vector_Tile_Site_Address_Labels_FeatureServer_57",
-     "unique": 25771
-    },
-    {
-     "layer": "hP2NPfFE_arcgis_rest_services_Site_Addresses_FeatureServer_0",
-     "unique": 10238
-    },
-    {
-     "layer": "_arcgis_rest_services_Addresses_NOT_ELIGIBLE_FeatureServer_0",
-     "unique": 36195
-    },
-    {
-     "layer": "_Mountlake_Terrace_Washington_Addresses_view_FeatureServer_0",
-     "unique": 0
-    }
-   ]
-  },
-  "OK": {
-   "layers": 10,
-   "layer_unique_sum": 539864,
-   "unique": 358447,
-   "per_layer": [
-    {
-     "layer": "gis_rest_services_INCOG_911_Address_Map_WFL1_FeatureServer_0",
-     "unique": 181417
-    },
-    {
-     "layer": "est_services_NormanResidentialTrashAddresses_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "_services_Lincoln_LUCA_Addresses_Counts_WFL1_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "_rest_services_Randall_County_Addresses_WFL1_FeatureServer_1",
-     "unique": 61051
-    },
-    {
-     "layer": "_rest_services_GIS_ENV_GIS_Work_Background_Layer_MapServer_0",
-     "unique": 3
+     "layer": "ysZUz_arcgis_rest_services_Carroll_Addresses_FeatureServer_0",
+     "unique": 15434
     }
    ]
   },
   "IN": {
-   "layers": 9,
-   "layer_unique_sum": 198296,
-   "unique": 198296,
+   "layers": 13,
+   "rows_scanned": 475760,
+   "rows_no_key": 909,
+   "layer_unique_sum": 473256,
+   "unique": 437015,
    "per_layer": [
     {
-     "layer": "xkcSkFAjt_arcgis_rest_services_911_Addresses_FeatureServer_0",
-     "unique": 17386
+     "layer": "iyTV6_arcgis_rest_services_NASP_Address_view_FeatureServer_0",
+     "unique": 715
     },
     {
-     "layer": "sses_public_e65dd46e9c084cddaedcb94aeea0ed6b_FeatureServer_0",
-     "unique": 7703
+     "layer": "gis_rest_services_E911Addresses_Inside_100Yr_FeatureServer_0",
+     "unique": 639
     },
     {
-     "layer": "s_rest_services_Master_Address_List_Aug_2026_FeatureServer_0",
-     "unique": 0
+     "layer": "cgis_rest_services_Rubbertown_Addresses_WFL1_FeatureServer_0",
+     "unique": 69
     },
     {
-     "layer": "s_Meade_Co_KY_Addresses_Roads_Lot_Lines_WFL1_FeatureServer_0",
-     "unique": 0
+     "layer": "_arcgis_rest_services_Westside_AddressPoints_FeatureServer_0",
+     "unique": 564
     },
     {
-     "layer": "rest_services_E911_Addresses_Hamilton_County_FeatureServer_0",
-     "unique": 173207
+     "layer": "00ea7p7i0U_arcgis_rest_services_E911CallDATA_FeatureServer_1",
+     "unique": 179
+    }
+   ]
+  },
+  "UT": {
+   "layers": 12,
+   "rows_scanned": 324368,
+   "rows_no_key": 0,
+   "layer_unique_sum": 315162,
+   "unique": 307102,
+   "per_layer": [
+    {
+     "layer": "teAddresses_78438353268d48b3ae6eb590e09a6c1a_FeatureServer_0",
+     "unique": 1357
+    },
+    {
+     "layer": "s_Addresses_further_away_than_200ft_of_roads_FeatureServer_0",
+     "unique": 49
+    },
+    {
+     "layer": "rvices_Addresses_within__25_miles_of_streams_FeatureServer_0",
+     "unique": 371
+    },
+    {
+     "layer": "lhlg_arcgis_rest_services_Address200feetaway_FeatureServer_0",
+     "unique": 39
+    },
+    {
+     "layer": "cgis_rest_services_fireworks_final_addresses_FeatureServer_0",
+     "unique": 121
+    }
+   ]
+  },
+  "ID": {
+   "layers": 12,
+   "rows_scanned": 525671,
+   "rows_no_key": 2,
+   "layer_unique_sum": 470997,
+   "unique": 470317,
+   "per_layer": [
+    {
+     "layer": "t_services_Short_Term_Rentals_Address_Points_FeatureServer_0",
+     "unique": 34
+    },
+    {
+     "layer": "s93fmcFMug_arcgis_rest_services_Address_WFL1_FeatureServer_0",
+     "unique": 111
+    },
+    {
+     "layer": "s93fmcFMug_arcgis_rest_services_Address_View_FeatureServer_0",
+     "unique": 1242
+    },
+    {
+     "layer": "rvices_Camas_County_Roads_and_Address_Points_FeatureServer_0",
+     "unique": 1205
+    },
+    {
+     "layer": "rest_services_AddresseditSchema22_publicview_FeatureServer_0",
+     "unique": 1275
+    }
+   ]
+  },
+  "NJ": {
+   "layers": 12,
+   "rows_scanned": 216816,
+   "rows_no_key": 1,
+   "layer_unique_sum": 197081,
+   "unique": 191360,
+   "per_layer": [
+    {
+     "layer": "s_rest_services_MS4_sites_Addresses_OFFICIAL_FeatureServer_0",
+     "unique": 158
+    },
+    {
+     "layer": "resses_Between_March_2018_To_April_2020_WFL1_FeatureServer_0",
+     "unique": 388
+    },
+    {
+     "layer": "rcgis_rest_services_MCSONJ_Address_Collector_FeatureServer_0",
+     "unique": 183
+    },
+    {
+     "layer": "is_rest_services_79_Greenwich_address_points_FeatureServer_0",
+     "unique": 2
+    },
+    {
+     "layer": "bNao4Cfr_arcgis_rest_services_address_points_FeatureServer_0",
+     "unique": 3561
+    }
+   ]
+  },
+  "IA": {
+   "layers": 12,
+   "rows_scanned": 230258,
+   "rows_no_key": 3,
+   "layer_unique_sum": 105470,
+   "unique": 105346,
+   "per_layer": [
+    {
+     "layer": "nLN_arcgis_rest_services_1920_Address_Points_FeatureServer_0",
+     "unique": 515
+    },
+    {
+     "layer": "_rest_services_SC_Address_Grid_Intersections_FeatureServer_0",
+     "unique": 511
+    },
+    {
+     "layer": "_arcgis_rest_services_1940_Address_Points_JG_FeatureServer_0",
+     "unique": 95
+    },
+    {
+     "layer": "_arcgis_rest_services_1920_Address_Points_JG_FeatureServer_0",
+     "unique": 63
+    },
+    {
+     "layer": "CIe16u6G_arcgis_rest_services_Address_Points_FeatureServer_0",
+     "unique": 518
+    }
+   ]
+  },
+  "OK": {
+   "layers": 11,
+   "rows_scanned": 563206,
+   "rows_no_key": 1,
+   "layer_unique_sum": 322463,
+   "unique": 319389,
+   "per_layer": [
+    {
+     "layer": "ytLCyS0D_arcgis_rest_services_Address_Points_FeatureServer_0",
+     "unique": 3083
+    },
+    {
+     "layer": "teAddresses_3c0d2a3e024645759ed1c230bc207fc6_FeatureServer_0",
+     "unique": 3
+    },
+    {
+     "layer": "h_arcgis_rest_services_DeweyCo_ADDRESS_POINT_FeatureServer_0",
+     "unique": 3434
+    },
+    {
+     "layer": "esses_field_3c0d2a3e024645759ed1c230bc207fc6_FeatureServer_0",
+     "unique": 3
+    },
+    {
+     "layer": "aytLCyS0D_arcgis_rest_services_AddressPoints_FeatureServer_0",
+     "unique": 3071
+    }
+   ]
+  },
+  "ME": {
+   "layers": 11,
+   "rows_scanned": 23152,
+   "rows_no_key": 0,
+   "layer_unique_sum": 22889,
+   "unique": 21795,
+   "per_layer": [
+    {
+     "layer": "services_Emergency_Services_Address_Yarmouth_FeatureServer_0",
+     "unique": 2
+    },
+    {
+     "layer": "s_Feature_Fire_Stations__8701407324347697906_FeatureServer_0",
+     "unique": 569
+    },
+    {
+     "layer": "s_6210111511358341306_from_maine_geo_library_FeatureServer_0",
+     "unique": 59
+    },
+    {
+     "layer": "olleges_and_Universities_4063016863268643245_FeatureServer_0",
+     "unique": 322
+    },
+    {
+     "layer": "oYk_arcgis_rest_services_Milbridge_Addresses_FeatureServer_0",
+     "unique": 549
+    }
+   ]
+  },
+  "NH": {
+   "layers": 9,
+   "rows_scanned": 1064844,
+   "rows_no_key": 2,
+   "layer_unique_sum": 1063430,
+   "unique": 681460,
+   "per_layer": [
+    {
+     "layer": "w5d_arcgis_rest_services_Calais_VT_Resources_FeatureServer_4",
+     "unique": 978
+    },
+    {
+     "layer": "ices_Barre_City_Infill_Housing_Analysis_WFL1_FeatureServer_8",
+     "unique": 2983
+    },
+    {
+     "layer": "services_Zanna_E911_Sites_Within_8min_Buffer_FeatureServer_1",
+     "unique": 207315
+    },
+    {
+     "layer": "rcgis_rest_services_VT_Data___E911_Landmarks_FeatureServer_0",
+     "unique": 12616
+    },
+    {
+     "layer": "m_jOKMO9vKmc98J4JC_arcgis_rest_services_E911_FeatureServer_0",
+     "unique": 12401
+    }
+   ]
+  },
+  "MT": {
+   "layers": 8,
+   "rows_scanned": 17153,
+   "rows_no_key": 0,
+   "layer_unique_sum": 17053,
+   "unique": 14964,
+   "per_layer": [
+    {
+     "layer": "vices_Meagher_County_Addressing_Basemap_WFL1_FeatureServer_0",
+     "unique": 2078
+    },
+    {
+     "layer": "illwater_County_Addressing_Layers_2022_WFL99_FeatureServer_0",
+     "unique": 8
+    },
+    {
+     "layer": "ices_Meagher_County_Address_Points_June_2025_FeatureServer_0",
+     "unique": 2105
+    },
+    {
+     "layer": "est_services_SiteAddressPin_view_13268481226_FeatureServer_0",
+     "unique": 1
+    },
+    {
+     "layer": "est_services_SiteAddressPin_view_13268052057_FeatureServer_0",
+     "unique": 1
+    }
+   ]
+  },
+  "SC": {
+   "layers": 8,
+   "rows_scanned": 413843,
+   "rows_no_key": 16,
+   "layer_unique_sum": 411824,
+   "unique": 354485,
+   "per_layer": [
+    {
+     "layer": "rcgis_rest_services_Breweries_Address_Points_FeatureServer_0",
+     "unique": 18
+    },
+    {
+     "layer": "pn2_arcgis_rest_services_2023_Address_points_FeatureServer_0",
+     "unique": 1085
+    },
+    {
+     "layer": "cgis_rest_services_Bike_Share_Address_Points_FeatureServer_0",
+     "unique": 13
+    },
+    {
+     "layer": "HNk0Cmg2csuv9p_arcgis_rest_services_Energov3_FeatureServer_0",
+     "unique": 4576
+    },
+    {
+     "layer": "zOpn2_arcgis_rest_services_Streets_Buidlings_FeatureServer_0",
+     "unique": 65446
+    }
+   ]
+  },
+  "KY": {
+   "layers": 8,
+   "rows_scanned": 272475,
+   "rows_no_key": 0,
+   "layer_unique_sum": 262118,
+   "unique": 197284,
+   "per_layer": [
+    {
+     "layer": "gis_rest_services_Mammoth_Cave_NG911__Public_FeatureServer_0",
+     "unique": 111
+    },
+    {
+     "layer": "gis_rest_services_KnoxCo_FloodRisk_Addresses_FeatureServer_0",
+     "unique": 398
+    },
+    {
+     "layer": "cgis_rest_services_Busty_Road_Address_Points_FeatureServer_0",
+     "unique": 268
+    },
+    {
+     "layer": "zxvnVEjzQ6xuSXS_arcgis_rest_services_Address_FeatureServer_0",
+     "unique": 78240
+    },
+    {
+     "layer": "mxCAS_arcgis_rest_services_ClermontAddresses_FeatureServer_0",
+     "unique": 82868
     }
    ]
   },
   "TN": {
-   "layers": 9,
-   "layer_unique_sum": 1223878,
-   "unique": 626133,
+   "layers": 6,
+   "rows_scanned": 624706,
+   "rows_no_key": 4,
+   "layer_unique_sum": 596646,
+   "unique": 269325,
    "per_layer": [
+    {
+     "layer": "qBWodG9Kll_arcgis_rest_services_ChargingLike_FeatureServer_0",
+     "unique": 68
+    },
+    {
+     "layer": "arcgis_rest_services_UTC_Building_Addresses_FeatureServer_19",
+     "unique": 56
+    },
     {
      "layer": "rvices_WCAddresses20251003_gdb_view_Geocivix_FeatureServer_0",
      "unique": 95987
     },
     {
      "layer": "arcgis_rest_services_Addresses_Arcade_Labels_FeatureServer_0",
-     "unique": 159519
+     "unique": 159525
     },
     {
      "layer": "_services_Rutherford_Site_Addresses_11012024_FeatureServer_0",
-     "unique": 170490
-    },
-    {
-     "layer": "_rest_services_Site_Addresses_FLOCK_10302024_FeatureServer_0",
-     "unique": 170490
-    },
-    {
-     "layer": "_arcgis_rest_services_Nashville_110623B_WFL1_FeatureServer_0",
-     "unique": 270433
-    }
-   ]
-  },
-  "KY": {
-   "layers": 8,
-   "layer_unique_sum": 317773,
-   "unique": 209664,
-   "per_layer": [
-    {
-     "layer": "zxvnVEjzQ6xuSXS_arcgis_rest_services_Address_FeatureServer_0",
-     "unique": 77940
-    },
-    {
-     "layer": "mxCAS_arcgis_rest_services_ClermontAddresses_FeatureServer_0",
-     "unique": 82800
-    },
-    {
-     "layer": "is_rest_services_Madison_County_KY_Addresses_FeatureServer_1",
-     "unique": 0
-    },
-    {
-     "layer": "ervices_Lee_County_E911_Addresses_and_Roads_FeatureServer_20",
-     "unique": 0
-    },
-    {
-     "layer": "cgis_rest_services_NRSA_Address_Locator_WFL1_FeatureServer_8",
-     "unique": 48573
-    }
-   ]
-  },
-  "ID": {
-   "layers": 8,
-   "layer_unique_sum": 465304,
-   "unique": 460005,
-   "per_layer": [
-    {
-     "layer": "oN_arcgis_rest_services_WASD_Addresses_3_23_FeatureServer_52",
-     "unique": 232447
-    },
-    {
-     "layer": "i_arcgis_rest_services_Ada_County_Addresses_FeatureServer_13",
-     "unique": 188312
-    },
-    {
-     "layer": "aNxg1PvwI_arcgis_rest_services_All_Addresses_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "_qnjIrwR8z5Izc0ij_arcgis_rest_services_ng911_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "TjgFX_arcgis_rest_services_addresses_120222a_FeatureServer_0",
-     "unique": 5306
-    }
-   ]
-  },
-  "MI": {
-   "layers": 7,
-   "layer_unique_sum": 55079,
-   "unique": 55079,
-   "per_layer": [
-    {
-     "layer": "wVADPEG6iD24f_arcgis_rest_services_Addresses_FeatureServer_0",
-     "unique": 5999
-    },
-    {
-     "layer": "rcgis_rest_services_HostedServices_Addresses_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "_arcgis_rest_services_Shawano_Addresses_2026_FeatureServer_0",
-     "unique": 728
-    },
-    {
-     "layer": "_arcgis_rest_services_Addresses_USA_combined_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "Us_arcgis_rest_services_OC_Site_Address_2023_FeatureServer_0",
-     "unique": 0
-    }
-   ]
-  },
-  "ME": {
-   "layers": 6,
-   "layer_unique_sum": 3369441,
-   "unique": 701108,
-   "per_layer": [
-    {
-     "layer": "ver_rest_services_ParcelViewer_Parcel_Map_Labels_MapServer_0",
-     "unique": 11875
-    },
-    {
-     "layer": "s_rest_services_Maine_E911_Addresses_Feature_FeatureServer_0@ME-2",
-     "unique": 646815
-    },
-    {
-     "layer": "lMUcWvuPRM_arcgis_rest_services_E911Agol_gdb_FeatureServer_0",
-     "unique": 679760
-    },
-    {
-     "layer": "ces_Maine_E911_Addresses_5882121085363306039_FeatureServer_0",
-     "unique": 675166
-    },
-    {
-     "layer": "arcgis_rest_services_Maine_E911_NG_ADDRESSES_FeatureServer_0",
-     "unique": 670771
-    }
-   ]
-  },
-  "SC": {
-   "layers": 5,
-   "layer_unique_sum": 23297,
-   "unique": 23297,
-   "per_layer": [
-    {
-     "layer": "zOpn2_arcgis_rest_services_Streets_Buidlings_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "w_arcgis_rest_services_Addresses_not_in_Town_FeatureServer_5",
-     "unique": 0
-    },
-    {
-     "layer": "rcgis_rest_services_GC_Address_Points_Public_FeatureServer_8",
-     "unique": 23297
-    },
-    {
-     "layer": "m_nEIrIdcFpdK28ibf_arcgis_rest_services_E911_FeatureServer_1",
-     "unique": 0
-    },
-    {
-     "layer": "1Vphzvgd_arcgis_rest_services_City_Addresses_FeatureServer_0",
-     "unique": 0
-    }
-   ]
-  },
-  "UT": {
-   "layers": 5,
-   "layer_unique_sum": 67877,
-   "unique": 65861,
-   "per_layer": [
-    {
-     "layer": "rcgis_rest_services_Richfield_Comm_Addresses_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "gT_arcgis_rest_services_USU_Addressing_view_FeatureServer_26",
-     "unique": 35525
-    },
-    {
-     "layer": "_arcgis_rest_services_zoningAddressingSearch_FeatureServer_0",
-     "unique": 32352
-    },
-    {
-     "layer": "CRVuK_arcgis_rest_services_Map_View_Address_FeatureServer_42",
-     "unique": 0
-    },
-    {
-     "layer": "cgis_rest_services_SaltLake_County_Addresses_FeatureServer_0",
-     "unique": 0
-    }
-   ]
-  },
-  "NJ": {
-   "layers": 4,
-   "layer_unique_sum": 2562456,
-   "unique": 2472946,
-   "per_layer": [
-    {
-     "layer": "k6RO1_arcgis_rest_services_HudsonCty_AddrPts_FeatureServer_0",
-     "unique": 89939
-    },
-    {
-     "layer": "field_College_Block_Lot_and_Address_Map_WFL1_FeatureServer_0",
-     "unique": 13375
-    },
-    {
-     "layer": "arcgis_rest_services_Hudson_County_Addresses_FeatureServer_0",
-     "unique": 85378
-    },
-    {
-     "layer": "king_Water_Systems_by_Address_in_New_Jersey_FeatureServer_38",
-     "unique": 2373764
-    }
-   ]
-  },
-  "PA": {
-   "layers": 3,
-   "layer_unique_sum": 0,
-   "unique": 0,
-   "per_layer": [
-    {
-     "layer": "rcgis_rest_services_Bedford_County_Addresses_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "j7_arcgis_rest_services_Addresses_GeneralUse_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "71LO_arcgis_rest_services_Addresses_CivQuest_FeatureServer_0",
-     "unique": 0
-    }
-   ]
-  },
-  "MS": {
-   "layers": 3,
-   "layer_unique_sum": 26522,
-   "unique": 26498,
-   "per_layer": [
-    {
-     "layer": "ez8fHeIiDRbgb_arcgis_rest_services_Addresses_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "_rest_services_Oxford_911_Address_View_Layer_FeatureServer_1",
-     "unique": 13274
-    },
-    {
-     "layer": "X_arcgis_rest_services_County_P_Address_View_FeatureServer_0",
-     "unique": 13248
-    }
-   ]
-  },
-  "MT": {
-   "layers": 2,
-   "layer_unique_sum": 0,
-   "unique": 0,
-   "per_layer": [
-    {
-     "layer": "teAddresses_8548b2fdfac0464392b3fd7620a632d7_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "ces_Stillwater_County_Addressing_Layers_2026_FeatureServer_0",
-     "unique": 0
-    }
-   ]
-  },
-  "ND": {
-   "layers": 2,
-   "layer_unique_sum": 68163,
-   "unique": 65937,
-   "per_layer": [
-    {
-     "layer": "meepNh_arcgis_rest_services_Master_Addresses_FeatureServer_0",
-     "unique": 15182
-    },
-    {
-     "layer": "0gE_arcgis_rest_services_CenCom_Address_View_FeatureServer_0",
-     "unique": 52981
-    }
-   ]
-  },
-  "DC": {
-   "layers": 2,
-   "layer_unique_sum": 0,
-   "unique": 0,
-   "per_layer": [
-    {
-     "layer": "arcgis_rest_services_Alexandria_VA_Addresses_FeatureServer_0",
-     "unique": 0
-    },
-    {
-     "layer": "LmYGD_arcgis_rest_services_DC_Addresses_WFL1_FeatureServer_0",
-     "unique": 0
+     "unique": 170505
     }
    ]
   },
   "AK": {
-   "layers": 1,
-   "layer_unique_sum": 87553,
-   "unique": 87553,
+   "layers": 6,
+   "rows_scanned": 137312,
+   "rows_no_key": 1,
+   "layer_unique_sum": 93701,
+   "unique": 93682,
    "per_layer": [
     {
-     "layer": "wbHlfF_arcgis_rest_services_Addresses_Hosted_FeatureServer_0",
-     "unique": 87553
+     "layer": "YH0_arcgis_rest_services_Site_Address_Points_FeatureServer_0",
+     "unique": 890
+    },
+    {
+     "layer": "Hpm8mHFz_arcgis_rest_services_Addresses_view_FeatureServer_0",
+     "unique": 886
+    },
+    {
+     "layer": "DiwEHErgACQrcA3_arcgis_rest_services_Address_FeatureServer_0",
+     "unique": 2217
+    },
+    {
+     "layer": "5IxwbSz_arcgis_rest_services_AddressesOnline_FeatureServer_0",
+     "unique": 1163
+    },
+    {
+     "layer": "37YZHYH0_arcgis_rest_services_Address_Points_FeatureServer_0",
+     "unique": 992
     }
    ]
   },
-  "HI": {
-   "layers": 1,
-   "layer_unique_sum": 0,
-   "unique": 0,
+  "DC": {
+   "layers": 5,
+   "rows_scanned": 42088,
+   "rows_no_key": 0,
+   "layer_unique_sum": 38671,
+   "unique": 37381,
    "per_layer": [
     {
-     "layer": "rcgis_rest_services_MC_Address_Pts_PMG_View1_FeatureServer_0",
-     "unique": 0
+     "layer": "tVX_arcgis_rest_services_RPZ_Address_Points2_FeatureServer_0",
+     "unique": 1387
+    },
+    {
+     "layer": "gis_rest_services_Theoretical_Address_Ranges_FeatureServer_0",
+     "unique": 395
+    },
+    {
+     "layer": "gis_rest_services_AddressUpdate_DCGIS_Ward1_FeatureServer_23",
+     "unique": 669
+    },
+    {
+     "layer": "Ll1tVX_arcgis_rest_services_RPZ_Address_Pt_2_FeatureServer_0",
+     "unique": 1304
+    },
+    {
+     "layer": "arcgis_rest_services_Alexandria_VA_Addresses_FeatureServer_0",
+     "unique": 34916
+    }
+   ]
+  },
+  "PA": {
+   "layers": 5,
+   "rows_scanned": 206585,
+   "rows_no_key": 0,
+   "layer_unique_sum": 153462,
+   "unique": 153462,
+   "per_layer": [
+    {
+     "layer": "_arcgis_rest_services_Richland_AddressPt2022_FeatureServer_0",
+     "unique": 4719
+    },
+    {
+     "layer": "SpUPMP3Z_arcgis_rest_services_Address_Points_FeatureServer_0",
+     "unique": 2603
+    },
+    {
+     "layer": "CKH_arcgis_rest_services_MCRC_Address_Points_FeatureServer_0",
+     "unique": 457
+    },
+    {
+     "layer": "rcgis_rest_services_Bedford_County_Addresses_FeatureServer_0",
+     "unique": 28007
+    },
+    {
+     "layer": "j7_arcgis_rest_services_Addresses_GeneralUse_FeatureServer_0",
+     "unique": 117676
+    }
+   ]
+  },
+  "ND": {
+   "layers": 4,
+   "rows_scanned": 21072,
+   "rows_no_key": 0,
+   "layer_unique_sum": 18476,
+   "unique": 18325,
+   "per_layer": [
+    {
+     "layer": "s_rest_services_Sioux_County_Addressing_WFL1_FeatureServer_2",
+     "unique": 1524
+    },
+    {
+     "layer": "arcgis_rest_services_mclean_readdress_points_FeatureServer_0",
+     "unique": 1695
+    },
+    {
+     "layer": "Thf3DKUv_arcgis_rest_services_Address_Points_FeatureServer_0",
+     "unique": 73
+    },
+    {
+     "layer": "meepNh_arcgis_rest_services_Master_Addresses_FeatureServer_0",
+     "unique": 15184
     }
    ]
   },
   "CT": {
-   "layers": 1,
-   "layer_unique_sum": 0,
-   "unique": 0,
+   "layers": 3,
+   "rows_scanned": 10451,
+   "rows_no_key": 0,
+   "layer_unique_sum": 7284,
+   "unique": 7284,
    "per_layer": [
     {
+     "layer": "teAddresses_fc0cc9ec7e5a47b1a4b4ad7a1eb2f9e0_FeatureServer_0",
+     "unique": 1
+    },
+    {
+     "layer": "Iuq_arcgis_rest_services_Address_Points_DSSD_FeatureServer_0",
+     "unique": 120
+    },
+    {
      "layer": "rWTl_arcgis_rest_services_Harrison_Addresses_FeatureServer_0",
-     "unique": 0
+     "unique": 7163
     }
    ]
   },
-  "DE": {
-   "layers": 1,
-   "layer_unique_sum": 86274,
-   "unique": 86274,
+  "HI": {
+   "layers": 3,
+   "rows_scanned": 65295,
+   "rows_no_key": 0,
+   "layer_unique_sum": 54469,
+   "unique": 54456,
    "per_layer": [
     {
-     "layer": "_rest_services_EmergencyManagement_Addresses_FeatureServer_0",
-     "unique": 86274
+     "layer": "rest_services_LahainaStreetsAndAddressPoints_FeatureServer_0",
+     "unique": 4758
+    },
+    {
+     "layer": "est_services_20171228_Kakaako_Address_Points_FeatureServer_0",
+     "unique": 1145
+    },
+    {
+     "layer": "rcgis_rest_services_MC_Address_Pts_PMG_View1_FeatureServer_0",
+     "unique": 48566
+    }
+   ]
+  },
+  "SD": {
+   "layers": 2,
+   "rows_scanned": 2810,
+   "rows_no_key": 0,
+   "layer_unique_sum": 2758,
+   "unique": 2758,
+   "per_layer": [
+    {
+     "layer": "tMi_arcgis_rest_services_Address_Points_view_FeatureServer_0",
+     "unique": 2752
+    },
+    {
+     "layer": "ZHUggYYSp_arcgis_rest_services_Address_types_FeatureServer_0",
+     "unique": 6
+    }
+   ]
+  },
+  "WY": {
+   "layers": 2,
+   "rows_scanned": 1063,
+   "rows_no_key": 0,
+   "layer_unique_sum": 1029,
+   "unique": 1029,
+   "per_layer": [
+    {
+     "layer": "st_services_FEMA_Address_Attachments__public_FeatureServer_0",
+     "unique": 114
+    },
+    {
+     "layer": "3oxsPnVw4fnW9_arcgis_rest_services_Addresses_FeatureServer_1",
+     "unique": 915
+    }
+   ]
+  },
+  "RI": {
+   "layers": 2,
+   "rows_scanned": 2856,
+   "rows_no_key": 0,
+   "layer_unique_sum": 2816,
+   "unique": 2816,
+   "per_layer": [
+    {
+     "layer": "is_rest_services_Flooded_FACILITY_Sites_E911_FeatureServer_0",
+     "unique": 2673
+    },
+    {
+     "layer": "On_arcgis_rest_services_CW_Points_w_Address_FeatureServer_12",
+     "unique": 143
+    }
+   ]
+  },
+  "MS": {
+   "layers": 2,
+   "rows_scanned": 48909,
+   "rows_no_key": 0,
+   "layer_unique_sum": 45211,
+   "unique": 45211,
+   "per_layer": [
+    {
+     "layer": "ez8fHeIiDRbgb_arcgis_rest_services_Addresses_FeatureServer_0",
+     "unique": 30930
+    },
+    {
+     "layer": "_rest_services_Oxford_911_Address_View_Layer_FeatureServer_1",
+     "unique": 14281
     }
    ]
   },
   "NE": {
    "layers": 1,
-   "layer_unique_sum": 0,
-   "unique": 0,
+   "rows_scanned": 136,
+   "rows_no_key": 0,
+   "layer_unique_sum": 136,
+   "unique": 136,
    "per_layer": [
     {
-     "layer": "GOi6N4Rq5cqFv_arcgis_rest_services_Addresses_FeatureServer_0",
-     "unique": 0
+     "layer": "dQbOYiPWy_arcgis_rest_services_AddressPoints_FeatureServer_0",
+     "unique": 136
     }
    ]
   }

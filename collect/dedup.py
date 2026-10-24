@@ -131,9 +131,29 @@ def _fallback_key(rec):
 
 
 def digests_from_tar(path, tmpdir):
-    """从一个 tar.gz 里抠出该层的去重键集合 + 统计（总行 / 无键行）。"""
+    """从一个数据资产里抠出该层的去重键集合 + 统计（总行 / 无键行）。
+    支持 tar.gz（多 part 打包）与单个 ndjson.gz。"""
     keys = set()
     stats = {"rows": 0, "no_key": 0}
+    if path.endswith(".ndjson.gz"):
+        try:
+            with gzip.open(path, "rb") as f:
+                for line in f:
+                    if not line.strip():
+                        continue
+                    try:
+                        rec = json.loads(line)
+                    except Exception:
+                        continue
+                    stats["rows"] += 1
+                    k = rec.get("addr_key") or _fallback_key(rec)
+                    if k:
+                        keys.add(k)
+                    else:
+                        stats["no_key"] += 1
+        except Exception as e:
+            print("  ⚠️ 解包失败 %s：%s" % (os.path.basename(path), str(e)[:80]))
+        return keys, stats
     try:
         with tarfile.open(path, "r:gz") as tf:
             for m in tf.getmembers():
@@ -196,13 +216,12 @@ def main(argv=None):
         per_layer = []
         for r in layers:
             tag = r["tag"]
-            rc, out, err = gh(["release", "download", tag, "--repo", REPO,
-                              "--pattern", "*.tar.gz", "--dir", tmpdir, "--clobber"])
+            rc, out, err = gh(["release", "download", tag, "--repo", REPO, "--dir", tmpdir, "--clobber"])
             got = set()
             st_rows = 0
             if rc == 0:
                 for fn in os.listdir(tmpdir):
-                    if fn.startswith(r["layer"]) and fn.endswith(".tar.gz"):
+                    if fn.endswith((".tar.gz", ".ndjson.gz")) and not fn.endswith("-checkpoint.json"):
                         g, stt = digests_from_tar(os.path.join(tmpdir, fn), tmpdir)
                         got |= g
                         st_rows += stt["rows"]
