@@ -1,5 +1,5 @@
 name: ci-smoke
-# 改动自检：任何 push 到 collect/ 或 scripts/ 的改动，先单层跑 3 条记录，过不了就别放量。
+# 改动自检：任何 push 到 collect/ 或 scripts/ 的改动，先过五道闸，再过不了就别放量。
 on:
   push:
     paths: ["collect/**", "scripts/**", "survey/ng911/scripts/**"]
@@ -13,8 +13,45 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.11" }
-      - name: 语法检查
-        run: python3 -m py_compile collect/*.py scripts/*.py survey/ng911/scripts/*.py
+
+      # 2026-10-24 事故：`python3 -m py_compile scripts/*.py` 在目录为空时 glob 不展开，
+      # 直接把字面量当路径 → No such file or directory → 整条 CI 连续 4 次假红。
+      - name: 语法检查（目录不存在/为空就跳过，别让 glob 崩掉流水线）
+        run: |
+          python3 - <<'PY'
+          import compileall, os, sys
+          dirs = [d for d in ("collect", "scripts", "survey/ng911/scripts") if os.path.isdir(d)]
+          if not dirs:
+              sys.exit("一个源码目录都没有，仓库结构不对")
+          ok = all([compileall.compile_dir(d, quiet=1) for d in dirs])
+          print("compile ok:", dirs)
+          sys.exit(0 if ok else 1)
+          PY
+
+      - name: 结构自检 25 条
+        run: python3 collect/supervisor.py --entry-check
+
+      - name: 判据卡与 steps.json 一致性
+        run: python3 collect/check_docs.py
+
+      - name: 单测（unittest，不依赖 pytest）
+        run: python3 -m unittest discover -s collect/tests -q
+
+      - name: 选层干跑（选中 0 层或 id 重复 = 配置坏了）
+        run: |
+          python3 collect/run_step_03.py --validate
+          python3 collect/run_step_03.py --list-matrix > /tmp/m.json
+          python3 - <<'PY'
+          import json, sys
+          inc = json.load(open("/tmp/m.json"))["include"]
+          ids = [x["layer"] for x in inc]
+          print("STEP-03 选中 %d 层，唯一 %d" % (len(ids), len(set(ids))))
+          if not ids:
+              sys.exit("选层为空：steps.json 或 layer_plan.csv 有问题")
+          if len(ids) != len(set(ids)):
+              sys.exit("选出的层有重复 id：layer_id 唯一化失效")
+          PY
+
       - name: 单层试采（按配置逐个试，任意一层有数据即通过）
         run: |
           python3 - <<'PY'

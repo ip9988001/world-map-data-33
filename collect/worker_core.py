@@ -14,8 +14,10 @@ import argparse
 import csv
 import json
 import os
+import re
 import subprocess
 import sys
+import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -46,7 +48,10 @@ def load_policy(step):
     pol = dict(DEFAULTS.get(step) or {})
     if os.path.exists(STEPS_F):
         try:
-            ext = (json.load(open(STEPS_F, encoding="utf-8")).get("steps") or {}).get(step) or {}
+            doc = json.load(open(STEPS_F, encoding="utf-8"))
+            ext = (doc.get("steps") or {}).get(step) or {}
+            if not ext.get("geom_in") and (doc.get("engine") or {}).get("geom_allow"):
+                ext = dict(ext, geom_in=list(doc["engine"]["geom_allow"]))
             for k, v in ext.items():
                 if isinstance(v, dict) and isinstance(pol.get(k), dict):
                     pol[k] = dict(pol[k], **v)
@@ -62,7 +67,20 @@ def _rows_from_csv(path=None):
     if not os.path.exists(path):
         return []
     with open(path, encoding="utf-8") as f:
-        return list(csv.DictReader(f))
+        rows = list(csv.DictReader(f))
+    # ★ layer_id 会撞车（实测 245 个重复、56 个跨州）：撞车的加 `@<state>-<n>` 后缀。
+    #   不唯一化就会「--layer 反查命中别的州那一行」→ 静默采错数据，比报错更坏。
+    cnt = {}
+    for r in rows:
+        lid = r.get("layer_id") or ""
+        cnt[lid] = cnt.get(lid, 0) + 1
+    idx = {}
+    for r in rows:
+        lid = r.get("layer_id") or ""
+        if cnt.get(lid, 0) > 1:
+            idx[lid] = idx.get(lid, 0) + 1
+            r["layer_id"] = "%s@%s-%d" % (lid, r.get("state") or "na", idx[lid])
+    return rows
 
 
 def _norm_plan_row(r):
@@ -104,13 +122,14 @@ def select_layers(step, limit=0, policy=None):
     else:
         rows = [_norm_plan_row(r) for r in _rows_from_csv()]
         out = [r for r in rows if r["url"]]
+        # ★ skip/empty 是「这层不该采」的结论，与选法无关：放在所有过滤之前统一剔除
+        if not sel.get("include_skip"):
+            out = [r for r in out if (r.get("plan") or "") not in ("skip", "empty")]
         if sel.get("state"):
             out = [r for r in out if r["state"] == sel["state"]]
         if sel.get("where"):
             out = [r for r in out if _cmp(r, sel["where"])]
         if sel.get("mode") == "bulk":
-            skip = ("skip", "empty")
-            out = [r for r in out if (r.get("plan") or "") not in skip]
             off = int(sel.get("offset") or 0)
             size = int(sel.get("batch") or pol.get("batch") or 40)
             out = out[off:off + size]
@@ -164,6 +183,37 @@ def cli(argv=None, step=None):
         print(json.dumps({"include": [{"layer": r["id"]} for r in layers]}, ensure_ascii=False))
         return 0
     return run(step, argv)
+
+
+def _resolve_layer(step, layer):
+    """把 matrix 传来的 layer 反查成一份「单层 cfg 文件」。
+    顺序：本步选层结果 → 全量 plan.csv → 试点配置 pilot_layers.json。
+    为什么不能直接用 pilot_layers.json：试点只有 8 层，STEP-03 的 120 层全在里面查不到，
+    上一版就是这里让所有 collect job 秒挂 unknown layer。
+    """
+    want = layer
+    for src in ("step", "plan", "pilot"):
+        try:
+            if src == "step":
+                pol = load_policy(step)
+                pool = select_layers(step, limit=0, policy=dict(pol, select=dict(pol.get("select") or {}) | {"_force_plan": True}))
+            elif src == "plan":
+                pool = [_norm_plan_row(r) for r in _rows_from_csv()]
+            else:
+                pool = json.load(open(LAYERS_F, encoding="utf-8")) if os.path.exists(LAYERS_F) else []
+        except Exception:
+            pool = []
+        hit = [r for r in pool if (r.get("id") or r.get("layer_id")) == want]
+        if hit:
+            one = hit[0]
+            one = {"id": one.get("id") or one.get("layer_id"), "title": one.get("title") or want,
+                   "svc": one.get("svc") or "FeatureServer", "url": one.get("url"),
+                   "expect": one.get("expect")}
+            tmp = os.path.join(tempfile.gettempdir(), "one-layer-%s.json" % re.sub(r"[^\w@.\-]", "_", want))
+            with open(tmp, "w", encoding="utf-8") as f:
+                json.dump([one], f, ensure_ascii=False, indent=1)
+            return tmp, one["id"]
+    return None, None
 
 
 def _pilot_cmd(cfg_file, layer, a):
@@ -261,7 +311,11 @@ def run(step, argv=None):
 
     # ---- 单层直跑：兼容 collect-pilot.yml 的 matrix ----
     if a.layer:
-        sys.argv = _pilot_cmd(a.cfg or LAYERS_F, a.layer, a)[1:]
+        cfg_f, lid = _resolve_layer(step, a.layer)
+        if not cfg_f:
+            print(json.dumps({"layer": a.layer, "err": "unknown_layer"}, ensure_ascii=False))
+            return 2
+        sys.argv = _pilot_cmd(cfg_f, lid, a)[1:]
         sys.argv[0] = os.path.join(HERE, "pilot.py")
         import pilot
         return pilot.main()
