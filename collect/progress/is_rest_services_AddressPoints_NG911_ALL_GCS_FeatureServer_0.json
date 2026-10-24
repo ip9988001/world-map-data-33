@@ -1,0 +1,22 @@
+{
+ "id": "is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0",
+ "ts": "2026-10-24T00:56:04Z",
+ "api": "https://services6.arcgis.com/7XhimSpf8B7lHIMy/arcgis/rest/services/AddressPoints_NG911_ALL_GCS/FeatureServer/0",
+ "count": 1035861,
+ "base_rows": 0,
+ "rows": 994576,
+ "parts": 6,
+ "workers": {
+  "2": 172644,
+  "0": 172644,
+  "1": 172644,
+  "3": 172644,
+  "4": 154000,
+  "5": 150000
+ },
+ "strategy": "keyset",
+ "units": 6,
+ "done_units": 0,
+ "unit_rows_target": 200000,
+ "done": false
+}
