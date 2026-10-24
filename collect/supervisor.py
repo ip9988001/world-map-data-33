@@ -148,8 +148,9 @@ def evidence(st, step):
             d = {}
         ev["facts"]["report"] = {
             "sha": hashlib.sha1(raw).hexdigest()[:12],
-            "mtime": datetime.fromtimestamp(os.path.getmtime(REPORT_F), timezone.utc)
-                            .strftime("%Y-%m-%dT%H:%M:%SZ"),
+            # ★ 不能用文件 mtime：那是 runner checkout 的时间，永远「刚刚」，会骗人。
+            #   用 worker 自己写进 manifest 的 at 字段，才是真实采集时间。
+            "freshest": max([(m.get("at") or "") for m in (d.get("detail") or [])], default=""),
             "layers": d.get("layers"), "with_rows": d.get("with_rows"),
             "worst_diff": d.get("worst_diff"), "total_rows": d.get("total_rows"),
             "failed": d.get("failed"),
@@ -336,6 +337,7 @@ def patrol(dry=False):
     um = used_minutes()
     if um is not None:
         b["minutes_used"] = um
+    b.setdefault("minutes_used", 0)          # ★ 缺字段时 gh api 失败会直接 KeyError，工头整轮崩掉
     b.setdefault("minutes_cap", 1800); b.setdefault("stop_ratio", 0.95)
     ratio = b["minutes_used"] / max(b["minutes_cap"], 1)
     say("额度", f"{b['minutes_used']}/{b['minutes_cap']} ({ratio:.0%})")

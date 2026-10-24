@@ -441,11 +441,15 @@ def _fetch_ckpt_asset(plan_hash, log):
     if not rep:
         return None
     name = "%s-checkpoint.json" % CUR["id"]
+    rc_v, _ = _pub(["gh", "release", "view", _tag(), "--repo", rep], timeout=60)
+    if rc_v != 0:
+        return None          # tag 还不存在 = 本层第一次跑，正常，不是错误
     d = "/tmp/ck_%s" % CUR["id"]
     os.makedirs(d, exist_ok=True)
     pth = os.path.join(d, name)
     rc, o = _pub(["gh", "release", "download", _tag(), "-p", name, "-D", d, "--clobber"], timeout=180)
     if rc != 0 or not os.path.exists(pth):
+        log("⚠️ 检查点下载失败（tag 存在但取不到）：%s → 本轮从头采" % o[:100])
         return None
     try:
         d2 = json.load(open(pth, encoding="utf-8"))
@@ -509,7 +513,9 @@ def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock
     d = os.path.join(OUTBASE, CUR["id"])
     os.makedirs(d, exist_ok=True)
     if expect == 0:
-        return 0, [], ""
+        return 0, [], "", 0
+    if limit:                       # 试采：把页大小压到 limit，别一次拉回 2000 行
+        ps = max(1, min(ps, limit))
     rows = part_no = 0
     buf, last, off, mode = [], None, 0, "keyset"
     files = []
@@ -535,7 +541,7 @@ def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock
         r = _q(api, q)
         if "__error__" in r:
             flush()
-            return rows, files, "query_fail:" + str(r["__error__"])[:160]
+            return rows, files, "query_fail:" + str(r["__error__"])[:160], expect
         feats = r.get("features") or []
         if not feats:
             if rows == 0 and last is None and mode == "keyset":
@@ -568,7 +574,7 @@ def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock
             flush()
         with lock:
             prog["workers"][str(idx)] = rows
-            prog["rows"] = sum(prog["workers"].values())
+            prog["rows"] = prog.get("base_rows", 0) + sum(prog["workers"].values())
         if limit and rows >= limit:
             break
         if mode == "offset":
@@ -577,10 +583,10 @@ def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock
             break
         time.sleep(0.1)
     flush()
-    return rows, files, ""
+    return rows, files, "", expect
 
 
-def _unit_ids(api, batches, idx, log, prog, lock):
+def _unit_ids(api, batches, idx, log, prog, lock, limit=0):
     """一个 ids 单元（若干 objectIds 批，顺序取）。返回 (rows, files, err)。"""
     d = os.path.join(OUTBASE, CUR["id"])
     os.makedirs(d, exist_ok=True)
@@ -599,6 +605,8 @@ def _unit_ids(api, batches, idx, log, prog, lock):
             rec = normalize(at, g.get("y"), g.get("x"))
             rec.update({"src_layer": CUR["id"], "src_title": CUR["title"], "raw": at})
             recs.append(rec)
+        if limit and rows + len(recs) > limit:      # --limit 试采：多出来的直接裁掉
+            recs = recs[:max(0, limit - rows)]
         if not recs:
             continue
         p = os.path.join(d, "part-u%05d-b%05d.ndjson.gz" % (idx, bi))
@@ -609,8 +617,13 @@ def _unit_ids(api, batches, idx, log, prog, lock):
         rows += len(recs)
         with lock:
             prog["workers"][str(idx)] = rows
-            prog["rows"] = sum(prog["workers"].values())
-    return rows, files, (";".join(errs) if errs else "")
+            prog["rows"] = prog.get("base_rows", 0) + sum(prog["workers"].values())
+        if limit and rows >= limit:
+            break
+    expect = sum(len(b[1]) for b in batches)
+    if limit:
+        expect = min(expect, limit)
+    return rows, files, (";".join(errs) if errs else ""), expect
 
 
 def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False):
@@ -669,6 +682,9 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False):
             units = [(None, None)]
             plan = {"kind": "single", "units": [[None, None]]}
 
+    if limit:
+        # --limit 是试采用：只跑一个单元、单线程、忽略既有检查点，免得 5 个单元各采 limit 行
+        units, workers, fresh = units[:1], 1, True
     plan_hash = hashlib.sha1(json.dumps(plan, sort_keys=True).encode()).hexdigest()[:16]
     ck = None if fresh else _load_ckpt(plan_hash)
     if ck is None and not fresh:
@@ -694,8 +710,9 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False):
     ck.setdefault("unit_rows", {})
     ck.setdefault("unit_files", {})
 
+    base_rows = sum((ck.get("unit_rows_seen") or ck.get("unit_rows") or {}).values())
     prog = {"id": CUR["id"], "ts": TS(), "api": api, "count": count,
-            "rows": sum((ck.get("unit_rows") or {}).values()),
+            "base_rows": base_rows, "rows": base_rows,
             "parts": sum(len(v) for v in ck["unit_files"].values()), "workers": {},
             "strategy": STRATEGY, "units": len(units), "done_units": len(done),
             "unit_rows_target": UNIT_ROWS, "done": False}
@@ -709,22 +726,45 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False):
 
     def one(i, u):
         if STRATEGY == "ids":
-            rows, files, err = _unit_ids(api, u, i, log, prog, lock)
+            rows, files, err, expect = _unit_ids(api, u, i, log, prog, lock, limit)
         else:
             lo, hi = u
-            rows, files, err = _unit_range(api, oid_field, defexpr, lo, hi, i, ps, limit, log, prog, lock, ck)
+            rows, files, err, expect = _unit_range(api, oid_field, defexpr, lo, hi, i, ps,
+                                                   limit, log, prog, lock, ck)
+        # ① 无错 ② 行数对得上（--limit 试采不判）③ 上传成功 —— 三条同时成立才算完成
+        if not err and not limit and expect > 0 and rows < expect * 0.999:
+            err = "short:%d/%d" % (rows, expect)
         ok = False
-        if files:
+        if files:                      # 数据先落地：哪怕这个单元还不算完成，拿到的行也是真的
             with up_lock:
                 ok = _upload(files, log)
+        snap = None
         with lock:
-            _record_unit(ck, i, rows, files)
-            ck["unit_uploaded"][str(i)] = ok
+            ck.setdefault("unit_uploaded", {})[str(i)] = bool(ok)
+            ck.setdefault("unit_rows_seen", {})[str(i)] = rows   # 采到的行如实记账（不管是否算完成）
+            if err.startswith("short:"):
+                # 上游真实缺失：同一单元连续两次 short 且行数一致 → 认可，不再无限重试
+                st = ck.setdefault("unit_short_tries", {}).setdefault(str(i), {"n": 0, "rows": -1})
+                if st["rows"] == rows:
+                    st["n"] += 1
+                else:
+                    st["rows"], st["n"] = rows, 1
+                if st["n"] >= 2:
+                    ck.setdefault("unit_short_ack", {})[str(i)] = rows
+                    err = ""
+            done_ok = (not err) and (ok or not files)
+            if done_ok:
+                _record_unit(ck, i, rows, files)
+                ck.setdefault("unit_errors", {}).pop(str(i), None)
+            else:
+                ck.setdefault("unit_errors", {})[str(i)] = (err or "upload_failed")[:200]
             _save_ckpt(ck)
-            if ok:
+            snap = json.loads(json.dumps(ck))
+            if done_ok:
                 _purge(files)
-                _publish_ckpt(ck, log)
-        return rows, err
+        if done_ok:
+            _publish_ckpt(snap, log)   # 锁外：上传检查点不再阻塞采集线程
+        return rows, (err or "")
 
     try:
         if len(todo) == 1 or workers <= 1:
@@ -743,7 +783,7 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False):
                         errs.append(e_)
     finally:
         with lock:
-            rows_total = sum((ck.get("unit_rows") or {}).values())
+            rows_total = sum((ck.get("unit_rows_seen") or ck.get("unit_rows") or {}).values())
             prog["rows"] = rows_total
             prog["done"] = True
             prog["done_units"] = len(ck.get("done_units") or [])
@@ -754,7 +794,23 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False):
     resumed = len(done)
     if resumed and not errs:
         log("  ⟲ 本次续跑：跳过 %d 个已完成单元，新采 %d 行" % (resumed, rows_new))
-    return sum((ck.get("unit_rows") or {}).values()), count, (";".join(errs) if errs else ""), parts
+    return sum((ck.get("unit_rows_seen") or ck.get("unit_rows") or {}).values()), count, \
+        (";".join(errs) if errs else ""), parts
+
+
+def verdict(rows, count, err, limit=0):
+    """工人退出码判据（可单测）。
+
+    「采到 99% 但没报错」以前会返回 0 = 绿灯，正是 de_suss 空包能混过去的原因。
+    现在：行数不齐也判失败，阈值用绝对+相对双阈值（至少容 1 行，避免小层误杀）。
+    --limit 试采不判（否则 smoke 必红）。
+    """
+    if count == 0 and not err:
+        return 0, ""
+    short = (not limit) and count > 0 and rows < count - max(1, count // 1000)
+    if err or rows <= 0 or short:
+        return 1, ("short:%d/%d" % (rows, count)) if short else ""
+    return 0, ""
 
 
 def main():
@@ -802,7 +858,10 @@ def main():
     if count == 0 and not err:
         log("empty layer（count=0），按空层处理，不算失败")
         return 0
-    return 0 if (rows > 0 and not err) else 1
+    code, short = verdict(rows, count, err, a.limit)
+    if short:
+        log("❌ 数据不齐 rows=%d count=%d（缺 %.2f%%）" % (rows, count, 100.0 * (count - rows) / max(count, 1)))
+    return code
 
 
 if __name__ == "__main__":

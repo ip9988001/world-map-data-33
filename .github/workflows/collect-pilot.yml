@@ -49,6 +49,10 @@ jobs:
           python-version: "3.11"
       - name: 采集 ${{ matrix.layer }}（单元级断点续传）
         env:
+          # ★ P0-1：pilot.py 里 _upload/_publish_ckpt/_fetch_ckpt_asset 全在调 gh，
+          #   而 Actions 的 shell step 不会自动注入 GH_TOKEN（checkout 只给 git 塞 extraheader）。
+          #   少了这行 = 所有单元上传失败 = 断点续传形同虚设。
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PILOT_HEARTBEAT_PUSH: "1"
           # ★ tag 按层固定，不带 run_number —— 这样下一轮 run 能从这个 tag 里
           #   把 <layer>-checkpoint.json 捞回来，接着上次的进度跑，而不是从 0 开始。
@@ -68,9 +72,11 @@ jobs:
           # 这里只在「它一次都没发成功」时兜底，避免同一份数据重复传两遍。
           TAG="collect-pilot-$ID"
           export ID   # 给下面 python -c 读（env: 里的 ID 已注入，这行是双保险）
-          N=$(python3 -c "import json,os;p='collect/out/%s/_checkpoint.json'%os.environ['ID'];print(len(json.load(open(p)).get('done_units') or []) if os.path.exists(p) else 0)")
+          # 判据必须是「真的传上去过」（unit_uploaded 里有无 true），
+          # 不能用 done_units —— 采集成功但上传失败时 done_units 也有值，兜底会误判为"已发布"而跳过 → 静默丢数据
+          N=$(python3 -c "import json,os;p='collect/out/%s/_checkpoint.json'%os.environ['ID'];print(sum(1 for v in json.load(open(p)).get('unit_uploaded',{}).values() if v) if os.path.exists(p) else 0)")
           if [ "${N:-0}" -gt 0 ]; then
-            echo "✅ pilot 已分批发 ${N} 个单元到 $TAG，跳过兜底上传"
+            echo "✅ pilot 已成功发布 ${N} 个单元到 $TAG，跳过兜底上传"
             exit 0
           fi
           if [ -d "collect/out/$ID" ] && [ -n "$(ls -A "collect/out/$ID" 2>/dev/null)" ]; then
