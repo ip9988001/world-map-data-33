@@ -2,3 +2,8 @@ out/
 pilot_report.json
 plan_*.csv
 layer_plan.csv
+FINAL_REPORT.md
+layer_status.json
+out/
+reports/*.json
+!reports/.gitkeep
