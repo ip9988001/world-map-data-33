@@ -1,0 +1,17 @@
+{
+ "id": "ccH_arcgis_rest_services_SiteAddress20231227_FeatureServer_0",
+ "ts": "2026-10-24T01:51:14Z",
+ "api": "https://services.arcgis.com/f5HgUpxURgEzTccH/arcgis/rest/services/SiteAddress20231227/FeatureServer/0",
+ "count": 567521,
+ "base_rows": 0,
+ "rows": 548000,
+ "parts": 11,
+ "workers": {
+  "0": 548000
+ },
+ "strategy": "keyset",
+ "units": 1,
+ "done_units": 0,
+ "unit_rows_target": 1000000,
+ "done": false
+}
