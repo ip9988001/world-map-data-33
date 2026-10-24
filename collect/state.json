@@ -3,7 +3,7 @@
  "current_step": "05",
  "mode": "self-drive-v2",
  "budget": {
-  "minutes_used": 527,
+  "minutes_used": 677,
   "minutes_cap": 1800,
   "warn_ratio": 0.8,
   "stop_ratio": 0.95
@@ -61,10 +61,10 @@
  "paused_at": "2026-10-23T23:14:35Z",
  "last_error": null,
  "wake": {
-  "signature": "eea52004866905a0",
-  "at": "2026-10-24T04:15:41Z",
+  "signature": "95be9ec28fb77077",
+  "at": "2026-10-24T05:16:06Z",
   "reason": "县市碎片：工人已停手，等大脑判验收",
-  "issue": null,
-  "count": 6
+  "issue": 6,
+  "count": 7
  }
 }
