@@ -9,11 +9,11 @@
   "stop_ratio": 0.95
  },
  "last_run": {
-  "step": "02",
+  "step": "03",
   "run_id": null,
-  "at": "2026-10-23T23:22:51Z",
+  "at": "2026-10-24T00:52:44Z",
   "trigger": "brain",
-  "layers": "san_juan",
+  "layers": "all",
   "workers": 4
  },
  "awaiting_brain": false,
@@ -44,14 +44,13 @@
    }
   },
   "03": {
-   "status": "ready",
-   "at": null,
-   "note": "KS 全州单州试跑，等放量指令"
+   "status": "started",
+   "at": "2026-10-24T00:52:44Z"
   }
  },
  "blocked_count": 0,
- "status": "awaiting_go",
- "paused_reason": "框架升级 v2（2026-10-24）：工头改造期间不巡逻、不点火",
+ "status": "running",
+ "paused_reason": null,
  "paused_at": "2026-10-23T23:14:35Z",
  "last_error": null
 }

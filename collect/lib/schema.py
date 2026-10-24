@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 """字段归一化（纯函数，无 IO、无全局状态）—— 从 pilot.py 抽出。"""
+# ★ 抽模块时漏了这两行：normalize() 里用 re.match / hashlib.md5，
+#   一旦某层带「完整地址」字段就 NameError 秒挂（STEP-03 灰度 20 层里挂了 5 层正是这个）。
+import hashlib
+import re
 
 F_ADD = ("ADD_NUM", "ADDRNUM", "ADDRESS_NUMBER", "HOUSE_NUM", "HOUSENUM", "STREET_NUM", "ADDR_NO")
 F_FULL = ("FULLADDR", "FULL_ADDR", "FULL_ADDRESS", "ADDRESS", "SITE_ADDRESS", "LOCATION")
