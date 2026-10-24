@@ -37,16 +37,41 @@ REPO = os.environ.get("GITHUB_REPOSITORY") or "ip9988001/world-map-data-33"
 LABEL = "sentinel-alarm"
 STALL_MIN = 240          # 超过这么久没结束 = 异常，但只报告不判死
 
-# step -> (名字, 说明书, worker workflow)
-STEPS = {
-    "00": ("地基", "collect/steps/STEP-00.md", "worker-00.yml"),
-    "01": ("预检", "collect/steps/STEP-01.md", "worker-01.yml"),
-    "02": ("试点 8 层", "collect/steps/STEP-02.md", "worker-02.yml"),
-    "03": ("单州试跑 KS", "collect/steps/STEP-03.md", "worker-03.yml"),
-    "04": ("全州级放量", "collect/steps/STEP-04.md", "worker-04.yml"),
-    "05": ("县市碎片放量", "collect/steps/STEP-05.md", "worker-05.yml"),
-    "06": ("收工", "collect/steps/STEP-06.md", "worker-06.yml"),
-}
+# ★ 唯一参数源：collect/steps.json。工头不再自带一份参数副本。
+STEPS_JSON = os.path.join(ROOT, "collect", "steps.json")
+
+
+def cfg():  # ponytail: 每次现读，7 步 × 每轮一次，代价可忽略；要缓存时加 mtime 判定
+    with open(STEPS_JSON, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def steps_map():
+    """step -> (名字, 说明书, worker workflow)，全部来自 steps.json。"""
+    out = {}
+    for k, s in (cfg().get("steps") or {}).items():
+        sup = s.get("supervise") or {}
+        out[k] = (s.get("title") or k,
+                  sup.get("doc") or f"collect/steps/STEP-{k}.md",
+                  sup.get("wf") or f"worker-{k}.yml")
+    return out
+
+
+def profile_of(step):
+    """单步工头的全部差异：卡死阈值 / 叫醒话术 / 命令模板 / 证据清单 / 判据卡。"""
+    s = (cfg().get("steps") or {}).get(step) or {}
+    sup = s.get("supervise") or {}
+    title, doc, wf = STEPS.get(step, (s.get("title") or step, None, None))
+    return {"step": step, "title": title, "doc": doc, "wf": wf,
+            "stall_min": int(sup.get("stall_min") or STALL_MIN),
+            "evidence": list(s.get("evidence") or []),
+            "wake_reason": sup.get("wake_reason") or f"{title}：工人已停手，等大脑判验收",
+            "cmds": list(sup.get("cmds") or []),
+            "accept": dict(s.get("accept") or {}),
+            "tag": s.get("tag"), "kind": s.get("kind")}
+
+
+STEPS = steps_map()
 
 
 def now():
@@ -120,33 +145,22 @@ def active_runs(wf=None):
 
 
 # ---------------- 证据（只收事实，不下结论） ----------------
-def evidence(st, step):
-    ev = {"step": step, "at": now(), "facts": {}, "ask": []}
-    wf = STEPS[step][2]
-
+# ★ steps.json 的 evidence 清单是需求，这里是供给：缺哪个就记进 missing，绝不假装收到。
+def _sources(st, step):
+    """一次性取原始料（runs/releases/report/blocked/state），后面的收集器都从它派生。"""
+    wf = STEPS.get(step, (None, None, None))[2]
     runs = (api_json("repos/%s/actions/runs?per_page=30" % REPO).get("workflow_runs") or [])
-    mine = [r for r in runs if (r.get("path") or "").split("/")[-1] == wf][:6]
-    ev["facts"]["recent_runs"] = [
-        {"n": r.get("run_number"), "id": r.get("id"), "status": r.get("status"),
-         "conclusion": r.get("conclusion"), "at": r.get("created_at"),
-         "duration_min": round((r.get("updated_at") and r.get("created_at") and
-                                (mins(r.get("created_at")) - mins(r.get("updated_at")))) or 0, 1)}
-        for r in mine]
+    mine = [r for r in runs if wf and (r.get("path") or "").split("/")[-1] == wf][:6]
+    reps = api_json("repos/%s/releases?per_page=20" % REPO) or []
 
-    rels = api_json("repos/%s/releases?per_page=20" % REPO) or []
-    ev["facts"]["releases"] = [
-        {"tag": r.get("tag_name"), "at": r.get("created_at"),
-         "assets": [{"name": a.get("name"), "bytes": a.get("size")} for a in (r.get("assets") or [])]}
-        for r in rels[:12]]
-
-    # 报告新鲜度（本地 checkout 里的那份）
+    rep = None
     if os.path.exists(REPORT_F):
         raw = open(REPORT_F, "rb").read()
         try:
             d = json.loads(raw.decode("utf-8"))
         except Exception:
             d = {}
-        ev["facts"]["report"] = {
+        rep = {
             "sha": hashlib.sha1(raw).hexdigest()[:12],
             # ★ 不能用文件 mtime：那是 runner checkout 的时间，永远「刚刚」，会骗人。
             #   用 worker 自己写进 manifest 的 at 字段，才是真实采集时间。
@@ -157,36 +171,117 @@ def evidence(st, step):
             "per_layer": [{k: m.get(k) for k in ("id", "count", "rows", "parts", "diff", "elapsed_s", "err")}
                           for m in (d.get("detail") or [])],
         }
-    else:
-        ev["facts"]["report"] = None
 
+    blk = None
     if os.path.exists(BLOCKED_F):
         try:
-            ev["facts"]["blocked"] = json.load(open(BLOCKED_F, encoding="utf-8"))
+            blk = json.load(open(BLOCKED_F, encoding="utf-8"))
         except Exception:
-            ev["facts"]["blocked"] = None
+            blk = None
 
-    ev["facts"]["state"] = {"step": step, "last_run": st.get("last_run"),
-                            "last_error": st.get("last_error"),
-                            "budget": st.get("budget"),
-                            "steps": st.get("steps")}
+    return {
+        "runs": [{"n": r.get("run_number"), "id": r.get("id"), "status": r.get("status"),
+                  "conclusion": r.get("conclusion"), "at": r.get("created_at"),
+                  "duration_min": round((mins(r.get("created_at") or "") - mins(r.get("updated_at") or "")) or 0, 1)}
+                 for r in mine],
+        "releases": [{"tag": r.get("tag_name"), "at": r.get("created_at"),
+                      "assets": [{"name": a.get("name"), "bytes": a.get("size")} for a in (r.get("assets") or [])]}
+                     for r in (reps or [])[:12]],
+        "report": rep,
+        "blocked": blk,
+        "state": {"step": step, "last_run": st.get("last_run"), "last_error": st.get("last_error"),
+                  "budget": st.get("budget"), "steps": st.get("steps")},
+    }
 
-    # 要问大脑什么（是问题，不是结论）
+
+def _ck_assets(S):
+    return [{"tag": r["tag"], "name": a["name"], "bytes": a["bytes"]}
+            for r in S["releases"] for a in (r.get("assets") or [])
+            if (a.get("name") or "").endswith("-checkpoint.json")]
+
+
+def _short_units(S):
+    return [{"id": m.get("id"), "err": m.get("err"), "rows": m.get("rows")}
+            for m in ((S["report"] or {}).get("per_layer") or [])
+            if str(m.get("err") or "").startswith("short:")]
+
+
+def _unit_errors(S):
+    return [{"id": m.get("id"), "err": m.get("err")}
+            for m in ((S["report"] or {}).get("per_layer") or [])
+            if m.get("err") and not str(m.get("err")).startswith("short:")]
+
+
+def _layer_plan(S):
+    f = os.path.join(ROOT, "collect", "layer_plan.csv")
+    m = (((S["state"] or {}).get("steps") or {}).get("01") or {}).get("metrics") or {}
+    return {"file": "collect/layer_plan.csv", "exists": os.path.exists(f),
+            "rows": m.get("rows"), "plan_empty": m.get("plan_empty")}
+
+
+def _count_rate(S):
+    m = (((S["state"] or {}).get("steps") or {}).get("01") or {}).get("metrics") or {}
+    return {"count_rate": m.get("count_rate")}
+
+
+def _file_ev(rel):
+    def f(S):
+        p = os.path.join(ROOT, rel)
+        return {"file": rel, "exists": os.path.exists(p),
+                "bytes": (os.path.getsize(p) if os.path.exists(p) else 0)}
+    return f
+
+
+# steps.json 里能写哪些 evidence 名字，全在这张表里
+COLLECTORS = {
+    "recent_runs": lambda S: S["runs"],
+    "releases": lambda S: S["releases"],
+    "report": lambda S: S["report"],
+    "blocked": lambda S: S["blocked"],
+    "state": lambda S: S["state"],
+    "checkpoint": _ck_assets,
+    "short_units": _short_units,
+    "unit_errors": _unit_errors,
+    "layer_plan.csv": _layer_plan,
+    "count_rate": _count_rate,
+    "selftest": lambda S: {"entry_check": "python3 collect/supervisor.py --entry-check"},
+    "unit_tests": _file_ev("collect/tests/test_worker_core.py"),
+    "FINAL_REPORT.md": _file_ev("collect/reports/FINAL_REPORT.md"),
+    "paused": lambda S: {"status": (load().get("status")), "paused_reason": load().get("paused_reason")},
+}
+
+
+def evidence(st, step):
+    prof = profile_of(step)
+    want = prof.get("evidence") or ["recent_runs", "releases", "report", "state"]
+    S = _sources(st, step)
+    ev = {"step": step, "at": now(), "want": want, "facts": {}, "missing": [], "profile": prof}
+    for k in want:
+        f = COLLECTORS.get(k)
+        if f is None:
+            ev["missing"].append(k)          # 名字拼错或还没有收集器 → 明确报缺口
+            continue
+        try:
+            ev["facts"][k] = f(S)
+        except Exception as e:
+            ev["missing"].append(f"{k}({str(e)[:60]})")
+
+    rep = S["report"] or {}
     ev["ask"] = [
-        f"STEP {step}（{STEPS[step][0]}）这一轮的结果，判通过还是不通过？依据在 evidence.report.per_layer 里",
-        "不通过的话：是补跑哪一层，还是记 blocked 跳过继续往下走？",
-        f"判完请写回账本：python3 collect/supervisor.py --review pass|fail --note \"...\"",
+        f"STEP {step}（{prof['title']}）这一轮，判通过还是不通过？判据卡（steps.json accept）：{json.dumps(prof.get('accept') or {}, ensure_ascii=False)}",
+        f"依据：evidence.report.per_layer / evidence.checkpoint / evidence.short_units（缺的键见 missing={ev['missing']}）",
+        "不通过的话：补跑哪一层，还是记 blocked 跳过继续往下走？",
+        f"判完写回账本：python3 collect/supervisor.py --review pass|fail --note \"...\"",
     ]
     return ev
 
 
 def signature(ev):
-    d = {"step": ev["step"],
-         "runs": [(r["id"], r["status"], r["conclusion"]) for r in ev["facts"]["recent_runs"]],
-         "rel": [(r["tag"], [(a["bytes"]) for a in r["assets"]]) for r in ev["facts"]["releases"]],
-         "rep": (ev["facts"]["report"] or {}).get("sha"),
-         "blocked": len((ev["facts"].get("blocked") or {}).get("items") or [])}
-    return hashlib.sha1(json.dumps(d, sort_keys=True, ensure_ascii=False).encode()).hexdigest()[:16]
+    """同一批证据只叫醒一次。state 含 budget（每轮都变）→ 排除，否则去重永远失效。"""
+    keep = ("recent_runs", "releases", "report", "blocked", "checkpoint", "short_units", "unit_errors")
+    d = {"step": ev["step"], "facts": {k: v for k, v in ev["facts"].items() if k in keep},
+         "missing": sorted(ev.get("missing") or [])}
+    return hashlib.sha1(json.dumps(d, sort_keys=True, ensure_ascii=False, default=str).encode()).hexdigest()[:16]
 
 
 def post_issue(step, body, sig):
@@ -214,26 +309,37 @@ def wake(st, step, reason, dry=False, profile=None):
     """叫醒大脑：落 WAKE.json + 开 Issue。同签名只叫一次。"""
     ev = evidence(st, step)
     ev["reason"] = reason
-    if profile:
-        ev["profile"] = {k: profile.get(k) for k in ("step", "title", "stall_min", "cmds", "evidence")}
+    prof = dict(profile or profile_of(step))
+    ev["profile"] = {k: prof.get(k) for k in ("step", "title", "stall_min", "cmds", "evidence", "accept", "doc", "tag")}
     sig = signature(ev)
     ev["signature"] = sig
     prev = (st.get("wake") or {}).get("signature")
     fresh = sig != prev
 
+    title_, doc_, wf_ = STEPS.get(step, (step, None, None))
+    acc = prof.get("accept") or {}
+    cmds = prof.get("cmds") or []
     body = "\n".join([
-        f"## 工头叫醒（v2 · 只叫人，不判验收）",
+        "## 工头叫醒（v2 · 只叫人，不判验收）",
         "",
         f"- 原因：**{reason}**",
-        f"- 步号：STEP {step} {STEPS[step][0]}　说明书：`{STEPS[step][1]}`",
-        f"- 证据：`collect/wake/WAKE.json`（签名 `{sig}`）",
-        f"- 判定权：**在你**。工头不判、不推进、不点火。",
+        f"- 步号：**STEP {step} {title_}**　类型：`{prof.get('kind')}`",
         "",
-        "### 事实",
+        "### 你要读的东西（路径已写死，别去找）",
+        f"- 说明书：`{doc_}`",
+        f"- 参数与判据卡：`collect/steps.json` → `steps.{step}`（accept = `{json.dumps(acc, ensure_ascii=False)}`）",
+        f"- 证据原件：`{WAKE_F}`（绝对路径）",
+        f"- 工人 workflow：`.github/workflows/{wf_}`",
+        "",
+        "### 事实（工头只收事实，不写合格/不合格）",
         "```json",
-        json.dumps({k: ev["facts"][k] for k in ("recent_runs", "report") if k in ev["facts"]},
-                   ensure_ascii=False)[:2500],
+        json.dumps({k: ev["facts"][k] for k in ev["facts"] if k != "state"}, ensure_ascii=False)[:2500],
         "```",
+        "",
+        f"### 证据缺口（steps.json 要了但没收到的键）：{('`' + '`, `'.join(ev['missing']) + '`') if ev.get('missing') else '无'}",
+        "",
+        "### 命令模板（照抄，改参数就行）",
+    ] + [f"```bash\npython3 collect/supervisor.py {c}\n```" for c in cmds] + [
         "",
         "### 要你回答",
     ] + [f"- {q}" for q in ev["ask"]])
@@ -273,12 +379,15 @@ def kick(step, layers=None, workers=None, dry=False):
     st.setdefault("steps", {})[step] = {"status": "started", "at": now()}
     st["last_run"] = {"step": step, "run_id": None, "at": now(),
                       "trigger": "brain", "layers": layers or "all", "workers": workers}
+    st["paused_reason"] = None
+    (st.get("wake") or {}).pop("closed", None)   # 重新开跑 = 上一轮 fail 的关单作废
     save(st)
     print(("✅ 已点火 " if rc == 0 else "❌ 点火失败 ") + f"{wf} rc={rc} {(err or '')[:120]}")
     return rc
 
 
 def review(verdict, note, nxt=None, dry=False):
+    """大脑写验收结论。pass 才可能推进；fail 必须把流程停住，不许同一批证据反复叫醒。"""
     st = load()
     step = st.get("current_step")
     if verdict not in ("pass", "fail"):
@@ -287,15 +396,31 @@ def review(verdict, note, nxt=None, dry=False):
     st.setdefault("brain_review", {}).update(
         {"at": now(), "step": step, "verdict": verdict, "note": note or ""})
     st.setdefault("steps", {}).setdefault(step, {})["status"] = "done" if verdict == "pass" else "failed"
+    wk = st.setdefault("wake", {})
+
     if verdict == "pass" and nxt:
         st["current_step"] = nxt
         st["status"] = "running"
+        st["paused_reason"] = None
         st.setdefault("steps", {}).setdefault(nxt, {})["status"] = "ready"
+        wk.pop("closed", None)
     elif verdict == "pass" and nxt is None:
         st["status"] = "finished"
+        st["paused_reason"] = None
+        wk.pop("closed", None)
+    else:
+        # ★ fail 闭环：停在 awaiting_go，巡逻一律静止；同签名证据不再开 Issue。
+        #   要重跑就 --kick（点火会把 status 改回 running 并清掉 closed）。
+        st["status"] = "awaiting_go"
+        st["paused_reason"] = note or f"STEP {step} 验收不通过，等大脑给指令"
+        wk["closed"] = {"at": now(), "verdict": "fail", "step": step, "note": note or "",
+                        "signature": wk.get("signature")}
+        st.setdefault("steps", {})[step].update({"status": "failed", "fail_reason": (note or "")[:300]})
+
     if not dry:
         save(st)
-    print(json.dumps({"step": step, "verdict": verdict, "next": nxt, "saved": not dry}, ensure_ascii=False))
+    print(json.dumps({"step": step, "verdict": verdict, "next": nxt, "status": st["status"],
+                      "saved": not dry}, ensure_ascii=False))
     return 0
 
 
@@ -429,6 +554,34 @@ def entry_check():
     add(18, "双闹钟都在", os.path.exists(os.path.join(ROOT, "ops", "patrol_kick.sh")) and
         os.path.exists(os.path.join(ROOT, ".github", "workflows", "collect-supervisor.yml")),
         "GitHub cron + 本机 cron")
+
+    # ---- 19~24：v2.1 本轮新增（steps.json 单源 / 清单驱动取证 / 简报四件套 / fail 闭环）----
+    d = cfg()
+    S = d.get("steps") or {}
+    add(19, "steps.json 是唯一参数源", d.get("schema") == "v2.1" and sorted(S) == ["0%d" % i for i in range(7)],
+        f"schema={d.get('schema')} steps={len(S)} 份")
+
+    profs = []
+    for k in S:
+        fp = os.path.join(ROOT, "collect", "supervisors", "step_%s.py" % k)
+        profs.append(open(fp, encoding="utf-8").read() if os.path.exists(fp) else "")
+    add(20, "7 份工头只报步号", len(profs) == 7 and all("core.profile_of(" in t for t in profs)
+        and not any("PROFILE = {" in t for t in profs), "supervisors/step_0X.py ← steps.json")
+
+    miss = {k: [e for e in (s.get("evidence") or []) if e not in COLLECTORS] for k, s in S.items()}
+    miss = {k: v for k, v in miss.items() if v}
+    add(21, "证据需求都有收集器", not miss, f"steps.json evidence × COLLECTORS：缺口={miss or '无'}")
+
+    fat = {k: [f for f in ("stall_min", "wake_reason", "cmds", "doc", "wf")
+               if not (s.get("supervise") or {}).get(f)] for k, s in S.items()}
+    fat = {k: v for k, v in fat.items() if v}
+    add(22, "每步 supervise 五项齐", not fat, f"缺项={fat or '无'}")
+
+    add(23, "叫醒简报四件套", all(t in src for t in ("说明书：", "判据卡", "命令模板")),
+        "说明书路径 / 判据卡(accept) / 命令模板 / WAKE 绝对路径")
+
+    add(24, "fail 有闭环", '"closed"' in src and "awaiting_go" in src and 'pop("closed"' in src,
+        "fail→awaiting_go + 关单；--kick 解封")
 
     good = sum(1 for c in C if c["ok"])
     for c in C:
