@@ -75,7 +75,7 @@
  "last_error": null,
  "wake": {
   "signature": "5317a66ad0f5c5e6",
-  "at": "2026-10-24T21:01:51Z",
+  "at": "2026-10-24T21:31:17Z",
   "reason": "增量同步：工人已停手，等大脑判验收",
   "issue": null,
   "count": 9
