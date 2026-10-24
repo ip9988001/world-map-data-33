@@ -1,21 +1,20 @@
 {
- "step": "03",
- "at": "2026-10-24T01:29:43Z",
+ "step": "04",
+ "at": "2026-10-24T01:45:29Z",
  "want": [
   "report",
   "releases",
   "checkpoint",
-  "unit_errors",
-  "short_units"
+  "unit_errors"
  ],
  "facts": {
   "report": {
-   "sha": "b1b22ae5b6b7",
-   "freshest": "2026-10-24T01:20:39Z",
-   "layers": 119,
-   "with_rows": 119,
+   "sha": "120fb7736422",
+   "freshest": "2026-10-24T01:44:13Z",
+   "layers": 129,
+   "with_rows": 129,
    "worst_diff": 0,
-   "total_rows": 17926394,
+   "total_rows": 24130471,
    "failed": [],
    "per_layer": [
     {
@@ -1088,289 +1087,315 @@
      "diff": 0.0,
      "elapsed_s": 33.4,
      "err": ""
+    },
+    {
+     "id": "4G_arcgis_rest_services_NM911_Address_202203_FeatureServer_0",
+     "count": 1006136,
+     "rows": 1006136,
+     "parts": 22,
+     "diff": 0.0,
+     "elapsed_s": 236.8,
+     "err": ""
+    },
+    {
+     "id": "Uilbd_arcgis_rest_services_Address_Inventory_FeatureServer_0",
+     "count": 1041510,
+     "rows": 1041510,
+     "parts": 22,
+     "diff": 0.0,
+     "elapsed_s": 185.2,
+     "err": ""
+    },
+    {
+     "id": "X0mRVOFNTdLzd_arcgis_rest_services_Addresses_FeatureServer_0",
+     "count": 792091,
+     "rows": 792091,
+     "parts": 16,
+     "diff": 0.0,
+     "elapsed_s": 374.0,
+     "err": ""
+    },
+    {
+     "id": "_arcgis_rest_services_PascoMapper_Addresses_FeatureServer_16",
+     "count": 363257,
+     "rows": 363257,
+     "parts": 8,
+     "diff": 0.0,
+     "elapsed_s": 205.1,
+     "err": ""
+    },
+    {
+     "id": "d1_arcgis_rest_services_Vermont_US_Addresses_FeatureServer_1",
+     "count": 342507,
+     "rows": 342507,
+     "parts": 7,
+     "diff": 0.0,
+     "elapsed_s": 140.5,
+     "err": ""
+    },
+    {
+     "id": "gis_rest_services_INCOG_911_Address_Map_WFL1_FeatureServer_0",
+     "count": 417781,
+     "rows": 417781,
+     "parts": 9,
+     "diff": 0.0,
+     "elapsed_s": 391.5,
+     "err": ""
+    },
+    {
+     "id": "gis_rest_services_Riverside_County_Addresses_FeatureServer_0",
+     "count": 831320,
+     "rows": 831320,
+     "parts": 17,
+     "diff": 0.0,
+     "elapsed_s": 269.4,
+     "err": ""
+    },
+    {
+     "id": "sYuxx9Ny_arcgis_rest_services_GeoAddress_gdb_FeatureServer_0",
+     "count": 614279,
+     "rows": 614279,
+     "parts": 13,
+     "diff": 0.0,
+     "elapsed_s": 129.8,
+     "err": ""
+    },
+    {
+     "id": "sses_public_84b35cee615045ffbebd93e11cdb072e_FeatureServer_0",
+     "count": 397598,
+     "rows": 397598,
+     "parts": 8,
+     "diff": 0.0,
+     "elapsed_s": 103.9,
+     "err": ""
+    },
+    {
+     "id": "teAddresses_84b35cee615045ffbebd93e11cdb072e_FeatureServer_0",
+     "count": 397598,
+     "rows": 397598,
+     "parts": 8,
+     "diff": 0.0,
+     "elapsed_s": 114.8,
+     "err": ""
     }
    ]
   },
   "releases": [
    {
-    "tag": "collect-step03-yV3k5_arcgis_rest_services_Address_Points_EV_FeatureServer_1",
-    "at": "2026-10-24T01:08:59Z",
+    "tag": "collect-step04-teAddresses_84b35cee615045ffbebd93e11cdb072e_FeatureServer_0",
+    "at": "2026-10-24T01:37:13Z",
     "assets": [
      {
-      "name": "yV3k5_arcgis_rest_services_Address_Points_EV_FeatureServer_1-checkpoint.json",
-      "bytes": 419
+      "name": "teAddresses_84b35cee615045ffbebd93e11cdb072e_FeatureServer_0-checkpoint.json",
+      "bytes": 653
      },
      {
-      "name": "yV3k5_arcgis_rest_services_Address_Points_EV_FeatureServer_1-u00000.tar.gz",
-      "bytes": 1450659
+      "name": "teAddresses_84b35cee615045ffbebd93e11cdb072e_FeatureServer_0-u00000.tar.gz",
+      "bytes": 19998327
      }
     ]
    },
    {
-    "tag": "collect-step03-w_arcgis_rest_services_AddPts_CityDec032024_FeatureServer_20",
-    "at": "2026-10-24T01:08:59Z",
+    "tag": "collect-step04-sses_public_84b35cee615045ffbebd93e11cdb072e_FeatureServer_0",
+    "at": "2026-10-24T01:37:13Z",
     "assets": [
      {
-      "name": "w_arcgis_rest_services_AddPts_CityDec032024_FeatureServer_20-checkpoint.json",
-      "bytes": 423
+      "name": "sses_public_84b35cee615045ffbebd93e11cdb072e_FeatureServer_0-checkpoint.json",
+      "bytes": 660
      },
      {
-      "name": "w_arcgis_rest_services_AddPts_CityDec032024_FeatureServer_20-u00000.tar.gz",
-      "bytes": 497650
+      "name": "sses_public_84b35cee615045ffbebd93e11cdb072e_FeatureServer_0-u00000.tar.gz",
+      "bytes": 19292574
      }
     ]
    },
    {
-    "tag": "collect-step03-vices_Lab_7_Damage_Assessment__view_wdunham1_FeatureServer_1",
-    "at": "2026-10-24T01:08:59Z",
+    "tag": "collect-step04-sYuxx9Ny_arcgis_rest_services_GeoAddress_gdb_FeatureServer_0",
+    "at": "2026-10-24T01:37:13Z",
     "assets": [
      {
-      "name": "vices_Lab_7_Damage_Assessment__view_wdunham1_FeatureServer_1-checkpoint.json",
-      "bytes": 434
+      "name": "sYuxx9Ny_arcgis_rest_services_GeoAddress_gdb_FeatureServer_0-checkpoint.json",
+      "bytes": 765
      },
      {
-      "name": "vices_Lab_7_Damage_Assessment__view_wdunham1_FeatureServer_1-u00000.tar.gz",
-      "bytes": 1713
+      "name": "sYuxx9Ny_arcgis_rest_services_GeoAddress_gdb_FeatureServer_0-u00000.tar.gz",
+      "bytes": 72759085
      }
     ]
    },
    {
-    "tag": "collect-step03-vOoYdfLC8_arcgis_rest_services_ltar_site_pV2_FeatureServer_0",
-    "at": "2026-10-24T01:08:59Z",
+    "tag": "collect-step04-gis_rest_services_Riverside_County_Addresses_FeatureServer_0",
+    "at": "2026-10-24T01:40:43Z",
     "assets": [
      {
-      "name": "vOoYdfLC8_arcgis_rest_services_ltar_site_pV2_FeatureServer_0-checkpoint.json",
-      "bytes": 409
+      "name": "gis_rest_services_Riverside_County_Addresses_FeatureServer_0-checkpoint.json",
+      "bytes": 894
      },
      {
-      "name": "vOoYdfLC8_arcgis_rest_services_ltar_site_pV2_FeatureServer_0-u00000.tar.gz",
-      "bytes": 3080
+      "name": "gis_rest_services_Riverside_County_Addresses_FeatureServer_0-u00000.tar.gz",
+      "bytes": 34512747
      }
     ]
    },
    {
-    "tag": "collect-step03-t_services_Compassion_Point_Service_Projects_FeatureServer_0",
-    "at": "2026-10-24T00:52:34Z",
+    "tag": "collect-step04-gis_rest_services_INCOG_911_Address_Map_WFL1_FeatureServer_0",
+    "at": "2026-10-24T01:43:45Z",
     "assets": [
      {
-      "name": "t_services_Compassion_Point_Service_Projects_FeatureServer_0-checkpoint.json",
-      "bytes": 429
+      "name": "gis_rest_services_INCOG_911_Address_Map_WFL1_FeatureServer_0-checkpoint.json",
+      "bytes": 662
      },
      {
-      "name": "t_services_Compassion_Point_Service_Projects_FeatureServer_0-u00000.tar.gz",
-      "bytes": 2994
+      "name": "gis_rest_services_INCOG_911_Address_Map_WFL1_FeatureServer_0-u00000.tar.gz",
+      "bytes": 32769024
      }
     ]
    },
    {
-    "tag": "collect-step03-st_services_Geocoded_addresses_of_TPD_points_FeatureServer_0",
-    "at": "2026-10-24T01:08:59Z",
+    "tag": "collect-step04-d1_arcgis_rest_services_Vermont_US_Addresses_FeatureServer_1",
+    "at": "2026-10-24T01:37:13Z",
     "assets": [
      {
-      "name": "st_services_Geocoded_addresses_of_TPD_points_FeatureServer_0-checkpoint.json",
-      "bytes": 434
+      "name": "d1_arcgis_rest_services_Vermont_US_Addresses_FeatureServer_1-checkpoint.json",
+      "bytes": 598
      },
      {
-      "name": "st_services_Geocoded_addresses_of_TPD_points_FeatureServer_0-u00000.tar.gz",
-      "bytes": 1974819
+      "name": "d1_arcgis_rest_services_Vermont_US_Addresses_FeatureServer_1-u00000.tar.gz",
+      "bytes": 17079022
      }
     ]
    },
    {
-    "tag": "collect-step03-st_services_City_Fire_Hydrant_Locations_WFL1_FeatureServer_3",
-    "at": "2026-10-24T01:08:59Z",
+    "tag": "collect-step04-_arcgis_rest_services_PascoMapper_Addresses_FeatureServer_16",
+    "at": "2026-10-24T01:40:43Z",
     "assets": [
      {
-      "name": "st_services_City_Fire_Hydrant_Locations_WFL1_FeatureServer_3-checkpoint.json",
-      "bytes": 434
+      "name": "_arcgis_rest_services_PascoMapper_Addresses_FeatureServer_16-checkpoint.json",
+      "bytes": 629
      },
      {
-      "name": "st_services_City_Fire_Hydrant_Locations_WFL1_FeatureServer_3-u00000.tar.gz",
-      "bytes": 574563
+      "name": "_arcgis_rest_services_PascoMapper_Addresses_FeatureServer_16-u00000.tar.gz",
+      "bytes": 55310669
      }
     ]
    },
    {
-    "tag": "collect-step03-services_MediCal_Dental_FFS_Provider_Listing_FeatureServer_0",
-    "at": "2026-10-24T01:08:59Z",
+    "tag": "collect-step04-X0mRVOFNTdLzd_arcgis_rest_services_Addresses_FeatureServer_0",
+    "at": "2026-10-24T01:43:45Z",
     "assets": [
      {
-      "name": "services_MediCal_Dental_FFS_Provider_Listing_FeatureServer_0-checkpoint.json",
-      "bytes": 466
+      "name": "X0mRVOFNTdLzd_arcgis_rest_services_Addresses_FeatureServer_0-checkpoint.json",
+      "bytes": 848
      },
      {
-      "name": "services_MediCal_Dental_FFS_Provider_Listing_FeatureServer_0-u00000.tar.gz",
-      "bytes": 3763808
+      "name": "X0mRVOFNTdLzd_arcgis_rest_services_Addresses_FeatureServer_0-u00000.tar.gz",
+      "bytes": 97089058
      }
     ]
    },
    {
-    "tag": "collect-step03-s_rest_services_UsGov_HuddledMasses_features_FeatureServer_0",
-    "at": "2026-10-24T01:08:59Z",
+    "tag": "collect-step04-Uilbd_arcgis_rest_services_Address_Inventory_FeatureServer_0",
+    "at": "2026-10-24T01:37:13Z",
     "assets": [
      {
-      "name": "s_rest_services_UsGov_HuddledMasses_features_FeatureServer_0-checkpoint.json",
-      "bytes": 426
+      "name": "Uilbd_arcgis_rest_services_Address_Inventory_FeatureServer_0-checkpoint.json",
+      "bytes": 1077
      },
      {
-      "name": "s_rest_services_UsGov_HuddledMasses_features_FeatureServer_0-u00000.tar.gz",
-      "bytes": 11016
+      "name": "Uilbd_arcgis_rest_services_Address_Inventory_FeatureServer_0-u00000.tar.gz",
+      "bytes": 18835066
+     },
+     {
+      "name": "Uilbd_arcgis_rest_services_Address_Inventory_FeatureServer_0-u00001.tar.gz",
+      "bytes": 22636256
      }
     ]
    },
    {
-    "tag": "collect-step03-s_rest_services_Marathon_County_WI_Addresses_FeatureServer_0",
-    "at": "2026-10-24T01:08:59Z",
+    "tag": "collect-step04-4G_arcgis_rest_services_NM911_Address_202203_FeatureServer_0",
+    "at": "2026-10-24T01:40:43Z",
     "assets": [
      {
-      "name": "s_rest_services_Marathon_County_WI_Addresses_FeatureServer_0-checkpoint.json",
-      "bytes": 459
+      "name": "4G_arcgis_rest_services_NM911_Address_202203_FeatureServer_0-checkpoint.json",
+      "bytes": 1080
      },
      {
-      "name": "s_rest_services_Marathon_County_WI_Addresses_FeatureServer_0-u00000.tar.gz",
-      "bytes": 1620454
-     }
-    ]
-   },
-   {
-    "tag": "collect-step03-s_rest_services_Haysville_Parcels_View_Layer_FeatureServer_0",
-    "at": "2026-10-24T01:13:16Z",
-    "assets": [
-     {
-      "name": "s_rest_services_Haysville_Parcels_View_Layer_FeatureServer_0-checkpoint.json",
-      "bytes": 1171
+      "name": "4G_arcgis_rest_services_NM911_Address_202203_FeatureServer_0-u00000.tar.gz",
+      "bytes": 20394651
      },
      {
-      "name": "s_rest_services_Haysville_Parcels_View_Layer_FeatureServer_0-u00000.tar.gz",
-      "bytes": 17526139
-     },
-     {
-      "name": "s_rest_services_Haysville_Parcels_View_Layer_FeatureServer_0-u00001.tar.gz",
-      "bytes": 17871591
-     },
-     {
-      "name": "s_rest_services_Haysville_Parcels_View_Layer_FeatureServer_0-u00002.tar.gz",
-      "bytes": 17828184
-     },
-     {
-      "name": "s_rest_services_Haysville_Parcels_View_Layer_FeatureServer_0-u00003.tar.gz",
-      "bytes": 17849715
-     },
-     {
-      "name": "s_rest_services_Haysville_Parcels_View_Layer_FeatureServer_0-u00004.tar.gz",
-      "bytes": 17659368
-     }
-    ]
-   },
-   {
-    "tag": "collect-step03-s_rest_services_FQHC_List_for_Maps12_13_2022_FeatureServer_0",
-    "at": "2026-10-24T01:08:59Z",
-    "assets": [
-     {
-      "name": "s_rest_services_FQHC_List_for_Maps12_13_2022_FeatureServer_0-checkpoint.json",
-      "bytes": 426
-     },
-     {
-      "name": "s_rest_services_FQHC_List_for_Maps12_13_2022_FeatureServer_0-u00000.tar.gz",
-      "bytes": 19278
+      "name": "4G_arcgis_rest_services_NM911_Address_202203_FeatureServer_0-u00001.tar.gz",
+      "bytes": 18891988
      }
     ]
    }
   ],
-  "checkpoint": [
-   {
-    "tag": "collect-step03-yV3k5_arcgis_rest_services_Address_Points_EV_FeatureServer_1",
-    "name": "yV3k5_arcgis_rest_services_Address_Points_EV_FeatureServer_1-checkpoint.json",
-    "bytes": 419
-   },
-   {
-    "tag": "collect-step03-w_arcgis_rest_services_AddPts_CityDec032024_FeatureServer_20",
-    "name": "w_arcgis_rest_services_AddPts_CityDec032024_FeatureServer_20-checkpoint.json",
-    "bytes": 423
-   },
-   {
-    "tag": "collect-step03-vices_Lab_7_Damage_Assessment__view_wdunham1_FeatureServer_1",
-    "name": "vices_Lab_7_Damage_Assessment__view_wdunham1_FeatureServer_1-checkpoint.json",
-    "bytes": 434
-   },
-   {
-    "tag": "collect-step03-vOoYdfLC8_arcgis_rest_services_ltar_site_pV2_FeatureServer_0",
-    "name": "vOoYdfLC8_arcgis_rest_services_ltar_site_pV2_FeatureServer_0-checkpoint.json",
-    "bytes": 409
-   },
-   {
-    "tag": "collect-step03-t_services_Compassion_Point_Service_Projects_FeatureServer_0",
-    "name": "t_services_Compassion_Point_Service_Projects_FeatureServer_0-checkpoint.json",
-    "bytes": 429
-   },
-   {
-    "tag": "collect-step03-st_services_Geocoded_addresses_of_TPD_points_FeatureServer_0",
-    "name": "st_services_Geocoded_addresses_of_TPD_points_FeatureServer_0-checkpoint.json",
-    "bytes": 434
-   },
-   {
-    "tag": "collect-step03-st_services_City_Fire_Hydrant_Locations_WFL1_FeatureServer_3",
-    "name": "st_services_City_Fire_Hydrant_Locations_WFL1_FeatureServer_3-checkpoint.json",
-    "bytes": 434
-   },
-   {
-    "tag": "collect-step03-services_MediCal_Dental_FFS_Provider_Listing_FeatureServer_0",
-    "name": "services_MediCal_Dental_FFS_Provider_Listing_FeatureServer_0-checkpoint.json",
-    "bytes": 466
-   },
-   {
-    "tag": "collect-step03-s_rest_services_UsGov_HuddledMasses_features_FeatureServer_0",
-    "name": "s_rest_services_UsGov_HuddledMasses_features_FeatureServer_0-checkpoint.json",
-    "bytes": 426
-   },
-   {
-    "tag": "collect-step03-s_rest_services_Marathon_County_WI_Addresses_FeatureServer_0",
-    "name": "s_rest_services_Marathon_County_WI_Addresses_FeatureServer_0-checkpoint.json",
-    "bytes": 459
-   },
-   {
-    "tag": "collect-step03-s_rest_services_Haysville_Parcels_View_Layer_FeatureServer_0",
-    "name": "s_rest_services_Haysville_Parcels_View_Layer_FeatureServer_0-checkpoint.json",
-    "bytes": 1171
-   },
-   {
-    "tag": "collect-step03-s_rest_services_FQHC_List_for_Maps12_13_2022_FeatureServer_0",
-    "name": "s_rest_services_FQHC_List_for_Maps12_13_2022_FeatureServer_0-checkpoint.json",
-    "bytes": 426
-   }
-  ],
-  "unit_errors": [],
-  "short_units": []
+  "checkpoint": {
+   "layers_with_checkpoint": 10,
+   "releases_seen": 10,
+   "units_uploaded": 12,
+   "bytes": 7866,
+   "sample": [
+    {
+     "tag": "collect-step04-teAddresses_84b35cee615045ffbebd93e11cdb072e_FeatureServer_0",
+     "name": "teAddresses_84b35cee615045ffbebd93e11cdb072e_FeatureServer_0-checkpoint.json",
+     "bytes": 653
+    },
+    {
+     "tag": "collect-step04-sses_public_84b35cee615045ffbebd93e11cdb072e_FeatureServer_0",
+     "name": "sses_public_84b35cee615045ffbebd93e11cdb072e_FeatureServer_0-checkpoint.json",
+     "bytes": 660
+    },
+    {
+     "tag": "collect-step04-sYuxx9Ny_arcgis_rest_services_GeoAddress_gdb_FeatureServer_0",
+     "name": "sYuxx9Ny_arcgis_rest_services_GeoAddress_gdb_FeatureServer_0-checkpoint.json",
+     "bytes": 765
+    },
+    {
+     "tag": "collect-step04-gis_rest_services_Riverside_County_Addresses_FeatureServer_0",
+     "name": "gis_rest_services_Riverside_County_Addresses_FeatureServer_0-checkpoint.json",
+     "bytes": 894
+    },
+    {
+     "tag": "collect-step04-gis_rest_services_INCOG_911_Address_Map_WFL1_FeatureServer_0",
+     "name": "gis_rest_services_INCOG_911_Address_Map_WFL1_FeatureServer_0-checkpoint.json",
+     "bytes": 662
+    }
+   ]
+  },
+  "unit_errors": []
  },
  "missing": [],
  "profile": {
-  "step": "03",
-  "title": "单州试跑 KS",
-  "stall_min": 240,
+  "step": "04",
+  "title": "全州放量",
+  "stall_min": 300,
   "cmds": [
-   "--review pass --next 04",
-   "--kick 03 --workers 4 --max-layers 20"
+   "--review pass --next 05",
+   "--kick 04 --workers 4 --max-layers 10",
+   "--kick 04 --workers 4"
   ],
   "evidence": [
    "report",
    "releases",
    "checkpoint",
-   "unit_errors",
-   "short_units"
+   "unit_errors"
   ],
   "accept": {
-   "done_rate_min": 0.85,
-   "failed_rate_max": 0.15
+   "total_rows_min": 30000000,
+   "layers_min": 40,
+   "layers_max": 60,
+   "per_layer_rows_max": 5000000
   },
-  "doc": "collect/steps/STEP-03.md",
-  "tag": "collect-step03-{layer}"
+  "doc": "collect/steps/STEP-04.md",
+  "tag": "collect-step04-{layer}"
  },
  "ask": [
-  "STEP 03（单州试跑 KS）这一轮，判通过还是不通过？判据卡（steps.json accept）：{\"done_rate_min\": 0.85, \"failed_rate_max\": 0.15}",
+  "STEP 04（全州放量）这一轮，判通过还是不通过？判据卡（steps.json accept）：{\"total_rows_min\": 30000000, \"layers_min\": 40, \"layers_max\": 60, \"per_layer_rows_max\": 5000000}",
   "依据：evidence.report.per_layer / evidence.checkpoint / evidence.short_units（缺的键见 missing=[]）",
   "不通过的话：补跑哪一层，还是记 blocked 跳过继续往下走？",
   "判完写回账本：python3 collect/supervisor.py --review pass|fail --note \"...\""
  ],
- "reason": "单州试跑 KS：工人已停手，等大脑判验收",
- "signature": "6d6823ad70b5bfc4"
+ "reason": "全州放量：工人已停手，等大脑判验收",
+ "signature": "aeaefe42354a4385"
 }
