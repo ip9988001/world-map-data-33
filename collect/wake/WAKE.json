@@ -1,6 +1,6 @@
 {
  "step": "03",
- "at": "2026-10-24T01:08:49Z",
+ "at": "2026-10-24T01:29:43Z",
  "want": [
   "report",
   "releases",
@@ -10,12 +10,12 @@
  ],
  "facts": {
   "report": {
-   "sha": "5b38c099032b",
-   "freshest": "2026-10-24T01:02:51Z",
-   "layers": 28,
-   "with_rows": 28,
+   "sha": "b1b22ae5b6b7",
+   "freshest": "2026-10-24T01:20:39Z",
+   "layers": 119,
+   "with_rows": 119,
    "worst_diff": 0,
-   "total_rows": 13940943,
+   "total_rows": 17926394,
    "failed": [],
    "per_layer": [
     {
@@ -105,7 +105,7 @@
      "rows": 16251,
      "parts": 1,
      "diff": 0.0,
-     "elapsed_s": 2.2,
+     "elapsed_s": 1.8,
      "err": ""
     },
     {
@@ -114,7 +114,7 @@
      "rows": 28553,
      "parts": 1,
      "diff": 0.0,
-     "elapsed_s": 1.7,
+     "elapsed_s": 4.1,
      "err": ""
     },
     {
@@ -132,7 +132,7 @@
      "rows": 203,
      "parts": 1,
      "diff": 0.0,
-     "elapsed_s": 2.2,
+     "elapsed_s": 3.2,
      "err": ""
     },
     {
@@ -141,7 +141,7 @@
      "rows": 27213,
      "parts": 1,
      "diff": 0.0,
-     "elapsed_s": 1.9,
+     "elapsed_s": 5.4,
      "err": ""
     },
     {
@@ -150,7 +150,7 @@
      "rows": 59,
      "parts": 1,
      "diff": 0.0,
-     "elapsed_s": 2.0,
+     "elapsed_s": 1.9,
      "err": ""
     },
     {
@@ -159,7 +159,7 @@
      "rows": 16,
      "parts": 1,
      "diff": 0.0,
-     "elapsed_s": 1.5,
+     "elapsed_s": 1.8,
      "err": ""
     },
     {
@@ -168,7 +168,7 @@
      "rows": 63767,
      "parts": 2,
      "diff": 0.0,
-     "elapsed_s": 3.9,
+     "elapsed_s": 1.2,
      "err": ""
     },
     {
@@ -177,7 +177,7 @@
      "rows": 23,
      "parts": 1,
      "diff": 0.0,
-     "elapsed_s": 1.7,
+     "elapsed_s": 1.8,
      "err": ""
     },
     {
@@ -195,7 +195,7 @@
      "rows": 567,
      "parts": 1,
      "diff": 0.0,
-     "elapsed_s": 1.9,
+     "elapsed_s": 5.8,
      "err": ""
     },
     {
@@ -204,7 +204,7 @@
      "rows": 2253,
      "parts": 1,
      "diff": 0.0,
-     "elapsed_s": 2.1,
+     "elapsed_s": 1.2,
      "err": ""
     },
     {
@@ -213,7 +213,7 @@
      "rows": 1035861,
      "parts": 24,
      "diff": 0.0,
-     "elapsed_s": 1.3,
+     "elapsed_s": 3.5,
      "err": ""
     },
     {
@@ -222,7 +222,7 @@
      "rows": 221873,
      "parts": 6,
      "diff": 0.0,
-     "elapsed_s": 5.7,
+     "elapsed_s": 4.5,
      "err": ""
     },
     {
@@ -240,7 +240,7 @@
      "rows": 1,
      "parts": 1,
      "diff": 0.0,
-     "elapsed_s": 1.7,
+     "elapsed_s": 1.9,
      "err": ""
     },
     {
@@ -249,7 +249,7 @@
      "rows": 477,
      "parts": 1,
      "diff": 0.0,
-     "elapsed_s": 1.4,
+     "elapsed_s": 4.2,
      "err": ""
     },
     {
@@ -258,7 +258,7 @@
      "rows": 108,
      "parts": 1,
      "diff": 0.0,
-     "elapsed_s": 1.9,
+     "elapsed_s": 2.3,
      "err": ""
     },
     {
@@ -267,12 +267,887 @@
      "rows": 15,
      "parts": 1,
      "diff": 0.0,
-     "elapsed_s": 2.0,
+     "elapsed_s": 2.1,
+     "err": ""
+    },
+    {
+     "id": "0lhG1rav_arcgis_rest_services_DisplayMapWGS1_FeatureServer_2",
+     "count": 14951,
+     "rows": 14951,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 16.0,
+     "err": ""
+    },
+    {
+     "id": "13izw_arcgis_rest_services_AddPtsDec122023_FeatureServer_123",
+     "count": 9014,
+     "rows": 9014,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 20.3,
+     "err": ""
+    },
+    {
+     "id": "1_arcgis_rest_services_Bismarck_ND_Addresses_FeatureServer_0",
+     "count": 40568,
+     "rows": 40568,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 16.9,
+     "err": ""
+    },
+    {
+     "id": "1_arcgis_rest_services_Longview_TX_Addresses_FeatureServer_0",
+     "count": 33603,
+     "rows": 33603,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 15.0,
+     "err": ""
+    },
+    {
+     "id": "23vOoYdfLC8_arcgis_rest_services_ltar_site_p_FeatureServer_1",
+     "count": 29,
+     "rows": 29,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 4.8,
+     "err": ""
+    },
+    {
+     "id": "5WkCMqlwISp_arcgis_rest_services_ACT_Members_FeatureServer_2",
+     "count": 145,
+     "rows": 145,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 5.6,
+     "err": ""
+    },
+    {
+     "id": "5kGh_arcgis_rest_services_ClerkAddressPoints_FeatureServer_0",
+     "count": 14562,
+     "rows": 14562,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 7.8,
+     "err": ""
+    },
+    {
+     "id": "5n_arcgis_rest_services_City_Limit_Addresses_FeatureServer_0",
+     "count": 12144,
+     "rows": 12144,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 10.0,
+     "err": ""
+    },
+    {
+     "id": "7ueLg_arcgis_rest_services_0_Sites_Addresses_FeatureServer_0",
+     "count": 86,
+     "rows": 86,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 5.1,
+     "err": ""
+    },
+    {
+     "id": "8TU7DUyn_arcgis_rest_services_RCRASitePoints_FeatureServer_0",
+     "count": 44,
+     "rows": 44,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 6.2,
+     "err": ""
+    },
+    {
+     "id": "CXd1_arcgis_rest_services_Fargo_ND_Addresses_FeatureServer_0",
+     "count": 72684,
+     "rows": 72684,
+     "parts": 2,
+     "diff": 0.0,
+     "elapsed_s": 25.5,
+     "err": ""
+    },
+    {
+     "id": "DI_arcgis_rest_services_MPRDHRS_RESPTC_Sites_FeatureServer_0",
+     "count": 13,
+     "rows": 13,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 6.5,
+     "err": ""
+    },
+    {
+     "id": "FhOo_arcgis_rest_services_AT24_PollingPlaces_FeatureServer_0",
+     "count": 2,
+     "rows": 2,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 5.6,
+     "err": ""
+    },
+    {
+     "id": "Groundwork_NRG_Comprehensive_Map__Copy__WFL1_FeatureServer_0",
+     "count": 214,
+     "rows": 214,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 4.4,
+     "err": ""
+    },
+    {
+     "id": "ILCm3hbWNTZLH_arcgis_rest_services_Addresses_FeatureServer_0",
+     "count": 11219,
+     "rows": 11219,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 10.3,
+     "err": ""
+    },
+    {
+     "id": "J99MjOR6x_arcgis_rest_services_CityCentroids_FeatureServer_0",
+     "count": 48,
+     "rows": 48,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 4.2,
+     "err": ""
+    },
+    {
+     "id": "JCuO8rbmH_arcgis_rest_services_KFS_2024_WFL1_FeatureServer_1",
+     "count": 88,
+     "rows": 88,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 4.2,
+     "err": ""
+    },
+    {
+     "id": "J_arcgis_rest_services_City_Council_Map_WFL1_FeatureServer_0",
+     "count": 22,
+     "rows": 22,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 6.8,
+     "err": ""
+    },
+    {
+     "id": "J_arcgis_rest_services_Hometown__RARE_alumni_FeatureServer_0",
+     "count": 104,
+     "rows": 104,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 4.8,
+     "err": ""
+    },
+    {
+     "id": "Kf35_arcgis_rest_services_MC_FIRE_STATION_FeatureServer_1209",
+     "count": 11,
+     "rows": 11,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 6.0,
+     "err": ""
+    },
+    {
+     "id": "LlzhyV3k5_arcgis_rest_services_AddressPoints_FeatureServer_0",
+     "count": 16251,
+     "rows": 16251,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 21.1,
+     "err": ""
+    },
+    {
+     "id": "PShD_arcgis_rest_services_AddressPoints_LAMA_FeatureServer_0",
+     "count": 23696,
+     "rows": 23696,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 19.5,
+     "err": ""
+    },
+    {
+     "id": "UaBfRSxc_arcgis_rest_services_Address_Points_FeatureServer_0",
+     "count": 2381,
+     "rows": 2381,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 5.2,
+     "err": ""
+    },
+    {
+     "id": "XhimSpf8B7lHIMy_arcgis_rest_services_Bridges_FeatureServer_0",
+     "count": 572,
+     "rows": 572,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 5.2,
+     "err": ""
+    },
+    {
+     "id": "Y1bGKerz1PTl5_arcgis_rest_services_Map2_WFL1_FeatureServer_0",
+     "count": 30,
+     "rows": 30,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 7.1,
+     "err": ""
+    },
+    {
+     "id": "Y1bGKerz1PTl5_arcgis_rest_services_Map3_WFL1_FeatureServer_0",
+     "count": 30,
+     "rows": 30,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 5.2,
+     "err": ""
+    },
+    {
+     "id": "_7XhimSpf8B7lHIMy_arcgis_rest_services_Other_FeatureServer_0",
+     "count": 572,
+     "rows": 572,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 4.1,
+     "err": ""
+    },
+    {
+     "id": "_arcgis_rest_services_Sex_Offender_Map_WFL1_FeatureServer_13",
+     "count": 5,
+     "rows": 5,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 8.7,
+     "err": ""
+    },
+    {
+     "id": "_arcgis_rest_services_Voting_Information_Map_FeatureServer_0",
+     "count": 22,
+     "rows": 22,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 5.3,
+     "err": ""
+    },
+    {
+     "id": "_rest_services_Roadmap_and_ABH_Sites_1_27_22_FeatureServer_0",
+     "count": 53,
+     "rows": 53,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 5.0,
+     "err": ""
+    },
+    {
+     "id": "_services_TSCPL_Youth_Services_Outreach_WFL1_FeatureServer_0",
+     "count": 74,
+     "rows": 74,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 5.2,
+     "err": ""
+    },
+    {
+     "id": "_to_Healthcare_Facilities_Medical_Center_MEG_FeatureServer_0",
+     "count": 988,
+     "rows": 988,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 4.2,
+     "err": ""
+    },
+    {
+     "id": "ab_7_Damage_Assessment_View_2_0Ncarde12_view_FeatureServer_1",
+     "count": 10,
+     "rows": 10,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 6.7,
+     "err": ""
+    },
+    {
+     "id": "arcgis_rest_services_CSX_Ramp_Address_Points_FeatureServer_0",
+     "count": 16319,
+     "rows": 16319,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 9.2,
+     "err": ""
+    },
+    {
+     "id": "arcgis_rest_services_Hinesville_GA_Addresses_FeatureServer_0",
+     "count": 26965,
+     "rows": 26965,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 17.7,
+     "err": ""
+    },
+    {
+     "id": "arcgis_rest_services_Meade_Co_Address_Points_FeatureServer_0",
+     "count": 2517,
+     "rows": 2517,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 5.5,
+     "err": ""
+    },
+    {
+     "id": "arcgis_rest_services_One58_Plaza_Update_6_25_FeatureServer_0",
+     "count": 2,
+     "rows": 2,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 5.0,
+     "err": ""
+    },
+    {
+     "id": "arcgis_rest_services_Panorama43rdWaterPoints_FeatureServer_0",
+     "count": 4,
+     "rows": 4,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 5.0,
+     "err": ""
+    },
+    {
+     "id": "bD1SATUihBS_arcgis_rest_services_Coffeyville_FeatureServer_0",
+     "count": 1,
+     "rows": 1,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 4.9,
+     "err": ""
+    },
+    {
+     "id": "bT7h_arcgis_rest_services_Emergency_Shelters_FeatureServer_0",
+     "count": 23,
+     "rows": 23,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 4.6,
+     "err": ""
+    },
+    {
+     "id": "cgis_rest_services_Address_Points_030126_shp_FeatureServer_0",
+     "count": 3737,
+     "rows": 3737,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 6.6,
+     "err": ""
+    },
+    {
+     "id": "cgis_rest_services_Panorama43rdTrafficPoints_FeatureServer_1",
+     "count": 42,
+     "rows": 42,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 4.5,
+     "err": ""
+    },
+    {
+     "id": "cgis_rest_services_Riley_County_KS_Addresses_FeatureServer_0",
+     "count": 33193,
+     "rows": 33193,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 13.3,
+     "err": ""
+    },
+    {
+     "id": "czQ6_arcgis_rest_services_SC_Haysville_Zones_FeatureServer_0",
+     "count": 974087,
+     "rows": 974087,
+     "parts": 20,
+     "diff": 0.0,
+     "elapsed_s": 607.1,
+     "err": ""
+    },
+    {
+     "id": "d1_arcgis_rest_services_Visalia_CA_Addresses_FeatureServer_0",
+     "count": 57934,
+     "rows": 57934,
+     "parts": 2,
+     "diff": 0.0,
+     "elapsed_s": 22.0,
+     "err": ""
+    },
+    {
+     "id": "ervices_Medi_Cal_Dental_FFS_Provider_Listing_FeatureServer_0",
+     "count": 45972,
+     "rows": 45972,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 15.0,
+     "err": ""
+    },
+    {
+     "id": "erz1PTl5_arcgis_rest_services_Mapfinal1_WFL1_FeatureServer_0",
+     "count": 30,
+     "rows": 30,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 5.1,
+     "err": ""
+    },
+    {
+     "id": "est_services_New_Mexico_State_Univ_Addresses_FeatureServer_0",
+     "count": 1077,
+     "rows": 1077,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 7.6,
+     "err": ""
+    },
+    {
+     "id": "est_services_Voting_Information_Map_New_WFL1_FeatureServer_0",
+     "count": 22,
+     "rows": 22,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 4.6,
+     "err": ""
+    },
+    {
+     "id": "f9MkUwD4_arcgis_rest_services_Address_Points_FeatureServer_0",
+     "count": 52542,
+     "rows": 52542,
+     "parts": 2,
+     "diff": 0.0,
+     "elapsed_s": 19.4,
+     "err": ""
+    },
+    {
+     "id": "gis_rest_services_Amazon_Service_Site_List_FeatureServer_103",
+     "count": 121,
+     "rows": 121,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 6.0,
+     "err": ""
+    },
+    {
+     "id": "gis_rest_services_DamageAssessment_dashboard_FeatureServer_0@KS-5",
+     "count": 1,
+     "rows": 1,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 4.4,
+     "err": ""
+    },
+    {
+     "id": "gis_rest_services_Tiger_2010_Landmark_Points_FeatureServer_0",
+     "count": 9844,
+     "rows": 9844,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 7.7,
+     "err": ""
+    },
+    {
+     "id": "ices_Hospitals_EMTALA_Citation_Pop50k_OrLess_FeatureServer_0",
+     "count": 121,
+     "rows": 121,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 4.4,
+     "err": ""
+    },
+    {
+     "id": "ices_Lab_7_Damage_Assessment_1224561130_view_FeatureServer_1",
+     "count": 7,
+     "rows": 7,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 5.2,
+     "err": ""
+    },
+    {
+     "id": "is_rest_services_Community_Supports_Services_FeatureServer_0",
+     "count": 123,
+     "rows": 123,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 5.5,
+     "err": ""
+    },
+    {
+     "id": "is_rest_services_Forsyth_County_GA_Addresses_FeatureServer_0",
+     "count": 93990,
+     "rows": 93990,
+     "parts": 2,
+     "diff": 0.0,
+     "elapsed_s": 23.0,
+     "err": ""
+    },
+    {
+     "id": "is_rest_services_La_Montanita_Co_op_Delivery_FeatureServer_0",
+     "count": 134,
+     "rows": 134,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 6.6,
+     "err": ""
+    },
+    {
+     "id": "is_rest_services_Panorama43rdTrafficPointsNO_FeatureServer_5",
+     "count": 1,
+     "rows": 1,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 4.2,
+     "err": ""
+    },
+    {
+     "id": "kHdPRqs_arcgis_rest_services_Zoning_Map_WFL1_FeatureServer_0",
+     "count": 12833,
+     "rows": 12833,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 47.5,
+     "err": ""
+    },
+    {
+     "id": "kLV_arcgis_rest_services_FWS_NFHS_CMT_Points_FeatureServer_3",
+     "count": 122,
+     "rows": 122,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 5.0,
+     "err": ""
+    },
+    {
+     "id": "ks_gov_kdhe_doe_rest_services_BER_Tanks_DASC_FeatureServer_0",
+     "count": 17535,
+     "rows": 17535,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 13.9,
+     "err": ""
+    },
+    {
+     "id": "mH91RfZ_arcgis_rest_services_Snap_Data_Layer_FeatureServer_1",
+     "count": 85396,
+     "rows": 85396,
+     "parts": 2,
+     "diff": 0.0,
+     "elapsed_s": 24.5,
+     "err": ""
+    },
+    {
+     "id": "m_LGtNQDlIZBdntoA9_arcgis_rest_services_snap_FeatureServer_0",
+     "count": 98,
+     "rows": 98,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 5.3,
+     "err": ""
+    },
+    {
+     "id": "on_Proximity_to_Sedgwick_County_Schools_WFL1_FeatureServer_0",
+     "count": 43,
+     "rows": 43,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 5.3,
+     "err": ""
+    },
+    {
+     "id": "q_arcgis_rest_services_Facility_Site_Point_1_FeatureServer_1",
+     "count": 108,
+     "rows": 108,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 5.7,
+     "err": ""
+    },
+    {
+     "id": "rcgis_rest_services_CANYCY24DRAFTVisMap_WFL1_FeatureServer_0",
+     "count": 5017,
+     "rows": 5017,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 8.6,
+     "err": ""
+    },
+    {
+     "id": "rcgis_rest_services_FY2025_Households_Public_FeatureServer_0",
+     "count": 3882,
+     "rows": 3882,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 7.1,
+     "err": ""
+    },
+    {
+     "id": "rcgis_rest_services_Future_Land_Use___Public_FeatureServer_6",
+     "count": 33198,
+     "rows": 33198,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 27.0,
+     "err": ""
+    },
+    {
+     "id": "rcgis_rest_services_Kansas_River_Mile_Points_FeatureServer_0",
+     "count": 1696,
+     "rows": 1696,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 5.7,
+     "err": ""
+    },
+    {
+     "id": "rcgis_rest_services_Lake_County_IL_Addresses_FeatureServer_0",
+     "count": 325394,
+     "rows": 325394,
+     "parts": 8,
+     "diff": 0.0,
+     "elapsed_s": 52.8,
+     "err": ""
+    },
+    {
+     "id": "rcgis_rest_services_OsageCoKS_NG911Addresses_FeatureServer_0",
+     "count": 8287,
+     "rows": 8287,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 7.7,
+     "err": ""
+    },
+    {
+     "id": "rcgis_rest_services_Special_Event_Sites_view_FeatureServer_0",
+     "count": 6,
+     "rows": 6,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 4.4,
+     "err": ""
+    },
+    {
+     "id": "rcgis_rest_services_United_States_Counties_1_FeatureServer_0",
+     "count": 3109,
+     "rows": 3109,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 4.4,
+     "err": ""
+    },
+    {
+     "id": "rest_services_EMS_Density_Heat_Map_2026_WFL1_FeatureServer_0",
+     "count": 3909,
+     "rows": 3909,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 9.5,
+     "err": ""
+    },
+    {
+     "id": "rest_services_Sacramento_County_CA_Addresses_FeatureServer_0",
+     "count": 662634,
+     "rows": 662634,
+     "parts": 16,
+     "diff": 0.0,
+     "elapsed_s": 51.1,
+     "err": ""
+    },
+    {
+     "id": "rvices_SW_External_4AGOL_Report_Shared_Layer_FeatureServer_0",
+     "count": 298,
+     "rows": 298,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 6.1,
+     "err": ""
+    },
+    {
+     "id": "rvices_Space_Time_Pattern_Mining_3D_New_WSL1_FeatureServer_0",
+     "count": 31050,
+     "rows": 31050,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 10.6,
+     "err": ""
+    },
+    {
+     "id": "rvices_Space_Time_Pattern_Mining_3D_New_WSL2_FeatureServer_0",
+     "count": 31050,
+     "rows": 31050,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 10.8,
+     "err": ""
+    },
+    {
+     "id": "rvices_Space_Time_Pattern_Mining_3D_New_WSL3_FeatureServer_0",
+     "count": 31050,
+     "rows": 31050,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 14.7,
+     "err": ""
+    },
+    {
+     "id": "s_rest_services_FQHC_List_for_Maps12_13_2022_FeatureServer_0",
+     "count": 156,
+     "rows": 156,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 4.8,
+     "err": ""
+    },
+    {
+     "id": "s_rest_services_Haysville_Parcels_View_Layer_FeatureServer_0",
+     "count": 974087,
+     "rows": 974087,
+     "parts": 20,
+     "diff": 0.0,
+     "elapsed_s": 627.4,
+     "err": ""
+    },
+    {
+     "id": "s_rest_services_Marathon_County_WI_Addresses_FeatureServer_0",
+     "count": 59998,
+     "rows": 59998,
+     "parts": 2,
+     "diff": 0.0,
+     "elapsed_s": 19.2,
+     "err": ""
+    },
+    {
+     "id": "s_rest_services_UsGov_HuddledMasses_features_FeatureServer_0",
+     "count": 146,
+     "rows": 146,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 7.6,
+     "err": ""
+    },
+    {
+     "id": "services_MediCal_Dental_FFS_Provider_Listing_FeatureServer_0",
+     "count": 50359,
+     "rows": 50359,
+     "parts": 2,
+     "diff": 0.0,
+     "elapsed_s": 20.4,
+     "err": ""
+    },
+    {
+     "id": "st_services_City_Fire_Hydrant_Locations_WFL1_FeatureServer_3",
+     "count": 10312,
+     "rows": 10312,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 9.1,
+     "err": ""
+    },
+    {
+     "id": "st_services_Geocoded_addresses_of_TPD_points_FeatureServer_0",
+     "count": 33844,
+     "rows": 33844,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 17.8,
+     "err": ""
+    },
+    {
+     "id": "vOoYdfLC8_arcgis_rest_services_ltar_site_pV2_FeatureServer_0",
+     "count": 29,
+     "rows": 29,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 4.2,
+     "err": ""
+    },
+    {
+     "id": "vices_Lab_7_Damage_Assessment__view_wdunham1_FeatureServer_1",
+     "count": 10,
+     "rows": 10,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 4.9,
+     "err": ""
+    },
+    {
+     "id": "w_arcgis_rest_services_AddPts_CityDec032024_FeatureServer_20",
+     "count": 10494,
+     "rows": 10494,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 8.0,
+     "err": ""
+    },
+    {
+     "id": "yV3k5_arcgis_rest_services_Address_Points_EV_FeatureServer_1",
+     "count": 16257,
+     "rows": 16257,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 33.4,
      "err": ""
     }
    ]
   },
   "releases": [
+   {
+    "tag": "collect-step03-yV3k5_arcgis_rest_services_Address_Points_EV_FeatureServer_1",
+    "at": "2026-10-24T01:08:59Z",
+    "assets": [
+     {
+      "name": "yV3k5_arcgis_rest_services_Address_Points_EV_FeatureServer_1-checkpoint.json",
+      "bytes": 419
+     },
+     {
+      "name": "yV3k5_arcgis_rest_services_Address_Points_EV_FeatureServer_1-u00000.tar.gz",
+      "bytes": 1450659
+     }
+    ]
+   },
+   {
+    "tag": "collect-step03-w_arcgis_rest_services_AddPts_CityDec032024_FeatureServer_20",
+    "at": "2026-10-24T01:08:59Z",
+    "assets": [
+     {
+      "name": "w_arcgis_rest_services_AddPts_CityDec032024_FeatureServer_20-checkpoint.json",
+      "bytes": 423
+     },
+     {
+      "name": "w_arcgis_rest_services_AddPts_CityDec032024_FeatureServer_20-u00000.tar.gz",
+      "bytes": 497650
+     }
+    ]
+   },
+   {
+    "tag": "collect-step03-vices_Lab_7_Damage_Assessment__view_wdunham1_FeatureServer_1",
+    "at": "2026-10-24T01:08:59Z",
+    "assets": [
+     {
+      "name": "vices_Lab_7_Damage_Assessment__view_wdunham1_FeatureServer_1-checkpoint.json",
+      "bytes": 434
+     },
+     {
+      "name": "vices_Lab_7_Damage_Assessment__view_wdunham1_FeatureServer_1-u00000.tar.gz",
+      "bytes": 1713
+     }
+    ]
+   },
+   {
+    "tag": "collect-step03-vOoYdfLC8_arcgis_rest_services_ltar_site_pV2_FeatureServer_0",
+    "at": "2026-10-24T01:08:59Z",
+    "assets": [
+     {
+      "name": "vOoYdfLC8_arcgis_rest_services_ltar_site_pV2_FeatureServer_0-checkpoint.json",
+      "bytes": 409
+     },
+     {
+      "name": "vOoYdfLC8_arcgis_rest_services_ltar_site_pV2_FeatureServer_0-u00000.tar.gz",
+      "bytes": 3080
+     }
+    ]
+   },
    {
     "tag": "collect-step03-t_services_Compassion_Point_Service_Projects_FeatureServer_0",
     "at": "2026-10-24T00:52:34Z",
@@ -288,260 +1163,180 @@
     ]
    },
    {
-    "tag": "collect-step03-q_arcgis_rest_services_Facility_Site_Point_2_FeatureServer_1",
-    "at": "2026-10-24T00:52:34Z",
+    "tag": "collect-step03-st_services_Geocoded_addresses_of_TPD_points_FeatureServer_0",
+    "at": "2026-10-24T01:08:59Z",
     "assets": [
      {
-      "name": "q_arcgis_rest_services_Facility_Site_Point_2_FeatureServer_1-checkpoint.json",
-      "bytes": 419
+      "name": "st_services_Geocoded_addresses_of_TPD_points_FeatureServer_0-checkpoint.json",
+      "bytes": 434
      },
      {
-      "name": "q_arcgis_rest_services_Facility_Site_Point_2_FeatureServer_1-u00000.tar.gz",
-      "bytes": 12684
-     },
-     {
-      "name": "q_arcgis_rest_services_Facility_Site_Point_2_FeatureServer_1.tar.gz",
-      "bytes": 364
+      "name": "st_services_Geocoded_addresses_of_TPD_points_FeatureServer_0-u00000.tar.gz",
+      "bytes": 1974819
      }
     ]
    },
    {
-    "tag": "collect-step03-m_qIZBeaKoXYwn3kjH_arcgis_rest_services_ERP_FeatureServer_29",
-    "at": "2026-10-24T00:52:34Z",
+    "tag": "collect-step03-st_services_City_Fire_Hydrant_Locations_WFL1_FeatureServer_3",
+    "at": "2026-10-24T01:08:59Z",
     "assets": [
      {
-      "name": "m_qIZBeaKoXYwn3kjH_arcgis_rest_services_ERP_FeatureServer_29-checkpoint.json",
-      "bytes": 402
+      "name": "st_services_City_Fire_Hydrant_Locations_WFL1_FeatureServer_3-checkpoint.json",
+      "bytes": 434
      },
      {
-      "name": "m_qIZBeaKoXYwn3kjH_arcgis_rest_services_ERP_FeatureServer_29-u00000.tar.gz",
-      "bytes": 41378
-     },
-     {
-      "name": "m_qIZBeaKoXYwn3kjH_arcgis_rest_services_ERP_FeatureServer_29.tar.gz",
-      "bytes": 358
+      "name": "st_services_City_Fire_Hydrant_Locations_WFL1_FeatureServer_3-u00000.tar.gz",
+      "bytes": 574563
      }
     ]
    },
    {
-    "tag": "collect-step03-kvZmS4_arcgis_rest_services_DamageAssessment_FeatureServer_0",
-    "at": "2026-10-24T00:52:34Z",
+    "tag": "collect-step03-services_MediCal_Dental_FFS_Provider_Listing_FeatureServer_0",
+    "at": "2026-10-24T01:08:59Z",
     "assets": [
      {
-      "name": "kvZmS4_arcgis_rest_services_DamageAssessment_FeatureServer_0-checkpoint.json",
-      "bytes": 410
+      "name": "services_MediCal_Dental_FFS_Provider_Listing_FeatureServer_0-checkpoint.json",
+      "bytes": 466
      },
      {
-      "name": "kvZmS4_arcgis_rest_services_DamageAssessment_FeatureServer_0-u00000.tar.gz",
-      "bytes": 890
-     },
-     {
-      "name": "kvZmS4_arcgis_rest_services_DamageAssessment_FeatureServer_0.tar.gz",
-      "bytes": 359
+      "name": "services_MediCal_Dental_FFS_Provider_Listing_FeatureServer_0-u00000.tar.gz",
+      "bytes": 3763808
      }
     ]
    },
    {
-    "tag": "collect-step03-is_rest_services_Points_of_Interest_RTD_WFL1_FeatureServer_0",
-    "at": "2026-10-24T00:52:34Z",
+    "tag": "collect-step03-s_rest_services_UsGov_HuddledMasses_features_FeatureServer_0",
+    "at": "2026-10-24T01:08:59Z",
     "assets": [
      {
-      "name": "is_rest_services_Points_of_Interest_RTD_WFL1_FeatureServer_0-checkpoint.json",
-      "bytes": 423
-     },
-     {
-      "name": "is_rest_services_Points_of_Interest_RTD_WFL1_FeatureServer_0-u00000.tar.gz",
-      "bytes": 4423
-     },
-     {
-      "name": "is_rest_services_Points_of_Interest_RTD_WFL1_FeatureServer_0.tar.gz",
-      "bytes": 367
-     }
-    ]
-   },
-   {
-    "tag": "collect-step03-is_rest_services_Chester_County_PA_Addresses_FeatureServer_0",
-    "at": "2026-10-24T00:52:34Z",
-    "assets": [
-     {
-      "name": "is_rest_services_Chester_County_PA_Addresses_FeatureServer_0-checkpoint.json",
-      "bytes": 623
-     },
-     {
-      "name": "is_rest_services_Chester_County_PA_Addresses_FeatureServer_0-u00000.tar.gz",
-      "bytes": 2509168
-     },
-     {
-      "name": "is_rest_services_Chester_County_PA_Addresses_FeatureServer_0-u00001.tar.gz",
-      "bytes": 2554305
-     }
-    ]
-   },
-   {
-    "tag": "collect-step03-is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0",
-    "at": "2026-10-24T00:52:34Z",
-    "assets": [
-     {
-      "name": "is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0-checkpoint.json",
-      "bytes": 1333
-     },
-     {
-      "name": "is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0-u00000.tar.gz",
-      "bytes": 12033455
-     },
-     {
-      "name": "is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0-u00001.tar.gz",
-      "bytes": 11300807
-     },
-     {
-      "name": "is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0-u00002.tar.gz",
-      "bytes": 9609944
-     },
-     {
-      "name": "is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0-u00003.tar.gz",
-      "bytes": 11327028
-     },
-     {
-      "name": "is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0-u00004.tar.gz",
-      "bytes": 11587080
-     },
-     {
-      "name": "is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0-u00005.tar.gz",
-      "bytes": 11508845
-     }
-    ]
-   },
-   {
-    "tag": "collect-step03-gis_rest_services_Seneca_Nation_NY_Addresses_FeatureServer_0",
-    "at": "2026-10-24T00:52:34Z",
-    "assets": [
-     {
-      "name": "gis_rest_services_Seneca_Nation_NY_Addresses_FeatureServer_0-checkpoint.json",
+      "name": "s_rest_services_UsGov_HuddledMasses_features_FeatureServer_0-checkpoint.json",
       "bytes": 426
      },
      {
-      "name": "gis_rest_services_Seneca_Nation_NY_Addresses_FeatureServer_0-u00000.tar.gz",
-      "bytes": 60989
+      "name": "s_rest_services_UsGov_HuddledMasses_features_FeatureServer_0-u00000.tar.gz",
+      "bytes": 11016
      }
     ]
    },
    {
-    "tag": "collect-step03-gis_rest_services_Master_CHHS_Dashboard_Upload_FeatureServer",
-    "at": "2026-10-24T00:52:34Z",
+    "tag": "collect-step03-s_rest_services_Marathon_County_WI_Addresses_FeatureServer_0",
+    "at": "2026-10-24T01:08:59Z",
     "assets": [
      {
-      "name": "gis_rest_services_Master_CHHS_Dashboard_Upload_FeatureServer-checkpoint.json",
-      "bytes": 424
+      "name": "s_rest_services_Marathon_County_WI_Addresses_FeatureServer_0-checkpoint.json",
+      "bytes": 459
      },
      {
-      "name": "gis_rest_services_Master_CHHS_Dashboard_Upload_FeatureServer-u00000.tar.gz",
-      "bytes": 32296
+      "name": "s_rest_services_Marathon_County_WI_Addresses_FeatureServer_0-u00000.tar.gz",
+      "bytes": 1620454
      }
     ]
    },
    {
-    "tag": "collect-step03-gis_rest_services_Dodge_City_Base_Map_Layers_FeatureServer_9",
-    "at": "2026-10-24T00:52:34Z",
+    "tag": "collect-step03-s_rest_services_Haysville_Parcels_View_Layer_FeatureServer_0",
+    "at": "2026-10-24T01:13:16Z",
     "assets": [
      {
-      "name": "gis_rest_services_Dodge_City_Base_Map_Layers_FeatureServer_9-checkpoint.json",
+      "name": "s_rest_services_Haysville_Parcels_View_Layer_FeatureServer_0-checkpoint.json",
+      "bytes": 1171
+     },
+     {
+      "name": "s_rest_services_Haysville_Parcels_View_Layer_FeatureServer_0-u00000.tar.gz",
+      "bytes": 17526139
+     },
+     {
+      "name": "s_rest_services_Haysville_Parcels_View_Layer_FeatureServer_0-u00001.tar.gz",
+      "bytes": 17871591
+     },
+     {
+      "name": "s_rest_services_Haysville_Parcels_View_Layer_FeatureServer_0-u00002.tar.gz",
+      "bytes": 17828184
+     },
+     {
+      "name": "s_rest_services_Haysville_Parcels_View_Layer_FeatureServer_0-u00003.tar.gz",
+      "bytes": 17849715
+     },
+     {
+      "name": "s_rest_services_Haysville_Parcels_View_Layer_FeatureServer_0-u00004.tar.gz",
+      "bytes": 17659368
+     }
+    ]
+   },
+   {
+    "tag": "collect-step03-s_rest_services_FQHC_List_for_Maps12_13_2022_FeatureServer_0",
+    "at": "2026-10-24T01:08:59Z",
+    "assets": [
+     {
+      "name": "s_rest_services_FQHC_List_for_Maps12_13_2022_FeatureServer_0-checkpoint.json",
       "bytes": 426
      },
      {
-      "name": "gis_rest_services_Dodge_City_Base_Map_Layers_FeatureServer_9-u00000.tar.gz",
-      "bytes": 299780
-     }
-    ]
-   },
-   {
-    "tag": "collect-step03-ervices_Reuse_Points_of_Interest_Public_View_FeatureServer_0",
-    "at": "2026-10-24T00:52:34Z",
-    "assets": [
-     {
-      "name": "ervices_Reuse_Points_of_Interest_Public_View_FeatureServer_0-checkpoint.json",
-      "bytes": 431
-     },
-     {
-      "name": "ervices_Reuse_Points_of_Interest_Public_View_FeatureServer_0-u00000.tar.gz",
-      "bytes": 6156
-     }
-    ]
-   },
-   {
-    "tag": "collect-step03-cgis_rest_services_Cedar_Rapids_IA_Addresses_FeatureServer_0",
-    "at": "2026-10-24T00:52:34Z",
-    "assets": [
-     {
-      "name": "cgis_rest_services_Cedar_Rapids_IA_Addresses_FeatureServer_0-checkpoint.json",
-      "bytes": 456
-     },
-     {
-      "name": "cgis_rest_services_Cedar_Rapids_IA_Addresses_FeatureServer_0-u00000.tar.gz",
-      "bytes": 1856429
+      "name": "s_rest_services_FQHC_List_for_Maps12_13_2022_FeatureServer_0-u00000.tar.gz",
+      "bytes": 19278
      }
     ]
    }
   ],
   "checkpoint": [
    {
+    "tag": "collect-step03-yV3k5_arcgis_rest_services_Address_Points_EV_FeatureServer_1",
+    "name": "yV3k5_arcgis_rest_services_Address_Points_EV_FeatureServer_1-checkpoint.json",
+    "bytes": 419
+   },
+   {
+    "tag": "collect-step03-w_arcgis_rest_services_AddPts_CityDec032024_FeatureServer_20",
+    "name": "w_arcgis_rest_services_AddPts_CityDec032024_FeatureServer_20-checkpoint.json",
+    "bytes": 423
+   },
+   {
+    "tag": "collect-step03-vices_Lab_7_Damage_Assessment__view_wdunham1_FeatureServer_1",
+    "name": "vices_Lab_7_Damage_Assessment__view_wdunham1_FeatureServer_1-checkpoint.json",
+    "bytes": 434
+   },
+   {
+    "tag": "collect-step03-vOoYdfLC8_arcgis_rest_services_ltar_site_pV2_FeatureServer_0",
+    "name": "vOoYdfLC8_arcgis_rest_services_ltar_site_pV2_FeatureServer_0-checkpoint.json",
+    "bytes": 409
+   },
+   {
     "tag": "collect-step03-t_services_Compassion_Point_Service_Projects_FeatureServer_0",
     "name": "t_services_Compassion_Point_Service_Projects_FeatureServer_0-checkpoint.json",
     "bytes": 429
    },
    {
-    "tag": "collect-step03-q_arcgis_rest_services_Facility_Site_Point_2_FeatureServer_1",
-    "name": "q_arcgis_rest_services_Facility_Site_Point_2_FeatureServer_1-checkpoint.json",
-    "bytes": 419
+    "tag": "collect-step03-st_services_Geocoded_addresses_of_TPD_points_FeatureServer_0",
+    "name": "st_services_Geocoded_addresses_of_TPD_points_FeatureServer_0-checkpoint.json",
+    "bytes": 434
    },
    {
-    "tag": "collect-step03-m_qIZBeaKoXYwn3kjH_arcgis_rest_services_ERP_FeatureServer_29",
-    "name": "m_qIZBeaKoXYwn3kjH_arcgis_rest_services_ERP_FeatureServer_29-checkpoint.json",
-    "bytes": 402
+    "tag": "collect-step03-st_services_City_Fire_Hydrant_Locations_WFL1_FeatureServer_3",
+    "name": "st_services_City_Fire_Hydrant_Locations_WFL1_FeatureServer_3-checkpoint.json",
+    "bytes": 434
    },
    {
-    "tag": "collect-step03-kvZmS4_arcgis_rest_services_DamageAssessment_FeatureServer_0",
-    "name": "kvZmS4_arcgis_rest_services_DamageAssessment_FeatureServer_0-checkpoint.json",
-    "bytes": 410
+    "tag": "collect-step03-services_MediCal_Dental_FFS_Provider_Listing_FeatureServer_0",
+    "name": "services_MediCal_Dental_FFS_Provider_Listing_FeatureServer_0-checkpoint.json",
+    "bytes": 466
    },
    {
-    "tag": "collect-step03-is_rest_services_Points_of_Interest_RTD_WFL1_FeatureServer_0",
-    "name": "is_rest_services_Points_of_Interest_RTD_WFL1_FeatureServer_0-checkpoint.json",
-    "bytes": 423
-   },
-   {
-    "tag": "collect-step03-is_rest_services_Chester_County_PA_Addresses_FeatureServer_0",
-    "name": "is_rest_services_Chester_County_PA_Addresses_FeatureServer_0-checkpoint.json",
-    "bytes": 623
-   },
-   {
-    "tag": "collect-step03-is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0",
-    "name": "is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0-checkpoint.json",
-    "bytes": 1333
-   },
-   {
-    "tag": "collect-step03-gis_rest_services_Seneca_Nation_NY_Addresses_FeatureServer_0",
-    "name": "gis_rest_services_Seneca_Nation_NY_Addresses_FeatureServer_0-checkpoint.json",
+    "tag": "collect-step03-s_rest_services_UsGov_HuddledMasses_features_FeatureServer_0",
+    "name": "s_rest_services_UsGov_HuddledMasses_features_FeatureServer_0-checkpoint.json",
     "bytes": 426
    },
    {
-    "tag": "collect-step03-gis_rest_services_Master_CHHS_Dashboard_Upload_FeatureServer",
-    "name": "gis_rest_services_Master_CHHS_Dashboard_Upload_FeatureServer-checkpoint.json",
-    "bytes": 424
+    "tag": "collect-step03-s_rest_services_Marathon_County_WI_Addresses_FeatureServer_0",
+    "name": "s_rest_services_Marathon_County_WI_Addresses_FeatureServer_0-checkpoint.json",
+    "bytes": 459
    },
    {
-    "tag": "collect-step03-gis_rest_services_Dodge_City_Base_Map_Layers_FeatureServer_9",
-    "name": "gis_rest_services_Dodge_City_Base_Map_Layers_FeatureServer_9-checkpoint.json",
+    "tag": "collect-step03-s_rest_services_Haysville_Parcels_View_Layer_FeatureServer_0",
+    "name": "s_rest_services_Haysville_Parcels_View_Layer_FeatureServer_0-checkpoint.json",
+    "bytes": 1171
+   },
+   {
+    "tag": "collect-step03-s_rest_services_FQHC_List_for_Maps12_13_2022_FeatureServer_0",
+    "name": "s_rest_services_FQHC_List_for_Maps12_13_2022_FeatureServer_0-checkpoint.json",
     "bytes": 426
-   },
-   {
-    "tag": "collect-step03-ervices_Reuse_Points_of_Interest_Public_View_FeatureServer_0",
-    "name": "ervices_Reuse_Points_of_Interest_Public_View_FeatureServer_0-checkpoint.json",
-    "bytes": 431
-   },
-   {
-    "tag": "collect-step03-cgis_rest_services_Cedar_Rapids_IA_Addresses_FeatureServer_0",
-    "name": "cgis_rest_services_Cedar_Rapids_IA_Addresses_FeatureServer_0-checkpoint.json",
-    "bytes": 456
    }
   ],
   "unit_errors": [],
@@ -577,5 +1372,5 @@
   "判完写回账本：python3 collect/supervisor.py --review pass|fail --note \"...\""
  ],
  "reason": "单州试跑 KS：工人已停手，等大脑判验收",
- "signature": "506aed957a7a0d2f"
+ "signature": "6d6823ad70b5bfc4"
 }

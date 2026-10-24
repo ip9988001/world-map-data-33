@@ -1,9 +1,9 @@
 {
  "project": "world-map-data-33 collect",
- "current_step": "03",
+ "current_step": "04",
  "mode": "self-drive-v2",
  "budget": {
-  "minutes_used": 732,
+  "minutes_used": 745,
   "minutes_cap": 1800,
   "warn_ratio": 0.8,
   "stop_ratio": 0.95
@@ -16,12 +16,12 @@
   "layers": "m_qIZBeaKoXYwn3kjH_arcgis_rest_services_ERP_FeatureServer_29,kvZmS4_arcgis_rest_services_DamageAssessment_FeatureServer_0,is_rest_services_Points_of_Interest_RTD_WFL1_FeatureServer_0,_services_OPEN_DATA_cdphe_ems_ambulance_agencies_MapServer_0,q_arcgis_rest_services_Facility_Site_Point_2_FeatureServer_1",
   "workers": 4
  },
- "awaiting_brain": true,
+ "awaiting_brain": false,
  "brain_review": {
-  "at": "2026-10-23T23:26:45Z",
-  "step": "02",
+  "at": "2026-10-24T01:29:45Z",
+  "step": "03",
   "verdict": "pass",
-  "note": "STEP02 试点 8 层全部 rows==count（12,525,311 行，worst_diff=0）。修复三处真因：① de_suss layer 0→132 上轮未生效（run 冻旧 SHA）② san_juan 服务用 HTTP 200 包 {\"error\":\"Pagination is not supported\"}，静默退化成 2000 行，已加 200-error 识别 + ids 通道（returnIdsOnly+objectIds 分批并发）③ 报告 artifact 打包整个 reports 目录导致 merge 非确定性覆盖。附带：工人支持 OID 区间并发、心跳进仓库、report/工头补 fetch-depth:0。"
+  "note": "STEP-03 单州试跑 KS：111 层全部选中并跑完（报告 119 层含试点重合，0 失败 0 零行，total_rows=17,926,394，worst_diff=0），20 个 checkpoint 实测 1,415,632 行与计划完全一致，单元错误 0。done_rate=1.000 ≥0.85、failed_rate=0.000 ≤0.15，两条判据均过。联调同时修掉 6 处真因（skip 未过滤/ layer_id 撞车 56 跨州 / --layer 反查错源 / lib.schema 缺 import / 采集步无报告 / 证据升级不重叫）。"
  },
  "steps": {
   "01": {
@@ -44,8 +44,11 @@
    }
   },
   "03": {
-   "status": "in_review",
+   "status": "done",
    "at": "2026-10-24T00:59:15Z"
+  },
+  "04": {
+   "status": "ready"
   }
  },
  "blocked_count": 0,
@@ -54,10 +57,10 @@
  "paused_at": "2026-10-23T23:14:35Z",
  "last_error": null,
  "wake": {
-  "signature": "506aed957a7a0d2f",
-  "at": "2026-10-24T01:08:49Z",
+  "signature": "6d6823ad70b5bfc4",
+  "at": "2026-10-24T01:29:43Z",
   "reason": "单州试跑 KS：工人已停手，等大脑判验收",
   "issue": 4,
-  "count": 2
+  "count": 3
  }
 }
