@@ -3,7 +3,7 @@
  "current_step": "03",
  "mode": "self-drive-v2",
  "budget": {
-  "minutes_used": 600,
+  "minutes_used": 731,
   "minutes_cap": 1800,
   "warn_ratio": 0.8,
   "stop_ratio": 0.95
@@ -11,12 +11,12 @@
  "last_run": {
   "step": "03",
   "run_id": null,
-  "at": "2026-10-24T00:52:44Z",
+  "at": "2026-10-24T00:59:15Z",
   "trigger": "brain",
-  "layers": "all",
+  "layers": "m_qIZBeaKoXYwn3kjH_arcgis_rest_services_ERP_FeatureServer_29,kvZmS4_arcgis_rest_services_DamageAssessment_FeatureServer_0,is_rest_services_Points_of_Interest_RTD_WFL1_FeatureServer_0,_services_OPEN_DATA_cdphe_ems_ambulance_agencies_MapServer_0,q_arcgis_rest_services_Facility_Site_Point_2_FeatureServer_1",
   "workers": 4
  },
- "awaiting_brain": false,
+ "awaiting_brain": true,
  "brain_review": {
   "at": "2026-10-23T23:26:45Z",
   "step": "02",
@@ -44,13 +44,20 @@
    }
   },
   "03": {
-   "status": "started",
-   "at": "2026-10-24T00:52:44Z"
+   "status": "in_review",
+   "at": "2026-10-24T00:59:15Z"
   }
  },
  "blocked_count": 0,
  "status": "running",
  "paused_reason": null,
  "paused_at": "2026-10-23T23:14:35Z",
- "last_error": null
+ "last_error": null,
+ "wake": {
+  "signature": "ac531613c2e7f3f4",
+  "at": "2026-10-24T01:01:57Z",
+  "reason": "单州试跑 KS：工人已停手，等大脑判验收",
+  "issue": "https://github.com/ip9988001/world-map-data-33/issues/4",
+  "count": 1
+ }
 }

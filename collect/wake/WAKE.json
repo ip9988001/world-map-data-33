@@ -1,0 +1,316 @@
+{
+ "step": "03",
+ "at": "2026-10-24T01:01:57Z",
+ "want": [
+  "releases",
+  "checkpoint",
+  "unit_errors",
+  "short_units"
+ ],
+ "facts": {
+  "releases": [
+   {
+    "tag": "collect-step03-t_services_Compassion_Point_Service_Projects_FeatureServer_0",
+    "at": "2026-10-24T00:52:34Z",
+    "assets": [
+     {
+      "name": "t_services_Compassion_Point_Service_Projects_FeatureServer_0-checkpoint.json",
+      "bytes": 429
+     },
+     {
+      "name": "t_services_Compassion_Point_Service_Projects_FeatureServer_0-u00000.tar.gz",
+      "bytes": 2994
+     }
+    ]
+   },
+   {
+    "tag": "collect-step03-q_arcgis_rest_services_Facility_Site_Point_2_FeatureServer_1",
+    "at": "2026-10-24T00:52:34Z",
+    "assets": [
+     {
+      "name": "q_arcgis_rest_services_Facility_Site_Point_2_FeatureServer_1-checkpoint.json",
+      "bytes": 419
+     },
+     {
+      "name": "q_arcgis_rest_services_Facility_Site_Point_2_FeatureServer_1-u00000.tar.gz",
+      "bytes": 12684
+     },
+     {
+      "name": "q_arcgis_rest_services_Facility_Site_Point_2_FeatureServer_1.tar.gz",
+      "bytes": 364
+     }
+    ]
+   },
+   {
+    "tag": "collect-step03-m_qIZBeaKoXYwn3kjH_arcgis_rest_services_ERP_FeatureServer_29",
+    "at": "2026-10-24T00:52:34Z",
+    "assets": [
+     {
+      "name": "m_qIZBeaKoXYwn3kjH_arcgis_rest_services_ERP_FeatureServer_29-checkpoint.json",
+      "bytes": 402
+     },
+     {
+      "name": "m_qIZBeaKoXYwn3kjH_arcgis_rest_services_ERP_FeatureServer_29-u00000.tar.gz",
+      "bytes": 41378
+     },
+     {
+      "name": "m_qIZBeaKoXYwn3kjH_arcgis_rest_services_ERP_FeatureServer_29.tar.gz",
+      "bytes": 358
+     }
+    ]
+   },
+   {
+    "tag": "collect-step03-kvZmS4_arcgis_rest_services_DamageAssessment_FeatureServer_0",
+    "at": "2026-10-24T00:52:34Z",
+    "assets": [
+     {
+      "name": "kvZmS4_arcgis_rest_services_DamageAssessment_FeatureServer_0-checkpoint.json",
+      "bytes": 410
+     },
+     {
+      "name": "kvZmS4_arcgis_rest_services_DamageAssessment_FeatureServer_0-u00000.tar.gz",
+      "bytes": 890
+     },
+     {
+      "name": "kvZmS4_arcgis_rest_services_DamageAssessment_FeatureServer_0.tar.gz",
+      "bytes": 359
+     }
+    ]
+   },
+   {
+    "tag": "collect-step03-is_rest_services_Points_of_Interest_RTD_WFL1_FeatureServer_0",
+    "at": "2026-10-24T00:52:34Z",
+    "assets": [
+     {
+      "name": "is_rest_services_Points_of_Interest_RTD_WFL1_FeatureServer_0-checkpoint.json",
+      "bytes": 423
+     },
+     {
+      "name": "is_rest_services_Points_of_Interest_RTD_WFL1_FeatureServer_0-u00000.tar.gz",
+      "bytes": 4423
+     },
+     {
+      "name": "is_rest_services_Points_of_Interest_RTD_WFL1_FeatureServer_0.tar.gz",
+      "bytes": 367
+     }
+    ]
+   },
+   {
+    "tag": "collect-step03-is_rest_services_Chester_County_PA_Addresses_FeatureServer_0",
+    "at": "2026-10-24T00:52:34Z",
+    "assets": [
+     {
+      "name": "is_rest_services_Chester_County_PA_Addresses_FeatureServer_0-checkpoint.json",
+      "bytes": 623
+     },
+     {
+      "name": "is_rest_services_Chester_County_PA_Addresses_FeatureServer_0-u00000.tar.gz",
+      "bytes": 2509168
+     },
+     {
+      "name": "is_rest_services_Chester_County_PA_Addresses_FeatureServer_0-u00001.tar.gz",
+      "bytes": 2554305
+     }
+    ]
+   },
+   {
+    "tag": "collect-step03-is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0",
+    "at": "2026-10-24T00:52:34Z",
+    "assets": [
+     {
+      "name": "is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0-checkpoint.json",
+      "bytes": 1333
+     },
+     {
+      "name": "is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0-u00000.tar.gz",
+      "bytes": 12033455
+     },
+     {
+      "name": "is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0-u00001.tar.gz",
+      "bytes": 11300807
+     },
+     {
+      "name": "is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0-u00002.tar.gz",
+      "bytes": 9609944
+     },
+     {
+      "name": "is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0-u00003.tar.gz",
+      "bytes": 11327028
+     },
+     {
+      "name": "is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0-u00004.tar.gz",
+      "bytes": 11587080
+     },
+     {
+      "name": "is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0-u00005.tar.gz",
+      "bytes": 11508845
+     }
+    ]
+   },
+   {
+    "tag": "collect-step03-gis_rest_services_Seneca_Nation_NY_Addresses_FeatureServer_0",
+    "at": "2026-10-24T00:52:34Z",
+    "assets": [
+     {
+      "name": "gis_rest_services_Seneca_Nation_NY_Addresses_FeatureServer_0-checkpoint.json",
+      "bytes": 426
+     },
+     {
+      "name": "gis_rest_services_Seneca_Nation_NY_Addresses_FeatureServer_0-u00000.tar.gz",
+      "bytes": 60989
+     }
+    ]
+   },
+   {
+    "tag": "collect-step03-gis_rest_services_Master_CHHS_Dashboard_Upload_FeatureServer",
+    "at": "2026-10-24T00:52:34Z",
+    "assets": [
+     {
+      "name": "gis_rest_services_Master_CHHS_Dashboard_Upload_FeatureServer-checkpoint.json",
+      "bytes": 424
+     },
+     {
+      "name": "gis_rest_services_Master_CHHS_Dashboard_Upload_FeatureServer-u00000.tar.gz",
+      "bytes": 32296
+     }
+    ]
+   },
+   {
+    "tag": "collect-step03-gis_rest_services_Dodge_City_Base_Map_Layers_FeatureServer_9",
+    "at": "2026-10-24T00:52:34Z",
+    "assets": [
+     {
+      "name": "gis_rest_services_Dodge_City_Base_Map_Layers_FeatureServer_9-checkpoint.json",
+      "bytes": 426
+     },
+     {
+      "name": "gis_rest_services_Dodge_City_Base_Map_Layers_FeatureServer_9-u00000.tar.gz",
+      "bytes": 299780
+     }
+    ]
+   },
+   {
+    "tag": "collect-step03-ervices_Reuse_Points_of_Interest_Public_View_FeatureServer_0",
+    "at": "2026-10-24T00:52:34Z",
+    "assets": [
+     {
+      "name": "ervices_Reuse_Points_of_Interest_Public_View_FeatureServer_0-checkpoint.json",
+      "bytes": 431
+     },
+     {
+      "name": "ervices_Reuse_Points_of_Interest_Public_View_FeatureServer_0-u00000.tar.gz",
+      "bytes": 6156
+     }
+    ]
+   },
+   {
+    "tag": "collect-step03-cgis_rest_services_Cedar_Rapids_IA_Addresses_FeatureServer_0",
+    "at": "2026-10-24T00:52:34Z",
+    "assets": [
+     {
+      "name": "cgis_rest_services_Cedar_Rapids_IA_Addresses_FeatureServer_0-checkpoint.json",
+      "bytes": 456
+     },
+     {
+      "name": "cgis_rest_services_Cedar_Rapids_IA_Addresses_FeatureServer_0-u00000.tar.gz",
+      "bytes": 1856429
+     }
+    ]
+   }
+  ],
+  "checkpoint": [
+   {
+    "tag": "collect-step03-t_services_Compassion_Point_Service_Projects_FeatureServer_0",
+    "name": "t_services_Compassion_Point_Service_Projects_FeatureServer_0-checkpoint.json",
+    "bytes": 429
+   },
+   {
+    "tag": "collect-step03-q_arcgis_rest_services_Facility_Site_Point_2_FeatureServer_1",
+    "name": "q_arcgis_rest_services_Facility_Site_Point_2_FeatureServer_1-checkpoint.json",
+    "bytes": 419
+   },
+   {
+    "tag": "collect-step03-m_qIZBeaKoXYwn3kjH_arcgis_rest_services_ERP_FeatureServer_29",
+    "name": "m_qIZBeaKoXYwn3kjH_arcgis_rest_services_ERP_FeatureServer_29-checkpoint.json",
+    "bytes": 402
+   },
+   {
+    "tag": "collect-step03-kvZmS4_arcgis_rest_services_DamageAssessment_FeatureServer_0",
+    "name": "kvZmS4_arcgis_rest_services_DamageAssessment_FeatureServer_0-checkpoint.json",
+    "bytes": 410
+   },
+   {
+    "tag": "collect-step03-is_rest_services_Points_of_Interest_RTD_WFL1_FeatureServer_0",
+    "name": "is_rest_services_Points_of_Interest_RTD_WFL1_FeatureServer_0-checkpoint.json",
+    "bytes": 423
+   },
+   {
+    "tag": "collect-step03-is_rest_services_Chester_County_PA_Addresses_FeatureServer_0",
+    "name": "is_rest_services_Chester_County_PA_Addresses_FeatureServer_0-checkpoint.json",
+    "bytes": 623
+   },
+   {
+    "tag": "collect-step03-is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0",
+    "name": "is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0-checkpoint.json",
+    "bytes": 1333
+   },
+   {
+    "tag": "collect-step03-gis_rest_services_Seneca_Nation_NY_Addresses_FeatureServer_0",
+    "name": "gis_rest_services_Seneca_Nation_NY_Addresses_FeatureServer_0-checkpoint.json",
+    "bytes": 426
+   },
+   {
+    "tag": "collect-step03-gis_rest_services_Master_CHHS_Dashboard_Upload_FeatureServer",
+    "name": "gis_rest_services_Master_CHHS_Dashboard_Upload_FeatureServer-checkpoint.json",
+    "bytes": 424
+   },
+   {
+    "tag": "collect-step03-gis_rest_services_Dodge_City_Base_Map_Layers_FeatureServer_9",
+    "name": "gis_rest_services_Dodge_City_Base_Map_Layers_FeatureServer_9-checkpoint.json",
+    "bytes": 426
+   },
+   {
+    "tag": "collect-step03-ervices_Reuse_Points_of_Interest_Public_View_FeatureServer_0",
+    "name": "ervices_Reuse_Points_of_Interest_Public_View_FeatureServer_0-checkpoint.json",
+    "bytes": 431
+   },
+   {
+    "tag": "collect-step03-cgis_rest_services_Cedar_Rapids_IA_Addresses_FeatureServer_0",
+    "name": "cgis_rest_services_Cedar_Rapids_IA_Addresses_FeatureServer_0-checkpoint.json",
+    "bytes": 456
+   }
+  ],
+  "unit_errors": [],
+  "short_units": []
+ },
+ "missing": [],
+ "profile": {
+  "step": "03",
+  "title": "单州试跑 KS",
+  "stall_min": 240,
+  "cmds": [
+   "--review pass --next 04",
+   "--kick 03 --workers 4 --max-layers 20"
+  ],
+  "evidence": [
+   "releases",
+   "checkpoint",
+   "unit_errors",
+   "short_units"
+  ],
+  "accept": {
+   "done_rate_min": 0.85,
+   "failed_rate_max": 0.15
+  },
+  "doc": "collect/steps/STEP-03.md",
+  "tag": "collect-step03-{layer}"
+ },
+ "ask": [
+  "STEP 03（单州试跑 KS）这一轮，判通过还是不通过？判据卡（steps.json accept）：{\"done_rate_min\": 0.85, \"failed_rate_max\": 0.15}",
+  "依据：evidence.report.per_layer / evidence.checkpoint / evidence.short_units（缺的键见 missing=[]）",
+  "不通过的话：补跑哪一层，还是记 blocked 跳过继续往下走？",
+  "判完写回账本：python3 collect/supervisor.py --review pass|fail --note \"...\""
+ ],
+ "reason": "单州试跑 KS：工人已停手，等大脑判验收",
+ "signature": "ac531613c2e7f3f4"
+}

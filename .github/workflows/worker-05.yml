@@ -31,5 +31,5 @@ jobs:
       max_layers: ${{ github.event.inputs.max_layers || '0' }}
       workers: ${{ github.event.inputs.workers || '4' }}
       unit_rows: ${{ github.event.inputs.unit_rows || '100000' }}
-      report: "false"
+      report: "true"
       single: "false"
