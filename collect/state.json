@@ -1,6 +1,6 @@
 {
  "project": "world-map-data-33 collect",
- "current_step": "05",
+ "current_step": "06",
  "mode": "self-drive-v2",
  "budget": {
   "minutes_used": 836,
@@ -16,12 +16,12 @@
   "layers": "all",
   "workers": 4
  },
- "awaiting_brain": true,
+ "awaiting_brain": false,
  "brain_review": {
-  "at": "2026-10-24T03:27:38Z",
-  "step": "04",
+  "at": "2026-10-24T09:21:59Z",
+  "step": "05",
   "verdict": "pass",
-  "note": "STEP-04 全州放量：48 层全部落盘（46 FeatureServer + 2 MapServer），0 失败 0 零行，实收 38,655,034 行（计划 38,655,004，差 +30 行 = 上游 count 漂移，worst_diff=0）；layers 48 ∈[40,60]、total_rows 3866 万 ≥3000 万、per_layer 最大 369.8 万 ≤500 万，四条判据全过。过程中修掉两个真因：MapServer+keyset 空转（已加 12 分钟无进展看门狗自杀 + skip_blocked 记档），where 字段别名导致过滤静默失效。"
+  "note": "STEP-05 县市碎片：554 层应采，553 层入报告（99.8%），failed_rate 0.0000 ≤0.15，实收 35,116,448 行（计划 35,116,023，差 +425 = 上游漂移），worst_diff 0；2 层记 blocked（rgv911 MapServer 空转、Weston Basemap 服务 404）。放量期修掉 4 个并行真因：心跳推送争抢 main、报告 push 重试不足、预算滚动漏账、分批窗口在过滤之前切。"
  },
  "steps": {
   "01": {
@@ -52,8 +52,11 @@
    "at": "2026-10-24T01:47:49Z"
   },
   "05": {
-   "status": "in_review",
+   "status": "done",
    "at": "2026-10-24T04:36:25Z"
+  },
+  "06": {
+   "status": "ready"
   }
  },
  "blocked_count": 0,
