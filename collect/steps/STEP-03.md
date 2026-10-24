@@ -33,7 +33,6 @@
 ```bash
 python3 collect/supervisor.py --kick 03 --workers 4
 python3 collect/supervisor.py --review pass --next 04 --note "..."
-python3 collect/supervisor.py --review pass --next 04
 ```
 
 ## 卡死阈值
