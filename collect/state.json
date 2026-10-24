@@ -62,9 +62,9 @@
  "last_error": null,
  "wake": {
   "signature": "eea52004866905a0",
-  "at": "2026-10-24T03:45:45Z",
+  "at": "2026-10-24T04:15:41Z",
   "reason": "县市碎片：工人已停手，等大脑判验收",
-  "issue": "https://github.com/ip9988001/world-map-data-33/issues/6",
+  "issue": null,
   "count": 6
  }
 }
