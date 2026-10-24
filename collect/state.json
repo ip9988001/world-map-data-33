@@ -18,10 +18,10 @@
  },
  "awaiting_brain": false,
  "brain_review": {
-  "at": "2026-10-24T09:21:59Z",
-  "step": "05",
+  "at": "2026-10-24T09:22:24Z",
+  "step": "06",
   "verdict": "pass",
-  "note": "STEP-05 县市碎片：554 层应采，553 层入报告（99.8%），failed_rate 0.0000 ≤0.15，实收 35,116,448 行（计划 35,116,023，差 +425 = 上游漂移），worst_diff 0；2 层记 blocked（rgv911 MapServer 空转、Weston Basemap 服务 404）。放量期修掉 4 个并行真因：心跳推送争抢 main、报告 push 重试不足、预算滚动漏账、分批窗口在过滤之前切。"
+  "note": "STEP-06 收工：覆盖率总表已生成（collect/reports/FINAL_REPORT.md），688 层 / 83,603,214 行 / 45 州属地 / 1 层失败（上游下线，已记 blocked）；worst_diff 0，声明 83,603,216 行 vs 实收 83,603,214（差 2 行）"
  },
  "steps": {
   "01": {
@@ -56,11 +56,11 @@
    "at": "2026-10-24T04:36:25Z"
   },
   "06": {
-   "status": "ready"
+   "status": "done"
   }
  },
  "blocked_count": 0,
- "status": "running",
+ "status": "finished",
  "paused_reason": null,
  "paused_at": "2026-10-23T23:14:35Z",
  "last_error": null,
