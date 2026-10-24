@@ -208,7 +208,7 @@ def _sources(st, step):
                  for r in mine],
         "releases": [{"tag": r.get("tag_name"), "at": r.get("created_at"),
                       "assets": [{"name": a.get("name"), "bytes": a.get("size")} for a in (r.get("assets") or [])]}
-                     for r in (reps or [])[:12]],
+                     for r in (reps or [])[:40]],   # 聚合够用即可，正文 2500 字会截断
         "report": rep,
         "blocked": blk,
         "state": {"step": step, "last_run": st.get("last_run"), "last_error": st.get("last_error"),
