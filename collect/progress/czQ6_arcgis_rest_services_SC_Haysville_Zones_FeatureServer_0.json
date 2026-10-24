@@ -1,16 +1,17 @@
 {
  "id": "czQ6_arcgis_rest_services_SC_Haysville_Zones_FeatureServer_0",
- "ts": "2026-10-24T01:13:16Z",
+ "ts": "2026-10-24T01:16:18Z",
  "api": "https://services6.arcgis.com/xAh4NsLbP9wYczQ6/arcgis/rest/services/SC_Haysville_Zones/FeatureServer/0",
  "count": 974087,
  "base_rows": 0,
- "rows": 432500,
- "parts": 8,
+ "rows": 814272,
+ "parts": 0,
  "workers": {
-  "0": 108000,
-  "1": 107000,
-  "3": 110500,
-  "2": 107000
+  "0": 194818,
+  "1": 194818,
+  "3": 194818,
+  "2": 194818,
+  "4": 35000
  },
  "strategy": "keyset",
  "units": 5,
