@@ -3,7 +3,7 @@
  "current_step": "05",
  "mode": "self-drive-v2",
  "budget": {
-  "minutes_used": 362,
+  "minutes_used": 833,
   "minutes_cap": 1800,
   "warn_ratio": 0.8,
   "stop_ratio": 0.95
@@ -16,7 +16,7 @@
   "layers": "all",
   "workers": 4
  },
- "awaiting_brain": false,
+ "awaiting_brain": true,
  "brain_review": {
   "at": "2026-10-24T03:27:38Z",
   "step": "04",
@@ -52,7 +52,7 @@
    "at": "2026-10-24T01:47:49Z"
   },
   "05": {
-   "status": "started",
+   "status": "in_review",
    "at": "2026-10-24T04:36:25Z"
   }
  },
@@ -62,10 +62,10 @@
  "paused_at": "2026-10-23T23:14:35Z",
  "last_error": null,
  "wake": {
-  "signature": "95be9ec28fb77077",
-  "at": "2026-10-24T06:46:01Z",
+  "signature": "8f7e33fb9c399c45",
+  "at": "2026-10-24T07:31:19Z",
   "reason": "县市碎片：工人已停手，等大脑判验收",
-  "issue": null,
-  "count": 7
+  "issue": 6,
+  "count": 8
  }
 }

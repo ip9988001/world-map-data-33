@@ -1,6 +1,6 @@
 {
  "step": "05",
- "at": "2026-10-24T06:46:01Z",
+ "at": "2026-10-24T07:31:19Z",
  "want": [
   "report",
   "releases",
@@ -9,13 +9,15 @@
  ],
  "facts": {
   "report": {
-   "sha": "36eec717a17a",
-   "freshest": "2026-10-24T04:41:03Z",
-   "layers": 556,
-   "with_rows": 556,
+   "sha": "297548b817d1",
+   "freshest": "2026-10-24T07:17:53Z",
+   "layers": 652,
+   "with_rows": 651,
    "worst_diff": 0,
-   "total_rows": 72764326,
-   "failed": [],
+   "total_rows": 75411899,
+   "failed": [
+    "l_org_arcgis_rest_services_Weston_Basemap_cache_MapServer_20"
+   ],
    "per_layer": [
     {
      "id": "az911",
@@ -140,7 +142,7 @@
      "rows": 27213,
      "parts": 1,
      "diff": 0.0,
-     "elapsed_s": 5.4,
+     "elapsed_s": 3.7,
      "err": ""
     },
     {
@@ -302,7 +304,7 @@
      "rows": 33603,
      "parts": 1,
      "diff": 0.0,
-     "elapsed_s": 15.0,
+     "elapsed_s": 1.8,
      "err": ""
     },
     {
@@ -581,7 +583,7 @@
      "rows": 26965,
      "parts": 1,
      "diff": 0.0,
-     "elapsed_s": 17.7,
+     "elapsed_s": 4.5,
      "err": ""
     },
     {
@@ -653,7 +655,7 @@
      "rows": 33193,
      "parts": 1,
      "diff": 0.0,
-     "elapsed_s": 13.3,
+     "elapsed_s": 2.7,
      "err": ""
     },
     {
@@ -5020,6 +5022,870 @@
      "diff": 0.0,
      "elapsed_s": 33.1,
      "err": ""
+    },
+    {
+     "id": "0ipEAOFhn_arcgis_rest_services_Address_Tiles_FeatureServer_0",
+     "count": 23863,
+     "rows": 23863,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.1,
+     "err": ""
+    },
+    {
+     "id": "1p_arcgis_rest_services_ADDRESS_20230403_CoB_FeatureServer_0",
+     "count": 34536,
+     "rows": 34536,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.3,
+     "err": ""
+    },
+    {
+     "id": "4x6y8cTIstSBE_arcgis_rest_services_Addresses_FeatureServer_0",
+     "count": 29448,
+     "rows": 29448,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 3.1,
+     "err": ""
+    },
+    {
+     "id": "7IM34hqT9y9ew_arcgis_rest_services_Addresses_FeatureServer_0",
+     "count": 23950,
+     "rows": 23950,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.2,
+     "err": ""
+    },
+    {
+     "id": "8lct5k3LSbyO_arcgis_rest_services_AddressULM_FeatureServer_1",
+     "count": 28996,
+     "rows": 28996,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.9,
+     "err": ""
+    },
+    {
+     "id": "BpZX2wFbS_arcgis_rest_services_911addressing_FeatureServer_0",
+     "count": 32197,
+     "rows": 32197,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.3,
+     "err": ""
+    },
+    {
+     "id": "DDRnnsbCKWWP_arcgis_rest_services_Addresses2_FeatureServer_0",
+     "count": 25659,
+     "rows": 25659,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.9,
+     "err": ""
+    },
+    {
+     "id": "DL6ILvlkPNTg8_arcgis_rest_services_Addresses_FeatureServer_0",
+     "count": 23334,
+     "rows": 23334,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 1.8,
+     "err": ""
+    },
+    {
+     "id": "DgvxltnFwP_arcgis_rest_services_NG911_Layers_FeatureServer_1",
+     "count": 30273,
+     "rows": 30273,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.2,
+     "err": ""
+    },
+    {
+     "id": "Gr3P_arcgis_rest_services_ETJ_addresses_WFL1_FeatureServer_1",
+     "count": 25081,
+     "rows": 25081,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.0,
+     "err": ""
+    },
+    {
+     "id": "J9QAHCiGx_arcgis_rest_services_SiteAddresses_FeatureServer_0",
+     "count": 26021,
+     "rows": 26021,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 3.7,
+     "err": ""
+    },
+    {
+     "id": "JRr_arcgis_rest_services_MAT_NG911_Addresses_FeatureServer_0",
+     "count": 32336,
+     "rows": 32336,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 4.1,
+     "err": ""
+    },
+    {
+     "id": "KckAl7VOw_arcgis_rest_services_Address_Lists_FeatureServer_0",
+     "count": 23136,
+     "rows": 23136,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 1.8,
+     "err": ""
+    },
+    {
+     "id": "Mk18pL_arcgis_rest_services_Coffee_Addresses_FeatureServer_0",
+     "count": 29524,
+     "rows": 29524,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.1,
+     "err": ""
+    },
+    {
+     "id": "OLvsmwpY1RmFG_arcgis_rest_services_Addresses_FeatureServer_0",
+     "count": 26510,
+     "rows": 26510,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 3.4,
+     "err": ""
+    },
+    {
+     "id": "PlhvQwvs_arcgis_rest_services_E911_Addrs_Pts_FeatureServer_0",
+     "count": 35637,
+     "rows": 35637,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.0,
+     "err": ""
+    },
+    {
+     "id": "RmLNAomixG_arcgis_rest_services_RP_Addr_2022_FeatureServer_0",
+     "count": 24045,
+     "rows": 24045,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.1,
+     "err": ""
+    },
+    {
+     "id": "S1a_arcgis_rest_services_Address_Mailing_Map_FeatureServer_1",
+     "count": 33587,
+     "rows": 33587,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 1.6,
+     "err": ""
+    },
+    {
+     "id": "TOM4lipn_arcgis_rest_services_Addresses_2023_FeatureServer_0",
+     "count": 29170,
+     "rows": 29170,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 3.1,
+     "err": ""
+    },
+    {
+     "id": "TlITuys_arcgis_rest_services_WyboSiteAddress_FeatureServer_0",
+     "count": 24136,
+     "rows": 24136,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 4.5,
+     "err": ""
+    },
+    {
+     "id": "Uiqh7X11gGV2d_arcgis_rest_services_Addresses_FeatureServer_0",
+     "count": 31520,
+     "rows": 31520,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.2,
+     "err": ""
+    },
+    {
+     "id": "VDElDOMEad_arcgis_rest_services_WayneAddress_FeatureServer_0",
+     "count": 31980,
+     "rows": 31980,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.2,
+     "err": ""
+    },
+    {
+     "id": "WCoI_arcgis_rest_services_20260601_Addresses_FeatureServer_0",
+     "count": 33856,
+     "rows": 33856,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 1.7,
+     "err": ""
+    },
+    {
+     "id": "WQTB2G8AH9RQYE_arcgis_rest_services_address_FeatureServer_16",
+     "count": 25791,
+     "rows": 25791,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.2,
+     "err": ""
+    },
+    {
+     "id": "WTywHfayX67L_arcgis_rest_services_NG911_Data_FeatureServer_0",
+     "count": 21706,
+     "rows": 21706,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 1.6,
+     "err": ""
+    },
+    {
+     "id": "Yd7fCfTTiVp8_arcgis_rest_services_Addresses2_FeatureServer_0",
+     "count": 24109,
+     "rows": 24109,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.5,
+     "err": ""
+    },
+    {
+     "id": "Zm_arcgis_rest_services_Aurora_Address_view_FeatureServer_15",
+     "count": 20861,
+     "rows": 20861,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.9,
+     "err": ""
+    },
+    {
+     "id": "_arcgis_rest_services_Civic_Rec_QC_Addresses_FeatureServer_0",
+     "count": 34839,
+     "rows": 34839,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.1,
+     "err": ""
+    },
+    {
+     "id": "_arcgis_rest_services_EnerGov_Test_Map1_WFL1_FeatureServer_3",
+     "count": 30649,
+     "rows": 30649,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 1.9,
+     "err": ""
+    },
+    {
+     "id": "_arcgis_rest_services_Logan_County_Addresses_FeatureServer_0",
+     "count": 28571,
+     "rows": 28571,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 1.4,
+     "err": ""
+    },
+    {
+     "id": "_arcgis_rest_services_Shawano_Addresses_2026_FeatureServer_0",
+     "count": 25427,
+     "rows": 25427,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.5,
+     "err": ""
+    },
+    {
+     "id": "_arcgis_rest_services_TehamaCounty_NG911_gdb_FeatureServer_8",
+     "count": 27565,
+     "rows": 27565,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.4,
+     "err": ""
+    },
+    {
+     "id": "_arcgis_rest_services_zoningAddressingSearch_FeatureServer_0",
+     "count": 32625,
+     "rows": 32625,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 3.0,
+     "err": ""
+    },
+    {
+     "id": "_map_claycountymn_gov_arcgis_rest_services_NG911_MapServer_0",
+     "count": 35207,
+     "rows": 35207,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 62.0,
+     "err": ""
+    },
+    {
+     "id": "_rest_services_Delta_County_Address_01232025_FeatureServer_0",
+     "count": 21108,
+     "rows": 21108,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.6,
+     "err": ""
+    },
+    {
+     "id": "_rest_services_GIS_ENV_GIS_Work_Background_Layer_MapServer_0",
+     "count": 21721,
+     "rows": 21721,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.4,
+     "err": ""
+    },
+    {
+     "id": "_rest_services_NM_911_Addresses_Large_Scale_FeatureServer_32",
+     "count": 26481,
+     "rows": 26481,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.1,
+     "err": ""
+    },
+    {
+     "id": "_rest_services_NM_911_Addresses_Small_Scale_FeatureServer_33",
+     "count": 26481,
+     "rows": 26481,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.0,
+     "err": ""
+    },
+    {
+     "id": "_services_Lincoln_LUCA_Addresses_Counts_WFL1_FeatureServer_0",
+     "count": 26903,
+     "rows": 26903,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.2,
+     "err": ""
+    },
+    {
+     "id": "aLg_arcgis_rest_services_Address_Hemet031325_FeatureServer_0",
+     "count": 30879,
+     "rows": 30879,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 1.9,
+     "err": ""
+    },
+    {
+     "id": "arcgis_rest_services_AddressQC_fieldmap_WFL1_FeatureServer_0",
+     "count": 21951,
+     "rows": 21951,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 1.8,
+     "err": ""
+    },
+    {
+     "id": "arcgis_rest_services_Alexandria_VA_Addresses_FeatureServer_0",
+     "count": 34927,
+     "rows": 34927,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.0,
+     "err": ""
+    },
+    {
+     "id": "arcgis_rest_services_BarryCountyMO_Addresses_FeatureServer_0",
+     "count": 24123,
+     "rows": 24123,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.4,
+     "err": ""
+    },
+    {
+     "id": "arcgis_rest_services_FranklinCountyAddresses_FeatureServer_0",
+     "count": 31516,
+     "rows": 31516,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 3.2,
+     "err": ""
+    },
+    {
+     "id": "arcgis_rest_services_Jasper_County_Addresses_FeatureServer_0",
+     "count": 21594,
+     "rows": 21594,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 1.8,
+     "err": ""
+    },
+    {
+     "id": "arcgis_rest_services_Master_Address_List_New_FeatureServer_0",
+     "count": 21055,
+     "rows": 21055,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.2,
+     "err": ""
+    },
+    {
+     "id": "arcgis_rest_services_OpenNewmarket_Addresses_FeatureServer_0",
+     "count": 34922,
+     "rows": 34922,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.1,
+     "err": ""
+    },
+    {
+     "id": "c_gov_arcgis_rest_services_Addresses_E911Address_MapServer_1",
+     "count": 21754,
+     "rows": 21754,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.2,
+     "err": ""
+    },
+    {
+     "id": "cgis_rest_services_FranklinCoVA_911Addresses_FeatureServer_0",
+     "count": 33769,
+     "rows": 33769,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 3.6,
+     "err": ""
+    },
+    {
+     "id": "cgis_rest_services_Franklin_Co_911_Addresses_FeatureServer_0",
+     "count": 33769,
+     "rows": 33769,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 1.8,
+     "err": ""
+    },
+    {
+     "id": "cgis_rest_services_Master_Addresses_for_Grid_FeatureServer_0",
+     "count": 34386,
+     "rows": 34386,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.3,
+     "err": ""
+    },
+    {
+     "id": "cgis_rest_services_Sarpy_County_NE_Addresses_FeatureServer_1",
+     "count": 33980,
+     "rows": 33980,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 3.1,
+     "err": ""
+    },
+    {
+     "id": "eSvF_arcgis_rest_services_OpenData_Addresses_FeatureServer_0",
+     "count": 22247,
+     "rows": 22247,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 3.8,
+     "err": ""
+    },
+    {
+     "id": "es_Service_Location_Moving_ToCURB_ASof712025_FeatureServer_0",
+     "count": 26684,
+     "rows": 26684,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.1,
+     "err": ""
+    },
+    {
+     "id": "est_services_Street_Sweeping_Pilot_Addresses_FeatureServer_0",
+     "count": 28338,
+     "rows": 28338,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.0,
+     "err": ""
+    },
+    {
+     "id": "ez8fHeIiDRbgb_arcgis_rest_services_Addresses_FeatureServer_0",
+     "count": 30935,
+     "rows": 30935,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.1,
+     "err": ""
+    },
+    {
+     "id": "fMdTkPeHLCobS_arcgis_rest_services_Addresses_FeatureServer_0",
+     "count": 35199,
+     "rows": 35199,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 1.6,
+     "err": ""
+    },
+    {
+     "id": "field_College_Block_Lot_and_Address_Map_WFL1_FeatureServer_0",
+     "count": 23106,
+     "rows": 23106,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.1,
+     "err": ""
+    },
+    {
+     "id": "g_arcgis_rest_services_BarryCounty_Addresses_FeatureServer_0",
+     "count": 23141,
+     "rows": 23141,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.0,
+     "err": ""
+    },
+    {
+     "id": "gis_rest_services_BransonAddressSearch_WFL1_FeatureServer_54",
+     "count": 23859,
+     "rows": 23859,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.0,
+     "err": ""
+    },
+    {
+     "id": "h_arcgis_rest_services_AddressesJuly26B_WFL1_FeatureServer_2",
+     "count": 21789,
+     "rows": 21789,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 1.9,
+     "err": ""
+    },
+    {
+     "id": "h_arcgis_rest_services_Addresses_for_Clariti_FeatureServer_0",
+     "count": 23418,
+     "rows": 23418,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.7,
+     "err": ""
+    },
+    {
+     "id": "iGx_arcgis_rest_services_Addresses_Only_view_FeatureServer_0",
+     "count": 26315,
+     "rows": 26315,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.1,
+     "err": ""
+    },
+    {
+     "id": "ices_City_of_Cuyahoga_Falls_Addressing_WFL1_FeatureServer_11",
+     "count": 27479,
+     "rows": 27479,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 3.7,
+     "err": ""
+    },
+    {
+     "id": "is_rest_services_Lead_Service_Line_Addresses_FeatureServer_0",
+     "count": 30565,
+     "rows": 30565,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.1,
+     "err": ""
+    },
+    {
+     "id": "isapp_dunwoodyga_gov_arcgis_rest_services_Parcel_MapServer_1",
+     "count": 23777,
+     "rows": 23777,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 6.7,
+     "err": ""
+    },
+    {
+     "id": "j53q3aOgCSYTp_arcgis_rest_services_Addresses_FeatureServer_0",
+     "count": 21092,
+     "rows": 21092,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 1.6,
+     "err": ""
+    },
+    {
+     "id": "j7VSF_arcgis_rest_services_TemeculaAddresses_FeatureServer_0",
+     "count": 32615,
+     "rows": 32615,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.8,
+     "err": ""
+    },
+    {
+     "id": "j_arcgis_rest_services_BARRON_ADDRESSES_2025_FeatureServer_0",
+     "count": 27058,
+     "rows": 27058,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 1.8,
+     "err": ""
+    },
+    {
+     "id": "kOGGtW27pGICf_arcgis_rest_services_Addresses_FeatureServer_0",
+     "count": 34063,
+     "rows": 34063,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.2,
+     "err": ""
+    },
+    {
+     "id": "l_org_arcgis_rest_services_Weston_Basemap_cache_MapServer_20",
+     "count": 0,
+     "rows": 0,
+     "parts": 0,
+     "diff": null,
+     "elapsed_s": 133.5,
+     "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch2:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch3:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch4:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch5:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch6:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch7:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch8:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch9:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch10:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch11:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch12:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch13:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch14:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch15:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch16:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch17:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch18:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch19:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch20:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch21:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch22:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch23:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch24:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch25:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch26:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch27:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch28:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch29:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch30:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch31:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<"
+    },
+    {
+     "id": "m_Iwwqwcdc5CWG2jt9_arcgis_rest_services_ADDR_FeatureServer_0",
+     "count": 24465,
+     "rows": 24465,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 3.3,
+     "err": ""
+    },
+    {
+     "id": "maps_rest_services_OPENDATA_RegionalBaseOpenData_MapServer_2",
+     "count": 34683,
+     "rows": 34683,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 4.3,
+     "err": ""
+    },
+    {
+     "id": "ow3ofS_arcgis_rest_services_NM_911_Addresses_FeatureServer_0",
+     "count": 22208,
+     "rows": 22208,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.4,
+     "err": ""
+    },
+    {
+     "id": "pMfHt82xFG_arcgis_rest_services_RouteAddress_FeatureServer_0",
+     "count": 34495,
+     "rows": 34495,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.2,
+     "err": ""
+    },
+    {
+     "id": "rcgis_rest_services_Bedford_County_Addresses_FeatureServer_0",
+     "count": 28352,
+     "rows": 28352,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 1.6,
+     "err": ""
+    },
+    {
+     "id": "rcgis_rest_services_Buildings_and_Addresses_FeatureServer_17",
+     "count": 30856,
+     "rows": 30856,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 1.9,
+     "err": ""
+    },
+    {
+     "id": "rcgis_rest_services_Essex_Address_Pts_9_9_25_FeatureServer_0",
+     "count": 33904,
+     "rows": 33904,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.4,
+     "err": ""
+    },
+    {
+     "id": "rcgis_rest_services_GC_Address_Points_Public_FeatureServer_8",
+     "count": 24978,
+     "rows": 24978,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 3.8,
+     "err": ""
+    },
+    {
+     "id": "rcgis_rest_services_TLWaddressInternetAccess_FeatureServer_0",
+     "count": 21006,
+     "rows": 21006,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 1.7,
+     "err": ""
+    },
+    {
+     "id": "rest_services_Addresses_With_Voting_Precinct_FeatureServer_0",
+     "count": 24398,
+     "rows": 24398,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.4,
+     "err": ""
+    },
+    {
+     "id": "rest_services_Cherokee_Address_Analysis_WFL1_FeatureServer_0",
+     "count": 32167,
+     "rows": 32167,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 1.9,
+     "err": ""
+    },
+    {
+     "id": "rest_services_Hurricane_Ian_Damage_Addresses_FeatureServer_0",
+     "count": 27912,
+     "rows": 27912,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.0,
+     "err": ""
+    },
+    {
+     "id": "sKPeG_arcgis_rest_services_Address_ViewLayer_FeatureServer_0",
+     "count": 24987,
+     "rows": 24987,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 3.2,
+     "err": ""
+    },
+    {
+     "id": "s_rest_services_Fayette_County_911_Addresses_FeatureServer_1",
+     "count": 24529,
+     "rows": 24529,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.1,
+     "err": ""
+    },
+    {
+     "id": "s_rest_services_OPENNewmarket_Address_3_view_FeatureServer_0",
+     "count": 34922,
+     "rows": 34922,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 1.9,
+     "err": ""
+    },
+    {
+     "id": "s_rest_services_Rural_Addresses__Label_Only__FeatureServer_0",
+     "count": 30747,
+     "rows": 30747,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 1.8,
+     "err": ""
+    },
+    {
+     "id": "st_services_City_of_Pittsburg_Address_Public_FeatureServer_0",
+     "count": 25582,
+     "rows": 25582,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.5,
+     "err": ""
+    },
+    {
+     "id": "st_services_Vector_Tile_Site_Address_Labels_FeatureServer_57",
+     "count": 32917,
+     "rows": 32917,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.1,
+     "err": ""
+    },
+    {
+     "id": "ttesville_org_cvgisweb_rest_services_OpenData_1_MapServer_76",
+     "count": 25823,
+     "rows": 25823,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 44.1,
+     "err": ""
+    },
+    {
+     "id": "vices_Campbell_County__VA_Broadband_Map_WFL1_FeatureServer_0",
+     "count": 27456,
+     "rows": 27456,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.5,
+     "err": ""
+    },
+    {
+     "id": "xLBcrikqFM0vkoy_arcgis_rest_services_Address_FeatureServer_0",
+     "count": 29507,
+     "rows": 29507,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.2,
+     "err": ""
+    },
+    {
+     "id": "yYd7fCfTTiVp8_arcgis_rest_services_Addresses_FeatureServer_0",
+     "count": 24107,
+     "rows": 24107,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 3.4,
+     "err": ""
+    },
+    {
+     "id": "ycSVzMEzm7ey_arcgis_rest_services_Addressing_FeatureServer_0",
+     "count": 22930,
+     "rows": 22930,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.0,
+     "err": ""
+    },
+    {
+     "id": "yjVw1fpWcwy7h_arcgis_rest_services_ADDRESSES_FeatureServer_0",
+     "count": 22283,
+     "rows": 22283,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 2.4,
+     "err": ""
+    },
+    {
+     "id": "yvfv_arcgis_rest_services_Mercer_SiteAddress_FeatureServer_0",
+     "count": 33215,
+     "rows": 33215,
+     "parts": 1,
+     "diff": 0.0,
+     "elapsed_s": 1.9,
+     "err": ""
     }
    ]
   },
@@ -5596,7 +6462,7 @@
      },
      {
       "name": "ttesville_org_cvgisweb_rest_services_OpenData_1_MapServer_76-u00000.tar.gz",
-      "bytes": 2694111
+      "bytes": 2694400
      }
     ]
    },
@@ -5712,5 +6578,5 @@
   "判完写回账本：python3 collect/supervisor.py --review pass|fail --note \"...\""
  ],
  "reason": "县市碎片：工人已停手，等大脑判验收",
- "signature": "95be9ec28fb77077"
+ "signature": "8f7e33fb9c399c45"
 }
