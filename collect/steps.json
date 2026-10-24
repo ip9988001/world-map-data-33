@@ -114,6 +114,7 @@
     "limit_mode": "spread"
    },
    "evidence": [
+    "report",
     "releases",
     "checkpoint",
     "unit_errors",
@@ -145,6 +146,7 @@
    "unit_rows": 1000000,
    "tag": "collect-step04-{layer}",
    "evidence": [
+    "report",
     "releases",
     "checkpoint",
     "unit_errors"
@@ -179,6 +181,7 @@
     "max_per_authorization": 5
    },
    "evidence": [
+    "report",
     "releases",
     "checkpoint",
     "blocked"

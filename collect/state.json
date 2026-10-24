@@ -54,10 +54,10 @@
  "paused_at": "2026-10-23T23:14:35Z",
  "last_error": null,
  "wake": {
-  "signature": "ac531613c2e7f3f4",
-  "at": "2026-10-24T01:04:01Z",
+  "signature": "506aed957a7a0d2f",
+  "at": "2026-10-24T01:08:49Z",
   "reason": "单州试跑 KS：工人已停手，等大脑判验收",
-  "issue": null,
-  "count": 1
+  "issue": 4,
+  "count": 2
  }
 }

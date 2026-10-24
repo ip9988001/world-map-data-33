@@ -55,6 +55,7 @@ python3 collect/supervisor.py --kick 03 --workers 4 --max-layers 20
   "limit_mode": "spread"
  },
  "evidence": [
+  "report",
   "releases",
   "checkpoint",
   "unit_errors",

@@ -52,6 +52,7 @@ python3 collect/supervisor.py --review pass --next 06 --note "..."
  "unit_rows": 100000,
  "tag": "collect-step05-{layer}",
  "evidence": [
+  "report",
   "releases",
   "checkpoint",
   "blocked"
