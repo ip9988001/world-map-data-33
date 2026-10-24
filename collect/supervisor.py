@@ -117,30 +117,45 @@ def mins(iso):
 
 
 def used_minutes():
-    """按真实计费口径累加：每个 job 的时长（不是 run 的墙钟）。
+    """累加 job 分钟（不是 run 墙钟），并且**结算过的 run 只算一次**。
 
-    ★ 2026-10-24 事故：老实现累加 run 的 created→updated。111 个并行 job 的 run 墙钟只有 ~20 分钟，
-      而 job 分钟和是 52 分钟 —— 并行度越高，账面越乐观，1800 的闸门等于没有。
+    2026-10-24 两次修：
+      ① 老实现用 run 的 created→updated，111 个并行 job 的 run 墙钟只有 ~20 分钟，
+         job 分钟和却是 52 分钟 —— 并行度越高，闸门越乐观。
+      ② 只扫最近 15 个 run 会「漏账」：跑得越多，账越小（实测从 475 掉到 363）。
+         现在用 settled_runs 水位线，只结算没算过的 run，累计值写回账本。
     """
-    runs = api_json("repos/%s/actions/runs?per_page=30" % REPO).get("workflow_runs") or []
-    done = [r for r in runs if r.get("status") == "completed"][:JOB_RUNS_MAX]
+    st = load()
+    b = st.setdefault("budget", {})
+    seen = set(b.get("settled_runs") or [])
+    total = float(b.get("settled_min") or 0)
+    runs = api_json("repos/%s/actions/runs?per_page=50" % REPO).get("workflow_runs") or []
     fmt = "%Y-%m-%dT%H:%M:%SZ"
-    tot = 0.0
-    for r in done:
-        for page in (1, 2, 3):        # 一个 run 可能上百个 job
+    fresh = 0
+    for r in runs:
+        if r.get("status") != "completed" or r.get("id") in seen:
+            continue
+        for page in (1, 2, 3):
             js = api_json("repos/%s/actions/runs/%s/jobs?per_page=100&page=%d"
                           % (REPO, r.get("id"), page)).get("jobs") or []
             for j in js:
-                a, b = j.get("started_at"), j.get("completed_at")
-                if not (a and b):
+                a, c2 = j.get("started_at"), j.get("completed_at")
+                if not (a and c2):
                     continue
                 try:
-                    tot += max((datetime.strptime(b, fmt) - datetime.strptime(a, fmt)).total_seconds() / 60.0, 0)
+                    total += max((datetime.strptime(c2, fmt) - datetime.strptime(a, fmt)).total_seconds() / 60.0, 0)
                 except Exception:
                     pass
             if len(js) < 100:
                 break
-    return int(tot)
+        seen.add(r.get("id"))
+        fresh += 1
+    if fresh:
+        b["settled_runs"] = sorted(seen)[-500:]
+        b["settled_min"] = round(total, 1)
+        b["minutes_used"] = int(total)
+        save(st)
+    return int(total)
 
 
 def active_runs(wf=None):

@@ -9,14 +9,14 @@
   "stop_ratio": 0.95
  },
  "last_run": {
-  "step": "04",
+  "step": "05",
   "run_id": null,
-  "at": "2026-10-24T01:47:49Z",
+  "at": "2026-10-24T04:36:25Z",
   "trigger": "brain",
   "layers": "all",
   "workers": 4
  },
- "awaiting_brain": true,
+ "awaiting_brain": false,
  "brain_review": {
   "at": "2026-10-24T03:27:38Z",
   "step": "04",
@@ -52,7 +52,8 @@
    "at": "2026-10-24T01:47:49Z"
   },
   "05": {
-   "status": "in_review"
+   "status": "started",
+   "at": "2026-10-24T04:36:25Z"
   }
  },
  "blocked_count": 0,
