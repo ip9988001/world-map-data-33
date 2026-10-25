@@ -1,8 +1,8 @@
 {
  "since": "2026-07-26",
- "probed": 12,
- "with_field": 4,
- "changed_rows": 0,
+ "probed": 1117,
+ "with_field": 484,
+ "changed_rows": 6441778,
  "detail": [
   {
    "id": "az911",
@@ -67,6 +67,6011 @@
    "field": "editdate",
    "changed": 0,
    "err": ""
+  },
+  {
+   "id": "_services_OPEN_DATA_cdphe_ems_ambulance_agencies_MapServer_0",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "arcgis_rest_services_Wellington_FL_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_ltar_address_p_geocoded_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "are_River_Watershed_Farm_Pond_Layers_v2_WFL1_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_Cedar_Rapids_IA_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ervices_Reuse_Points_of_Interest_Public_View_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "gis_rest_services_Dodge_City_Base_Map_Layers_FeatureServer_9",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "gis_rest_services_Master_CHHS_Dashboard_Upload_FeatureServer",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "gis_rest_services_Seneca_Nation_NY_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0",
+   "field": "l_update",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "is_rest_services_Chester_County_PA_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "is_rest_services_Points_of_Interest_RTD_WFL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "kvZmS4_arcgis_rest_services_DamageAssessment_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "m_qIZBeaKoXYwn3kjH_arcgis_rest_services_ERP_FeatureServer_29",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "q_arcgis_rest_services_Facility_Site_Point_2_FeatureServer_1",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "t_services_Compassion_Point_Service_Projects_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "0lhG1rav_arcgis_rest_services_DisplayMapWGS1_FeatureServer_2",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "13izw_arcgis_rest_services_AddPtsDec122023_FeatureServer_123",
+   "field": "l_update",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "1_arcgis_rest_services_Bismarck_ND_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "1_arcgis_rest_services_Longview_TX_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "23vOoYdfLC8_arcgis_rest_services_ltar_site_p_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "5WkCMqlwISp_arcgis_rest_services_ACT_Members_FeatureServer_2",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "5kGh_arcgis_rest_services_ClerkAddressPoints_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "5n_arcgis_rest_services_City_Limit_Addresses_FeatureServer_0",
+   "field": "l_update",
+   "changed": 12144,
+   "err": ""
+  },
+  {
+   "id": "7ueLg_arcgis_rest_services_0_Sites_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "8TU7DUyn_arcgis_rest_services_RCRASitePoints_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "CXd1_arcgis_rest_services_Fargo_ND_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "DI_arcgis_rest_services_MPRDHRS_RESPTC_Sites_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "FhOo_arcgis_rest_services_AT24_PollingPlaces_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Groundwork_NRG_Comprehensive_Map__Copy__WFL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ILCm3hbWNTZLH_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "J99MjOR6x_arcgis_rest_services_CityCentroids_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "JCuO8rbmH_arcgis_rest_services_KFS_2024_WFL1_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "J_arcgis_rest_services_City_Council_Map_WFL1_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "J_arcgis_rest_services_Hometown__RARE_alumni_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Kf35_arcgis_rest_services_MC_FIRE_STATION_FeatureServer_1209",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "LlzhyV3k5_arcgis_rest_services_AddressPoints_FeatureServer_0",
+   "field": "l_update",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "PShD_arcgis_rest_services_AddressPoints_LAMA_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "UaBfRSxc_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "field": "l_update",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "XhimSpf8B7lHIMy_arcgis_rest_services_Bridges_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Y1bGKerz1PTl5_arcgis_rest_services_Map2_WFL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Y1bGKerz1PTl5_arcgis_rest_services_Map3_WFL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_7XhimSpf8B7lHIMy_arcgis_rest_services_Other_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_arcgis_rest_services_Sex_Offender_Map_WFL1_FeatureServer_13",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_arcgis_rest_services_Voting_Information_Map_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_rest_services_Roadmap_and_ABH_Sites_1_27_22_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_services_TSCPL_Youth_Services_Outreach_WFL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_to_Healthcare_Facilities_Medical_Center_MEG_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ab_7_Damage_Assessment_View_2_0Ncarde12_view_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_CSX_Ramp_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_Hinesville_GA_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_Meade_Co_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_One58_Plaza_Update_6_25_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_Panorama43rdWaterPoints_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "bD1SATUihBS_arcgis_rest_services_Coffeyville_FeatureServer_0",
+   "field": "l_update",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "bT7h_arcgis_rest_services_Emergency_Shelters_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "cgis_rest_services_Address_Points_030126_shp_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_Panorama43rdTrafficPoints_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_Riley_County_KS_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "czQ6_arcgis_rest_services_SC_Haysville_Zones_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "d1_arcgis_rest_services_Visalia_CA_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ervices_Medi_Cal_Dental_FFS_Provider_Listing_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "erz1PTl5_arcgis_rest_services_Mapfinal1_WFL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "est_services_New_Mexico_State_Univ_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "est_services_Voting_Information_Map_New_WFL1_FeatureServer_0",
+   "field": "editdate",
+   "changed": 22,
+   "err": ""
+  },
+  {
+   "id": "f9MkUwD4_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "gis_rest_services_Amazon_Service_Site_List_FeatureServer_103",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "gis_rest_services_DamageAssessment_dashboard_FeatureServer_0@KS-5",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "gis_rest_services_Tiger_2010_Landmark_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ices_Hospitals_EMTALA_Citation_Pop50k_OrLess_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ices_Lab_7_Damage_Assessment_1224561130_view_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "is_rest_services_Community_Supports_Services_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "is_rest_services_Forsyth_County_GA_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "is_rest_services_La_Montanita_Co_op_Delivery_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "is_rest_services_Panorama43rdTrafficPointsNO_FeatureServer_5",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "kHdPRqs_arcgis_rest_services_Zoning_Map_WFL1_FeatureServer_0",
+   "field": "l_update",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "kLV_arcgis_rest_services_FWS_NFHS_CMT_Points_FeatureServer_3",
+   "field": "modified",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "ks_gov_kdhe_doe_rest_services_BER_Tanks_DASC_FeatureServer_0",
+   "field": null,
+   "err": "HTTP Error 522: <none>"
+  },
+  {
+   "id": "mH91RfZ_arcgis_rest_services_Snap_Data_Layer_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "m_LGtNQDlIZBdntoA9_arcgis_rest_services_snap_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "on_Proximity_to_Sedgwick_County_Schools_WFL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "q_arcgis_rest_services_Facility_Site_Point_1_FeatureServer_1",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rcgis_rest_services_CANYCY24DRAFTVisMap_WFL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_FY2025_Households_Public_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_Future_Land_Use___Public_FeatureServer_6",
+   "field": "l_update",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rcgis_rest_services_Kansas_River_Mile_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_Lake_County_IL_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_OsageCoKS_NG911Addresses_FeatureServer_0",
+   "field": "l_update",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rcgis_rest_services_Special_Event_Sites_view_FeatureServer_0",
+   "field": "docname_edit",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rcgis_rest_services_United_States_Counties_1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rest_services_EMS_Density_Heat_Map_2026_WFL1_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rest_services_Sacramento_County_CA_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rvices_SW_External_4AGOL_Report_Shared_Layer_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rvices_Space_Time_Pattern_Mining_3D_New_WSL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rvices_Space_Time_Pattern_Mining_3D_New_WSL2_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rvices_Space_Time_Pattern_Mining_3D_New_WSL3_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "s_rest_services_FQHC_List_for_Maps12_13_2022_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "s_rest_services_Haysville_Parcels_View_Layer_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "s_rest_services_Marathon_County_WI_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "s_rest_services_UsGov_HuddledMasses_features_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "services_MediCal_Dental_FFS_Provider_Listing_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "st_services_City_Fire_Hydrant_Locations_WFL1_FeatureServer_3",
+   "field": "updateby",
+   "changed": 10312,
+   "err": ""
+  },
+  {
+   "id": "st_services_Geocoded_addresses_of_TPD_points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "vOoYdfLC8_arcgis_rest_services_ltar_site_pV2_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "vices_Lab_7_Damage_Assessment__view_wdunham1_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "w_arcgis_rest_services_AddPts_CityDec032024_FeatureServer_20",
+   "field": "updateby",
+   "changed": 10493,
+   "err": ""
+  },
+  {
+   "id": "yV3k5_arcgis_rest_services_Address_Points_EV_FeatureServer_1",
+   "field": "l_update",
+   "changed": 16257,
+   "err": ""
+  },
+  {
+   "id": "4G_arcgis_rest_services_NM911_Address_202203_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 1006136,
+   "err": ""
+  },
+  {
+   "id": "Uilbd_arcgis_rest_services_Address_Inventory_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 1041510,
+   "err": ""
+  },
+  {
+   "id": "X0mRVOFNTdLzd_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_arcgis_rest_services_PascoMapper_Addresses_FeatureServer_16",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "d1_arcgis_rest_services_Vermont_US_Addresses_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "gis_rest_services_INCOG_911_Address_Map_WFL1_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "gis_rest_services_Riverside_County_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "sYuxx9Ny_arcgis_rest_services_GeoAddress_gdb_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "sses_public_84b35cee615045ffbebd93e11cdb072e_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "teAddresses_84b35cee615045ffbebd93e11cdb072e_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "4G_arcgis_rest_services_NM911_Address_202205_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 1007421,
+   "err": ""
+  },
+  {
+   "id": "9xEgP_arcgis_rest_services_Zanna_E911_Sites_FeatureServer_10",
+   "field": "updatedate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "Dyf_arcgis_rest_services_Master_Address_File_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "JJqLK0A_arcgis_rest_services_NG911_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Ny_arcgis_rest_services_GeoAddressWCondo_gdb_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Oy_arcgis_rest_services_Address_Lookup1_WFL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "PLlPw_arcgis_rest_services_Situs_20Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "STLCO_NG911_Schema_Attributes_081326_gdb_zip_FeatureServer_0",
+   "field": "date_updated",
+   "changed": 139,
+   "err": ""
+  },
+  {
+   "id": "WClLJZr3s_arcgis_rest_services_YorkAddresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Xd1_arcgis_rest_services_Boston_MA_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "YtAMoyYT_arcgis_rest_services_Master_Address_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_arcgis_rest_services_Nashville_110623B_WFL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_Maine_E911_NG_ADDRESSES_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "arcgis_rest_services_ParcelsJoin_SpatialJoin_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_Search_Addresses_Public_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "auma_Centers_for_VT_E911_Site_Locations_WFL1_FeatureServer_0",
+   "field": "updatesour",
+   "changed": 341074,
+   "err": ""
+  },
+  {
+   "id": "ccH_arcgis_rest_services_SiteAddress20231227_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "ces_Maine_E911_Addresses_5882121085363306039_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "cgis_rest_services_NM911_Address_202601_FGDC_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_SaltLake_County_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "d5Ku_arcgis_rest_services_address_pnts_units_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "d_arcgis_rest_services_OC_Addresses_20260811_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "dyB05xBau1dNQ_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "es_us_mn_state_mngeo_loc_addresses_zip9_open_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "ffxXvGX_arcgis_rest_services_KISD_Addresses_FeatureServer_15",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "g5s_arcgis_rest_services_Tidewater_addresses_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "gis_rest_services_ShelbyTN_Addresses_AGOHost_FeatureServer_0",
+   "field": "editor",
+   "changed": 341684,
+   "err": ""
+  },
+  {
+   "id": "gov_gisweb01_rest_services_EGIS_HOUSTON_CITYINFO_MapServer_0",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "king_Water_Systems_by_Address_in_New_Jersey_FeatureServer_38",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "lMUcWvuPRM_arcgis_rest_services_E911Agol_gdb_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "ps_com_od_rest_services_COP_OpenData_Property_MapServer_1272",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "rest_services_SiteAddressPoints_Distribution_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 6169,
+   "err": ""
+  },
+  {
+   "id": "s_rest_services_Maine_E911_Addresses_Feature_FeatureServer_0@ME-2",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "s_rest_services_SanDiego_County_CA_Addresses_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "st_services_Address_Points_SAMs_Lite_1030896_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "xVN2oUE9EYLSnPE_arcgis_rest_services_Address_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "0hS_arcgis_rest_services_Address_Road_Update_FeatureServer_0",
+   "field": "editor",
+   "changed": 7370,
+   "err": ""
+  },
+  {
+   "id": "1mtnDG_arcgis_rest_services_Worth__ADDRESSES_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "1uhbqnOZPx6qT_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "387Pb3S_arcgis_rest_services_LiveAdds_202504_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "4soU_arcgis_rest_services_Site_Addresses_gdb_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "67TISFO3iTjgFX_arcgis_rest_services_address2_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "7Y8pE5CiojuXeU_arcgis_rest_services_NewSitus_FeatureServer_0",
+   "field": "lastupdatedate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "8nlIDAHxNx4_arcgis_rest_services_911_Address_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "BY6OUzMBTZcz_arcgis_rest_services_Addresses_FeatureServer_15",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "CRVuK_arcgis_rest_services_Map_View_Address_FeatureServer_42",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "CY2_arcgis_rest_services_Dispatcher_Map_WFL1_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "DQNT3m6mbJlqZ_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": "updatedate",
+   "changed": 161,
+   "err": ""
+  },
+  {
+   "id": "FjYDrl_arcgis_rest_services_Address_12102021_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "HKRPMgv82EjLQ_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "HRU_arcgis_rest_services_VFAC_Addresses_WFL1_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 7686,
+   "err": ""
+  },
+  {
+   "id": "Iod9kh71mtnDG_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": "editor",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "KcOCt7Lxga2AytI_arcgis_rest_services_Address_FeatureServer_0",
+   "field": "editdate",
+   "changed": 30,
+   "err": ""
+  },
+  {
+   "id": "M5KB8_arcgis_rest_services_E911_PairwiseClip_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "NuFrQ7kB_arcgis_rest_services_Master_Address_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "PSO5BR5eOIggwRH_arcgis_rest_services_Address_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Pc_arcgis_rest_services_EL_RENO_911ADDRESSES_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Q24dH_arcgis_rest_services_Addresses__Site__FeatureServer_13",
+   "field": "last_update_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "QSIEviNS_arcgis_rest_services_Addresses_2025_FeatureServer_3",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "QpZPT9qY_arcgis_rest_services_TOD_ADDRESS_IN_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Qwt3_arcgis_rest_services_Address_Layer_view_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "R_arcgis_rest_services_Tornado_Addresses_NLR_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "SQHJsl5r_arcgis_rest_services_Address_Labels_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Sample_NCTECH_Volusia_Situs_Addresss_VRWorld_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "TjgFX_arcgis_rest_services_addresses_120222a_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Us_arcgis_rest_services_OC_Site_Address_2023_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "VF_arcgis_rest_services_SC_Addressing_2025_7_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Z_arcgis_rest_services_CityofDemingAddresses_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 7251,
+   "err": ""
+  },
+  {
+   "id": "Zk1fY2MHCTEXz_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_ArcGIS_rest_services_AddressesE911Macon2022_FeatureServer_0",
+   "field": "editor",
+   "changed": 7242,
+   "err": ""
+  },
+  {
+   "id": "_Mountlake_Terrace_Washington_Addresses_view_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_arcgis_rest_services_Address_Pnts_ElSegundo_FeatureServer_2",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_arcgis_rest_services_Site_Address_Occupants_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_in_Incident_Address_and_Type_for_Date_Range_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_rest_services_E911_Houses_Washington_County_FeatureServer_0",
+   "field": "updatedate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_server_rest_services_Aspen_AspenEditEnabled_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_services_Address_and_Street_Annotation_view_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "arcgis_rest_services_Hartford_911_Addresses__FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "ater_Meter_Replacement_Addresses_Zone_1_view_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "bK6DOd0VbR_arcgis_rest_services_SB_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ces_Stillwater_County_Addressing_Layers_2026_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "cgis_rest_services_Address_Data_Public_view_FeatureServer_10",
+   "field": "last_edited_date",
+   "changed": 7527,
+   "err": ""
+  },
+  {
+   "id": "cgis_rest_services_Administrative_Addressing_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_SiteAddresses_public_2020_FeatureServer_1",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "cyjLcCCpGk8Ri_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "d_Septic_System_Pilot_Project_Addresses_View_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "dlWlBxzX_arcgis_rest_services_Newton_Address_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "e3_arcgis_rest_services_SiteAddresses_public_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "es_City_Buildings_and_Address_Locations_WFL1_FeatureServer_4",
+   "field": "edit_date",
+   "changed": 1,
+   "err": ""
+  },
+  {
+   "id": "esses_In_Refuse_Recycle_Routes_WFL1_July2019_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "g5mTyuNWO5xx6_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "gUZUh16VF_arcgis_rest_services_SC_Addressing_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "gg5s_arcgis_rest_services_Building_Addresses_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "hAmRP1z50gTbO_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ieS2ld_arcgis_rest_services_Searcy_NG911_gdb_FeatureServer_2",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "jyn_arcgis_rest_services_Full_Street_Address_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "kFjYDrl_arcgis_rest_services_Address02202025_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "kFjYDrl_arcgis_rest_services_Address06192026_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "kFjYDrl_arcgis_rest_services_Address11292023_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "kttgSmcq6CPonms_arcgis_rest_services_Address_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "l0FeW1NE_arcgis_rest_services_AddressesWInfo_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "lqccxOHLu_arcgis_rest_services_SiteAddresses_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "mn_gov_arcgis_rest_services_Basemaps_LINKBasemap_MapServer_4",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "ms_arcgis_rest_services_Address_Data_Public_FeatureServer_10",
+   "field": "last_edited_date",
+   "changed": 7527,
+   "err": ""
+  },
+  {
+   "id": "oXVtxM_arcgis_rest_services_CountyAddresses_FeatureServer_23",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "p_arcgis_rest_services_Addresses_Public_View_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rWTl_arcgis_rest_services_Harrison_Addresses_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "resses___Archuleta_County_201411251147175537_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rest_services_Master_Address_Management_WFL1_FeatureServer_0",
+   "field": "updatedate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rest_services_Pella_Address_Data_Public_View_FeatureServer_2",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rest_services_Site_Addresses_06012022_public_FeatureServer_2",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "roY6O3ncx_arcgis_rest_services_MS4_addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "s___Pulse_of_OC_Updated_Draft___Site_Address_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "s_rest_services_Addressing_Addressing_public_FeatureServer_0@MN-3",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "s_rest_services_City_of_Dinuba_Addresses_gdb_FeatureServer_1",
+   "field": "last_update",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "s_rest_services_Richland_County_ND_Addresses_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "sdIpPb_arcgis_rest_services_Addresses_Splits_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ses_public_3336c922d00a441e8f588e16c3dc2577_FeatureServer_10",
+   "field": "last_edited_date",
+   "changed": 7529,
+   "err": ""
+  },
+  {
+   "id": "sses_public_6332b4b81c614cb4894d5de569a96465_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "sses_public_e65dd46e9c084cddaedcb94aeea0ed6b_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "st_services_Curb_Transition_Magic_Number2027_FeatureServer_0",
+   "field": "updated",
+   "changed": 1,
+   "err": ""
+  },
+  {
+   "id": "st_services_Lincoln_City_Addresses_View_Only_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "st_services_Winneshiek_County_Address_Points_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "t_services_Perry_County_Address_Geocode_v1_1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "t_services_Public_20Notification_20Addresses_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 68,
+   "err": ""
+  },
+  {
+   "id": "teAddresses_8548b2fdfac0464392b3fd7620a632d7_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 6197,
+   "err": ""
+  },
+  {
+   "id": "tkincounty_com_arcgis_rest_services_Full_Address_MapServer_1",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "unty__GA_Online_911_Addresses_and_Roads_WFL1_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "unty_com_arcgis_rest_services_Hosted_Address_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 193,
+   "err": ""
+  },
+  {
+   "id": "vlQFEpKtV_arcgis_rest_services_DOUGLASCOUNTY_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "wVADPEG6iD24f_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "wu_arcgis_rest_services_CoStafford_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "yHixJV_arcgis_rest_services_Master_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ye4IXyXsdIpPb_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "0_arcgis_rest_services_2022_Sep_01_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "0_arcgis_rest_services_Duncanville_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "1N7Y1EilGjehZ_arcgis_rest_services_ADDRESSES_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 17575,
+   "err": ""
+  },
+  {
+   "id": "4OueTcnj_arcgis_rest_services_just_addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "6Z_arcgis_rest_services_N911_Addresses__View_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 51,
+   "err": ""
+  },
+  {
+   "id": "8SWPG8KZ6r_arcgis_rest_services_911Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "8hGN_arcgis_rest_services_Polk_Addresses_GAC_FeatureServer_0",
+   "field": "edit_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "BYQ9pcCt_arcgis_rest_services_e911_pt_txdist_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "C2HwTkBAlth_arcgis_rest_services_Address_gdb_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 14389,
+   "err": ""
+  },
+  {
+   "id": "DdwE7LMrYrEMJ_arcgis_rest_services_Addresses_FeatureServer_1",
+   "field": "dateupdate",
+   "changed": 50,
+   "err": ""
+  },
+  {
+   "id": "ELbQdlhsJLcCM_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Ia_arcgis_rest_services_County_911_Addresses_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "JE9B_arcgis_rest_services_Newberg_Addresses__FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "KPa_arcgis_rest_services_overture_address_sd_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Kw_arcgis_rest_services_Situs_Address_Public_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "MJrpz61FbvL5t_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 44,
+   "err": ""
+  },
+  {
+   "id": "RnMdg5KWv_arcgis_rest_services_911_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "So_arcgis_rest_services_SiteAddresses_public_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "TymXTmwPsPzPHRU_arcgis_rest_services_Address_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "WuVPEmGK_arcgis_rest_services_Addresses_View_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "X4bb8_arcgis_rest_services_Fulton_NG911_WFL1_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "X_arcgis_rest_services_County_P_Address_View_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "XhtlWzOFCTkO_arcgis_rest_services_AddressPts_FeatureServer_0",
+   "field": "edit_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "YdlWlBxzX_arcgis_rest_services_Boone_Address_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ZPiRSTUFu_arcgis_rest_services_Situs_Address_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_arcgis_rest_services_911_Addresses_Website2_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_arcgis_rest_services_WyomingCountyAddresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_arcgis_rest_services_Wyoming_SAMB_Addresses_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_rest_services_Oxford_911_Address_View_Layer_FeatureServer_1",
+   "field": "dateupdate",
+   "changed": 20,
+   "err": ""
+  },
+  {
+   "id": "aAg05xQLgo7_arcgis_rest_services_SiteAddress_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "aAg05xQLgo7_arcgis_rest_services_WGS_Address_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "aR3VIVeAhJdr_arcgis_rest_services_AddressBPs_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "arcgis_rest_services_BTV_e911_Address_Layers_FeatureServer_0",
+   "field": "lastupdatedate",
+   "changed": 10966,
+   "err": ""
+  },
+  {
+   "id": "arcgis_rest_services_PAunderservedstructures_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_Short_Term_Rentals_WFL1_FeatureServer_1",
+   "field": "last_edited_date",
+   "changed": 13863,
+   "err": ""
+  },
+  {
+   "id": "arcgis_rest_services_Winona_County_Addresses_FeatureServer_0",
+   "field": "edited_dt",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "ces_911_Address_Street_Review_WFL1_view_only_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "ces_Pueblo_County_Addresses_Evacuation_Times_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_AddressesWithElectionData_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_AtascaderoAddresses082025_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_Site_Addresses_View_Layer_FeatureServer_0",
+   "field": "editdate",
+   "changed": 15,
+   "err": ""
+  },
+  {
+   "id": "cgis_rest_services_Skokie_Base_Address_View_FeatureServer_33",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cjlmqkA8ypi4T_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "dHIlQ88_arcgis_rest_services_LCaddresspts_GW_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "dHIlQ88_arcgis_rest_services_LCaddresspts_SB_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "dlWlBxzX_arcgis_rest_services_Marion_Address_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "dlWlBxzX_arcgis_rest_services_Searcy_Address_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "drG_arcgis_rest_services_Arlington_Addresses_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 6,
+   "err": ""
+  },
+  {
+   "id": "e8LteOjzU_arcgis_rest_services_MGO_AddressPt_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "ervices_Lee_County_E911_Addresses_and_Roads_FeatureServer_20",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "gis_rest_services_AddressList_Update20250311_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "gis_rest_services_GRANT_Address_ClerksOffice_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 16517,
+   "err": ""
+  },
+  {
+   "id": "gis_rest_services_Limestone_County_Addresses_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 1825,
+   "err": ""
+  },
+  {
+   "id": "gis_rest_services_Mailing_Address_Map_2_WFL1_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "gis_rest_services_Mailing_Address_Map___WFL1_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "gis_rest_services_SANGIS_AddressAPN_07312024_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "hP2NPfFE_arcgis_rest_services_Site_Addresses_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "is_rest_services_Bureau_County_911_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "is_rest_services_Cottage_Grove_Address_Point_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "is_rest_services_Gloucester_County_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "is_rest_services_Grady_Site_Addresses_Public_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "is_rest_services_Master_Address_Database_MAD_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "jld0x0gpn_arcgis_rest_services_E911Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "kIrNAR_arcgis_rest_services_E911_Share_Files_FeatureServer_0",
+   "field": "editor",
+   "changed": 2792,
+   "err": ""
+  },
+  {
+   "id": "kTU5o6Z_arcgis_rest_services_Addressing_AGOL_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "kh71mtnDG_arcgis_rest_services_E911addresses_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "l9_arcgis_rest_services_svcBndryAddress_view_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "l_Assessor_parcel_Map_June_06_09_2023_WFL1_FeatureServer_219",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "m7axC2dD_arcgis_rest_services_WascoAddresses_FeatureServer_5",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "m_jOKMO9vKmc98J4JC_arcgis_rest_services_E911_FeatureServer_0",
+   "field": "updatedate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "m_x7Yxpfpio5GuQWF2_arcgis_rest_services_E911_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "meepNh_arcgis_rest_services_Master_Addresses_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "ountyny_gov_server_rest_services_EMO_E911_Viewer_MapServer_5",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "pNK5CvU_arcgis_rest_services_HempV_Addresses_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rcgis_rest_services_Facility_Sites_E911_Clip_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rcgis_rest_services_Johns_Creek_GA_Addresses_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_Mailing_Address_Map_WFL1_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_Newberg_Addresses_2_view_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_Sioux_Falls_SD_Addresses_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_VT_Data___E911_Landmarks_FeatureServer_0",
+   "field": "updatedate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rent_Site_Addresses_and_Entrance_Points_view_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rest_services_Addresses_Clark_County_WI_2019_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "s_rest_services_Addressing_Addressing_public_FeatureServer_0@MN-1",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "services_BRIC_WRC_Situs_Address_LookUp_Table_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "sez_arcgis_rest_services_Tyler_Property_Data_FeatureServer_1",
+   "field": "updateuser",
+   "changed": 17811,
+   "err": ""
+  },
+  {
+   "id": "sses_public_35d07adabaff4ddba616f6f365b8954e_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "st_services_Arlington_Addresses_current_view_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 6,
+   "err": ""
+  },
+  {
+   "id": "st_services_VacantResidentialProperties_WFL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "st_services_WinonaCounty_DBO_CountyAddresses_FeatureServer_0",
+   "field": "edited_dt",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "tBHQoYlrmJI_arcgis_rest_services_address_pts_FeatureServer_1",
+   "field": "last_edited_date",
+   "changed": 56,
+   "err": ""
+  },
+  {
+   "id": "t_server_rest_services_Public_Roseburg_Addresses_MapServer_0",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "teAddresses_176dcf6d135741fcbc3bf17da5aa7aff_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "teAddresses_1a8d5e9d05674ad599c70df5dfdd4265_FeatureServer_0",
+   "field": "editdate",
+   "changed": 15,
+   "err": ""
+  },
+  {
+   "id": "uTYf_arcgis_rest_services_Bell_AddressPoints_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ver_rest_services_ParcelViewer_Parcel_Map_Labels_MapServer_0",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "wY8_arcgis_rest_services_Address_Ranges_WFL1_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "wlO_arcgis_rest_services_Master_Address_List_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "xkcSkFAjt_arcgis_rest_services_911_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ysZUz_arcgis_rest_services_Carroll_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "0JE2L2xUd_arcgis_rest_services_SiteAddresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "1Vphzvgd_arcgis_rest_services_City_Addresses_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 794,
+   "err": ""
+  },
+  {
+   "id": "27IJC_arcgis_rest_services_Address_Locations_FeatureServer_0",
+   "field": "updatestatus",
+   "changed": 43384,
+   "err": ""
+  },
+  {
+   "id": "2kwz79KUqUvxC_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "3kMP_arcgis_rest_services_E911AddressforSOMA_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "4Ui_arcgis_rest_services_CityAddresses2022bu_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "5jlmVkpxP_arcgis_rest_services_Online911Data_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "71LO_arcgis_rest_services_Addresses_CivQuest_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "AAWNInLrxvF0A_arcgis_rest_services_TCAddress_FeatureServer_0",
+   "field": "date_edite",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "AQdtmx0tv46_arcgis_rest_services_Address_Nye_FeatureServer_6",
+   "field": "last_edited_date",
+   "changed": 63594,
+   "err": ""
+  },
+  {
+   "id": "AQncZQEtBv_arcgis_rest_services_Address_Clip_FeatureServer_0",
+   "field": "editor",
+   "changed": 62053,
+   "err": ""
+  },
+  {
+   "id": "Bq9hgug_arcgis_rest_services_BG911_Addresses_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "BvD2F_arcgis_rest_services_COG_StreetAddress_FeatureServer_1",
+   "field": "last_edited_date",
+   "changed": 51404,
+   "err": ""
+  },
+  {
+   "id": "C2lEIpJ2TRrs5_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "CSVXisSNlAAjd_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 91,
+   "err": ""
+  },
+  {
+   "id": "EjnCT_arcgis_rest_services_Leander_Addresses_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 49076,
+   "err": ""
+  },
+  {
+   "id": "Geezhu2j_arcgis_rest_services_E911_Addresses_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "I64Ui_arcgis_rest_services_CountyAddress2023_FeatureServer_7",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "Ilt_arcgis_rest_services_Clinton_Address_Pts_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "InLrxvF0A_arcgis_rest_services_AddressR2_gdb_FeatureServer_0",
+   "field": "date_edited",
+   "changed": 215,
+   "err": ""
+  },
+  {
+   "id": "IzAwdHlO_arcgis_rest_services_Address_hosted_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "KpsCnqD7H_arcgis_rest_services_SiteAddresses_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "OU_arcgis_rest_services_Addresses_SIO_Hosted_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "QYTTiP6CrfEsw_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 37276,
+   "err": ""
+  },
+  {
+   "id": "TiP6CrfEsw_arcgis_rest_services_Ward_Address_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 38345,
+   "err": ""
+  },
+  {
+   "id": "WNInLrxvF0A_arcgis_rest_services_Address_gdb_FeatureServer_0",
+   "field": "date_edited",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "Ypus4pYH0S_arcgis_rest_services_Site_Address_FeatureServer_4",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_arcgis_rest_services_Addresses_NOT_ELIGIBLE_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_arcgis_rest_services_BG911_Address_20250501_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_arcgis_rest_services_Flagstaff_AZ_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_cfmdyB05xBau1dNQ_arcgis_rest_services_Situs_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_qnjIrwR8z5Izc0ij_arcgis_rest_services_ng911_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "aNxg1PvwI_arcgis_rest_services_All_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_MGO_Master_Address_View_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_Tompkins_County_Address_FeatureServer_0",
+   "field": "date_edited",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "cgis_rest_services_NRSA_Address_Locator_WFL1_FeatureServer_8",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "com_arcgis_rest_services_CommunityAddressing_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "d1DIvN_arcgis_rest_services_SiteAddresses__1_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "d_Waste__Days_of_Service_Per_Address_092424_FeatureServer_52",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "dresses_in_City_Limits___ESD9___Web_Map_WFL1_FeatureServer_1",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "e_Rollout__Days_of_Service_Per_Address__WFL1_FeatureServer_1",
+   "field": "last_edite",
+   "changed": 46943,
+   "err": ""
+  },
+  {
+   "id": "eajjke_arcgis_rest_services_Addresses_Rogers_FeatureServer_0",
+   "field": "edit_date",
+   "changed": 321,
+   "err": ""
+  },
+  {
+   "id": "eeeoWYqSyV5I_arcgis_rest_services_E911_gdb__FeatureServer_11",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ervices_Meade_Co_KY_Addresses_and_Roads_WFL1_FeatureServer_1",
+   "field": "dateupdate",
+   "changed": 6,
+   "err": ""
+  },
+  {
+   "id": "est_services_AddressPtsAndUnitNumbersWebsite_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "est_services_NormanResidentialTrashAddresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "exxB_arcgis_rest_services_911_Address_Labels_FeatureServer_6",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "gT_arcgis_rest_services_USU_Addressing_view_FeatureServer_26",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ges_arcgis_rest_services_AddressAndRoads2022_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "gis_com_kcsgis_rest_services_Etowah_AL31_VAM_MS_MapServer_10",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "gis_rest_services_CountyAddress2023_CHE_View_FeatureServer_7",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "gis_rest_services_Queen_Creek_Addresses__All_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "i4lYRFOsss0F5_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "is_rest_services_Madison_County_KY_Addresses_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "is_rest_services_Public_View_Site_Addresses__FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "m_nEIrIdcFpdK28ibf_arcgis_rest_services_E911_FeatureServer_1",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "ofS_arcgis_rest_services_Taos_E911_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "p_arcgis_rest_services_LAFO_ADDRESS_12_17_13_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "qTGWY_arcgis_rest_services_JoCo_Site_Address_FeatureServer_1",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "q_arcgis_rest_services_Site_Addresses_Public_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rOyyLV2jNLiBS_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rXp_arcgis_rest_services_LPG_Address_Records_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 56668,
+   "err": ""
+  },
+  {
+   "id": "rcgis_rest_services_CTSI_AddressChecker_WFL1_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rcgis_rest_services_Daly_City_Addresses_AGOL_FeatureServer_2",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_Deerfield_Case_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_MC_Address_Pts_PMG_View1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_Res_Address_Demographics_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_Unincorporated_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rest_services_CarthageWardsandaddresses_WFL1_FeatureServer_1",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rvices_Deerfield_Case_Addresses_FeatureLayer_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "s_Meade_Co_KY_Addresses_Roads_Lot_Lines_WFL1_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 6,
+   "err": ""
+  },
+  {
+   "id": "s_rest_services_CTSI_Address_Check_2023_WFL1_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "s_rest_services_CityAddresses2022bu_CHE_view_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "s_rest_services_Master_Address_List_Aug_2026_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "s_rest_services_Raleigh_Co_EOC_Address_Sites_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "sses_public_0af1fc8b92f7415dbfdf37c6fa956c77_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "sses_public_33e99042997a472fa1a25a8b6f4465cf_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "sses_public_3ac05ddeab6d46389b7b3c0616abc861_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "sses_public_a000778ae1664a348de916831f1a0ac0_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "sses_public_a2522c3dfde94f6da7500df892abf9aa_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "sses_public_e7c532395de343e38e58a8463128cfb7_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "sses_public_fa4be22034f14c15a3a589dd7009ca64_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "st_services_A4_Landscape_addressverification_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "t_services_SummitCntyCO_Addresses_Pictometry_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "teAddresses_1809c74f027741ce815587367a5cfd68_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "teAddresses_25f96256e2164540bc18abbff8a9d5c2_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "teAddresses_33e99042997a472fa1a25a8b6f4465cf_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "teAddresses_b786541565b5475593a786a08ba6b3e2_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "teAddresses_ecd2ff39fbb34f39a2ec415fd784331b_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "u6oHu4Z_arcgis_rest_services_SITUS_PUB_CBB_2_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "unty_oh_gov_arcgisdev_rest_services_WMAS_Address_MapServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "vF0A_arcgis_rest_services_AddressSearchLayer_FeatureServer_0",
+   "field": "date_edite",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "vN_arcgis_rest_services_SiteAddresses_public_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "wFbS_arcgis_rest_services_Chemungaddress_pts_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "y_us_arcgis_rest_services_Addresses_WC_2022_FeatureServer_54",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "zUpjDtspiBG0j_arcgis_rest_services_E911_Copy_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "0gE_arcgis_rest_services_CenCom_Address_View_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "3P_arcgis_rest_services_SiteAddresses_public_FeatureServer_0@TX-2",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "4427d57d2827830_rest_services_Base_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "5V8PH7DzSE6AU_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "8JRPoNeQjgcLi_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": "edit_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "ABcyiF_arcgis_rest_services_Address_pt_views_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "C0yIuqCBxq_arcgis_rest_services_Address_2024_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "C7QlRK1kZ_arcgis_rest_services_EAS_Addresses_FeatureServer_0",
+   "field": "lastupdatedate",
+   "changed": 382,
+   "err": ""
+  },
+  {
+   "id": "CRg_arcgis_rest_services_SBCnty_Address_Grid_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "C_arcgis_rest_services_Active_Addresses_2025_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "Cz_arcgis_rest_services_HC_MD_Addresses_10mi_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "F_arcgis_rest_services_NM911_Address_02_2025_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 97956,
+   "err": ""
+  },
+  {
+   "id": "F_arcgis_rest_services_NM911_Address_10_2024_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 97603,
+   "err": ""
+  },
+  {
+   "id": "GEllMqef1LMjj_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 1265,
+   "err": ""
+  },
+  {
+   "id": "GOi6N4Rq5cqFv_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": "editedby",
+   "changed": 112607,
+   "err": ""
+  },
+  {
+   "id": "I64Ui_arcgis_rest_services_WLAddressAndRoads_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "JdBHI0_arcgis_rest_services_Addresses_SC_USE_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 947,
+   "err": ""
+  },
+  {
+   "id": "LmXo7Hn9vNc_arcgis_rest_services_E911Address_FeatureServer_0",
+   "field": "updated",
+   "changed": 111302,
+   "err": ""
+  },
+  {
+   "id": "LmYGD_arcgis_rest_services_DC_Addresses_WFL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "LxyiJoNiVHKwq_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "McTk2tV5FXPLX_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 529,
+   "err": ""
+  },
+  {
+   "id": "QGwSSLC0l_arcgis_rest_services_t07_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Spu5VOlu_arcgis_rest_services_Site_Addresses_FeatureServer_0",
+   "field": "updated",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "Tpwo5_arcgis_rest_services_FullAddress032026_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "U5257_arcgis_rest_services_Yonkers_Addresses_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "V5FXPLX_arcgis_rest_services_Addresses_Units_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "VWAC8iN_arcgis_rest_services_road_centerline_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_arcgis_rest_services_Addresses_USA_combined_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_arcgis_rest_services_BILLING_ACCT_LOCATIONS_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_arcgis_rest_services_CharlesCountyAddresses_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 71182,
+   "err": ""
+  },
+  {
+   "id": "_arcgis_rest_services_city_address_march2025_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_pa_us_arcgis_rest_services_Hosted_Addresses_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_rest_services_EmergencyManagement_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_rest_services_HenricoCountyGIS_05082023_gdb_FeatureServer_0",
+   "field": "dateupdated",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_rest_services_NM911_Address_202401_SC_Web_a_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 96299,
+   "err": ""
+  },
+  {
+   "id": "_rest_services_Randall_County_Addresses_WFL1_FeatureServer_1",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_rest_services_Site_Addresses_FLOCK_10302024_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_services_Infrastructure_Transportation_Sheriffs_MapServer_0",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "aVKdPC5e_arcgis_rest_services_Address_Public_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "araca_gov_maps_rest_services_LAYERS_RegionalBase_MapServer_2",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "arcgis_rest_services_AddressPt_20240705_WFL1_FeatureServer_0",
+   "field": "editdate",
+   "changed": 4,
+   "err": ""
+  },
+  {
+   "id": "arcgis_rest_services_Addresses_Arcade_Labels_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "arcgis_rest_services_Hudson_County_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_NM911_Address_202506_SC_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 98409,
+   "err": ""
+  },
+  {
+   "id": "arcgis_rest_services_modified_JaCo_addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arverLink_Address_Lookup_20250623_PublicView_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_Delaware_County_E911_Data_FeatureServer_0",
+   "field": "modified",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "cgis_rest_services_Indianapolis_IN_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_Infrastructure_Transportation_MapServer_0",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "countyfl_gov_accelasupp_rest_services_AccelaXAPO_MapServer_0",
+   "field": null,
+   "err": "HTTP Error 403: Forbidden"
+  },
+  {
+   "id": "eDUBgTeCT3_arcgis_rest_services_LC_Addresses_FeatureServer_0",
+   "field": "edit_date",
+   "changed": 847,
+   "err": ""
+  },
+  {
+   "id": "ervices_64a951f0_b017_11e6_b4e3_22000b8406af_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ervices_Zanna_E911_Sites_Outside_8min_Buffer_FeatureServer_2",
+   "field": "updatedate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "est_services_Collier_Addresses_Within_3_Mile_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "f_arcgis_rest_services_Killeen_AddressPoints_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "gis_rest_services_Address_For_WebApp_Locator_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "iJkq4oXsPh_arcgis_rest_services_Addresses_SR_FeatureServer_0",
+   "field": "sr_editor",
+   "changed": 88553,
+   "err": ""
+  },
+  {
+   "id": "i_rest_services_Cadastral_Site_Address_Point_FeatureServer_0",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "is_rest_services_AddressValidationTest2_WFL1_FeatureServer_0",
+   "field": "edittask",
+   "changed": 90643,
+   "err": ""
+  },
+  {
+   "id": "is_rest_services_Addresses_2015_Boston_BARI__FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "is_rest_services_Addresses_CitizenServe_View_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "is_rest_services_Barry_County_E911_Map_WFL1_FeatureServer_29",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "is_rest_services_Building_Permit_Addresssing_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "is_rest_services_NM911_Address_202301_SC_Web_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "j7_arcgis_rest_services_Addresses_GeneralUse_FeatureServer_0",
+   "field": "edit_date",
+   "changed": 73890,
+   "err": ""
+  },
+  {
+   "id": "jSxUKayj_arcgis_rest_services_911_Addresses_FeatureServer_58",
+   "field": "dateupdate",
+   "changed": 6830,
+   "err": ""
+  },
+  {
+   "id": "k6RO1_arcgis_rest_services_HudsonCty_AddrPts_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ld_oh_us_arcgis_rest_services_OpenData_Addresses_MapServer_0",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "leoncountyfl_gov_accela_rest_services_AccelaXAPO_MapServer_0",
+   "field": null,
+   "err": "HTTP Error 403: Forbidden"
+  },
+  {
+   "id": "mxCAS_arcgis_rest_services_ClermontAddresses_FeatureServer_0",
+   "field": "edits",
+   "changed": 88300,
+   "err": ""
+  },
+  {
+   "id": "nQPdJ0azuLyn_arcgis_rest_services_AddressPts_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ntaclaraca_gov_maps_rest_services_LAYERS_BaseMap_MapServer_2",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "ountyfl_gov_accela_rest_services_AccelaXAPO_Test_MapServer_0",
+   "field": null,
+   "err": "HTTP Error 403: Forbidden"
+  },
+  {
+   "id": "ov_public_rest_services_public_Council_Wards_FeatureServer_1",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "r_arcgis_rest_services_Coryell_address_5Mile_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_AddressPts_20230817_WFL1_FeatureServer_0",
+   "field": "editdate",
+   "changed": 4,
+   "err": ""
+  },
+  {
+   "id": "rcgis_rest_services_HostedServices_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "rvices_MapServices_TLC_OverlayAddressSearch_D_WM_MapServer_0",
+   "field": null,
+   "err": "HTTP Error 403: Forbidden"
+  },
+  {
+   "id": "rvices_Situs_for_ConsolidatedPrecincts_AGOL_FeatureServer_51",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rvices_WCAddresses20251003_gdb_view_Geocivix_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rvices_stratmap19_addresspoints_48027_vector_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "s_rest_services_ElectionsPollingPlaceAddress_FeatureServer_0",
+   "field": "updated",
+   "changed": 110944,
+   "err": ""
+  },
+  {
+   "id": "s_rest_services_NM911_Address_01_2026_SC_Web_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "s_rest_services_Solano_County_Addresses_WFL1_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "st_services_Springfield_address_density_WFL1_FeatureServer_2",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "st_services_Vector_COT_UtilityERM_Addresses_D_WM_MapServer_0",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "t3XQ_arcgis_rest_services_AddressPt_20230629_FeatureServer_0",
+   "field": "editdate",
+   "changed": 4,
+   "err": ""
+  },
+  {
+   "id": "tUCmxaVKdPC5e_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 2054,
+   "err": ""
+  },
+  {
+   "id": "t_services_Katy_ISD_Harris_County_Addresses_FeatureServer_68",
+   "field": "editor",
+   "changed": 10569,
+   "err": ""
+  },
+  {
+   "id": "t_services_NG911_Map__Lake_County__Ohio_WFL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "tg2A1_arcgis_rest_services_vw_dist_addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "u0_arcgis_rest_services_Address_OfflineCopy_FeatureServer_21",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "vices_Yuma_911_Data_Roads_and_Addresses_WFL1_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "wLs3iGyK80EW_arcgis_rest_services_911Address_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 1,
+   "err": ""
+  },
+  {
+   "id": "wbCJ2GMP_arcgis_rest_services_E911calls_2020_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "wbHlfF_arcgis_rest_services_Addresses_Hosted_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "zOpn2_arcgis_rest_services_Streets_Buidlings_FeatureServer_0",
+   "field": "edit_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "zxvnVEjzQ6xuSXS_arcgis_rest_services_Address_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "0ipEAOFhn_arcgis_rest_services_Address_Tiles_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "1p_arcgis_rest_services_ADDRESS_20230403_CoB_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "4x6y8cTIstSBE_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "7IM34hqT9y9ew_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "8lct5k3LSbyO_arcgis_rest_services_AddressULM_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "BpZX2wFbS_arcgis_rest_services_911addressing_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 32197,
+   "err": ""
+  },
+  {
+   "id": "DDRnnsbCKWWP_arcgis_rest_services_Addresses2_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "DL6ILvlkPNTg8_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "DgvxltnFwP_arcgis_rest_services_NG911_Layers_FeatureServer_1",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "Gr3P_arcgis_rest_services_ETJ_addresses_WFL1_FeatureServer_1",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "J9QAHCiGx_arcgis_rest_services_SiteAddresses_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "JRr_arcgis_rest_services_MAT_NG911_Addresses_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 382,
+   "err": ""
+  },
+  {
+   "id": "KckAl7VOw_arcgis_rest_services_Address_Lists_FeatureServer_0",
+   "field": "record_updated",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "Mk18pL_arcgis_rest_services_Coffee_Addresses_FeatureServer_0",
+   "field": "editor",
+   "changed": 4872,
+   "err": ""
+  },
+  {
+   "id": "OLvsmwpY1RmFG_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": "updatedate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "PlhvQwvs_arcgis_rest_services_E911_Addrs_Pts_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 35637,
+   "err": ""
+  },
+  {
+   "id": "RmLNAomixG_arcgis_rest_services_RP_Addr_2022_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "S1a_arcgis_rest_services_Address_Mailing_Map_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "TOM4lipn_arcgis_rest_services_Addresses_2023_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "TlITuys_arcgis_rest_services_WyboSiteAddress_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "Uiqh7X11gGV2d_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "VDElDOMEad_arcgis_rest_services_WayneAddress_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 31980,
+   "err": ""
+  },
+  {
+   "id": "WCoI_arcgis_rest_services_20260601_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "WQTB2G8AH9RQYE_arcgis_rest_services_address_FeatureServer_16",
+   "field": "editor",
+   "changed": 25790,
+   "err": ""
+  },
+  {
+   "id": "WTywHfayX67L_arcgis_rest_services_NG911_Data_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "Yd7fCfTTiVp8_arcgis_rest_services_Addresses2_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Zm_arcgis_rest_services_Aurora_Address_view_FeatureServer_15",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_arcgis_rest_services_Civic_Rec_QC_Addresses_FeatureServer_0",
+   "field": "last_edit_date",
+   "changed": 34839,
+   "err": ""
+  },
+  {
+   "id": "_arcgis_rest_services_EnerGov_Test_Map1_WFL1_FeatureServer_3",
+   "field": "lastupdatedate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_arcgis_rest_services_Logan_County_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_arcgis_rest_services_Shawano_Addresses_2026_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_arcgis_rest_services_TehamaCounty_NG911_gdb_FeatureServer_8",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_arcgis_rest_services_zoningAddressingSearch_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_map_claycountymn_gov_arcgis_rest_services_NG911_MapServer_0",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "_rest_services_Delta_County_Address_01232025_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_rest_services_GIS_ENV_GIS_Work_Background_Layer_MapServer_0",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "_rest_services_NM_911_Addresses_Large_Scale_FeatureServer_32",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_rest_services_NM_911_Addresses_Small_Scale_FeatureServer_33",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_services_Lincoln_LUCA_Addresses_Counts_WFL1_FeatureServer_0",
+   "field": "edit_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "aLg_arcgis_rest_services_Address_Hemet031325_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_AddressQC_fieldmap_WFL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_Alexandria_VA_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_BarryCountyMO_Addresses_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "arcgis_rest_services_FranklinCountyAddresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_Jasper_County_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_Master_Address_List_New_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "arcgis_rest_services_OpenNewmarket_Addresses_FeatureServer_0",
+   "field": "edit_uid",
+   "changed": 34922,
+   "err": ""
+  },
+  {
+   "id": "c_gov_arcgis_rest_services_Addresses_E911Address_MapServer_1",
+   "field": null,
+   "err": "HTTP Error 403: Forbidden"
+  },
+  {
+   "id": "cgis_rest_services_FranklinCoVA_911Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_Franklin_Co_911_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_Master_Addresses_for_Grid_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_Sarpy_County_NE_Addresses_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "eSvF_arcgis_rest_services_OpenData_Addresses_FeatureServer_0",
+   "field": "editdate",
+   "changed": 22247,
+   "err": ""
+  },
+  {
+   "id": "es_Service_Location_Moving_ToCURB_ASof712025_FeatureServer_0",
+   "field": "updated",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "est_services_Street_Sweeping_Pilot_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ez8fHeIiDRbgb_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "fMdTkPeHLCobS_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "field_College_Block_Lot_and_Address_Map_WFL1_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "g_arcgis_rest_services_BarryCounty_Addresses_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 114,
+   "err": ""
+  },
+  {
+   "id": "gis_rest_services_BransonAddressSearch_WFL1_FeatureServer_54",
+   "field": "last_edited_date",
+   "changed": 23857,
+   "err": ""
+  },
+  {
+   "id": "h_arcgis_rest_services_AddressesJuly26B_WFL1_FeatureServer_2",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "h_arcgis_rest_services_Addresses_for_Clariti_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "iGx_arcgis_rest_services_Addresses_Only_view_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 26315,
+   "err": ""
+  },
+  {
+   "id": "ices_City_of_Cuyahoga_Falls_Addressing_WFL1_FeatureServer_11",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "is_rest_services_Lead_Service_Line_Addresses_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "isapp_dunwoodyga_gov_arcgis_rest_services_Parcel_MapServer_1",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "j53q3aOgCSYTp_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "j7VSF_arcgis_rest_services_TemeculaAddresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "j_arcgis_rest_services_BARRON_ADDRESSES_2025_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "kOGGtW27pGICf_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "l_org_arcgis_rest_services_Weston_Basemap_cache_MapServer_20",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "m_Iwwqwcdc5CWG2jt9_arcgis_rest_services_ADDR_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "maps_rest_services_OPENDATA_RegionalBaseOpenData_MapServer_2",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ow3ofS_arcgis_rest_services_NM_911_Addresses_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 22208,
+   "err": ""
+  },
+  {
+   "id": "pMfHt82xFG_arcgis_rest_services_RouteAddress_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_Bedford_County_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_Buildings_and_Addresses_FeatureServer_17",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rcgis_rest_services_Essex_Address_Pts_9_9_25_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rcgis_rest_services_GC_Address_Points_Public_FeatureServer_8",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_TLWaddressInternetAccess_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rest_services_Addresses_With_Voting_Precinct_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rest_services_Cherokee_Address_Analysis_WFL1_FeatureServer_0",
+   "field": "edit_date",
+   "changed": 11,
+   "err": ""
+  },
+  {
+   "id": "rest_services_Hurricane_Ian_Damage_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "sKPeG_arcgis_rest_services_Address_ViewLayer_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 24987,
+   "err": ""
+  },
+  {
+   "id": "s_rest_services_Fayette_County_911_Addresses_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "s_rest_services_OPENNewmarket_Address_3_view_FeatureServer_0",
+   "field": "edit_when",
+   "changed": 592,
+   "err": ""
+  },
+  {
+   "id": "s_rest_services_Rural_Addresses__Label_Only__FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "st_services_City_of_Pittsburg_Address_Public_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "st_services_Vector_Tile_Site_Address_Labels_FeatureServer_57",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ttesville_org_cvgisweb_rest_services_OpenData_1_MapServer_76",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "vices_Campbell_County__VA_Broadband_Map_WFL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "xLBcrikqFM0vkoy_arcgis_rest_services_Address_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "yYd7fCfTTiVp8_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ycSVzMEzm7ey_arcgis_rest_services_Addressing_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 22929,
+   "err": ""
+  },
+  {
+   "id": "yjVw1fpWcwy7h_arcgis_rest_services_ADDRESSES_FeatureServer_0",
+   "field": "editor",
+   "changed": 22256,
+   "err": ""
+  },
+  {
+   "id": "yvfv_arcgis_rest_services_Mercer_SiteAddress_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "0yIuqCBxq_arcgis_rest_services_CNO_Addresses_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "27_Great_Mississippi_Flood_in_Arkansas_WFL1_FeatureServer_14",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "M5ymMLbxIyWTjn2_arcgis_rest_services_Address_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "MCHD_Environmental_Health_Public_Service_Map_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "SE6sXfoLq_arcgis_rest_services_Address_ProdA_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "W83eUIFui_arcgis_rest_services_Address_Sites_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ZHFr6zdgNZuVG0_arcgis_rest_services_Address2_FeatureServer_3",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_Mississippi_Flood_in_Arkansas__Final__WFL1_FeatureServer_14",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_Zs2aNLFN00jrS4gG_arcgis_rest_services_data2_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_arcgis_rest_services_AMI_Deployment_Address_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_rest_services_Address__GCS_WGS_1984__Public_FeatureServer_0",
+   "field": "feature_date_updated",
+   "changed": 8654,
+   "err": ""
+  },
+  {
+   "id": "_rest_services_Arapahoe_County_Addresses_gdb_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_rest_services_Atlanta_Streets_and_Addresses_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 233572,
+   "err": ""
+  },
+  {
+   "id": "_services_Lower_MS_Sediment_Bottleneck_WFL1_FeatureServer_14",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_Jeffco_Address_Map_WFL1_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_Nightly_OpenData_Update_FeatureServer_3",
+   "field": "editorg",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "cGIS_rest_services_Baldwin911Addresses__view_FeatureServer_2",
+   "field": "last_edited_date",
+   "changed": 8816,
+   "err": ""
+  },
+  {
+   "id": "couver_us_arcgis_rest_services_common_BasemapPUB_MapServer_0",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "ervices_AddressPts_DamageAssessment_REA_VIEW_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "gis_rest_services_NENA_Addresses_WGS_Service_FeatureServer_0",
+   "field": "lastupdated",
+   "changed": 37819,
+   "err": ""
+  },
+  {
+   "id": "hedVoters_Statewide_withSiteTypeDescription_FeatureServer_32",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "i_arcgis_rest_services_Ada_County_Addresses_FeatureServer_13",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "is_rest_services_Address_1424300337393713068_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "jvohPcWJU5ij6_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "oN_arcgis_rest_services_WASD_Addresses_3_23_FeatureServer_52",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_Address_Pts_Living_Units_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rcgis_rest_services_Addressing_RoadsAndAddresses_MapServer_0",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "rcgis_rest_services_Richfield_Comm_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rest_services_E911_Addresses_Hamilton_County_FeatureServer_0",
+   "field": "edit_priv",
+   "changed": 171309,
+   "err": ""
+  },
+  {
+   "id": "rvices_BaseLayers_Addresses_for_BackdropPurposes_MapServer_0",
+   "field": null,
+   "err": "<urlopen error [Errno -3] Temporary failure in name resolution>"
+  },
+  {
+   "id": "server_rest_services_Intermap_Situs_address_WMAS_MapServer_0",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "services_CountyServices_Municipal_Addressing_FeatureServer_2",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "services_Zanna_E911_Sites_Within_8min_Buffer_FeatureServer_1",
+   "field": "updatedate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "vices_BaseLayers_BaseLayers_for_BackdropPurposes_MapServer_1",
+   "field": null,
+   "err": "<urlopen error [Errno -5] No address associated with hostname>"
+  },
+  {
+   "id": "w_arcgis_rest_services_Addresses_not_in_Town_FeatureServer_5",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "xLqeJd2jOX_arcgis_rest_services_VC_Addresses_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "123_4848a2717d344d119d250f258af86bea_results_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 6,
+   "err": ""
+  },
+  {
+   "id": "1oVm_arcgis_rest_services_WCD_Site_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "6GqBWodG9Kll_arcgis_rest_services_Addresses__FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "CcMPHO_arcgis_rest_services_CERT_Team_Public_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "D4lF0F_arcgis_rest_services_PCBAddressBlocks_FeatureServer_0",
+   "field": "last_edit_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "Ep4y_arcgis_rest_services_CAW_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "HFr6zdgNZuVG0_arcgis_rest_services_NG911_CFS_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "IvN_arcgis_rest_services_ProposedSiteAddress_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "Npbr2SGIhQvrH_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "OMMISSIONER_PCT_PUBLIC_WORKS_ADDRESSES_point_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Property_Profile___No_Site_Address___10_2025_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "RealEstate_ACParcels_Outcome25address_points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Thf3DKUv_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "VDPqdJ5_arcgis_rest_services_UC_Address_Grid_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "V_arcgis_rest_services_Crisis_Site_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "WXituM_arcgis_rest_services_Town_Owned_Situs_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 16,
+   "err": ""
+  },
+  {
+   "id": "WodG9Kll_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "XdLKOfIXex_arcgis_rest_services_KHSD_Address_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "YG1DOsR_arcgis_rest_services_HS_Plan_D_WFL1_FeatureServer_14",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ZHUggYYSp_arcgis_rest_services_Address_types_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_Property_Profile___No_Site_Address___1_2026_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_arcgis_rest_services_1920_Address_Points_JG_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_arcgis_rest_services_Address_Location_Point_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_arcgis_rest_services_Mission_Site_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_arcgis_rest_services_SU_Address_Layer_DRAFT_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_arcgis_rest_services_Site_Address_Locations_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_arcgis_rest_services_Vulnerable_e911_sites__FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_rest_services_2025_Waste_Disposal_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_rest_services_ATW_Address_Points_2_5_Higher_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_rest_services_CatoctinSpeedDating_Addresses_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_rest_services_E911_Origin_Point_NAD27_V2501_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_rest_services_Jay_Cooke_Trailhead_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "a0SJxRv_arcgis_rest_services_Minnesota_NG911_FeatureServer_0",
+   "field": "edit_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "arcgis_rest_services_Address_Points_Display2_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "arcgis_rest_services_Address_Points_for_Edit_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "arcgis_rest_services_Geocoded_Addresses_WFL1_FeatureServer_3",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_HWY_160_Address_Markers_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_Jerry_Addresses_Updated_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_SCPD_Precinct_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_UTC_Building_Addresses_FeatureServer_19",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_address_points_unserved_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "ces_Around_The_Wye_Address_Points_1_5_Higher_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "ces_service_e145361f9e5a446b995b1ae0cb62db77_FeatureServer_0",
+   "field": "editdate",
+   "changed": 32,
+   "err": ""
+  },
+  {
+   "id": "cgis_rest_services_Addresses_Updated_October_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_Bike_Share_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_Center_Point_of_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_Parks_GeocodeAddresses_JC_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_ProposedSiteAddress_field_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "cnmA9U_arcgis_rest_services_CollegeAddresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "daBmNjCHu_arcgis_rest_services_AddressPoints_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "eV_arcgis_rest_services_BCC_Addresses_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ervices_Steamboat_Springs_Points_of_Interest_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "esses_field_1dc5c3405972470c9380408c90f4a4f5_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "esses_field_3c0d2a3e024645759ed1c230bc207fc6_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "est_services_Campus_911_Address_Points_2023_FeatureServer_11",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "est_services_DE_Address_Points_2_0_Higherf_2_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "est_services_SiteAddressPin_view_13268052057_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "est_services_SiteAddressPin_view_13268481226_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "etPostalCodeFinder_PostalCodeAggregated_E911_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "evrTlaV_arcgis_rest_services_Apt_Situs_Point_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ffCJ4P5_arcgis_rest_services_Addresses_Final_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ffCJ4P5_arcgis_rest_services_Jerry_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "gis_rest_services_City_of_Corcoran_Addresses_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "hr_arcgis_rest_services_NCI_Center_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "huyler_County_Multi_Parcel_Addresses_Updated_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "illwater_County_Addressing_Layers_2022_WFL99_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "is_rest_services_79_Greenwich_address_points_FeatureServer_0",
+   "field": "dateupdated",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "is_rest_services_CPHT_Headquarters_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "is_rest_services_LCRR_Missing_Addresses_WFL1_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "is_rest_services_NCI_Cancer_Center_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "is_rest_services_NoCO_Shelter_Addresses_WFL1_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "is_rest_services_OntarioColleges_GeocodeAddr_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "is_rest_services_Posted_Address_Verification_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "lhlg_arcgis_rest_services_Address200feetaway_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "lxt6cnCY2_arcgis_rest_services_siteaddresses_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 2,
+   "err": ""
+  },
+  {
+   "id": "niversity_of_Redlands_Address_Points__Public_FeatureServer_6",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "nricoCounty_ShortPump_5Addresses_UseThisOne2_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "ostalCodeFinder_MunicipalityAggregation_E911_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ptdo_arcgis_rest_services_CommunityAddresses_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "qBWodG9Kll_arcgis_rest_services_ChargingLike_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "qI_arcgis_rest_services_t_ng911_psaps_backup_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "r_of_Potential_Site_Address_2_and_AE_Sites_1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_Breweries_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_E_Gateway_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rest_services_Addresses_near5min_parents_CWH_FeatureServer_0",
+   "field": "editor",
+   "changed": 53,
+   "err": ""
+  },
+  {
+   "id": "rest_services_OntarioColleges_GeocodeAddress_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "s_6210111511358341306_from_maine_geo_library_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "s_Addresses_further_away_than_200ft_of_roads_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "s_Lodgings___Hotels__Inns__BnBs__E911_Data__FeatureServer_32",
+   "field": "updatedate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "s_TCECD_Site_Address_Points_Outside_County_FeatureServer_176",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "s_rest_services_DHN_All_Addresses_Aug_4_2023_FeatureServer_7",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "s_rest_services_Thomas_Poree_Story_Map_FINAL_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "services_911_Addresses_Restoration_Park_ONLY_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 9,
+   "err": ""
+  },
+  {
+   "id": "services_DemoUSAAPIPLayer_point_with_address_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "services_Emergency_Services_Address_Yarmouth_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "services_McDowell_Dilapidated_Addresses_WFL1_FeatureServer_8",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "services_Memphis_Synagogues_Addresses_202603_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "services_NCI_CancerCenter_Address_spring2025_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "services_Walston_OP_Address_05Mile_Points8ft_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "sses_submit_bbba9069ed4649d8bd079495d8f47f07_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 3,
+   "err": ""
+  },
+  {
+   "id": "st_services_Address_Points_Appogee_On_Quincy_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "st_services_NewSiteFinityParks2AGOL4EELsView_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "t_services_DBO_OntarioCollege_GeocodeAddress_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "t_services_E911_Grid_Origin_NAD83_2011__Feet_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "t_services_Short_Term_Rentals_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "teAddresses_1dc5c3405972470c9380408c90f4a4f5_FeatureServer_0@MO-1",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "teAddresses_1fda33ac1a5a463cabffde7c226afa69_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "teAddresses_3c0d2a3e024645759ed1c230bc207fc6_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "teAddresses_fc0cc9ec7e5a47b1a4b4ad7a1eb2f9e0_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "tments_to_Multi_Family_Residential_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "u_arcgis_rest_services_Prospective_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "uyler_County_Single_Parcel_Addresses_Updated_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "vices_Baldwin911Addresses__Fire_Station_View_FeatureServer_2",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "vices_Catalina_Points_of_Interest_by_Address_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "vices_Little_Raleigh_Address_Points_4_Higher_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "vices_WA_Fairview_Wildfire_of_2026_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "xaminer_to_July_24_2020_to_Addresses__Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "zdgNZuVG0_arcgis_rest_services_NG911_Chicago_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "00ea7p7i0U_arcgis_rest_services_E911CallDATA_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "0ij_arcgis_rest_services_FWP_Lands_Addresses_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "3YBzBoefRGq66_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "9_arcgis_rest_services_NG911_Web_layers_WFL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Aa0SJxRv_arcgis_rest_services_NG911_Template_FeatureServer_0",
+   "field": "editdate",
+   "changed": 24,
+   "err": ""
+  },
+  {
+   "id": "CIe16u6G_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "CKH_arcgis_rest_services_MCRC_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Dta5_arcgis_rest_services_MaineE911Addresses_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "EXz_arcgis_rest_services_Evac_Address_Points_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "Hpm8mHFz_arcgis_rest_services_Addresses_view_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "I88qiQGw_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "field": "editdate",
+   "changed": 1,
+   "err": ""
+  },
+  {
+   "id": "IOcEYxoF_arcgis_rest_services_lead_addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Iuq_arcgis_rest_services_Address_Points_DSSD_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "JSry_arcgis_rest_services_Route_3_Addressing_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "J_arcgis_rest_services_LACDBG_Address_Points_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 245,
+   "err": ""
+  },
+  {
+   "id": "Km_arcgis_rest_services_SmartGovSubAddresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "NA_arcgis_rest_services_Cottonwood_Addresses_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "NqI_arcgis_rest_services_ng911_primary_psaps_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "OMrvu25KcUX35_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "O_arcgis_rest_services_NG9111PSAPPointValues_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "On_arcgis_rest_services_CW_Points_w_Address_FeatureServer_12",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "P2WNA_arcgis_rest_services_Peroria_Addresses_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "P2WNA_arcgis_rest_services_Potomac_Addresses_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "PPO6ob_arcgis_rest_services_StudyAreaAddress_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "SFO3iTjgFX_arcgis_rest_services_Address_Join_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "WofKfQhH_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "field": "edit_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "Wzi_arcgis_rest_services_NCRPO_MCD_Addresses_FeatureServer_0",
+   "field": "lastedited",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "X_arcgis_rest_services_Alpena_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "YH0_arcgis_rest_services_Site_Address_Points_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "ZN_arcgis_rest_services_Town_Preference_WFL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_Find_Locations_in_Address_Points_filt_radon_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_GIS_Participant_Addresses_2019_deidentified_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_arcgis_rest_services_1940_Address_Points_JG_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_arcgis_rest_services_IQA_grantees_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_arcgis_rest_services_Remote_Address_Points_FeatureServer_10",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_arcgis_rest_services_Westside_AddressPoints_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_gov_server_rest_services_Address_Points_602_FeatureServer_1",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_rest_services_DPZ_Curbs_2006_points_address_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_rest_services_Grayton_Parcels_and_Addresses_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_rest_services_NG911_PSAPs_GDH_Weekly_Report_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_rest_services_SC_Address_Grid_Intersections_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_rest_services_Vacation_Rental_Address_Layer_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ajG76dg_arcgis_rest_services_HPOAddresses__1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_Addresses_06042026_WFL1_FeatureServer_3",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_Addresses_and_responses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_Biosolid_Site_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_Milbridge_911_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_Wauconda_Site_Addresses_FeatureServer_0",
+   "field": "update_",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "c_arcgis_rest_services_Saluda_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ces_Northside_Sales_2015_2023_Address_Points_FeatureServer_0",
+   "field": "editeddate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "ces_Residential_Address_Points_for_Analysis_FeatureServer_66",
+   "field": "editdate",
+   "changed": 902,
+   "err": ""
+  },
+  {
+   "id": "cgis_rest_services_911_Addresses_in_Snowshoe_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 279,
+   "err": ""
+  },
+  {
+   "id": "cgis_rest_services_AddressesCountyProperties_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_Addressing_Map722025_WFL1_FeatureServer_3",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_Busty_Road_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_Grahamtown_Address_Points_FeatureServer_9",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "cgis_rest_services_Property_Address_Features_FeatureServer_0",
+   "field": "editdate",
+   "changed": 17,
+   "err": ""
+  },
+  {
+   "id": "cgis_rest_services_address_points_breezeline_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "cgis_rest_services_fireworks_final_addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "dQbOYiPWy_arcgis_rest_services_AddressPoints_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ervices_Addresses_awayfrom3mi_cemeteries_CWH_FeatureServer_0",
+   "field": "editor",
+   "changed": 199,
+   "err": ""
+  },
+  {
+   "id": "ervices_Owner_and_Mailing_Address_Query_WFL1_FeatureServer_7",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "es_Site_Improvement_Grant_Eligible_Addresses_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "es_WA_Autumn_Lane_Wildfire_of_2026_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "est_services_AddressPoints_E911Transfercalls_FeatureServer_0",
+   "field": "edit_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "est_services_HoustonMap_Planning_and_Development_MapServer_7@TX-2",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "est_services_Indian_Hills_FPD_address_points_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "est_services_SOS_StreetPostalCodeFinder_E911_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "gis_rest_services_AddressUpdate_DCGIS_Ward1_FeatureServer_23",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "gis_rest_services_Address_points_within_NSMZ_FeatureServer_0",
+   "field": "edit_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "gis_rest_services_E911Addresses_Inside_100Yr_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 639,
+   "err": ""
+  },
+  {
+   "id": "gis_rest_services_Floodplain_Addresses_Osage_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "gis_rest_services_KnoxCo_FloodRisk_Addresses_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "gis_rest_services_LC_Geocoded_Addresses_WFL1_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "gis_rest_services_Mammoth_Cave_NG911__Public_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "gis_rest_services_Miccosukee_address_pointss_FeatureServer_0",
+   "field": "edit_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "gis_rest_services_Milbridge_NG_911_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "gis_rest_services_Theoretical_Address_Ranges_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ices_Customer_Irrigation_Address_Points_WFL1_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "ices_Low_Population_with_Address_Points_WFL1_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "ices_map_services_MAP_ANR_ANRATLASFPR_WM_NOCACHE_MapServer_2",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "is_rest_services_AddressPointsRiverside_Clip_FeatureServer_0",
+   "field": "date_edite",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "is_rest_services_Address_Has_Business___View_FeatureServer_0",
+   "field": "editdate",
+   "changed": 694,
+   "err": ""
+  },
+  {
+   "id": "iyTV6_arcgis_rest_services_NASP_Address_view_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "jBW_arcgis_rest_services_DSTT_Address_Points_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "kWL_arcgis_rest_services_SU_Addressing_Layer_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "mFK_arcgis_rest_services_SFHA_Address_Points_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "maps_com_arcgis_rest_services_Public_BDS_Address_MapServer_9",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "nLN_arcgis_rest_services_1920_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "oYk_arcgis_rest_services_Milbridge_Addresses_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "olleges_and_Universities_4063016863268643245_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "on_Meeting_Using_GIS_to_Facilitate_the_NG911_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "qI_arcgis_rest_services_NG911_GDH_GIS_Status_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "qdjIQw4R1_arcgis_rest_services_GP_AddressPts_FeatureServer_0",
+   "field": "edit_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rcgis_rest_services_2025_Yard_Sale_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_AddressPoints_WithFolios_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_Address_Points_in_Buffer_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rcgis_rest_services_Address_Points_reference_FeatureServer_0",
+   "field": "edittime",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rcgis_rest_services_Address_Viewer_Map_Notes_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rcgis_rest_services_HP_Shops_addresses_units_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_MCSONJ_Address_Collector_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rcgis_rest_services_Roxbury_Master_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "resses_Between_March_2018_To_April_2020_WFL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rest_services_Architectural_Legacy_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rest_services_Copy_of_Site_Addresses_3_28_24_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rvices_Addresses_within__25_miles_of_streams_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rvices_Find_Locations_in_Address_Points_filt_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rvices_Impacted_Businesses_by_Address_202002_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "s93fmcFMug_arcgis_rest_services_Address_WFL1_FeatureServer_0",
+   "field": "lasteditor",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "s_Feature_Fire_Stations__8701407324347697906_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "s_rest_services_Grapevine_Parcels_addresses__FeatureServer_0",
+   "field": "user_update_add",
+   "changed": 55,
+   "err": ""
+  },
+  {
+   "id": "s_rest_services_MS4_sites_Addresses_OFFICIAL_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "services_Fairfield_Blythewood_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "sidential_Address_within_1500__of_a_CRC_well_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "st_services_FEMA_Address_Attachments__public_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "tG_arcgis_rest_services_Address_Point_Errors_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "t_services_EM_Building_Damage_Address_Export_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "t_services_PDK_Addresses_and_Centerline_WFL1_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "t_services_Rutherford_College_Address_Points_FeatureServer_0",
+   "field": "edit_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "t_services_Tax_Sales_Addresses_December_2025_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "0DY_arcgis_rest_services_EnerGov_AddrParcels_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "0DY_arcgis_rest_services_Snohomish_Addresses_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "3ECP25Sn_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "field": "edit_date",
+   "changed": 8,
+   "err": ""
+  },
+  {
+   "id": "4aPlhvQwvs_arcgis_rest_services_TEST_Service_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 4000,
+   "err": ""
+  },
+  {
+   "id": "61POPssw_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "8Ri_arcgis_rest_services_Secondary_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "9JX5q_arcgis_rest_services_Site_Addresses_CM_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "DiwEHErgACQrcA3_arcgis_rest_services_Address_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Find_Locations_in_Address_Points_herndon_va2_FeatureServer_0@MD-1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "HNk0Cmg2csuv9p_arcgis_rest_services_Energov3_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Ll1tVX_arcgis_rest_services_RPZ_Address_Pt_2_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "NT3_arcgis_rest_services_E911_JUNE_ADDRESSES_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "N_arcgis_rest_services_Master_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "QvjiKhzBVQV7V_arcgis_rest_services_SITUS_PTS_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "S9sE3M9RybT_arcgis_rest_services_Address_Pts_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 617,
+   "err": ""
+  },
+  {
+   "id": "Site_Structure_Address_Points__External_View_FeatureServer_3",
+   "field": "dateupdate",
+   "changed": 522,
+   "err": ""
+  },
+  {
+   "id": "TpEhyQB_arcgis_rest_services_Addresses_91024_FeatureServer_0",
+   "field": "updatedate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "WYow3ofS_arcgis_rest_services_Address___Town_FeatureServer_4",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "WsOS_arcgis_rest_services_wlv_address_points_FeatureServer_0",
+   "field": "updatedate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "X5q_arcgis_rest_services_DD_Addresses_Public_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Xa_arcgis_rest_services_SiteAddresses_public_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_arcgis_rest_services_E911_Addresses_4_2024_FeatureServer_23",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_arcgis_rest_services_Energov_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_arcgis_rest_services_Juno_Address_Points_DC_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_arcgis_rest_services_LevellandAddressPoints_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_arcgis_rest_services_Richland_AddressPt2022_FeatureServer_0",
+   "field": "edit_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_arcgis_rest_services_Sheridan_Addresses_gdb_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_rest_services_Practice_Topographic_Basins_Sewer_MapServer_2",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_rest_services_Site_Structure_Address_Points_FeatureServer_0@WA-5",
+   "field": "last_edited_date",
+   "changed": 15,
+   "err": ""
+  },
+  {
+   "id": "arcgis_rest_services_Corrales_Addresses_WFL1_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 3467,
+   "err": ""
+  },
+  {
+   "id": "arcgis_rest_services_E911_FEB_ADDRESSES_2025_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_HBAddressScriptTestview_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "arcgis_rest_services_Tuckahoe_Address_Points_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "arcgis_rest_services_master_address_database_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "bNao4Cfr_arcgis_rest_services_address_points_FeatureServer_0",
+   "field": "editdate",
+   "changed": 3907,
+   "err": ""
+  },
+  {
+   "id": "bS_arcgis_rest_services_Surry_E911_PSAP_View_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 18,
+   "err": ""
+  },
+  {
+   "id": "cRP_arcgis_rest_services_Address_Points_Full_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_Address_Points_Index_WFL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_Anna_ETJ_Address_Points_FeatureServer_229",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "cgis_rest_services_Shrewsbury_Address_Points_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "cgis_rest_services_Site_Addresses_OSM_Public_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "d1kK0tx_arcgis_rest_services_AddressPtsAGOWM_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "for_Municipal_District_of_Saint_Stephen_WFL1_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "gis_rest_services_Address_Points_Update_WFL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "gis_rest_services_Canyon_Lake_Address_Points_FeatureServer_0",
+   "field": "date_edite",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "h_arcgis_rest_services_DeweyCo_ADDRESS_POINT_FeatureServer_0",
+   "field": "reveditor",
+   "changed": 3535,
+   "err": ""
+  },
+  {
+   "id": "ial_Addresses_Economic_Development_6_17_26V2_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "iyZAAcRP_arcgis_rest_services_Address_Update_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "lZg_arcgis_rest_services_TensasAddressPoints_FeatureServer_0",
+   "field": "editor_nam",
+   "changed": 4404,
+   "err": ""
+  },
+  {
+   "id": "mOSHoWNZ_arcgis_rest_services_Town_Addresses_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "mage_Assessment___Parcel_Address_Rollup_view_FeatureServer_0",
+   "field": "editdate",
+   "changed": 3469,
+   "err": ""
+  },
+  {
+   "id": "nTr_arcgis_rest_services_Address_Points_2021_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_Addressing_AddressPoints_FeatureServer_0",
+   "field": null,
+   "err": "HTTP Error 403: Forbidden"
+  },
+  {
+   "id": "rcgis_rest_services_Addressing_Addressing_public_MapServer_0",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "rcgis_rest_services_CCPK_AddressPoints_WGS84_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_Site_Addresses_NK_Public_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rest_services_Addresses_within_Fire_District_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rest_services_Greene_Calhoun_addresses_roads_FeatureServer_1",
+   "field": "editor",
+   "changed": 3642,
+   "err": ""
+  },
+  {
+   "id": "rest_services_Hialeah_Gardens_Address_points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rest_services_Hood_River_Site_Address_Public_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rest_services_LahainaStreetsAndAddressPoints_FeatureServer_0",
+   "field": "editor",
+   "changed": 4760,
+   "err": ""
+  },
+  {
+   "id": "rest_services_ToT_E911_Road_and_Address_Data_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "s_Address_Points_without_Readdressing_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "s_Find_Locations_in_Address_Points_centrvle2_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "s_Physical_Addresses_for_Zip_Code_24013_WFL1_FeatureServer_0",
+   "field": "geometry_edit_type",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "s_rest_services_Fairview_Address_Points_2024_FeatureServer_5",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "sdIpPb_arcgis_rest_services_Addresses_Public_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "sses_public_0ff5f102f0014850b137f3c64af8b338_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "sses_public_e6294e415150477cabab0e6e58c126a2_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "st_services_Town_of_Sidney_Address_Data_WFL1_FeatureServer_0",
+   "field": "edit_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "t_services_Shamokin_Address_Points_June_2019_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "teAddresses_122036ab99c2454a9d989f68934b19b0_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "tersect_of_Address_Points_and_buff1mi_rivers_FeatureServer_0",
+   "field": "editor",
+   "changed": 4919,
+   "err": ""
+  },
+  {
+   "id": "vOamkQCWQM5KB8_arcgis_rest_services_E911_SLR_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "v_quest_arcgis_rest_services_Franklin_Public_FeatureServer_1",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "x_arcgis_rest_services_DSMIParcelsAddressPts_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "2YfaSvieL_arcgis_rest_services_Yurok_Address_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "37YZHYH0_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "3oxsPnVw4fnW9_arcgis_rest_services_Addresses_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "4C5C_arcgis_rest_services_address_points_apb_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "4JC_arcgis_rest_services_Rutland_County_E911_FeatureServer_0",
+   "field": "updatedate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "4XSFR9wSzw_arcgis_rest_services_ADDRESS_DATA_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "5IxwbSz_arcgis_rest_services_AddressesOnline_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "6FlIW_arcgis_rest_services_NP_Address_Points_FeatureServer_0",
+   "field": "update_key",
+   "changed": 2436,
+   "err": ""
+  },
+  {
+   "id": "ASGpv7gPaTEUL_arcgis_rest_services_Addresses_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Blhlg_arcgis_rest_services_RHUEnochAddresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Blhlg_arcgis_rest_services_UtahAddressPoints_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "CDFVQ_arcgis_rest_services_Address_Points_C2_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "CjdNui_arcgis_rest_services_addresses_030317_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "DCrBlhlg_arcgis_rest_services_EnochAddresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Dl4j6iT0i_arcgis_rest_services_AddressPoints_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "DlIH33l3_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "FwVI_arcgis_rest_services_9_1_1_Site_Address_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Fx_arcgis_rest_services_Anna_ETJ_Addresses_FeatureServer_157",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "GAlRIIIg_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "GTj4xmYDtu_arcgis_rest_services_911addresses_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "GtVEXzaX_arcgis_rest_services_Address_Point2_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "HgyUvYRWd_arcgis_rest_services_AddressPoints_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "HoWNZ_arcgis_rest_services_Village_Addresses_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "HtVstUaG_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "field": "updatedt",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "Hyco_Boat_Docks_with_Parcel_and_Address_Data_FeatureServer_0",
+   "field": "lastupdateby",
+   "changed": 910,
+   "err": ""
+  },
+  {
+   "id": "J7UaClOw_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "Klwi2PRa_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "field": "dateupdated",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "QE7iy_arcgis_rest_services_Addresses_Mar2024_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "QGbyiuCh_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "RTu_arcgis_rest_services_Sample_Addresses_bd_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "SpUPMP3Z_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "U4FaQtqrjGWfU_arcgis_rest_services_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "W9xjDnZ35_arcgis_rest_services_911_Addresses_FeatureServer_0",
+   "field": "reveditor",
+   "changed": 1772,
+   "err": ""
+  },
+  {
+   "id": "XcE_arcgis_rest_services_911Address_20141030_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "YDMVmmxMeM_arcgis_rest_services_Crash_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "YDtu_arcgis_rest_services_PHYSICAL_ADDRESSES_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "YeF6EBJ1_arcgis_rest_services_Addresses_View_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 190,
+   "err": ""
+  },
+  {
+   "id": "_arcgis_rest_services_AddresspointsDuplicate_FeatureServer_0",
+   "field": "update_",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_arcgis_rest_services_Cesar_Chavez_Addresses_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "_rest_services_COAHOMA_COUNTY_ADDRESS_POINTS_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_rest_services_E911Roads_flowlines_intersect_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "_services_Parcel_and_Address_Data_Civic_Plus_FeatureServer_1",
+   "field": "last_edited_date",
+   "changed": 190,
+   "err": ""
+  },
+  {
+   "id": "aiian_Gardens_CA_Master_Address_Table__View_FeatureServer_10",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "akSFUjJ_arcgis_rest_services_Address_Points_FeatureServer_15",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "arcgis_rest_services_Property_Address_Points_FeatureServer_0",
+   "field": "lastupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "arcgis_rest_services_Unincorp_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "arcgis_rest_services_mclean_readdress_points_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "aytLCyS0D_arcgis_rest_services_AddressPoints_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "ble_Lake_Address_Points_Master_for_Collector_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "ces_WA_Old_Trails_Wildfire_of_2026_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_AddressPoints_Provisional_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_Bronxville_Address_Points_FeatureServer_0",
+   "field": "dateupdated",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "cgis_rest_services_Hosted_Address_Point__HFV_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "cgis_rest_services_NG911_RCL___SSAP_Examples_FeatureServer_1",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "cgis_rest_services_Rubbertown_Addresses_WFL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "dZd_arcgis_rest_services_Address_Points_Test_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ermits_Peak_Damage_Assessment_Address_Points_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 1042,
+   "err": ""
+  },
+  {
+   "id": "est_services_20171228_Kakaako_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "est_services_Address_and_OpenGOV_Permit_Join_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 1525,
+   "err": ""
+  },
+  {
+   "id": "est_services_CaseStudySchuylerMcAuliffe_WFL1_FeatureServer_0",
+   "field": "updatesour",
+   "changed": 2968,
+   "err": ""
+  },
+  {
+   "id": "est_services_Crownpoint_address_point_update_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "est_services_Location_SITUS_ADDRESS_PT_point_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "gis_rest_services_BV_Site_Addresses_20240719_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "gis_rest_services_Defiance_County_Addresses_FeatureServer_83",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "gis_rest_services_Lake_Address_Points_Master_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "gis_rest_services_Residential_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "h9A9gmot5dRco_arcgis_rest_services_Addresses_FeatureServer_3",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ices_Barre_City_Infill_Housing_Analysis_WFL1_FeatureServer_8",
+   "field": "updatedate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "ices_Meagher_County_Address_Points_June_2025_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "is_rest_services_Address_TaxLienAuction_2024_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "is_rest_services_Carmel_AddressPoints_050626_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "is_rest_services_Find_Clusters_for_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "is_rest_services_Flooded_FACILITY_Sites_E911_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "is_rest_services_Independence_Addresses_WFL1_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "is_rest_services_Sierra_FTTH___e911_ALL_PONS_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "jn17FVjr_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "jtv_arcgis_rest_services_Lake_Address_Points_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "lbd_arcgis_rest_services_Address_Points_view_FeatureServer_0",
+   "field": "last_edite",
+   "changed": 133,
+   "err": ""
+  },
+  {
+   "id": "m2tY5bzqz10C_arcgis_rest_services_E911Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "mc98J4JC_arcgis_rest_services_MH_e911Addison_FeatureServer_0",
+   "field": "updatesour",
+   "changed": 1270,
+   "err": ""
+  },
+  {
+   "id": "nia_VRP_Potential_Brownfields_Site_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ov_arcgis2_rest_services_ADDRESS_POINTS_COMM_FeatureServer_0",
+   "field": null,
+   "err": "HTTP Error 522: <none>"
+  },
+  {
+   "id": "p1M_arcgis_rest_services_SnowPlowedAddresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "pn2_arcgis_rest_services_2023_Address_points_FeatureServer_0",
+   "field": "edit_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rcgis_rest_services_Hanover_NG911_Exceptions_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rcgis_rest_services_Town_of_Groton_Addresses_FeatureServer_0",
+   "field": "date_edited",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rest_services_AddresseditSchema22_publicview_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rest_services_Curbside_Addressing_Final_WFL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rest_services_Hinesburg_Planning_Zoning_WFL1_FeatureServer_2",
+   "field": "updatedate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rest_services_Lake_Address_Points_by_Section_FeatureServer_0",
+   "field": "editdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "rest_services_Surfside_Parcles_and_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "rvices_Camas_County_Roads_and_Address_Points_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "s93fmcFMug_arcgis_rest_services_Address_View_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "s_Addresses__2025_09_02__Gramercy_Community_FeatureServer_21",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "s_rest_services_Addressing_Addressing_public_FeatureServer_0@MN-2",
+   "field": null,
+   "err": "<urlopen error timed out>"
+  },
+  {
+   "id": "s_rest_services_CCCFPD_Draft_Address_Points_FeatureServer_14",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "s_rest_services_Shenandoah_Address_Map_WFL1_FeatureServer_11",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "s_rest_services_Sioux_County_Addressing_WFL1_FeatureServer_2",
+   "field": "dateupdate",
+   "changed": 1720,
+   "err": ""
+  },
+  {
+   "id": "services_AddressLayer_Census9706_Residential_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "sses_public_f42ca5814db04f79a8d83bc0f50b5212_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "tMi_arcgis_rest_services_Address_Points_view_FeatureServer_0",
+   "field": "editdate",
+   "changed": 346,
+   "err": ""
+  },
+  {
+   "id": "tVX_arcgis_rest_services_RPZ_Address_Points2_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "t_services_Address_Points_Layers_WFL1_Public_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "t_services_Hanover_BEAD_Grant_Address_Points_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "teAddresses_78438353268d48b3ae6eb590e09a6c1a_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "tjNW10pz_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "vices_GISC_Publish_CMV_FGDB_202204_gdb_view_FeatureServer_33",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "vices_MammothLakes_Address_Verification_WFL1_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "vices_Meagher_County_Addressing_Basemap_WFL1_FeatureServer_0",
+   "field": "dateupdate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "vices_Ridgeside_Labels_StreetAddresses_WFL1_FeatureServer_27",
+   "field": "last_edite",
+   "changed": 1064,
+   "err": ""
+  },
+  {
+   "id": "w5d_arcgis_rest_services_Calais_VT_Resources_FeatureServer_4",
+   "field": "updatedate",
+   "changed": 0,
+   "err": ""
+  },
+  {
+   "id": "wSRRTu_arcgis_rest_services_Sample_Addresses_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "y_arcgis_rest_services_SheridanAddresses2023_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
+  },
+  {
+   "id": "ytLCyS0D_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "field": "last_edited_date",
+   "changed": 3,
+   "err": ""
+  },
+  {
+   "id": "ze4GYYo_arcgis_rest_services_Addresses_No_BB_FeatureServer_0",
+   "field": null,
+   "err": "no_delta_field"
   }
  ]
 }
