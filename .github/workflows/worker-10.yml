@@ -1,0 +1,29 @@
+name: worker-10
+# STEP 10 —— 宗地地址扩采
+# 只有这一步的差异写在下面；执行机制全在 _worker-template.yml。
+on:
+  workflow_dispatch:
+    inputs:
+      layers:      { description: "只跑这些层（逗号分隔）", default: "" }
+      max_layers:  { description: "只跑前 N 层（灰度用，0=全部）", default: "0" }
+      workers:     { description: "并发线程数", default: "4" }
+      unit_rows:   { description: "单元行数", default: "100000" }
+      offset:      { description: "批量游标起点", default: "0" }
+      size:        { description: "本批层数", default: "20" }
+permissions: { contents: write, actions: write }
+concurrency:
+  group: worker-10
+  cancel-in-progress: false
+jobs:
+  run:
+    uses: ./.github/workflows/_worker-template.yml
+    with:
+      step: "10"
+      layers: ${{ github.event.inputs.layers || '' }}
+      max_layers: ${{ github.event.inputs.max_layers || '0' }}
+      workers: ${{ github.event.inputs.workers || '4' }}
+      unit_rows: ${{ github.event.inputs.unit_rows || '100000' }}
+      offset: ${{ github.event.inputs.offset || '0' }}
+      size: ${{ github.event.inputs.size || '200' }}
+      report: "true"
+      single: "true"

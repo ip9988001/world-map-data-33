@@ -50,7 +50,7 @@ def load_policy(step):
         try:
             doc = json.load(open(STEPS_F, encoding="utf-8"))
             ext = (doc.get("steps") or {}).get(step) or {}
-            if not ext.get("geom_in") and (doc.get("engine") or {}).get("geom_allow"):
+            if "geom_in" not in ext and (doc.get("engine") or {}).get("geom_allow"):
                 ext = dict(ext, geom_in=list(doc["engine"]["geom_allow"]))
             for k, v in ext.items():
                 if isinstance(v, dict) and isinstance(pol.get(k), dict):
@@ -70,13 +70,18 @@ def _rows_from_csv(path=None):
         rows = list(csv.DictReader(f))
     # ★ layer_id 会撞车（实测 245 个重复、56 个跨州）：撞车的加 `@<state>-<n>` 后缀。
     #   不唯一化就会「--layer 反查命中别的州那一行」→ 静默采错数据，比报错更坏。
+    # ★ 列名随清单而异：layer_plan.csv 用 layer_id，batch1.csv 用 layer。
+    #   只认 layer_id 会让 batch1 的 1265 行全落到空键 ""，然后把每一行都改成 "@NC-1"，
+    #   url 索全数查不中 → 选层静默归零。
+    def _lid(r):
+        return r.get("layer_id") or r.get("layer") or r.get("id") or ""
     cnt = {}
     for r in rows:
-        lid = r.get("layer_id") or ""
+        lid = _lid(r)
         cnt[lid] = cnt.get(lid, 0) + 1
     idx = {}
     for r in rows:
-        lid = r.get("layer_id") or ""
+        lid = _lid(r)
         if cnt.get(lid, 0) > 1:
             idx[lid] = idx.get(lid, 0) + 1
             r["layer_id"] = "%s@%s-%d" % (lid, r.get("state") or "na", idx[lid])
@@ -84,14 +89,37 @@ def _rows_from_csv(path=None):
 
 
 def _norm_plan_row(r):
-    return {"id": r.get("layer_id") or r.get("id"),
+    # ★ 字段名随清单而异：layer_plan.csv 用 row_count，situs_layers.csv 用 rows，
+    #   batch1.csv 用 declared/layer。只认一种就会让整批选层静默归零。
+    raw = r.get("row_count") or r.get("rows") or r.get("declared")
+    return {"id": r.get("layer_id") or r.get("layer") or r.get("id"),
             "state": r.get("state") or "",
-            "title": r.get("title") or r.get("layer_id") or "",
+            "title": r.get("title") or r.get("layer_id") or r.get("layer") or "",
             "svc": r.get("svc") or "FeatureServer",
             "url": r.get("url") or "",
-            "expect": int(r["row_count"]) if (r.get("row_count") or "").isdigit() else None,
+            "expect": int(raw) if str(raw or "").isdigit() else None,
             "plan": r.get("plan") or "",
-            "geom": r.get("geom") or ""}
+            "geom": r.get("geom") or "",
+            "grade": r.get("grade") or "",
+            "eff": r.get("eff") or ""}
+
+
+_URL_IDX = None
+
+
+def _url_index():
+    """situs_layers.csv 建 layer_id → url 索引（batch1.csv 只存 layer/state/grade/declared/eff）。"""
+    global _URL_IDX
+    if _URL_IDX is None:
+        _URL_IDX = {}
+        f = os.path.join(HERE, "situs_layers.csv")
+        if os.path.exists(f):
+            with open(f, encoding="utf-8") as fh:
+                for r in csv.DictReader(fh):
+                    lid, url = r.get("layer_id") or "", r.get("url") or ""
+                    if lid and url:
+                        _URL_IDX[lid] = url
+    return _URL_IDX
 
 
 # where 表达式里的字段名 → plan 行里的真实字段（写 row_count 但行里叫 expect，曾让过滤静默失效）
@@ -132,8 +160,38 @@ def select_layers(step, limit=0, policy=None):
         rows = json.load(open(LAYERS_F, encoding="utf-8")) if os.path.exists(LAYERS_F) else []
         out = [dict(r) for r in rows]
     else:
-        rows = [_norm_plan_row(r) for r in _rows_from_csv()]
+        # ★ STEP-10 这类步的选层清单不是 layer_plan.csv：宗地层是 Polygon/Polyline，
+        #   STEP-01 预检按几何白名单早把它们 skip 了，永远不会进 plan。靠 select.file 指路。
+        f = sel.get("file")
+        csv_path = None
+        if f:
+            csv_path = f if os.path.isabs(f) else os.path.join(ROOT, f)
+            if not os.path.exists(csv_path):
+                csv_path = os.path.join(HERE, os.path.basename(f))
+        rows = [_norm_plan_row(r) for r in _rows_from_csv(csv_path)]
+        # 清单里没有 url 的（batch1.csv 就是），从 situs_layers.csv 补回来
+        if any(not r["url"] for r in rows):
+            idx_url = _url_index()
+            for r in rows:
+                if not r["url"]:
+                    # 唯一化后缀 @STATE-n 不是真层名，查 url 要剥掉
+                    r["url"] = (idx_url.get(r["id"])
+                                or idx_url.get((r["id"] or "").split("@")[0]) or "")
         out = [r for r in rows if r["url"]]
+        if sel.get("grade"):
+            want_g = {str(x).lower() for x in sel["grade"]}
+            out = [r for r in out if (r.get("grade") or "").lower() in want_g]
+        if sel.get("eff_min") is not None:
+            # ★ 有效率口径不统一：situs 表用 0~1 小数，batch1 表用 0~100 百分数。
+            #   直接比较会让 eff_min=0.2 把 100.0 判成不达标 → 整批归零。
+            def _eff01(v):
+                try:
+                    x = float(v)
+                except (TypeError, ValueError):
+                    return None
+                return x / 100.0 if x > 1 else x
+            _m = float(sel["eff_min"])
+            out = [r for r in out if (_eff01(r.get("eff")) is not None and _eff01(r.get("eff")) >= _m)]
         # ★ skip/empty 是「这层不该采」的结论，与选法无关：放在所有过滤之前统一剔除
         if not sel.get("include_skip"):
             out = [r for r in out if (r.get("plan") or "") not in ("skip", "empty")]
@@ -251,7 +309,11 @@ def _resolve_layer(step, layer):
         try:
             if src == "step":
                 pol = load_policy(step)
-                pool = select_layers(step, limit=0, policy=dict(pol, select=dict(pol.get("select") or {}) | {"_force_plan": True}))
+                # ★ 反查必须关掉 bulk 游标窗口：05/10 是 offset+size 分批推进，
+                #   开着窗口时 matrix 里第 N 层会反查不到 → 全部 unknown_layer 秒挂。
+                sel = {k: v for k, v in (pol.get("select") or {}).items()
+                       if k not in ("mode", "offset", "batch")}
+                pool = select_layers(step, limit=0, policy=dict(pol, select=sel))
             elif src == "plan":
                 pool = [_norm_plan_row(r) for r in _rows_from_csv()]
             else:
@@ -284,7 +346,7 @@ def _pilot_cmd(cfg_file, layer, a):
 
 
 # ---------------- 配置校验 / 展开（steps.json 是唯一参数来源） ----------------
-KINDS = ("bootstrap", "preflight", "collect", "report")
+KINDS = ("bootstrap", "preflight", "collect", "report", "analyze", "delta", "parcel_situs")
 
 
 def validate(path=None):
@@ -303,7 +365,7 @@ def validate(path=None):
     if not eng.get("channels"):
         errs.append("engine.channels 缺失（应为 keyset/ids/offset）")
     steps = cfg.get("steps") or {}
-    for st in ("00", "01", "02", "03", "04", "05", "06"):
+    for st in sorted(steps):
         if st not in steps:
             errs.append("缺 STEP %s 的 policy" % st)
             continue
@@ -312,7 +374,7 @@ def validate(path=None):
             errs.append("STEP %s kind 非法：%r（只允许 %s）" % (st, pol.get("kind"), "/".join(KINDS)))
         if not pol.get("title"):
             errs.append("STEP %s 缺 title" % st)
-        if pol.get("kind") == "collect":
+        if pol.get("kind") in ("collect", "parcel_situs"):
             if not pol.get("select"):
                 errs.append("STEP %s 是 collect 但没有 select" % st)
             if "{layer}" not in (pol.get("tag") or ""):

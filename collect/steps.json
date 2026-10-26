@@ -1,6 +1,6 @@
 {
  "schema": "v2.1",
- "_comment": "自研模式 v2.1 的唯一参数来源。7 个工人入口读它，7 个工头读它，STEP-0X.md 与它交叉校验。改参数只改这里。",
+ "_comment": "自研模式 v2.1 的唯一参数来源。11 个工人入口读它，11 个工头读它，STEP-0X.md 与它交叉校验。改参数只改这里。",
  "engine": {
   "channels": [
    "keyset",
@@ -343,6 +343,50 @@
     "cmds": [
      "--review pass --note \"项目收尾\"",
      "--kick 09"
+    ]
+   }
+  },
+  "10": {
+   "kind": "parcel_situs",
+   "title": "宗地地址扩采",
+   "desc": "从 Polygon/Polyline 层里挑出真正带房产地址字段的层；按实测有效率只采高产出层，不按声明行数全采",
+   "select": {
+    "source": "layer_plan",
+    "file": "collect/batch1.csv",
+    "grade": [
+     "strong",
+     "weak"
+    ],
+    "eff_min": 0.2,
+    "mode": "bulk",
+    "order": "rows_desc",
+    "offset": 0,
+    "batch": 200
+   },
+   "workers": 4,
+   "unit_rows": 100000,
+   "tag": "collect-step10-{layer}",
+   "geom_in": [],
+   "evidence": [
+    "report",
+    "releases",
+    "checkpoint",
+    "layer_plan.csv",
+    "state"
+   ],
+   "accept": {
+    "eff_min": 0.2,
+    "pick_layers_min": 1000,
+    "budget_min_max": 900
+   },
+   "supervise": {
+    "stall_min": 180,
+    "doc": "collect/steps/STEP-10.md",
+    "wf": "worker-10.yml",
+    "wake_reason": "宗地扩采：工人已停手，等大脑判验收",
+    "cmds": [
+     "--kick 10 --offset 0 --size 200",
+     "--review pass --note \"宗地扩采批1收尾\""
     ]
    }
   }

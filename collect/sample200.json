@@ -1,0 +1,21 @@
+{
+ "sample_layers": 200,
+ "unknown_layers": 20,
+ "buckets": {
+  "3": 76,
+  "2": 554,
+  "1": 2117,
+  "0": 2045
+ },
+ "sample_by_bucket": {
+  "B0": 20,
+  "B1": 50,
+  "B2": 70,
+  "B3": 60
+ },
+ "sample_rows": 126735257,
+ "pool_rows": 263542797,
+ "cover_pct": 48.1,
+ "unknown_pool_layers": 362,
+ "unknown_pool_rows": 8793696
+}

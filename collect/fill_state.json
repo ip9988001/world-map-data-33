@@ -1,0 +1,48 @@
+{
+ "fixed_layers": 224,
+ "src": {
+  "name_abbr": 144,
+  "full_name": 54,
+  "none": 4359,
+  "url_abbr": 26
+ },
+ "still_unknown_layers": 4359,
+ "still_unknown_rows_strong_weak": 102167935,
+ "strong_by_state_top": {},
+ "states_strong": 47,
+ "strong_rows_known": 81493798,
+ "top": [
+  [
+   "CA",
+   34602321
+  ],
+  [
+   "OH",
+   13758718
+  ],
+  [
+   "WA",
+   6177508
+  ],
+  [
+   "TX",
+   3838604
+  ],
+  [
+   "FL",
+   3055140
+  ],
+  [
+   "MA",
+   2951551
+  ],
+  [
+   "IL",
+   2135955
+  ],
+  [
+   "GA",
+   1980246
+  ]
+ ]
+}

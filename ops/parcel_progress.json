@@ -1,0 +1,11 @@
+{
+ "ts": "2026-10-26T00:14:11Z",
+ "done_layers": 1227,
+ "total_layers": 1253,
+ "fetched": 34236118,
+ "valid": 31339209,
+ "err": 0,
+ "total_declared": 38391336,
+ "pct": 89.18,
+ "elapsed_min": 966.5
+}

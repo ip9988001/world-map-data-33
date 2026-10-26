@@ -1,0 +1,60 @@
+{
+ "todo": 4359,
+ "fixed": 3703,
+ "fixed_rows": 120712691,
+ "src": {
+  "geo": 3703,
+  "outside": 456,
+  "nogeom": 6,
+  "nofeat": 187,
+  "err:TimeoutError": 4,
+  "err:HTTPError": 2,
+  "err:URLError": 1
+ },
+ "still_unknown_layers": 656,
+ "still_unknown_rows_sw": 8793696,
+ "states_strong": 51,
+ "strong_rows_known": 127158423,
+ "top": [
+  [
+   "CA",
+   40452125
+  ],
+  [
+   "OH",
+   15670226
+  ],
+  [
+   "WA",
+   15067289
+  ],
+  [
+   "FL",
+   8602593
+  ],
+  [
+   "TX",
+   6220952
+  ],
+  [
+   "IL",
+   4776320
+  ],
+  [
+   "MA",
+   3308353
+  ],
+  [
+   "GA",
+   3240145
+  ],
+  [
+   "AZ",
+   2523747
+  ],
+  [
+   "CO",
+   2160415
+  ]
+ ]
+}
