@@ -1,6 +1,6 @@
 {
  "step": "10",
- "at": "2026-10-26T16:45:39Z",
+ "at": "2026-10-26T17:15:46Z",
  "want": [
   "report",
   "releases",
@@ -10894,7 +10894,7 @@
    },
    "last_error": null,
    "budget": {
-    "minutes_used": 711,
+    "minutes_used": 340,
     "minutes_cap": 1800,
     "warn_ratio": 0.8,
     "stop_ratio": 0.95,
@@ -10995,7 +10995,7 @@
      "status": "done"
     },
     "10": {
-     "status": "kicked",
+     "status": "in_review",
      "at": "2026-10-26T16:27:54Z",
      "note": "第10环接回正牌流水线：run_step_10.py + worker-10.yml(matrix 逐层)，本机零参与"
     }

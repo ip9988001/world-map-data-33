@@ -3,7 +3,7 @@
  "current_step": "10",
  "mode": "self-drive-v2",
  "budget": {
-  "minutes_used": 711,
+  "minutes_used": 340,
   "minutes_cap": 1800,
   "warn_ratio": 0.8,
   "stop_ratio": 0.95,
@@ -131,9 +131,9 @@
  "last_error": null,
  "wake": {
   "signature": "1020b056a7fe0a38",
-  "at": "2026-10-26T16:45:39Z",
+  "at": "2026-10-26T17:15:46Z",
   "reason": "宗地扩采：工人已停手，等大脑判验收",
-  "issue": "https://github.com/ip9988001/world-map-data-33/issues/9",
+  "issue": null,
   "count": 9
  }
 }
