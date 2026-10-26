@@ -131,9 +131,9 @@
  "last_error": null,
  "wake": {
   "signature": "40c1638ad0869109",
-  "at": "2026-10-26T18:15:39Z",
+  "at": "2026-10-26T18:45:44Z",
   "reason": "宗地扩采：工人已停手，等大脑判验收",
-  "issue": 9,
+  "issue": null,
   "count": 10
  }
 }
