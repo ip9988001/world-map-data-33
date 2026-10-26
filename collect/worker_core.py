@@ -347,7 +347,9 @@ def select_layers(step, limit=0, policy=None):
             out = [r for r in out if (r.get("geom") or "").lower() in allow]
         # ★ 已采层剔除必须在 bulk 窗口切片**之前**：
         #   先切 [off:off+size] 再剔除，切出来的 20 层里仍混着已采层，等于白跑。
-        if sel.get("skip_done"):
+        # ★ 显式点名要采的层（--layers）不算续采，不能剔：冒烟测的就是已采层。
+        #   自动选层才走 skip_done。
+        if sel.get("skip_done") and not sel.get("layers"):
             done = done_layers(step)
             if done:
                 _b = len(out)
