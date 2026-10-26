@@ -143,17 +143,21 @@ def _gh(path):
         return None
 
 
-def parcel_done():
-    """本机 4.7G 解析产物（P3 生成）→ 已完成层字典。文件不存在时返回空，不是错误。"""
+def parcel_audit_layers():
+    """parcel_done.json 里的全部层（含未完成）—— 用于「本机说没采完」的否决权。"""
     f = os.path.join(HERE, DONE_NAME)
     if not os.path.exists(f):
         return {}
     try:
-        doc = json.load(open(f, encoding="utf-8"))
+        return json.load(open(f, encoding="utf-8")).get("layers") or {}
     except Exception as e:
         print("⚠️ parcel_done.json 读不动，按「无已采层」处理：%s" % str(e)[:80])
         return {}
-    return {k: v for k, v in (doc.get("layers") or {}).items() if v.get("complete")}
+
+
+def parcel_done():
+    """本机 4.7G 解析产物（P3 生成）→ 已完成层字典。文件不存在时返回空，不是错误。"""
+    return {k: v for k, v in parcel_audit_layers().items() if v.get("complete")}
 
 
 def release_done(step="10", use_cache=True):
@@ -211,11 +215,22 @@ def release_done(step="10", use_cache=True):
 
 
 def done_layers(step="10"):
-    """已采层全集 = 本机清单（精确）+ Releases（tag）。"""
-    done = dict(parcel_done())
+    """已采层全集 = 本机清单（精确）+ Releases（tag）
+
+    ★ 优先级：本机逐层数行 > Releases 的 tag 浅判。
+      2026-10-26 那次误跑的产物正好暴露了这一点：4 层在 Releases 里
+      有 tag 有 checkpoint，但本机实测缺口还在（partial）。
+      若让 tag 浅判覆盖本机结论，这 4 层的缺口就永久钉死、永远不会被补。
+      所以：本机明确说 complete=false 的层，一律不因为 tag 存在而跳过。
+    """
+    audit = parcel_audit_layers()
+    done = {k: v for k, v in audit.items() if v.get("complete")}
     for lid, rec in release_done(step).items():
-        if rec.get("complete"):
-            done.setdefault(lid, rec)
+        if not rec.get("complete"):
+            continue
+        if lid in audit and not audit[lid].get("complete"):
+            continue
+        done.setdefault(lid, rec)
     return done
 
 
