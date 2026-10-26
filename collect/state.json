@@ -3,7 +3,7 @@
  "current_step": "10",
  "mode": "self-drive-v2",
  "budget": {
-  "minutes_used": 9,
+  "minutes_used": 711,
   "minutes_cap": 1800,
   "warn_ratio": 0.8,
   "stop_ratio": 0.95,
@@ -67,7 +67,7 @@
   "layers": "batch1",
   "workers": 4
  },
- "awaiting_brain": false,
+ "awaiting_brain": true,
  "brain_review": {
   "at": "2026-10-25T01:04:27Z",
   "step": "09",
@@ -119,7 +119,7 @@
    "status": "done"
   },
   "10": {
-   "status": "kicked",
+   "status": "in_review",
    "at": "2026-10-26T16:27:54Z",
    "note": "第10环接回正牌流水线：run_step_10.py + worker-10.yml(matrix 逐层)，本机零参与"
   }
@@ -130,10 +130,10 @@
  "paused_at": "2026-10-23T23:14:35Z",
  "last_error": null,
  "wake": {
-  "signature": "8f7e33fb9c399c45",
-  "at": "2026-10-24T09:01:22Z",
-  "reason": "县市碎片：工人已停手，等大脑判验收",
-  "issue": null,
-  "count": 8
+  "signature": "1020b056a7fe0a38",
+  "at": "2026-10-26T16:45:39Z",
+  "reason": "宗地扩采：工人已停手，等大脑判验收",
+  "issue": "https://github.com/ip9988001/world-map-data-33/issues/9",
+  "count": 9
  }
 }

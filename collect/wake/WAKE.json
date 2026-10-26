@@ -1,18 +1,21 @@
 {
- "step": "09",
- "at": "2026-10-25T01:01:51Z",
+ "step": "10",
+ "at": "2026-10-26T16:45:39Z",
  "want": [
   "report",
-  "releases"
+  "releases",
+  "checkpoint",
+  "layer_plan.csv",
+  "state"
  ],
  "facts": {
   "report": {
-   "sha": "6a8fe927ad7f",
-   "freshest": "2026-10-24T16:16:16Z",
-   "layers": 1117,
-   "with_rows": 1115,
+   "sha": "c7c5b17c1cb4",
+   "freshest": "2026-10-26T16:31:17Z",
+   "layers": 1130,
+   "with_rows": 1128,
    "worst_diff": 0,
-   "total_rows": 84201583,
+   "total_rows": 88199069,
    "failed": [
     "l_org_arcgis_rest_services_Weston_Basemap_cache_MapServer_20",
     "rcgis_rest_services_Addressing_Addressing_public_MapServer_0"
@@ -10070,37 +10073,965 @@
      "diff": 0.0,
      "elapsed_s": 2.3,
      "err": ""
+    },
+    {
+     "id": "6zC_arcgis_rest_services_parcel_file_current_FeatureServer_0",
+     "count": 377940,
+     "rows": 377940,
+     "parts": 8,
+     "diff": 0.0,
+     "elapsed_s": 131.8,
+     "err": ""
+    },
+    {
+     "id": "9ZtPWOn_arcgis_rest_services_ValueComparison_FeatureServer_0",
+     "count": 192607,
+     "rows": 192607,
+     "parts": 4,
+     "diff": 0.0,
+     "elapsed_s": 129.9,
+     "err": ""
+    },
+    {
+     "id": "Buildable_Lands_Inventory__Update_June_2022__FeatureServer_0",
+     "count": 245074,
+     "rows": 245074,
+     "parts": 6,
+     "diff": 0.0,
+     "elapsed_s": 72.0,
+     "err": ""
+    },
+    {
+     "id": "Parcels_Within_500m_From_ParksandGreenspaces_FeatureServer_0",
+     "count": 1008227,
+     "rows": 1008227,
+     "parts": 27,
+     "diff": 0.0,
+     "elapsed_s": 166.0,
+     "err": ""
+    },
+    {
+     "id": "cgis_rest_services_AGOL_Parcels_PacificTime_FeatureServer_17",
+     "count": 211139,
+     "rows": 211139,
+     "parts": 6,
+     "diff": 0.0,
+     "elapsed_s": 63.3,
+     "err": ""
+    },
+    {
+     "id": "gis_rest_services_KC_Parcels__Open_Data_View_FeatureServer_3",
+     "count": 202980,
+     "rows": 202980,
+     "parts": 6,
+     "diff": 0.0,
+     "elapsed_s": 55.0,
+     "err": ""
+    },
+    {
+     "id": "is_rest_services_Zoning_Initiation_Date_WFL1_FeatureServer_1",
+     "count": 243950,
+     "rows": 243950,
+     "parts": 6,
+     "diff": 0.0,
+     "elapsed_s": 107.9,
+     "err": ""
+    },
+    {
+     "id": "lopment_Capacity_by_Development_Site_Current_FeatureServer_0",
+     "count": 164609,
+     "rows": 164609,
+     "parts": 4,
+     "diff": 0.0,
+     "elapsed_s": 118.7,
+     "err": ""
+    },
+    {
+     "id": "ntymd_gov_arcgis_rest_services_GDX_buildings_FeatureServer_0",
+     "count": 347176,
+     "rows": 347176,
+     "parts": 7,
+     "diff": 0.0,
+     "elapsed_s": 171.9,
+     "err": ""
+    },
+    {
+     "id": "rest_services_Existing_Land_Use__10_category_FeatureServer_0",
+     "count": 245376,
+     "rows": 245376,
+     "parts": 6,
+     "diff": 0.0,
+     "elapsed_s": 69.3,
+     "err": ""
+    },
+    {
+     "id": "y3Y2xxSi397ufGR_arcgis_rest_services_Parcels_FeatureServer_0",
+     "count": 188799,
+     "rows": 188799,
+     "parts": 4,
+     "diff": 0.0,
+     "elapsed_s": 90.0,
+     "err": ""
+    },
+    {
+     "id": "zNll27nt9ZtPWOn_arcgis_rest_services_Parcels_FeatureServer_0",
+     "count": 214657,
+     "rows": 214657,
+     "parts": 6,
+     "diff": 0.0,
+     "elapsed_s": 89.9,
+     "err": ""
+    },
+    {
+     "id": "zfsFsB5_arcgis_rest_services_Tax_Parcels2018_FeatureServer_0",
+     "count": 354952,
+     "rows": 354952,
+     "parts": 8,
+     "diff": 0.0,
+     "elapsed_s": 119.1,
+     "err": ""
     }
    ]
   },
-  "releases": []
+  "releases": [
+   {
+    "tag": "collect-step10-zfsFsB5_arcgis_rest_services_Tax_Parcels2021_FeatureServer_0",
+    "at": "2026-10-26T16:28:41Z",
+    "assets": [
+     {
+      "name": "zfsFsB5_arcgis_rest_services_Tax_Parcels2021_FeatureServer_0-u00001.tar.gz",
+      "bytes": 500532
+     },
+     {
+      "name": "zfsFsB5_arcgis_rest_services_Tax_Parcels2021_FeatureServer_0-u00002.tar.gz",
+      "bytes": 886099
+     },
+     {
+      "name": "zfsFsB5_arcgis_rest_services_Tax_Parcels2021_FeatureServer_0-u00003.tar.gz",
+      "bytes": 1860447
+     },
+     {
+      "name": "zfsFsB5_arcgis_rest_services_Tax_Parcels2021_FeatureServer_0-checkpoint.json",
+      "bytes": 563
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-zfsFsB5_arcgis_rest_services_Tax_Parcels2020_FeatureServer_0",
+    "at": "2026-10-26T16:25:24Z",
+    "assets": [
+     {
+      "name": "zfsFsB5_arcgis_rest_services_Tax_Parcels2020_FeatureServer_0-u00003.tar.gz",
+      "bytes": 223758
+     },
+     {
+      "name": "zfsFsB5_arcgis_rest_services_Tax_Parcels2020_FeatureServer_0-u00001.tar.gz",
+      "bytes": 1319285
+     },
+     {
+      "name": "zfsFsB5_arcgis_rest_services_Tax_Parcels2020_FeatureServer_0-u00002.tar.gz",
+      "bytes": 2529130
+     },
+     {
+      "name": "zfsFsB5_arcgis_rest_services_Tax_Parcels2020_FeatureServer_0-checkpoint.json",
+      "bytes": 563
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-zfsFsB5_arcgis_rest_services_Tax_Parcels2018_FeatureServer_0",
+    "at": "2026-10-26T16:27:41Z",
+    "assets": [
+     {
+      "name": "zfsFsB5_arcgis_rest_services_Tax_Parcels2018_FeatureServer_0-u00003.tar.gz",
+      "bytes": 9926140
+     },
+     {
+      "name": "zfsFsB5_arcgis_rest_services_Tax_Parcels2018_FeatureServer_0-u00000.tar.gz",
+      "bytes": 10076995
+     },
+     {
+      "name": "zfsFsB5_arcgis_rest_services_Tax_Parcels2018_FeatureServer_0-u00002.tar.gz",
+      "bytes": 9894480
+     },
+     {
+      "name": "zfsFsB5_arcgis_rest_services_Tax_Parcels2018_FeatureServer_0-u00001.tar.gz",
+      "bytes": 9684494
+     },
+     {
+      "name": "zfsFsB5_arcgis_rest_services_Tax_Parcels2018_FeatureServer_0-checkpoint.json",
+      "bytes": 755
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-zfsFsB5_arcgis_rest_services_Tax_Parcels2017_FeatureServer_0",
+    "at": "2026-10-26T16:28:41Z",
+    "assets": [
+     {
+      "name": "zfsFsB5_arcgis_rest_services_Tax_Parcels2017_FeatureServer_0-u00001.tar.gz",
+      "bytes": 593867
+     },
+     {
+      "name": "zfsFsB5_arcgis_rest_services_Tax_Parcels2017_FeatureServer_0-u00002.tar.gz",
+      "bytes": 924769
+     },
+     {
+      "name": "zfsFsB5_arcgis_rest_services_Tax_Parcels2017_FeatureServer_0-u00003.tar.gz",
+      "bytes": 1741374
+     },
+     {
+      "name": "zfsFsB5_arcgis_rest_services_Tax_Parcels2017_FeatureServer_0-checkpoint.json",
+      "bytes": 563
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-zNll27nt9ZtPWOn_arcgis_rest_services_Parcels_FeatureServer_0",
+    "at": "2026-10-26T16:28:41Z",
+    "assets": [
+     {
+      "name": "zNll27nt9ZtPWOn_arcgis_rest_services_Parcels_FeatureServer_0-u00000.tar.gz",
+      "bytes": 5518536
+     },
+     {
+      "name": "zNll27nt9ZtPWOn_arcgis_rest_services_Parcels_FeatureServer_0-u00001.tar.gz",
+      "bytes": 5386920
+     },
+     {
+      "name": "zNll27nt9ZtPWOn_arcgis_rest_services_Parcels_FeatureServer_0-u00002.tar.gz",
+      "bytes": 5682296
+     },
+     {
+      "name": "zNll27nt9ZtPWOn_arcgis_rest_services_Parcels_FeatureServer_0-checkpoint.json",
+      "bytes": 644
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-y3Y2xxSi397ufGR_arcgis_rest_services_Parcels_FeatureServer_0",
+    "at": "2026-10-26T16:27:41Z",
+    "assets": [
+     {
+      "name": "y3Y2xxSi397ufGR_arcgis_rest_services_Parcels_FeatureServer_0-u00000.tar.gz",
+      "bytes": 18829452
+     },
+     {
+      "name": "y3Y2xxSi397ufGR_arcgis_rest_services_Parcels_FeatureServer_0-u00001.tar.gz",
+      "bytes": 18281864
+     },
+     {
+      "name": "y3Y2xxSi397ufGR_arcgis_rest_services_Parcels_FeatureServer_0-checkpoint.json",
+      "bytes": 541
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-vuFjG9HQX_arcgis_rest_services_Parcel_Test_3_FeatureServer_0",
+    "at": "2026-10-26T16:28:41Z",
+    "assets": [
+     {
+      "name": "vuFjG9HQX_arcgis_rest_services_Parcel_Test_3_FeatureServer_0-u00003.tar.gz",
+      "bytes": 23507826
+     },
+     {
+      "name": "vuFjG9HQX_arcgis_rest_services_Parcel_Test_3_FeatureServer_0-u00001.tar.gz",
+      "bytes": 24416388
+     },
+     {
+      "name": "vuFjG9HQX_arcgis_rest_services_Parcel_Test_3_FeatureServer_0-u00002.tar.gz",
+      "bytes": 23403660
+     },
+     {
+      "name": "vuFjG9HQX_arcgis_rest_services_Parcel_Test_3_FeatureServer_0-u00000.tar.gz",
+      "bytes": 24630195
+     },
+     {
+      "name": "vuFjG9HQX_arcgis_rest_services_Parcel_Test_3_FeatureServer_0-checkpoint.json",
+      "bytes": 753
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-vuFjG9HQX_arcgis_rest_services_Parcel_Labels_FeatureServer_0",
+    "at": "2026-10-26T16:28:41Z",
+    "assets": [
+     {
+      "name": "vuFjG9HQX_arcgis_rest_services_Parcel_Labels_FeatureServer_0-u00001.tar.gz",
+      "bytes": 22378653
+     },
+     {
+      "name": "vuFjG9HQX_arcgis_rest_services_Parcel_Labels_FeatureServer_0-u00000.tar.gz",
+      "bytes": 22617167
+     },
+     {
+      "name": "vuFjG9HQX_arcgis_rest_services_Parcel_Labels_FeatureServer_0-u00002.tar.gz",
+      "bytes": 21427998
+     },
+     {
+      "name": "vuFjG9HQX_arcgis_rest_services_Parcel_Labels_FeatureServer_0-u00003.tar.gz",
+      "bytes": 21565957
+     },
+     {
+      "name": "vuFjG9HQX_arcgis_rest_services_Parcel_Labels_FeatureServer_0-checkpoint.json",
+      "bytes": 753
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-s_2026_SOE_GENERAL_USE_MAP___POST_CNG_WFL1_FeatureServer_118",
+    "at": "2026-10-26T16:27:41Z",
+    "assets": [
+     {
+      "name": "s_2026_SOE_GENERAL_USE_MAP___POST_CNG_WFL1_FeatureServer_118-u00001.tar.gz",
+      "bytes": 10013117
+     },
+     {
+      "name": "s_2026_SOE_GENERAL_USE_MAP___POST_CNG_WFL1_FeatureServer_118-u00003.tar.gz",
+      "bytes": 10205430
+     },
+     {
+      "name": "s_2026_SOE_GENERAL_USE_MAP___POST_CNG_WFL1_FeatureServer_118-u00002.tar.gz",
+      "bytes": 10707064
+     },
+     {
+      "name": "s_2026_SOE_GENERAL_USE_MAP___POST_CNG_WFL1_FeatureServer_118-u00000.tar.gz",
+      "bytes": 10182301
+     },
+     {
+      "name": "s_2026_SOE_GENERAL_USE_MAP___POST_CNG_WFL1_FeatureServer_118-u00004.tar.gz",
+      "bytes": 8428285
+     },
+     {
+      "name": "s_2026_SOE_GENERAL_USE_MAP___POST_CNG_WFL1_FeatureServer_118-checkpoint.json",
+      "bytes": 884
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-rest_services_Existing_Land_Use__10_category_FeatureServer_0",
+    "at": "2026-10-26T16:28:41Z",
+    "assets": [
+     {
+      "name": "rest_services_Existing_Land_Use__10_category_FeatureServer_0-u00001.tar.gz",
+      "bytes": 5557649
+     },
+     {
+      "name": "rest_services_Existing_Land_Use__10_category_FeatureServer_0-u00002.tar.gz",
+      "bytes": 5576657
+     },
+     {
+      "name": "rest_services_Existing_Land_Use__10_category_FeatureServer_0-u00000.tar.gz",
+      "bytes": 5518543
+     },
+     {
+      "name": "rest_services_Existing_Land_Use__10_category_FeatureServer_0-checkpoint.json",
+      "bytes": 667
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-ntymd_gov_arcgis_rest_services_GDX_buildings_FeatureServer_0",
+    "at": "2026-10-26T16:28:41Z",
+    "assets": [
+     {
+      "name": "ntymd_gov_arcgis_rest_services_GDX_buildings_FeatureServer_0-u00000.tar.gz",
+      "bytes": 37957004
+     },
+     {
+      "name": "ntymd_gov_arcgis_rest_services_GDX_buildings_FeatureServer_0-checkpoint.json",
+      "bytes": 581
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-m_AQDHTHDrZzfsFsB5_arcgis_rest_services_2022_FeatureServer_0",
+    "at": "2026-10-26T16:25:24Z",
+    "assets": [
+     {
+      "name": "m_AQDHTHDrZzfsFsB5_arcgis_rest_services_2022_FeatureServer_0-u00001.tar.gz",
+      "bytes": 751780
+     },
+     {
+      "name": "m_AQDHTHDrZzfsFsB5_arcgis_rest_services_2022_FeatureServer_0-u00003.tar.gz",
+      "bytes": 803823
+     },
+     {
+      "name": "m_AQDHTHDrZzfsFsB5_arcgis_rest_services_2022_FeatureServer_0-u00002.tar.gz",
+      "bytes": 2009049
+     },
+     {
+      "name": "m_AQDHTHDrZzfsFsB5_arcgis_rest_services_2022_FeatureServer_0-checkpoint.json",
+      "bytes": 552
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-lopment_Capacity_by_Development_Site_Current_FeatureServer_0",
+    "at": "2026-10-26T16:28:41Z",
+    "assets": [
+     {
+      "name": "lopment_Capacity_by_Development_Site_Current_FeatureServer_0-u00001.tar.gz",
+      "bytes": 15629773
+     },
+     {
+      "name": "lopment_Capacity_by_Development_Site_Current_FeatureServer_0-u00000.tar.gz",
+      "bytes": 15628520
+     },
+     {
+      "name": "lopment_Capacity_by_Development_Site_Current_FeatureServer_0-checkpoint.json",
+      "bytes": 587
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-is_rest_services_Zoning_Initiation_Date_WFL1_FeatureServer_1",
+    "at": "2026-10-26T16:27:41Z",
+    "assets": [
+     {
+      "name": "is_rest_services_Zoning_Initiation_Date_WFL1_FeatureServer_1-u00000.tar.gz",
+      "bytes": 4340669
+     },
+     {
+      "name": "is_rest_services_Zoning_Initiation_Date_WFL1_FeatureServer_1-u00001.tar.gz",
+      "bytes": 4404154
+     },
+     {
+      "name": "is_rest_services_Zoning_Initiation_Date_WFL1_FeatureServer_1-u00002.tar.gz",
+      "bytes": 4389251
+     },
+     {
+      "name": "is_rest_services_Zoning_Initiation_Date_WFL1_FeatureServer_1-checkpoint.json",
+      "bytes": 664
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-gis_rest_services_KC_Parcels__Open_Data_View_FeatureServer_3",
+    "at": "2026-10-26T16:28:41Z",
+    "assets": [
+     {
+      "name": "gis_rest_services_KC_Parcels__Open_Data_View_FeatureServer_3-u00001.tar.gz",
+      "bytes": 11214211
+     },
+     {
+      "name": "gis_rest_services_KC_Parcels__Open_Data_View_FeatureServer_3-u00002.tar.gz",
+      "bytes": 11205406
+     },
+     {
+      "name": "gis_rest_services_KC_Parcels__Open_Data_View_FeatureServer_3-u00000.tar.gz",
+      "bytes": 11208006
+     },
+     {
+      "name": "gis_rest_services_KC_Parcels__Open_Data_View_FeatureServer_3-checkpoint.json",
+      "bytes": 664
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-g_server_rest_services_Hosted_Buildings_2024_FeatureServer_2",
+    "at": "2026-10-26T16:27:41Z",
+    "assets": [
+     {
+      "name": "g_server_rest_services_Hosted_Buildings_2024_FeatureServer_2-u00003.tar.gz",
+      "bytes": 12602495
+     },
+     {
+      "name": "g_server_rest_services_Hosted_Buildings_2024_FeatureServer_2-u00002.tar.gz",
+      "bytes": 12720481
+     },
+     {
+      "name": "g_server_rest_services_Hosted_Buildings_2024_FeatureServer_2-u00000.tar.gz",
+      "bytes": 12950707
+     },
+     {
+      "name": "g_server_rest_services_Hosted_Buildings_2024_FeatureServer_2-u00001.tar.gz",
+      "bytes": 12777584
+     },
+     {
+      "name": "g_server_rest_services_Hosted_Buildings_2024_FeatureServer_2-u00004.tar.gz",
+      "bytes": 12788783
+     },
+     {
+      "name": "g_server_rest_services_Hosted_Buildings_2024_FeatureServer_2-u00006.tar.gz",
+      "bytes": 12519935
+     },
+     {
+      "name": "g_server_rest_services_Hosted_Buildings_2024_FeatureServer_2-u00005.tar.gz",
+      "bytes": 12897612
+     },
+     {
+      "name": "g_server_rest_services_Hosted_Buildings_2024_FeatureServer_2-u00007.tar.gz",
+      "bytes": 12919518
+     },
+     {
+      "name": "g_server_rest_services_Hosted_Buildings_2024_FeatureServer_2-checkpoint.json",
+      "bytes": 1150
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-fsFsB5_arcgis_rest_services_Tax_Parcels_2025_FeatureServer_0",
+    "at": "2026-10-26T16:25:24Z",
+    "assets": [
+     {
+      "name": "fsFsB5_arcgis_rest_services_Tax_Parcels_2025_FeatureServer_0-u00003.tar.gz",
+      "bytes": 369578
+     },
+     {
+      "name": "fsFsB5_arcgis_rest_services_Tax_Parcels_2025_FeatureServer_0-u00001.tar.gz",
+      "bytes": 1585318
+     },
+     {
+      "name": "fsFsB5_arcgis_rest_services_Tax_Parcels_2025_FeatureServer_0-u00002.tar.gz",
+      "bytes": 2534778
+     },
+     {
+      "name": "fsFsB5_arcgis_rest_services_Tax_Parcels_2025_FeatureServer_0-checkpoint.json",
+      "bytes": 564
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-fsFsB5_arcgis_rest_services_Tax_Parcels_2024_FeatureServer_0",
+    "at": "2026-10-26T16:25:24Z",
+    "assets": [
+     {
+      "name": "fsFsB5_arcgis_rest_services_Tax_Parcels_2024_FeatureServer_0-u00003.tar.gz",
+      "bytes": 381221
+     },
+     {
+      "name": "fsFsB5_arcgis_rest_services_Tax_Parcels_2024_FeatureServer_0-u00001.tar.gz",
+      "bytes": 1401446
+     },
+     {
+      "name": "fsFsB5_arcgis_rest_services_Tax_Parcels_2024_FeatureServer_0-u00002.tar.gz",
+      "bytes": 2504178
+     },
+     {
+      "name": "fsFsB5_arcgis_rest_services_Tax_Parcels_2024_FeatureServer_0-checkpoint.json",
+      "bytes": 564
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-fsFsB5_arcgis_rest_services_Tax_Parcels_2023_FeatureServer_0",
+    "at": "2026-10-26T16:28:41Z",
+    "assets": [
+     {
+      "name": "fsFsB5_arcgis_rest_services_Tax_Parcels_2023_FeatureServer_0-u00003.tar.gz",
+      "bytes": 484391
+     },
+     {
+      "name": "fsFsB5_arcgis_rest_services_Tax_Parcels_2023_FeatureServer_0-u00001.tar.gz",
+      "bytes": 1097088
+     },
+     {
+      "name": "fsFsB5_arcgis_rest_services_Tax_Parcels_2023_FeatureServer_0-u00002.tar.gz",
+      "bytes": 2368856
+     },
+     {
+      "name": "fsFsB5_arcgis_rest_services_Tax_Parcels_2023_FeatureServer_0-checkpoint.json",
+      "bytes": 564
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-est_services_SpokaneParcelsTEST_CovenantJoin_FeatureServer_9",
+    "at": "2026-10-26T16:28:41Z",
+    "assets": [
+     {
+      "name": "est_services_SpokaneParcelsTEST_CovenantJoin_FeatureServer_9-u00001.tar.gz",
+      "bytes": 4747198
+     },
+     {
+      "name": "est_services_SpokaneParcelsTEST_CovenantJoin_FeatureServer_9-u00002.tar.gz",
+      "bytes": 4924610
+     },
+     {
+      "name": "est_services_SpokaneParcelsTEST_CovenantJoin_FeatureServer_9-checkpoint.json",
+      "bytes": 565
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-cgis_rest_services_MyProperty_Parcel_Address_FeatureServer_0",
+    "at": "2026-10-26T16:28:41Z",
+    "assets": [
+     {
+      "name": "cgis_rest_services_MyProperty_Parcel_Address_FeatureServer_0.tar.gz",
+      "bytes": 21067418
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-cgis_rest_services_AGOL_Parcels_PacificTime_FeatureServer_17",
+    "at": "2026-10-26T16:27:41Z",
+    "assets": [
+     {
+      "name": "cgis_rest_services_AGOL_Parcels_PacificTime_FeatureServer_17-u00001.tar.gz",
+      "bytes": 3035128
+     },
+     {
+      "name": "cgis_rest_services_AGOL_Parcels_PacificTime_FeatureServer_17-u00002.tar.gz",
+      "bytes": 3051613
+     },
+     {
+      "name": "cgis_rest_services_AGOL_Parcels_PacificTime_FeatureServer_17-u00000.tar.gz",
+      "bytes": 3112129
+     },
+     {
+      "name": "cgis_rest_services_AGOL_Parcels_PacificTime_FeatureServer_17-checkpoint.json",
+      "bytes": 662
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-bBQScMtY_arcgis_rest_services_CC_PARCELS_SHP_FeatureServer_1",
+    "at": "2026-10-26T16:28:41Z",
+    "assets": [
+     {
+      "name": "bBQScMtY_arcgis_rest_services_CC_PARCELS_SHP_FeatureServer_1.tar.gz",
+      "bytes": 64061412
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-Parcels_Within_500m_From_ParksandGreenspaces_FeatureServer_0",
+    "at": "2026-10-26T16:25:24Z",
+    "assets": [
+     {
+      "name": "Parcels_Within_500m_From_ParksandGreenspaces_FeatureServer_0-u00002.tar.gz",
+      "bytes": 1849831
+     },
+     {
+      "name": "Parcels_Within_500m_From_ParksandGreenspaces_FeatureServer_0-u00000.tar.gz",
+      "bytes": 4246818
+     },
+     {
+      "name": "Parcels_Within_500m_From_ParksandGreenspaces_FeatureServer_0-u00001.tar.gz",
+      "bytes": 5202015
+     },
+     {
+      "name": "Parcels_Within_500m_From_ParksandGreenspaces_FeatureServer_0-u00003.tar.gz",
+      "bytes": 5901760
+     },
+     {
+      "name": "Parcels_Within_500m_From_ParksandGreenspaces_FeatureServer_0-u00004.tar.gz",
+      "bytes": 6608348
+     },
+     {
+      "name": "Parcels_Within_500m_From_ParksandGreenspaces_FeatureServer_0-u00005.tar.gz",
+      "bytes": 6056460
+     },
+     {
+      "name": "Parcels_Within_500m_From_ParksandGreenspaces_FeatureServer_0-u00006.tar.gz",
+      "bytes": 6113519
+     },
+     {
+      "name": "Parcels_Within_500m_From_ParksandGreenspaces_FeatureServer_0-u00007.tar.gz",
+      "bytes": 5872301
+     },
+     {
+      "name": "Parcels_Within_500m_From_ParksandGreenspaces_FeatureServer_0-u00008.tar.gz",
+      "bytes": 6190177
+     },
+     {
+      "name": "Parcels_Within_500m_From_ParksandGreenspaces_FeatureServer_0-u00009.tar.gz",
+      "bytes": 6827050
+     },
+     {
+      "name": "Parcels_Within_500m_From_ParksandGreenspaces_FeatureServer_0-u00010.tar.gz",
+      "bytes": 6290881
+     },
+     {
+      "name": "Parcels_Within_500m_From_ParksandGreenspaces_FeatureServer_0-checkpoint.json",
+      "bytes": 1667
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-HQX_arcgis_rest_services_Parcels_for_Aerials_FeatureServer_0",
+    "at": "2026-10-26T16:28:41Z",
+    "assets": [
+     {
+      "name": "HQX_arcgis_rest_services_Parcels_for_Aerials_FeatureServer_0-u00001.tar.gz",
+      "bytes": 22156140
+     },
+     {
+      "name": "HQX_arcgis_rest_services_Parcels_for_Aerials_FeatureServer_0-u00000.tar.gz",
+      "bytes": 22386084
+     },
+     {
+      "name": "HQX_arcgis_rest_services_Parcels_for_Aerials_FeatureServer_0-u00002.tar.gz",
+      "bytes": 21158207
+     },
+     {
+      "name": "HQX_arcgis_rest_services_Parcels_for_Aerials_FeatureServer_0-u00003.tar.gz",
+      "bytes": 21384257
+     },
+     {
+      "name": "HQX_arcgis_rest_services_Parcels_for_Aerials_FeatureServer_0-checkpoint.json",
+      "bytes": 759
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-Buildable_Lands_Inventory__Update_June_2022__FeatureServer_0",
+    "at": "2026-10-26T16:27:41Z",
+    "assets": [
+     {
+      "name": "Buildable_Lands_Inventory__Update_June_2022__FeatureServer_0-u00001.tar.gz",
+      "bytes": 9467095
+     },
+     {
+      "name": "Buildable_Lands_Inventory__Update_June_2022__FeatureServer_0-u00002.tar.gz",
+      "bytes": 9485660
+     },
+     {
+      "name": "Buildable_Lands_Inventory__Update_June_2022__FeatureServer_0-u00000.tar.gz",
+      "bytes": 10063560
+     },
+     {
+      "name": "Buildable_Lands_Inventory__Update_June_2022__FeatureServer_0-checkpoint.json",
+      "bytes": 686
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-9ZtPWOn_arcgis_rest_services_ValueComparison_FeatureServer_0",
+    "at": "2026-10-26T16:28:41Z",
+    "assets": [
+     {
+      "name": "9ZtPWOn_arcgis_rest_services_ValueComparison_FeatureServer_0-u00000.tar.gz",
+      "bytes": 9455219
+     },
+     {
+      "name": "9ZtPWOn_arcgis_rest_services_ValueComparison_FeatureServer_0-u00001.tar.gz",
+      "bytes": 9619387
+     },
+     {
+      "name": "9ZtPWOn_arcgis_rest_services_ValueComparison_FeatureServer_0-checkpoint.json",
+      "bytes": 549
+     }
+    ]
+   },
+   {
+    "tag": "collect-step10-6zC_arcgis_rest_services_parcel_file_current_FeatureServer_0",
+    "at": "2026-10-26T16:28:41Z",
+    "assets": [
+     {
+      "name": "6zC_arcgis_rest_services_parcel_file_current_FeatureServer_0-u00000.tar.gz",
+      "bytes": 18110328
+     },
+     {
+      "name": "6zC_arcgis_rest_services_parcel_file_current_FeatureServer_0-u00002.tar.gz",
+      "bytes": 17880680
+     },
+     {
+      "name": "6zC_arcgis_rest_services_parcel_file_current_FeatureServer_0-u00001.tar.gz",
+      "bytes": 19595439
+     },
+     {
+      "name": "6zC_arcgis_rest_services_parcel_file_current_FeatureServer_0-u00003.tar.gz",
+      "bytes": 15071171
+     },
+     {
+      "name": "6zC_arcgis_rest_services_parcel_file_current_FeatureServer_0-checkpoint.json",
+      "bytes": 759
+     }
+    ]
+   }
+  ],
+  "checkpoint": {
+   "layers_with_checkpoint": 26,
+   "releases_seen": 28,
+   "units_uploaded": 92,
+   "bytes": 18223,
+   "sample": [
+    {
+     "tag": "collect-step10-zfsFsB5_arcgis_rest_services_Tax_Parcels2021_FeatureServer_0",
+     "name": "zfsFsB5_arcgis_rest_services_Tax_Parcels2021_FeatureServer_0-checkpoint.json",
+     "bytes": 563
+    },
+    {
+     "tag": "collect-step10-zfsFsB5_arcgis_rest_services_Tax_Parcels2020_FeatureServer_0",
+     "name": "zfsFsB5_arcgis_rest_services_Tax_Parcels2020_FeatureServer_0-checkpoint.json",
+     "bytes": 563
+    },
+    {
+     "tag": "collect-step10-zfsFsB5_arcgis_rest_services_Tax_Parcels2018_FeatureServer_0",
+     "name": "zfsFsB5_arcgis_rest_services_Tax_Parcels2018_FeatureServer_0-checkpoint.json",
+     "bytes": 755
+    },
+    {
+     "tag": "collect-step10-zfsFsB5_arcgis_rest_services_Tax_Parcels2017_FeatureServer_0",
+     "name": "zfsFsB5_arcgis_rest_services_Tax_Parcels2017_FeatureServer_0-checkpoint.json",
+     "bytes": 563
+    },
+    {
+     "tag": "collect-step10-zNll27nt9ZtPWOn_arcgis_rest_services_Parcels_FeatureServer_0",
+     "name": "zNll27nt9ZtPWOn_arcgis_rest_services_Parcels_FeatureServer_0-checkpoint.json",
+     "bytes": 644
+    }
+   ]
+  },
+  "layer_plan.csv": {
+   "file": "collect/layer_plan.csv",
+   "exists": true,
+   "rows": 60695,
+   "plan_empty": 0
+  },
+  "state": {
+   "step": "10",
+   "last_run": {
+    "step": "10",
+    "run_id": null,
+    "at": "2026-10-26T16:27:54Z",
+    "trigger": "brain",
+    "layers": "batch1",
+    "workers": 4
+   },
+   "last_error": null,
+   "budget": {
+    "minutes_used": 711,
+    "minutes_cap": 1800,
+    "warn_ratio": 0.8,
+    "stop_ratio": 0.95,
+    "settled_runs": [
+     40223905602,
+     40226321490,
+     40228412210,
+     40231053488,
+     40233378096,
+     40235778634,
+     40238094979,
+     40240219323,
+     40242737597,
+     40245044538,
+     40247230254,
+     40249661832,
+     40250275546,
+     40252036083,
+     40254517609,
+     40256918022,
+     40259393055,
+     40261861424,
+     40264376887,
+     40266798708,
+     40269389167,
+     40271920578,
+     40273644243,
+     40275909232,
+     40278717632,
+     40281651194,
+     40284643246,
+     40287706870,
+     40290956627,
+     40294442166,
+     40298097793,
+     40301967944,
+     40305925565,
+     40309829710,
+     40313657589,
+     40314312816,
+     40317379539,
+     40319207642,
+     40323002418,
+     40326893689,
+     40331108877,
+     40335581342,
+     40340131294,
+     40344978528,
+     40349927963,
+     40354840419,
+     40358289092,
+     40358689695
+    ],
+    "settled_min": 9.6
+   },
+   "steps": {
+    "01": {
+     "status": "done",
+     "at": "2026-10-23T05:23:39Z",
+     "metrics": {
+      "rows": 60695,
+      "plan_empty": 0,
+      "count_rate": 0.787
+     }
+    },
+    "02": {
+     "status": "done",
+     "at": "2026-10-23T23:22:51Z",
+     "metrics": {
+      "layers": 8,
+      "with_rows": 8,
+      "worst_diff": 0.0,
+      "total_rows": 12525311
+     }
+    },
+    "03": {
+     "status": "done",
+     "at": "2026-10-24T00:59:15Z"
+    },
+    "04": {
+     "status": "done",
+     "at": "2026-10-24T01:47:49Z"
+    },
+    "05": {
+     "status": "done",
+     "at": "2026-10-24T04:36:25Z"
+    },
+    "06": {
+     "status": "done"
+    },
+    "07": {
+     "status": "done"
+    },
+    "08": {
+     "status": "done"
+    },
+    "09": {
+     "status": "done"
+    },
+    "10": {
+     "status": "kicked",
+     "at": "2026-10-26T16:27:54Z",
+     "note": "第10环接回正牌流水线：run_step_10.py + worker-10.yml(matrix 逐层)，本机零参与"
+    }
+   }
+  }
  },
  "missing": [],
  "profile": {
-  "step": "09",
-  "title": "增量同步",
+  "step": "10",
+  "title": "宗地地址扩采",
   "stall_min": 180,
   "cmds": [
-   "--review pass --note \"项目收尾\"",
-   "--kick 09"
+   "--kick 10 --offset 0 --size 200",
+   "--review pass --note \"宗地扩采批1收尾\""
   ],
   "evidence": [
    "report",
-   "releases"
+   "releases",
+   "checkpoint",
+   "layer_plan.csv",
+   "state"
   ],
   "accept": {
-   "field_rate_min": 0.1,
-   "failed_rate_max": 0.2
+   "eff_min": 0.2,
+   "pick_layers_min": 1000,
+   "budget_min_max": 900
   },
-  "doc": "collect/steps/STEP-09.md",
-  "tag": "collect-delta-{layer}-{date}"
+  "doc": "collect/steps/STEP-10.md",
+  "tag": "collect-step10-{layer}"
  },
  "ask": [
-  "STEP 09（增量同步）这一轮，判通过还是不通过？判据卡（steps.json accept）：{\"field_rate_min\": 0.1, \"failed_rate_max\": 0.2}",
+  "STEP 10（宗地地址扩采）这一轮，判通过还是不通过？判据卡（steps.json accept）：{\"eff_min\": 0.2, \"pick_layers_min\": 1000, \"budget_min_max\": 900}",
   "依据：evidence.report.per_layer / evidence.checkpoint / evidence.short_units（缺的键见 missing=[]）",
   "不通过的话：补跑哪一层，还是记 blocked 跳过继续往下走？",
   "判完写回账本：python3 collect/supervisor.py --review pass|fail --note \"...\""
  ],
- "reason": "增量同步：工人已停手，等大脑判验收",
- "signature": "5317a66ad0f5c5e6"
+ "reason": "宗地扩采：工人已停手，等大脑判验收",
+ "signature": "1020b056a7fe0a38"
 }
