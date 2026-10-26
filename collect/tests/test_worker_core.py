@@ -135,11 +135,16 @@ class TestStep10(unittest.TestCase):
                 dict(layer="p3", state="KS", grade="weak", declared="10", eff="5.0"),      # 有效率不达标
                 dict(layer="p9", state="KS", grade="weak", declared="10", eff="100.0"),    # situs 无此层 → 无 url
             ])
-        self._old = (W.ROOT, W.HERE, W._URL_IDX)
+        self._old = (W.ROOT, W.HERE, W._URL_IDX, os.environ.get("WC_OFFLINE"))
         W.ROOT, W.HERE, W._URL_IDX = self.tmp, self.tmp, None
+        os.environ["WC_OFFLINE"] = "1"      # 单测不许打 gh api（会真的拉几十页 Releases）
 
     def tearDown(self):
-        W.ROOT, W.HERE, W._URL_IDX = self._old
+        W.ROOT, W.HERE, W._URL_IDX, offline = self._old
+        if offline is None:
+            os.environ.pop("WC_OFFLINE", None)
+        else:
+            os.environ["WC_OFFLINE"] = offline
 
     def sel(self, **kw):
         s = {"source": "layer_plan", "file": "batch1.csv",
@@ -185,6 +190,34 @@ class TestStep10(unittest.TestCase):
         self.assertGreater(cfg["workers"], 0)
         self.assertGreater(cfg["unit_rows"], 0)
         self.assertEqual(cfg["geom_in"], [])
+    def _write_done(self, complete=(), partial=()):
+        doc = {"source": "test", "layers": {}}
+        for x in complete:
+            doc["layers"][x] = {"complete": True, "rows": 1}
+        for x in partial:
+            doc["layers"][x] = {"complete": False, "rows": 1}
+        with open(os.path.join(self.tmp, "parcel_done.json"), "w", encoding="utf-8") as f:
+            json.dump(doc, f)
+
+    def test_skip_done_drops_complete_layers(self):
+        """parcel_done.json 里 complete=true 的层必须被剔掉，partial 的保留"""
+        self._write_done(complete=["p1"], partial=["p2"])
+        out = W.select_layers("10", policy=self.sel(skip_done=True))
+        self.assertEqual([r["id"] for r in out], ["p2"])
+
+    def test_skip_done_off_keeps_everything(self):
+        """skip_done=False 用于 --layer 反查：已采层也必须查得到，否则 unknown_layer"""
+        self._write_done(complete=["p1", "p2"])
+        out = W.select_layers("10", policy=self.sel(skip_done=False))
+        self.assertEqual(sorted(r["id"] for r in out), ["p1", "p2"])
+
+    def test_skip_done_happens_before_bulk_window(self):
+        """剔除必须在窗口切片之前：否则切出的 2 层里还混着已采层，等于白跑"""
+        self._write_done(complete=["p1"])
+        out = W.select_layers("10", policy=self.sel(skip_done=True, mode="bulk", offset=0, batch=2))
+        # p1 已采 → 待采 [p2]；窗口 size=2 只能取到 p2
+        self.assertEqual([r["id"] for r in out], ["p2"])
+
 
 
 if __name__ == "__main__":

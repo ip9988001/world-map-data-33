@@ -8,3 +8,4 @@ collect/progress/
 # 生产采集产物：只认 GitHub Releases，绝不进 git
 collect/parcel_out/
 collect/batch1_result.json
+collect/.release_index.json

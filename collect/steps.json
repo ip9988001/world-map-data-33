@@ -361,7 +361,8 @@
     "mode": "bulk",
     "order": "rows_desc",
     "offset": 0,
-    "batch": 200
+    "batch": 200,
+    "skip_done": true
    },
    "workers": 4,
    "unit_rows": 100000,

@@ -11,6 +11,9 @@ on:
       max_layers:  { type: string, default: "0" }
       offset:      { type: string, default: "0" }
       size:        { type: string, default: "40" }
+      # ★ 冒烟用：只采前 N 行就停（0=整层）。没有它「试采 200 行」做不到，
+      #   因为 pilot 默认把整层采完，最小的层也有上万行。
+      limit:       { type: string, default: "0" }
       report:      { type: string, default: "false" }
       # single=true → 不是按层跑（bootstrap / preflight / report 这三类步）
       single:      { type: string, default: "false" }
@@ -83,7 +86,8 @@ jobs:
           PILOT_RELEASE_TAG: collect-step${{ inputs.step }}-${{ matrix.layer }}
         run: |
           python3 collect/run_step_${{ inputs.step }}.py --layer ${{ matrix.layer }} \
-            --workers ${{ inputs.workers }} --unit-rows ${{ inputs.unit_rows }}
+            --workers ${{ inputs.workers }} --unit-rows ${{ inputs.unit_rows }} \
+            --limit "${{ inputs.limit }}"
       - name: 兜底上传（只有 pilot 一个单元都没发成功时才做）
         if: always()
         env:

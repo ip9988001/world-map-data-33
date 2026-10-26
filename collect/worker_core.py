@@ -18,6 +18,7 @@ import re
 import subprocess
 import sys
 import tempfile
+import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -120,6 +121,102 @@ def _url_index():
                     if lid and url:
                         _URL_IDX[lid] = url
     return _URL_IDX
+
+
+# ---------------- 续采：已采层判定（本机清单 + Releases 双来源） ----------------
+REPO = os.environ.get("GITHUB_REPOSITORY") or "ip9988001/world-map-data-33"
+DONE_NAME = "parcel_done.json"
+REL_CACHE = ".release_index.json"
+REL_TTL = int(os.environ.get("WC_REL_TTL") or 600)
+
+
+def _gh(path):
+    """调 gh api。拿不到就返回 None，绝不抛：续采判断失败时宁可多采，不许炸掉整批。"""
+    if os.environ.get("WC_OFFLINE"):
+        return None
+    try:
+        r = subprocess.run(["gh", "api", path], capture_output=True, text=True, timeout=180)
+        if r.returncode != 0:
+            return None
+        return json.loads(r.stdout or "null")
+    except Exception:
+        return None
+
+
+def parcel_done():
+    """本机 4.7G 解析产物（P3 生成）→ 已完成层字典。文件不存在时返回空，不是错误。"""
+    f = os.path.join(HERE, DONE_NAME)
+    if not os.path.exists(f):
+        return {}
+    try:
+        doc = json.load(open(f, encoding="utf-8"))
+    except Exception as e:
+        print("⚠️ parcel_done.json 读不动，按「无已采层」处理：%s" % str(e)[:80])
+        return {}
+    return {k: v for k, v in (doc.get("layers") or {}).items() if v.get("complete")}
+
+
+def release_done(step="10", use_cache=True):
+    """扫 Releases，返回 {layer: {"tag":..., "complete": bool, "how":...}}
+
+    ★ 判据分两档，必须写清来源，不许假装精确：
+      浅判（本函数）= tag 形如 collect-stepNN-<layer> 且 assets 里有 -checkpoint.json
+      深判（P6 人工验收）= 再拉 checkpoint，unit_uploaded 全 true 且
+                           sum(unit_rows) ≥ declared×0.99（半截层不算完成）
+    为什么默认浅判：深判每层要额外一次 asset 下载，批1 有上千个 tag 时就会打爆
+    API 额度；而续采阶段真正要剔的层主要来自 parcel_done.json（精确，来自逐层数行），
+    Releases 侧目前只有几十个 tag。
+    只认「tag 存在」才是错的——那会把截断层永久当已采完，3.7M 行缺口就是这么被埋的。
+    """
+    key = "step%s" % step
+    cache_f = os.path.join(HERE, REL_CACHE)
+    if use_cache and os.path.exists(cache_f):
+        try:
+            c = json.load(open(cache_f, encoding="utf-8"))
+            if time.time() - float(c.get("at") or 0) < REL_TTL and key in (c.get("data") or {}):
+                return c["data"][key]
+        except Exception:
+            pass
+
+    seen, page = {}, 1
+    while page <= 40:
+        batch = _gh("repos/%s/releases?per_page=100&page=%d" % (REPO, page))
+        if not batch:
+            break
+        for r in batch:
+            tag = r.get("tag_name") or ""
+            m = re.match(r"^collect-step%s-(.+)$" % step, tag)
+            if not m:
+                continue
+            lid = m.group(1)
+            assets = [a.get("name") for a in (r.get("assets") or [])]
+            seen[lid] = {"tag": tag, "assets": assets,
+                         "complete": any(a and a.endswith("-checkpoint.json") for a in assets),
+                         "how": "shallow"}
+        if len(batch) < 100:
+            break
+        page += 1
+
+    if seen or page > 1:
+        try:
+            c = {}
+            if os.path.exists(cache_f):
+                c = json.load(open(cache_f, encoding="utf-8")) or {}
+            c.setdefault("data", {})[key] = seen
+            c["at"] = time.time()
+            json.dump(c, open(cache_f, "w", encoding="utf-8"), ensure_ascii=False)
+        except Exception:
+            pass
+    return seen
+
+
+def done_layers(step="10"):
+    """已采层全集 = 本机清单（精确）+ Releases（tag）。"""
+    done = dict(parcel_done())
+    for lid, rec in release_done(step).items():
+        if rec.get("complete"):
+            done.setdefault(lid, rec)
+    return done
 
 
 # where 表达式里的字段名 → plan 行里的真实字段（写 row_count 但行里叫 expect，曾让过滤静默失效）
@@ -233,6 +330,14 @@ def select_layers(step, limit=0, policy=None):
         if allow:
             allow = {str(x).lower() for x in allow}
             out = [r for r in out if (r.get("geom") or "").lower() in allow]
+        # ★ 已采层剔除必须在 bulk 窗口切片**之前**：
+        #   先切 [off:off+size] 再剔除，切出来的 20 层里仍混着已采层，等于白跑。
+        if sel.get("skip_done"):
+            done = done_layers(step)
+            if done:
+                _b = len(out)
+                out = [r for r in out if r["id"] not in done]
+                print("⏭ 跳过已采 %d 层，待采 %d 层" % (_b - len(out), len(out)))
         # ★ 排序与分批窗口必须放在所有过滤之后：
         #   上一版先切 [off:off+size] 再过滤，40 层切出来只剩 1 层（过滤把窗口里的都杀了）。
         if sel.get("order") in ("rows_desc", "rows_asc"):
@@ -313,6 +418,7 @@ def _resolve_layer(step, layer):
                 #   开着窗口时 matrix 里第 N 层会反查不到 → 全部 unknown_layer 秒挂。
                 sel = {k: v for k, v in (pol.get("select") or {}).items()
                        if k not in ("mode", "offset", "batch")}
+                sel["skip_done"] = False    # 反查已采层也必须能查到，否则 unknown_layer 秒挂
                 pool = select_layers(step, limit=0, policy=dict(pol, select=sel))
             elif src == "plan":
                 pool = [_norm_plan_row(r) for r in _rows_from_csv()]

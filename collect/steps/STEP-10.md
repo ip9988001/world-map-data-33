@@ -61,7 +61,8 @@ python3 collect/supervisor.py --review pass --note "宗地扩采收尾"
   "mode": "bulk",
   "order": "rows_desc",
   "offset": 0,
-  "batch": 200
+  "batch": 200,
+  "skip_done": true
  },
  "workers": 4,
  "unit_rows": 100000,

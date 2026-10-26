@@ -25,6 +25,7 @@ jobs:
       unit_rows: ${{ github.event.inputs.unit_rows || '100000' }}
       offset: ${{ github.event.inputs.offset || '0' }}
       size: ${{ github.event.inputs.size || '200' }}
+      limit: ${{ github.event.inputs.limit || '0' }}
       report: "true"
       # ★ 必须 false：single=true 会走 direct 分支，一个 runner 里串行跑整批 200 层
       #   → 300min timeout 必杀，等于把「本机 966 分钟跑不完」的错在云端复刻一遍。
