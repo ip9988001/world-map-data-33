@@ -1,6 +1,6 @@
 {
  "step": "10",
- "at": "2026-10-26T21:45:45Z",
+ "at": "2026-10-26T21:52:17Z",
  "want": [
   "report",
   "releases",
@@ -11436,7 +11436,7 @@
    },
    "last_error": null,
    "budget": {
-    "minutes_used": 91,
+    "minutes_used": 417,
     "minutes_cap": 1800,
     "warn_ratio": 0.8,
     "stop_ratio": 0.95,
