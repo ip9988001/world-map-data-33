@@ -1,0 +1,20 @@
+{
+ "id": "bBQScMtY_arcgis_rest_services_Street_Numbers_FeatureServer_0",
+ "ts": "2026-10-26T17:50:07Z",
+ "api": "https://services1.arcgis.com/F1v0ufATbBQScMtY/arcgis/rest/services/Street_Numbers/FeatureServer/0",
+ "count": 675006,
+ "base_rows": 0,
+ "rows": 316400,
+ "parts": 4,
+ "workers": {
+  "3": 79800,
+  "0": 79400,
+  "2": 78800,
+  "1": 78400
+ },
+ "strategy": "keyset",
+ "units": 7,
+ "done_units": 0,
+ "unit_rows_target": 100000,
+ "done": false
+}
