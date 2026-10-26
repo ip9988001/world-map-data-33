@@ -1,8 +1,8 @@
 {
- "layers": 1130,
- "with_rows": 1128,
+ "layers": 1131,
+ "with_rows": 1129,
  "worst_diff": 0,
- "total_rows": 88199069,
+ "total_rows": 88199070,
  "failed": [
   "l_org_arcgis_rest_services_Weston_Basemap_cache_MapServer_20",
   "rcgis_rest_services_Addressing_Addressing_public_MapServer_0"
@@ -16950,6 +16950,21 @@
    "limit": 0,
    "strategy": "keyset",
    "at": "2026-10-26T16:28:55Z"
+  },
+  {
+   "id": "07rnKNp8FApKhW_arcgis_rest_services_Bluerain_FeatureServer_0",
+   "title": "07rnKNp8FApKhW_arcgis_rest_services_Bluerain_FeatureServer_0",
+   "url": "https://services8.arcgis.com/HX07rnKNp8FApKhW/arcgis/rest/services/Bluerain/FeatureServer/0",
+   "svc": "FeatureServer",
+   "count": 1,
+   "rows": 1,
+   "parts": 1,
+   "diff": 0.0,
+   "elapsed_s": 4.6,
+   "err": "",
+   "limit": 0,
+   "strategy": "keyset",
+   "at": "2026-10-26T17:43:17Z"
   }
  ]
 }
