@@ -59,7 +59,7 @@ def load_policy(step):
                 else:
                     pol[k] = v
         except Exception as e:
-            print("⚠️ steps.json 解析失败（改用内置默认）：%s" % str(e)[:120])
+            print("⚠️ steps.json 解析失败（改用内置默认）：%s" % str(e)[:120], file=sys.stderr)
     return pol
 
 
@@ -151,7 +151,7 @@ def parcel_audit_layers():
     try:
         return json.load(open(f, encoding="utf-8")).get("layers") or {}
     except Exception as e:
-        print("⚠️ parcel_done.json 读不动，按「无已采层」处理：%s" % str(e)[:80])
+        print("⚠️ parcel_done.json 读不动，按「无已采层」处理：%s" % str(e)[:80], file=sys.stderr)
         return {}
 
 
@@ -323,7 +323,7 @@ def select_layers(step, limit=0, policy=None):
                 ids = {x.get("id") for x in (blk.get("items") or [])}
                 out = [r for r in out if r["id"] not in ids]
             except Exception as e:
-                print("⚠️ blocked.json 读不动，跳过 skip_blocked：%s" % str(e)[:80])
+                print("⚠️ blocked.json 读不动，跳过 skip_blocked：%s" % str(e)[:80], file=sys.stderr)
         if sel.get("svc_exclude"):
             bad = {str(x).lower() for x in sel["svc_exclude"]}
             out = [r for r in out if (r.get("svc") or "").lower() not in bad]
@@ -354,7 +354,9 @@ def select_layers(step, limit=0, policy=None):
             if done:
                 _b = len(out)
                 out = [r for r in out if r["id"] not in done]
-                print("⏭ 跳过已采 %d 层，待采 %d 层" % (_b - len(out), len(out)))
+                # ★ 必须走 stderr：--list-matrix 的 stdout 是给 workflow 解 JSON 用的，
+                #   一行提示混进去就是 JSONDecodeError: line 1 column 1（2026-10-27 踩过）
+                print("⏭ 跳过已采 %d 层，待采 %d 层" % (_b - len(out), len(out)), file=sys.stderr)
         # ★ 排序与分批窗口必须放在所有过滤之后：
         #   上一版先切 [off:off+size] 再过滤，40 层切出来只剩 1 层（过滤把窗口里的都杀了）。
         if sel.get("order") in ("rows_desc", "rows_asc"):
