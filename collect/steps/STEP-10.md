@@ -63,6 +63,9 @@ python3 collect/supervisor.py --review pass --note "宗地扩采收尾"
   "offset": 0,
   "batch": 200
  },
+ "workers": 4,
+ "unit_rows": 100000,
+ "tag": "collect-step10-{layer}",
  "evidence": [
   "report",
   "releases",
