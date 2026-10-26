@@ -1,10 +1,10 @@
 {
- "step": "10-P",
+ "step": "10",
  "sub": "S7/7 完成",
  "done": 7,
  "total": 7,
- "status": "awaiting_confirm",
- "ts": "2026-10-25T05:48:47Z",
+ "status": "running",
+ "ts": "2026-10-26T16:27:54Z",
  "eta_left_min": 0,
- "note": "10-P 全流程跑通并已入册 steps.json；决策报告已出；等是否开采确认"
+ "note": "批1 开采中：跑在 GitHub runner（worker-10，matrix 逐层），产物落 Release collect-step10-<layer>"
 }
