@@ -3,7 +3,7 @@
  "current_step": "10",
  "mode": "self-drive-v2",
  "budget": {
-  "minutes_used": 424,
+  "minutes_used": 425,
   "minutes_cap": 1800,
   "warn_ratio": 0.8,
   "stop_ratio": 0.95,
@@ -131,7 +131,7 @@
  "last_error": null,
  "wake": {
   "signature": "40c1638ad0869109",
-  "at": "2026-10-27T01:20:00Z",
+  "at": "2026-10-27T01:45:59Z",
   "reason": "宗地扩采：工人已停手，等大脑判验收",
   "issue": null,
   "count": 10
