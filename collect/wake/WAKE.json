@@ -1,6 +1,6 @@
 {
  "step": "10",
- "at": "2026-10-27T03:45:47Z",
+ "at": "2026-10-27T04:15:56Z",
  "want": [
   "report",
   "releases",
@@ -10,8 +10,8 @@
  ],
  "facts": {
   "report": {
-   "sha": "0216de5d81e3",
-   "freshest": "2026-10-26T18:04:10Z",
+   "sha": "fb5477081afa",
+   "freshest": "2026-10-27T03:51:41Z",
    "layers": 1160,
    "with_rows": 1158,
    "worst_diff": 0,
@@ -10206,7 +10206,7 @@
      "rows": 23591,
      "parts": 1,
      "diff": 0.0,
-     "elapsed_s": 22.6,
+     "elapsed_s": 3.6,
      "err": ""
     },
     {
@@ -11436,7 +11436,7 @@
    },
    "last_error": null,
    "budget": {
-    "minutes_used": 102,
+    "minutes_used": 429,
     "minutes_cap": 1800,
     "warn_ratio": 0.8,
     "stop_ratio": 0.95,
@@ -11575,5 +11575,5 @@
   "判完写回账本：python3 collect/supervisor.py --review pass|fail --note \"...\""
  ],
  "reason": "宗地扩采：工人已停手，等大脑判验收",
- "signature": "40c1638ad0869109"
+ "signature": "f68315754243aa45"
 }
