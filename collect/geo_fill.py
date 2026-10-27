@@ -1,0 +1,138 @@
+#!/usr/bin/env python3
+"""geo_fill.py v2 — 给 layer_plan_clean.csv 未定位层补 state。
+策略：①标题宽松匹配 ②feature+outSR=4326 反查（服务端转投影，最可靠）③extent 兜底(仅4326/3857)
+"""
+import csv, json, os, sys, time, math, urllib.request
+from collections import Counter
+from concurrent.futures import ThreadPoolExecutor
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+from geo_state import which_state  # noqa: E402
+
+SRC = os.path.join(HERE, 'layer_plan_clean.csv')
+UA = {'User-Agent': 'world-map-data-33/1.0 (+geofill)'}
+
+STATES = ['alabama','alaska','arizona','arkansas','california','colorado','connecticut','delaware',
+ 'florida','georgia','hawaii','idaho','illinois','indiana','iowa','kansas','kentucky','louisiana',
+ 'maine','maryland','massachusetts','michigan','minnesota','mississippi','missouri','montana',
+ 'nebraska','nevada','newhampshire','newjersey','newmexico','newyork','northcarolina','northdakota',
+ 'ohio','oklahoma','oregon','pennsylvania','rhodeisland','southcarolina','southdakota','tennessee',
+ 'texas','utah','vermont','virginia','washington','westvirginia','wisconsin','wyoming','districtofcolumbia']
+AB = {'alabama':'AL','alaska':'AK','arizona':'AZ','arkansas':'AR','california':'CA','colorado':'CO',
+ 'connecticut':'CT','delaware':'DE','florida':'FL','georgia':'GA','hawaii':'HI','idaho':'ID','illinois':'IL',
+ 'indiana':'IN','iowa':'IA','kansas':'KS','kentucky':'KY','louisiana':'LA','maine':'ME','maryland':'MD',
+ 'massachusetts':'MA','michigan':'MI','minnesota':'MN','mississippi':'MS','missouri':'MO','montana':'MT',
+ 'nebraska':'NE','nevada':'NV','newhampshire':'NH','newjersey':'NJ','newmexico':'NM','newyork':'NY',
+ 'northcarolina':'NC','northdakota':'ND','ohio':'OH','oklahoma':'OK','oregon':'OR','pennsylvania':'PA',
+ 'rhodeisland':'RI','southcarolina':'SC','southdakota':'SD','tennessee':'TN','texas':'TX','utah':'UT',
+ 'vermont':'VT','virginia':'VA','washington':'WA','westvirginia':'WV','wisconsin':'WI','wyoming':'WY',
+ 'districtofcolumbia':'DC'}
+
+def title_state(t):
+    """宽松：maine_elevation / Maine-Turnpike 都算命中，长名优先避免 virginia/westvirginia 误判"""
+    if not t: return None
+    low = t.lower()
+    flat = low.replace('_', ' ').replace('-', ' ')
+    flat2 = flat.replace(' ', '')
+    for nm in sorted(STATES, key=len, reverse=True):
+        if nm in flat2: return AB[nm]
+    return None
+
+def http_json(u, timeout=25):
+    with urllib.request.urlopen(urllib.request.Request(u, headers=UA), timeout=timeout) as r:
+        return json.loads(r.read().decode('utf-8', 'replace'))
+
+def qurl(u):
+    """ArcGIS 图层端点必须走 /query 才能查询；直接 ?where= 返回的是元数据。"""
+    u = url_clean(u)
+    return u if u.endswith('/query') else u + '/query'
+
+def url_clean(u):
+    u = (u or '').strip().rstrip('/')
+    return u
+
+def geo_probe(url):
+    u = url_clean(url)
+    base = u if u.endswith('/query') else u
+    # ① feature + outSR=4326（服务端负责投影转换）
+    #    ★ ArcGIS JSON 不是 GeoJSON：Point 是 {x,y}，Polyline 是 {paths}，Polygon 是 {rings}
+    try:
+        d = http_json(qurl(u) + '?where=1%3D1&outFields=*&resultRecordCount=5&returnGeometry=true&outSR=4326&f=json')
+        for f in (d.get('features') or [])[:5]:
+            g = f.get('geometry') or {}
+            if 'x' in g and 'y' in g:
+                lon, lat = float(g['x']), float(g['y'])
+                if -180 <= lon <= -60 and 15 <= lat <= 72:
+                    return (lon, lat), 'feature-point'
+                continue
+            pts = []
+            def collect(o):
+                if isinstance(o, (list, tuple)):
+                    if len(o) >= 2 and isinstance(o[0], (int, float)) and isinstance(o[1], (int, float)):
+                        pts.append((float(o[0]), float(o[1])))
+                    else:
+                        for z in o: collect(z)
+            for key in ('rings', 'paths', 'coordinates'):
+                if key in g: collect(g[key]); break
+            if pts:
+                lon = sum(q[0] for q in pts) / len(pts)
+                lat = sum(q[1] for q in pts) / len(pts)
+                if -180 <= lon <= -60 and 15 <= lat <= 72:
+                    return (lon, lat), 'feature-centroid'
+    except Exception:
+        pass
+    # ② extent 兜底（只接受 4326/3857）—— 元数据用原端点
+    try:
+        m = http_json(base + '?f=json')
+        ext = m.get('extent') or m.get('fullExtent') or {}
+        sr = ext.get('spatialReference') or {}
+        w = sr.get('latestWkid') or sr.get('wkid')
+        if ext.get('xmin') is not None and w in (4326, None, 3857, 102100, 900913):
+            x = (float(ext['xmin']) + float(ext['xmax'])) / 2
+            y = (float(ext['ymin']) + float(ext['ymax'])) / 2
+            if w in (3857, 102100, 900913):
+                lon = x / 20037508.34 * 180.0
+                lat = (2 * math.atan(math.exp(y / 6378137.0)) - math.pi / 2) * 180 / math.pi
+            else:
+                lon, lat = x, y
+            span = abs(float(ext['xmax']) - float(ext['xmin'])) / max(1, (20037508.34 / 180.0)) if w in (3857, 102100, 900913) else abs(float(ext['xmax']) - float(ext['xmin']))
+            if span > 12: return None, 'multi-state'
+            return (lon, lat), 'extent'
+        if ext.get('xmin') is not None: return None, 'proj-%s' % w
+    except Exception as e:
+        return None, 'meta:%s' % type(e).__name__
+    return None, 'nogeom'
+
+def one(row):
+    # 标题优先（零成本）
+    st = title_state(row.get('title', ''))
+    if st: return st, 'title'
+    pt, how = geo_probe(row.get('url') or '')
+    if not pt: return None, how
+    return which_state(*pt) or None, 'geo-' + how
+
+def main():
+    limit = int(sys.argv[1]) if len(sys.argv) > 1 else 0
+    write = '--write' in sys.argv
+    rows = list(csv.DictReader(open(SRC, encoding='utf-8', errors='ignore')))
+    fields = list(rows[0].keys())
+    todo = [r for r in rows if (r.get('state') or '') in ('', '未定位')]
+    if limit: todo = todo[:limit]
+    print('待定位:', len(todo), '| 写回:', write)
+    stat = Counter(); filled = 0; t0 = time.time()
+    def work(r):
+        st, how = one(r); return r, st, how
+    with ThreadPoolExecutor(16) as ex:
+        for i, (r, st, how) in enumerate(ex.map(work, todo), 1):
+            stat[how.split(':')[0] if ':' in how else how] += 1
+            if st: r['state'] = st; r['state_src'] = how; filled += 1
+            else: r['state_src'] = 'fail:' + how
+            if i % 200 == 0: print(f'  {i}/{len(todo)} ok={filled} {time.time()-t0:.0f}s')
+    if write:
+        with open(SRC, 'w', newline='', encoding='utf-8') as f:
+            w = csv.DictWriter(f, fieldnames=fields, extrasaction='ignore'); w.writeheader(); w.writerows(rows)
+    print(json.dumps(dict(todo=len(todo), filled=filled, by_src=dict(stat), secs=round(time.time()-t0,1)), ensure_ascii=False, indent=1))
+
+if __name__ == '__main__':
+    main()

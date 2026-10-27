@@ -1,0 +1,32 @@
+name: geo-fill
+# 给 layer_plan_clean.csv 里 state=未定位 的层补州归属
+# 策略：标题宽松匹配 → ArcGIS /query + outSR=4326 取 1~5 个 feature → 州界多边形反查
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "只处理前 N 层（0=全部）"
+        default: "0"
+permissions:
+  contents: write
+concurrency:
+  group: geo-fill
+  cancel-in-progress: false
+jobs:
+  fill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: 州定位
+        run: python3 collect/geo_fill.py "${{ github.event.inputs.limit || '0' }}" --write
+      - name: 落库
+        run: |
+          git config user.name "geo-fill-bot"
+          git config user.email "bot@xinxin.local"
+          git add collect/layer_plan_clean.csv || true
+          git diff --cached --quiet && echo "无变更" || git commit -m "chore(geo): 补州定位 $(date -u +%FT%TZ)"
+          git push || echo "push skipped"

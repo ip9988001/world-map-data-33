@@ -1,0 +1,16 @@
+{
+ "total": 60695,
+ "kept": 42496,
+ "dropped": {
+  "plan=skip": 5273,
+  "row_count=0": 12926
+ },
+ "fixed_by": {
+  "title-name": 290,
+  "domain-abbr": 139,
+  "domain-suffix": 596,
+  "domain-name": 82
+ },
+ "still_unknown": 19949,
+ "kept_rows": 2731517721
+}
