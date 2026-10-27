@@ -16975,11 +16975,11 @@
    "rows": 23591,
    "parts": 1,
    "diff": 0.0,
-   "elapsed_s": 22.6,
+   "elapsed_s": 3.6,
    "err": "",
    "limit": 0,
    "strategy": "keyset",
-   "at": "2026-10-26T17:46:38Z"
+   "at": "2026-10-27T03:51:41Z"
   },
   {
    "id": "7nt9ZtPWOn_arcgis_rest_services_RangeBuffers_FeatureServer_6",
