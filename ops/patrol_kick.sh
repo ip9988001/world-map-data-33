@@ -6,7 +6,7 @@
 # 它不看验收、不判死、不 dispatch 任何工人。
 #
 # 由本机 cron 每 15 分钟跑一次（GitHub schedule 事件不保证送达，双闹钟之一）。
-# 2026-10-28：GitHub cron 已降到 */30，本脚本阈值同步 20→40 分钟，否则每次都会误 KICK。
+# 2026-10-28：GitHub cron 声明 */30、实测 45 分钟/次，阈值必须 > 实测周期：20→40→60。
 set -u
 REPO="ip9988001/world-map-data-33"
 STATE=$(gh api "repos/$REPO/contents/collect/state.json" -q '.content' 2>/dev/null | base64 -d 2>/dev/null)
@@ -38,7 +38,7 @@ except Exception:
 PY
 )
 
-if [ "${AGE:-9999}" -lt 40 ]; then
+if [ "${AGE:-9999}" -lt 60 ]; then
   echo "$(date -u +%FT%TZ) SKIP 工头 ${AGE} 分钟前刚跑过"
   exit 0
 fi
