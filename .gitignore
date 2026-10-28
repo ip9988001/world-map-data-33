@@ -9,3 +9,5 @@ collect/progress/
 collect/parcel_out/
 collect/batch1_result.json
 collect/.release_index.json
+# 工头叫醒缓存：只对当次 run/本机有效，绝不进 git（2026-10-28 修：曾 264KB × 104 版本）
+collect/wake/

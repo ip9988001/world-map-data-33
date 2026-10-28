@@ -2,7 +2,7 @@ name: collect-supervisor
 # 工头（v2）：只叫醒大脑，不判验收、不点火、不推进。
 # 工人不报告，工头自己看；没有活 run 就把证据打包落盘 + 开 Issue 叫大脑。
 on:
-  schedule: [{ cron: "*/10 * * * *" }]
+  schedule: [{ cron: "*/30 * * * *" }]
   workflow_dispatch:
 permissions: { contents: write, issues: write, actions: write }
 concurrency:
@@ -28,13 +28,12 @@ jobs:
         run: |
           git config user.name collect-bot
           git config user.email bot@users.noreply.github.com
-          git add collect/state.json || true
-          git add -f collect/wake/ 2>/dev/null || true
+          git add collect/state.json
           git diff --cached --quiet || git commit -m "state: 工头巡逻 $(date -u +%FT%TZ)"
           ok=0
           for i in 1 2 3 4 5; do
-            git fetch -q origin main || true
-            git rebase -q origin/main 2>/dev/null || git rebase --abort 2>/dev/null || true
+            if ! git fetch -q origin main; then echo "⚠️ fetch 失败（第 $i 次）"; sleep $((i*4)); continue; fi
+            if ! git rebase -q origin/main; then git rebase --abort 2>/dev/null && echo "⚠️ rebase 冲突已回退" || echo "⚠️ rebase 失败"; fi
             if git push -q origin HEAD:main 2>/dev/null; then ok=1; echo "✅ 账本已推送（第 $i 次）"; break; fi
             echo "⚠️ push 第 $i 次被拒，重试…"; sleep $((i*4))
           done

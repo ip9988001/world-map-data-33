@@ -124,7 +124,7 @@
    "note": "第10环接回正牌流水线：run_step_10.py + worker-10.yml(matrix 逐层)，本机零参与"
   }
  },
- "blocked_count": 0,
+ "blocked_count": 2,
  "status": "running",
  "paused_reason": null,
  "paused_at": "2026-10-23T23:14:35Z",
