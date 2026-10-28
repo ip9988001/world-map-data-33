@@ -26,6 +26,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: 依赖（pyproj 用于判断 EPSG 是否覆盖美国 + 投影转换）
+        run: pip install "pyproj>=3.6"
       - name: 州定位
         run: |
           if [ "${{ github.event.inputs.mode || 'fill' }}" = "report" ]; then
