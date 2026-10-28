@@ -1,13 +1,13 @@
 {
  "layers_by_reason": {},
- "generated_at": "2026-10-28T16:07:09Z",
+ "generated_at": "2026-10-28T16:18:16Z",
  "source": "collect/layer_plan_clean.csv（state=未定位 的层）",
  "total_todo": 4351,
- "filled": 31,
- "unfilled": 4320,
+ "filled": 87,
+ "unfilled": 4264,
  "by_reason": {
-  "outside_us": 2425,
-  "multi-state": 677,
+  "outside_us": 2422,
+  "multi-state": 679,
   "nogeom": 460,
   "proj-nonus-27700": 198,
   "proj-nonus-2193": 88,
@@ -15,131 +15,134 @@
   "proj-nonus-2157": 83,
   "proj-nonus-7856": 17,
   "geo-feature-centroid": 17,
-  "proj-nonus-8857": 13,
+  "proj-fail-8857": 13,
+  "geo-feature-point": 12,
   "proj-nonus-32717": 12,
   "proj-nonus-7855": 12,
-  "geo-feature-point": 11,
   "proj-nonus-4283": 11,
   "proj-nonus-32636": 10,
   "proj-nonus-29902": 10,
-  "proj-nonus-2272": 9,
   "proj-nonus-7899": 9,
   "proj-nonus-28355": 8,
   "proj-nonus-28992": 8,
-  "proj-nonus-32620": 6,
+  "proj-fix-2272": 8,
+  "proj-fail-32620": 6,
   "proj-nonus-25833": 5,
-  "proj-nonus-3395": 5,
+  "proj-fail-3395": 5,
   "proj-nonus-7844": 5,
-  "proj-nonus-2264": 5,
+  "proj-fix-2264": 5,
   "proj-nonus-25832": 4,
   "proj-nonus-32181": 4,
   "proj-nonus-2326": 4,
   "proj-nonus-32643": 4,
   "proj-nonus-5514": 3,
   "proj-nonus-3035": 3,
-  "proj-nonus-26986": 3,
   "proj-nonus-32718": 3,
-  "proj-nonus-2229": 3,
+  "proj-fix-2229": 3,
   "proj-nonus-3059": 3,
   "proj-nonus-32645": 3,
   "proj-nonus-54030": 3,
-  "proj-nonus-26915": 3,
+  "proj-fix-26915": 3,
   "proj-nonus-3123": 2,
   "proj-nonus-2100": 2,
   "proj-nonus-4258": 2,
-  "proj-nonus-2227": 2,
+  "proj-fix-2227": 2,
+  "proj-fix-26986": 2,
   "proj-nonus-102698": 2,
   "proj-nonus-32631": 2,
   "meta": 2,
   "proj-nonus-102690": 2,
   "proj-nonus-28354": 2,
-  "proj-nonus-26912": 2,
+  "proj-fail-26912": 2,
   "proj-nonus-7854": 2,
-  "proj-nonus-4269": 2,
+  "proj-fail-4269": 2,
   "vote-2": 2,
-  "proj-nonus-3443": 2,
-  "proj-nonus-2284": 2,
+  "proj-fix-3443": 2,
+  "proj-fix-2284": 2,
   "proj-nonus-32651": 2,
-  "proj-nonus-2236": 2,
+  "proj-fix-2236": 2,
   "proj-nonus-32634": 2,
-  "proj-nonus-26917": 2,
+  "proj-fail-26917": 2,
   "proj-nonus-21095": 2,
   "proj-nonus-4095": 2,
-  "proj-nonus-2927": 2,
-  "proj-nonus-2249": 2,
-  "proj-nonus-2286": 2,
+  "proj-fix-2927": 2,
+  "proj-fix-2286": 2,
   "proj-nonus-2039": 2,
-  "proj-nonus-2228": 2,
-  "proj-nonus-2958": 2,
+  "proj-fix-2228": 2,
+  "proj-fail-2958": 2,
   "proj-nonus-102565": 1,
+  "proj-fail-2272": 1,
   "proj-nonus-32721": 1,
   "proj-nonus-103517": 1,
   "proj-nonus-102630": 1,
-  "proj-nonus-6574": 1,
-  "proj-nonus-6625": 1,
-  "proj-nonus-2278": 1,
-  "proj-nonus-2232": 1,
+  "proj-fix-6574": 1,
+  "proj-fix-6625": 1,
+  "proj-fix-2232": 1,
   "proj-nonus-22992": 1,
   "proj-nonus-3994": 1,
-  "proj-nonus-3451": 1,
+  "proj-fix-3451": 1,
   "proj-nonus-2154": 1,
-  "proj-nonus-2876": 1,
-  "proj-nonus-6579": 1,
+  "proj-fix-2876": 1,
+  "proj-fix-6579": 1,
   "proj-nonus-9377": 1,
   "proj-nonus-29903": 1,
-  "proj-nonus-6447": 1,
+  "proj-fix-6447": 1,
   "proj-nonus-103768": 1,
-  "proj-nonus-6492": 1,
-  "proj-nonus-26919": 1,
+  "proj-fix-6492": 1,
+  "proj-fix-26919": 1,
   "proj-nonus-54004": 1,
   "proj-nonus-102070": 1,
   "proj-nonus-27200": 1,
   "proj-nonus-9184": 1,
-  "proj-nonus-3433": 1,
+  "proj-fix-3433": 1,
   "vote-4": 1,
   "proj-nonus-3765": 1,
   "proj-nonus-3007": 1,
-  "proj-nonus-6588": 1,
+  "proj-fail-6588": 1,
   "proj-nonus-102039": 1,
-  "proj-nonus-2253": 1,
+  "proj-fix-2253": 1,
   "proj-nonus-32655": 1,
-  "proj-nonus-2273": 1,
+  "proj-fix-2273": 1,
   "proj-nonus-32722": 1,
   "proj-nonus-32638": 1,
-  "proj-nonus-2277": 1,
-  "proj-nonus-26910": 1,
+  "proj-fix-2277": 1,
+  "proj-fail-26910": 1,
   "proj-nonus-3111": 1,
-  "proj-nonus-2868": 1,
+  "proj-fail-2868": 1,
   "proj-nonus-6674": 1,
   "proj-nonus-102567": 1,
+  "proj-fail-2249": 1,
   "proj-nonus-4140": 1,
   "proj-nonus-4686": 1,
-  "proj-nonus-6439": 1,
-  "proj-nonus-2926": 1,
+  "proj-fix-6439": 1,
+  "proj-fix-2926": 1,
   "proj-nonus-27120": 1,
-  "proj-nonus-3735": 1,
+  "proj-fix-3735": 1,
   "proj-nonus-32629": 1,
   "proj-nonus-102018": 1,
   "proj-nonus-26921": 1,
   "proj-nonus-32630": 1,
-  "proj-nonus-2230": 1,
+  "proj-fix-2230": 1,
   "proj-nonus-32751": 1,
   "proj-nonus-31983": 1,
   "proj-nonus-32704": 1,
-  "proj-nonus-3078": 1,
+  "proj-fail-3078": 1,
+  "proj-fail-26986": 1,
   "proj-nonus-3346": 1,
-  "proj-nonus-2883": 1,
+  "proj-fix-2883": 1,
   "proj-nonus-102662": 1,
   "proj-nonus-102157": 1,
   "proj-nonus-32750": 1,
-  "proj-nonus-2254": 1,
+  "proj-fix-2254": 1,
   "proj-nonus-102696": 1,
+  "proj-fix-2249": 1,
+  "proj-fail-26911": 1,
   "proj-nonus-4222": 1,
   "proj-nonus-3308": 1
  },
  "rows_by_reason": {
-  "outside_us": 139291257,
-  "multi-state": 323488671,
+  "outside_us": 139288516,
+  "multi-state": 323488673,
   "nogeom": 103498190,
   "proj-nonus-27700": 6315183,
   "proj-nonus-2193": 4237943,
@@ -147,125 +150,128 @@
   "proj-nonus-2157": 4347333,
   "proj-nonus-7856": 519791,
   "geo-feature-centroid": 681727,
-  "proj-nonus-8857": 4338,
+  "proj-fail-8857": 4338,
+  "geo-feature-point": 576223,
   "proj-nonus-32717": 180,
   "proj-nonus-7855": 763124,
-  "geo-feature-point": 576036,
   "proj-nonus-4283": 6044592,
   "proj-nonus-32636": 16479,
   "proj-nonus-29902": 20815,
-  "proj-nonus-2272": 51940,
   "proj-nonus-7899": 420,
   "proj-nonus-28355": 129810,
   "proj-nonus-28992": 5965563,
-  "proj-nonus-32620": 19122,
+  "proj-fix-2272": 46593,
+  "proj-fail-32620": 19122,
   "proj-nonus-25833": 404472,
-  "proj-nonus-3395": 38574,
+  "proj-fail-3395": 38574,
   "proj-nonus-7844": 31024417,
-  "proj-nonus-2264": 80489,
+  "proj-fix-2264": 80489,
   "proj-nonus-25832": 16337,
   "proj-nonus-32181": 1745,
   "proj-nonus-2326": 72163,
   "proj-nonus-32643": 810,
   "proj-nonus-5514": 23776,
   "proj-nonus-3035": 49176,
-  "proj-nonus-26986": 6855,
   "proj-nonus-32718": 84,
-  "proj-nonus-2229": 32417,
+  "proj-fix-2229": 32417,
   "proj-nonus-3059": 4744,
   "proj-nonus-32645": 50,
   "proj-nonus-54030": 5300,
-  "proj-nonus-26915": 176,
+  "proj-fix-26915": 176,
   "proj-nonus-3123": 41813,
   "proj-nonus-2100": 2452,
   "proj-nonus-4258": 275195,
-  "proj-nonus-2227": 6259,
+  "proj-fix-2227": 6259,
+  "proj-fix-26986": 4020,
   "proj-nonus-102698": 40399,
   "proj-nonus-32631": 18,
   "meta": 132152,
   "proj-nonus-102690": 32376,
   "proj-nonus-28354": 11148,
-  "proj-nonus-26912": 11144,
+  "proj-fail-26912": 11144,
   "proj-nonus-7854": 13332,
-  "proj-nonus-4269": 419,
+  "proj-fail-4269": 419,
   "vote-2": 128,
-  "proj-nonus-3443": 2,
-  "proj-nonus-2284": 29207,
+  "proj-fix-3443": 2,
+  "proj-fix-2284": 29207,
   "proj-nonus-32651": 8753,
-  "proj-nonus-2236": 67,
+  "proj-fix-2236": 67,
   "proj-nonus-32634": 964572,
-  "proj-nonus-26917": 546411,
+  "proj-fail-26917": 546411,
   "proj-nonus-21095": 4120,
   "proj-nonus-4095": 132,
-  "proj-nonus-2927": 30981,
-  "proj-nonus-2249": 22116,
-  "proj-nonus-2286": 6330,
+  "proj-fix-2927": 30981,
+  "proj-fix-2286": 6330,
   "proj-nonus-2039": 17182,
-  "proj-nonus-2228": 48899,
-  "proj-nonus-2958": 606,
+  "proj-fix-2228": 48899,
+  "proj-fail-2958": 606,
   "proj-nonus-102565": 12542,
+  "proj-fail-2272": 5347,
   "proj-nonus-32721": 14,
   "proj-nonus-103517": 15425,
   "proj-nonus-102630": 10564,
-  "proj-nonus-6574": 2661,
-  "proj-nonus-6625": 366,
-  "proj-nonus-2278": 187,
-  "proj-nonus-2232": 114,
+  "proj-fix-6574": 2661,
+  "proj-fix-6625": 366,
+  "proj-fix-2232": 114,
   "proj-nonus-22992": 92,
   "proj-nonus-3994": 17,
-  "proj-nonus-3451": 290095,
+  "proj-fix-3451": 290095,
   "proj-nonus-2154": 68130,
-  "proj-nonus-2876": 11839,
-  "proj-nonus-6579": 6244,
+  "proj-fix-2876": 11839,
+  "proj-fix-6579": 6244,
   "proj-nonus-9377": 534,
   "proj-nonus-29903": 115,
-  "proj-nonus-6447": 81858,
+  "proj-fix-6447": 81858,
   "proj-nonus-103768": 14465,
-  "proj-nonus-6492": 6778,
-  "proj-nonus-26919": 106,
+  "proj-fix-6492": 6778,
+  "proj-fix-26919": 106,
   "proj-nonus-54004": 8,
   "proj-nonus-102070": 31680,
   "proj-nonus-27200": 16733,
   "proj-nonus-9184": 9588,
-  "proj-nonus-3433": 2304,
+  "proj-fix-3433": 2304,
   "vote-4": 1410,
   "proj-nonus-3765": 314,
   "proj-nonus-3007": 102,
-  "proj-nonus-6588": 2,
+  "proj-fail-6588": 2,
   "proj-nonus-102039": 266766,
-  "proj-nonus-2253": 26009,
+  "proj-fix-2253": 26009,
   "proj-nonus-32655": 8513,
-  "proj-nonus-2273": 8087,
+  "proj-fix-2273": 8087,
   "proj-nonus-32722": 838,
   "proj-nonus-32638": 1,
-  "proj-nonus-2277": 76690,
-  "proj-nonus-26910": 5457,
+  "proj-fix-2277": 76690,
+  "proj-fail-26910": 5457,
   "proj-nonus-3111": 1649,
-  "proj-nonus-2868": 635,
+  "proj-fail-2868": 635,
   "proj-nonus-6674": 202,
   "proj-nonus-102567": 90,
+  "proj-fail-2249": 13065,
   "proj-nonus-4140": 6138,
   "proj-nonus-4686": 228,
-  "proj-nonus-6439": 1,
-  "proj-nonus-2926": 875,
+  "proj-fix-6439": 1,
+  "proj-fix-2926": 875,
   "proj-nonus-27120": 288,
-  "proj-nonus-3735": 18,
+  "proj-fix-3735": 18,
   "proj-nonus-32629": 23222,
   "proj-nonus-102018": 7322,
   "proj-nonus-26921": 4405,
   "proj-nonus-32630": 4061,
-  "proj-nonus-2230": 997,
+  "proj-fix-2230": 997,
   "proj-nonus-32751": 18,
   "proj-nonus-31983": 11,
   "proj-nonus-32704": 2,
-  "proj-nonus-3078": 1,
+  "proj-fail-3078": 1,
+  "proj-fail-26986": 2835,
   "proj-nonus-3346": 950182,
-  "proj-nonus-2883": 76584,
+  "proj-fix-2883": 76584,
   "proj-nonus-102662": 7037,
   "proj-nonus-102157": 2640,
   "proj-nonus-32750": 654,
-  "proj-nonus-2254": 50207,
+  "proj-fix-2254": 50207,
   "proj-nonus-102696": 38449,
+  "proj-fix-2249": 9051,
+  "proj-fail-26911": 2739,
   "proj-nonus-4222": 1360,
   "proj-nonus-3308": 827
  },
@@ -554,31 +560,11 @@
     "row_count": "12542"
    }
   ],
-  "proj-nonus-2272": [
+  "proj-fail-2272": [
    {
     "title": "Parcels_8_3_16",
     "url": "https://services2.arcgis.com/UN0zLLtTogiWbvpK/arcgis/rest/services/Parcels_8_3_16/FeatureServer/0",
     "row_count": "5347"
-   },
-   {
-    "title": "Parcels10_20",
-    "url": "https://services8.arcgis.com/65lT7GhxbcZanyY0/arcgis/rest/services/Parcels10_20/FeatureServer/0",
-    "row_count": "5531"
-   },
-   {
-    "title": "Parcels_Oct2018",
-    "url": "https://services3.arcgis.com/BCo8ZEj7O01uyRTx/arcgis/rest/services/Parcels_Oct2018/FeatureServer/0",
-    "row_count": "4290"
-   },
-   {
-    "title": "SpringfieldParcels_AllFields",
-    "url": "https://services9.arcgis.com/Tq3SUrXSc9IZNb9m/arcgis/rest/services/SpringfieldParcels_AllFields/FeatureServer/0",
-    "row_count": "7514"
-   },
-   {
-    "title": "Parcels",
-    "url": "https://services3.arcgis.com/BCo8ZEj7O01uyRTx/arcgis/rest/services/Solebury_021320_wTraisrAttribs/FeatureServer/1",
-    "row_count": "4289"
    }
   ],
   "proj-nonus-32636": [
@@ -713,7 +699,7 @@
     "row_count": "22"
    }
   ],
-  "proj-nonus-8857": [
+  "proj-fail-8857": [
    {
     "title": "GHSL — Urban Expansion and Population — Episcopal Conferences, Urban Context",
     "url": "https://services8.arcgis.com/7DJFMLstNUGRFz6m/arcgis/rest/services/GHSL_01_Conferences_City_Context_20261009/FeatureServer/0",
@@ -774,7 +760,7 @@
     "row_count": "1"
    }
   ],
-  "proj-nonus-3395": [
+  "proj-fail-3395": [
    {
     "title": "RunwayCenterline",
     "url": "https://services5.arcgis.com/62o2qANhRqripAuB/arcgis/rest/services/RunwayCenterline/FeatureServer/45",
@@ -854,25 +840,6 @@
     "row_count": "10564"
    }
   ],
-  "proj-nonus-2227": [
-   {
-    "title": "NFO Addressing",
-    "url": "https://services.arcgis.com/yq3FgOI44hYHAFVZ/arcgis/rest/services/NFO_Addressing/FeatureServer/0",
-    "row_count": "4354"
-   },
-   {
-    "title": "Drainage Documents",
-    "url": "https://services1.arcgis.com/jJfZghspGKh8J9Jm/arcgis/rest/services/Drainage_Documents/FeatureServer/5",
-    "row_count": "1905"
-   }
-  ],
-  "proj-nonus-6574": [
-   {
-    "title": "Intersections for Souix Falls MPO 2050 LRTP",
-    "url": "https://services.arcgis.com/sLe4VrKqV1JxToKz/arcgis/rest/services/Intersections_for_Souix_Falls_MPO_2050_LRTP/FeatureServer/0",
-    "row_count": "2661"
-   }
-  ],
   "proj-nonus-3035": [
    {
     "title": "D5_3_Cogeneration_Excess_Heat_HRE4",
@@ -890,23 +857,6 @@
     "row_count": "23902"
    }
   ],
-  "proj-nonus-26986": [
-   {
-    "title": "BRPC BETA Vision Zero HIN 05_24_24 Update",
-    "url": "https://services8.arcgis.com/ZybleXItoWGv9yUU/arcgis/rest/services/BRPC_BETA_Vision_Zero_HIN_05_24_24_Update/FeatureServer/0",
-    "row_count": "858"
-   },
-   {
-    "title": "OCPC Trends Risk Update 05_28_2024",
-    "url": "https://services8.arcgis.com/ZybleXItoWGv9yUU/arcgis/rest/services/OCPC_Trends_Risk_Update_05_28_2024/FeatureServer/0",
-    "row_count": "3162"
-   },
-   {
-    "title": "b22001_hh_foodstamps_snap_60yrs_acs_m",
-    "url": "https://services.arcgis.com/c5WwApDsDjRhIVkH/arcgis/rest/services/b22001_hh_foodstamps_snap_60yrs_acs_m/FeatureServer",
-    "row_count": "2835"
-   }
-  ],
   "proj-nonus-102698": [
    {
     "title": "police2386",
@@ -917,27 +867,6 @@
     "title": "CommissionerDistrictsServiceFinal",
     "url": "https://services2.arcgis.com/wTcQ72xtx5Lnk2YJ/arcgis/rest/services/CommissionerDistrictsServiceFinal/FeatureServer/0",
     "row_count": "39687"
-   }
-  ],
-  "proj-nonus-6625": [
-   {
-    "title": "DASHBOARD_HeberBypass_Level1_Impacts",
-    "url": "https://services.arcgis.com/04HiymDgLlsbhaV4/arcgis/rest/services/DASHBOARD_HeberBypass_Level1_Impacts/FeatureServer/0",
-    "row_count": "366"
-   }
-  ],
-  "proj-nonus-2278": [
-   {
-    "title": "Census Places 2014",
-    "url": "http://gis.h-gac.com/arcgis/rest/services/Census_ACS/Census_ACS_5Yr_Places_Pts/MapServer/0",
-    "row_count": "187"
-   }
-  ],
-  "proj-nonus-2232": [
-   {
-    "title": "PPACG Regional Transportation Projects",
-    "url": "https://services1.arcgis.com/0plDVQODvYjBRQXP/arcgis/rest/services/PPACG_Regional_Transportation_Projects/FeatureServer/0",
-    "row_count": "114"
    }
   ],
   "proj-nonus-22992": [
@@ -993,13 +922,6 @@
     "row_count": "9"
    }
   ],
-  "proj-nonus-3451": [
-   {
-    "title": "Caddo Parish Address Points",
-    "url": "https://utility.arcgis.com/usrsvcs/servers/32594d1368254a95b1404443a46cab09/rest/services/Assessor_Data/Caddo_Parish_Address_Point",
-    "row_count": "290095"
-   }
-  ],
   "proj-nonus-2154": [
    {
     "title": "Transport Performance Statistics by 200 metre grids for subset of Urban Centres in France",
@@ -1031,13 +953,6 @@
     "row_count": "16188"
    }
   ],
-  "proj-nonus-2876": [
-   {
-    "title": "Open Data Street Centerlines",
-    "url": "https://gis.greeleygov.com/arcgis_svr3/rest/services/PublicSpace/Open_Data_Street_Centerlines/FeatureServer/0",
-    "row_count": "11839"
-   }
-  ],
   "proj-nonus-28354": [
    {
     "title": "Properties",
@@ -1050,7 +965,7 @@
     "row_count": "2098"
    }
   ],
-  "proj-nonus-26912": [
+  "proj-fail-26912": [
    {
     "title": "Address Points",
     "url": "https://services5.arcgis.com/xPoG9m86qjKWAzys/arcgis/rest/services/ADDRESS_POINTS/FeatureServer/0",
@@ -1062,14 +977,7 @@
     "row_count": "4004"
    }
   ],
-  "proj-nonus-6579": [
-   {
-    "title": "EFIT",
-    "url": "https://services.arcgis.com/F7DSX1DSNSiWmOqh/arcgis/rest/services/EFIT/FeatureServer/0",
-    "row_count": "6244"
-   }
-  ],
-  "proj-nonus-32620": [
+  "proj-fail-32620": [
    {
     "title": "6023 Capstone Land Information System",
     "url": "https://services1.arcgis.com/NUSHso3rgWERZOFF/arcgis/rest/services/6023_Capstone_Land_Information_System/FeatureServer/1",
@@ -1193,42 +1101,11 @@
     "row_count": "78"
    }
   ],
-  "proj-nonus-6447": [
-   {
-    "title": "SiteAddressPoints",
-    "url": "https://services2.arcgis.com/zPFLSOZ5HzUzzTQb/arcgis/rest/services/SiteAddressPoints/FeatureServer/0",
-    "row_count": "81858"
-   }
-  ],
   "proj-nonus-103768": [
    {
     "title": "StreetCenterlines_IntersectionPoints",
     "url": "https://services1.arcgis.com/9meaaHE3uiba0zr8/arcgis/rest/services/StreetCenterlines_IntersectionPoints/FeatureServer/0",
     "row_count": "14465"
-   }
-  ],
-  "proj-nonus-6492": [
-   {
-    "title": "Sudbury_VPC5",
-    "url": "https://services8.arcgis.com/1Vo19P9psYNnj0cy/arcgis/rest/services/Sudbury_VPC5/FeatureServer/0",
-    "row_count": "6778"
-   }
-  ],
-  "proj-nonus-2229": [
-   {
-    "title": "Lancaster_Street_Intersections",
-    "url": "https://services7.arcgis.com/nSZffRgjBDuTMleo/arcgis/rest/services/Lancaster_Street_Intersections/FeatureServer/0",
-    "row_count": "3619"
-   },
-   {
-    "title": "Centerline Ties",
-    "url": "https://services9.arcgis.com/LUBoZWfQwvBnZCmP/arcgis/rest/services/Centerline_Ties_Test/FeatureServer/0",
-    "row_count": "353"
-   },
-   {
-    "title": "Parcel_View",
-    "url": "https://services2.arcgis.com/OCysFFatYM3MITwS/arcgis/rest/services/Parcel_View/FeatureServer/0",
-    "row_count": "28445"
    }
   ],
   "proj-nonus-2326": [
@@ -1270,7 +1147,7 @@
     "row_count": "2379"
    }
   ],
-  "proj-nonus-4269": [
+  "proj-fail-4269": [
    {
     "title": "US National Grid",
     "url": "https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/US_National_Grid_HFL_V/FeatureServer/0",
@@ -1280,13 +1157,6 @@
     "title": "Guam Force Laydown Map",
     "url": "https://services.arcgis.com/XG15cJAlne2vxtgt/arcgis/rest/services/Guam_Force_Laydown_Map/FeatureServer/73",
     "row_count": "91"
-   }
-  ],
-  "proj-nonus-26919": [
-   {
-    "title": "ME Source Data",
-    "url": "https://services.arcgis.com/F7DSX1DSNSiWmOqh/arcgis/rest/services/ME_Source_Data/FeatureServer/0",
-    "row_count": "106"
    }
   ],
   "proj-nonus-32645": [
@@ -1313,35 +1183,11 @@
     "row_count": "8"
    }
   ],
-  "proj-nonus-3443": [
-   {
-    "title": "ProposedSiteAddresses",
-    "url": "https://services1.arcgis.com/oX0kbxItOpLtURFa/arcgis/rest/services/ProposedSiteAddresses_2140050a506641b28cfd663ac86063d7/FeatureS",
-    "row_count": "1"
-   },
-   {
-    "title": "Address Request Form_stakeholder",
-    "url": "https://services1.arcgis.com/oX0kbxItOpLtURFa/arcgis/rest/services/survey123_41398ee888294e1e98d2b1777176486c_stakeholder/FeatureS",
-    "row_count": "1"
-   }
-  ],
   "proj-nonus-102070": [
    {
     "title": "Address_Points_GSY",
     "url": "https://services5.arcgis.com/uqdq4CSRQ5L5qvET/arcgis/rest/services/Address_Points_GSY/FeatureServer/0",
     "row_count": "31680"
-   }
-  ],
-  "proj-nonus-2284": [
-   {
-    "title": "E-911 Address Search",
-    "url": "https://gis.co.campbell.va.us/arcgis/rest/services/External/E_911_Address_Search/MapServer/20",
-    "row_count": "28208"
-   },
-   {
-    "title": "BBA_Addresses",
-    "url": "https://services9.arcgis.com/UrElc2PRESEUr5jw/arcgis/rest/services/BBA_Addresses/FeatureServer/65",
-    "row_count": "999"
    }
   ],
   "proj-nonus-27200": [
@@ -1397,13 +1243,6 @@
     "row_count": "1"
    }
   ],
-  "proj-nonus-3433": [
-   {
-    "title": "Paron_Address_Points",
-    "url": "https://pagis.org/arcgis/rest/services/PARON/Paron_Base/MapServer/0",
-    "row_count": "2304"
-   }
-  ],
   "proj-nonus-3765": [
    {
     "title": "A1_Austrija_Demo",
@@ -1418,7 +1257,7 @@
     "row_count": "102"
    }
   ],
-  "proj-nonus-6588": [
+  "proj-fail-6588": [
    {
     "title": "GAS_RED_LINE",
     "url": "https://services1.arcgis.com/cZH7Krb8dJAExGbw/arcgis/rest/services/GAS_RED_LINE/FeatureServer/4",
@@ -1432,25 +1271,11 @@
     "row_count": "266766"
    }
   ],
-  "proj-nonus-2253": [
-   {
-    "title": "LocalElections",
-    "url": "https://services2.arcgis.com/y7VShPA3gGO9NJCc/arcgis/rest/services/LocalElections/FeatureServer/0",
-    "row_count": "26009"
-   }
-  ],
   "proj-nonus-32655": [
    {
     "title": "Building Footprints - Saipan (DPL, 2015)",
     "url": "https://services.arcgis.com/qchgHH9IIeiivY5M/arcgis/rest/services/SaipanBuildings/FeatureServer/0",
     "row_count": "8513"
-   }
-  ],
-  "proj-nonus-2273": [
-   {
-    "title": "ROW Maint Cadastral",
-    "url": "https://services3.arcgis.com/07uNquE7aw4u0I7Q/arcgis/rest/services/ROW_Maint_Cadastral/FeatureServer/1",
-    "row_count": "8087"
    }
   ],
   "proj-nonus-54030": [
@@ -1477,35 +1302,6 @@
     "row_count": "838"
    }
   ],
-  "proj-nonus-26915": [
-   {
-    "title": "Beaver Businesses",
-    "url": "https://services.arcgis.com/ULBqC49IEeIR01GF/arcgis/rest/services/Beaver_Businesses/FeatureServer/0",
-    "row_count": "77"
-   },
-   {
-    "title": "Metropolitan Generalized Land Use - Historical",
-    "url": "https://arcgis.metc.state.mn.us/data1/rest/services/planning/Land_Use/FeatureServer/0",
-    "row_count": "22"
-   },
-   {
-    "title": "Beaver Streams and Rivers",
-    "url": "https://services.arcgis.com/ULBqC49IEeIR01GF/arcgis/rest/services/Beaver_Streams_and_Rivers/FeatureServer/0",
-    "row_count": "77"
-   }
-  ],
-  "proj-nonus-2236": [
-   {
-    "title": "CSAC Program Participation by Zip Code",
-    "url": "https://services9.arcgis.com/M0DpVhTwTZ42jNsw/arcgis/rest/services/CSAC_Program_Participation_by_Zip_Code/FeatureServer/0",
-    "row_count": "22"
-   },
-   {
-    "title": "CSAC Programs FY2024-25 View",
-    "url": "https://services9.arcgis.com/M0DpVhTwTZ42jNsw/arcgis/rest/services/CSAC_Programs_FY2024_25_Public_View/FeatureServer/0",
-    "row_count": "45"
-   }
-  ],
   "proj-nonus-32638": [
    {
     "title": "Street Centerline",
@@ -1525,7 +1321,7 @@
     "row_count": "4"
    }
   ],
-  "proj-nonus-26917": [
+  "proj-fail-26917": [
    {
     "title": "Sample1",
     "url": "https://services1.arcgis.com/pMeXRvgWClLJZr3s/arcgis/rest/services/Sample1/FeatureServer/0",
@@ -1537,14 +1333,7 @@
     "row_count": "20868"
    }
   ],
-  "proj-nonus-2277": [
-   {
-    "title": "Parcel Ordinances",
-    "url": "https://services.arcgis.com/0H6bQdxd9223gQB5/arcgis/rest/services/DBO_OrdinanceData/FeatureServer/0",
-    "row_count": "76690"
-   }
-  ],
-  "proj-nonus-26910": [
+  "proj-fail-26910": [
    {
     "title": "Snow Removal",
     "url": "https://gishub.princegeorge.ca/server/rest/services/GroupMapServices/City_Services/MapServer/0",
@@ -1558,7 +1347,7 @@
     "row_count": "1649"
    }
   ],
-  "proj-nonus-2868": [
+  "proj-fail-2868": [
    {
     "title": "iron_horse_points",
     "url": "https://services3.arcgis.com/9coHY2fvuFjG9HQX/arcgis/rest/services/iron_horse_points/FeatureServer/0",
@@ -1625,28 +1414,11 @@
     "row_count": "66"
    }
   ],
-  "proj-nonus-2927": [
-   {
-    "title": "Business Licenses - Map (Tacoma)",
-    "url": "https://services3.arcgis.com/SCwJH1pD8WSn5T5y/arcgis/rest/services/BusinessLicenses_Map/FeatureServer/0",
-    "row_count": "22138"
-   },
-   {
-    "title": "Business Licenses for Rental Activity - Map (Tacoma)",
-    "url": "https://services3.arcgis.com/SCwJH1pD8WSn5T5y/arcgis/rest/services/BusinessLicenses_RentalActivity_Map/FeatureServer/0",
-    "row_count": "8843"
-   }
-  ],
-  "proj-nonus-2249": [
+  "proj-fail-2249": [
    {
     "title": "Master_Address_Table",
     "url": "https://services1.arcgis.com/ePzCWD2awZlZQ5jd/arcgis/rest/services/Master_Address_Table/FeatureServer/0",
     "row_count": "13065"
-   },
-   {
-    "title": "Labels",
-    "url": "https://services6.arcgis.com/KGSRC6TkZVp4aCuQ/arcgis/rest/services/Labels/FeatureServer/0",
-    "row_count": "9051"
    }
   ],
   "proj-nonus-4140": [
@@ -1656,64 +1428,11 @@
     "row_count": "6138"
    }
   ],
-  "proj-nonus-2286": [
-   {
-    "title": "ParcelsWithAssessment_View_Retired",
-    "url": "https://services3.arcgis.com/jl3zLujxj5OMMkmC/arcgis/rest/services/ParcelsWithAssessment_View/FeatureServer/0",
-    "row_count": "3165"
-   },
-   {
-    "title": "ParcelsWithAssessment_View",
-    "url": "https://services3.arcgis.com/jl3zLujxj5OMMkmC/arcgis/rest/services/ParcelsWithAssessment_2_view/FeatureServer/0",
-    "row_count": "3165"
-   }
-  ],
-  "proj-nonus-2264": [
-   {
-    "title": "Centerline",
-    "url": "https://arcgis2.cityofws.org/arcgissmwa02/rest/services/OICv2/Transportation2/MapServer/0",
-    "row_count": "798"
-   },
-   {
-    "title": "LOSRC Schools Latest (Public View) ",
-    "url": "https://services1.arcgis.com/dUkMSguHjSnNcU9J/arcgis/rest/services/LOSRC_Schools_Latest_(Public_View)_/FeatureServer/1",
-    "row_count": "156"
-   },
-   {
-    "title": "Wake County Streets",
-    "url": "https://maps.wakegov.com/arcgis/rest/services/Transportation/Transportation/MapServer/0",
-    "row_count": "34839"
-   },
-   {
-    "title": "Streets in Wake County, NC",
-    "url": "https://maps.wake.gov/arcgis/rest/services/Transportation/Transportation/MapServer/0",
-    "row_count": "34839"
-   },
-   {
-    "title": "Street Centerlines",
-    "url": "https://services5.arcgis.com/q2nSlChj7QgGTANO/arcgis/rest/services/Street_Centerlines/FeatureServer/142",
-    "row_count": "9857"
-   }
-  ],
   "proj-nonus-4686": [
    {
     "title": "TGI_UPDM_Centerline",
     "url": "https://services7.arcgis.com/UXFgJ78f727l1Hdf/arcgis/rest/services/TGI_UPDM_Centerline/FeatureServer/0",
     "row_count": "228"
-   }
-  ],
-  "proj-nonus-6439": [
-   {
-    "title": "NEEPP_waterbodies_",
-    "url": "https://services1.arcgis.com/nRHtyn3uE1kyzoYc/arcgis/rest/services/NEEPP_waterbodies_/FeatureServer/117",
-    "row_count": "1"
-   }
-  ],
-  "proj-nonus-2926": [
-   {
-    "title": "Dickey Watershed Crossings",
-    "url": "https://services3.arcgis.com/CxYgmwdx507LY5lO/arcgis/rest/services/Dickey_Watershed_Crossings/FeatureServer/0",
-    "row_count": "875"
    }
   ],
   "proj-nonus-2039": [
@@ -1733,25 +1452,6 @@
     "title": "Buildings within the T1 zone of Fanny Village",
     "url": "https://services3.arcgis.com/ghoIk6e0ZmYVqai3/arcgis/rest/services/Buildings_within_the_T1_zone_of_Fanny_Village/FeatureServer/0",
     "row_count": "288"
-   }
-  ],
-  "proj-nonus-3735": [
-   {
-    "title": "TopEmployers",
-    "url": "https://services1.arcgis.com/1pXnFsHirWAc6772/arcgis/rest/services/TopEmployers/FeatureServer/0",
-    "row_count": "18"
-   }
-  ],
-  "proj-nonus-2228": [
-   {
-    "title": "NHDFlowline",
-    "url": "https://maps.co.monterey.ca.us/server/rest/services/Hydrology/NHDFlowline/FeatureServer/0",
-    "row_count": "48024"
-   },
-   {
-    "title": "Census 2010 Landmarks",
-    "url": "https://maps.co.monterey.ca.us/server/rest/services/Census_2010/Landmarks/FeatureServer/0",
-    "row_count": "875"
    }
   ],
   "proj-nonus-32629": [
@@ -1782,13 +1482,6 @@
     "row_count": "4061"
    }
   ],
-  "proj-nonus-2230": [
-   {
-    "title": "WILDOMAR_INTERSECTIONS",
-    "url": "https://services6.arcgis.com/kIJQVjhDSsSdR0Xt/arcgis/rest/services/STREETS_INTERSECTIONS/FeatureServer/0",
-    "row_count": "997"
-   }
-  ],
   "proj-nonus-32751": [
    {
     "title": "Centerline Week 21",
@@ -1803,7 +1496,7 @@
     "row_count": "11"
    }
   ],
-  "proj-nonus-2958": [
+  "proj-fail-2958": [
    {
     "title": "Snapping Turtle Habitat",
     "url": "https://services1.arcgis.com/pMeXRvgWClLJZr3s/arcgis/rest/services/Snapping_Turtle_Habitat/FeatureServer/0",
@@ -1822,11 +1515,18 @@
     "row_count": "2"
    }
   ],
-  "proj-nonus-3078": [
+  "proj-fail-3078": [
    {
     "title": "Water Wells - Upper Peninsula",
     "url": "https://gisagocss.state.mi.us/arcgis/rest/services/OpenData/public_health/MapServer/0",
     "row_count": "1"
+   }
+  ],
+  "proj-fail-26986": [
+   {
+    "title": "b22001_hh_foodstamps_snap_60yrs_acs_m",
+    "url": "https://services.arcgis.com/c5WwApDsDjRhIVkH/arcgis/rest/services/b22001_hh_foodstamps_snap_60yrs_acs_m/FeatureServer",
+    "row_count": "2835"
    }
   ],
   "proj-nonus-3346": [
@@ -1834,13 +1534,6 @@
     "title": "Lietuvos Respublikos keliai",
     "url": "https://utility.arcgis.com/usrsvcs/servers/087d2b1b6b244c31be0d060c7f7bdb09/rest/services/Hosted/Keiai_gatves/FeatureServer/0",
     "row_count": "950182"
-   }
-  ],
-  "proj-nonus-2883": [
-   {
-    "title": "City Sanitary Sewer Connected Properties",
-    "url": "https://services.arcgis.com/ptvDyBs1KkcwzQNJ/arcgis/rest/services/City_Sanitary_Sewer_Connected_Properties/FeatureServer/59",
-    "row_count": "76584"
    }
   ],
   "proj-nonus-102662": [
@@ -1864,18 +1557,18 @@
     "row_count": "654"
    }
   ],
-  "proj-nonus-2254": [
-   {
-    "title": "Online Parcels",
-    "url": "https://services6.arcgis.com/9h5t9CkNYcgSXrCh/arcgis/rest/services/Online_Parcels/FeatureServer/530",
-    "row_count": "50207"
-   }
-  ],
   "proj-nonus-102696": [
    {
     "title": "2022 Crime Incident Data with Geographic Coordinates",
     "url": "https://services2.arcgis.com/w657bnjzrjguNyOy/arcgis/rest/services/nibrs_2022/FeatureServer/0",
     "row_count": "38449"
+   }
+  ],
+  "proj-fail-26911": [
+   {
+    "title": "Peachland - Road Network",
+    "url": "https://www.rdcogis.com/arcgis/rest/services/DataDownload/PCH_DataDownload/MapServer/1",
+    "row_count": "2739"
    }
   ],
   "proj-nonus-4222": [
