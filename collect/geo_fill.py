@@ -10,6 +10,18 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from geo_state import which_state  # noqa: E402
 
+# ★ 2026-10-28：proj-XXXX 分支需要知道「这个 EPSG 是不是美国的坐标系」。
+#   pyproj 可选：没有就跳过分支（标 proj-unhandled），绝不静默假装成功。
+try:
+    from pyproj import CRS, Transformer
+    from pyproj.aoi import AreaOfInterest
+    from pyproj.database import query_crs_info
+    _US_AOI = AreaOfInterest(-125.0, 24.0, -66.0, 50.0)
+    US_EPSG = {int(c.code) for c in query_crs_info(auth_name="EPSG", area_of_interest=_US_AOI)}
+except Exception:  # noqa: BLE001
+    US_EPSG = set()
+
+
 SRC = os.path.join(HERE, 'layer_plan_clean.csv')
 UA = {'User-Agent': 'world-map-data-33/1.0 (+geofill)'}
 
@@ -104,12 +116,83 @@ def geo_probe(url):
         return None, 'meta:%s' % type(e).__name__
     return None, 'nogeom'
 
+def feature_vote(url, n=10, need=2):
+    """multi-state 专用：extent 跨州时改取多个 feature 的坐标，逐个过州界，多数票。
+    extent 说跨州 ≠ 数据跨州（很多是 extent 被设成全美，数据其实是某州子集）。"""
+    try:
+        d = http_json(qurl(url) + '?where=1%%3D1&outFields=*&resultRecordCount=%d'
+                                  '&returnGeometry=true&outSR=4326&f=json' % n)
+    except Exception:  # noqa: BLE001
+        return None, 0
+    votes = Counter()
+    for f in (d.get('features') or [])[:n]:
+        g = f.get('geometry') or {}
+        pt = None
+        if 'x' in g and 'y' in g:
+            pt = (float(g['x']), float(g['y']))
+        else:
+            pts = []
+            def collect(o):
+                if isinstance(o, (list, tuple)):
+                    if len(o) >= 2 and isinstance(o[0], (int, float)) and isinstance(o[1], (int, float)):
+                        pts.append((float(o[0]), float(o[1])))
+                    else:
+                        for z in o: collect(z)
+            for key in ('rings', 'paths', 'coordinates'):
+                if key in g: collect(g[key]); break
+            if pts:
+                pt = (sum(q[0] for q in pts) / len(pts), sum(q[1] for q in pts) / len(pts))
+        if pt and -180 <= pt[0] <= -60 and 15 <= pt[1] <= 72:
+            ab = which_state(*pt)
+            if ab: votes[ab] += 1
+    if votes:
+        ab, c = votes.most_common(1)[0]
+        if c >= need: return ab, c
+    return None, 0
+
+
+def proj_fallback(url, wkid):
+    """proj-XXXX 专用：wkid 若在美国 EPSG 集合内，把 extent 中心点转到 4326 再判州。"""
+    try:
+        w = int(wkid)
+    except Exception:  # noqa: BLE001
+        return None, 'proj-nonint'
+    if not US_EPSG or w not in US_EPSG:
+        return None, 'proj-nonus-%s' % wkid
+    try:
+        base = url_clean(url)
+        m = http_json(base + '?f=json')
+        ext = m.get('extent') or m.get('fullExtent') or {}
+        if ext.get('xmin') is None:
+            return None, 'proj-noext-%s' % wkid
+        x = (float(ext['xmin']) + float(ext['xmax'])) / 2
+        y = (float(ext['ymin']) + float(ext['ymax'])) / 2
+        tr = Transformer.from_crs(CRS.from_epsg(w), CRS.from_epsg(4326), always_xy=True)
+        lon, lat = tr.transform(x, y)
+        if -180 <= lon <= -60 and 15 <= lat <= 72:
+            ab = which_state(lon, lat)
+            if ab: return ab, 'proj-fix-%s' % wkid
+    except Exception:  # noqa: BLE001
+        pass
+    return None, 'proj-fail-%s' % wkid
+
+
 def one(row):
     # 标题优先（零成本）
     st = title_state(row.get('title', ''))
     if st: return st, 'title'
-    pt, how = geo_probe(row.get('url') or '')
-    if not pt: return None, how
+    u = row.get('url') or ''
+    pt, how = geo_probe(u)
+    if not pt:
+        if how == 'multi-state':
+            ab, c = feature_vote(u)
+            if ab: return ab, 'vote-%d' % c
+            return None, 'multi-state'
+        if how.startswith('proj-') and 'fail' not in how and 'nonus' not in how:
+            ab, h2 = proj_fallback(u, how[5:])
+            if ab: return ab, h2
+            return None, h2
+        return None, how
     ab = which_state(*pt)
     if ab: return ab, 'geo-' + how
     # 2026-10-28 修：有坐标但州界多边形判定不在美国 → 必须单独归类，
@@ -147,7 +230,13 @@ def main():
             if i % 200 == 0: print(f'  {i}/{len(todo)} ok={filled} {time.time()-t0:.0f}s')
 
     # ★ 归因报告：无副作用，任何模式下都写（2026-10-28 新增）
+    by_reason_layers = {}
+    for r in todo:
+        rs = reason_of(r.get('state_src', 'fail:unknown').replace('fail:', ''))
+        if not r.get('state'):
+            by_reason_layers.setdefault(rs, []).append(r.get('layer') or r.get('id') or '')
     rep = {
+        'layers_by_reason': by_reason_layers,
         'generated_at': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
         'source': 'collect/layer_plan_clean.csv（state=未定位 的层）',
         'total_todo': len(todo), 'filled': filled,
