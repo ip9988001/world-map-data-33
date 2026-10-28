@@ -7,6 +7,11 @@ on:
       limit:
         description: "只处理前 N 层（0=全部）"
         default: "0"
+      mode:
+        description: "fill=补州并写回 / report=只出归因报告（不动 CSV）"
+        default: "fill"
+        type: choice
+        options: [fill, report]
 permissions:
   contents: write
 concurrency:
@@ -22,11 +27,26 @@ jobs:
         with:
           python-version: "3.11"
       - name: 州定位
-        run: python3 collect/geo_fill.py "${{ github.event.inputs.limit || '0' }}" --write
+        run: |
+          if [ "${{ github.event.inputs.mode || 'fill' }}" = "report" ]; then
+            python3 collect/geo_fill.py "${{ github.event.inputs.limit || '0' }}"
+          else
+            python3 collect/geo_fill.py "${{ github.event.inputs.limit || '0' }}" --write
+          fi
       - name: 落库
         run: |
           git config user.name "geo-fill-bot"
           git config user.email "bot@xinxin.local"
-          git add collect/layer_plan_clean.csv || true
-          git diff --cached --quiet && echo "无变更" || git commit -m "chore(geo): 补州定位 $(date -u +%FT%TZ)"
-          git push || echo "push skipped"
+          for f in collect/layer_plan_clean.csv collect/geo_fill_report.json; do
+            [ -f "$f" ] && git add "$f"
+          done
+          if git diff --cached --quiet; then echo "无变更"; else
+            git commit -m "chore(geo): 补州定位/归因报告 $(date -u +%FT%TZ)"
+          fi
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main
+            if git push -q origin HEAD:main 2>/dev/null; then echo "✅ 已推送（第 $i 次）"; exit 0; fi
+            git pull -q --rebase --autostash origin main 2>/dev/null
+            sleep $((i*4))
+          done
+          echo "❌ 推送失败，需人工介入"; exit 1

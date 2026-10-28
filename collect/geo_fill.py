@@ -110,7 +110,11 @@ def one(row):
     if st: return st, 'title'
     pt, how = geo_probe(row.get('url') or '')
     if not pt: return None, how
-    return which_state(*pt) or None, 'geo-' + how
+    ab = which_state(*pt)
+    if ab: return ab, 'geo-' + how
+    # 2026-10-28 修：有坐标但州界多边形判定不在美国 → 必须单独归类，
+    # 原来返回 (None, 'geo-feature-point')，把这个最关键的信号吞掉了。
+    return None, 'outside_us'
 
 def main():
     limit = int(sys.argv[1]) if len(sys.argv) > 1 else 0
@@ -121,14 +125,40 @@ def main():
     if limit: todo = todo[:limit]
     print('待定位:', len(todo), '| 写回:', write)
     stat = Counter(); filled = 0; t0 = time.time()
+    rows_by = Counter(); samples = {}
+    def reason_of(how):
+        return how.split(':')[0] if ':' in how else how
     def work(r):
         st, how = one(r); return r, st, how
     with ThreadPoolExecutor(16) as ex:
         for i, (r, st, how) in enumerate(ex.map(work, todo), 1):
-            stat[how.split(':')[0] if ':' in how else how] += 1
+            rs = reason_of(how)
+            stat[rs] += 1
+            try: rows_by[rs] += int(float(r.get('row_count') or 0))
+            except Exception: pass
             if st: r['state'] = st; r['state_src'] = how; filled += 1
-            else: r['state_src'] = 'fail:' + how
+            else:
+                r['state_src'] = 'fail:' + how
+                bucket = samples.setdefault(rs, [])
+                if len(bucket) < 5:
+                    bucket.append({'title': (r.get('title') or '')[:90],
+                                   'url': (r.get('url') or '')[:130],
+                                   'row_count': r.get('row_count')})
             if i % 200 == 0: print(f'  {i}/{len(todo)} ok={filled} {time.time()-t0:.0f}s')
+
+    # ★ 归因报告：无副作用，任何模式下都写（2026-10-28 新增）
+    rep = {
+        'generated_at': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
+        'source': 'collect/layer_plan_clean.csv（state=未定位 的层）',
+        'total_todo': len(todo), 'filled': filled,
+        'unfilled': len(todo) - filled,
+        'by_reason': dict(stat.most_common()),
+        'rows_by_reason': {k: rows_by[k] for k, _ in stat.most_common()},
+        'samples': samples,
+        'note': 'only 陈述事实：每类各多少层、多少行、样本层是什么。补不补、怎么补由大脑决定。',
+    }
+    json.dump(rep, open(os.path.join(HERE, 'geo_fill_report.json'), 'w', encoding='utf-8'),
+              ensure_ascii=False, indent=1)
     if write:
         with open(SRC, 'w', newline='', encoding='utf-8') as f:
             w = csv.DictWriter(f, fieldnames=fields, extrasaction='ignore'); w.writeheader(); w.writerows(rows)
