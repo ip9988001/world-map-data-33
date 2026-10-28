@@ -4,7 +4,7 @@ name: collect-watchdog
 #           ② 本 workflow 每 30 分钟查一次：有 run 卡死 / 账本与现实不符 → 也叫
 on:
   schedule: [{ cron: "*/30 * * * *" }]
-  workflow_dispatch:
+  # workflow_dispatch:  # 2026-10-28 关闭：legacy 防误触发
 permissions: { contents: write, issues: write, actions: write }
 jobs:
   watchdog:

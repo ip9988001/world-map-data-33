@@ -117,7 +117,7 @@ jobs:
     needs: collect
     if: always() && inputs.report == 'true' && inputs.single != 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }     # 浅克隆里 git rebase 无法重放 → push 必被拒
