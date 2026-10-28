@@ -67,12 +67,12 @@
   "layers": "batch1",
   "workers": 4
  },
- "awaiting_brain": true,
+ "awaiting_brain": false,
  "brain_review": {
-  "at": "2026-10-25T01:04:27Z",
-  "step": "09",
+  "at": "2026-10-28T14:32:58Z",
+  "step": "10",
   "verdict": "pass",
-  "note": "STEP-09 增量探测：1,117 层全部探测，484 层（43.3%）有编辑时间字段，90 天窗口内变更 6,441,778 行；失败率远低于 20% 判据。结论：增量机制成立，可对 43% 的层做月度同步，其余 57% 需全量重采。"
+  "note": "STEP-10 宗地扩采验收通过。① eff：batch1.csv 1261 层实测有效率 min 50% / 中位 98.67%，全部 ≥ 0.2 门槛。② pick_layers：1261 ≥ 1000。③ budget：worker-10 共 7 次 run，墙钟合计 31 分钟 ≤ 900。④ 那 7 次里有 2 cancelled / 1 failure，逐一对照 checkpoint 后确认未丢层——31 个原缺口层均已由后续 run 补齐，parcel_done 现 1261/1261 complete。⑤ 唯一残留：Hutto 差 1,064 行，已记 blocked(pending)。"
  },
  "steps": {
   "01": {
@@ -162,13 +162,21 @@
    "at": "2026-10-25T01:04:27Z"
   },
   "10": {
-   "status": "in_review",
+   "status": "done",
    "at": "2026-10-26T16:27:54Z",
-   "note": "第10环接回正牌流水线：run_step_10.py + worker-10.yml(matrix 逐层)，本机零参与"
+   "note": "第10环接回正牌流水线：run_step_10.py + worker-10.yml(matrix 逐层)，本机零参与",
+   "metrics": {
+    "eff_min": 0.5,
+    "eff": 0.5,
+    "pick_layers_min": 1261,
+    "pick_layers": 1261,
+    "budget_min_max": 31,
+    "budget_min": 31
+   }
   }
  },
- "blocked_count": 2,
- "status": "running",
+ "blocked_count": 3,
+ "status": "finished",
  "paused_reason": null,
  "paused_at": "2026-10-23T23:14:35Z",
  "last_error": null,

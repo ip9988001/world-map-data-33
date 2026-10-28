@@ -20,7 +20,16 @@
    "step": "05",
    "state_machine": "abandoned",
    "recheck": "该 MapServer 重新上线"
+  },
+  {
+   "id": "collect-step10-7ABWQBGTG_arcgis_rest_services_Hutto_Parcels_FeatureServer_0",
+   "state": "TX",
+   "reason": "declared 24,655 vs 实采 23,591，差 1,064 行；其余 1260 层零差额",
+   "state_machine": "pending",
+   "recheck": "上游补齐后按县重采一次（--county 或 --layers 单层）",
+   "at": "2026-10-28T14:45:00Z",
+   "step": "10"
   }
  ],
- "count": 2
+ "count": 3
 }
