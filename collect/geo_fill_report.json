@@ -1,0 +1,1874 @@
+{
+ "generated_at": "2026-10-28T14:42:06Z",
+ "source": "collect/layer_plan_clean.csv（state=未定位 的层）",
+ "total_todo": 4351,
+ "filled": 30,
+ "unfilled": 4321,
+ "by_reason": {
+  "outside_us": 2422,
+  "multi-state": 683,
+  "nogeom": 460,
+  "proj-27700": 198,
+  "proj-2193": 88,
+  "proj-28356": 85,
+  "proj-2157": 83,
+  "proj-7856": 17,
+  "geo-feature-centroid": 17,
+  "geo-feature-point": 13,
+  "proj-8857": 13,
+  "proj-32717": 12,
+  "proj-7855": 12,
+  "proj-4283": 11,
+  "proj-32636": 10,
+  "proj-29902": 10,
+  "proj-2272": 9,
+  "proj-7899": 9,
+  "proj-28355": 8,
+  "proj-28992": 8,
+  "proj-32620": 6,
+  "proj-3395": 5,
+  "proj-7844": 5,
+  "proj-2264": 5,
+  "meta": 4,
+  "proj-25832": 4,
+  "proj-32181": 4,
+  "proj-25833": 4,
+  "proj-2326": 4,
+  "proj-32643": 4,
+  "proj-5514": 3,
+  "proj-3035": 3,
+  "proj-26986": 3,
+  "proj-32718": 3,
+  "proj-2229": 3,
+  "proj-3059": 3,
+  "proj-32645": 3,
+  "proj-54030": 3,
+  "proj-26915": 3,
+  "proj-3123": 2,
+  "proj-2100": 2,
+  "proj-4258": 2,
+  "proj-2227": 2,
+  "proj-102698": 2,
+  "proj-32631": 2,
+  "proj-102690": 2,
+  "proj-28354": 2,
+  "proj-26912": 2,
+  "proj-7854": 2,
+  "proj-4269": 2,
+  "proj-3443": 2,
+  "proj-2284": 2,
+  "proj-32651": 2,
+  "proj-2236": 2,
+  "proj-32634": 2,
+  "proj-26917": 2,
+  "proj-21095": 2,
+  "proj-4095": 2,
+  "proj-2927": 2,
+  "proj-2249": 2,
+  "proj-2286": 2,
+  "proj-2039": 2,
+  "proj-2958": 2,
+  "proj-102565": 1,
+  "proj-32721": 1,
+  "proj-103517": 1,
+  "proj-102630": 1,
+  "proj-6574": 1,
+  "proj-6625": 1,
+  "proj-2232": 1,
+  "proj-22992": 1,
+  "proj-3994": 1,
+  "proj-3451": 1,
+  "proj-2154": 1,
+  "proj-2876": 1,
+  "proj-6579": 1,
+  "proj-9377": 1,
+  "proj-29903": 1,
+  "proj-6447": 1,
+  "proj-103768": 1,
+  "proj-6492": 1,
+  "proj-26919": 1,
+  "proj-54004": 1,
+  "proj-102070": 1,
+  "proj-27200": 1,
+  "proj-9184": 1,
+  "proj-3433": 1,
+  "proj-3765": 1,
+  "proj-3007": 1,
+  "proj-6588": 1,
+  "proj-102039": 1,
+  "proj-2253": 1,
+  "proj-32655": 1,
+  "proj-2273": 1,
+  "proj-32722": 1,
+  "proj-32638": 1,
+  "proj-2277": 1,
+  "proj-26910": 1,
+  "proj-3111": 1,
+  "proj-2868": 1,
+  "proj-6674": 1,
+  "proj-102567": 1,
+  "proj-4140": 1,
+  "proj-4686": 1,
+  "proj-6439": 1,
+  "proj-2926": 1,
+  "proj-27120": 1,
+  "proj-3735": 1,
+  "proj-32629": 1,
+  "proj-102018": 1,
+  "proj-26921": 1,
+  "proj-32630": 1,
+  "proj-2230": 1,
+  "proj-32751": 1,
+  "proj-31983": 1,
+  "proj-32704": 1,
+  "proj-3078": 1,
+  "proj-3346": 1,
+  "proj-2883": 1,
+  "proj-102662": 1,
+  "proj-102157": 1,
+  "proj-32750": 1,
+  "proj-2254": 1,
+  "proj-102696": 1,
+  "proj-4222": 1,
+  "proj-3308": 1
+ },
+ "rows_by_reason": {
+  "outside_us": 139601949,
+  "multi-state": 323490212,
+  "nogeom": 103498190,
+  "proj-27700": 6315183,
+  "proj-2193": 4237943,
+  "proj-28356": 35189323,
+  "proj-2157": 4347333,
+  "proj-7856": 519791,
+  "geo-feature-centroid": 419024,
+  "geo-feature-point": 577098,
+  "proj-8857": 4338,
+  "proj-32717": 180,
+  "proj-7855": 763124,
+  "proj-4283": 6044592,
+  "proj-32636": 16479,
+  "proj-29902": 20815,
+  "proj-2272": 51940,
+  "proj-7899": 420,
+  "proj-28355": 129810,
+  "proj-28992": 5965563,
+  "proj-32620": 19122,
+  "proj-3395": 38574,
+  "proj-7844": 31024417,
+  "proj-2264": 80489,
+  "meta": 334377,
+  "proj-25832": 16337,
+  "proj-32181": 1745,
+  "proj-25833": 202279,
+  "proj-2326": 72163,
+  "proj-32643": 810,
+  "proj-5514": 23776,
+  "proj-3035": 49176,
+  "proj-26986": 6855,
+  "proj-32718": 84,
+  "proj-2229": 32417,
+  "proj-3059": 4744,
+  "proj-32645": 50,
+  "proj-54030": 5300,
+  "proj-26915": 176,
+  "proj-3123": 41813,
+  "proj-2100": 2452,
+  "proj-4258": 275195,
+  "proj-2227": 6259,
+  "proj-102698": 40399,
+  "proj-32631": 18,
+  "proj-102690": 32376,
+  "proj-28354": 11148,
+  "proj-26912": 11144,
+  "proj-7854": 13332,
+  "proj-4269": 419,
+  "proj-3443": 2,
+  "proj-2284": 29207,
+  "proj-32651": 8753,
+  "proj-2236": 67,
+  "proj-32634": 964572,
+  "proj-26917": 546411,
+  "proj-21095": 4120,
+  "proj-4095": 132,
+  "proj-2927": 30981,
+  "proj-2249": 22116,
+  "proj-2286": 6330,
+  "proj-2039": 17182,
+  "proj-2958": 606,
+  "proj-102565": 12542,
+  "proj-32721": 14,
+  "proj-103517": 15425,
+  "proj-102630": 10564,
+  "proj-6574": 2661,
+  "proj-6625": 366,
+  "proj-2232": 114,
+  "proj-22992": 92,
+  "proj-3994": 17,
+  "proj-3451": 290095,
+  "proj-2154": 68130,
+  "proj-2876": 11839,
+  "proj-6579": 6244,
+  "proj-9377": 534,
+  "proj-29903": 115,
+  "proj-6447": 81858,
+  "proj-103768": 14465,
+  "proj-6492": 6778,
+  "proj-26919": 106,
+  "proj-54004": 8,
+  "proj-102070": 31680,
+  "proj-27200": 16733,
+  "proj-9184": 9588,
+  "proj-3433": 2304,
+  "proj-3765": 314,
+  "proj-3007": 102,
+  "proj-6588": 2,
+  "proj-102039": 266766,
+  "proj-2253": 26009,
+  "proj-32655": 8513,
+  "proj-2273": 8087,
+  "proj-32722": 838,
+  "proj-32638": 1,
+  "proj-2277": 76690,
+  "proj-26910": 5457,
+  "proj-3111": 1649,
+  "proj-2868": 635,
+  "proj-6674": 202,
+  "proj-102567": 90,
+  "proj-4140": 6138,
+  "proj-4686": 228,
+  "proj-6439": 1,
+  "proj-2926": 875,
+  "proj-27120": 288,
+  "proj-3735": 18,
+  "proj-32629": 23222,
+  "proj-102018": 7322,
+  "proj-26921": 4405,
+  "proj-32630": 4061,
+  "proj-2230": 997,
+  "proj-32751": 18,
+  "proj-31983": 11,
+  "proj-32704": 2,
+  "proj-3078": 1,
+  "proj-3346": 950182,
+  "proj-2883": 76584,
+  "proj-102662": 7037,
+  "proj-102157": 2640,
+  "proj-32750": 654,
+  "proj-2254": 50207,
+  "proj-102696": 38449,
+  "proj-4222": 1360,
+  "proj-3308": 827
+ },
+ "samples": {
+  "outside_us": [
+   {
+    "title": "Reg_Parcels",
+    "url": "https://services6.arcgis.com/3R3y1KXaPJ9BFnsU/arcgis/rest/services/reg_parcels/FeatureServer/0",
+    "row_count": "983104"
+   },
+   {
+    "title": "Address Points",
+    "url": "https://services6.arcgis.com/ONZht79c8QWuX759/arcgis/rest/services/Address_Points/FeatureServer/0",
+    "row_count": "503923"
+   },
+   {
+    "title": "Addresses",
+    "url": "https://services.arcgis.com/xYjDUN35YwdCEcMm/arcgis/rest/services/Addresses/FeatureServer/0",
+    "row_count": "440479"
+   },
+   {
+    "title": "Waste Collection by Address",
+    "url": "https://services.arcgis.com/rYz782eMbySr2srL/arcgis/rest/services/Waste_Collection_by_Address/FeatureServer/0",
+    "row_count": "277713"
+   },
+   {
+    "title": "City Of Moreton Bay Registered Parcels derived from QSCF",
+    "url": "https://services-ap1.arcgis.com/152ojN3Ts9H3cdtl/arcgis/rest/services/CMB_QSCF_Registered_Parcels/FeatureServer/0",
+    "row_count": "217880"
+   }
+  ],
+  "proj-28356": [
+   {
+    "title": "[Superseded] City Plan 2014 — v24.00–2022 — Property boundaries — Parcel",
+    "url": "https://services2.arcgis.com/dEKgZETqwmDAh1rP/arcgis/rest/services/s_cp2014_v24_2022_property_boundaries_parcel/FeatureServer/0",
+    "row_count": "871327"
+   },
+   {
+    "title": "[Superseded] City Plan 2014 — v19.00–2020 — Property boundaries — Parcel",
+    "url": "https://services2.arcgis.com/dEKgZETqwmDAh1rP/arcgis/rest/services/superseded_cp2014_v19_2020_property_boundaries_parcel/FeatureSe",
+    "row_count": "740714"
+   },
+   {
+    "title": "[Superseded] City Plan 2014 — v24.00–2022 — Property boundaries — Holding",
+    "url": "https://services2.arcgis.com/dEKgZETqwmDAh1rP/arcgis/rest/services/s_cp2014_v24_2022_property_boundaries_holding/FeatureServer/0",
+    "row_count": "560944"
+   },
+   {
+    "title": "City of Gold Coast Property Address",
+    "url": "https://services.arcgis.com/3vStCH7NDoBOZ5zn/arcgis/rest/services/CoGC_Property_Address/FeatureServer/0",
+    "row_count": "289207"
+   },
+   {
+    "title": "Open Space Areas",
+    "url": "https://services-ap1.arcgis.com/lnVW0dLI3fvST2hd/arcgis/rest/services/Open_Space_view/FeatureServer/0",
+    "row_count": "4009"
+   }
+  ],
+  "meta": [
+   {
+    "title": "bike_stat_centerline_fastest_sum",
+    "url": "https://services7.arcgis.com/wCvLzGFkz06gCfBg/arcgis/rest/services/bike_stat_centerline_fastest_sum/FeatureServer/0",
+    "row_count": "202193"
+   },
+   {
+    "title": "Resident Address - Chelan County Direct - Public Notification App",
+    "url": "https://atlas.co.chelan.wa.us/arcgis/rest/services/GIS/Parcels4NWandPC/FeatureServer/0",
+    "row_count": "48871"
+   },
+   {
+    "title": "Centerline",
+    "url": "https://services6.arcgis.com/a1uZUKwhtF9O6a4e/arcgis/rest/services/Centerline/FeatureServer/0",
+    "row_count": "32"
+   },
+   {
+    "title": "Site Address Points",
+    "url": "https://atlas.co.chelan.wa.us/arcgis/rest/services/PW/Site_Address_Points/MapServer/0",
+    "row_count": "83281"
+   }
+  ],
+  "proj-27700": [
+   {
+    "title": "Postcodes Scotland",
+    "url": "https://services-eu1.arcgis.com/2REzQtl8TdVlI8S0/arcgis/rest/services/Postcodes_Scotland/FeatureServer/0",
+    "row_count": "157433"
+   },
+   {
+    "title": "customer service test",
+    "url": "https://services2.arcgis.com/twg5k4OdEd1sa0RJ/arcgis/rest/services/customer_service_test/FeatureServer/0",
+    "row_count": "139502"
+   },
+   {
+    "title": "BF_TS_TPO_POINTS_AREAS",
+    "url": "https://services9.arcgis.com/5eO9hmsd8SoBl0Cj/arcgis/rest/services/GIS_TPO_Points_and_Areas/FeatureServer/9",
+    "row_count": "6079"
+   },
+   {
+    "title": "Housing and SHLAA sites",
+    "url": "https://services3.arcgis.com/y0Mj0TLNFif07RwB/arcgis/rest/services/Housing_and_SHLAA_sites/FeatureServer/121",
+    "row_count": "749"
+   },
+   {
+    "title": "Housing_SHLAA_2022",
+    "url": "https://services3.arcgis.com/y0Mj0TLNFif07RwB/arcgis/rest/services/Housing_SHLAA_2022/FeatureServer/106",
+    "row_count": "732"
+   }
+  ],
+  "nogeom": [
+   {
+    "title": "Real Estate Appraisal Pin Master 2023",
+    "url": "https://services6.arcgis.com/VLA0ImJ33zhtGEaP/arcgis/rest/services/Real%20Estate%20Appraisal%20Pin%20Master%202023/FeatureServer/0",
+    "row_count": "137295"
+   },
+   {
+    "title": "water_pressure_zone1",
+    "url": "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/water_pressure_zone1/FeatureServer/0",
+    "row_count": "26946"
+   },
+   {
+    "title": "County Parcels and Stormwater Asset Information",
+    "url": "https://services7.arcgis.com/f8vjF7CsMeTPBIVC/arcgis/rest/services/Join_Features_to_County_Parcels_and_Property_Information_view/F",
+    "row_count": "7699"
+   },
+   {
+    "title": "Zoning_Flu",
+    "url": "https://services2.arcgis.com/x5zvhhxfUuRDntRe/arcgis/rest/services/Zoning_Flu/FeatureServer/0",
+    "row_count": "1461"
+   },
+   {
+    "title": "Centerline_r",
+    "url": "https://services-ap1.arcgis.com/wpWb8a9FF5Iqqeu6/arcgis/rest/services/Centerline_r/FeatureServer/96",
+    "row_count": "6"
+   }
+  ],
+  "proj-2193": [
+   {
+    "title": "EXTERNAL LOCAL MAPS Parcel Boundaries",
+    "url": "https://services.arcgis.com/MMPHUPU6MnEt0lEK/arcgis/rest/services/Parcel_Boundaries/FeatureServer/22",
+    "row_count": "81094"
+   },
+   {
+    "title": "EXTERNAL LOCAL MAPS Corax Cadastral Address Label",
+    "url": "https://services.arcgis.com/MMPHUPU6MnEt0lEK/arcgis/rest/services/Corax_Cadastral_Address_Label/FeatureServer/1",
+    "row_count": "55446"
+   },
+   {
+    "title": "TEST_CRM_Layers",
+    "url": "https://services1.arcgis.com/DlsnLEhGfXazS5Er/arcgis/rest/services/Public_CRM_Layers__Test_Data/FeatureServer/1",
+    "row_count": "46661"
+   },
+   {
+    "title": "PNCC Addresses",
+    "url": "https://services.arcgis.com/Fv0Tvc98QEDvQyjL/arcgis/rest/services/House_Number_General/FeatureServer/0",
+    "row_count": "39424"
+   },
+   {
+    "title": "Current Consents",
+    "url": "https://services1.arcgis.com/TWsoAGve3wb3oFHK/arcgis/rest/services/Current_Consents/FeatureServer/0",
+    "row_count": "11223"
+   }
+  ],
+  "proj-7856": [
+   {
+    "title": "PRP_NSW_Land_Parcels_Climate",
+    "url": "https://services-ap1.arcgis.com/dV1qcLmDJGVuZCQb/arcgis/rest/services/PRP_NSW_Land_Parcels_Climate/FeatureServer/0",
+    "row_count": "64299"
+   },
+   {
+    "title": "Land Parcels",
+    "url": "https://services9.arcgis.com/mSduxE3T8JIlWsNp/arcgis/rest/services/Land_Parcels/FeatureServer/0",
+    "row_count": "22529"
+   },
+   {
+    "title": "Land Parcels Latest",
+    "url": "https://services7.arcgis.com/SqbRuGmmUbhRpdi1/arcgis/rest/services/Land_Parcels_Latest/FeatureServer/0",
+    "row_count": "16067"
+   },
+   {
+    "title": "authority_house_number",
+    "url": "https://services-ap1.arcgis.com/qO0YnxzFsZREWsj6/arcgis/rest/services/authority_house_number/FeatureServer/0",
+    "row_count": "33637"
+   },
+   {
+    "title": "Parcels_AGOL",
+    "url": "https://services3.arcgis.com/zjbesynggtrdwb3p/arcgis/rest/services/Parcels_AGOL/FeatureServer/0",
+    "row_count": "13292"
+   }
+  ],
+  "proj-3123": [
+   {
+    "title": "MAS_Map",
+    "url": "https://services8.arcgis.com/0PUGqRSJ5qYd4bLX/arcgis/rest/services/MAS_Map/FeatureServer/0",
+    "row_count": "41812"
+   },
+   {
+    "title": "N2_Centerline_",
+    "url": "https://services8.arcgis.com/h9TUF6x5VzqLQaYx/arcgis/rest/services/N2_Centerline_/FeatureServer/1",
+    "row_count": "1"
+   }
+  ],
+  "multi-state": [
+   {
+    "title": "NZ Family Services Directory  30 September 2026 ",
+    "url": "https://services3.arcgis.com/dfenJGIWuZTOdMZB/arcgis/rest/services/NZ_Family_Services_Directory_30_Sept_26/FeatureServer/0",
+    "row_count": "23439"
+   },
+   {
+    "title": "ne_10m_rivers_lake_centerlines_scale_rank",
+    "url": "https://services3.arcgis.com/I88u8wDux7Kis2GZ/arcgis/rest/services/ne_10m_rivers_lake_centerlines_scale_rank/FeatureServer/0",
+    "row_count": "4176"
+   },
+   {
+    "title": "AFIA_PBI_ViewLayer_01",
+    "url": "https://services7.arcgis.com/OwPYxdqWv7612O7N/arcgis/rest/services/AFIA_PBI_ViewLayer_01/FeatureServer/0",
+    "row_count": "3464"
+   },
+   {
+    "title": "Key Biodiversity Areas_point",
+    "url": "https://services6.arcgis.com/zOnyumh63cMmLBBH/arcgis/rest/services/Key_Biodiversity_Areas_point/FeatureServer/0",
+    "row_count": "2081"
+   },
+   {
+    "title": "World Major Rivers from Natural Earth medium scale",
+    "url": "https://services8.arcgis.com/QQGMu3AgoCvivmaQ/arcgis/rest/services/Natural_Earth_World_Major_Rivers_medium_scale/FeatureServer/0",
+    "row_count": "1633"
+   }
+  ],
+  "proj-2157": [
+   {
+    "title": "Census 2016 - Table 11.1 - Population aged 5 years and over by means of travel to work, sc",
+    "url": "https://services-eu1.arcgis.com/BuS9rtTsYEV5C0xh/arcgis/rest/services/CensusHub2016_T11_1_SA2015/FeatureServer/0",
+    "row_count": "18641"
+   },
+   {
+    "title": "Census 2016 - Table 2.3 - Usually resident population aged 1 year and over by usual reside",
+    "url": "https://services-eu1.arcgis.com/BuS9rtTsYEV5C0xh/arcgis/rest/services/CensusHub2016_T2_3_SA2015/FeatureServer/0",
+    "row_count": "18641"
+   },
+   {
+    "title": "Census 2016 - Table 2.2 - Usually resident population by ethnic or cultural background  by",
+    "url": "https://services-eu1.arcgis.com/BuS9rtTsYEV5C0xh/arcgis/rest/services/CensusHub2016_T2_2_SA2015/FeatureServer/0",
+    "row_count": "18641"
+   },
+   {
+    "title": "ResidentialTimelines",
+    "url": "https://services1.arcgis.com/PxbTDTskGHCe4sv6/arcgis/rest/services/ResidentialTimelines/FeatureServer/10",
+    "row_count": "1067"
+   },
+   {
+    "title": "Licensed Excavations",
+    "url": "https://services-eu1.arcgis.com/v5dOXTEOb7ZHdNyQ/arcgis/rest/services/Licensed_Excavations/FeatureServer/0",
+    "row_count": "263"
+   }
+  ],
+  "proj-25832": [
+   {
+    "title": "DekTeigFlate_25052023",
+    "url": "https://services-eu1.arcgis.com/odXSXZtZc842y9uS/arcgis/rest/services/DekTeigFlate_25052023/FeatureServer/1",
+    "row_count": "14173"
+   },
+   {
+    "title": "canal_centerline",
+    "url": "https://services.arcgis.com/iE6tIH8G74YE9Bmv/arcgis/rest/services/canal_centerline/FeatureServer/0",
+    "row_count": "1"
+   },
+   {
+    "title": "Kommunegrense_Hedmark Kart",
+    "url": "https://services-eu1.arcgis.com/odXSXZtZc842y9uS/arcgis/rest/services/Kommunegrense_Hedmark_Kart/FeatureServer/17",
+    "row_count": "12"
+   },
+   {
+    "title": "Renhold vei 30_301_view",
+    "url": "https://services-eu1.arcgis.com/xtQ8lKB5TCbYoJP6/arcgis/rest/services/Renhold_vei_30_301_view/FeatureServer/2",
+    "row_count": "2151"
+   }
+  ],
+  "proj-102565": [
+   {
+    "title": "VerticalStructurePointAGO1",
+    "url": "https://services5.arcgis.com/62o2qANhRqripAuB/arcgis/rest/services/VerticalStructurePointAGO1/FeatureServer/1",
+    "row_count": "12542"
+   }
+  ],
+  "proj-2272": [
+   {
+    "title": "Parcels_8_3_16",
+    "url": "https://services2.arcgis.com/UN0zLLtTogiWbvpK/arcgis/rest/services/Parcels_8_3_16/FeatureServer/0",
+    "row_count": "5347"
+   },
+   {
+    "title": "Parcels10_20",
+    "url": "https://services8.arcgis.com/65lT7GhxbcZanyY0/arcgis/rest/services/Parcels10_20/FeatureServer/0",
+    "row_count": "5531"
+   },
+   {
+    "title": "Parcels_Oct2018",
+    "url": "https://services3.arcgis.com/BCo8ZEj7O01uyRTx/arcgis/rest/services/Parcels_Oct2018/FeatureServer/0",
+    "row_count": "4290"
+   },
+   {
+    "title": "SpringfieldParcels_AllFields",
+    "url": "https://services9.arcgis.com/Tq3SUrXSc9IZNb9m/arcgis/rest/services/SpringfieldParcels_AllFields/FeatureServer/0",
+    "row_count": "7514"
+   },
+   {
+    "title": "Parcels",
+    "url": "https://services3.arcgis.com/BCo8ZEj7O01uyRTx/arcgis/rest/services/Solebury_021320_wTraisrAttribs/FeatureServer/1",
+    "row_count": "4289"
+   }
+  ],
+  "proj-32636": [
+   {
+    "title": "Parcels",
+    "url": "https://services.arcgis.com/n8DZcMxnIWosk4zB/arcgis/rest/services/Parcels/FeatureServer/0",
+    "row_count": "2650"
+   },
+   {
+    "title": "COMMANDARIA POI NEW 19012021 12px Y",
+    "url": "https://services5.arcgis.com/QIfdHhM3x30g3mL0/arcgis/rest/services/COMMANDARIA_POI_NEW_19012021_12px_Y/FeatureServer/0",
+    "row_count": "199"
+   },
+   {
+    "title": "Parcels",
+    "url": "https://services7.arcgis.com/cuU31v2h32m6o4NQ/arcgis/rest/services/Parcels/FeatureServer/0",
+    "row_count": "2650"
+   },
+   {
+    "title": "LARNAKA POI 19072022",
+    "url": "https://services5.arcgis.com/QIfdHhM3x30g3mL0/arcgis/rest/services/LARNAKA_POI_19072022/FeatureServer/0",
+    "row_count": "85"
+   },
+   {
+    "title": "POINTS_OF_INTEREST_1912017",
+    "url": "https://services5.arcgis.com/QIfdHhM3x30g3mL0/arcgis/rest/services/POINTS_OF_INTEREST_1912017/FeatureServer/0",
+    "row_count": "7126"
+   }
+  ],
+  "proj-2100": [
+   {
+    "title": "Chainage",
+    "url": "https://services2.arcgis.com/ZAK1QoLjKDdgETfk/arcgis/rest/services/Chainage/FeatureServer/0",
+    "row_count": "2294"
+   },
+   {
+    "title": "AOCenterLines",
+    "url": "https://services2.arcgis.com/h5RowaZ9KCSgp6Z4/arcgis/rest/services/AOCenterLines/FeatureServer/0",
+    "row_count": "158"
+   }
+  ],
+  "proj-28355": [
+   {
+    "title": "Land Title",
+    "url": "https://services8.arcgis.com/Qhxu8dzT7BHYuJZL/arcgis/rest/services/Land_Title_negative_buffered/FeatureServer/1",
+    "row_count": "1032"
+   },
+   {
+    "title": "DCDB_Address",
+    "url": "https://services-ap1.arcgis.com/xYbmdyJFb3eEmMJp/arcgis/rest/services/DCDB_Address/FeatureServer/0",
+    "row_count": "19905"
+   },
+   {
+    "title": "Property_view_pathway_RFS_Points_Manager_View",
+    "url": "https://services1.arcgis.com/5REoMU162diWrxzT/arcgis/rest/services/Property_view_pathway_RFS_Points_Manager_View/FeatureServer/0",
+    "row_count": "84"
+   },
+   {
+    "title": "PlanningZones_GISaddressPt",
+    "url": "https://services3.arcgis.com/gToGKwidNkZbWBGJ/arcgis/rest/services/PlanningZones_GISaddressPt/FeatureServer/0",
+    "row_count": "66987"
+   },
+   {
+    "title": "ACTGOV ACT Urban Boundary 2022",
+    "url": "https://services1.arcgis.com/E5n4f1VY84i0xSjy/arcgis/rest/services/ACT_Urban_x/FeatureServer/0",
+    "row_count": "28"
+   }
+  ],
+  "proj-32181": [
+   {
+    "title": "RoadsMergedLabeling",
+    "url": "https://services5.arcgis.com/4cgpd6caJYuDiTSW/arcgis/rest/services/RoadsMergedLabeling/FeatureServer/20",
+    "row_count": "548"
+   },
+   {
+    "title": "Roads for Christmas Map",
+    "url": "https://services5.arcgis.com/4cgpd6caJYuDiTSW/arcgis/rest/services/Roads_for_Christmas_Map/FeatureServer/0",
+    "row_count": "1191"
+   },
+   {
+    "title": "Pollingplaces",
+    "url": "https://services1.arcgis.com/ujp4AeSs32zPJZBw/arcgis/rest/services/Pollingplaces/FeatureServer/0",
+    "row_count": "5"
+   },
+   {
+    "title": "PollingplacesWard4",
+    "url": "https://services1.arcgis.com/ujp4AeSs32zPJZBw/arcgis/rest/services/PollingplacesWard4/FeatureServer/0",
+    "row_count": "1"
+   }
+  ],
+  "proj-28992": [
+   {
+    "title": "BJ2780_Ede_GOWB_Centerline_Duiding",
+    "url": "https://services.arcgis.com/zmBQLV64TsFvEpV0/arcgis/rest/services/BJ2780_Ede_GOWB_Centerline_Duiding/FeatureServer/5",
+    "row_count": "405"
+   },
+   {
+    "title": "Voorzieningen_in_de_buurt",
+    "url": "https://services9.arcgis.com/xayyYtTPgnrhsAAs/arcgis/rest/services/Voorzieningen_in_de_buurt/FeatureServer/13",
+    "row_count": "4966"
+   },
+   {
+    "title": "0003_Veldboek",
+    "url": "https://services5.arcgis.com/rsoQxMElspiPSiF9/arcgis/rest/services/KL_template_Veldboek_a62ec/FeatureServer/3",
+    "row_count": "5"
+   },
+   {
+    "title": "Buffers_voorzieningen",
+    "url": "https://services9.arcgis.com/xayyYtTPgnrhsAAs/arcgis/rest/services/Buffers_voorzieningen/FeatureServer/19",
+    "row_count": "4966"
+   },
+   {
+    "title": "BerkumenErgieNeutraal",
+    "url": "https://services-eu1.arcgis.com/HZbjGLFJxhQKZmMB/arcgis/rest/services/BerkumenErgieNeutraal/FeatureServer/17",
+    "row_count": "1614"
+   }
+  ],
+  "proj-5514": [
+   {
+    "title": "Sociální služby / Social services",
+    "url": "https://gis.brno.cz/ags1/rest/services/OMI/OMI_OSP_socialni_sluzby_b/FeatureServer/0",
+    "row_count": "259"
+   },
+   {
+    "title": "Počet osob na adresních místech / ODAE_T_ROB",
+    "url": "https://gis.brno.cz/ags1/rest/services/ODAE/ODAE_T_ROB/FeatureServer/0",
+    "row_count": "23495"
+   },
+   {
+    "title": "zavlazovacie_vaky_layer",
+    "url": "https://services-eu1.arcgis.com/6mjX1RJdjBOiFWhC/arcgis/rest/services/zavlazovacie_vaky_layer_72fcc0202e334e79a682f90656db3898/Fea",
+    "row_count": "22"
+   }
+  ],
+  "proj-8857": [
+   {
+    "title": "GHSL — Urban Expansion and Population — Episcopal Conferences, Urban Context",
+    "url": "https://services8.arcgis.com/7DJFMLstNUGRFz6m/arcgis/rest/services/GHSL_01_Conferences_City_Context_20261009/FeatureServer/0",
+    "row_count": "122"
+   },
+   {
+    "title": "GHSL — Groundwater and Population Growth — Episcopal Conferences, Urban Context",
+    "url": "https://services8.arcgis.com/7DJFMLstNUGRFz6m/arcgis/rest/services/GHSL_05_Conferences_City_Context_20261009/FeatureServer/0",
+    "row_count": "122"
+   },
+   {
+    "title": "GHSL — Urban Trees, Greenness and Heat — Episcopal Conferences, Urban Context",
+    "url": "https://services8.arcgis.com/7DJFMLstNUGRFz6m/arcgis/rest/services/GHSL_09_Conferences_City_Context_20261009/FeatureServer/0",
+    "row_count": "122"
+   },
+   {
+    "title": "GHSL — Urban Resilience Profile — Episcopal Conferences, Urban Context",
+    "url": "https://services8.arcgis.com/7DJFMLstNUGRFz6m/arcgis/rest/services/GHSL_06_Conferences_City_Context_20261009/FeatureServer/0",
+    "row_count": "122"
+   },
+   {
+    "title": "GHSL — Environmental Exposure and Health Facility Proximity — Episcopal Conferences, Urban",
+    "url": "https://services8.arcgis.com/7DJFMLstNUGRFz6m/arcgis/rest/services/GHSL_07_Conferences_City_Context_20261009/FeatureServer/0",
+    "row_count": "122"
+   }
+  ],
+  "proj-32721": [
+   {
+    "title": "Areas_SNAP",
+    "url": "https://services9.arcgis.com/qQQS21vUqjPJkmLN/arcgis/rest/services/Areas_SNAP/FeatureServer/1",
+    "row_count": "14"
+   }
+  ],
+  "proj-32717": [
+   {
+    "title": "ZonifSantfeb2026",
+    "url": "https://services5.arcgis.com/qefe3CGaSKnteGG1/arcgis/rest/services/ZonifSantfeb2026/FeatureServer/0",
+    "row_count": "4"
+   },
+   {
+    "title": "Afectacion_SNAP_Cofan",
+    "url": "https://services3.arcgis.com/NoXCEayaU54gj3wI/arcgis/rest/services/Afectacion_SNAP_Cofan/FeatureServer/0",
+    "row_count": "1"
+   },
+   {
+    "title": "Amorti El Salado",
+    "url": "https://services5.arcgis.com/qefe3CGaSKnteGG1/arcgis/rest/services/Amorti_El_Salado/FeatureServer/0",
+    "row_count": "1"
+   },
+   {
+    "title": "Corredores y KBAs CEPF 2023",
+    "url": "https://services.arcgis.com/x494PplYsmeeZsYB/arcgis/rest/services/Corredores_y_KBAs_CEPF_2023/FeatureServer/0",
+    "row_count": "1"
+   },
+   {
+    "title": "Amorti El Morro",
+    "url": "https://services5.arcgis.com/qefe3CGaSKnteGG1/arcgis/rest/services/Amorti_El_Morro/FeatureServer/0",
+    "row_count": "1"
+   }
+  ],
+  "proj-3395": [
+   {
+    "title": "RunwayCenterline",
+    "url": "https://services5.arcgis.com/62o2qANhRqripAuB/arcgis/rest/services/RunwayCenterline/FeatureServer/45",
+    "row_count": "2"
+   },
+   {
+    "title": "ServiceableLocations",
+    "url": "https://services.arcgis.com/w19mhSG0nqiZrGUr/arcgis/rest/services/ServiceableLocations_248897b91f3d45db9bf13a12a8c0dd7a/FeatureSer",
+    "row_count": "183"
+   },
+   {
+    "title": "ATNS_VerticalStructurePoint",
+    "url": "https://services5.arcgis.com/62o2qANhRqripAuB/arcgis/rest/services/ATNS_VerticalStructurePoint/FeatureServer/2",
+    "row_count": "12543"
+   },
+   {
+    "title": "Property Parcel",
+    "url": "https://services5.arcgis.com/Rh3p6jlaIKVa2VfP/arcgis/rest/services/Property_Plans/FeatureServer/0",
+    "row_count": "15424"
+   },
+   {
+    "title": "address_system_autocomplete_test_layer_LBI",
+    "url": "https://services5.arcgis.com/Rh3p6jlaIKVa2VfP/arcgis/rest/services/address_system_autocomplete_test_layer_LBI/FeatureServer/0",
+    "row_count": "10422"
+   }
+  ],
+  "proj-4258": [
+   {
+    "title": "Addresses of Brussels Belgium AD_demo",
+    "url": "https://services9.arcgis.com/UILu2wREgFBEuDZW/arcgis/rest/services/AD_Address_Brussels_Belgium_AD_demo/FeatureServer/0",
+    "row_count": "225195"
+   },
+   {
+    "title": "Addresses Brussels AD FeatureLayer demo",
+    "url": "https://services9.arcgis.com/UILu2wREgFBEuDZW/arcgis/rest/services/Addresses_Brussels_AD_FeatureLayer_demo/FeatureServer/0",
+    "row_count": "50000"
+   }
+  ],
+  "proj-25833": [
+   {
+    "title": "bike_centerline_v1",
+    "url": "https://services7.arcgis.com/wCvLzGFkz06gCfBg/arcgis/rest/services/bike_centerline_v1/FeatureServer/0",
+    "row_count": "202193"
+   },
+   {
+    "title": "Data_10421_Ost_6_50Hertz_Centerlines",
+    "url": "https://services-eu1.arcgis.com/5IgQNQtwtCAqwmru/arcgis/rest/services/Data_10421_Ost_6_50Hertz_Centerlines/FeatureServer/0",
+    "row_count": "3"
+   },
+   {
+    "title": "UrbanFlooding_WFL1",
+    "url": "https://services1.arcgis.com/DIcffHalFljSYvfk/arcgis/rest/services/UrbanFlooding_WFL1/FeatureServer/0",
+    "row_count": "82"
+   },
+   {
+    "title": "B_C_Lav_bro_CenterLine_Text",
+    "url": "https://services6.arcgis.com/d195iIs6VJ0AHGL0/arcgis/rest/services/B_C_Lav_bro_CenterLine_Text/FeatureServer/1",
+    "row_count": "1"
+   }
+  ],
+  "proj-103517": [
+   {
+    "title": "Parcels",
+    "url": "https://services9.arcgis.com/8iy6zsIijm63y2aD/arcgis/rest/services/Parcels/FeatureServer/0",
+    "row_count": "15425"
+   }
+  ],
+  "proj-7855": [
+   {
+    "title": "TCC Road Centerlines GDA2020",
+    "url": "https://services6.arcgis.com/3VCE6mezZtwKJeIR/arcgis/rest/services/TCC_Road_Centerlines_GDA2020/FeatureServer/0",
+    "row_count": "11330"
+   },
+   {
+    "title": "Trails",
+    "url": "https://services-ap1.arcgis.com/w6r4LlwgJu8O0neQ/arcgis/rest/services/Trails/FeatureServer/0",
+    "row_count": "1633"
+   },
+   {
+    "title": "ACTGOV DIVISION",
+    "url": "https://services1.arcgis.com/E5n4f1VY84i0xSjy/arcgis/rest/services/ACTGOV_DIVISIONS/FeatureServer/0",
+    "row_count": "121"
+   },
+   {
+    "title": "TasmanianEnergy",
+    "url": "https://services5.arcgis.com/65nQ6lypeJh7OW1K/arcgis/rest/services/TasmanianEnergy/FeatureServer/0",
+    "row_count": "301619"
+   },
+   {
+    "title": "Public toilet - Point",
+    "url": "https://services-ap1.arcgis.com/w6r4LlwgJu8O0neQ/arcgis/rest/services/public_toilets_point_view/FeatureServer/0",
+    "row_count": "20"
+   }
+  ],
+  "proj-102630": [
+   {
+    "title": "Address_Points_View",
+    "url": "https://services2.arcgis.com/kT3YXKYAyR8joPvc/arcgis/rest/services/Address_Points_View/FeatureServer/2",
+    "row_count": "10564"
+   }
+  ],
+  "proj-2227": [
+   {
+    "title": "NFO Addressing",
+    "url": "https://services.arcgis.com/yq3FgOI44hYHAFVZ/arcgis/rest/services/NFO_Addressing/FeatureServer/0",
+    "row_count": "4354"
+   },
+   {
+    "title": "Drainage Documents",
+    "url": "https://services1.arcgis.com/jJfZghspGKh8J9Jm/arcgis/rest/services/Drainage_Documents/FeatureServer/5",
+    "row_count": "1905"
+   }
+  ],
+  "proj-6574": [
+   {
+    "title": "Intersections for Souix Falls MPO 2050 LRTP",
+    "url": "https://services.arcgis.com/sLe4VrKqV1JxToKz/arcgis/rest/services/Intersections_for_Souix_Falls_MPO_2050_LRTP/FeatureServer/0",
+    "row_count": "2661"
+   }
+  ],
+  "proj-3035": [
+   {
+    "title": "D5_3_Cogeneration_Excess_Heat_HRE4",
+    "url": "https://services7.arcgis.com/yw4gqar8UPhNkPqY/arcgis/rest/services/D5_3_Cogeneration_Excess_Heat_HRE4/FeatureServer/0",
+    "row_count": "1372"
+   },
+   {
+    "title": "Hard_Protection_Points_Industry_Type_ETRS89_LAEA",
+    "url": "https://services.arcgis.com/JJzESW51TqeY9uat/arcgis/rest/services/Hard_Protection_Points_Industry_Type_ETRS89_LAEA/FeatureServer/2",
+    "row_count": "23902"
+   },
+   {
+    "title": "Hard_Protection_Points_General_Protection_Type_ETRS89_LAEA",
+    "url": "https://services.arcgis.com/JJzESW51TqeY9uat/arcgis/rest/services/Hard_Protection_Points_General_Protection_Type_ETRS89_LAEA/Featu",
+    "row_count": "23902"
+   }
+  ],
+  "proj-26986": [
+   {
+    "title": "BRPC BETA Vision Zero HIN 05_24_24 Update",
+    "url": "https://services8.arcgis.com/ZybleXItoWGv9yUU/arcgis/rest/services/BRPC_BETA_Vision_Zero_HIN_05_24_24_Update/FeatureServer/0",
+    "row_count": "858"
+   },
+   {
+    "title": "OCPC Trends Risk Update 05_28_2024",
+    "url": "https://services8.arcgis.com/ZybleXItoWGv9yUU/arcgis/rest/services/OCPC_Trends_Risk_Update_05_28_2024/FeatureServer/0",
+    "row_count": "3162"
+   },
+   {
+    "title": "b22001_hh_foodstamps_snap_60yrs_acs_m",
+    "url": "https://services.arcgis.com/c5WwApDsDjRhIVkH/arcgis/rest/services/b22001_hh_foodstamps_snap_60yrs_acs_m/FeatureServer",
+    "row_count": "2835"
+   }
+  ],
+  "proj-102698": [
+   {
+    "title": "police2386",
+    "url": "https://services5.arcgis.com/Xl0cAd6WMhA7fHTz/arcgis/rest/services/police2386/FeatureServer/0",
+    "row_count": "712"
+   },
+   {
+    "title": "CommissionerDistrictsServiceFinal",
+    "url": "https://services2.arcgis.com/wTcQ72xtx5Lnk2YJ/arcgis/rest/services/CommissionerDistrictsServiceFinal/FeatureServer/0",
+    "row_count": "39687"
+   }
+  ],
+  "proj-6625": [
+   {
+    "title": "DASHBOARD_HeberBypass_Level1_Impacts",
+    "url": "https://services.arcgis.com/04HiymDgLlsbhaV4/arcgis/rest/services/DASHBOARD_HeberBypass_Level1_Impacts/FeatureServer/0",
+    "row_count": "366"
+   }
+  ],
+  "proj-2232": [
+   {
+    "title": "PPACG Regional Transportation Projects",
+    "url": "https://services1.arcgis.com/0plDVQODvYjBRQXP/arcgis/rest/services/PPACG_Regional_Transportation_Projects/FeatureServer/0",
+    "row_count": "114"
+   }
+  ],
+  "proj-22992": [
+   {
+    "title": "Centerline1x2",
+    "url": "https://services8.arcgis.com/oTalEaSXAuyNT7xf/arcgis/rest/services/Centerline1x2/FeatureServer/7",
+    "row_count": "92"
+   }
+  ],
+  "proj-3994": [
+   {
+    "title": "Seamount closures",
+    "url": "https://services3.arcgis.com/fp1tibNcN9mbExhG/arcgis/rest/services/Seamount_closures/FeatureServer/305",
+    "row_count": "17"
+   }
+  ],
+  "proj-4283": [
+   {
+    "title": "GBRMPA Whitsundays Plan of Management no anchoring areas",
+    "url": "https://services-ap1.arcgis.com/8gXWSCxaJlFIfiTr/arcgis/rest/services/Whitsundays_Plan_of_Management_no_anchoring_areas/FeatureSer",
+    "row_count": "15"
+   },
+   {
+    "title": "CRCNA place based planning project layer group 4",
+    "url": "https://services8.arcgis.com/BLh71157WcIevurr/arcgis/rest/services/CRCNA_place_based_planning_project_layer_group_4/FeatureServer/",
+    "row_count": "107"
+   },
+   {
+    "title": "Queensland foundation data",
+    "url": "https://spatial-gis.information.qld.gov.au/arcgis/rest/services/Basemaps/FoundationData/FeatureServer/0",
+    "row_count": "2849073"
+   },
+   {
+    "title": "Cadastre_Address_LGATE002__Large_Scale",
+    "url": "https://services5.arcgis.com/8SdjYDkJx9faF4I2/arcgis/rest/services/Cadastre_Address_LGATE002__Large_Scale/FeatureServer/0",
+    "row_count": "1711731"
+   },
+   {
+    "title": "Tackling Indigenous Smoking (TIS) Program (2022)",
+    "url": "https://services5.arcgis.com/OvOcYIrJnM97ABBA/arcgis/rest/services/Tackling_Indigenous_Smoking_2022/FeatureServer/0",
+    "row_count": "39"
+   }
+  ],
+  "proj-32631": [
+   {
+    "title": "Stores",
+    "url": "https://services1.arcgis.com/m9p5y180BqMf6JT7/arcgis/rest/services/Stores/FeatureServer/1",
+    "row_count": "9"
+   },
+   {
+    "title": "Stores_ST",
+    "url": "https://services1.arcgis.com/m9p5y180BqMf6JT7/arcgis/rest/services/Stores_ST/FeatureServer/1",
+    "row_count": "9"
+   }
+  ],
+  "proj-3451": [
+   {
+    "title": "Caddo Parish Address Points",
+    "url": "https://utility.arcgis.com/usrsvcs/servers/32594d1368254a95b1404443a46cab09/rest/services/Assessor_Data/Caddo_Parish_Address_Point",
+    "row_count": "290095"
+   }
+  ],
+  "proj-2154": [
+   {
+    "title": "Transport Performance Statistics by 200 metre grids for subset of Urban Centres in France",
+    "url": "https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/france_public_transit_45/FeatureServer/0",
+    "row_count": "68130"
+   }
+  ],
+  "proj-102690": [
+   {
+    "title": "fire_master_v4",
+    "url": "https://services2.arcgis.com/RSm8IFpeYSInb9rO/arcgis/rest/services/fire_master_v4/FeatureServer/1",
+    "row_count": "16188"
+   },
+   {
+    "title": "fire_master_v3",
+    "url": "https://services2.arcgis.com/RSm8IFpeYSInb9rO/arcgis/rest/services/fire_master_v3/FeatureServer/1",
+    "row_count": "16188"
+   }
+  ],
+  "proj-2876": [
+   {
+    "title": "Open Data Street Centerlines",
+    "url": "https://gis.greeleygov.com/arcgis_svr3/rest/services/PublicSpace/Open_Data_Street_Centerlines/FeatureServer/0",
+    "row_count": "11839"
+   }
+  ],
+  "proj-28354": [
+   {
+    "title": "Properties",
+    "url": "https://services-ap1.arcgis.com/Yha51PiDEK2YJKbO/arcgis/rest/services/Properties/FeatureServer/0",
+    "row_count": "9050"
+   },
+   {
+    "title": "Cadastre_Address",
+    "url": "https://services7.arcgis.com/txunf04jv3dMw2Mh/arcgis/rest/services/Cadastre_Address/FeatureServer/0",
+    "row_count": "2098"
+   }
+  ],
+  "proj-26912": [
+   {
+    "title": "Address Points",
+    "url": "https://services5.arcgis.com/xPoG9m86qjKWAzys/arcgis/rest/services/ADDRESS_POINTS/FeatureServer/0",
+    "row_count": "7140"
+   },
+   {
+    "title": "Addresses",
+    "url": "https://services.arcgis.com/X6y6yYcthteBp2Ec/arcgis/rest/services/Addresses/FeatureServer/0",
+    "row_count": "4004"
+   }
+  ],
+  "proj-6579": [
+   {
+    "title": "EFIT",
+    "url": "https://services.arcgis.com/F7DSX1DSNSiWmOqh/arcgis/rest/services/EFIT/FeatureServer/0",
+    "row_count": "6244"
+   }
+  ],
+  "proj-32620": [
+   {
+    "title": "6023 Capstone Land Information System",
+    "url": "https://services1.arcgis.com/NUSHso3rgWERZOFF/arcgis/rest/services/6023_Capstone_Land_Information_System/FeatureServer/1",
+    "row_count": "2098"
+   },
+   {
+    "title": "ParcelTaxJoin_FeatureService_Group5",
+    "url": "https://services1.arcgis.com/NUSHso3rgWERZOFF/arcgis/rest/services/ParcelTaxJoin_FeatureService_Group5/FeatureServer/0",
+    "row_count": "14163"
+   },
+   {
+    "title": "ACTIVE_LYR",
+    "url": "https://services1.arcgis.com/NUSHso3rgWERZOFF/arcgis/rest/services/ACTIVE_LYR/FeatureServer/0",
+    "row_count": "292"
+   },
+   {
+    "title": "Fundamental Datasets of Dinsley Gardens Trincity",
+    "url": "https://services1.arcgis.com/NUSHso3rgWERZOFF/arcgis/rest/services/Fundamental_Datasets_of_Dinsley_Gardens_Trincity/FeatureServer/",
+    "row_count": "415"
+   },
+   {
+    "title": "Parcels",
+    "url": "https://services1.arcgis.com/NUSHso3rgWERZOFF/arcgis/rest/services/Parcels/FeatureServer/0",
+    "row_count": "66"
+   }
+  ],
+  "proj-9377": [
+   {
+    "title": "Proyecto_Final_Sibate1",
+    "url": "https://services.arcgis.com/deQSb0Gn7gDPf3uV/arcgis/rest/services/Proyecto_Final_Sibate1/FeatureServer/0",
+    "row_count": "534"
+   }
+  ],
+  "proj-29903": [
+   {
+    "title": "Licensed waste facilities ",
+    "url": "https://services3.arcgis.com/HRuPlEcokYlz4mdz/arcgis/rest/services/Licensed_waste_facilities_/FeatureServer/0",
+    "row_count": "115"
+   }
+  ],
+  "proj-29902": [
+   {
+    "title": "HealthSocialcare",
+    "url": "https://services3.arcgis.com/HRuPlEcokYlz4mdz/arcgis/rest/services/HealthSocialcare/FeatureServer/0",
+    "row_count": "34"
+   },
+   {
+    "title": "WalkingInspectionsSince2000",
+    "url": "https://services-eu1.arcgis.com/z1y55jruXrgzzpdi/arcgis/rest/services/WalkingInspectionsSince2000/FeatureServer/0",
+    "row_count": "1093"
+   },
+   {
+    "title": "GreenspaceNI Map 400m Proximity Hexmap",
+    "url": "https://services7.arcgis.com/rVwbcvflURVxkV6s/arcgis/rest/services/Greenspace_Proximity_Hexmap/FeatureServer/45",
+    "row_count": "14346"
+   },
+   {
+    "title": "Schools_Scotland__2022",
+    "url": "https://services-eu1.arcgis.com/ELpYE44CpoxrJqcU/arcgis/rest/services/Schools_Scotland__2022/FeatureServer/0",
+    "row_count": "2495"
+   },
+   {
+    "title": "Town Centre Assets Point",
+    "url": "https://services5.arcgis.com/65ux41b9DoQZACr1/arcgis/rest/services/Town_Centre_Assets_Point/FeatureServer/0",
+    "row_count": "56"
+   }
+  ],
+  "proj-7899": [
+   {
+    "title": "UOM_LAND_PARCELS_DOOKIE",
+    "url": "https://services6.arcgis.com/wNUCgbZ3TmLukLnT/arcgis/rest/services/UOM_LAND_PARCELS_DOOKIE/FeatureServer/0",
+    "row_count": "12"
+   },
+   {
+    "title": "UOM_LAND_PARCELS_SOUTHBANK",
+    "url": "https://services6.arcgis.com/wNUCgbZ3TmLukLnT/arcgis/rest/services/UOM_LAND_PARCELS_SOUTHBANK/FeatureServer/0",
+    "row_count": "8"
+   },
+   {
+    "title": "UOM_LAND_PARCELS_SHEPPARTON",
+    "url": "https://services6.arcgis.com/wNUCgbZ3TmLukLnT/arcgis/rest/services/UOM_LAND_PARCELS_SHEPPARTON/FeatureServer/0",
+    "row_count": "3"
+   },
+   {
+    "title": "UOM_LAND_PARCELS_BURNLEY",
+    "url": "https://services6.arcgis.com/wNUCgbZ3TmLukLnT/arcgis/rest/services/UOM_LAND_PARCELS_BURNLEY/FeatureServer/0",
+    "row_count": "1"
+   },
+   {
+    "title": "UOM_LAND_PARCELS_PARKVILLE",
+    "url": "https://services6.arcgis.com/wNUCgbZ3TmLukLnT/arcgis/rest/services/UOM_LAND_PARCELS_PARKVILLE/FeatureServer/0",
+    "row_count": "165"
+   }
+  ],
+  "proj-7854": [
+   {
+    "title": "Park_Lands_Licence_Point_November_2021_Final",
+    "url": "https://services.arcgis.com/BzylpWnjWP0tW4nL/arcgis/rest/services/Park_Lands_Licence_Point_November_2021_Final/FeatureServer/0",
+    "row_count": "4"
+   },
+   {
+    "title": "Parcels Public",
+    "url": "https://services8.arcgis.com/oGkFYCCqyI37HWqP/arcgis/rest/services/Parcels_Public/FeatureServer/0",
+    "row_count": "13328"
+   }
+  ],
+  "proj-32718": [
+   {
+    "title": "Corredores_conectividad_EC",
+    "url": "https://services3.arcgis.com/H9kvlWFGTCcyKqKF/arcgis/rest/services/Corredores_conectividad_EC/FeatureServer/0",
+    "row_count": "4"
+   },
+   {
+    "title": "SNAP",
+    "url": "https://services9.arcgis.com/NOt9aRRQgcL53dXa/arcgis/rest/services/SNAP/FeatureServer/2",
+    "row_count": "2"
+   },
+   {
+    "title": "SNAP",
+    "url": "https://services5.arcgis.com/qefe3CGaSKnteGG1/arcgis/rest/services/SNAP/FeatureServer/2",
+    "row_count": "78"
+   }
+  ],
+  "proj-6447": [
+   {
+    "title": "SiteAddressPoints",
+    "url": "https://services2.arcgis.com/zPFLSOZ5HzUzzTQb/arcgis/rest/services/SiteAddressPoints/FeatureServer/0",
+    "row_count": "81858"
+   }
+  ],
+  "proj-103768": [
+   {
+    "title": "StreetCenterlines_IntersectionPoints",
+    "url": "https://services1.arcgis.com/9meaaHE3uiba0zr8/arcgis/rest/services/StreetCenterlines_IntersectionPoints/FeatureServer/0",
+    "row_count": "14465"
+   }
+  ],
+  "proj-6492": [
+   {
+    "title": "Sudbury_VPC5",
+    "url": "https://services8.arcgis.com/1Vo19P9psYNnj0cy/arcgis/rest/services/Sudbury_VPC5/FeatureServer/0",
+    "row_count": "6778"
+   }
+  ],
+  "proj-2229": [
+   {
+    "title": "Lancaster_Street_Intersections",
+    "url": "https://services7.arcgis.com/nSZffRgjBDuTMleo/arcgis/rest/services/Lancaster_Street_Intersections/FeatureServer/0",
+    "row_count": "3619"
+   },
+   {
+    "title": "Centerline Ties",
+    "url": "https://services9.arcgis.com/LUBoZWfQwvBnZCmP/arcgis/rest/services/Centerline_Ties_Test/FeatureServer/0",
+    "row_count": "353"
+   },
+   {
+    "title": "Parcel_View",
+    "url": "https://services2.arcgis.com/OCysFFatYM3MITwS/arcgis/rest/services/Parcel_View/FeatureServer/0",
+    "row_count": "28445"
+   }
+  ],
+  "proj-2326": [
+   {
+    "title": "CEO Tower_WFL1",
+    "url": "https://services1.arcgis.com/YcXwI443i0NDRwgZ/arcgis/rest/services/CEO_Tower_WFL1/FeatureServer/333",
+    "row_count": "1152"
+   },
+   {
+    "title": "Centerlines",
+    "url": "https://services5.arcgis.com/xH8UmTNerx1qYfXM/arcgis/rest/services/Centerlines/FeatureServer/0",
+    "row_count": "34683"
+   },
+   {
+    "title": "CENTERLINE",
+    "url": "https://services5.arcgis.com/xH8UmTNerx1qYfXM/arcgis/rest/services/CENTERLINE/FeatureServer/0",
+    "row_count": "35273"
+   },
+   {
+    "title": "CENTERLINE_TKO",
+    "url": "https://services5.arcgis.com/xH8UmTNerx1qYfXM/arcgis/rest/services/CENTERLINE_TKO/FeatureServer/1",
+    "row_count": "1055"
+   }
+  ],
+  "proj-3059": [
+   {
+    "title": "Waste Sorting Points in Riga",
+    "url": "https://services1.arcgis.com/rGfCw5sHu4uZnbVH/arcgis/rest/services/Atkritumu_skirosanas_punkti_Riga_metadata/FeatureServer/0",
+    "row_count": "589"
+   },
+   {
+    "title": "LVC_CENTERLINES",
+    "url": "https://services.arcgis.com/DIKWh1SUr7cpgam6/arcgis/rest/services/LVC_CENTERLINES/FeatureServer/0",
+    "row_count": "1776"
+   },
+   {
+    "title": "LVC_CENTERLINES",
+    "url": "https://services-eu1.arcgis.com/LReFeETNd1ENxC0v/arcgis/rest/services/LVC_CENTERLINES/FeatureServer/0",
+    "row_count": "2379"
+   }
+  ],
+  "proj-4269": [
+   {
+    "title": "US National Grid",
+    "url": "https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/US_National_Grid_HFL_V/FeatureServer/0",
+    "row_count": "328"
+   },
+   {
+    "title": "Guam Force Laydown Map",
+    "url": "https://services.arcgis.com/XG15cJAlne2vxtgt/arcgis/rest/services/Guam_Force_Laydown_Map/FeatureServer/73",
+    "row_count": "91"
+   }
+  ],
+  "proj-26919": [
+   {
+    "title": "ME Source Data",
+    "url": "https://services.arcgis.com/F7DSX1DSNSiWmOqh/arcgis/rest/services/ME_Source_Data/FeatureServer/0",
+    "row_count": "106"
+   }
+  ],
+  "proj-32645": [
+   {
+    "title": "Range",
+    "url": "https://services.arcgis.com/qBRuzKe4xjrBBuna/arcgis/rest/services/Range/FeatureServer/0",
+    "row_count": "12"
+   },
+   {
+    "title": "Road Projects (Existing centerline)",
+    "url": "https://services5.arcgis.com/WHv6zgyGky4xgPeC/arcgis/rest/services/Maharashtra_SRIP_Centerlines/FeatureServer/1",
+    "row_count": "27"
+   },
+   {
+    "title": "Karnataka Centerlines",
+    "url": "https://services5.arcgis.com/WHv6zgyGky4xgPeC/arcgis/rest/services/Karnataka_Centerlines/FeatureServer/0",
+    "row_count": "11"
+   }
+  ],
+  "proj-54004": [
+   {
+    "title": "Coastal Protected Areas",
+    "url": "https://services5.arcgis.com/Xqd7UHgodoHV31bQ/arcgis/rest/services/Coastal_Protected_Areas/FeatureServer/0",
+    "row_count": "8"
+   }
+  ],
+  "proj-3443": [
+   {
+    "title": "ProposedSiteAddresses",
+    "url": "https://services1.arcgis.com/oX0kbxItOpLtURFa/arcgis/rest/services/ProposedSiteAddresses_2140050a506641b28cfd663ac86063d7/FeatureS",
+    "row_count": "1"
+   },
+   {
+    "title": "Address Request Form_stakeholder",
+    "url": "https://services1.arcgis.com/oX0kbxItOpLtURFa/arcgis/rest/services/survey123_41398ee888294e1e98d2b1777176486c_stakeholder/FeatureS",
+    "row_count": "1"
+   }
+  ],
+  "proj-102070": [
+   {
+    "title": "Address_Points_GSY",
+    "url": "https://services5.arcgis.com/uqdq4CSRQ5L5qvET/arcgis/rest/services/Address_Points_GSY/FeatureServer/0",
+    "row_count": "31680"
+   }
+  ],
+  "proj-2284": [
+   {
+    "title": "E-911 Address Search",
+    "url": "https://gis.co.campbell.va.us/arcgis/rest/services/External/E_911_Address_Search/MapServer/20",
+    "row_count": "28208"
+   },
+   {
+    "title": "BBA_Addresses",
+    "url": "https://services9.arcgis.com/UrElc2PRESEUr5jw/arcgis/rest/services/BBA_Addresses/FeatureServer/65",
+    "row_count": "999"
+   }
+  ],
+  "proj-27200": [
+   {
+    "title": "Hutt City Council Address Points 2008",
+    "url": "https://services5.arcgis.com/n4qyP7iVOnJlCVth/arcgis/rest/services/Hutt_City_Council_Address_Points_2008/FeatureServer/0",
+    "row_count": "16733"
+   }
+  ],
+  "proj-7844": [
+   {
+    "title": "Selected DSS government pensions and allowances from 2019 to 2024 by 2021 SA2 TE",
+    "url": "https://services-ap1.arcgis.com/ypkPEy1AmwPKGNNv/arcgis/rest/services/DSS_pens_allows_2019_2024_TE_SA2/FeatureServer/0",
+    "row_count": "14832"
+   },
+   {
+    "title": "Tackling Indigenous Smoking (TIS) Program (2023)",
+    "url": "https://services5.arcgis.com/OvOcYIrJnM97ABBA/arcgis/rest/services/Tackling_Indigenous_Smoking_2023/FeatureServer/0",
+    "row_count": "37"
+   },
+   {
+    "title": "National Address Points",
+    "url": "https://services-ap1.arcgis.com/ypkPEy1AmwPKGNNv/arcgis/rest/services/national_address_points/FeatureServer/0",
+    "row_count": "15949543"
+   },
+   {
+    "title": "EXP_national_address_points",
+    "url": "https://services-ap1.arcgis.com/EiaPtTiEArHVnvWM/arcgis/rest/services/EXP_national_address_points/FeatureServer/0",
+    "row_count": "15057532"
+   },
+   {
+    "title": "Selected DSS government pensions and allowances from 2019 to 2024 by 2021 SA2",
+    "url": "https://services-ap1.arcgis.com/ypkPEy1AmwPKGNNv/arcgis/rest/services/DSS_pens_allows_2019_2024_SA2/FeatureServer/0",
+    "row_count": "2473"
+   }
+  ],
+  "proj-9184": [
+   {
+    "title": "AGRI C2 Mapa Interactivo",
+    "url": "https://services3.arcgis.com/R7ZXE5YFPP5St1EC/arcgis/rest/services/AGRI_C2_Mapa_Interactivo/FeatureServer/0",
+    "row_count": "9588"
+   }
+  ],
+  "proj-32651": [
+   {
+    "title": "Detailed Bridge Inventory",
+    "url": "https://services1.arcgis.com/IwZZTMxZCmAmFYvF/arcgis/rest/services/Detailed_Bridge_Inventory/FeatureServer/4",
+    "row_count": "8752"
+   },
+   {
+    "title": "SC_Centerline",
+    "url": "https://services8.arcgis.com/h9TUF6x5VzqLQaYx/arcgis/rest/services/SC_Centerline/FeatureServer/0",
+    "row_count": "1"
+   }
+  ],
+  "proj-3433": [
+   {
+    "title": "Paron_Address_Points",
+    "url": "https://pagis.org/arcgis/rest/services/PARON/Paron_Base/MapServer/0",
+    "row_count": "2304"
+   }
+  ],
+  "proj-3765": [
+   {
+    "title": "A1_Austrija_Demo",
+    "url": "https://services6.arcgis.com/RNSRmwbDoM8H7zDN/arcgis/rest/services/A1_Austrija_Demo/FeatureServer/0",
+    "row_count": "314"
+   }
+  ],
+  "proj-3007": [
+   {
+    "title": "CENTERLINE_RAIL",
+    "url": "https://services.arcgis.com/88JjSknPvkqWkkTZ/arcgis/rest/services/CENTERLINE_RAIL/FeatureServer/0",
+    "row_count": "102"
+   }
+  ],
+  "proj-6588": [
+   {
+    "title": "GAS_RED_LINE",
+    "url": "https://services1.arcgis.com/cZH7Krb8dJAExGbw/arcgis/rest/services/GAS_RED_LINE/FeatureServer/4",
+    "row_count": "2"
+   }
+  ],
+  "proj-102039": [
+   {
+    "title": "IVCGroupRangeMaps_343",
+    "url": "https://services.arcgis.com/EVsTT4nNRCwmHNyb/arcgis/rest/services/IVCGroupRangeMaps_343_27c28/FeatureServer/0",
+    "row_count": "266766"
+   }
+  ],
+  "proj-2253": [
+   {
+    "title": "LocalElections",
+    "url": "https://services2.arcgis.com/y7VShPA3gGO9NJCc/arcgis/rest/services/LocalElections/FeatureServer/0",
+    "row_count": "26009"
+   }
+  ],
+  "proj-32655": [
+   {
+    "title": "Building Footprints - Saipan (DPL, 2015)",
+    "url": "https://services.arcgis.com/qchgHH9IIeiivY5M/arcgis/rest/services/SaipanBuildings/FeatureServer/0",
+    "row_count": "8513"
+   }
+  ],
+  "proj-2273": [
+   {
+    "title": "ROW Maint Cadastral",
+    "url": "https://services3.arcgis.com/07uNquE7aw4u0I7Q/arcgis/rest/services/ROW_Maint_Cadastral/FeatureServer/1",
+    "row_count": "8087"
+   }
+  ],
+  "proj-54030": [
+   {
+    "title": "Catholic CO2 Footprint Excluding Top 10",
+    "url": "https://services3.arcgis.com/I88u8wDux7Kis2GZ/arcgis/rest/services/Catholic_CO2_Footprint_Excluding_Top_10/FeatureServer/0",
+    "row_count": "2650"
+   },
+   {
+    "title": "Catholic_CO2_Footprint_Beta_VacantSees",
+    "url": "https://services3.arcgis.com/I88u8wDux7Kis2GZ/arcgis/rest/services/Catholic_CO2_Footprint_Beta_VacantSees/FeatureServer/0",
+    "row_count": "163"
+   },
+   {
+    "title": "Catholic_CO2_Footprint_Beta_FullSees_MinusTop10",
+    "url": "https://services3.arcgis.com/I88u8wDux7Kis2GZ/arcgis/rest/services/Catholic_CO2_Footprint_Beta_FullSees_MinusTop10/FeatureServer/0",
+    "row_count": "2487"
+   }
+  ],
+  "proj-32722": [
+   {
+    "title": "TSX1_SAR_20240502_FLOODED_AREAS",
+    "url": "https://services3.arcgis.com/txu3Aw836B0Ze9Ef/arcgis/rest/services/TSX1_SAR_20240502_FLOODED_AREAS/FeatureServer/1",
+    "row_count": "838"
+   }
+  ],
+  "proj-26915": [
+   {
+    "title": "Beaver Businesses",
+    "url": "https://services.arcgis.com/ULBqC49IEeIR01GF/arcgis/rest/services/Beaver_Businesses/FeatureServer/0",
+    "row_count": "77"
+   },
+   {
+    "title": "Metropolitan Generalized Land Use - Historical",
+    "url": "https://arcgis.metc.state.mn.us/data1/rest/services/planning/Land_Use/FeatureServer/0",
+    "row_count": "22"
+   },
+   {
+    "title": "Beaver Streams and Rivers",
+    "url": "https://services.arcgis.com/ULBqC49IEeIR01GF/arcgis/rest/services/Beaver_Streams_and_Rivers/FeatureServer/0",
+    "row_count": "77"
+   }
+  ],
+  "proj-2236": [
+   {
+    "title": "CSAC Program Participation by Zip Code",
+    "url": "https://services9.arcgis.com/M0DpVhTwTZ42jNsw/arcgis/rest/services/CSAC_Program_Participation_by_Zip_Code/FeatureServer/0",
+    "row_count": "22"
+   },
+   {
+    "title": "CSAC Programs FY2024-25 View",
+    "url": "https://services9.arcgis.com/M0DpVhTwTZ42jNsw/arcgis/rest/services/CSAC_Programs_FY2024_25_Public_View/FeatureServer/0",
+    "row_count": "45"
+   }
+  ],
+  "proj-32638": [
+   {
+    "title": "Street Centerline",
+    "url": "https://services7.arcgis.com/DG5l1qNfUb8TL72v/arcgis/rest/services/Street_Centerline/FeatureServer/10",
+    "row_count": "1"
+   }
+  ],
+  "proj-32634": [
+   {
+    "title": "Litauen",
+    "url": "https://services3.arcgis.com/ovkpN2TevleeKZGq/arcgis/rest/services/Litauen/FeatureServer/0",
+    "row_count": "964568"
+   },
+   {
+    "title": "Burned_Area_Attica_2021_Wildfires_Huaeoteam_view",
+    "url": "https://services8.arcgis.com/JDjQrQppZR2u4Y1i/arcgis/rest/services/Burned_Area_Attica_2021_Wildfires_Huaeoteam_view/FeatureServer/",
+    "row_count": "4"
+   }
+  ],
+  "proj-26917": [
+   {
+    "title": "Sample1",
+    "url": "https://services1.arcgis.com/pMeXRvgWClLJZr3s/arcgis/rest/services/Sample1/FeatureServer/0",
+    "row_count": "525543"
+   },
+   {
+    "title": "Aurora_Basemap_view",
+    "url": "https://services2.arcgis.com/1IylZvXQw11Lg0Zm/arcgis/rest/services/Aurora_Basemap_view/FeatureServer/0",
+    "row_count": "20868"
+   }
+  ],
+  "proj-2277": [
+   {
+    "title": "Parcel Ordinances",
+    "url": "https://services.arcgis.com/0H6bQdxd9223gQB5/arcgis/rest/services/DBO_OrdinanceData/FeatureServer/0",
+    "row_count": "76690"
+   }
+  ],
+  "proj-26910": [
+   {
+    "title": "Snow Removal",
+    "url": "https://gishub.princegeorge.ca/server/rest/services/GroupMapServices/City_Services/MapServer/0",
+    "row_count": "5457"
+   }
+  ],
+  "proj-3111": [
+   {
+    "title": "Services",
+    "url": "https://services.arcgis.com/B7qHofahIc9hrOqB/arcgis/rest/services/Services/FeatureServer/1",
+    "row_count": "1649"
+   }
+  ],
+  "proj-2868": [
+   {
+    "title": "iron_horse_points",
+    "url": "https://services3.arcgis.com/9coHY2fvuFjG9HQX/arcgis/rest/services/iron_horse_points/FeatureServer/0",
+    "row_count": "635"
+   }
+  ],
+  "proj-21095": [
+   {
+    "title": "Demand Points Covered",
+    "url": "https://services2.arcgis.com/cPVqgcKAQtE6xCja/arcgis/rest/services/Demand_Points_Covered/FeatureServer/1",
+    "row_count": "555"
+   },
+   {
+    "title": "Demand Points Not Covered",
+    "url": "https://services2.arcgis.com/cPVqgcKAQtE6xCja/arcgis/rest/services/Demand_Points_Not_Covered/FeatureServer/1",
+    "row_count": "3565"
+   }
+  ],
+  "proj-32643": [
+   {
+    "title": "Road Centerline",
+    "url": "https://services7.arcgis.com/TGjun5cqf5Jwp2Ad/arcgis/rest/services/Road_Centerline/FeatureServer/0",
+    "row_count": "229"
+   },
+   {
+    "title": "Health_Facilities",
+    "url": "https://services8.arcgis.com/r6MmJtuWAzMawmJ8/arcgis/rest/services/Health_Facilities/FeatureServer/13",
+    "row_count": "191"
+   },
+   {
+    "title": "CMP_ROAD_CENTERLINES",
+    "url": "https://services7.arcgis.com/TGjun5cqf5Jwp2Ad/arcgis/rest/services/CMP_ROAD_CENTERLINES/FeatureServer/0",
+    "row_count": "199"
+   },
+   {
+    "title": "BMConMaps_Nov26gdb",
+    "url": "https://services8.arcgis.com/r6MmJtuWAzMawmJ8/arcgis/rest/services/BMConMaps_Nov26gdb/FeatureServer/14",
+    "row_count": "191"
+   }
+  ],
+  "proj-6674": [
+   {
+    "title": "RoadLedger_CenterLine",
+    "url": "https://services2.arcgis.com/vHwV8ifphq5i2BA9/arcgis/rest/services/douro/FeatureServer/3",
+    "row_count": "202"
+   }
+  ],
+  "proj-102567": [
+   {
+    "title": "Belfast Road centerlines",
+    "url": "https://services8.arcgis.com/2rhN4blOetORqvuZ/arcgis/rest/services/Belfast_Road_centerlines/FeatureServer/2",
+    "row_count": "90"
+   }
+  ],
+  "proj-4095": [
+   {
+    "title": "CPH_RWY_04R22L_Shope_centerline_C",
+    "url": "https://services-eu1.arcgis.com/BcjBcIDbeNSc5Xny/arcgis/rest/services/CPH_RWY_04R22L_Shope_centerline_C/FeatureServer/0",
+    "row_count": "66"
+   },
+   {
+    "title": "CPH_RWY_04R22L_Shope_centerline_C",
+    "url": "https://services3.arcgis.com/NqGokVvI0NQ6O9Jf/arcgis/rest/services/CPH_RWY_04R22L_Shope_centerline_C/FeatureServer/0",
+    "row_count": "66"
+   }
+  ],
+  "proj-2927": [
+   {
+    "title": "Business Licenses - Map (Tacoma)",
+    "url": "https://services3.arcgis.com/SCwJH1pD8WSn5T5y/arcgis/rest/services/BusinessLicenses_Map/FeatureServer/0",
+    "row_count": "22138"
+   },
+   {
+    "title": "Business Licenses for Rental Activity - Map (Tacoma)",
+    "url": "https://services3.arcgis.com/SCwJH1pD8WSn5T5y/arcgis/rest/services/BusinessLicenses_RentalActivity_Map/FeatureServer/0",
+    "row_count": "8843"
+   }
+  ],
+  "proj-2249": [
+   {
+    "title": "Master_Address_Table",
+    "url": "https://services1.arcgis.com/ePzCWD2awZlZQ5jd/arcgis/rest/services/Master_Address_Table/FeatureServer/0",
+    "row_count": "13065"
+   },
+   {
+    "title": "Labels",
+    "url": "https://services6.arcgis.com/KGSRC6TkZVp4aCuQ/arcgis/rest/services/Labels/FeatureServer/0",
+    "row_count": "9051"
+   }
+  ],
+  "proj-4140": [
+   {
+    "title": "NB tiepts for Storymap",
+    "url": "https://services.arcgis.com/wjcPoefzjpzCgffS/arcgis/rest/services/Tie_Points/FeatureServer/0",
+    "row_count": "6138"
+   }
+  ],
+  "proj-2286": [
+   {
+    "title": "ParcelsWithAssessment_View_Retired",
+    "url": "https://services3.arcgis.com/jl3zLujxj5OMMkmC/arcgis/rest/services/ParcelsWithAssessment_View/FeatureServer/0",
+    "row_count": "3165"
+   },
+   {
+    "title": "ParcelsWithAssessment_View",
+    "url": "https://services3.arcgis.com/jl3zLujxj5OMMkmC/arcgis/rest/services/ParcelsWithAssessment_2_view/FeatureServer/0",
+    "row_count": "3165"
+   }
+  ],
+  "proj-2264": [
+   {
+    "title": "Centerline",
+    "url": "https://arcgis2.cityofws.org/arcgissmwa02/rest/services/OICv2/Transportation2/MapServer/0",
+    "row_count": "798"
+   },
+   {
+    "title": "LOSRC Schools Latest (Public View) ",
+    "url": "https://services1.arcgis.com/dUkMSguHjSnNcU9J/arcgis/rest/services/LOSRC_Schools_Latest_(Public_View)_/FeatureServer/1",
+    "row_count": "156"
+   },
+   {
+    "title": "Wake County Streets",
+    "url": "https://maps.wakegov.com/arcgis/rest/services/Transportation/Transportation/MapServer/0",
+    "row_count": "34839"
+   },
+   {
+    "title": "Streets in Wake County, NC",
+    "url": "https://maps.wake.gov/arcgis/rest/services/Transportation/Transportation/MapServer/0",
+    "row_count": "34839"
+   },
+   {
+    "title": "Street Centerlines",
+    "url": "https://services5.arcgis.com/q2nSlChj7QgGTANO/arcgis/rest/services/Street_Centerlines/FeatureServer/142",
+    "row_count": "9857"
+   }
+  ],
+  "proj-4686": [
+   {
+    "title": "TGI_UPDM_Centerline",
+    "url": "https://services7.arcgis.com/UXFgJ78f727l1Hdf/arcgis/rest/services/TGI_UPDM_Centerline/FeatureServer/0",
+    "row_count": "228"
+   }
+  ],
+  "proj-6439": [
+   {
+    "title": "NEEPP_waterbodies_",
+    "url": "https://services1.arcgis.com/nRHtyn3uE1kyzoYc/arcgis/rest/services/NEEPP_waterbodies_/FeatureServer/117",
+    "row_count": "1"
+   }
+  ],
+  "proj-2926": [
+   {
+    "title": "Dickey Watershed Crossings",
+    "url": "https://services3.arcgis.com/CxYgmwdx507LY5lO/arcgis/rest/services/Dickey_Watershed_Crossings/FeatureServer/0",
+    "row_count": "875"
+   }
+  ],
+  "proj-2039": [
+   {
+    "title": "academic",
+    "url": "https://services8.arcgis.com/JcXY3lLZni6BK4El/arcgis/rest/services/academic/FeatureServer/0",
+    "row_count": "390"
+   },
+   {
+    "title": "Addresses",
+    "url": "https://services9.arcgis.com/tfeLX7LFVABzD11G/arcgis/rest/services/Addresses/FeatureServer/1",
+    "row_count": "16792"
+   }
+  ],
+  "proj-27120": [
+   {
+    "title": "Buildings within the T1 zone of Fanny Village",
+    "url": "https://services3.arcgis.com/ghoIk6e0ZmYVqai3/arcgis/rest/services/Buildings_within_the_T1_zone_of_Fanny_Village/FeatureServer/0",
+    "row_count": "288"
+   }
+  ],
+  "proj-3735": [
+   {
+    "title": "TopEmployers",
+    "url": "https://services1.arcgis.com/1pXnFsHirWAc6772/arcgis/rest/services/TopEmployers/FeatureServer/0",
+    "row_count": "18"
+   }
+  ],
+  "proj-32629": [
+   {
+    "title": "Winter_flood_map_Ireland",
+    "url": "https://services6.arcgis.com/jGmjai02B4iBlPub/arcgis/rest/services/Winter_flood_map_Ireland/FeatureServer/0",
+    "row_count": "23222"
+   }
+  ],
+  "proj-102018": [
+   {
+    "title": "Natural_Earth_Features",
+    "url": "https://services1.arcgis.com/cc7nIINtrZ67dyVJ/arcgis/rest/services/Natural_Earth_Features/FeatureServer/0",
+    "row_count": "7322"
+   }
+  ],
+  "proj-26921": [
+   {
+    "title": "GBSC_Furrows",
+    "url": "https://services.arcgis.com/9PtzeAadJyclx9t7/arcgis/rest/services/GBSC_Furrows/FeatureServer/0",
+    "row_count": "4405"
+   }
+  ],
+  "proj-32630": [
+   {
+    "title": "LAND_MANAGEMENT",
+    "url": "https://services2.arcgis.com/4WiMNWDUQZIvdL5U/arcgis/rest/services/LAND_MANAGEMENT/FeatureServer/0",
+    "row_count": "4061"
+   }
+  ],
+  "proj-2230": [
+   {
+    "title": "WILDOMAR_INTERSECTIONS",
+    "url": "https://services6.arcgis.com/kIJQVjhDSsSdR0Xt/arcgis/rest/services/STREETS_INTERSECTIONS/FeatureServer/0",
+    "row_count": "997"
+   }
+  ],
+  "proj-32751": [
+   {
+    "title": "Centerline Week 21",
+    "url": "https://services-ap1.arcgis.com/wRfGMWqI4rrJZGuc/arcgis/rest/services/Centerline_Week_21/FeatureServer/0",
+    "row_count": "18"
+   }
+  ],
+  "proj-31983": [
+   {
+    "title": "Escolas Municipais",
+    "url": "https://pgeo3.rio.rj.gov.br/arcgis/rest/services/Educacao/SME/MapServer/0",
+    "row_count": "11"
+   }
+  ],
+  "proj-2958": [
+   {
+    "title": "Snapping Turtle Habitat",
+    "url": "https://services1.arcgis.com/pMeXRvgWClLJZr3s/arcgis/rest/services/Snapping_Turtle_Habitat/FeatureServer/0",
+    "row_count": "9"
+   },
+   {
+    "title": "FLOODED_ADDRESS_POINTS",
+    "url": "https://services3.arcgis.com/rl7ACuZkiFsmDA2g/arcgis/rest/services/FLOODED_ADDRESS_POINTS/FeatureServer/0",
+    "row_count": "597"
+   }
+  ],
+  "proj-32704": [
+   {
+    "title": "LakewoodSurveyData",
+    "url": "https://services6.arcgis.com/WLUaDXlM9e7NEAEl/arcgis/rest/services/LakewoodSurveyData/FeatureServer/0",
+    "row_count": "2"
+   }
+  ],
+  "proj-3078": [
+   {
+    "title": "Water Wells - Upper Peninsula",
+    "url": "https://gisagocss.state.mi.us/arcgis/rest/services/OpenData/public_health/MapServer/0",
+    "row_count": "1"
+   }
+  ],
+  "proj-3346": [
+   {
+    "title": "Lietuvos Respublikos keliai",
+    "url": "https://utility.arcgis.com/usrsvcs/servers/087d2b1b6b244c31be0d060c7f7bdb09/rest/services/Hosted/Keiai_gatves/FeatureServer/0",
+    "row_count": "950182"
+   }
+  ],
+  "proj-2883": [
+   {
+    "title": "City Sanitary Sewer Connected Properties",
+    "url": "https://services.arcgis.com/ptvDyBs1KkcwzQNJ/arcgis/rest/services/City_Sanitary_Sewer_Connected_Properties/FeatureServer/59",
+    "row_count": "76584"
+   }
+  ],
+  "proj-102662": [
+   {
+    "title": "PublicWorksRoadBuffers",
+    "url": "https://services3.arcgis.com/fsrDo0QMPlK9CkZD/arcgis/rest/services/PublicWorksRoadBuffers/FeatureServer/0",
+    "row_count": "7037"
+   }
+  ],
+  "proj-102157": [
+   {
+    "title": "Roads",
+    "url": "https://services8.arcgis.com/F6gGsTn5VEDyNKNB/arcgis/rest/services/Roads/FeatureServer/0",
+    "row_count": "2640"
+   }
+  ],
+  "proj-32750": [
+   {
+    "title": "BPK Basis Data Situs MAPANG 2023",
+    "url": "https://services5.arcgis.com/qTkM6Z0U2byBJmr1/arcgis/rest/services/Bahas_Web_GIS_mapang/FeatureServer/0",
+    "row_count": "654"
+   }
+  ],
+  "proj-2254": [
+   {
+    "title": "Online Parcels",
+    "url": "https://services6.arcgis.com/9h5t9CkNYcgSXrCh/arcgis/rest/services/Online_Parcels/FeatureServer/530",
+    "row_count": "50207"
+   }
+  ],
+  "proj-102696": [
+   {
+    "title": "2022 Crime Incident Data with Geographic Coordinates",
+    "url": "https://services2.arcgis.com/w657bnjzrjguNyOy/arcgis/rest/services/nibrs_2022/FeatureServer/0",
+    "row_count": "38449"
+   }
+  ],
+  "proj-4222": [
+   {
+    "title": "Moch_complete",
+    "url": "https://services3.arcgis.com/zAmy2uQQIuJsmD8h/arcgis/rest/services/Moch_complete/FeatureServer/0",
+    "row_count": "1360"
+   }
+  ],
+  "proj-3308": [
+   {
+    "title": "ForestExtent22Tenure24_LGA_Zones5556",
+    "url": "https://services2.arcgis.com/iCBB4zKDwkw2iwDD/arcgis/rest/services/ForestExtent22_LGA_UTMzones5556_int_Tenure24_dis/FeatureServer/",
+    "row_count": "827"
+   }
+  ]
+ },
+ "note": "only 陈述事实：每类各多少层、多少行、样本层是什么。补不补、怎么补由大脑决定。"
+}
