@@ -96,27 +96,69 @@
   },
   "03": {
    "status": "done",
-   "at": "2026-10-24T00:59:15Z"
+   "at": "2026-10-24T00:59:15Z",
+   "metrics": null,
+   "metrics_note": "无 metrics，产物证据=tags collect-step03；accept 口径待核（step05: tags 555 vs layers_max 100）"
   },
   "04": {
    "status": "done",
-   "at": "2026-10-24T01:47:49Z"
+   "at": "2026-10-24T01:47:49Z",
+   "metrics": null,
+   "metrics_note": "无 metrics，产物证据=tags collect-step04；accept 口径待核（step05: tags 555 vs layers_max 100）"
   },
   "05": {
    "status": "done",
-   "at": "2026-10-24T04:36:25Z"
+   "at": "2026-10-24T04:36:25Z",
+   "metrics": null,
+   "metrics_note": "无 metrics，产物证据=tags collect-step05；accept 口径待核（step05: tags 555 vs layers_max 100）"
   },
   "06": {
-   "status": "done"
+   "status": "done",
+   "metrics": {
+    "layers": 1117,
+    "rows": 84201583,
+    "declared": 84205406,
+    "worst_diff": 0,
+    "failed_layers": 2,
+    "states": 48,
+    "evidence": "collect/reports/FINAL_REPORT.md",
+    "backfilled": "2026-10-28"
+   },
+   "at": "2026-10-25T01:04:27Z"
   },
   "07": {
-   "status": "done"
+   "status": "done",
+   "metrics": {
+    "layers": 437,
+    "failed_rate": null,
+    "evidence": "tags collect-step07 ×437",
+    "backfilled": "2026-10-28",
+    "note": "failed_rate 无据，标 null，不编"
+   }
   },
   "08": {
-   "status": "done"
+   "status": "done",
+   "metrics": {
+    "states": 48,
+    "unique_rows": 47182251,
+    "dup_rate": 0.3,
+    "scanned_rows": 79958767,
+    "layers": 1151,
+    "evidence": "collect/reports/DEDUP_REPORT.md",
+    "backfilled": "2026-10-28"
+   }
   },
   "09": {
-   "status": "done"
+   "status": "done",
+   "metrics": {
+    "probed": 1117,
+    "with_field": 484,
+    "field_rate": 0.433,
+    "rows_changed": 6441778,
+    "evidence": "collect/reports/DELTA_REPORT.md + brain_review 10-25",
+    "backfilled": "2026-10-28"
+   },
+   "at": "2026-10-25T01:04:27Z"
   },
   "10": {
    "status": "in_review",
