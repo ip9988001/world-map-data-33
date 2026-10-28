@@ -131,7 +131,14 @@
     "backfilled": "2026-10-28",
     "note": "accept 的 layers 80~100 是单批设计，实际 554 层跨 6 批，口径不同不构成不达标"
    },
-   "metrics_note": "无 metrics，产物证据=tags collect-step05；accept 口径待核（step05: tags 555 vs layers_max 100）"
+   "metrics_note": "无 metrics，产物证据=tags collect-step05；accept 口径待核（step05: tags 555 vs layers_max 100）",
+   "brain_accept": {
+    "at": "2026-10-28T14:55:00Z",
+    "verdict": "accepted-despite-violation",
+    "fact": "verify_accept 实测 layers=554 vs accept.layers_max=100 → 事实 VIOLATE，不掩盖",
+    "reason": "accept 的 80~100 是「单批」设计（每批一层组），step05 实际跨 6 批共 554 层，总量与单批上限不是同一口径。按不变量第 10 条，已验收环节的判据只准新增不准改，故不改 accept，改由大脑裁定接受并留痕。",
+    "accepted_by": "brain"
+   }
   },
   "06": {
    "status": "done",
@@ -168,7 +175,8 @@
     "layers": 1151,
     "evidence": "collect/reports/DEDUP_REPORT.md",
     "backfilled": "2026-10-28"
-   }
+   },
+   "at": "2026-10-25T01:04:27Z"
   },
   "09": {
    "status": "done",
