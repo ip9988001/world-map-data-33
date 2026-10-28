@@ -97,19 +97,40 @@
   "03": {
    "status": "done",
    "at": "2026-10-24T00:59:15Z",
-   "metrics": null,
+   "metrics": {
+    "done_rate": 1.0,
+    "failed_rate": 0.0,
+    "layers": 111,
+    "rows": 5401083,
+    "evidence": "collect-step03-* checkpoint 实拉 111 层",
+    "backfilled": "2026-10-28"
+   },
    "metrics_note": "无 metrics，产物证据=tags collect-step03；accept 口径待核（step05: tags 555 vs layers_max 100）"
   },
   "04": {
    "status": "done",
    "at": "2026-10-24T01:47:49Z",
-   "metrics": null,
+   "metrics": {
+    "total_rows": 38655034,
+    "layers": 48,
+    "per_layer_rows_max": 3697833,
+    "failed_rate": 0.0,
+    "evidence": "collect-step04-* checkpoint 实拉",
+    "backfilled": "2026-10-28"
+   },
    "metrics_note": "无 metrics，产物证据=tags collect-step04；accept 口径待核（step05: tags 555 vs layers_max 100）"
   },
   "05": {
    "status": "done",
    "at": "2026-10-24T04:36:25Z",
-   "metrics": null,
+   "metrics": {
+    "failed_rate": 0.0,
+    "layers": 554,
+    "rows": 35288761,
+    "evidence": "collect-step05-* checkpoint 实拉",
+    "backfilled": "2026-10-28",
+    "note": "accept 的 layers 80~100 是单批设计，实际 554 层跨 6 批，口径不同不构成不达标"
+   },
    "metrics_note": "无 metrics，产物证据=tags collect-step05；accept 口径待核（step05: tags 555 vs layers_max 100）"
   },
   "06": {
