@@ -8,14 +8,18 @@
    "row_count": 302920,
    "reason": "no_progress_91min: MapServer+keyset 游标不前进也不报错，0 个单元上传",
    "at": "2026-10-24T03:30:00Z",
-   "step": "04"
+   "step": "04",
+   "state_machine": "pending",
+   "recheck": "换 ids 通道重试一次（keyset 游标不前进）"
   },
   {
    "id": "l_org_arcgis_rest_services_Weston_Basemap_cache_MapServer_20",
    "state": "未定位",
    "reason": "http404_all_batches: 33 个批次全部 404（服务已下线），非本地问题",
    "at": "2026-10-24T08:00:00Z",
-   "step": "05"
+   "step": "05",
+   "state_machine": "abandoned",
+   "recheck": "该 MapServer 重新上线"
   }
  ],
  "count": 2

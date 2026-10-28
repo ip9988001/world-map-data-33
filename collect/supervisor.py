@@ -104,6 +104,11 @@ def load():
 
 def save(st):
     os.makedirs(os.path.dirname(STATE_F), exist_ok=True)
+    # ★ blocked_count 一律派生，禁止手写（2026-10-28 修：曾 state=0 而 blocked.json 实有 2 条）
+    try:
+        st["blocked_count"] = len((json.load(open(BLOCKED_F, encoding="utf-8")) or {}).get("items") or [])
+    except Exception:
+        st["blocked_count"] = None
     with open(STATE_F, "w", encoding="utf-8") as f:
         json.dump(st, f, ensure_ascii=False, indent=1)
 
@@ -437,12 +442,24 @@ def kick(step, layers=None, workers=None, dry=False, max_layers=None, offset=Non
     return rc
 
 
-def review(verdict, note, nxt=None, dry=False):
+def review(verdict, note, nxt=None, dry=False, metrics=None):
     """大脑写验收结论。pass 才可能推进；fail 必须把流程停住，不许同一批证据反复叫醒。"""
     st = load()
     step = st.get("current_step")
     if verdict not in ("pass", "fail"):
         print("verdict 只能是 pass / fail"); return 1
+    # ★ 证据先于结论（2026-10-28 修）：pass 必须带 metrics 且覆盖该步 accept 全部键。
+    acc = dict(((cfg().get("steps") or {}).get(step) or {}).get("accept") or {})
+    if verdict == "pass":
+        if not metrics:
+            print(json.dumps({"error": "pass 必须带 --metrics（证据先于结论）",
+                              "step": step, "need": acc or "该步无 accept 判据"},
+                             ensure_ascii=False)); return 1
+        lack = [k for k in acc if k not in metrics]
+        if lack:
+            print(json.dumps({"error": "metrics 缺判据键", "missing": lack, "need": acc},
+                             ensure_ascii=False)); return 1
+        st.setdefault("steps", {}).setdefault(step, {})["metrics"] = metrics
     st["awaiting_brain"] = False
     st.setdefault("brain_review", {}).update(
         {"at": now(), "step": step, "verdict": verdict, "note": note or ""})
@@ -649,6 +666,16 @@ def entry_check():
     add(25, "判据卡与 steps.json 一致", rc == 0 and docs.get("ready") is True,
         f"check_docs.py → {docs.get('docs')} 份判据卡 / {len(docs.get('problems') or [])} 条问题")
 
+    _blk = {}
+    try:
+        _blk = json.load(open(BLOCKED_F, encoding="utf-8")) or {}
+    except Exception:
+        _blk = {}
+    add(26, "blocked_count 派生一致", st.get("blocked_count") == len(_blk.get("items") or []),
+        f"state={st.get('blocked_count')} / blocked.json={len(_blk.get('items') or [])}")
+    add(27, "pass 必带 metrics", "--metrics" in src and "metrics 缺判据键" in src,
+        "review 拒绝空证据的 pass")
+
     good = sum(1 for c in C if c["ok"])
     for c in C:
         print(("✅" if c["ok"] else "❌") + f" {c['n']:>2}. {c['name']} — {c['ev']}")
@@ -670,6 +697,7 @@ def main():
     ap.add_argument("--size", type=int, help="本批层数（STEP-05 分批）")
     ap.add_argument("--review", choices=["pass", "fail"])
     ap.add_argument("--note")
+    ap.add_argument("--metrics", help="验收指标 JSON（pass 必填，须覆盖 accept 全部键）")
     ap.add_argument("--next", dest="nxt")
     ap.add_argument("--pause", metavar="REASON")
     ap.add_argument("--resume", action="store_true")
@@ -681,7 +709,11 @@ def main():
     if a.kick:
         return kick(a.kick, a.layers, a.workers, a.dry_run, a.max_layers, a.offset, a.size)
     if a.review:
-        return review(a.review, a.note, a.nxt, a.dry_run)
+        try:
+            met = json.loads(a.metrics) if a.metrics else None
+        except Exception as e:
+            print(json.dumps({"error": "metrics 不是合法 JSON: %s" % e}, ensure_ascii=False)); return 1
+        return review(a.review, a.note, a.nxt, a.dry_run, met)
     if a.pause:
         return pause(a.pause, a.dry_run)
     if a.resume:
