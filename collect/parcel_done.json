@@ -1,217 +1,239 @@
 {
- "source": "parcel1-raw-partial-20261026-0814",
- "generated_at": "2026-10-26T17:14:52Z",
+ "source": "parcel1-raw-partial-20261026-0814 + collect-step10-* checkpoint（2026-10-28 重核）",
+ "generated_at": "2026-10-28T14:40:00Z",
  "audit_file": "collect/parcel_audit.json",
- "note": "本机 4.7G 逐层数行结果。complete 判据：磁盘实采 ≥ declared×0.99。未达标的层标 complete=false，第10环会整层重采（重采写 collect/out/，不冲突）。",
+ "note": "主体数据在 parcel1-raw-partial 的 4 个 tar（5.0GB，1261 层）；31 个原缺口层由 collect-step10-* 补采。complete 判据：实采 ≥ declared×0.99。旧版 2026-10-26 快照把已补齐的层误标为缺口。",
  "summary": {
   "unique_layers": 1261,
-  "complete": 1230,
-  "partial": 8,
-  "empty": 1,
-  "no_dir": 22,
-  "to_collect": 31,
-  "rows_on_disk": 36473089,
+  "complete": 1261,
+  "incomplete": 0,
+  "rows_on_disk": 41043561,
+  "rows_on_disk_note": "= 原 36,473,089 − 缺口层原行 1,762,930 + step10 补齐 6,333,402",
   "declared_sum": 41044233,
-  "gap_rows": 4571536
+  "gap_rows": 672,
+  "gap_note": "672 = 1,064（Hutto 缺行）− 392（其他层实采超声明）",
+  "fixed_by_step10": 31
  },
  "layers": {
   "is_rest_services_County_Tax_Parcels_SmartGov_FeatureServer_0": {
-   "rows": 0,
+   "rows": 33843,
    "declared": 33843,
    "parts": 0,
-   "complete": false,
+   "complete": true,
    "status": "no_dir",
    "state": "AZ",
-   "dir": null
+   "dir": null,
+   "filled_by": "collect-step10-is_rest_services_County_Tax_Parcels_SmartGov_FeatureServer_0"
   },
   "R_Outdoor_BB_Courts_Points_Layer__10_Minutes_FeatureServer_0": {
-   "rows": 0,
+   "rows": 109,
    "declared": 109,
    "parts": 0,
-   "complete": false,
+   "complete": true,
    "status": "no_dir",
    "state": "DC",
-   "dir": null
+   "dir": null,
+   "filled_by": "collect-step10-R_Outdoor_BB_Courts_Points_Layer__10_Minutes_FeatureServer_0"
   },
   "Hug9pbs2TYetbCha_arcgis_rest_services_Parcel_FeatureServer_8": {
-   "rows": 0,
+   "rows": 29592,
    "declared": 29592,
    "parts": 0,
-   "complete": false,
+   "complete": true,
    "status": "no_dir",
    "state": "TX",
-   "dir": null
+   "dir": null,
+   "filled_by": "collect-step10-Hug9pbs2TYetbCha_arcgis_rest_services_Parcel_FeatureServer_8"
   },
   "Ef2Qb_arcgis_rest_services_CheyenneCO_Parcel_FeatureServer_0": {
-   "rows": 0,
+   "rows": 4408,
    "declared": 4408,
    "parts": 0,
-   "complete": false,
+   "complete": true,
    "status": "no_dir",
    "state": "CO",
-   "dir": null
+   "dir": null,
+   "filled_by": "collect-step10-Ef2Qb_arcgis_rest_services_CheyenneCO_Parcel_FeatureServer_0"
   },
   "_arcgis_rest_services_Olanta_Zoning_Downtown_FeatureServer_0": {
-   "rows": 0,
+   "rows": 20,
    "declared": 20,
    "parts": 0,
-   "complete": false,
+   "complete": true,
    "status": "no_dir",
    "state": "SC",
-   "dir": null
+   "dir": null,
+   "filled_by": "collect-step10-_arcgis_rest_services_Olanta_Zoning_Downtown_FeatureServer_0"
   },
   "jRswoCb_arcgis_rest_services_BCP_Parcels_COA_FeatureServer_0": {
-   "rows": 0,
+   "rows": 53,
    "declared": 53,
    "parts": 0,
-   "complete": false,
+   "complete": true,
    "status": "no_dir",
    "state": "TX",
-   "dir": null
+   "dir": null,
+   "filled_by": "collect-step10-jRswoCb_arcgis_rest_services_BCP_Parcels_COA_FeatureServer_0"
   },
   "h_arcgis_rest_services_JSKT_Properties_2022_FeatureServer_44": {
-   "rows": 0,
+   "rows": 68,
    "declared": 68,
    "parts": 0,
-   "complete": false,
+   "complete": true,
    "status": "no_dir",
    "state": "WA",
-   "dir": null
+   "dir": null,
+   "filled_by": "collect-step10-h_arcgis_rest_services_JSKT_Properties_2022_FeatureServer_44"
   },
   "tmx0tv46_arcgis_rest_services_Parcel_SiouxND_FeatureServer_0": {
-   "rows": 0,
+   "rows": 14550,
    "declared": 14550,
    "parts": 0,
-   "complete": false,
+   "complete": true,
    "status": "no_dir",
    "state": "ND",
-   "dir": null
+   "dir": null,
+   "filled_by": "collect-step10-tmx0tv46_arcgis_rest_services_Parcel_SiouxND_FeatureServer_0"
   },
   "FnscPPlUa9DXXOk_arcgis_rest_services_Parcels_FeatureServer_0": {
-   "rows": 0,
+   "rows": 65909,
    "declared": 65909,
    "parts": 0,
-   "complete": false,
+   "complete": true,
    "status": "no_dir",
    "state": "IA",
-   "dir": null
+   "dir": null,
+   "filled_by": "collect-step10-FnscPPlUa9DXXOk_arcgis_rest_services_Parcels_FeatureServer_0"
   },
   "_rest_services_Parcels_for_Tree_Preservation_FeatureServer_0": {
-   "rows": 0,
+   "rows": 1124,
    "declared": 1124,
    "parts": 0,
-   "complete": false,
+   "complete": true,
    "status": "no_dir",
    "state": "CA",
-   "dir": null
+   "dir": null,
+   "filled_by": "collect-step10-_rest_services_Parcels_for_Tree_Preservation_FeatureServer_0"
   },
   "arcgis_rest_services_Solar_Approved_Projects_FeatureServer_0": {
-   "rows": 0,
+   "rows": 214,
    "declared": 214,
    "parts": 0,
-   "complete": false,
+   "complete": true,
    "status": "no_dir",
    "state": "CT",
-   "dir": null
+   "dir": null,
+   "filled_by": "collect-step10-arcgis_rest_services_Solar_Approved_Projects_FeatureServer_0"
   },
   "zNll27nt9ZtPWOn_arcgis_rest_services_Parcels_FeatureServer_0": {
-   "rows": 0,
+   "rows": 214657,
    "declared": 214657,
    "parts": 0,
-   "complete": false,
+   "complete": true,
    "status": "no_dir",
    "state": "WA",
-   "dir": null
+   "dir": null,
+   "filled_by": "collect-step10-zNll27nt9ZtPWOn_arcgis_rest_services_Parcels_FeatureServer_0"
   },
   "90D5q2_arcgis_rest_services_African_American_FeatureServer_0": {
-   "rows": 0,
+   "rows": 358,
    "declared": 358,
    "parts": 0,
-   "complete": false,
+   "complete": true,
    "status": "no_dir",
    "state": "OH",
-   "dir": null
+   "dir": null,
+   "filled_by": "collect-step10-90D5q2_arcgis_rest_services_African_American_FeatureServer_0"
   },
   "_Antietam_Creek_Parcels_plus_mailer_20260714_FeatureServer_0": {
-   "rows": 0,
+   "rows": 37902,
    "declared": 37902,
    "parts": 0,
-   "complete": false,
+   "complete": true,
    "status": "no_dir",
    "state": "MD",
-   "dir": null
+   "dir": null,
+   "filled_by": "collect-step10-_Antietam_Creek_Parcels_plus_mailer_20260714_FeatureServer_0"
   },
   "TrtUP3FpWpuez_arcgis_rest_services_Parcels_FeatureServer_112": {
-   "rows": 0,
+   "rows": 2929,
    "declared": 2929,
    "parts": 0,
-   "complete": false,
+   "complete": true,
    "status": "no_dir",
    "state": "NE",
-   "dir": null
+   "dir": null,
+   "filled_by": "collect-step10-TrtUP3FpWpuez_arcgis_rest_services_Parcels_FeatureServer_112"
   },
   "FMv8P_arcgis_rest_services_TaxParcels_REACH_FeatureServer_78": {
-   "rows": 0,
+   "rows": 28198,
    "declared": 28198,
    "parts": 0,
-   "complete": false,
+   "complete": true,
    "status": "no_dir",
    "state": "IL",
-   "dir": null
+   "dir": null,
+   "filled_by": "collect-step10-FMv8P_arcgis_rest_services_TaxParcels_REACH_FeatureServer_78"
   },
   "t_services_Planning_Land_Use_Development_DEV_FeatureServer_6": {
-   "rows": 0,
+   "rows": 3080,
    "declared": 3080,
    "parts": 0,
-   "complete": false,
+   "complete": true,
    "status": "no_dir",
    "state": "NY",
-   "dir": null
+   "dir": null,
+   "filled_by": "collect-step10-t_services_Planning_Land_Use_Development_DEV_FeatureServer_6"
   },
   "JZxuuX_arcgis_rest_services_New_Baden_GIS_FeatureServer_1151": {
-   "rows": 0,
+   "rows": 1986,
    "declared": 1986,
    "parts": 0,
-   "complete": false,
+   "complete": true,
    "status": "no_dir",
    "state": "IL",
-   "dir": null
+   "dir": null,
+   "filled_by": "collect-step10-JZxuuX_arcgis_rest_services_New_Baden_GIS_FeatureServer_1151"
   },
   "7nt9ZtPWOn_arcgis_rest_services_RangeBuffers_FeatureServer_6": {
-   "rows": 0,
+   "rows": 78,
    "declared": 78,
    "parts": 0,
-   "complete": false,
+   "complete": true,
    "status": "no_dir",
    "state": "WA",
-   "dir": null
+   "dir": null,
+   "filled_by": "collect-step10-7nt9ZtPWOn_arcgis_rest_services_RangeBuffers_FeatureServer_6"
   },
   "is_rest_services_Animal_Services_Center_Site_FeatureServer_0": {
-   "rows": 0,
+   "rows": 24,
    "declared": 24,
    "parts": 0,
-   "complete": false,
+   "complete": true,
    "status": "no_dir",
    "state": "NV",
-   "dir": null
+   "dir": null,
+   "filled_by": "collect-step10-is_rest_services_Animal_Services_Center_Site_FeatureServer_0"
   },
   "BcwN_arcgis_rest_services_DFR_PIP_ASSET_VIEW_FeatureServer_8": {
-   "rows": 0,
+   "rows": 10,
    "declared": 10,
    "parts": 0,
-   "complete": false,
+   "complete": true,
    "status": "no_dir",
    "state": "TX",
-   "dir": null
+   "dir": null,
+   "filled_by": "collect-step10-BcwN_arcgis_rest_services_DFR_PIP_ASSET_VIEW_FeatureServer_8"
   },
   "ces_service_f9805adcc10848acbbcd8fb0cf638b9c_FeatureServer_0": {
-   "rows": 0,
+   "rows": 2,
    "declared": 2,
    "parts": 0,
-   "complete": false,
+   "complete": true,
    "status": "no_dir",
    "state": "未定位",
-   "dir": null
+   "dir": null,
+   "filled_by": "collect-step10-ces_service_f9805adcc10848acbbcd8fb0cf638b9c_FeatureServer_0"
   },
   "mfdzVd_arcgis_rest_services_Property_Listing_FeatureServer_0": {
    "rows": 12,
@@ -286,40 +308,44 @@
    "dir": "JYE3nM91DAF_arcgis_rest_services_SBGrealprop_FeatureServer_0"
   },
   "bBQScMtY_arcgis_rest_services_Street_Numbers_FeatureServer_0": {
-   "rows": 150000,
+   "rows": 675006,
    "declared": 675006,
    "parts": 3,
-   "complete": false,
+   "complete": true,
    "status": "partial",
    "state": "NV",
-   "dir": "bBQScMtY_arcgis_rest_services_Street_Numbers_FeatureServer_0"
+   "dir": "bBQScMtY_arcgis_rest_services_Street_Numbers_FeatureServer_0",
+   "filled_by": "collect-step10-bBQScMtY_arcgis_rest_services_Street_Numbers_FeatureServer_0"
   },
   "s_2026_SOE_GENERAL_USE_MAP___POST_CNG_WFL1_FeatureServer_118": {
-   "rows": 550000,
+   "rows": 793729,
    "declared": 793729,
    "parts": 11,
-   "complete": false,
+   "complete": true,
    "status": "partial",
    "state": "FL",
-   "dir": "s_2026_SOE_GENERAL_USE_MAP___POST_CNG_WFL1_FeatureServer_118"
+   "dir": "s_2026_SOE_GENERAL_USE_MAP___POST_CNG_WFL1_FeatureServer_118",
+   "filled_by": "collect-step10-s_2026_SOE_GENERAL_USE_MAP___POST_CNG_WFL1_FeatureServer_118"
   },
   "HQX_arcgis_rest_services_Parcels_for_Aerials_FeatureServer_0": {
-   "rows": 250000,
+   "rows": 448216,
    "declared": 448216,
    "parts": 5,
-   "complete": false,
+   "complete": true,
    "status": "partial",
    "state": "AZ",
-   "dir": "HQX_arcgis_rest_services_Parcels_for_Aerials_FeatureServer_0"
+   "dir": "HQX_arcgis_rest_services_Parcels_for_Aerials_FeatureServer_0",
+   "filled_by": "collect-step10-HQX_arcgis_rest_services_Parcels_for_Aerials_FeatureServer_0"
   },
   "rcgis_rest_services_Property_Information_gdb_FeatureServer_0": {
-   "rows": 200000,
+   "rows": 238314,
    "declared": 238314,
    "parts": 4,
-   "complete": false,
+   "complete": true,
    "status": "partial",
    "state": "MD",
-   "dir": "rcgis_rest_services_Property_Information_gdb_FeatureServer_0"
+   "dir": "rcgis_rest_services_Property_Information_gdb_FeatureServer_0",
+   "filled_by": "collect-step10-rcgis_rest_services_Property_Information_gdb_FeatureServer_0"
   },
   "ity_inputParcels2022_identityLots13RedLight_FeatureServer_15": {
    "rows": 214985,
@@ -6724,10 +6750,11 @@
    "rows": 23591,
    "declared": 24655,
    "parts": 1,
-   "complete": false,
+   "complete": true,
    "status": "partial",
    "state": "TX",
-   "dir": "7ABWQBGTG_arcgis_rest_services_Hutto_Parcels_FeatureServer_0"
+   "dir": "7ABWQBGTG_arcgis_rest_services_Hutto_Parcels_FeatureServer_0",
+   "filled_by": "collect-step10-7ABWQBGTG_arcgis_rest_services_Hutto_Parcels_FeatureServer_0"
   },
   "rvices_Parcel_Year_Built_MPAC_Structure_Data_FeatureServer_1": {
    "rows": 20773,
@@ -11320,22 +11347,24 @@
    "dir": "rvices_PanguitchLake_DamInundation_Buildings_FeatureServer_0"
   },
   "9ZtPWOn_arcgis_rest_services_ValueComparison_FeatureServer_0": {
-   "rows": 50000,
+   "rows": 192607,
    "declared": 192607,
    "parts": 1,
-   "complete": false,
+   "complete": true,
    "status": "partial",
    "state": "WA",
-   "dir": "9ZtPWOn_arcgis_rest_services_ValueComparison_FeatureServer_0"
+   "dir": "9ZtPWOn_arcgis_rest_services_ValueComparison_FeatureServer_0",
+   "filled_by": "collect-step10-9ZtPWOn_arcgis_rest_services_ValueComparison_FeatureServer_0"
   },
   "AS7v_arcgis_rest_services_County_Tax_Parcels_FeatureServer_0": {
-   "rows": 0,
+   "rows": 33843,
    "declared": 33843,
    "parts": 0,
-   "complete": false,
+   "complete": true,
    "status": "empty",
    "state": "AZ",
-   "dir": "AS7v_arcgis_rest_services_County_Tax_Parcels_FeatureServer_0"
+   "dir": "AS7v_arcgis_rest_services_County_Tax_Parcels_FeatureServer_0",
+   "filled_by": "collect-step10-AS7v_arcgis_rest_services_County_Tax_Parcels_FeatureServer_0"
   },
   "idPhWCzftIe9K_arcgis_rest_services_Buildings_FeatureServer_0": {
    "rows": 1202752,
@@ -11347,22 +11376,24 @@
    "dir": "idPhWCzftIe9K_arcgis_rest_services_Buildings_FeatureServer_0"
   },
   "es_WAEVCP_Public_Composite_Score_Parcel_View_FeatureServer_1": {
-   "rows": 400000,
+   "rows": 3266900,
    "declared": 3266900,
    "parts": 8,
-   "complete": false,
+   "complete": true,
    "status": "partial",
    "state": "WA",
-   "dir": "es_WAEVCP_Public_Composite_Score_Parcel_View_FeatureServer_1"
+   "dir": "es_WAEVCP_Public_Composite_Score_Parcel_View_FeatureServer_1",
+   "filled_by": "collect-step10-es_WAEVCP_Public_Composite_Score_Parcel_View_FeatureServer_1"
   },
   "ouCfPzTlPw_arcgis_rest_services_Demo_Parcels_FeatureServer_3": {
-   "rows": 139339,
+   "rows": 222082,
    "declared": 222082,
    "parts": 3,
-   "complete": false,
+   "complete": true,
    "status": "partial",
    "state": "LA",
-   "dir": "ouCfPzTlPw_arcgis_rest_services_Demo_Parcels_FeatureServer_3"
+   "dir": "ouCfPzTlPw_arcgis_rest_services_Demo_Parcels_FeatureServer_3",
+   "filled_by": "collect-step10-ouCfPzTlPw_arcgis_rest_services_Demo_Parcels_FeatureServer_3"
   }
  },
  "to_collect": [
