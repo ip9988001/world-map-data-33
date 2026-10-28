@@ -673,6 +673,8 @@ def entry_check():
         _blk = {}
     add(26, "blocked_count 派生一致", st.get("blocked_count") == len(_blk.get("items") or []),
         f"state={st.get('blocked_count')} / blocked.json={len(_blk.get('items') or [])}")
+    add(28, "accept 判据有消费者", os.path.exists(os.path.join(ROOT, "collect", "verify_accept.py")),
+        "collect/verify_accept.py（只陈述事实，不判合格）")
     add(27, "pass 必带 metrics", "--metrics" in src and "metrics 缺判据键" in src,
         "review 拒绝空证据的 pass")
 
