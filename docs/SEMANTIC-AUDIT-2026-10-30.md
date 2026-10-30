@@ -95,14 +95,13 @@
 **分歧实例（为什么不能混用）**：
 
 - `es_us_mn_state_mngeo_loc_addresses_zip9_open_FeatureServer_0`：post_city=`Not stated` vs inc_muni=`Saint Francis`
-- `es_us_mn_state_mngeo_loc_addresses_zip9_open_FeatureServer_0`：post_city=`Not stated` vs inc_muni=`Saint Francis`
-- `es_us_mn_state_mngeo_loc_addresses_zip9_open_FeatureServer_0`：post_city=`Not stated` vs inc_muni=`Saint Francis`
-- `6zC_arcgis_rest_services_parcel_file_current_FeatureServer_0`：taxpayer_city=`DETROIT` vs neighborhood=`NW Goldberg`
 - `6zC_arcgis_rest_services_parcel_file_current_FeatureServer_0`：taxpayer_city=`DETROIT` vs neighborhood=`NW Goldberg`
 - `6zC_arcgis_rest_services_parcel_file_current_FeatureServer_0`：taxpayer_city=`DETROIT` vs neighborhood=`LaSalle Gardens`
 
 ## 三、复现
 
 ```bash
-python3 analysis/semantic_audit.py both --rows 500 --layers 25
+python3 analysis/semantic_audit.py both --rows 600 --layers 30
+
+# 本轮实测 560 行 / 28 层（少数层已死链，故略少于请求的全数）
 ```

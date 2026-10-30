@@ -503,14 +503,25 @@ def render(ev: dict) -> str:
               "- 不过校验 / 层内 clean_rate < 0.8 → **postal_city = null，postal_city_source = null**",
               "- municipal_city 只收 `%s`；`UNINCORPORATED` 一律 null"
               % ", ".join(r["municipal_city"]["accept_columns"]), ""]
-        if r["measured"]["agreement"]["examples"]:
+        exs = []
+        seen_ex = set()
+        for e in r["measured"]["agreement"]["examples"]:
+            k = (e["layer"], e["col"], e["other"], e["a"], e["b"])
+            if k in seen_ex:
+                continue
+            seen_ex.add(k)
+            exs.append(e)
+        if exs:
             L += ["**分歧实例（为什么不能混用）**：", ""]
-            for e in r["measured"]["agreement"]["examples"]:
+            for e in exs:
                 L.append("- `%s`：%s=`%s` vs %s=`%s`"
                          % (e["layer"], e["col"], e["a"], e["other"], e["b"]))
             L += [""]
     L += ["## 三、复现", "", "```bash",
-          "python3 analysis/semantic_audit.py both --rows 500 --layers 25", "```", ""]
+          "python3 analysis/semantic_audit.py both --rows 600 --layers 30", "",
+          "# 本轮实测 %d 行 / %d 层（少数层已死链，故略少于请求的全数）"
+          % (c["rules"]["measured"]["rows"] if c else 0,
+             c["rules"]["measured"]["layers"] if c else 0), "```", ""]
     return "\n".join(L)
 
 
@@ -520,9 +531,18 @@ def main() -> int:
     ap.add_argument("--rows", type=int, default=500, help="city 总行数（addr_type 用 25/层）")
     ap.add_argument("--layers", type=int, default=25)
     ap.add_argument("--jobs", type=int, default=6)
+    ap.add_argument("--render-only", action="store_true",
+                    help="不重抽样，直接用现有 analysis/semantic-audit-*.json 重渲染文档")
     a = ap.parse_args()
     per = max(10, a.rows // max(1, a.layers))
     ev = {}
+    if a.render_only:
+        src = os.path.join(HERE, "semantic-audit-2026-10-30.json")
+        ev = json.load(open(src, encoding="utf-8"))
+        md = os.path.join(ROOT, "docs", "SEMANTIC-AUDIT-2026-10-30.md")
+        open(md, "w", encoding="utf-8").write(render(ev))
+        print("重渲染 %s" % md)
+        return 0
     if a.what in ("addr_type", "both"):
         ev["addr_type"] = audit_addr_type(rows_per_layer=25, max_layers=40, jobs=a.jobs)
     if a.what in ("city", "both"):
