@@ -717,6 +717,21 @@ def entry_check():
     simp_ok = "def simplify_rings" in simp_src and "SIMP_EPS = 1e-5" in simp_src \
         and "SIMP_DECIMALS = 6" in simp_src
     wired = 'rec["rings"] = feature_rings' in pil_src
+    # 31. unit 切片必须**行数 + 字节**双上限（GitHub 单资产 2 GB）
+    #     实测 Offices_of_Physicians 32.6 KB/行 × 10 万行 = 3.26 GB → 只按行数切会撞线，
+    #     点层同样中招（一行几十个字段/超长串）。字节上限 1.5 GB，先到先切。
+    step_unit = {k: v for k, v in S.items() if (v or {}).get("unit_rows")}
+    lack_bytes = [k for k, v in step_unit.items() if not (v or {}).get("unit_bytes")]
+    bad_bytes = [k for k, v in step_unit.items()
+                 if (v or {}).get("unit_bytes") and not (0 < (v.get("unit_bytes") or 0) < 2_000_000_000)]
+    pil_b = open(os.path.join(ROOT, "collect", "pilot.py"), encoding="utf-8").read()
+    dual = ('os.environ.get("PILOT_UNIT_BYTES", "1500000000")' in pil_b
+            and "def plan_units(" in pil_b and "bytes_per_row" in pil_b
+            and "min(cap, by_bytes)" in pil_b)
+    add(31, "unit 切片行数+字节双上限", bool(step_unit) and not lack_bytes and not bad_bytes and dual,
+        f"有 unit_rows 的步={sorted(step_unit) or '无'} 缺 unit_bytes={lack_bytes or '无'} "
+        f"超 2GB={bad_bytes or '无'} pilot 双上限={dual}")
+
     add(30, "面层落简化 rings", bool(poly_steps) and not no_rings and rings_on and simp_ok and wired,
         f"面层步={poly_steps or '无'} 缺 poly_rings={no_rings or '无'} 默认开={rings_on} "
         f"简化常量={simp_ok} 已接线={wired}")

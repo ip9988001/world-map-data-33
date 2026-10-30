@@ -263684,5 +263684,15 @@
     "规则": "addr_type 按映射落值的层，原值一律写入此列供审计；其它层为 null"
    }
   ]
+ },
+ "geom_sidecar": {
+  "fields_not_in_schema": [
+   "rings",
+   "rings_skipped",
+   "paths",
+   "geometry"
+  ],
+  "policy": "几何旁挂：采集侧面层落简化 rings（6 位小数 + RDP 1e-5°）；intake 显式剔除，不进 addr/aux_* 任何表、不进五元组、不参与去重与 addr_id；二仓读取走 schema/SCHEMA.json rev3 的 rings_ref 引用（方案 B）",
+  "at": "2026-10-30"
  }
 }

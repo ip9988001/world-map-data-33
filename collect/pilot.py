@@ -218,7 +218,18 @@ def _purge(files):
 
 
 def _record_unit(ck, idx, rows, files):
-    return units.record_unit(ck, idx, rows, files)
+    out = units.record_unit(ck, idx, rows, files)
+    # 真实落盘字节记账（估算可能偏；超 1.5 GB 的单元进明账，不打断采集）
+    try:
+        b = sum(os.path.getsize(f) for f in files if os.path.exists(f))
+        ck.setdefault("unit_bytes", {})[str(idx)] = b
+        if b > UNIT_BYTES:
+            ck.setdefault("unit_bytes_over", {})[str(idx)] = b
+            log("  ⚠ 单元 u%d 落盘 %.2f GB > 1.5 GB 上限（已记账，建议下次按小页重切）"
+                % (idx, b / 1e9))
+    except Exception:                                  # noqa: BLE001
+        pass
+    return out
 
 
 def _q(api, params, timeout=180):
@@ -319,6 +330,43 @@ GEOM_TYPE = ""          # collect_arcgis_v2 从图层元数据填，面层判定
 POLY_RINGS = os.environ.get("PILOT_POLY_RINGS", "1") == "1"
 RING_GEOMS = ("esrigeometrypolygon",)      # 只对面：`rings` 是面的概念，线层的 `paths` 不冒充
 
+# ---- 非宗地面判别（2026-10-30）----
+# 20 层实测里混着 5 个「不是宗地」的面：Buildings_2024、Buffer1000、Santee…Buffer、
+# sullins_buffer、Offices_of_Physicians（还有 Shoreline/Demographic_Profiles）。
+# 它们的几何是缓冲区/楼轮廓、顶点均值远超真宗地，落 rings 纯属烧 0.6 GB。
+# 判据（两条同时满足才算）：① 图层名/字段里**没有** parcel|lot|property|tax|situs 语义；
+#                        ② 采样顶点均值 > 50 × 真宗地中位（9.75 → 阈值 487.5）。
+# 命中 → 本层只落质心，不落 rings，每行记 `rings_skipped="non_parcel"`（明账，不是静默丢）。
+NON_PARCEL_TOKENS = ("parcel", "lot", "property", "tax", "situs")
+# 层名里的「明显不是宗地」硬负词：缓冲区/楼轮廓/岸线/细分/人口画像/写字楼
+# （实测：Buffer1000 顶点只有 124 = 12.7 倍中位，够不上 50 倍，但形状明显不是宗地）
+NON_PARCEL_NAME_TOKENS = ("buffer", "building", "footprint", "shoreline", "subdiv",
+                          "demographic", "office", "sewer", "basin", "flowline", "road")
+PARCEL_VERTEX_MEDIAN = 9.75          # 20 层实测的每宗地顶点中位
+NON_PARCEL_VERTEX_RATIO = 50.0       # > 50 倍中位 = 几何形状完全不是宗地
+RINGS_SKIP = ""                      # "" 正常；"non_parcel" = 本层只留质心
+
+
+def is_non_parcel(vertices_mean: float, fields=(), names=()) -> bool:
+    """非宗地面判别（纯函数，可单测）。命中 → 该层不落 rings，只落质心。
+
+    两档，任一命中即算（都要先满足「没有 parcel/lot/property/tax/situs 语义」）：
+      ① 几何档：顶点均值 > 50 × 真宗地中位（9.75 → 487.5）—— 形状根本不是宗地；
+      ② 名称档：层名带 buffer|building|footprint|shoreline|subdiv|demographic|office… ——
+         实测这类层（Buffer1000 124 顶点、Santee buffer 218、sullins 128）够不上 50 倍，
+         但落 rings 毫无用途。两档都只在「无宗地语义」时才成立，宁可多存不误杀。
+    """
+    toks = []
+    toks.extend(str(x) for x in (names or ()))
+    for f in (fields or ()):
+        toks.append(str((f or {}).get("name") or ""))
+    blob = " ".join(toks).lower()
+    if any(t in blob for t in NON_PARCEL_TOKENS):
+        return False                 # 有宗地语义 → 哪怕几何也重，按宗地处理
+    if float(vertices_mean or 0) > PARCEL_VERTEX_MEDIAN * NON_PARCEL_VERTEX_RATIO:
+        return True
+    return any(t in blob for t in NON_PARCEL_NAME_TOKENS)
+
 
 def geom_is_poly():
     """当前图层是不是面/线层（决定要不要 returnCentroid + 本地算质心）。"""
@@ -330,7 +378,13 @@ def geom_has_rings():
     return POLY_RINGS and str(GEOM_TYPE or "").lower() in RING_GEOMS
 STRATEGY = "keyset"
 CKPT_VER = 2
-UNIT_ROWS = int(os.environ.get("PILOT_UNIT_ROWS", "500000"))   # 一个「单元」目标行数
+UNIT_ROWS = int(os.environ.get("PILOT_UNIT_ROWS", "500000"))   # 一个「单元」的**行数**上限（参考值）
+# ★ 2026-10-30 全局修正：GitHub 单资产 2 GB —— 只按行数切会撞线。
+#   实测 `Offices_of_Physicians` 32.6 KB/行 × 10 万行 = 3.26 GB（宗地层），点层同理
+#   （有些层一行带几十个字段/超长串）。所以切分改成**行数 且 字节**双上限，先到先切：
+#   字节 = 估算值（见 `estimate_bytes_per_row`）+ 余量，落盘后再用真实字节记账，超线进明账。
+UNIT_BYTES = int(os.environ.get("PILOT_UNIT_BYTES", "1500000000"))   # 1.5e9 B = 1.5 GB
+UNIT_BYTES_MARGIN = float(os.environ.get("PILOT_UNIT_BYTES_MARGIN", "1.4"))  # 估算余量
 IDS_BATCH = 800                                                # 单次 objectIds 请求最多多少个
 
 
@@ -540,8 +594,71 @@ def make_rec(ft, geom_type=None):
     rec.update({"src_layer": CUR["id"], "src_title": CUR["title"], "raw": at,
                 "_lat": lat, "_lon": lon})
     if POLY_RINGS and str(gt or "").lower() in RING_GEOMS:
-        rec["rings"] = feature_rings(ft, gt)          # 键必在：None = 几何退化，不是没采
+        if RINGS_SKIP:
+            rec["rings_skipped"] = RINGS_SKIP         # 例如 "non_parcel"：明账，不是静默丢
+        else:
+            rec["rings"] = feature_rings(ft, gt)      # 键必在：None = 几何退化，不是没采
     return rec
+
+
+def estimate_bytes_per_row(api, where, n=40, log=None):
+    """抓一小页真数据，量「一行落盘后多少字节」（含 rings）—— 切分计划要用它。
+
+    只取 n 行（默认 40），不写盘、不影响断点。返回 (bytes_per_row, mean_vertices, n_rows)。
+    量的是 `make_rec()` 的序列化长度，不是上游原样 JSON —— 落盘体积才是 GitHub 的约束。
+    """
+    q = {"where": where, "outFields": "*", "returnGeometry": "true",
+         "outSR": "4326", "resultRecordCount": min(200, n), "f": "json"}
+    if POLY_CENTROID and geom_is_poly():
+        q["returnCentroid"] = "true"        # 采样请求要和正式请求完全同参，否则估小
+    try:
+        r = _q(api, q, timeout=90)
+        feats = (r.get("features") or [])[:n]
+    except Exception:                                  # noqa: BLE001
+        return 0, 0.0, 0
+    if not feats:
+        return 0, 0.0, 0
+    tot, verts = 0, []
+    for ft in feats:
+        try:
+            rec = make_rec(ft)
+            tot += len(json.dumps(rec, ensure_ascii=False).encode())
+        except Exception:                              # noqa: BLE001
+            continue
+        rings = (ft.get("geometry") or {}).get("rings")
+        if rings:
+            verts.append(sum(len(x) for x in rings))
+    bpr = tot / float(len(feats))
+    vmean = (sum(verts) / float(len(verts))) if verts else 0.0
+    if log and bpr:
+        log("  估计：%.0f B/行（含 rings），平均顶点 %.1f" % (bpr, vmean))
+    return bpr, vmean, len(feats)
+
+
+def plan_units(count, mn, mx, bytes_per_row=0, unit_rows=None, unit_bytes=None,
+               margin=None, kind="range"):
+    """切分计划：**行数上限 且 字节上限**，先到先切。返回 (units, rows_cap)。
+
+    为什么单单行数不够：GitHub 单个 Release 资产上限 2 GB，某些层一行就 30 KB，
+    10 万行 = 3.26 GB（实测 `Offices_of_Physicians`）→ 必须同时按字节收。
+    估算不确定（行大小有长尾），所以给 `margin` 余量；落盘后再用真实字节记账。
+    """
+    unit_rows = UNIT_ROWS if unit_rows is None else unit_rows
+    unit_bytes = UNIT_BYTES if unit_bytes is None else unit_bytes
+    margin = UNIT_BYTES_MARGIN if margin is None else margin
+    cap = int(unit_rows)
+    if bytes_per_row and bytes_per_row > 0:
+        by_bytes = int(unit_bytes / (float(bytes_per_row) * float(margin)))
+        cap = max(1, min(cap, by_bytes))
+    if kind == "range":
+        n_units = max(1, int(math.ceil((count or 0) / float(cap)))) if count else 1
+        span = max(1, int(math.ceil(((mx or 0) - (mn or 0) + 1) / float(n_units))))
+        units, a0 = [], mn
+        while a0 is not None and mx is not None and a0 <= mx:
+            units.append((a0, min(a0 + span - 1, mx)))
+            a0 += span
+        return (units or [(None, None)]), cap
+    return None, cap
 
 
 def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock, ck):
@@ -675,7 +792,8 @@ def _unit_ids(api, batches, idx, log, prog, lock, limit=0):
 
 
 def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False):
-    global STRATEGY, UNIT_ROWS, GEOM_TYPE
+    global STRATEGY, UNIT_ROWS, GEOM_TYPE, RINGS_SKIP
+    RINGS_SKIP = ""
     m = re.search(r"/(FeatureServer|MapServer)(/\d+)?$", url.rstrip("/"))
     api = url.split("?")[0].rstrip("/")
     if m and not m.group(2):
@@ -708,30 +826,45 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False):
             log("  returnIdsOnly 失败（%s）→ 退回 keyset" % str(r_ids.get("__error__"))[:80])
             STRATEGY = "keyset"
     if STRATEGY == "ids":
+        bpr_ids, _vm, _n = estimate_bytes_per_row(api, w_all, log=log)
+        _u, cap_ids = plan_units(len(ids), 0, 0, bytes_per_row=bpr_ids, kind="ids")
         bl, cur = [], []
         for i in range(0, len(ids), IDS_BATCH):
             cur.append((i // IDS_BATCH, ids[i:i + IDS_BATCH]))
-            if len(cur) * IDS_BATCH >= UNIT_ROWS:
+            if len(cur) * IDS_BATCH >= cap_ids:
                 bl.append(cur)
                 cur = []
         if cur:
             bl.append(cur)
         units = bl
         plan = {"kind": "ids", "n_ids": len(ids), "batch": IDS_BATCH,
-                "units": [[b[0] for b in u] for u in units]}
+                "units": [[b[0] for b in u] for u in units],
+                "bytes_per_row_est": round(bpr_ids, 1), "unit_bytes_cap": UNIT_BYTES,
+                "unit_rows_cap": cap_ids}
     else:
         mn, mx, e = _oid_bounds(api, oid_field) if workers > 1 or count > UNIT_ROWS else (None, None, "small")
         if mn is not None and mx is not None and mx > mn:
-            n_units = max(1, int(math.ceil(count / float(UNIT_ROWS)))) if count else 1
-            span = max(1, int(math.ceil((mx - mn + 1) / float(n_units))))
-            a0 = mn
-            while a0 <= mx:
-                units.append((a0, min(a0 + span - 1, mx)))
-                a0 += span
-            plan = {"kind": "range", "units": units}
+            bpr, vmean, _n = estimate_bytes_per_row(api, w_all, log=log)
+            units, cap = plan_units(count, mn, mx, bytes_per_row=bpr, kind="range")
+            if cap < UNIT_ROWS:
+                log("  ⚠ 按字节切：行数上限 %d → %d（估 %.0f B/行 × 余量 %.1f，1.5 GB/单元）"
+                    % (UNIT_ROWS, cap, bpr, UNIT_BYTES_MARGIN))
+            if POLY_RINGS and geom_is_poly():
+                skip = "non_parcel" if is_non_parcel(
+                    vmean, fields=meta.get("fields") or (),
+                    names=(CUR.get("id"), CUR.get("title"))) else ""
+                globals()["RINGS_SKIP"] = skip
+                if skip:
+                    log("  ⏭ 判为非宗地面（顶点均值 %.0f > %.0f 且层名/字段无 parcel 语义）"
+                        "→ 只落质心，不落 rings" % (vmean, PARCEL_VERTEX_MEDIAN * NON_PARCEL_VERTEX_RATIO))
+            plan = {"kind": "range", "units": units, "bytes_per_row_est": round(bpr, 1),
+                    "unit_bytes_cap": UNIT_BYTES, "unit_rows_cap": cap,
+                    "vertices_mean_est": round(vmean, 1),
+                    "rings_skipped": RINGS_SKIP or None}
         else:
             units = [(None, None)]
-            plan = {"kind": "single", "units": [[None, None]]}
+            plan = {"kind": "single", "units": [[None, None]], "unit_bytes_cap": UNIT_BYTES,
+                    "unit_rows_cap": UNIT_ROWS}
 
     if limit:
         # --limit 是试采用：只跑一个单元、单线程、忽略既有检查点，免得 5 个单元各采 limit 行

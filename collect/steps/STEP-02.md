@@ -49,6 +49,7 @@ python3 collect/supervisor.py --review pass --next 03 --note "..."
  },
  "workers": 4,
  "unit_rows": 500000,
+ "unit_bytes": 1500000000,
  "tag": "collect-step02-{layer}",
  "evidence": [
   "report",

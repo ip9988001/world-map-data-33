@@ -183,7 +183,8 @@ def test_city_value_rules() -> None:
 def main() -> int:
     for f in (test_parcel_never_addr, test_line_never_addr, test_gates, test_norm,
               test_keys, test_reconcile, test_postal_city_not_owner,
-              test_addr_type_no_heuristics, test_city_value_rules):
+              test_addr_type_no_heuristics, test_city_value_rules,
+              test_rings_never_in_tables):
         f()
     print()
     if FAILS:
@@ -191,6 +192,29 @@ def main() -> int:
         return 1
     print("✅ 契约测试全绿")
     return 0
+
+
+def test_rings_never_in_tables() -> None:
+    """几何旁挂：`rings`/`rings_skipped` 绝不许进任何表（addr/aux_*/reject）。
+
+    2026-10-30 采集侧开始落简化 rings，intake 必须显式剔除：
+      · 几何归属是 (src_layer_id, src_oid)，不是地址行 → 塞进 addr 会按地址数复制 N 份；
+      · 二仓读取走 `rings_ref` 引用（SCHEMA.json rev3 方案 B），几何本体留三仓边车。
+    """
+    row = {"house_number": "12", "street_name": "MAIN ST", "zip5": "12345",
+           "latitude": 38.0, "longitude": -97.0, "rings": [[[-97.0, 38.0]]],
+           "rings_skipped": "non_parcel", "paths": [[[-97.0, 38.0]]]}
+    out = I.public_row(row)
+    for k in ("rings", "rings_skipped", "paths", "geometry"):
+        assert k not in out, "几何字段漏进了表：%s → %r" % (k, out.get(k))
+    # 断言函数自己也要能炸（防止有人把它改成空转）
+    try:
+        I.assert_no_geom_fields({"addr_id": "x", "rings": []}, "addr")
+    except AssertionError:
+        pass
+    else:
+        raise AssertionError("assert_no_geom_fields 没拦住 rings —— 断言形同虚设")
+    I.assert_no_geom_fields(out, "addr")      # 干净的行不许误报
 
 
 if __name__ == "__main__":

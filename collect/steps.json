@@ -76,6 +76,7 @@
    },
    "workers": 4,
    "unit_rows": 500000,
+   "unit_bytes": 1500000000,
    "tag": "collect-step02-{layer}",
    "report": "pilot",
    "evidence": [
@@ -108,6 +109,7 @@
    },
    "workers": 4,
    "unit_rows": 200000,
+   "unit_bytes": 1500000000,
    "tag": "collect-step03-{layer}",
    "gate": {
     "gray_layers": 20,
@@ -153,6 +155,7 @@
    },
    "workers": 4,
    "unit_rows": 1000000,
+   "unit_bytes": 1500000000,
    "tag": "collect-step04-{layer}",
    "evidence": [
     "report",
@@ -200,6 +203,7 @@
    },
    "workers": 4,
    "unit_rows": 100000,
+   "unit_bytes": 1500000000,
    "tag": "collect-step05-{layer}",
    "roll": {
     "mode": "batches",
@@ -268,6 +272,7 @@
    },
    "workers": 4,
    "unit_rows": 100000,
+   "unit_bytes": 1500000000,
    "tag": "collect-step07-{layer}",
    "evidence": [
     "report",
@@ -371,6 +376,7 @@
    },
    "workers": 4,
    "unit_rows": 100000,
+   "unit_bytes": 1500000000,
    "tag": "collect-step10-{layer}",
    "geom_in": [],
    "evidence": [
@@ -417,6 +423,7 @@
    },
    "workers": 4,
    "unit_rows": 100000,
+   "unit_bytes": 1500000000,
    "tag": "collect-step10b-{layer}",
    "geom_in": [],
    "evidence": [
@@ -454,6 +461,7 @@
    },
    "workers": 4,
    "unit_rows": 1000000,
+   "unit_bytes": 1500000000,
    "tag": "collect-step04-{layer}",
    "evidence": [
     "report",
@@ -496,6 +504,7 @@
    },
    "workers": 4,
    "unit_rows": 100000,
+   "unit_bytes": 1500000000,
    "tag": "collect-step05-{layer}",
    "roll": {
     "mode": "batches",
@@ -540,6 +549,7 @@
    },
    "workers": 4,
    "unit_rows": 100000,
+   "unit_bytes": 1500000000,
    "tag": "collect-step07-{layer}",
    "evidence": [
     "report",

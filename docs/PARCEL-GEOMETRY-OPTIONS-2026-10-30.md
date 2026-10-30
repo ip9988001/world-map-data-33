@@ -253,11 +253,38 @@ python3 collect/geom_backfill.py --plan collect/ledger/geom_plan.json --concurre
 ### 6.5 推荐（实测后仍然不变，理由变了）
 
 **② 简化 rings，gzip，+3.1 GB（13.3 GB 的 ③ 档只多买到亚微米噪声）。**
-三条附加条件：
+三条附加条件（**已全部落地**，见 6.6）：
 
-1. **先剔非宗地面**（6.3），把 ② 档压到 ~2.5 GB；
-2. **part 按字节切**（≤1.5 GB/资产），不是按 100k 行切（6.4）；
-3. **intake 显式跳过 `rings` 字段**，不为它建表（否则解析成本 ×3，见第四节代价表）。
+1. **先剔非宗地面**（6.3）→ 实测省 **0.19~1.62 GB**（名称档 102 层 / 4.33M 行，中位口径 ~0.37 GB），
+   **不是**先前口估的「压到 2.5 GB」——那条是没算过的乐观值，以本节的实测为准；
+2. **part 按字节切**（≤1.5 GB/资产），不是按 100k 行切（6.4）→ 规则已写进 `steps.json#*.unit_bytes`
+   与 `--entry-check` 第 31 条；
+3. **intake 显式跳过 `rings` 字段** → `GEOM_SIDECAR_FIELDS` 显式剔除 + `assert_no_geom_fields` 硬断言。
+
+### 6.6 两条通用规则（2026-10-30 落地，全局适用，不止宗地）
+
+**① unit 切片 = 行数 且 字节双上限（先到先切）**
+`unit_rows` 退化成参考值，真正兜底的是 `unit_bytes = 1.5 GB`：
+
+| 项 | 值 |
+|---|---|
+| 估算 | 采集前抓 40 行真数据，量 `make_rec` 序列化长度（含 rings）→ B/行 |
+| 切分 | `rows_cap = min(unit_rows, unit_bytes / (B/行 × 1.4))` |
+| 记账 | 真实落盘字节写进检查点 `unit_bytes`；超线写 `unit_bytes_over`（明账，不静默） |
+| 历史批次 | `collect/unit_size_audit.py` 扫本机快照：1,970 个单元里**最大 0.78 GB**，超 1.5 GB 的 **0 个**，超 2 GB 的 **0 个** → **历史产物不需要重切** |
+| 为什么是全局 | 点层同样中招：一行几十个字段/超长串，按 10 万行切照样可能超 2 GB |
+
+**② 非宗地面不落 rings**
+判据（两条同时满足才命中）：层名/字段**无** `parcel|lot|property|tax|situs` 语义，且
+（顶点均值 > 50 × 真宗地中位 9.75 → 487.5，**或** 层名带 `buffer|building|footprint|shoreline|subdiv|demographic|office…`）。
+命中 → 只落质心，每行记 `rings_skipped="non_parcel"`。
+
+| 口径 | 结果 |
+|---|---|
+| 20 层实测样本 | 命中 **7 层**（Buildings_2024、Buffer1000、Santee…Buffer、sullins_buffer、Offices_of_Physicians、Subdivisions_Info、Demographic_Profiles） |
+| 样本内可省 | **102 MB**（其中 Buildings_2024 75 MB、Offices 15.5 MB、Buffer1000 11 MB） |
+| 离线全量（名称档） | **102 层 / 4,331,973 行**（占宗地行数 11.9%）→ 省 **0.19~1.62 GB**（86 B/行中位口径 **~0.37 GB**） |
+| 预期 | 3.15 GB → **约 2.8 GB**（不是 2.5 GB：顶点档要多命中 200 层才够，需逐层采样才能定） |
 
 ---
 

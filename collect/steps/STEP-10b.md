@@ -31,6 +31,8 @@ reject 档**只记账不采** —— 宗地面层是采集面最大的缺口，�
   `PILOT_POLY_RINGS` 默认已开。面层每行额外落 `rings`（6 位小数 + RDP 1e-5°，第 ② 档），
   退化几何 → `rings=null`；点层/线层不带该键。**只落简化版，不落原始 rings**（实测：原始多付 5.2 GB 买亚微米噪声）。
   已有 part 资产不动，存量层补几何走 `--geom-backfill`（见几何方案文档第五节）
+- **非宗地面只落质心**（`rings_skipped="non_parcel"`）+ **unit 按行数且字节（1.5 GB）双上限先到先切**：
+  两条都是硬判据（`steps.json#steps.10b.unit_bytes`），`--entry-check` 第 30/31 条守着
 - **面层必须带质心（硬判据，`steps.json#steps.10b.poly_centroid=true`）**：
   `PILOT_POLY_CENTROID` 默认已开。面层每行落 `_lat`/`_lon`（= rings 本地算的
   `representative_point`，算不出来才退回 `returnCentroid=true` 的服务端质心，`outSR=4326` 即 WGS84）。
@@ -86,6 +88,7 @@ python3 collect/step_full_report.py --stage step10b
  },
  "workers": 4,
  "unit_rows": 100000,
+ "unit_bytes": 1500000000,
  "tag": "collect-step10b-{layer}",
  "evidence": [
   "report",

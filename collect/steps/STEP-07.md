@@ -61,6 +61,7 @@ python3 collect/supervisor.py --kick 07 --workers 4 --offset 0 --size 120
  },
  "workers": 4,
  "unit_rows": 100000,
+ "unit_bytes": 1500000000,
  "tag": "collect-step07-{layer}",
  "evidence": [
   "report",

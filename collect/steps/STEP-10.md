@@ -35,6 +35,12 @@
    `docs/PARCEL-GEOMETRY-OPTIONS-2026-10-30.md` 拍定第 ② 档：**只落简化，不落原始 rings**。
    · 键必在：几何退化 → `rings=null`（**不猜、不拿 bbox 代替**）；点层/线层**不带**该键。
    · 只影响**新采集**，已有 part 资产一个字节都不改动；单体顶点硬上限 8000（防某层缓冲区把一行写成几 MB）。
+   · **非宗地面不落 rings**：层名/字段无 parcel|lot|property|tax|situs 语义，且（顶点均值 > 50×真宗地中位
+     或层名带 buffer|building|footprint|shoreline|subdiv|demographic|office…）→ 只落质心，
+     每行记 `rings_skipped="non_parcel"`（明账，不是静默丢）。
+9. **unit 按字节切（硬判据，`steps.json#steps.10.unit_bytes`）**：单元上限 = `unit_rows` **且** `unit_bytes`
+   （1.5 GB），**先到先切**。GitHub 单资产 2 GB —— 实测某层 32.6 KB/行 × 10 万行 = 3.26 GB，
+   只按行数切会撞线；这个问题对点层同样成立。真实落盘字节进检查点 (`unit_bytes`)，超线进 `unit_bytes_over` 明账。
    · 存量层补几何走独立入口 `--geom-backfill`（口径/成本/闸门见几何方案文档第五节），**不在本步内**。
 
 ## 验收判据（机器判；判定权在大脑）
@@ -80,6 +86,7 @@ python3 collect/supervisor.py --review pass --note "宗地扩采收尾"
  },
  "workers": 4,
  "unit_rows": 100000,
+ "unit_bytes": 1500000000,
  "tag": "collect-step10-{layer}",
  "evidence": [
   "report",

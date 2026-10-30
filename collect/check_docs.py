@@ -21,7 +21,7 @@ STEPS_JSON = os.path.join(HERE, "steps.json")
 MIRROR_RE = re.compile(r"<!-- steps\.json 镜像.*?```json\s*(\{.*?\})\s*```", re.S)
 BASH_RE = re.compile(r"```bash\s*(.*?)```", re.S)
 WANT_FIELDS = ("kind", "poly_centroid", "poly_rings", "title", "select", "workers", "unit_rows",
-                "tag", "gate", "evidence", "accept")
+                "unit_bytes", "tag", "gate", "evidence", "accept")
 # 命令块里的脚本：开关按**被调的那个脚本**校验，不是一律按 supervisor.py
 # （2026-10-30 修：补采四阶段走 full_plan/full_shard/step_full_report，老规则会把真开关判成假的）
 CMD_SCRIPT_RE = re.compile(r"(collect/[\w/.\-]+\.py|scripts/[\w/.\-]+\.py)")

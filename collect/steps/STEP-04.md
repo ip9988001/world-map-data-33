@@ -58,6 +58,7 @@ python3 collect/supervisor.py --kick 04 --workers 4
  },
  "workers": 4,
  "unit_rows": 1000000,
+ "unit_bytes": 1500000000,
  "tag": "collect-step04-{layer}",
  "evidence": [
   "report",

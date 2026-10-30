@@ -341,8 +341,20 @@ def route(row: dict, bad: list[str], kind: str) -> tuple[str, str | None]:
     return "addr", None
 
 
+# 几何旁挂字段：`rings`（采集侧 2026-10-30 起面层会落简化 rings）与 `rings_skipped` 标记
+# **一律不进任何表**（不进 addr / aux_parcel / aux_street / aux_addr_nohouse / reject，
+# 不进五元组、不参与去重、不参与 addr_id）。理由：
+#   · 几何的归属是 (src_layer_id, src_oid)，不是地址行；塞进 addr 会让同一宗地几何按地址数复制；
+#   · 二仓读取走 `rings_ref` 引用（SCHEMA.json rev3 方案 B），几何本体留三仓边车。
+GEOM_SIDECAR_FIELDS = ("rings", "rings_skipped", "paths", "geometry")
+
+
 def public_row(row: dict) -> dict:
-    """只输出 SCHEMA 2.0 的 19 主字段 + 4 三仓溯源列 + 3 个 SCHEMA 原生溯源列。"""
+    """只输出 SCHEMA 2.0 的 19 主字段 + 4 三仓溯源列 + 3 个 SCHEMA 原生溯源列。
+
+    ★ 几何字段在这里被**显式剔除**（`GEOM_SIDECAR_FIELDS`），不靠「keep 白名单碰巧没列到」——
+    白名单一旦有人加字段就会漏，所以剔完还要断言（`assert_no_geom_fields`）。
+    """
     keep = ["house_number", "house_number_suffix", "street_pre_dir", "street_name",
             "street_post_type", "street_post_dir", "street_full", "unit", "postal_city",
             "municipal_city", "county_name", "county_fips", "state_abbr", "zip5",
@@ -358,7 +370,17 @@ def public_row(row: dict) -> dict:
                  ("municipal_city", "municipal_city_source")):
         if not out.get(v):
             out[s] = None
+    for k in GEOM_SIDECAR_FIELDS:
+        out.pop(k, None)
     return out
+
+
+def assert_no_geom_fields(row: dict, where: str = "") -> None:
+    """硬断言：任何要落表的行里出现几何字段 → 当场炸（不许静默落进 addr/aux）。"""
+    bad = [k for k in GEOM_SIDECAR_FIELDS if k in row]
+    if bad:
+        raise AssertionError("几何字段混进表 %s：%s（几何只能做旁挂，见 GEOM_SIDECAR_FIELDS）"
+                             % (where or "?", bad))
 
 
 def run_layer(lid: str, fmap: dict, outdir: str, limit: int = 0,
@@ -420,6 +442,7 @@ def run_layer(lid: str, fmap: dict, outdir: str, limit: int = 0,
             pr = public_row(row)
             if extra_keys is not None:
                 pr.update(extra_keys(row) or {})
+            assert_no_geom_fields(pr, table)      # 几何字段进了表 → 当场炸，不静默
             if table == "addr":
                 pr["addr_id"] = addr_id(row)
                 pr["full_formatted_address"] = full_formatted(row)
