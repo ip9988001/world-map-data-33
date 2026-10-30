@@ -121,6 +121,18 @@ class StatusPriority(unittest.TestCase):
         self.assertEqual(out["declared"], 4000)
 
 
+class ShardViewFollowsLatestRun(unittest.TestCase):
+    def test_shards_incomplete_reflects_latest_run_not_stale(self):
+        base = _stage(4)
+        base["shards_incomplete"] = [0, 1, 2, 3]      # 上一轮全片未完成
+        run = _run(4)
+        run["shards_incomplete"] = []
+        out, _ = lm.merge_stage_ledger("04b", base, run, "R_NEW")
+        self.assertEqual(out["shards_incomplete"], [])   # 闸门看的是本轮
+        self.assertEqual(out["shards_run_id"], "R_NEW")
+        self.assertTrue(out["complete"])
+
+
 class RevisionsAppendOnly(unittest.TestCase):
     def test_revisions_are_appended_not_replaced(self):
         base = _stage(4)

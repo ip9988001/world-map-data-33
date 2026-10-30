@@ -151,11 +151,13 @@ def merge_stage_ledger(stage: str, base: dict | None, run_led: dict, run_id: str
     })
     for k in COUNT_KEYS:
         out[k] = cnt[k]
-    # 片口径四件套：阶段账本首次建立时沿用本 run 的；后续 run 只记在 revisions/last_merge 里，
-    # 不拿单 run 的「片完成度」去代表整个阶段。
+    # 片口径四件套是**本轮 run 的**（闸门读它判「本轮有没有片没跑完」），
+    # 所以每次合并都改成最新 run 的值，并用 shards_run_id 标明是哪一轮的口径；
+    # 想查历史片完成度看 revisions[]（只追加不替换）。
     for k in ("shards_expected", "shards_reported", "shards_incomplete",
               "shards_incomplete_detail"):
-        out.setdefault(k, run_led.get(k))
+        out[k] = run_led.get(k)
+    out["shards_run_id"] = str(run_id)
     # 「阶段是否收官」按合并后的逐层状态判，不看某一 run 的片数
     # 「阶段是否收官」只看合并后的逐层状态：必须有层、且没有 partial/missing/unverified/empty 之外的坏状态。
     # 不看某一 run 的片数（片口径记在 last_merge / revisions 里），否则一次缺片就永久把阶段判成未完成；
