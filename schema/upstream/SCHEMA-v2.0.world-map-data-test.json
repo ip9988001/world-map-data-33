@@ -2,7 +2,15 @@
   "schema_version": "2.0",
   "status": "LOCKED",
   "frozen_at": "2026-10-18T11:00:00Z",
-  "rev": 1,
+  "rev": 2,
+  "rev_log": [
+    {"rev": 1, "at": "2026-10-18T11:00:00Z", "by": "二仓 gold-v2", "kind": "initial",
+     "change": "v2.0 首次冻结：32 主字段 + 19 provenance 字段"},
+    {"rev": 2, "at": "2026-10-30T10:00:00Z", "by": "三仓 intake-33 接入", "kind": "minor-additive",
+     "change": "新增 4 个三仓溯源字段（additive）；32 个主字段与既有 19 个 provenance 字段的名/类型/语义均未改动",
+     "fields_added": ["src_kind", "src_layer_id", "src_layer_url", "src_parcel_id"],
+     "why": "三仓源层是 ArcGIS 点层/宗地层/线层，没有 NAD UUID / OA HASH / TIGER TLID / Overture id，既有 19 个溯源列一个都填不上；不加这 4 列地址无法回溯到原始层与原始宗地"}
+  ],
   "grain": "一行 = 一条标准化后的美国门牌地址记录；作用域 = 单个县（county_fips）",
   "naming": {
     "release_tag": "gold-US-<ST>-v1",
@@ -65,7 +73,11 @@
     {"name": "oa_file",             "type": "string",       "note": "OA 来源文件名"},
     {"name": "overture_upstream",   "type": "string",       "note": "Overture sources[1].dataset，用于验证是否仍为 NAD 镜像"},
     {"name": "dup_group",           "type": "int",          "note": "同址合并簇号；1 = 未合并"},
-    {"name": "dup_members",         "type": "int",          "note": "该簇被合并掉的成员数"}
+    {"name": "dup_members",         "type": "int",          "note": "该簇被合并掉的成员数"},
+    {"name": "src_kind",            "type": "enum",         "note": "三仓专有：address_point | parcel_situs | street_line；street_line 无门牌号，只进 aux_street"},
+    {"name": "src_layer_id",        "type": "string",       "note": "三仓专有：源层标识，等于 Release tag collect-step<NN>-<layer_id> 里的 <layer_id>"},
+    {"name": "src_layer_url",       "type": "string",       "note": "三仓专有：源层 ArcGIS REST 端点（仅记录，不用于回抓）"},
+    {"name": "src_parcel_id",       "type": "string",       "note": "三仓专有：仅 parcel_situs 行有值（ParcelID/APN/PIN/PARCEL_NUMBER）；点层与线层恒为 null"}
   ],
   "enums": {
     "addr_type": ["Residential", "Residential (Multi-Unit)", "Commercial", "Unknown"],
@@ -73,7 +85,8 @@
     "zip_source": ["nad_native", "zcta_derived", null],
     "postal_city_source": ["nad_post_city", "place_derived", null],
     "municipal_city_source": ["nad_inc_muni", "tiger_place", null],
-    "tiger_verify": ["range", "street", "none"]
+    "tiger_verify": ["range", "street", "none"],
+    "src_kind": ["address_point", "parcel_situs", "street_line"]
   },
   "grade_rules": {
     "S-Tier": "独立源 >= 2 且含 TIGER 号段区间命中（range_verified）",
@@ -107,7 +120,8 @@
       "新增 addr_id / dup_group / dup_members",
       "postal_city 语义收紧为 USPS 邮件城市名（v1 混用了 Inc_Muni）",
       "area_code 统一 null（v1 曾按州硬编码 302，属伪造）"
-    ]
+    ],
+    "rev2_minor_additive": "rev2 只给 provenance 加 4 列（src_kind / src_layer_id / src_layer_url / src_parcel_id），读数方可忽略；主字段、枚举、门禁、漏斗不变量与 rev1 完全一致"
   },
   "admin_registry": {
     "path": "rules/geo/global_admin_registry.json",

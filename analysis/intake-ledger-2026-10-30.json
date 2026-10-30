@@ -1,0 +1,121 @@
+{
+ "schema": "intake33-ledger/v1",
+ "layers": [
+  {
+   "layer": "8lct5k3LSbyO_arcgis_rest_services_AddressULM_FeatureServer_1",
+   "tag": "collect-step05-8lct5k3LSbyO_arcgis_rest_services_AddressULM_FeatureServer_1",
+   "kind": "address_point",
+   "rows_total": 28996,
+   "read": 28996,
+   "with_number": 28953,
+   "without_number": 43,
+   "dropped_reason": {
+    "no_house_number+no_street_name": 331,
+    "no_house_number+no_street_name+geo_missing": 3
+   },
+   "geo_missing": 3,
+   "tables": {
+    "addr": 28421,
+    "aux_parcel": 0,
+    "aux_street": 0,
+    "aux_addr_nohouse": 241,
+    "reject": 334
+   },
+   "partial_read": false,
+   "reconcile_ok": true,
+   "route_ok": true,
+   "reject_ok": true
+  },
+  {
+   "layer": "Gr3P_arcgis_rest_services_ETJ_addresses_WFL1_FeatureServer_1",
+   "tag": "collect-step05-Gr3P_arcgis_rest_services_ETJ_addresses_WFL1_FeatureServer_1",
+   "kind": "address_point",
+   "rows_total": 25081,
+   "read": 25081,
+   "with_number": 25081,
+   "without_number": 0,
+   "dropped_reason": {
+    "no_street_name": 30
+   },
+   "geo_missing": 0,
+   "tables": {
+    "addr": 25051,
+    "aux_parcel": 0,
+    "aux_street": 0,
+    "aux_addr_nohouse": 0,
+    "reject": 30
+   },
+   "partial_read": false,
+   "reconcile_ok": true,
+   "route_ok": true,
+   "reject_ok": true
+  },
+  {
+   "layer": "7ABWQBGTG_arcgis_rest_services_Hutto_Parcels_FeatureServer_0",
+   "tag": "collect-step10-7ABWQBGTG_arcgis_rest_services_Hutto_Parcels_FeatureServer_0",
+   "kind": "parcel_situs",
+   "rows_total": 23591,
+   "read": 23591,
+   "with_number": 21829,
+   "without_number": 1762,
+   "dropped_reason": {},
+   "geo_missing": 23591,
+   "tables": {
+    "addr": 0,
+    "aux_parcel": 23591,
+    "aux_street": 0,
+    "aux_addr_nohouse": 0,
+    "reject": 0
+   },
+   "partial_read": false,
+   "reconcile_ok": true,
+   "route_ok": true,
+   "reject_ok": true
+  },
+  {
+   "layer": "cgis_rest_services_AGOL_Parcels_PacificTime_FeatureServer_17",
+   "tag": "collect-step10-cgis_rest_services_AGOL_Parcels_PacificTime_FeatureServer_17",
+   "kind": "parcel_situs",
+   "rows_total": 211139,
+   "read": 211139,
+   "with_number": 193505,
+   "without_number": 17634,
+   "dropped_reason": {},
+   "geo_missing": 211139,
+   "tables": {
+    "addr": 0,
+    "aux_parcel": 211139,
+    "aux_street": 0,
+    "aux_addr_nohouse": 0,
+    "reject": 0
+   },
+   "partial_read": false,
+   "reconcile_ok": true,
+   "route_ok": true,
+   "reject_ok": true
+  },
+  {
+   "layer": "TIGER-US-GA-13151-addrfeat",
+   "tag": "raw-US-GA-v1",
+   "kind": "street_line",
+   "rows_total": 11910,
+   "read": 11910,
+   "with_number": 0,
+   "without_number": 11910,
+   "dropped_reason": {},
+   "geo_missing": 0,
+   "tables": {
+    "addr": 0,
+    "aux_parcel": 0,
+    "aux_street": 11910,
+    "aux_addr_no_house": 0,
+    "aux_addr_nohouse": 0,
+    "reject": 0
+   },
+   "partial_read": false,
+   "route_ok": true,
+   "reconcile_ok": true,
+   "reject_ok": true
+  }
+ ]
+}

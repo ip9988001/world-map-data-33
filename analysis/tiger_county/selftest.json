@@ -1,0 +1,12 @@
+{
+ "state": "GA",
+ "counties": 159,
+ "vertices": 31386,
+ "bbox_ambiguous_vertices": 14514,
+ "bbox_ambiguous_pct": 46.24,
+ "tag": "collect-step04-xVN2oUE9EYLSnPE_arcgis_rest_services_Address_FeatureServer_0",
+ "sampled": 2000,
+ "bbox_ambiguous_points": 2000,
+ "pip_unresolved": 0,
+ "bbox_ambiguous_pct_points": 100.0
+}

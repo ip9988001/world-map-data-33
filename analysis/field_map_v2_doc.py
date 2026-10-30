@@ -149,6 +149,35 @@ def main() -> int:
                    ("addr_type", "0%，无源列，需规则重分类（等你点头）")):
         A(f"- `{t}`：{why}")
     A("")
+    A("## 八bis、state / county 回填（B 项）")
+    A("")
+    A("| 口径 | 层数 | 占比 | 说明 |")
+    A("|---|---|---|---|")
+    A(f"| v1 口径（house_number + street_name + **state 列**） | {cov['usable_v1_state_column_only']} | "
+      f"{cov['usable_v1_pct']:.2f}% | 只认源列，所以大批「州只在层元数据里」的层被判不可用 |")
+    A(f"| v2（state 按层清单回填后） | {cov['usable_v2_after_state_backfill']} | "
+      f"{cov['usable_v2_pct']:.2f}% | 州是分片作用域属性，用层元数据补不算伪造 |")
+    A(f"| v3（+ 县可判：层名单县 {cov['county_layer_level']} 层，或逐行 TIGER 多边形判得出） | "
+      f"{cov['usable_v3_after_county']} | {cov['usable_v3_pct']:.2f}% | 掉下来的原因是宗地层缺坐标（{cov['county_multi_no_geo']} 层跨多县且无经纬度），需几何质心 |")
+    A("")
+    A("county 的两条路径：")
+    A("")
+    n_tiger = sum(1 for e in L.values() if e.get("county_src") == "tiger_layer_name")
+    n_col = sum(1 for e in L.values() if e.get("county_src") == "column"
+                and e.get("county_scope") == "single")
+    A(f"- **层名单县**：{cov['county_layer_level']} 层（源列 {n_col} + 从层 id/url 反查 TIGER {n_tiger} 层）")
+    A(f"- **层跨多县**：{cov['county_multi_row_pip']} 层 → county_fips 不能写死，必须逐行判定；其中 "
+      f"{cov['county_multi_no_geo']} 层连坐标都没有，属 `geo_missing`")
+    A("")
+    A("**禁用 bbox 的实证**（`collect/county_tiger.py --selftest GA`，结果落 `analysis/tiger_county/selftest.json`）：")
+    A("")
+    A("| 检验 | 结果 |")
+    A("|---|---|")
+    A("| GA 县界顶点 31,386 个做对照 | 14,514 个（46.2%）会同时落进**邻县**的 bbox |")
+    A("| GA 真实地址点抽样 2,000 个 | bbox 歧义（≥2 县）**2,000 条 = 100%**；多边形判定失败 **0 条** |")
+    A("")
+    A("所以 county 一律走射线法 point-in-polygon，bbox 只用来快速跳过候选，**绝不作为判定依据**。")
+    A("")
     A("## 九、别名表里的坑（实测踩到，已写进代码注释）")
     A("")
     A("| 字段/列 | 坑 | 处理 |")

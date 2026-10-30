@@ -24,13 +24,19 @@ import hashlib
 import json
 import os
 import re
+import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
+sys.path.insert(0, os.path.join(ROOT, "collect"))
+try:
+    import county_tiger as CT          # TIGER 县界多边形（禁用 bbox）
+except Exception:                      # noqa: BLE001
+    CT = None
 OUT = os.path.join(HERE, "out")
 
 SCHEMA_PIN = os.path.join(ROOT, "schema", "upstream", "SCHEMA-v2.0.world-map-data-test.json")
-SCHEMA_SHA256 = "794c59b8caea94996457eb4eef5c81e36909e49a39f8975c32facbf62cc85099"
+SCHEMA_SHA256 = "02d5690a3c501fddeae4c338df4c7b62274c498a8a1b59bc54e6823e570ae14c"  # rev2（+4 三仓溯源字段）
 
 # ---------------------------------------------------------------- 别名表
 # 每项 (name_regex, transform, quality)
@@ -63,11 +69,14 @@ HOUSE_NUMBER_SUFFIX = [
 STREET_PRE_DIR = [
     F(r"ST_PREDIR|STREET_PREDIR|ST_PRE_DIR|STREET_PRE_DIR|PREDIR|PRE_DIR|PRE_DIRECTION|PRE_DIRECTIONAL|"
       r"PREDIRECTI|PREDIRECTION|PREDIRECTIONAL|ADDR_PREDIR|ADDRPRE_DIR|STN_PREDIR|CLDXF_PREDIRECTIONAL|"
-      r"ROADPREDIR|STREET_DIR_PREFIX|PRE_DIRECTIONAL", "norm_dir"),
+      r"ROADPREDIR|STREET_DIR_PREFIX|PRE_DIRECTIONAL|RD_PREFIX|RD_PREDIR|ROAD_PREFIX|ROAD_PREDIR",
+      "norm_dir"),
 ]
 
 STREET_NAME = [
     F(r"ST_NAME|STNAME|STREET_NAME|STREETNAME|ST_NAM|STNAM|STREET_NAM|STREET_NA|STREET", "trim"),
+    F(r"RD_FULLNAME|ROAD_FULLNAME|RD_LABEL|FULL_ROAD_NAME", "strip_type_dir", "extracted"),
+    F(r"LABEL_NAME|ADDR_LABEL|FULL_LABEL", "strip_number", "extracted"),
     F(r"ROAD_NAME|ROADNAME|ROAD|THOROUGHFARE|WAY_NAME|STREET_FULL|FULL_STREET_NAME|FULLSTREET|STNAM_FULL|"
       r"FULL_STREET", "strip_type_dir", "extracted"),
     F(r"ADDR_STREET|ADDRSTREET|ADDRESS_STREET|SITUS_STREET|SITE_STREET|STREET_NM|STREETNAME_1|STREET_NAME_1|"
@@ -79,7 +88,8 @@ STREET_NAME = [
 STREET_POST_TYPE = [
     F(r"ST_POSTYP|ST_POS_TYP|ST_POS_TYP_1|STREET_POST_TYPE|POSTTYPE|POST_TYPE|ST_TYPE|STTYPE|STRTYPE|STREET_TYPE|"
       r"STREETTYPE|STREET_TYP|STREET_TP|ST_TYP|ST_SUFFIX|STREET_SUFFIX|STREET_SUF|STREET_SUF_1|ST_SUF|STREETSUF|"
-      r"ADDR_STREET_SUFFIX|ADDRSTSUF|STREETTYPE_1", "norm_post_type"),
+      r"ADDR_STREET_SUFFIX|ADDRSTSUF|STREETTYPE_1|RD_TYPE|RD_POSTTYPE|RD_SUFFIX|ROAD_TYPE|ROAD_SUFFIX",
+      "norm_post_type"),
 ]
 
 STREET_POST_DIR = [
@@ -92,7 +102,7 @@ STREET_FULL = [
     F(r"STNAM_FULL|ST_NAME_FULL|STREET_FULL|FULL_STREET|FULL_STREET_NAME|FULLSTREET|STREET_FULL_NAME|"
       r"STREET_LABEL|FULL_STNAME|ST_FULLNAME", "trim", "native"),
     F(r"ADDRESS|ADDRESS_FULL|ADDRESS1|ADDRESS_LINE_?1|FULLADDR|FULL_ADDR|FULLADDRESS|FULL_ADDRESS|FULL_ADDRE|"
-      r"SITE_ADDR|SITE_ADDRESS|SITEADDR|ADDR", "strip_number", "extracted"),
+      r"SITE_ADDR|SITE_ADDRESS|SITEADDR|ADDR|RD_FULLNAME|ROAD_FULLNAME|LABEL_NAME", "strip_number", "extracted"),
 ]
 
 UNIT = [
@@ -104,7 +114,7 @@ UNIT = [
 
 POSTAL_CITY = [
     F(r"POST_CITY|POSTAL_CITY|MAIL_CITY|MAILING_CITY|SITUS_CITY|ADDRESS_CITY|ADDR_CITY|CITY_POSTAL|"
-      r"CITY_MAILING|OWNER_CITY", "trim", "native"),
+      r"CITY_MAILING", "trim", "native"),
     # 注意：MUNICIPALITY / TOWN / COMMUNITY / OWNER_CITY **不进** postal_city
     #   - MUNICIPALITY/TOWNSHIP 属 municipal_city（实测含 "Unincorporated Area"）
     #   - OWNER_CITY 是业主邮寄城市（实测含 "MIAMI, FL 33142-2202"），不是房产所在城市
@@ -288,6 +298,7 @@ def norm_post_type(v: str) -> str | None:
 
 
 def norm_zip(v) -> str | None:
+    """取前 5 位数字；不足 5 位返回 None（补零＝伪造，4 位多半是源端丢位）。"""
     digits = re.sub(r"\D", "", str(v))
     if len(digits) < 5:
         return None
@@ -358,7 +369,10 @@ def extract_number(v) -> str | None:
 
 def strip_number(v) -> str | None:
     s = re.sub(r"^\s*\d+[A-Za-z]?(?:-\d+)?\s+", "", str(v)).strip()
-    return s or None
+    # 只有数字/切完啥也不剩 → 不是街名（实测有层的 ADDRESS 只存门牌号）
+    if not s or not re.search(r"[A-Za-z]", s):
+        return None
+    return s
 
 
 def strip_type_dir(v) -> str | None:
@@ -375,6 +389,39 @@ def norm_state(v) -> str | None:
     if len(s) == 2 and s in ABBR:
         return s
     return STATE_ABBR.get(s)
+
+
+# ---------------------------------------------------------------- TIGER 县界
+_IDX: dict = {}
+
+
+def tiger_index(st: str):
+    if not st or CT is None or st not in getattr(CT, "STATE_FIPS", {}):
+        return None
+    if st not in _IDX:
+        try:
+            _IDX[st] = CT.fetch_state(st)
+        except Exception as e:      # noqa: BLE001
+            print("⚠️ TIGER 县界取不到 %s：%s" % (st, str(e)[:80]))
+            _IDX[st] = None
+    return _IDX[st]
+
+
+def tiger_county_from_layer(lid: str, url: str, st: str):
+    """从层 id/url 反查县：先找 `Xxx_County`，再用「州内县名出现在层名里且唯一」兜底。"""
+    idx = tiger_index(st)
+    if idx is None:
+        return None
+    hit = CT.county_from_text(lid + " " + url, idx)
+    if hit:
+        return hit
+    key = CT._key(lid + " " + url)
+    cands = [f for f, e in idx.by_fips.items()
+             if len(e["name"]) >= 5 and CT._key(e["name"]) in key]
+    if len(cands) == 1:
+        e = idx.by_fips[cands[0]]
+        return (e["name"], e["fips"])
+    return None
 
 
 # ---------------------------------------------------------------- 主流程
@@ -567,28 +614,57 @@ def main() -> int:
             cov["municipal_city"]["reasons"]["需 tiger places 回填"] = \
                 cov["municipal_city"]["reasons"].get("需 tiger places 回填", 0) + 1
 
-        # ---- county
-        src, tr, q, rt = pick(fields, COUNTY_NAME, nums, MIN_RATE_LOW,
-                              validator=lambda n: any(norm_county(x) for x in examples(fields[n])))
-        if src:
-            put("county_name", src, tr, q, rt)
-            cov["county_name"]["with_source"] += 1
+        # ---- county：源列 → TIGER 县名回填（层 id/url）→ 逐行多边形判定
+        c_src, c_tr, c_q, c_rt = pick(fields, COUNTY_NAME, nums, MIN_RATE_LOW,
+                                      validator=lambda n: any(norm_county(x) for x in examples(fields[n])))
+        f_src, f_tr, f_q, f_rt = pick(fields, COUNTY_FIPS, nums, MIN_RATE_LOW,
+                                      validator=lambda n: any(norm_fips(x) for x in examples(fields[n])))
+        county_from = None
+        if c_src or f_src:
+            county_from = "column"
         else:
-            put("county_name", None, reason="无县名列；县身份应由县分片元数据给定（SCHEMA 的 scope.county_fips 同源）")
+            hit = None
+            if CT is not None:
+                hit = tiger_county_from_layer(lid, m.get("url") or "",
+                                              (m.get("state") or "").upper())
+            if hit:
+                county_from = "tiger_layer_name"
+                ent["county_name"] = {"src": "[[layer_name→tiger_county]]", "quality": "derived",
+                                      "value": hit[0], "fips": hit[1], "reason": None}
+                ent["county_name"].pop("reason")
+                ent["county_fips"] = {"src": "[[tiger_county.GEOID]]", "quality": "derived",
+                                      "value": hit[1]}
+                cov["county_name"]["layer_meta"] += 1
+                cov["county_fips"]["layer_meta"] += 1
+        if county_from == "column":
+            if c_src:
+                put("county_name", c_src, c_tr, c_q, c_rt)
+                cov["county_name"]["with_source"] += 1
+            else:
+                put("county_name", None, reason="无县名列（FIPS 列有，名可由 TIGER 反查）")
+                cov["county_name"]["null"] += 1
+                cov["county_name"]["reasons"]["无列"] = cov["county_name"]["reasons"].get("无列", 0) + 1
+            if f_src:
+                put("county_fips", f_src, f_tr, f_q, f_rt)
+                cov["county_fips"]["with_source"] += 1
+            else:
+                put("county_fips", None, reason="无 FIPS 列（县名有，FIPS 可由 TIGER 反查）")
+                cov["county_fips"]["null"] += 1
+                cov["county_fips"]["reasons"]["无列"] = cov["county_fips"]["reasons"].get("无列", 0) + 1
+        elif county_from != "tiger_layer_name":
+            # 层跨多县（州级/多县层）：county 必须逐行用 TIGER 多边形判定，不能在层级别写死
+            has_geo = bool((d.get("norm") or {}).get("lat", {}).get("nonempty"))
+            why = ("层跨多县 → 逐行 TIGER 多边形判定（禁用 bbox）" if has_geo
+                   else "层跨多县且无坐标 → 无法判县（geo_missing）")
+            put("county_name", None, reason=why)
+            put("county_fips", None, reason=why)
             cov["county_name"]["null"] += 1
-            cov["county_name"]["reasons"]["无列"] = cov["county_name"]["reasons"].get("无列", 0) + 1
-
-        src, tr, q, rt = pick(fields, COUNTY_FIPS, nums, MIN_RATE_LOW,
-                              validator=lambda n: any(norm_fips(x) for x in examples(fields[n])))
-        if src:
-            put("county_fips", src, tr, q, rt)
-            cov["county_fips"]["with_source"] += 1
-        else:
-            why = ("候选列示例值不是 4~5 位 FIPS，拒用" if any(re.match(r"^(FIPS|COUNTYFIPS|STCOFIPS|CNTY_FIPS|FIPS_CODE)$", n, re.I)
-                                                            for n in fields) else "无 FIPS 列")
-            put("county_fips", None, reason=why + "；县身份应由县分片元数据给定（roster）")
             cov["county_fips"]["null"] += 1
-            cov["county_fips"]["reasons"]["无列"] = cov["county_fips"]["reasons"].get("无列", 0) + 1
+            cov["county_name"]["reasons"]["跨多县"] = cov["county_name"]["reasons"].get("跨多县", 0) + 1
+            cov["county_fips"]["reasons"]["跨多县"] = cov["county_fips"]["reasons"].get("跨多县", 0) + 1
+        ent["county_scope"] = "single" if county_from == "tiger_layer_name" or (
+            county_from == "column" and (ent.get("county_fips") or {}).get("src")) else "multi"
+        ent["county_src"] = county_from
 
         # ---- state：列优先，其次层元数据（州是分片作用域属性）
         src, tr, q, rt = pick(fields, STATE, nums, 0.5,
@@ -603,6 +679,7 @@ def main() -> int:
                 # 州是分片作用域属性，层内恒成立（SCHEMA note: 县片内实测 100% 等于本州）
                 ent_state = put("state_abbr", "[[layer_meta.state]]", "layer_meta", "layer_meta", 1.0)
                 ent_state["scope_const"] = True
+                ent_state["value"] = norm_state(st)
                 ent["state_src"] = "layer_meta"
                 cov["state_abbr"]["layer_meta"] += 1
             else:
@@ -684,7 +761,8 @@ def main() -> int:
             "frozen_at": schema["frozen_at"],
             "pinned_copy": "schema/upstream/SCHEMA-v2.0.world-map-data-test.json",
             "sha256": SCHEMA_SHA256,
-            "commit": "b7dfa015548c66002975db0a4e06c5d84d26e6f9",
+            "commit": "514f12f",  # rev2 · minor additive（+src_kind/src_layer_id/src_layer_url/src_parcel_id）
+            "rev": schema.get("rev"),
         },
         "generated_at": "2026-10-30",
         "sources": {
@@ -752,7 +830,8 @@ def main() -> int:
     doc["value_rules"] = {
         "state_abbr": "列优先（STATE/State/ST…，需 2 位合法州码）；无列时取层元数据 state（州是分片作用域属性，"
                       "SCHEMA 亦记「县片内实测 100% 等于本州」）",
-        "zip5": "去非数字左补零到 5 位；ZIP4/Plus4 列不取（避免把 +4 当 zip5）；ZCTA 回填必须另标 zip_source=zcta_derived",
+        "zip5": "去非数字后取前 5 位；不足 5 位一律 null（**不左补零**——补零会造出看着合法、实为错误的 0xxxx 邮编）；"
+                "ZIP4/Plus4 列不取；ZCTA 回填必须另标 zip_source=zcta_derived",
         "county_name": "取 County/CountyName/CNTY_NAME，去尾部 ' County'，大小写归一；纯数字列视为 FIPS 不当县名",
         "county_fips": "候选列示例值必须是 4~5 位数字（4 位左补 0），否则拒用留 null",
         "street_post_type": "归一为全称（ST→Street, AVE→Avenue…），词表见 VALUE-PROFILE 与 SCHEMA note",
@@ -767,6 +846,20 @@ def main() -> int:
         "source_confidence": "三仓单层单源 → 恒 B-Tier（符合 SCHEMA grade_rules：只有 1 个独立源即 B-Tier；"
                              "S/A 需 NAD+TIGER+OA 多源 join 后才可升级）",
     }
+    def _has(e, f):
+        return bool((e.get(f) or {}).get("src"))
+
+    def _geo(e):
+        return _has(e, "latitude") and _has(e, "longitude")
+
+    u1 = sum(1 for e in out_layers.values()
+             if _has(e, "house_number") and _has(e, "street_name") and e.get("state_src") == "column")
+    u2 = sum(1 for e in out_layers.values()
+             if _has(e, "house_number") and _has(e, "street_name") and (e.get("state_abbr") or {}).get("src"))
+    u3 = sum(1 for e in out_layers.values()
+             if _has(e, "house_number") and _has(e, "street_name")
+             and (e.get("state_abbr") or {}).get("src")
+             and (e.get("county_scope") == "single" or _geo(e)))
     total_rows = sum((e.get("rows_total") or 0) for e in out_layers.values())
     row_cov = {}
     for t in TARGETS:
@@ -791,6 +884,16 @@ def main() -> int:
         "blocking_house_number_or_street": sum(1 for e in out_layers.values()
                                               if set(e["blocking"]) & {"house_number", "street_name"}),
         "mappable_primary_avg": round(sum(e["mappable_primary"] for e in out_layers.values()) / max(1, n_layer), 2),
+        "usable_v1_state_column_only": u1,
+        "usable_v1_pct": round(100.0 * u1 / max(1, n_layer), 2),
+        "usable_v2_after_state_backfill": u2,
+        "usable_v2_pct": round(100.0 * u2 / max(1, n_layer), 2),
+        "usable_v3_after_county": u3,
+        "usable_v3_pct": round(100.0 * u3 / max(1, n_layer), 2),
+        "county_layer_level": sum(1 for e in out_layers.values() if e.get("county_scope") == "single"),
+        "county_multi_row_pip": sum(1 for e in out_layers.values() if e.get("county_scope") == "multi"),
+        "county_multi_no_geo": sum(1 for e in out_layers.values()
+                                   if e.get("county_scope") == "multi" and not _geo(e)),
         "targets": len(TARGETS),
     }
 
