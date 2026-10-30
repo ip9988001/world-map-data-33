@@ -121,7 +121,10 @@ jobs:
           set -euo pipefail
           STAGE="${{ inputs.stage }}"; ID=$(printf "%02d" ${{ matrix.shard }})
           F="collect/ledger/${STAGE}_shard${ID}.json"
-          [ -f "$F" ] || { echo "⚠️ 本片没产出账本（片内 0 层或早退）"; exit 0; }
+          # 兜底：账本实际文件名以 stage 前缀为准；找不到就按 *_**_shardNN.json 兜一次，
+          # 避免「跑完 12 小时、账本静默落空」（2026-10-30 实测过这个坑）
+          [ -f "$F" ] || F=$(ls "collect/ledger/"*_shard"${ID}".json 2>/dev/null | head -1)
+          [ -n "${F:-}" ] && [ -f "$F" ] || { echo "⚠️ 本片没产出账本（片内 0 层或早退）"; exit 0; }
           cp "$F" /tmp/led.json
           for i in $(seq 1 6); do
             git fetch -q origin main || true
@@ -139,7 +142,9 @@ jobs:
         if: always()
         with:
           name: led-${{ inputs.stage }}-${{ matrix.shard }}
-          path: collect/ledger/${{ inputs.stage }}_shard*.json
+          path: |
+            collect/ledger/${{ inputs.stage }}_shard*.json
+            collect/ledger/*_shard${{ matrix.shard }}.json
           retention-days: 30
           if-no-files-found: warn
 
