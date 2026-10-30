@@ -71,6 +71,27 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: "3.11" }
       - run: pip install --quiet pyyaml
+      # ★ 派单前核验（2026-10-31 立规）：**没有 preflight 输出的派单，视为无效派单**。
+      #   只读：不采集、不派发、不改账本（上游只发 returnCountOnly 计数请求）。
+      #   14 项分五组（队列/并发、代码版本、账本基线、数据重叠、上游可用性），任一 FAIL → 本 job 直接红，
+      #   shard 一个都起不来。判据与处置见 docs/PREFLIGHT-GATE.md。
+      - name: 派单前核验（preflight gate）
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AUTHORIZE_HEAVY: ${{ inputs.authorize_heavy }}
+        run: |
+          set -euo pipefail
+          ARG=""
+          [ "$AUTHORIZE_HEAVY" = "1" ] && ARG="--authorize-heavy"
+          python3 collect/preflight_dispatch.py \
+            --stage "${{ inputs.stage }}" \
+            --force-layers "${{ inputs.force_layers }}" \
+            --size "${{ inputs.size }}" \
+            --max-shards "${{ inputs.max_shards }}" \
+            --ref "${{ github.ref_name }}" $ARG | tee /tmp/preflight.log
+          { echo "### 派单前核验（${{ inputs.stage }}）"; echo '```'
+            cat /tmp/preflight.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
       # ★ 重阶段闸门（2026-10-30 定案）：10b = 宗地 8,116 层 / 20~85 GB，属于「等口号」范围。
       #   不加这一步，任何人 `-f stage=10b` 就能把它放出去；加了之后必须同时给 authorize_heavy=1。
       - name: 重阶段闸门（10b 默认关闭）
@@ -123,6 +144,8 @@ jobs:
             git checkout -qf -B main origin/main
             cp /tmp/plan.json "collect/ledger/${STAGE}_plan.json"
             git add -f "collect/ledger/${STAGE}_plan.json"
+            # 派单前的 preflight 产物一起进 git：审计「这次派单核验过什么」
+            git add -f analysis/preflight-${STAGE}-*.json analysis/rows-baseline-${STAGE}-*.json 2>/dev/null || true
             if git diff --cached --quiet; then echo "计划无变化"; exit 0; fi
             git -c user.name=collect-bot -c user.email=bot@users.noreply.github.com \
                 commit -q -m "collect: ${STAGE} 计划（run ${{ github.run_id }}）"

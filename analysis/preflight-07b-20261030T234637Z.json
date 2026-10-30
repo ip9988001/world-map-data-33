@@ -1,0 +1,344 @@
+{
+ "schema": "preflight/v1",
+ "at": "2026-10-30T23:46:37Z",
+ "stage": "07b",
+ "ref": "main",
+ "ref_sha": "d5b5db280ae385b21d46070ec652c595cbe30e0f",
+ "main_sha": "d5b5db280ae385b21d46070ec652c595cbe30e0f",
+ "repo": "ip9988001/world-map-data-33",
+ "inputs": {
+  "stage": "07b",
+  "force_layers": [],
+  "size": "0",
+  "max_shards": "0",
+  "ref": "main",
+  "authorize_heavy": false
+ },
+ "verdict": "FAIL",
+ "fail_n": 2,
+ "warn_n": 2,
+ "checks": [
+  {
+   "id": "A1",
+   "group": "A",
+   "title": "同组占用",
+   "status": "PASS",
+   "detail": "同组空闲（无 in_progress / pending）"
+  },
+  {
+   "id": "A1b",
+   "group": "A",
+   "title": "上游阶段在跑",
+   "status": "WARN",
+   "detail": "上游 05b 正在跑（#41123309047）：它全绿后会自动派 07b → 现在手派会撞同一个 concurrency group；要么等它派，要么先去把它的接续停掉（chain=0 时不会自动派）",
+   "runs": [
+    {
+     "id": 41123309047,
+     "status": "in_progress",
+     "stage": "05b",
+     "created_at": "2026-10-30T20:27:06Z",
+     "head_sha": "7ed74c893",
+     "dur_min": 78
+    }
+   ]
+  },
+  {
+   "id": "A2",
+   "group": "A",
+   "title": "跨阶段并发",
+   "status": "PASS",
+   "detail": "其他阶段在跑 2 个（阈值 2）"
+  },
+  {
+   "id": "B3",
+   "group": "B",
+   "title": "代码版本（修复已生效）",
+   "status": "FAIL",
+   "detail": "该 ref 缺少 4 项已批准的修复：collect/ledger_merge.py→单 run 账本不得覆盖阶段账本; collect/step_full_report.py→merge 步骤走 ledger_merge 而不是直接写阶段账本; collect/ckpt_guard.py→force 重跑按单元合并检查点（不许整份覆盖）; collect/pilot.py→重跑前先备份旧检查点",
+   "missing": [
+    {
+     "file": "collect/ledger_merge.py",
+     "why": "文件不存在于该 ref",
+     "need": "单 run 账本不得覆盖阶段账本",
+     "from": "chore/ledger-merge-fix（PR 待合）"
+    },
+    {
+     "file": "collect/step_full_report.py",
+     "why": "缺少标记 'from ledger_merge import write_run_and_stage'",
+     "need": "merge 步骤走 ledger_merge 而不是直接写阶段账本",
+     "from": "chore/ledger-merge-fix（PR 待合）"
+    },
+    {
+     "file": "collect/ckpt_guard.py",
+     "why": "文件不存在于该 ref",
+     "need": "force 重跑按单元合并检查点（不许整份覆盖）",
+     "from": "fix/force-checkpoint-preserve（PR #12）"
+    },
+    {
+     "file": "collect/pilot.py",
+     "why": "缺少标记 '_backup_legacy_ckpt'",
+     "need": "重跑前先备份旧检查点",
+     "from": "fix/force-checkpoint-preserve（PR #12）"
+    }
+   ]
+  },
+  {
+   "id": "B4",
+   "group": "B",
+   "title": "接续策略 dry-run",
+   "status": "PASS",
+   "detail": "07b → next=空 / decide=stop（停车线正确，不会自动接下一阶段）",
+   "next": "-"
+  },
+  {
+   "id": "B5",
+   "group": "B",
+   "title": "阶段授权",
+   "status": "PASS",
+   "detail": "07b 在四阶段常规范围，无需额外授权"
+  },
+  {
+   "id": "C6",
+   "group": "C",
+   "title": "账本现值",
+   "status": "WARN",
+   "detail": "阶段账本 - 层/- 行；rebuilt - 层/- 行；最近 run - 层/- 行（缺：stage_ledger,rebuilt,last_run）",
+   "ledgers": {
+    "stage_ledger": {
+     "path": "",
+     "exists": false
+    },
+    "rebuilt": {
+     "path": "",
+     "exists": false
+    },
+    "last_run": {
+     "path": "",
+     "exists": false
+    }
+   }
+  },
+  {
+   "id": "C8",
+   "group": "C",
+   "title": "账本写入保护",
+   "status": "FAIL",
+   "detail": "该 ref 的 merge/采集写入还没带保护：ledger_merge.write_run_and_stage, ledger_merge.stage_overwrite_allowed, step_full_report 走 ledger_merge —— 跑完账本必被冲（缺列见 evidence）",
+   "checks": {
+    "ledger_merge.write_run_and_stage": false,
+    "ledger_merge.stage_overwrite_allowed": false,
+    "step_full_report 走 ledger_merge": false,
+    "step_full_report 带行数闸门": false,
+    "ckpt_guard.merge_checkpoints": false,
+    "pilot 收尾合并检查点": false
+   }
+  },
+  {
+   "id": "D9",
+   "group": "D",
+   "title": "目标层撞车",
+   "status": "INFO",
+   "detail": "本次没有 --force-layers，无「点名层撞车」风险（按计划切片仍可能重叠，见 D10）"
+  },
+  {
+   "id": "D10",
+   "group": "D",
+   "title": "已采重叠",
+   "status": "PASS",
+   "detail": "计划 27530 层 vs 已采 436 层，交集 0 —— 全是新层（口径：全档估算，非 full_plan 精确计划）",
+   "overlap_n": 0
+  },
+  {
+   "id": "D11",
+   "group": "D",
+   "title": "检查点备份",
+   "status": "INFO",
+   "detail": "本次无 --force-layers，跳过逐层检查点核查"
+  },
+  {
+   "id": "E12",
+   "group": "E",
+   "title": "上游 0 行层",
+   "status": "PASS",
+   "detail": "抽样 7 层，无 0 行层（7 层有行）"
+  },
+  {
+   "id": "E13",
+   "group": "E",
+   "title": "上游 403/超时",
+   "status": "PASS",
+   "detail": "7 层抽样无 403/超时"
+  },
+  {
+   "id": "E14",
+   "group": "E",
+   "title": "声明可复核率",
+   "status": "PASS",
+   "detail": "7 层声明都可复核（用于跑后差额分母）"
+  }
+ ],
+ "rows_baseline": {},
+ "evidence": {
+  "active_runs": [
+   {
+    "id": 41126178216,
+    "status": "in_progress",
+    "stage": "04b",
+    "created_at": "2026-10-30T20:48:56Z",
+    "head_sha": "cb86f4263",
+    "dur_min": 93
+   },
+   {
+    "id": 41124980564,
+    "status": "completed",
+    "stage": "",
+    "created_at": "2026-10-30T20:39:57Z",
+    "head_sha": "cb86f4263",
+    "dur_min": 9
+   },
+   {
+    "id": 41123309047,
+    "status": "in_progress",
+    "stage": "05b",
+    "created_at": "2026-10-30T20:27:06Z",
+    "head_sha": "7ed74c893",
+    "dur_min": 78
+   },
+   {
+    "id": 41122821137,
+    "status": "completed",
+    "stage": "",
+    "created_at": "2026-10-30T20:23:38Z",
+    "head_sha": "a3483511f",
+    "dur_min": 6
+   },
+   {
+    "id": 41121952357,
+    "status": "completed",
+    "stage": "",
+    "created_at": "2026-10-30T20:17:18Z",
+    "head_sha": "e758d2639",
+    "dur_min": 124
+   },
+   {
+    "id": 41120626718,
+    "status": "completed",
+    "stage": "",
+    "created_at": "2026-10-30T20:06:25Z",
+    "head_sha": "ab56323e2",
+    "dur_min": 16
+   },
+   {
+    "id": 41116421397,
+    "status": "completed",
+    "stage": "",
+    "created_at": "2026-10-30T19:34:59Z",
+    "head_sha": "404fa5021",
+    "dur_min": 12
+   },
+   {
+    "id": 41114330819,
+    "status": "completed",
+    "stage": "",
+    "created_at": "2026-10-30T19:19:39Z",
+    "head_sha": "404fa5021",
+    "dur_min": 13
+   },
+   {
+    "id": 41092912755,
+    "status": "completed",
+    "stage": "",
+    "created_at": "2026-10-30T16:46:28Z",
+    "head_sha": "48d1a48e5",
+    "dur_min": 152
+   },
+   {
+    "id": 41019004076,
+    "status": "completed",
+    "stage": "",
+    "created_at": "2026-10-30T07:15:46Z",
+    "head_sha": "b1bc572b2",
+    "dur_min": 528
+   }
+  ],
+  "runs_err": "",
+  "plan_commits": {
+   "04b": {
+    "run_id": "41126178216",
+    "commit": "5115f3490",
+    "layers_n": 22
+   }
+  },
+  "ref": {
+   "ref": "main",
+   "sha": "d5b5db280ae385b21d46070ec652c595cbe30e0f",
+   "main_sha": "d5b5db280ae385b21d46070ec652c595cbe30e0f"
+  },
+  "chain_dry_run": "[chain] stage=07b next=-   child_chain=0 decide=stop     reason=no_next_stage\n[chain] 不接续（no_next_stage）—— 到此为止，等口号\n[chain] dry-run：没有派发任何 run",
+  "stage_ledger_path": "",
+  "rows_baseline_layers": 0,
+  "inflight_targets": {
+   "41126178216": {
+    "stage": "04b",
+    "layers_n": 22
+   }
+  },
+  "planned": {
+   "layers_n": 27530,
+   "source": "estimate(band)",
+   "done_layers_n": 436
+  },
+  "upstream_probe": {
+   "zNmbMFiinWw4_arcgis_rest_services_Whitehorse_FeatureServer_0": {
+    "http": 200,
+    "count": 1,
+    "err": "",
+    "elapsed_s": 0.4,
+    "meta_token": null
+   },
+   "arcgis_rest_services_CDBG_2021_SC_Places_shp_FeatureServer_0": {
+    "http": 200,
+    "count": 6,
+    "err": "",
+    "elapsed_s": 0.8,
+    "meta_token": null
+   },
+   "iving_SNAP_benefits_with_older_adults_Daniela__FeatureServer": {
+    "http": 200,
+    "count": 33,
+    "err": "",
+    "elapsed_s": 0.4,
+    "meta_token": null
+   },
+   "iKsj5Z5YMN_arcgis_rest_services_Mapreup_WFL1_FeatureServer_0": {
+    "http": 200,
+    "count": 120,
+    "err": "",
+    "elapsed_s": 0.4,
+    "meta_token": null
+   },
+   "_rest_services_BP4_R036_GML_July_2025_Alecia_FeatureServer_0": {
+    "http": 200,
+    "count": 372,
+    "err": "",
+    "elapsed_s": 0.3,
+    "meta_token": null
+   },
+   "rcgis_rest_services_Centerline_types_primary_FeatureServer_4": {
+    "http": 200,
+    "count": 1424,
+    "err": "",
+    "elapsed_s": 0.3,
+    "meta_token": null
+   },
+   "pKe5izqVc_arcgis_rest_services_dissolve_WFL1_FeatureServer_4": {
+    "http": 200,
+    "count": 4997,
+    "err": "",
+    "elapsed_s": 0.3,
+    "meta_token": null
+   }
+  }
+ },
+ "checks_total": 14
+}
