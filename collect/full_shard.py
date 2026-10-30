@@ -146,7 +146,11 @@ def main() -> int:
            "rows": sum((r.get("rows") or 0) for r in recs),
            "declared": sum((r.get("declared") or 0) for r in recs),
            "records": recs}
-    out = os.path.join(HERE, "ledger", "%s_shard%02d.json" % (name, a.shard))
+    # 账本文件名必须用**传入的 stage 前缀**（04b/05b/07b/10b），
+    # 因为 workflow 的提交/artifact/汇总三处都按 collect/ledger/${STAGE}_shard*.json 找；
+    # 用 name（step04b）会让账本静默落空 —— 2026-10-30 实测 4 片跑完 0 账本就是这个 bug。
+    lname = stage if stage.endswith("b") else name
+    out = os.path.join(HERE, "ledger", "%s_shard%02d.json" % (lname, a.shard))
     os.makedirs(os.path.dirname(out), exist_ok=True)
     json.dump(led, open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print("[%s] 片 %d 账本：ok=%d empty=%d partial=%d failed=%d skipped=%d rows=%d"
