@@ -1,0 +1,232 @@
+name: collect-full
+
+# 全量补采 · 四阶段连续滚（step04b → 05b → 07b → 10b），全部在 runner 上跑。
+#
+# 为什么是「分片」而不是「一层一个 matrix job」：GitHub matrix 硬上限 256 job/run，
+# 而本仓剩 272/2,770/667/3,898 层。所以 matrix 的单元是**片**：
+#   step04b 20 层/片（大层慢）、step05b/07b/10b 200 层/片。
+# 每片一个 job：timeout 350 分钟、fail-fast: false、顺序跑片内层、逐层落账。
+# 断点续跑：已采层靠 done_layers（release tag + 本机 audit）判 skipped_done；pilot 自己的
+# checkpoint 在 Release 上，重跑只补缺口。
+# 收敛：本阶段 failed==0 → 自动 dispatch 下一阶段；否则停在这里等人看账本。
+on:
+  workflow_dispatch:
+    inputs:
+      stage:        { description: "04b / 05b / 07b / 10b", default: "04b" }
+      size:         { description: "每片层数（0=按阶段默认）", default: "0" }
+      workers:      { description: "层内并发线程", default: "4" }
+      unit_rows:    { description: "单元行数（0=按 steps.json）", default: "0" }
+      max_shards:   { description: "最多跑几片（0=全部，灰度用）", default: "0" }
+      chain:        { description: "1=本阶段全绿后自动接续下一阶段", default: "1" }
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: collect-full-${{ inputs.stage }}
+  cancel-in-progress: false
+
+env:
+  SIZE_DEFAULT_04B: "20"
+  SIZE_DEFAULT_05B: "200"
+  SIZE_DEFAULT_07B: "670"
+  SIZE_DEFAULT_10B: "200"
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    outputs:
+      matrix: ${{ steps.p.outputs.matrix }}
+      shards: ${{ steps.p.outputs.shards }}
+      size:   ${{ steps.p.outputs.size }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install --quiet pyyaml
+      - id: p
+        name: 算待采层 + 切片
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STAGE: ${{ inputs.stage }}
+        run: |
+          set -euo pipefail
+          mkdir -p collect/ledger
+          case "$STAGE" in
+            04b) DEF=$SIZE_DEFAULT_04B ;; 05b) DEF=$SIZE_DEFAULT_05B ;;
+            07b) DEF=$SIZE_DEFAULT_07B ;; 10b) DEF=$SIZE_DEFAULT_10B ;;
+            *) echo "::error::未知 stage $STAGE"; exit 1 ;;
+          esac
+          SIZE="${{ inputs.size }}"; [ "$SIZE" = "0" ] && SIZE="$DEF"
+          python3 collect/run_step_${STAGE}.py --validate
+          python3 collect/full_plan.py --stage "$STAGE" --size "$SIZE" \
+            --out "collect/ledger/${STAGE}_plan.json" | tee /tmp/plan.log
+          N=$(python3 -c "import json;d=json.load(open('collect/ledger/${STAGE}_plan.json'));print(d['shards_n'])")
+          MAX="${{ inputs.max_shards }}"
+          if [ "$MAX" != "0" ] && [ "$N" -gt "$MAX" ]; then N="$MAX"; fi
+          M=$(python3 -c "import json;print(json.dumps({'include':[{'shard':i} for i in range($N)]}))")
+          echo "matrix=$M" >> "$GITHUB_OUTPUT"
+          echo "shards=$N" >> "$GITHUB_OUTPUT"
+          echo "size=$SIZE" >> "$GITHUB_OUTPUT"
+          { echo "### $STAGE 计划"; echo '```'; cat /tmp/plan.log; echo '```'
+            echo "本次跑 **$N** 片（每片 $SIZE 层）"; } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plan-${{ inputs.stage }}
+          path: collect/ledger/${{ inputs.stage }}_plan.json
+          retention-days: 30
+          if-no-files-found: error
+
+  shard:
+    needs: plan
+    if: needs.plan.outputs.shards != '0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix: ${{ fromJson(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install --quiet pyyaml
+      - uses: actions/download-artifact@v4
+        with:
+          name: plan-${{ inputs.stage }}
+          path: collect/ledger
+      - name: 采片 ${{ matrix.shard }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PILOT_HEARTBEAT_PUSH: "1"
+        run: |
+          set -euo pipefail
+          STAGE="${{ inputs.stage }}"
+          # tag 与 steps.json 一致（collect-step04-<layer> 等），换 run 能续跑
+          TAGPFX=$(python3 -c "import json;print(json.load(open('collect/ledger/${STAGE}_plan.json'))['tag'].replace('{layer}',''))")
+          echo "TAG 前缀：$TAGPFX"
+          python3 collect/full_shard.py --stage "$STAGE" --shard ${{ matrix.shard }} \
+            --plan "collect/ledger/${STAGE}_plan.json" \
+            --workers "${{ inputs.workers }}" --unit-rows "${{ inputs.unit_rows }}" \
+            --tag-prefix "$TAGPFX"
+      - name: 提交本片账本（只动自己那一个文件，用重置到 main 的方式避免并发冲突）
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          STAGE="${{ inputs.stage }}"; ID=$(printf "%02d" ${{ matrix.shard }})
+          F="collect/ledger/${STAGE}_shard${ID}.json"
+          [ -f "$F" ] || { echo "⚠️ 本片没产出账本（片内 0 层或早退）"; exit 0; }
+          cp "$F" /tmp/led.json
+          for i in $(seq 1 6); do
+            git fetch -q origin main || true
+            git checkout -q -B main origin/main
+            mkdir -p collect/ledger
+            cp /tmp/led.json "$F"
+            git add -f "$F"
+            git -c user.name=collect-bot -c user.email=bot@users.noreply.github.com \
+                commit -q -m "collect: ${STAGE} 片 ${ID} 账本" || true
+            if git push -q origin HEAD:main; then echo "✅ 片账本已推送（第 $i 次）"; exit 0; fi
+            sleep $((i*3 + RANDOM % 4))
+          done
+          echo "❌ 片账本推送失败"; exit 1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: led-${{ inputs.stage }}-${{ matrix.shard }}
+          path: collect/ledger/${{ inputs.stage }}_shard*.json
+          retention-days: 30
+          if-no-files-found: warn
+
+  merge:
+    needs: [plan, shard]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install --quiet pyyaml
+      - uses: actions/download-artifact@v4
+        with:
+          path: collect/ledger
+          pattern: "led-*"
+          merge-multiple: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: plan-${{ inputs.stage }}
+          path: collect/ledger
+      - name: 汇总账本 + 收官文档
+        run: |
+          set -euo pipefail
+          STAGE="${{ inputs.stage }}"
+          python3 collect/step_full_report.py --stage "$STAGE" \
+            --plan "collect/ledger/${STAGE}_plan.json"
+          ls -la docs/ | tail -5
+      - name: 提交（账本 + 文档）
+        id: commit
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git config user.name  "collect-bot"
+          git config user.email "bot@users.noreply.github.com"
+          STAGE="${{ inputs.stage }}"
+          DOC=$(ls docs/STEP0*-FULL-*.md 2>/dev/null | tail -1 || true)
+          git add -f collect/${STAGE}_ledger.json collect/ledger || true
+          [ -n "$DOC" ] && git add -f "$DOC" || true
+          if git diff --cached --quiet; then echo "无变化"; else
+            git commit -q -m "collect: ${STAGE} 全量收官账本 + 文档"
+          fi
+          for i in $(seq 1 6); do
+            git fetch -q origin main || true
+            if git rebase -q origin/main 2>/dev/null && git push -q origin HEAD:main; then
+              echo "✅ 已推送"; echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"; exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            sleep $((i*3 + RANDOM % 4))
+          done
+          echo "::warning::账本推送失败（文档仍在 artifact 里）"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: final-${{ inputs.stage }}
+          path: |
+            docs/STEP0*-FULL-*.md
+            collect/${{ inputs.stage }}_ledger.json
+            collect/ledger
+          retention-days: 30
+      - name: 判定 + 自动接续下一阶段
+        id: chain
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          STAGE="${{ inputs.stage }}"
+          python3 - <<'PY' > /tmp/verdict.txt
+          import json,os
+          s=os.environ["STAGE"]
+          d=json.load(open("collect/%s_ledger.json"%s))
+          print(d["failed"], d["partial"], d["layers_n"], d["ok"], d["empty"], d["skipped_done"])
+          PY
+          read FAILED PARTIAL N OK EMPTY SKIP < /tmp/verdict.txt
+          echo "failed=$FAILED partial=$PARTIAL layers=$N ok=$OK empty=$EMPTY skipped=$SKIP"
+          { echo "### $STAGE 判定"; echo "- 层 $N / ok $OK / empty $EMPTY / partial $PARTIAL / failed $FAILED / skipped $SKIP"; } >> "$GITHUB_STEP_SUMMARY"
+          NEXT=""
+          case "$STAGE" in 04b) NEXT=05b ;; 05b) NEXT=07b ;; 07b) NEXT=10b ;; esac
+          if [ "$FAILED" != "0" ]; then
+            echo "::error::$STAGE 有 $FAILED 层 failed → 不接续（账本已落，逐条原因见 docs）"
+            exit 1
+          fi
+          if [ "${{ inputs.chain }}" != "1" ] || [ -z "$NEXT" ]; then
+            echo "本阶段收敛（failed=0），不接续（chain=${{ inputs.chain }}，next=${NEXT:-无}）"; exit 0
+          fi
+          echo "✅ $STAGE 全绿 → 自动接续 $NEXT"
+          gh workflow run collect-full.yml --repo "$GITHUB_REPOSITORY" --ref main \
+            -f stage="$NEXT" -f chain=1 -f workers=4

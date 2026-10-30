@@ -148,7 +148,8 @@
     "title_include": "address|addr\\b|situs|e-?911|ng911|mailing|delivery point|location point",
     "title_exclude": "fire|nfirs|response|parcel|zone|district|boundary|hydrant|business|poi|of interest|europe|canada|mexico|bus stop|shelter|parking|traffic|crash|collision|permit|school|hospital|station|cell ?tower|antenna|solar|weather|flood|watershed|trail|park\\b|bridge|billboard|licen|inspection|vacant|demolition",
     "rows_max": 5000000,
-    "skip_blocked": true
+    "skip_blocked": true,
+    "skip_done": true
    },
    "workers": 4,
    "unit_rows": 1000000,
@@ -194,7 +195,8 @@
     "state_exclude": [
      "未定位",
      ""
-    ]
+    ],
+    "skip_done": true
    },
    "workers": 4,
    "unit_rows": 100000,
@@ -261,7 +263,8 @@
      "未定位",
      ""
     ],
-    "title_include": "address|addr\\b|situs|e-?911|ng911|mailing|delivery point|location point"
+    "title_include": "address|addr\\b|situs|e-?911|ng911|mailing|delivery point|location point",
+    "skip_done": true
    },
    "workers": 4,
    "unit_rows": 100000,
@@ -390,6 +393,172 @@
      "--review pass --note \"宗地扩采批1收尾\""
     ]
    }
+  },
+  "10b": {
+   "kind": "parcel_situs",
+   "title": "宗地地址扩采 batch2+",
+   "desc": "batch1 之外的强/弱有效层全部采（reject 只记账不采）",
+   "select": {
+    "source": "layer_plan",
+    "file": "collect/situs_layers.csv",
+    "grade": [
+     "strong",
+     "weak"
+    ],
+    "mode": "bulk",
+    "order": "rows_desc",
+    "offset": 0,
+    "batch": 4000,
+    "skip_done": true
+   },
+   "workers": 4,
+   "unit_rows": 100000,
+   "tag": "collect-step10b-{layer}",
+   "geom_in": [],
+   "evidence": [
+    "report",
+    "releases",
+    "checkpoint",
+    "layer_plan.csv",
+    "state"
+   ],
+   "accept": {
+    "eff_min": 0.2,
+    "pick_layers_min": 1000,
+    "budget_min_max": 900
+   },
+   "supervise": {
+    "stall_min": 180,
+    "doc": "collect/steps/STEP-10.md",
+    "wf": "worker-10.yml",
+    "wake_reason": "宗地扩采：工人已停手，等大脑判验收",
+    "cmds": [
+     "--kick 10 --offset 0 --size 200",
+     "--review pass --note \"宗地扩采批1收尾\""
+    ]
+   },
+   "done_from": "10"
+  },
+  "04b": {
+   "kind": "collect",
+   "title": "全州放量（全量补采）",
+   "desc": "点类地址层 row_count>300000 全量补采；已采层靠 skip_done 剔除",
+   "select": {
+    "where": "row_count>300000",
+    "title_include": "address|addr\\b|situs|e-?911|ng911|mailing|delivery point|location point",
+    "skip_done": true
+   },
+   "workers": 4,
+   "unit_rows": 1000000,
+   "tag": "collect-step04-{layer}",
+   "evidence": [
+    "report",
+    "releases",
+    "checkpoint",
+    "unit_errors"
+   ],
+   "accept": {
+    "total_rows_min": 30000000,
+    "layers_min": 40,
+    "layers_max": 60,
+    "per_layer_rows_max": 5000000
+   },
+   "supervise": {
+    "stall_min": 300,
+    "doc": "collect/steps/STEP-04.md",
+    "wf": "worker-04.yml",
+    "wake_reason": "全州放量：工人已停手，等大脑判验收",
+    "cmds": [
+     "--review pass --next 05",
+     "--kick 04 --workers 4 --max-layers 10",
+     "--kick 04 --workers 4"
+    ]
+   },
+   "batch": 60,
+   "done_from": "04"
+  },
+  "05b": {
+   "kind": "collect",
+   "title": "县市碎片（全量补采）",
+   "desc": "剩余两万层分批扫完，不留 pending",
+   "select": {
+    "mode": "bulk",
+    "batch": 4000,
+    "order": "rows_asc",
+    "rows_min": 5000,
+    "title_include": "address|addr\\b|situs|e-?911|ng911|mailing|delivery point|location point",
+    "rows_max": 300000,
+    "skip_done": true,
+    "offset": 0
+   },
+   "workers": 4,
+   "unit_rows": 100000,
+   "tag": "collect-step05-{layer}",
+   "roll": {
+    "mode": "batches",
+    "max_per_authorization": 5
+   },
+   "evidence": [
+    "report",
+    "releases",
+    "checkpoint",
+    "blocked"
+   ],
+   "accept": {
+    "failed_rate_max": 0.15,
+    "layers_min": 80,
+    "layers_max": 100
+   },
+   "supervise": {
+    "stall_min": 300,
+    "doc": "collect/steps/STEP-05.md",
+    "wf": "worker-05.yml",
+    "wake_reason": "县市碎片：工人已停手，等大脑判验收",
+    "cmds": [
+     "--review pass --next 06",
+     "--kick 05 --workers 4 --offset 0 --size 100"
+    ]
+   },
+   "done_from": "05"
+  },
+  "07b": {
+   "kind": "collect",
+   "title": "碎片补齐（全量补采）",
+   "desc": "补上 05 因行数门槛排掉的小层（<5000 行）与软词地址层 —— 完整性，不是扩口径",
+   "select": {
+    "mode": "bulk",
+    "batch": 4000,
+    "order": "rows_asc",
+    "rows_min": 1,
+    "rows_max": 4999,
+    "title_include": "address|addr\\b|situs|e-?911|ng911|mailing|delivery point|location point",
+    "skip_done": true,
+    "offset": 0
+   },
+   "workers": 4,
+   "unit_rows": 100000,
+   "tag": "collect-step07-{layer}",
+   "evidence": [
+    "report",
+    "releases",
+    "checkpoint"
+   ],
+   "accept": {
+    "failed_rate_max": 0.2,
+    "layers_min": 250,
+    "layers_max": 1500
+   },
+   "supervise": {
+    "stall_min": 300,
+    "doc": "collect/steps/STEP-07.md",
+    "wf": "worker-07.yml",
+    "wake_reason": "碎片补齐：工人已停手，等大脑判验收",
+    "cmds": [
+     "--review pass --next 08",
+     "--kick 07 --workers 4 --offset 0 --size 120"
+    ]
+   },
+   "done_from": "07"
   }
  }
 }
