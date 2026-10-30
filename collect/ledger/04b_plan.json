@@ -1,44 +1,53 @@
 {
  "schema": "collect-plan/v1",
  "stage": "04b",
- "size": 6,
- "layers_n": 18,
+ "size": 8,
+ "layers_n": 22,
  "shards_n": 3,
- "declared_rows": 40779136,
+ "declared_rows": 151178722,
  "unit_rows": 1000000,
  "workers": 4,
  "done_from": "04",
  "tag": "collect-step04-{layer}",
  "order": null,
  "forced_layers": [
+  "s_Points_from_National_Address_Database_view_FeatureServer_0",
+  "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2",
   "UyC7jAmu_arcgis_rest_services_LBRSforLocator_FeatureServer_0",
   "ces_Ky_911_Site_Structure_Address_Points_WGS84WM_MapServer_0",
-  "fD_arcgis_rest_services_COTGEO_ADDRESS_POINT_FeatureServer_0",
-  "t01_rest_services_PlatTracker_PT365_PLAT_MAPPING_MapServer_5",
-  "cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0",
-  "s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0",
-  "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1",
+  "conemap_gov_secure_rest_services_NC1Map_Location_MapServer_0",
   "vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0",
   "ervices_us_mn_state_mngeo_loc_addresses_open_FeatureServer_0@未定位-1",
-  "_rgv911_org_server_rest_services_Public_Map_MIL1_MapServer_1",
-  "_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0"
+  "rvices_location_Address_Points_Modifications_FeatureServer_0",
+  "_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0",
+  "g_rest_services_Basemap_Address_Points_EagleView_MapServer_0",
+  "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1",
+  "tyil_gov_traditional_rest_services_cookVwrDynmc_MapServer_63",
+  "tync_gov_arcgis_rest_services_GISDV_Base_Map_FeatureServer_1",
+  "UGfPrN7o_arcgis_rest_services_Address_Labels_FeatureServer_0",
+  "ricopa_County_Address_Points__Non_Commercial_FeatureServer_0",
+  "_rgv911_org_server_rest_services_Public_Map_MIL1_MapServer_1"
  ],
  "shards": [
   {
    "shard": 0,
    "layers": [
+    "s_Points_from_National_Address_Database_view_FeatureServer_0",
+    "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2",
     "UyC7jAmu_arcgis_rest_services_LBRSforLocator_FeatureServer_0",
     "ces_Ky_911_Site_Structure_Address_Points_WGS84WM_MapServer_0",
-    "fD_arcgis_rest_services_COTGEO_ADDRESS_POINT_FeatureServer_0",
-    "t01_rest_services_PlatTracker_PT365_PLAT_MAPPING_MapServer_5",
-    "vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0",
-    "ervices_us_mn_state_mngeo_loc_addresses_open_FeatureServer_0@未定位-1"
+    "conemap_gov_secure_rest_services_NC1Map_Location_MapServer_0",
+    "ervices_us_mn_state_mngeo_loc_addresses_open_FeatureServer_0@未定位-1",
+    "rvices_location_Address_Points_Modifications_FeatureServer_0",
+    "tync_gov_arcgis_rest_services_GISDV_Base_Map_FeatureServer_1"
    ]
   },
   {
    "shard": 1,
    "layers": [
-    "rvices_location_Address_Points_Modifications_FeatureServer_0",
+    "UGfPrN7o_arcgis_rest_services_Address_Labels_FeatureServer_0",
+    "ricopa_County_Address_Points__Non_Commercial_FeatureServer_0",
+    "vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0",
     "_arcgis1_rest_services_FLEXMOBILE_Address_Points_MapServer_0",
     "_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0",
     "g_rest_services_Basemap_Address_Points_EagleView_MapServer_0",
