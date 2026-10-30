@@ -216,6 +216,29 @@ def main() -> int:
         V.append("| `%s` | %d | %s | %s |" % (
             name, num_layers[name], f"{n:,}",
             " | ".join(f"{c.get(k, 0):,} ({100.0 * c.get(k, 0) / max(1, n):.1f}%)" for k in cls)))
+    # 只挑「裸门牌号字段」再统计一次（ADDRESS/FULLADDR 这类整串地址会淹没 pure_num 分布）
+    bare = {}
+    for name, c in num_agg.items():
+        n = sum(c.values()) or 1
+        if c.get("other", 0) * 100.0 / n < 40:
+            bare[name] = c
+    bt = Counter()
+    for c in bare.values():
+        bt.update(c)
+    if bare:
+        BN = sum(bt.values())
+        V += ["", "### 只算「裸门牌号字段」（剔除整串地址字段，other<40%）", "",
+              "| 字段 | 层数 | 样本值数 | " + " | ".join(cls) + " |",
+              "|---|---|---|" + "---|" * len(cls)]
+        for name, c in sorted(bare.items(), key=lambda x: -sum(x[1].values()))[:15]:
+            n = sum(c.values())
+            V.append("| `%s` | %d | %s | %s |" % (name, num_layers[name], f"{n:,}",
+                     " | ".join(f"{c.get(k, 0):,} ({100.0 * c.get(k, 0) / max(1, n):.1f}%)" for k in cls)))
+        V += ["", "**裸门牌号字段合计**（%s 个样本值）：" % f"{BN:,}", "", "| 类 | 行数 | 占比 |", "|---|---|---|"]
+        for k in cls:
+            V.append("| %s | %s | %.2f%% |" % (k, f"{bt.get(k, 0):,}", 100.0 * bt.get(k, 0) / max(1, BN)))
+        V += ["", "整串地址字段（`ADDRESS`/`Address`/`FULLADDR`…）的 `other` 占比高是正常的——"
+                  "它们本来就是「门牌号 + 街名 + 城市」拼串，需要先按正则切出首段数字才进门牌列。", ""]
     N = sum(tot.values())
     V += ["", "**全体门牌字段合计**（%s 个样本值）：" % f"{N:,}", "",
           "| 类 | 行数 | 占比 |", "|---|---|---|"]

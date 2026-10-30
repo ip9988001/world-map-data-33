@@ -199,15 +199,6 @@
 | `YtAMoyYT_arcgis_rest_services_Master_Address_Feature` | address_point | 304,965 | `ADDRESS` | 100.0% | 304,965 | 0 | pure_num |
 | `arcgis_rest_services_Poland_Addresses_2_view_Feature` | address_point | 301,951 | `-` | 0.0% | 0 | 301,951 | no_number_field |
 
-## 覆盖与口径补充
-
-- field-map 覆盖：**2,381 层**（点层 1,143 + 宗地层 1,238），占已采层 **99.0%**（≥95% 门槛达标）。
-- `usable` 按任务口径（number/street/state 三者任一为 null 即 false）只有 **595 层（24.99%）**——
-  原因是**源图层普遍没有 state 列**（州信息在层元数据里，不在属性里）。
-  按「number + street 可得」的次级口径是 **1,844 层（77.45%）**，落仓时 state 由 layer 元数据回填即可。
-- 行级数字是**抽样比例外推**（每层 1,200~2,000 行样本）；3 层全量逐行核对见
-  `docs/INTAKE-YIELD-RECONCILE.md`（闭合 3/3，外推误差 -2.10% ~ 0.00%）。
-
 ## 汇总
 
 - 层数：**2381**（点层 1143 / 宗地层 1238）
