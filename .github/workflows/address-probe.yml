@@ -1,0 +1,110 @@
+name: address-probe
+
+# 点类地址层逐层摸排（4,986 层口径）：每层抽 300 行算实测有效率 → collect/address_layers.csv
+# 判据只有「真拉 300 行看能不能拼出地址」，不用 bbox（bbox 会把邻州地址算进本层）。
+# matrix 单元 = 片（默认 120 层/片），因为层数 5,111 > matrix 256 job 上限。
+on:
+  workflow_dispatch:
+    inputs:
+      size:    { description: "每片层数", default: "120" }
+      threads: { description: "片内并发", default: "10" }
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      matrix: ${{ steps.p.outputs.matrix }}
+      shards: ${{ steps.p.outputs.shards }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - id: p
+        run: |
+          set -euo pipefail
+          N=$(python3 -c "
+          import sys; sys.path.insert(0,'collect')
+          import address_probe as ap
+          print(len(ap.candidates()))")
+          S="${{ inputs.size }}"
+          SHP=$(( (N + S - 1) / S ))
+          echo "候选 $N 层 → $SHP 片（每片 $S 层）"
+          M=$(python3 -c "import json;print(json.dumps({'include':[{'shard':i} for i in range($SHP)]}))")
+          echo "matrix=$M" >> "$GITHUB_OUTPUT"; echo "shards=$SHP" >> "$GITHUB_OUTPUT"
+
+  probe:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix: ${{ fromJson(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: 摸排片 ${{ matrix.shard }}
+        run: |
+          python3 collect/address_probe.py --shard ${{ matrix.shard }} \
+            --shards ${{ needs.plan.outputs.shards }} --size "${{ inputs.size }}" \
+            --threads "${{ inputs.threads }}" \
+            --out "collect/ledger/addrprobe_$(printf %02d ${{ matrix.shard }}).csv"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ap-${{ matrix.shard }}
+          path: collect/ledger/addrprobe_*.csv
+          retention-days: 30
+          if-no-files-found: warn
+
+  merge:
+    needs: [plan, probe]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - uses: actions/download-artifact@v4
+        with:
+          path: collect/ledger
+          pattern: "ap-*"
+          merge-multiple: true
+      - name: 合成 CSV + 收官文档
+        run: |
+          set -euo pipefail
+          ls collect/ledger/addrprobe_*.csv | wc -l
+          python3 collect/address_probe.py --merge | tee /tmp/merge.json
+          { echo "### 摸排结果"; echo '```'; cat /tmp/merge.json; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - name: 提交
+        run: |
+          set -euo pipefail
+          git config user.name  "collect-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add -f collect/address_layers.csv docs/ADDRESS-LAYERS-PROBE-2026-10-30.md collect/ledger/addrprobe_*.csv
+          if git diff --cached --quiet; then echo "无变化"; exit 0; fi
+          git commit -q -m "collect: 点类地址层逐层摸排（实测抽样）→ address_layers.csv"
+          for i in $(seq 1 6); do
+            git fetch -q origin main || true
+            if git rebase -q origin/main 2>/dev/null && git push -q origin HEAD:main; then
+              echo "✅ 已推送"; exit 0; fi
+            git rebase --abort 2>/dev/null || true
+            sleep $((i*3 + RANDOM % 4))
+          done
+          echo "::warning::推送失败"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: address-layers
+          path: |
+            collect/address_layers.csv
+            docs/ADDRESS-LAYERS-PROBE-2026-10-30.md
+          retention-days: 30
