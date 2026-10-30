@@ -124,7 +124,13 @@ def resolve_ref(ref: str):
       `2161d50`（feat/ledger-rebuild 时代），而真正的远端 main 是 `d5b5db2`。
       先读本地 main 会把 preflight 判成「代码版本不对」，等于用假证据挡自己。
     """
-    cands = ["origin/%s" % ref] + ([ref] if not ref.startswith("origin/") else [])
+    ref = (ref or "").strip()
+    if ref.startswith("refs/heads/"):
+        ref = ref[len("refs/heads/"):]
+    if ref.startswith("origin/"):
+        cands = [ref, ref[len("origin/"):]]
+    else:
+        cands = ["origin/%s" % ref, ref]
     for cand in cands:
         rc, out, _ = _run(["git", "rev-parse", "--verify", "%s^{commit}" % cand], timeout=30)
         if rc == 0:
