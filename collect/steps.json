@@ -429,12 +429,12 @@
    },
    "supervise": {
     "stall_min": 180,
-    "doc": "collect/steps/STEP-10.md",
-    "wf": "worker-10.yml",
-    "wake_reason": "宗地扩采：工人已停手，等大脑判验收",
+    "doc": "collect/steps/STEP-10b.md",
+    "wf": "collect-full.yml",
+    "wake_reason": "宗地地址扩采 batch2+：工人已停手，等大脑判验收",
     "cmds": [
-     "--kick 10 --offset 0 --size 200",
-     "--review pass --note \"宗地扩采批1收尾\""
+     "--kick 10b --workers 4",
+     "--review pass --note \"宗地扩采 batch2+ 收尾\""
     ]
    },
    "done_from": "10"
@@ -465,13 +465,12 @@
    },
    "supervise": {
     "stall_min": 300,
-    "doc": "collect/steps/STEP-04.md",
-    "wf": "worker-04.yml",
-    "wake_reason": "全州放量：工人已停手，等大脑判验收",
+    "doc": "collect/steps/STEP-04b.md",
+    "wf": "collect-full.yml",
+    "wake_reason": "全州放量（全量补采）：工人已停手，等大脑判验收",
     "cmds": [
-     "--review pass --next 05",
-     "--kick 04 --workers 4 --max-layers 10",
-     "--kick 04 --workers 4"
+     "--kick 04b --workers 4",
+     "--review pass --next 05"
     ]
    },
    "batch": 60,
@@ -511,12 +510,12 @@
    },
    "supervise": {
     "stall_min": 300,
-    "doc": "collect/steps/STEP-05.md",
-    "wf": "worker-05.yml",
-    "wake_reason": "县市碎片：工人已停手，等大脑判验收",
+    "doc": "collect/steps/STEP-05b.md",
+    "wf": "collect-full.yml",
+    "wake_reason": "县市碎片（全量补采）：工人已停手，等大脑判验收",
     "cmds": [
-     "--review pass --next 06",
-     "--kick 05 --workers 4 --offset 0 --size 100"
+     "--kick 05b --workers 4",
+     "--review pass --next 06"
     ]
    },
    "done_from": "05"
@@ -550,12 +549,12 @@
    },
    "supervise": {
     "stall_min": 300,
-    "doc": "collect/steps/STEP-07.md",
-    "wf": "worker-07.yml",
-    "wake_reason": "碎片补齐：工人已停手，等大脑判验收",
+    "doc": "collect/steps/STEP-07b.md",
+    "wf": "collect-full.yml",
+    "wake_reason": "碎片补齐（全量补采）：工人已停手，等大脑判验收",
     "cmds": [
-     "--review pass --next 08",
-     "--kick 07 --workers 4 --offset 0 --size 120"
+     "--kick 07b --workers 4",
+     "--review pass --next 08"
     ]
    },
    "done_from": "07"

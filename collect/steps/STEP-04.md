@@ -53,7 +53,8 @@ python3 collect/supervisor.py --kick 04 --workers 4
   "title_include": "address|addr\\b|situs|e-?911|ng911|mailing|delivery point|location point",
   "title_exclude": "fire|nfirs|response|parcel|zone|district|boundary|hydrant|business|poi|of interest|europe|canada|mexico|bus stop|shelter|parking|traffic|crash|collision|permit|school|hospital|station|cell ?tower|antenna|solar|weather|flood|watershed|trail|park\\b|bridge|billboard|licen|inspection|vacant|demolition",
   "rows_max": 5000000,
-  "skip_blocked": true
+  "skip_blocked": true,
+  "skip_done": true
  },
  "workers": 4,
  "unit_rows": 1000000,

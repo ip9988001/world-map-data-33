@@ -416,16 +416,27 @@ def kick(step, layers=None, workers=None, dry=False, max_layers=None, offset=Non
     if not wf:
         print("该步没有工人 workflow"); return 1
     cmd = ["gh", "workflow", "run", wf, "--repo", REPO]
-    if layers:
-        cmd += ["-f", f"layers={layers}"]
-    if workers:
-        cmd += ["-f", f"workers={workers}"]
-    if max_layers:
-        cmd += ["-f", f"max_layers={max_layers}"]
-    if offset is not None:
-        cmd += ["-f", f"offset={offset}"]
-    if size is not None:
-        cmd += ["-f", f"size={size}"]
+    # 补采变体（04b/05b/07b/10b）只走分片 workflow collect-full.yml，它的唯一入口开关是 stage：
+    # 不传 stage 就会点到 workflow 的默认值（默认 04b），拿 05b/07b/10b 去点会静默跑错阶段。
+    if step.endswith("b") and wf == "collect-full.yml":
+        cmd += ["-f", f"stage={step}"]
+        if workers:
+            cmd += ["-f", f"workers={workers}"]
+        if size is not None:
+            cmd += ["-f", f"size={size}"]
+        if layers or max_layers or offset is not None:
+            print("⚠️ collect-full.yml 没有 layers/max_layers/offset 开关，已忽略（用 size 控每片层数）")
+    else:
+        if layers:
+            cmd += ["-f", f"layers={layers}"]
+        if workers:
+            cmd += ["-f", f"workers={workers}"]
+        if max_layers:
+            cmd += ["-f", f"max_layers={max_layers}"]
+        if offset is not None:
+            cmd += ["-f", f"offset={offset}"]
+        if size is not None:
+            cmd += ["-f", f"size={size}"]
     if dry:
         print("DRY:", " ".join(cmd)); return 0
     rc, out, err = sh(cmd)
@@ -618,10 +629,12 @@ def entry_check():
     add(15, "blocked.json 存在", os.path.exists(BLOCKED_F), "collect/blocked.json")
     d = cfg()
     S = d.get("steps") or {}
-    want_docs = {"STEP-%s.md" % k for k in S}
+    # 说明书以每步自己的 supervise.doc 为准（补采变体 04b/05b/… 可以共用基准步那份，也可以自备）
+    want_docs = {os.path.basename(((s.get("supervise") or {}).get("doc")
+                                   or ("collect/steps/STEP-%s.md" % k))) for k, s in S.items()}
     have_docs = set(os.listdir(os.path.join(ROOT, "collect", "steps")))
     add(16, "说明书齐全", want_docs <= have_docs,
-        f"{len(want_docs)} 步说明书齐（steps.json 有几步就要几份）")
+        f"{len(want_docs)} 份说明书齐（按各步 supervise.doc 点名）")
     add(17, "自检可验证", "--dry-run" in src and "--entry-check" in src, "dry-run / entry-check")
     add(18, "双闹钟都在", os.path.exists(os.path.join(ROOT, "ops", "patrol_kick.sh")) and
         os.path.exists(os.path.join(ROOT, ".github", "workflows", "collect-supervisor.yml")),
@@ -630,10 +643,16 @@ def entry_check():
     # ---- 19~24：v2.1 本轮新增（steps.json 单源 / 清单驱动取证 / 简报四件套 / fail 闭环）----
     d = cfg()
     S = d.get("steps") or {}
-    nums = sorted(int(k) for k in S if str(k).isdigit())
-    contiguous = nums == list(range(0, len(nums))) and len(nums) == len(S)
+    # 步号文法：基础步 0..NN 必须连续；补采变体只能长成「<基础步>b」，且基础步必须在。
+    # （2026-10-30 修：老规则只认纯数字，04b/05b/07b/10b 一进来就把这条判死，ci-smoke 连红 5 次）
+    base = {k for k in S if str(k).isdigit()}
+    suffixed = {k for k in S if str(k).endswith("b") and str(k)[:-1].isdigit()}
+    odd = [k for k in S if k not in base | suffixed]
+    base_ok = bool(base) and sorted(int(k) for k in base) == list(range(len(base)))
+    suff_ok = all(k[:-1] in base for k in suffixed)
+    contiguous = base_ok and suff_ok and not odd
     add(19, "steps.json 是唯一参数源", d.get("schema") == "v2.1" and contiguous and len(S) >= 7,
-        f"schema={d.get('schema')} steps={len(S)} 连续={contiguous}")
+        f"schema={d.get('schema')} 基础步={len(base)}个/补采变体={len(suffixed)}个/越界步号={odd} 文法={contiguous}")
 
     profs = []
     for k in S:

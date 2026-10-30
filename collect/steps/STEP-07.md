@@ -56,7 +56,8 @@ python3 collect/supervisor.py --kick 07 --workers 4 --offset 0 --size 120
    "未定位",
    ""
   ],
-  "title_include": "address|addr\\b|situs|e-?911|ng911|mailing|delivery point|location point"
+  "title_include": "address|addr\\b|situs|e-?911|ng911|mailing|delivery point|location point",
+  "skip_done": true
  },
  "workers": 4,
  "unit_rows": 100000,
