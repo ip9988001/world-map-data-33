@@ -1,0 +1,181 @@
+[1/2364] 0rZsAXbQ_arcgis_rest_services_CurrentParcels_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[2/2364] is_rest_services_Non_Emergency_Fire_and_Law_Fe no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[3/2364] arcgis_rest_services_CityParcels2021NoJoin_Fea no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[4/2364] BmMQuu_arcgis_rest_services_VB_Park_Property_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[5/2364] _rest_services_E911Roads_flowlines_intersect_F ok         read=2413      addr=0        parcel=0        nohouse=0       rej=2413   
+[6/2364] t_services_Shamokin_Address_Points_June_2019_F ok         read=4146      addr=4146     parcel=0        nohouse=0       rej=0      
+[7/2364] field_College_Block_Lot_and_Address_Map_WFL1_F ok         read=23106     addr=23105    parcel=0        nohouse=0       rej=1      
+[8/2364] is_rest_services_BuildingList2024_100to200k_Fe no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[9/2364] cgis_rest_services_Master_Addresses_for_Grid_F ok         read=34386     addr=0        parcel=0        nohouse=0       rej=34386  
+[10/2364] wFbS_arcgis_rest_services_Chemungaddress_pts_F ok         read=44642     addr=0        parcel=0        nohouse=0       rej=44642  
+[11/2364] OU_arcgis_rest_services_Addresses_SIO_Hosted_F ok         read=40752     addr=40752    parcel=0        nohouse=0       rej=0      
+[12/2364] rest_services_Emergency_Management_Operation_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[13/2364] es_Abraham_Lincoln_Addition_Covenant_Parcels_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[14/2364] 6Si_arcgis_rest_services_Parcel_with_Address_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[15/2364] ermits_Peak_Damage_Assessment_Address_Points_F ok         read=1042      addr=1042     parcel=0        nohouse=0       rej=0      
+[16/2364] rvices_Comstock_Park_Fourth_Addition_Parcels_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[17/2364] est_services_Parcels_Moores_Mill_Multi_Modal_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[18/2364] UaBfRSxc_arcgis_rest_services_Address_Points_F ok         read=2381      addr=0        parcel=0        nohouse=0       rej=2381   
+[19/2364] WQTB2G8AH9RQYE_arcgis_rest_services_address_Fe ok         read=25791     addr=25790    parcel=0        nohouse=0       rej=1      
+[20/2364] _arcgis_rest_services_Parcel_Information_WGS_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[21/2364] gis_rest_services_Macomb_County_Parcel_Data_Fe no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[22/2364] n_Minneapolis___All_SNAP_Store_Locations__25_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[23/2364] m_9tC74aDHuml0x5Yz_arcgis_rest_services_PDHP_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[24/2364] TymXTmwPsPzPHRU_arcgis_rest_services_Address_F ok         read=17199     addr=17197    parcel=0        nohouse=2       rej=0      
+[25/2364] Approved_Affordable_HousiingPropertiesForBid_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[26/2364] rcgis_rest_services_Parcel_Mailing_Addresses_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[27/2364] ear_Call_Count_Future_Station_124__6_Minutes_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[28/2364] egation_of_OtherStores_to_OtherStores_Travel_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[29/2364] ptdo_arcgis_rest_services_CommunityAddresses_F ok         read=1         addr=1        parcel=0        nohouse=0       rej=0      
+[30/2364] _arcgis_rest_services_1920_Address_Points_JG_F ok         read=63        addr=63       parcel=0        nohouse=0       rej=0      
+[31/2364] is_rest_services_Forsyth_County_GA_Addresses_F ok         read=93990     addr=93989    parcel=0        nohouse=0       rej=1      
+[32/2364] 9Jm_arcgis_rest_services_SW_Parcels_Accounts_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[33/2364] _services_Gray_Parcel_Value_Per_Acre_3D_WFL1_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[34/2364] 6Z_arcgis_rest_services_N911_Addresses__View_F ok         read=14965     addr=13486    parcel=0        nohouse=0       rej=1479   
+[35/2364] m_AQDHTHDrZzfsFsB5_arcgis_rest_services_2022_F ok         read=42231     addr=0        parcel=42231    nohouse=0       rej=0      
+[36/2364] zfsFsB5_arcgis_rest_services_Tax_Parcels2020_F ok         read=46001     addr=0        parcel=46001    nohouse=0       rej=0      
+[37/2364] 9xEgP_arcgis_rest_services_Zanna_E911_Sites_Fe ok         read=346678    addr=0        parcel=0        nohouse=0       rej=346678 
+[38/2364] Dta5_arcgis_rest_services_MaineE911Addresses_F ok         read=830       addr=0        parcel=0        nohouse=830     rej=0      
+[39/2364] 7Y8pE5CiojuXeU_arcgis_rest_services_NewSitus_F ok         read=6686      addr=6686     parcel=0        nohouse=0       rej=0      
+[40/2364] YKvkh_arcgis_rest_services_Parcels_12_Join_C_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[41/2364] ces_Emergency_Care_Establishment_Cornerstone_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[42/2364] GypOW4c_arcgis_rest_services_Zoning_Prop_rev_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[43/2364] _Mississippi_Flood_in_Arkansas__Final__WFL1_Fe ok         read=230816    addr=0        parcel=0        nohouse=0       rej=230816 
+[44/2364] tBHQoYlrmJI_arcgis_rest_services_address_pts_F ok         read=18505     addr=18504    parcel=0        nohouse=0       rej=1      
+[45/2364] Cz_arcgis_rest_services_HC_MD_Addresses_10mi_F ok         read=74273     addr=74267    parcel=0        nohouse=0       rej=6      
+[46/2364] gis_rest_services_Defiance_County_Addresses_Fe ok         read=2634      addr=2634     parcel=0        nohouse=0       rej=0      
+[47/2364] LRIXMD_arcgis_rest_services_CPS_UTILITY_View_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[48/2364] rest_services_City_of_Sharon_PA_Mapping_WFL1_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[49/2364] ffCJ4P5_arcgis_rest_services_Addresses_Final_F ok         read=55        addr=0        parcel=0        nohouse=0       rej=55     
+[50/2364] services_Address_Points__2249626704383450755_F ok         read=496450    addr=0        parcel=0        nohouse=0       rej=496450 
+[51/2364] 0ij_arcgis_rest_services_FWP_Lands_Addresses_F ok         read=551       addr=332      parcel=0        nohouse=8       rej=211    
+[52/2364] arcgis_rest_services_Jasper_County_Addresses_F ok         read=21594     addr=21564    parcel=0        nohouse=0       rej=30     
+[53/2364] vices_Catalina_Points_of_Interest_by_Address_F ok         read=20        addr=20       parcel=0        nohouse=0       rej=0      
+[54/2364] GCSLjBW_arcgis_rest_services_LLE_TestParcels_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[55/2364] eM_arcgis_rest_services_NCDOTFacilities_View_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[56/2364] d1_arcgis_rest_services_Visalia_CA_Addresses_F ok         read=57934     addr=57934    parcel=0        nohouse=0       rej=0      
+[57/2364] qTGWY_arcgis_rest_services_JoCo_Site_Address_F ok         read=45019     addr=45019    parcel=0        nohouse=0       rej=0      
+[58/2364] aQNwstCiO_arcgis_rest_services_NVCOG_Web_Map_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[59/2364] rest_services_Lake_Address_Points_by_Section_F ok         read=1558      addr=18       parcel=0        nohouse=1540    rej=0      
+[60/2364] oZeMDaqgb_arcgis_rest_services_Parcel_Public_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[61/2364] e_Rollout__Days_of_Service_Per_Address__WFL1_F ok         read=46949     addr=0        parcel=0        nohouse=0       rej=46949  
+[62/2364] leoncountyfl_gov_accela_rest_services_AccelaXA ok         read=157661    addr=0        parcel=0        nohouse=0       rej=157661 
+[63/2364] XBYERF0OH6_arcgis_rest_services_LLLT_Parcels_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[64/2364] s_6210111511358341306_from_maine_geo_library_F ok         read=70        addr=0        parcel=0        nohouse=70      rej=0      
+[65/2364] M5ymMLbxIyWTjn2_arcgis_rest_services_Address_F ok         read=219790    addr=0        parcel=0        nohouse=0       rej=219790 
+[66/2364] nLN_arcgis_rest_services_1920_Address_Points_F ok         read=553       addr=520      parcel=0        nohouse=32      rej=1      
+[67/2364] 8lct5k3LSbyO_arcgis_rest_services_AddressULM_F ok         read=28996     addr=28421    parcel=0        nohouse=241     rej=334    
+[68/2364] s_rest_services_Article_10_Individual_Reproj_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[69/2364] arcgis_rest_services_Building_Permit_Map_GIS_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[70/2364] rripySk0n_arcgis_rest_services_Adams_Service_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[71/2364] ajG76dg_arcgis_rest_services_HPOAddresses__1_F ok         read=503       addr=0        parcel=0        nohouse=0       rej=503    
+[72/2364] QGbyiuCh_arcgis_rest_services_Address_Points_F ok         read=931       addr=0        parcel=0        nohouse=926     rej=5      
+[73/2364] _rest_services_E911_Houses_Washington_County_F ok         read=6724      addr=0        parcel=0        nohouse=0       rej=6724   
+[74/2364] rcgis_rest_services_Permit_Applications_Poly_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[75/2364] arcgis_rest_services_Poland_Addresses_2_view_F ok         read=301951    addr=0        parcel=0        nohouse=0       rej=301951 
+[76/2364] hSQSuYA89VW_arcgis_rest_services_HIckory_500_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[77/2364] arcgis_rest_services_Tuckahoe_Address_Points_F ok         read=4342      addr=0        parcel=0        nohouse=4230    rej=112    
+[78/2364] QvjiKhzBVQV7V_arcgis_rest_services_SITUS_PTS_F ok         read=4613      addr=0        parcel=0        nohouse=4613    rej=0      
+[79/2364] _arcgis_rest_services_Juno_Address_Points_DC_F ok         read=3922      addr=0        parcel=0        nohouse=3922    rej=0      
+[80/2364] is_rest_services_Grady_Site_Addresses_Public_F ok         read=12986     addr=12912    parcel=0        nohouse=31      rej=43     
+[81/2364] hr_arcgis_rest_services_NCI_Center_Addresses_F ok         read=73        addr=0        parcel=0        nohouse=73      rej=0      
+[82/2364] rvices_ConvenienceStores_WalkingDistance_0_5_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[83/2364] vlQFEpKtV_arcgis_rest_services_DOUGLASCOUNTY_F ok         read=8201      addr=8194     parcel=0        nohouse=0       rej=7      
+[84/2364] 3v_arcgis_rest_services_Farhan_Parcel_Pakage_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[85/2364] rcgis_rest_services_Res_Address_Demographics_F ok         read=39114     addr=39114    parcel=0        nohouse=0       rej=0      
+[86/2364] ov_public_rest_services_public_Council_Wards_F ok         read=84127     addr=84125    parcel=0        nohouse=0       rej=2      
+[87/2364] vuFjG9HQX_arcgis_rest_services_Parcel_Labels_F ok         read=356780    addr=0        parcel=356780   nohouse=0       rej=0      
+[88/2364] eajjke_arcgis_rest_services_Addresses_Rogers_F ok         read=48889     addr=48889    parcel=0        nohouse=0       rej=0      
+[89/2364] rk_County_Address_Points_Clip_AreaOfInterest_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[90/2364] U6mYNGfwti_arcgis_rest_services_Approved_PUD_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[91/2364] rcgis_rest_services_Lopez_red_lining_Parcels_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[92/2364] SQSuYA89VW_arcgis_rest_services_HIckory_1000_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[93/2364] gT_arcgis_rest_services_USU_Addressing_view_Fe ok         read=36150     addr=36073    parcel=0        nohouse=0       rej=77     
+[94/2364] 0gE_arcgis_rest_services_CenCom_Address_View_F ok         read=69075     addr=67443    parcel=0        nohouse=6       rej=1626   
+[95/2364] gUZUh16VF_arcgis_rest_services_SC_Addressing_F ok         read=8585      addr=0        parcel=0        nohouse=8437    rej=148    
+[96/2364] So_arcgis_rest_services_SiteAddresses_public_F ok         read=16929     addr=16929    parcel=0        nohouse=0       rej=0      
+[97/2364] st_services_City_of_Pittsburg_Address_Public_F ok         read=25582     addr=25568    parcel=0        nohouse=14      rej=0      
+[98/2364] x9Ny_arcgis_rest_services_2024_Building_List_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[99/2364] kIrNAR_arcgis_rest_services_E911_Share_Files_F ok         read=17883     addr=17879    parcel=0        nohouse=0       rej=4      
+[100/2364] es_Parcels_East_Side_Trolley_ROW_Acquisition_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[101/2364] 4G_arcgis_rest_services_NM911_Address_202203_F ok         read=1006136   addr=1003206  parcel=0        nohouse=2754    rej=176    
+[102/2364] 2kwz79KUqUvxC_arcgis_rest_services_Addresses_F ok         read=44833     addr=12560    parcel=0        nohouse=1130    rej=31143  
+[103/2364] rest_services_AddresseditSchema22_publicview_F ok         read=1324      addr=1146     parcel=0        nohouse=0       rej=178    
+[104/2364] t_services_Population_Within_5min_of_Walmart_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[105/2364] LDhav_arcgis_rest_services_Approved_Projects_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[106/2364] services_DemoUSAAPIPLayer_point_with_address_F ok         read=56        addr=56       parcel=0        nohouse=0       rej=0      
+[107/2364] v_arcgis_rest_services_Gravey_Parcel_Package_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[108/2364] est_services_SiteAddressPin_view_13268052057_F ok         read=1         addr=1        parcel=0        nohouse=0       rej=0      
+[109/2364] t_services_Parcels_RockHillSC_HousingDevCorp_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[110/2364] ial_Addresses_Economic_Development_6_17_26V2_F ok         read=4142      addr=4003     parcel=0        nohouse=124     rej=15     
+[111/2364] kTU5o6Z_arcgis_rest_services_Addressing_AGOL_F ok         read=14712     addr=14712    parcel=0        nohouse=0       rej=0      
+[112/2364] is_rest_services_TaxSaleProperties2023_4AGOL_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[113/2364] vAo6IVI7r_arcgis_rest_services_ParkLocations_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[114/2364] cgis_rest_services_UpdateCampusWalkingMapWEB_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[115/2364] olbad_arcgis_rest_services_Salem_Parcel_View_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[116/2364] Y2M9iDqCvoBt_arcgis_rest_services_NSC_Campus_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[117/2364] wlO_arcgis_rest_services_Master_Address_List_F ok         read=11959     addr=11957    parcel=0        nohouse=2       rej=0      
+[118/2364] rcgis_rest_services_Hanover_NG911_Exceptions_F ok         read=1007      addr=0        parcel=0        nohouse=0       rej=1007   
+[119/2364] arcgis_rest_services_MGO_Master_Address_View_F ok         read=38648     addr=0        parcel=0        nohouse=0       rej=38648  
+[120/2364] g_arcgis_rest_services_ADDRESS_POINTS_021026_F ok         read=1127949   addr=0        parcel=0        nohouse=0       rej=1127949 
+[121/2364] cgis_rest_services_Hosted_Address_Point__HFV_F ok         read=2628      addr=2606     parcel=0        nohouse=22      rej=0      
+[122/2364] Zk1fY2MHCTEXz_arcgis_rest_services_Addresses_F ok         read=8149      addr=8149     parcel=0        nohouse=0       rej=0      
+[123/2364] arcgis_rest_services_Milbridge_911_Addresses_F ok         read=546       addr=546      parcel=0        nohouse=0       rej=0      
+[124/2364] _from_SNAP_Accepting_Food_Stores__0_25_Miles_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[125/2364] yXUS9g_arcgis_rest_services_BUILDINGS_public_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[126/2364] st_services_A4_Landscape_addressverification_F ok         read=49808     addr=49768    parcel=0        nohouse=35      rej=5      
+[127/2364] 9JX5q_arcgis_rest_services_Site_Addresses_CM_F ok         read=4140      addr=0        parcel=0        nohouse=0       rej=4140   
+[128/2364] lxt6cnCY2_arcgis_rest_services_siteaddresses_F ok         read=2         addr=2        parcel=0        nohouse=0       rej=0      
+[129/2364] aLg_arcgis_rest_services_Address_Hemet031325_F ok         read=30879     addr=30878    parcel=0        nohouse=1       rej=0      
+[130/2364] nut_Addition_to_Opportunity_Covenant_Parcels_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[131/2364] rcgis_rest_services_Ballot_Drop_Off_Map_WFL1_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[132/2364] Mk18pL_arcgis_rest_services_Coffee_Addresses_F ok         read=29524     addr=29523    parcel=0        nohouse=0       rej=1      
+[133/2364] YQLH_arcgis_rest_services_Folk_avenue_Buffer_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[134/2364] arcgis_rest_services_realprop_lulc_footprint_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[135/2364] n_of_SpecialtyStore_to_SpecialtyStore_Travel_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[136/2364] cgis_rest_services_Address_Points_Index_WFL1_F ok         read=3736      addr=0        parcel=0        nohouse=0       rej=3736   
+[137/2364] KG38ry4c8XnLWyS_arcgis_rest_services_Parcels_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[138/2364] _arcgis_rest_services_Addresses_NOT_ELIGIBLE_F ok         read=43411     addr=43189    parcel=0        nohouse=0       rej=222    
+[139/2364] arcgis_rest_services_PAunderservedstructures_F ok         read=11469     addr=11280    parcel=0        nohouse=184     rej=5      
+[140/2364] mLukLnT_arcgis_rest_services_STH_LAND_PARCEL_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[141/2364] pKhW_arcgis_rest_services_BlueDiamondAcq_shp_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[142/2364] s_City_of_Raleigh_owned_undeveloped_property_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[143/2364] olleges_and_Universities_4063016863268643245_F ok         read=331       addr=0        parcel=0        nohouse=331     rej=0      
+[144/2364] _arcgis_rest_services_Full_Text_Index_Search_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[145/2364] est_services_Regos_Addition_Covenant_Parcels_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[146/2364] services_Siegmunds_Addition_Covenant_Parcels_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[147/2364] arcgis_rest_services_Surface_Parking_Parcels_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[148/2364] _arcgis_rest_services_Maryland_Parcel_Blight_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[149/2364] hqcTQpZPT9qY_arcgis_rest_services_City_Parks_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[150/2364] NA_arcgis_rest_services_Cottonwood_Addresses_F ok         read=145       addr=145      parcel=0        nohouse=0       rej=0      
+[151/2364] w_arcgis_rest_services_Addresses_not_in_Town_F ok         read=277771    addr=0        parcel=0        nohouse=0       rej=277771 
+[152/2364] services_Landuse_Planning_Hosted_Backup_WFL1_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[153/2364] MdM_arcgis_rest_services_For_Sale_Properties_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[154/2364] rest_services_Parcels_Weber_Updated_04112025_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[155/2364] FwVI_arcgis_rest_services_9_1_1_Site_Address_F ok         read=1238      addr=549      parcel=0        nohouse=107     rej=582    
+[156/2364] CRg_arcgis_rest_services_SBCnty_Address_Grid_F ok         read=114312    addr=0        parcel=0        nohouse=0       rej=114312 
+[157/2364] zUzzTQb_arcgis_rest_services_JIR_January2026_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[158/2364] mPoN_arcgis_rest_services_Parcels_7_22_Merge_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[159/2364] f2Qb_arcgis_rest_services_CheyenneCO_Parcels_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[160/2364] cgis_rest_services_SaltLake_County_Addresses_F ok         read=540688    addr=382353   parcel=0        nohouse=0       rej=158335 
+[161/2364] rest_services_SDL_Addressed_Palmview_Parcels_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[162/2364] A_Office_Employee_Home_Locations___5_Minutes_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[163/2364] GptQt_arcgis_rest_services_Address_Points_RG_F ok         read=374426    addr=374014   parcel=0        nohouse=352     rej=60     
+[164/2364] _arcgis_rest_services_Tripper_Parcel_Package_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[165/2364] st_services_Address_Points_SAMs_Lite_1030896_F ok         read=1068846   addr=1068833  parcel=0        nohouse=12      rej=1      
+[166/2364] ervices_Meade_Co_KY_Addresses_and_Roads_WFL1_F ok         read=36292     addr=35944    parcel=0        nohouse=140     rej=208    
+[167/2364] 03djqghy3iy4_arcgis_rest_services_TaxParcels_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[168/2364] _First_and_Janson_Additions_Covenant_Parcels_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[169/2364] ed_Properties_Proposed_for_Added_Protections_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[170/2364] 7nt9ZtPWOn_arcgis_rest_services_ParcelsByADT_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[171/2364] e_ca_oakgis_rest_services_SBS_Parcel_Address_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[172/2364] otprint_Ubid_Folio_Buildings_100kto200k_View_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[173/2364] arcgis_rest_services_BooneBuildings_05082025_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[174/2364] PSO5BR5eOIggwRH_arcgis_rest_services_Address_F ok         read=8267      addr=0        parcel=0        nohouse=0       rej=8267   
+[175/2364] cgis_rest_services_Redlining_Walking_Tour_JD_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[176/2364] XhtlWzOFCTkO_arcgis_rest_services_AddressPts_F ok         read=11978     addr=11956    parcel=0        nohouse=19      rej=3      
+[177/2364] gis_rest_services_Pumper_Units__1_mi_Buffer_Fe no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[178/2364] arcgis_rest_services_Fairfield_Parcel_Update_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[179/2364] s_Find_Locations_in_Address_Points_centrvle2_F ok         read=3835      addr=3835     parcel=0        nohouse=0       rej=0      
+[180/2364] s_rest_services_SaginawPointso_ExportFeature_F no_assets  read=0         addr=0        parcel=0        nohouse=0       rej=0      release 快照里没有该层
+[181/2364] vices_WA_Fairview_Wildfire_of_2026_Addresses_F ok         read=68        addr=0        parcel=0        nohouse=0       rej=68     

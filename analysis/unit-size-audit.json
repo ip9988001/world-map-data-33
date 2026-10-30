@@ -1,0 +1,172 @@
+{
+ "at": "2026-10-30T16:19:20Z",
+ "snapshot": "/data/workspace/world-map-data-33/dist/intake-full/release-index.json",
+ "tags": 1426,
+ "units_total": 1970,
+ "hard_cap_b": 2000000000,
+ "target_cap_b": 1500000000,
+ "over_target_units": 0,
+ "over_hard_units": 0,
+ "top": [
+  {
+   "tag": "collect-step04-conemap_gov_secure_rest_services_NC1Map_Location_MapServer_0",
+   "units": 4,
+   "unit_max_b": 782832903,
+   "layer_bytes_b": 1908067410,
+   "over_hard": false,
+   "over_target": false
+  },
+  {
+   "tag": "collect-step04-rest_services_AGOL_MassGIS_Master_Address_Points_MapServer_0@未定位-2",
+   "units": 1,
+   "unit_max_b": 377944159,
+   "layer_bytes_b": 377944159,
+   "over_hard": false,
+   "over_target": false
+  },
+  {
+   "tag": "collect-step04-2bbc_rest_services_AGOL_MAD_AGOL_R2R_ADDRPTS_FeatureServer_0",
+   "units": 1,
+   "unit_max_b": 293147807,
+   "layer_bytes_b": 293147807,
+   "over_hard": false,
+   "over_target": false
+  },
+  {
+   "tag": "collect-step04-ces_Hosted_Address_Points_of_Indiana_Current_FeatureServer_0",
+   "units": 4,
+   "unit_max_b": 232134104,
+   "layer_bytes_b": 664407822,
+   "over_hard": false,
+   "over_target": false
+  },
+  {
+   "tag": "collect-step04-OJ5P6ngMu_arcgis_rest_services_AddressPoints_FeatureServer_0",
+   "units": 4,
+   "unit_max_b": 194794388,
+   "layer_bytes_b": 678123981,
+   "over_hard": false,
+   "over_target": false
+  },
+  {
+   "tag": "collect-step04-gov_gisweb01_rest_services_EGIS_HOUSTON_CITYINFO_MapServer_0",
+   "units": 2,
+   "unit_max_b": 180041693,
+   "layer_bytes_b": 326659101,
+   "over_hard": false,
+   "over_target": false
+  },
+  {
+   "tag": "collect-step04-aIfH92NqI_arcgis_rest_services_AddressNC_v1_FeatureServer_28",
+   "units": 6,
+   "unit_max_b": 178536510,
+   "layer_bytes_b": 988353741,
+   "over_hard": false,
+   "over_target": false
+  },
+  {
+   "tag": "collect-step04-s_Points_from_National_Address_Database_view_FeatureServer_0",
+   "units": 60,
+   "unit_max_b": 178035702,
+   "layer_bytes_b": 6691443409,
+   "over_hard": false,
+   "over_target": false
+  },
+  {
+   "tag": "collect-step04-ces_WI_NG911_Site_Structure_Address_Points_2_FeatureServer_0",
+   "units": 3,
+   "unit_max_b": 148670595,
+   "layer_bytes_b": 160776424,
+   "over_hard": false,
+   "over_target": false
+  },
+  {
+   "tag": "collect-step04-st_services_eGIS_Addressing_ADDRESS_POINTSv2_FeatureServer_0",
+   "units": 3,
+   "unit_max_b": 137103598,
+   "layer_bytes_b": 390502912,
+   "over_hard": false,
+   "over_target": false
+  },
+  {
+   "tag": "collect-step04-U_arcgis_rest_services_Oregon_Address_Points_FeatureServer_0",
+   "units": 2,
+   "unit_max_b": 131869326,
+   "layer_bytes_b": 263716841,
+   "over_hard": false,
+   "over_target": false
+  },
+  {
+   "tag": "collect-step04-es_us_mn_state_mngeo_loc_addresses_zip9_open_FeatureServer_0",
+   "units": 2,
+   "unit_max_b": 131556802,
+   "layer_bytes_b": 241178692,
+   "over_hard": false,
+   "over_target": false
+  },
+  {
+   "tag": "collect-step04-7QF1W_arcgis_rest_services_ADDRESS_POINT_642_FeatureServer_0",
+   "units": 1,
+   "unit_max_b": 126378113,
+   "layer_bytes_b": 126378113,
+   "over_hard": false,
+   "over_target": false
+  },
+  {
+   "tag": "collect-step04-lin_oh_us_arcgis_rest_services_Streets_Addresses_MapServer_3",
+   "units": 1,
+   "unit_max_b": 125689663,
+   "layer_bytes_b": 125689663,
+   "over_hard": false,
+   "over_target": false
+  },
+  {
+   "tag": "collect-step04-es_City_of_Columbus_Address_Points_20260630_FeatureServer_21",
+   "units": 1,
+   "unit_max_b": 122832562,
+   "layer_bytes_b": 122832562,
+   "over_hard": false,
+   "over_target": false
+  },
+  {
+   "tag": "collect-step04-kIBzkUXU_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "units": 1,
+   "unit_max_b": 122815333,
+   "layer_bytes_b": 122815333,
+   "over_hard": false,
+   "over_target": false
+  },
+  {
+   "tag": "collect-step04-rvices_Hosted_Address_Points_of_Indiana_2024_FeatureServer_0",
+   "units": 4,
+   "unit_max_b": 121718573,
+   "layer_bytes_b": 379648103,
+   "over_hard": false,
+   "over_target": false
+  },
+  {
+   "tag": "collect-step05-arcgis_rest_services_BTV_e911_Address_Layers_FeatureServer_0",
+   "units": 1,
+   "unit_max_b": 118898482,
+   "layer_bytes_b": 118898482,
+   "over_hard": false,
+   "over_target": false
+  },
+  {
+   "tag": "collect-step04-s_rest_services_Maine_E911_Addresses_Feature_FeatureServer_0@未定位-1",
+   "units": 1,
+   "unit_max_b": 113940667,
+   "layer_bytes_b": 113940667,
+   "over_hard": false,
+   "over_target": false
+  },
+  {
+   "tag": "collect-step04-gis_rest_services_AZ911_AddressPoints_Hosted_FeatureServer_0",
+   "units": 4,
+   "unit_max_b": 113102484,
+   "layer_bytes_b": 404241697,
+   "over_hard": false,
+   "over_target": false
+  }
+ ]
+}

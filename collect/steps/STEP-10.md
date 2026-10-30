@@ -24,6 +24,24 @@
 4. **抽样实测**：分层抽 200 层真下载，量 声明→实采→有效地址→去重净新增 四层漏斗
 5. **全库快测**：剩余层各取 300 行测有效率，按 `eff_min` 筛层
 6. **决策**：只采达标层，按产出/分钟排序，绝不按声明行数全采
+7. **面层带质心（硬判据，`steps.json#steps.10.poly_centroid=true`）**：`PILOT_POLY_CENTROID` 默认已开，
+   面层每行落 `_lat`/`_lon`（rings 本地算 `representative_point`，算不出才退回 `returnCentroid=true` 的服务端质心，`outSR=4326`）。
+   **2026-10-30 踩过的坑（防回归）**：老实现只读 `geometry.y/.x`，`rings` 在采集瞬间就被丢掉 ——
+   1,038 个宗地层「有行、有 Shape__Area、无坐标」，县判定与坐标补齐全部卡死，只能整层重采。
+   现在：面层缺 `_lat`/`_lon` 键 = 采集失败；回归保护在 `collect/tests/test_pilot_centroid_contract.py`。
+8. **面层落简化 rings（硬判据，`steps.json#steps.10.poly_rings=true`）**：`PILOT_POLY_RINGS` 默认已开，
+   面层每行额外落 `rings` = **6 位小数（≈0.11 m）+ RDP 1e-5°（≈1.1 m）**的简化环（口径常量只在
+   `collect/parcel_centroid.py` 的 `SIMP_EPS`/`SIMP_DECIMALS`）。口径由
+   `docs/PARCEL-GEOMETRY-OPTIONS-2026-10-30.md` 拍定第 ② 档：**只落简化，不落原始 rings**。
+   · 键必在：几何退化 → `rings=null`（**不猜、不拿 bbox 代替**）；点层/线层**不带**该键。
+   · 只影响**新采集**，已有 part 资产一个字节都不改动；单体顶点硬上限 8000（防某层缓冲区把一行写成几 MB）。
+   · **非宗地面不落 rings**：层名/字段无 parcel|lot|property|tax|situs 语义，且（顶点均值 > 50×真宗地中位
+     或层名带 buffer|building|footprint|shoreline|subdiv|demographic|office…）→ 只落质心，
+     每行记 `rings_skipped="non_parcel"`（明账，不是静默丢）。
+9. **unit 按字节切（硬判据，`steps.json#steps.10.unit_bytes`）**：单元上限 = `unit_rows` **且** `unit_bytes`
+   （1.5 GB），**先到先切**。GitHub 单资产 2 GB —— 实测某层 32.6 KB/行 × 10 万行 = 3.26 GB，
+   只按行数切会撞线；这个问题对点层同样成立。真实落盘字节进检查点 (`unit_bytes`)，超线进 `unit_bytes_over` 明账。
+   · 存量层补几何走独立入口 `--geom-backfill`（口径/成本/闸门见几何方案文档第五节），**不在本步内**。
 
 ## 验收判据（机器判；判定权在大脑）
 | 指标 | 阈值 |
@@ -49,6 +67,8 @@ python3 collect/supervisor.py --review pass --note "宗地扩采收尾"
 {
  "step": "10",
  "kind": "parcel_situs",
+ "poly_centroid": true,
+ "poly_rings": true,
  "title": "宗地地址扩采",
  "select": {
   "source": "layer_plan",
@@ -66,6 +86,7 @@ python3 collect/supervisor.py --review pass --note "宗地扩采收尾"
  },
  "workers": 4,
  "unit_rows": 100000,
+ "unit_bytes": 1500000000,
  "tag": "collect-step10-{layer}",
  "evidence": [
   "report",

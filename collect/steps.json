@@ -76,6 +76,7 @@
    },
    "workers": 4,
    "unit_rows": 500000,
+   "unit_bytes": 1500000000,
    "tag": "collect-step02-{layer}",
    "report": "pilot",
    "evidence": [
@@ -108,6 +109,7 @@
    },
    "workers": 4,
    "unit_rows": 200000,
+   "unit_bytes": 1500000000,
    "tag": "collect-step03-{layer}",
    "gate": {
     "gray_layers": 20,
@@ -153,6 +155,7 @@
    },
    "workers": 4,
    "unit_rows": 1000000,
+   "unit_bytes": 1500000000,
    "tag": "collect-step04-{layer}",
    "evidence": [
     "report",
@@ -200,6 +203,7 @@
    },
    "workers": 4,
    "unit_rows": 100000,
+   "unit_bytes": 1500000000,
    "tag": "collect-step05-{layer}",
    "roll": {
     "mode": "batches",
@@ -268,6 +272,7 @@
    },
    "workers": 4,
    "unit_rows": 100000,
+   "unit_bytes": 1500000000,
    "tag": "collect-step07-{layer}",
    "evidence": [
     "report",
@@ -351,6 +356,8 @@
   },
   "10": {
    "kind": "parcel_situs",
+   "poly_centroid": true,
+   "poly_rings": true,
    "title": "宗地地址扩采",
    "desc": "从 Polygon/Polyline 层里挑出真正带房产地址字段的层；按实测有效率只采高产出层，不按声明行数全采",
    "select": {
@@ -369,6 +376,7 @@
    },
    "workers": 4,
    "unit_rows": 100000,
+   "unit_bytes": 1500000000,
    "tag": "collect-step10-{layer}",
    "geom_in": [],
    "evidence": [
@@ -396,6 +404,8 @@
   },
   "10b": {
    "kind": "parcel_situs",
+   "poly_centroid": true,
+   "poly_rings": true,
    "title": "宗地地址扩采 batch2+",
    "desc": "batch1 之外的强/弱有效层全部采（reject 只记账不采）",
    "select": {
@@ -413,6 +423,7 @@
    },
    "workers": 4,
    "unit_rows": 100000,
+   "unit_bytes": 1500000000,
    "tag": "collect-step10b-{layer}",
    "geom_in": [],
    "evidence": [
@@ -450,6 +461,7 @@
    },
    "workers": 4,
    "unit_rows": 1000000,
+   "unit_bytes": 1500000000,
    "tag": "collect-step04-{layer}",
    "evidence": [
     "report",
@@ -492,6 +504,7 @@
    },
    "workers": 4,
    "unit_rows": 100000,
+   "unit_bytes": 1500000000,
    "tag": "collect-step05-{layer}",
    "roll": {
     "mode": "batches",
@@ -536,6 +549,7 @@
    },
    "workers": 4,
    "unit_rows": 100000,
+   "unit_bytes": 1500000000,
    "tag": "collect-step07-{layer}",
    "evidence": [
     "report",

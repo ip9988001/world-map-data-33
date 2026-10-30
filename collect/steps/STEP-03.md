@@ -49,6 +49,7 @@ python3 collect/supervisor.py --kick 03 --workers 4 --max-layers 20
  },
  "workers": 4,
  "unit_rows": 200000,
+ "unit_bytes": 1500000000,
  "tag": "collect-step03-{layer}",
  "gate": {
   "gray_layers": 20,

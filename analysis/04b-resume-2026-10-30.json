@@ -1,0 +1,114 @@
+{
+ "schema": "collect-resume/v1",
+ "stage": "04b",
+ "at": "2026-10-30T19:40:00Z",
+ "why": "04b 首轮 4 片被 timeout-minutes 350 掐成 cancelled（shard 1/2/9/10），且该轮 shard 账本因文件名不匹配全部静默落空",
+ "round1": {
+  "run_id": 41019004076,
+  "conclusion": "cancelled",
+  "shards": {
+   "success": [
+    0,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    11,
+    12,
+    13
+   ],
+   "cancelled": [
+    1,
+    2,
+    9,
+    10
+   ]
+  },
+  "note": "14 片 × 20 层 = 272 层；cancelled 的 4 片共 80 层"
+ },
+ "round2": {
+  "run_id": 41092912755,
+  "conclusion": "cancelled(人工取消 4 片挂死)",
+  "size": 4,
+  "plan_layers": 36,
+  "force_layers": [
+   "s_Points_from_National_Address_Database_view_FeatureServer_0",
+   "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2",
+   "UyC7jAmu_arcgis_rest_services_LBRSforLocator_FeatureServer_0",
+   "conemap_gov_secure_rest_services_NC1Map_Location_MapServer_0",
+   "rvices_Hosted_Address_Points_of_Indiana_2021_FeatureServer_1",
+   "ces_Ky_911_Site_Structure_Address_Points_WGS84WM_MapServer_0",
+   "is4_ocfl_net_arcgis_rest_services_AGOL_Open_Data_MapServer_0"
+  ],
+  "shards_done": {
+   "2": "success",
+   "4": "failure(账本推送步)",
+   "5": "failure(账本推送步)",
+   "7": "failure(账本推送步)",
+   "8": "failure(账本推送步)"
+  },
+  "shards_cancelled": [
+   0,
+   1,
+   3,
+   6
+  ],
+  "note": "4/5/7/8 红色只因『提交本片账本』步的裸 checkout 被工作区残留产物拦住；账本本身已生成并作为 artifact 上传（已用 checkout -f 修好）"
+ },
+ "round3": {
+  "run_id": 41114330819,
+  "conclusion": "cancelled(人工取消：14 层全部挂死上游)",
+  "note": "这 14 层在 60 分钟单层上限内没有任何一片能返回一行，见 round4/文档"
+ },
+ "round4": {
+  "run_id": 41116421397,
+  "status": "cancelled(人工取消)",
+  "purpose": "NAD 单层续跑（max_shards=1 / layer_timeout=300）",
+  "result": "NAD 68 个单元全部 done+uploaded（实采 39,875,268 行）；随后进入同片另外 3 个已知挂死层，取消以免空转 5 小时"
+ },
+ "ledger_truth": "以 Release 资产为准：collect/ledger/step04b_rebuilt.json + docs/STEP04-FULL-2026-10-30.md",
+ "final": {
+  "ledger_file": "collect/ledger/step04b_rebuilt.json",
+  "doc": "docs/STEP04-FULL-2026-10-30.md",
+  "layers_n": 272,
+  "ok": 250,
+  "partial": 4,
+  "failed": 18,
+  "empty": 0,
+  "declared": 580806486,
+  "rows": 490821547,
+  "gap": 89984939,
+  "gap_pct": 15.4931,
+  "note": "partial 4 = NAD（上游 count 在不同 vantage 间 18.8M~97.9M 漂移）+ 3 层计划期口径差；failed 18 = 13 层上游 0 数据 + 5 层半截（单元未上传/短供/无 checkpoint）"
+ },
+ "merge_failure": {
+  "job": "merge",
+  "run": 41019004076,
+  "verdict": "failure",
+  "root_cause": "脚本 bug（三条叠加），不是『deps 被 cancel 必然失败』",
+  "causes": [
+   "分片账本文件名不匹配：首轮 main SHA 的 full_shard 写 step04b_shardNN.json，workflow 找 04b_shardNN.json，artifact pattern *_shard${N}.json 也匹配不到零填充名 → 账本全部静默落空",
+   "step_full_report.py 见不到任何片账本即 SystemExit → merge 整体 failure",
+   "全部片被 cancel 时 download-artifact pattern=led-* 零匹配直接报错"
+  ],
+  "fixed_by": [
+   "48d1a48 账本名统一+artifact 双 pattern+提交步兜底",
+   "本次：缺片/partial_run 记为 shards_incomplete 且脚本恒退出 0",
+   "本次：download-artifact 步 continue-on-error: true"
+  ],
+  "now": "片被 cancel 只会在账本里多一行未完成片；merge 照样产出并提交部分账本"
+ },
+ "chain_gate": {
+  "where": ".github/workflows/collect-full.yml#merge.判定+自动接续",
+  "blocking": [
+   "shards_incomplete>0",
+   "failed>0",
+   "complete==false"
+  ],
+  "allow_next": "片齐 + failed=0 + complete=true + inputs.chain==1",
+  "why_not_exit1": "上一版 failed>0 时 exit 1 把 merge 判红，与『被 cancel 也要拿到账』冲突；闸门改为 exit 0 + ::error:: 注解 + step summary",
+  "stage04b_now": "不放行 05b"
+ }
+}

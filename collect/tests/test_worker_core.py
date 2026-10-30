@@ -220,5 +220,44 @@ class TestStep10(unittest.TestCase):
 
 
 
+class TestReleaseScanLoud(unittest.TestCase):
+    """Releases 扫不全绝不能被当成「这些层没采过」。
+
+    2026-10-30 实测：翻到第 3 页失败 → 只认出 185 个 tag（真值 288），剩下的已采层
+    全被判「没采过」→ 续跑会把它们重采一遍（几百小时带宽）。宁可炸，不许装。
+    """
+
+    def setUp(self):
+        self._gh, self._off = W._gh, os.environ.pop("WC_OFFLINE", None)
+
+    def tearDown(self):
+        W._gh = self._gh
+        if self._off is not None:
+            os.environ["WC_OFFLINE"] = self._off
+
+    def test_page_failure_raises(self):
+        W._gh = lambda p: None
+        with self.assertRaises(RuntimeError):
+            W._gh_page("repos/x/releases?page=1", tries=1)
+
+    def test_page_retry_then_success(self):
+        calls = {"n": 0}
+
+        def flaky(p):
+            calls["n"] += 1
+            return None if calls["n"] == 1 else [{"tag_name": "collect-step04-a"}]
+        W._gh = flaky
+        self.assertEqual(W._gh_page("p", tries=3), [{"tag_name": "collect-step04-a"}])
+        self.assertEqual(calls["n"], 2)
+
+    def test_offline_mode_is_explicit_empty(self):
+        W._gh = lambda p: None
+        os.environ["WC_OFFLINE"] = "1"
+        try:
+            self.assertEqual(W._gh_page("p"), [])
+        finally:
+            os.environ.pop("WC_OFFLINE", None)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

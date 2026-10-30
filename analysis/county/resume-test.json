@@ -1,0 +1,26 @@
+{
+ "at": "2026-10-30T13:58:37Z",
+ "what": "断点续跑实测：6 层小样，跑到中途 kill -9，重启同一条命令",
+ "sample_layers": [
+  "IzAwdHlO_arcgis_rest_services_Address_hosted_FeatureServer_0",
+  "1_arcgis_rest_services_Bismarck_ND_Addresses_FeatureServer_0",
+  "is_rest_services_Public_View_Site_Addresses__FeatureServer_0",
+  "q_arcgis_rest_services_Site_Addresses_Public_FeatureServer_0",
+  "OU_arcgis_rest_services_Addresses_SIO_Hosted_FeatureServer_0",
+  "t_services_SummitCntyCO_Addresses_Pictometry_FeatureServer_0"
+ ],
+ "killed_after_s": 14.0,
+ "layers_before": 2,
+ "rows_before": 80823,
+ "skipped_on_restart": 2,
+ "layers_after": 6,
+ "rows_after": 243726,
+ "skipped": 2,
+ "todo": 4,
+ "rows_total_expected": 243726,
+ "files_rewritten": [],
+ "restart_wall_s": 26.4,
+ "verdict": "重启后跳过已完成 2 层（= kill 前的 2 层），只跑剩余 4 层；行数相加 243726 == 6 层真实总行数 243726；已完成层 rows-*.json 重写数 0",
+ "progress_dir": "/tmp/ct-resume-prog（隔离目录，避免污染全量跑）",
+ "log": "/tmp/ct-resume-run.log"
+}

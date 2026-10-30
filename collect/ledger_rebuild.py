@@ -222,7 +222,11 @@ def judge(layer: str, declared, rel, ck, ck_err: str) -> dict:
             rec["problems"].append("unit %d 标记完成但 Release 无 -u%05d.tar.gz" % (i, i))
     for i in sorted(unit_assets):
         if i not in ur:
-            rec["problems"].append("Release 有 -u%05d.tar.gz 但 checkpoint 无该单元" % i)
+            # 重切片（plan_hash 变）后旧包的编号与新单元对不上是**预期**的：
+            # 完成度由 checkpoint 举证，多出来的包只是磁盘上的旧字节。
+            # 若把它当 failed，一次正常重切片就会把好层钉成永久 failed（2026-10-30 讨论过）。
+            rec.setdefault("stale_parts", []).append(i)
+            rec["warn"].append("Release 有 -u%05d.tar.gz 但 checkpoint 无该单元（旧切分遗留，不计入完成度）" % i)
     for i, e in sorted(errs.items()):
         rec["problems"].append("unit %d 残留错误：%s" % (i, str(e)[:80]))
     for i in sorted(ack):
@@ -296,8 +300,104 @@ def extras_not_in_plan(ids: list, releases: dict, prefix: str) -> list:
     return [t for t in sorted(releases) if t[len(prefix):] not in idset]
 
 
+def plan_shard_index(plan_path: str) -> dict:
+    """layer → 片号。用于把「哪片被 cancelled」标到逐层账上（否则就是静默丢）。"""
+    if not plan_path or not os.path.exists(plan_path):
+        return {}
+    d = json.load(open(plan_path, encoding="utf-8"))
+    out = {}
+    for s in d.get("shards") or []:
+        for lid in (s.get("layers") or []):
+            out[lid] = int(s.get("shard"))
+    return out
+
+
+SHARD_JOB_RE = re.compile(r"^shard \((\d+)\)$")
+
+
+def run_shard_jobs(repo: str, run_id: str) -> dict:
+    """从 workflow run 的 jobs 里取「片 → 结论」。空 run_id 返回 {}。
+
+    GitHub 把 timeout-minutes 超时的 job 记成 conclusion=cancelled（不是 failure），
+    所以「片 cancelled」在账本里必须看得见，不能只靠人记得。
+    """
+    if not run_id:
+        return {}
+    jobs, page = {}, 1
+    while page <= 5:
+        raw = gh(["api", "repos/%s/actions/runs/%s/jobs?per_page=100&page=%d" % (repo, run_id, page)])
+        batch = (json.loads(raw) or {}).get("jobs") or []
+        if not batch:
+            break
+        for j in batch:
+            m = SHARD_JOB_RE.match(j.get("name") or "")
+            if m:
+                jobs[int(m.group(1))] = {"job_id": j.get("id"), "conclusion": j.get("conclusion"),
+                                         "run_id": str(run_id),
+                                         "started_at": j.get("started_at"),
+                                         "completed_at": j.get("completed_at")}
+        if len(batch) < 100:
+            break
+        page += 1
+    return jobs
+
+
+def run_meta(repo: str, run_id: str) -> dict:
+    if not run_id:
+        return {}
+    j = json.loads(gh(["api", "repos/%s/actions/runs/%s" % (repo, run_id)]))
+    return {"id": int(run_id), "conclusion": j.get("conclusion"), "status": j.get("status"),
+            "created_at": j.get("created_at"), "updated_at": j.get("updated_at"),
+            "run_attempt": j.get("run_attempt")}
+
+
+def annotate_shards(recs: list, shard_of: dict, sjobs: dict):
+    """把「这层属于哪片 / 那片的 job 结论」标到逐层账上，并给出 cancelled 片的逐层汇总。
+
+    为什么必须有：GitHub 把 timeout-minutes 超时的 job 记成 conclusion=cancelled（不是 failure），
+    workflow 账本文件又因为文件名不匹配全静默落空过 —— 两次叠加就等于「4 片凭空消失」。
+    所以 cancelled 片里的每一层都要在账本里有名字、有状态、有「为什么是现在这个状态」。
+    """
+    cancelled = sorted(n for n, j in sjobs.items() if j.get("conclusion") == "cancelled")
+    for r in recs:
+        sn = shard_of.get(r["layer"])
+        r["shard"] = sn
+        if sn is not None and sn in sjobs:
+            r["shard_conclusion"] = sjobs[sn].get("conclusion")
+            if sjobs[sn].get("conclusion") == "cancelled":
+                r["shard_cancelled"] = True
+                if r["status"] == "ok":
+                    r["note_cancelled"] = "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
+                elif r.get("tag"):
+                    r["note_cancelled"] = "本层在 cancelled 片内，只落了一部分 → 需续跑补缺口"
+                else:
+                    r["note_cancelled"] = "本层在 cancelled 片内，一个字节都没落 → 从未跑成"
+    canc_block = []
+    for sn in cancelled:
+        ls = [r for r in recs if r.get("shard") == sn]
+        cnt = {}
+        for r in ls:
+            cnt[r["status"]] = cnt.get(r["status"], 0) + 1
+        canc_block.append({
+            "shard": sn, "job_conclusion": sjobs[sn].get("conclusion"),
+            "run_id": sjobs[sn].get("run_id"),
+            "job_id": sjobs[sn].get("job_id"),
+            "started_at": sjobs[sn].get("started_at"),
+            "completed_at": sjobs[sn].get("completed_at"),
+            "layers_n": len(ls), "ok": cnt.get("ok", 0), "empty": cnt.get("empty", 0),
+            "partial": cnt.get("partial", 0), "failed": cnt.get("failed", 0),
+            "declared": sum((r.get("declared") or 0) for r in ls),
+            "rows": sum((r.get("rows") or 0) for r in ls),
+            "layers": [{"layer": r["layer"], "status": r["status"], "declared": r.get("declared"),
+                        "rows": r.get("rows"), "parts_assets": r.get("parts_assets"),
+                        "units_done": r.get("units_done"), "units": r.get("units"),
+                        "note": r.get("note_cancelled")} for r in ls],
+        })
+    return cancelled, canc_block
+
+
 def rebuild(stage: str, plan_path: str, cache: str, repo: str, refresh: bool,
-            jobs: int, max_pages: int, generated_at: str = "") -> dict:
+            jobs: int, max_pages: int, generated_at: str = "", run_id: str = "") -> dict:
     prefix, tag, title = STAGE_TAG[stage]
     ids = plan_ids(plan_path)
     dec = declared_index()
@@ -336,6 +436,35 @@ def rebuild(stage: str, plan_path: str, cache: str, repo: str, refresh: bool,
         generated_at = max(stamps) if stamps else "unknown"
 
     extras = extras_not_in_plan(ids, releases, prefix)
+
+    # ---- 片维度：哪片 cancelled、那片的层后来到底怎么了（必须留在账本上）
+    shard_of = plan_shard_index(plan_path)
+    run_ids = [x.strip() for x in str(run_id or "").split(",") if x.strip()]
+    sjobs, runs_meta, merged = {}, [], {}
+    for rid in run_ids:
+        try:
+            one = run_shard_jobs(repo, rid)
+            meta = run_meta(repo, rid)
+            meta["shards"] = {str(n): j.get("conclusion") for n, j in sorted(one.items())}
+            runs_meta.append(meta)
+        except Exception as e:  # noqa: BLE001
+            print("[rebuild] ⚠ 取 run %s 的 job 结论失败：%s" % (rid, str(e)[:120]), flush=True)
+            continue
+        # 片号是每轮各自编的：同一片号在后续轮次里重跑过就以**后续轮**为准
+        for n, j in one.items():
+            merged.setdefault(n, []).append(j)
+            sjobs[n] = j
+    rmeta = runs_meta[-1] if runs_meta else {}
+    cancelled, canc_block = annotate_shards(recs, shard_of, sjobs)
+
+    run_block = dict(rmeta)
+    if len(runs_meta) > 1:
+        run_block["rounds"] = runs_meta
+    if sjobs:
+        run_block["shards"] = {str(n): j.get("conclusion") for n, j in sorted(sjobs.items())}
+        run_block["shards_cancelled"] = cancelled
+        run_block["shards_success"] = sorted(n for n, j in sjobs.items()
+                                            if j.get("conclusion") == "success")
     agg = {
         "schema": "collect-ledger-rebuild/v1",
         "stage": stage,
@@ -362,6 +491,8 @@ def rebuild(stage: str, plan_path: str, cache: str, repo: str, refresh: bool,
         "failed_layers": [{"layer": r["layer"], "reason": r.get("reason"),
                            "problems": r.get("problems")} for r in recs if r["status"] == "failed"],
         "empty_layers": [r["layer"] for r in recs if r["status"] == "empty"],
+        "run": run_block,
+        "cancelled_shards": canc_block,
         "extras_not_in_plan": {"n": len(extras), "tags": extras},
         "records": recs,
     }
@@ -404,7 +535,63 @@ def render_doc(agg: dict) -> str:
          "> 实采口径 = `Σ checkpoint.unit_rows_seen`（真采到的行）。"
          "老 checkpoint 缺该字段时退回 `Σ unit_rows`（计划值）并在逐层表标注 `unit_rows`。", ""]
 
-    L += ["## 二、差额 > 1%% 的层（必须逐条说明）", ""]
+    # ---- 片维度：cancelled 必须留痕（否则就是静默丢）
+    rb = agg.get("run") or {}
+    cb = agg.get("cancelled_shards") or []
+    L += ["## 二、片维度：哪片被 cancelled，那片的层到底怎么了", ""]
+    if rb.get("rounds"):
+        L += ["- 轮次（同号片以后续轮为准）：", "",
+              "| 轮 | run | 结论 | 起 | 止 | 片结论（success/cancelled/failure） |",
+              "|---|---|---|---|---|---|"]
+        for i, r in enumerate(rb["rounds"], 1):
+            sh = r.get("shards") or {}
+            cnt = {}
+            for c in sh.values():
+                cnt[c] = cnt.get(c, 0) + 1
+            summ = ("success %d / cancelled %d / failure %d"
+                    % (cnt.get("success", 0), cnt.get("cancelled", 0), cnt.get("failure", 0))
+                    if sh else "无片（计划/取数轮）")
+            L.append("| 第 %d 轮 | `%s` | %s | %s | %s | %s |"
+                     % (i, r.get("id"), r.get("conclusion"),
+                        (r.get("created_at") or "")[:16], (r.get("updated_at") or "")[:16], summ))
+        L += [""]
+    if rb.get("id"):
+        L += ["- run：`%s`（conclusion=**%s**，%s → %s）"
+              % (rb["id"], rb.get("conclusion"), rb.get("created_at"), rb.get("updated_at"))]
+        if cb:
+            # 片号是**每轮各自编的**：跨轮不能相加。这里只报「以最后一轮为准，
+            # 仍是 cancelled 的片号」，逐轮明细看上表。
+            L += ["- 以最后一轮为准：仍有 %d 个片号是 cancelled（shard %s）；"
+                  "这些片里的层逐条见下表" % (len(cb), "、".join(str(c["shard"]) for c in cb))]
+    else:
+        L += ["- 未指定 `--run-id`，本账只看资产、不标片结论。"]
+    if cb:
+        L += ["", "> 层号归属按**首轮计划**切分；同号片在后续轮次里重跑过，以最后一轮 job 结论为准。", "",
+              "| 片 | 轮(run) | job | 起 | 止 | 层 | ok | partial | failed | 声明 | 实采 | 覆盖率 |",
+              "|---|---|---|---|---|---|---|---|---|---|---|---|"]
+        for c in cb:
+            cov = 100.0 * (c["rows"] or 0) / max(c["declared"] or 1, 1)
+            L.append("| %d | `%s` | %s | %s | %s | %d | %d | %d | %d | %s | %s | %.1f%% |"
+                     % (c["shard"], c.get("run_id") or "-", c["job_id"],
+                        (c.get("started_at") or "-")[11:16],
+                        (c.get("completed_at") or "-")[11:16], c["layers_n"], c["ok"],
+                        c["partial"], c["failed"], f"{c['declared']:,}", f"{c['rows']:,}", cov))
+        L += ["", "**逐层痕迹（cancelled 片里的每一层都在这里，没有一个凭空消失）**：", ""]
+        for c in cb:
+            L += ["### shard %d（job %s，被 GitHub 按 timeout-minutes 掐掉）→ %d 层"
+                  % (c["shard"], c["job_id"], c["layers_n"]), ""]
+            L += ["| 层 | 单元(done/all) | 包 | 声明 | 实采 | 状态 | 说明 |",
+                  "|---|---|---|---|---|---|---|"]
+            for r in c["layers"]:
+                L.append("| `%s` | %s/%s | %s | %s | %s | %s | %s |"
+                         % (r["layer"], r.get("units_done") or "-", r.get("units") or "-",
+                            r.get("parts_assets"),
+                            f"{r['declared']:,}" if r.get("declared") else "-",
+                            f"{r['rows']:,}" if r.get("rows") is not None else "-",
+                            r["status"], r.get("note") or ""))
+            L += [""]
+
+    L += ["## 三、差额 > 1% 的层（必须逐条说明）", ""]
     if big:
         L += ["| # | 层 | 声明 | 实采 | 缺 | 缺口% | 原因 |", "|---|---|---|---|---|---|---|"]
         for i, r in enumerate(big, 1):
@@ -415,16 +602,24 @@ def render_doc(agg: dict) -> str:
         L += ["", "**为什么会有缺口（按原因归类）**："]
         kinds = {}
         for r in big:
-            k = ("上游短供（checkpoint 有 unit_short_ack）" if any("短供" in w for w in r["warn"])
-                 else "其他 / 待查" if not r["warn"] else "见备注")
+            rs = r.get("reason") or ""
+            if "计划期口径差" in rs:
+                k = "① 计划期口径差（本层 checkpoint 计划行已跑满，是清单声明值偏大：口径/上游缩水）"
+            elif "短供" in rs or any("短供" in w for w in r["warn"]):
+                k = "② 上游短供（checkpoint 有 unit_short_ack，上游自己少了行）"
+            elif "缺口" in rs:
+                k = "③ 单元没跑完（本层自己的单元还没做完，续跑能补）"
+            else:
+                k = "④ 其他（逐条原因见上表）"
             kinds.setdefault(k, []).append(r["layer"])
-        for k, v in kinds.items():
-            L.append("- %s：%d 层" % (k, len(v)))
+        for k in sorted(kinds):
+            L.append("- %s：%d 层 —— %s" % (k, len(kinds[k]),
+                                            "、".join("`%s`" % x[:36] for x in kinds[k][:4])))
     else:
         L.append("**无。** 所有层实采与声明差额 ≤ 1%。")
     L += [""]
 
-    L += ["## 三、差额绝对值最大的 10 层", ""]
+    L += ["## 四、差额绝对值最大的 10 层", ""]
     if gaps:
         L += ["| 层 | 声明 | 实采 | 差额 | 缺口% | 状态 |", "|---|---|---|---|---|---|"]
         for r in gaps[:10]:
@@ -435,7 +630,7 @@ def render_doc(agg: dict) -> str:
         L.append("**零差额。**")
     L += [""]
 
-    L += ["## 四、failed（%d 层，逐条原因）" % len(bad), ""]
+    L += ["## 五、failed（%d 层，逐条原因）" % len(bad), ""]
     if bad:
         L += ["| 层 | checkpoint | 资产单元包 | done/units | 原因 |", "|---|---|---|---|---|"]
         for r in bad:
@@ -447,14 +642,14 @@ def render_doc(agg: dict) -> str:
         L.append("**无。**")
     L += [""]
 
-    L += ["## 五、empty（%d 层）" % len(empty), ""]
+    L += ["## 六、empty（%d 层）" % len(empty), ""]
     L += (["| 层 | 声明 | 原因 |", "|---|---|---|"]
           + ["| `%s` | %s | %s |" % (r["layer"], r.get("declared"), (r.get("reason") or "")[:80])
              for r in empty]) if empty else ["**无。**"]
     L += [""]
 
     if agg["extras_not_in_plan"]["n"]:
-        L += ["## 六、不在本次计划内的 step04 Release（%d 个，供交叉核对）"
+        L += ["## 七、不在本次计划内的 step04 Release（%d 个，供交叉核对）"
               % agg["extras_not_in_plan"]["n"], "",
               "这些 tag 是往轮 pilot / 其他阶段的产物，不在 04b 计划清单里，未计入总账：", ""]
         L += ["- `%s`" % t for t in agg["extras_not_in_plan"]["tags"][:30]]
@@ -463,12 +658,12 @@ def render_doc(agg: dict) -> str:
                   % (agg["extras_not_in_plan"]["n"] - 30)]
         L += [""]
 
-    L += ["## 七、逐层台账（%d 层，按声明行数降序）" % len(recs), "",
-          "| # | 层 | 声明 | 实采 | 缺口% | 单元(done/all) | 包 | 字节 | 上传(最后) | 状态 | 行数源 |",
-          "|---|---|---|---|---|---|---|---|---|---|---|"]
+    L += ["## 八、逐层台账（%d 层，按声明行数降序）" % len(recs), "",
+          "| # | 片 | 层 | 声明 | 实采 | 缺口% | 单元(done/all) | 包 | 字节 | 上传(最后) | 状态 | 行数源 |",
+          "|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for i, r in enumerate(recs, 1):
-        L.append("| %d | `%s` | %s | %s | %.2f%% | %s/%s | %s | %s | %s | %s | %s |"
-                 % (i, r["layer"],
+        L.append("| %d | %s | `%s` | %s | %s | %.2f%% | %s/%s | %s | %s | %s | %s | %s |"
+                 % (i, r.get("shard") if r.get("shard") is not None else "-", r["layer"],
                     f"{r['declared']:,}" if r.get("declared") else "-",
                     f"{r['rows']:,}" if r.get("rows") is not None else "-",
                     r.get("gap_pct") or 0.0,
@@ -476,13 +671,16 @@ def render_doc(agg: dict) -> str:
                     r.get("parts_assets"),
                     f"{r['bytes']:,}" if r.get("bytes") else "-",
                     (r.get("last_upload") or "-")[:16], r["status"], r.get("rows_src") or "-"))
-    L += ["", "## 八、复现（幂等）", "", "```bash",
+    L += ["", "## 九、复现（幂等）", "", "```bash",
           "# 拉 04b 计划（若本地没有）：gh run download <run-id> -n plan-04b -D collect/ledger",
           "python3 collect/ledger_rebuild.py --stage %s \\" % stage,
           "    --plan collect/ledger/%s_plan.json \\" % stage,
+          "    --run-id %s \\" % (agg.get("run") or {}).get("id", "<run-id>"),
           "    --out collect/ledger/step%sb_rebuilt.json" % stage[:2],
-          "python3 collect/ledger_rebuild.py --stage %s --check   # 同状态应输出 IDENTICAL"
-          % stage, "```", ""]
+          "python3 collect/ledger_rebuild.py --stage %s --run-id %s \\"
+          % (stage, (agg.get("run") or {}).get("id", "<run-id>")),
+          "    --plan collect/ledger/%s_plan.json --check  # 同状态应输出 IDENTICAL" % stage,
+          "```", ""]
     return "\n".join(L)
 
 
@@ -500,6 +698,9 @@ def main() -> int:
     ap.add_argument("--max-pages", type=int, default=60)
     ap.add_argument("--refresh", action="store_true", help="忽略 checkpoint 缓存，全部重下")
     ap.add_argument("--generated-at", default="", help="覆盖 generated_at（默认取最新资产时间）")
+    ap.add_argument("--run-id", default="",
+                    help="采采的 workflow run id，可用逗号分隔多轮（cancelled 片 → 续跑轮），"
+                         "取「片 → 结论」标到逐层账上")
     ap.add_argument("--check", action="store_true", help="只比对现有输出是否一致，不写盘")
     a = ap.parse_args()
 
@@ -507,7 +708,7 @@ def main() -> int:
     plan = a.plan or os.path.join(HERE, "ledger", "%s_plan.json" % stage)
     out = a.out or os.path.join(HERE, "ledger", "step%sb_rebuilt.json" % stage[:2])
     agg = rebuild(stage, plan, a.cache, a.repo or repo_default(), a.refresh,
-                  a.jobs, a.max_pages, a.generated_at)
+                  a.jobs, a.max_pages, a.generated_at, a.run_id)
     doc = a.doc or os.path.join(ROOT, "docs", "%s-FULL-%s.md"
                                 % (STAGE_TAG[stage][1], (agg["generated_at"] or utcnow())[:10]))
     body = json.dumps(agg, ensure_ascii=False, indent=1, sort_keys=False)

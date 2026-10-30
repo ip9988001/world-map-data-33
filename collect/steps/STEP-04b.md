@@ -68,6 +68,7 @@ python3 collect/step_full_report.py --stage step04b
  },
  "workers": 4,
  "unit_rows": 1000000,
+ "unit_bytes": 1500000000,
  "tag": "collect-step04-{layer}",
  "evidence": [
   "report",

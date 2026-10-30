@@ -12,7 +12,8 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from ledger_rebuild import judge, scope_layers, extras_not_in_plan   # noqa: E402
+from ledger_rebuild import (judge, scope_layers, extras_not_in_plan,   # noqa: E402
+                            plan_shard_index, annotate_shards)
 
 
 def rel(tag="collect-step04-L", units=(0,), ckpt=True, size=1000):
@@ -70,9 +71,16 @@ def t_missing_asset():
 
 
 def t_extra_asset():
-    """Release 有单元包但 checkpoint 没记录 → failed（账实不符）。"""
+    """Release 有单元包但 checkpoint 没记录 → 旧切分遗留：**warn 不算 failed**（完成度由 checkpoint 举证）。
+
+    历史口径这里是 failed；2026-10-30 改为 warn：重切片（plan_hash 变）后旧包编号
+    与新单元对不上是预期行为，若继续判 failed，一次正常重切片就把好层钉成永久 failed。
+    该异常仍会在逐层表 `stale_parts` + 备注里看得见，不是静默。
+    """
     r = judge("L", 1000, rel(units=(0, 1)), ck(), "")
-    assert r["status"] == "failed" and "checkpoint 无该单元" in r["reason"], r
+    assert r["status"] == "ok", r
+    assert r.get("stale_parts") == [1], r
+    assert any("旧切分遗留" in w for w in r["warn"]), r
 
 
 def t_unit_errors():
@@ -161,6 +169,43 @@ def test_extras_empty_when_no_plan():
 def test_extras_lists_out_of_plan_tags():
     rels = {"collect-step04-a": {}, "collect-step04-old": {}}
     assert extras_not_in_plan(["a"], rels, "collect-step04-") == ["collect-step04-old"]
+
+
+# ---------------------------------------------------------------- cancelled 片留痕
+import json as _json          # noqa: E402
+import tempfile as _tmp       # noqa: E402
+
+
+def test_plan_shard_index_maps_layer_to_shard():
+    plan = {"shards": [{"shard": 0, "layers": ["a", "b"]}, {"shard": 7, "layers": ["c"]}]}
+    f = _tmp.NamedTemporaryFile("w", suffix=".json", delete=False)
+    _json.dump(plan, f); f.close()
+    assert plan_shard_index(f.name) == {"a": 0, "b": 0, "c": 7}
+    assert plan_shard_index("") == {} and plan_shard_index("/nonexist.json") == {}
+
+
+def test_annotate_shards_marks_every_cancelled_layer():
+    """cancelled 片里的层必须全部有痕迹：ok（已落盘）/ 半截 / 一个字节都没有，三档分明。"""
+    recs = [{"layer": "done_ok", "status": "ok", "tag": "t", "declared": 100, "rows": 100},
+            {"layer": "half", "status": "failed", "tag": "t", "declared": 100, "rows": 40,
+             "parts_assets": 2, "units_done": 2, "units": 4},
+            {"layer": "never", "status": "failed", "tag": None, "declared": 100, "rows": None},
+            {"layer": "other", "status": "ok", "tag": "t", "declared": 10, "rows": 10}]
+    shard_of = {"done_ok": 1, "half": 1, "never": 1, "other": 0}
+    sjobs = {0: {"job_id": 90, "conclusion": "success"},
+             1: {"job_id": 91, "conclusion": "cancelled"}}
+    cancelled, block = annotate_shards(recs, shard_of, sjobs)
+    assert cancelled == [1], cancelled
+    assert len(block) == 1 and block[0]["layers_n"] == 3, block
+    assert block[0]["ok"] == 1 and block[0]["failed"] == 2
+    assert block[0]["rows"] == 140 and block[0]["declared"] == 300
+    notes = {l["layer"]: l["note"] for l in block[0]["layers"]}
+    assert "已落盘" in notes["done_ok"], notes
+    assert "需续跑" in notes["half"], notes
+    assert "从未跑成" in notes["never"], notes
+    # 不在 cancelled 片的层不许被贴 cancelled 标
+    assert not recs[3].get("shard_cancelled") and recs[3]["shard"] == 0
+    assert recs[0]["shard_cancelled"] is True
 
 
 # ---------------------------------------------------------------- unittest 收口

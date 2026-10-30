@@ -1,0 +1,536 @@
+{
+ "schema": "city-rules/v1",
+ "at": "2026-10-30T10:30:37Z",
+ "policy": "postal_city 只收「邮件城市」语义列且值过形态校验；municipal_city 只收法定市政列；任何不确定一律 null，且 *_source 同步写 null（SCHEMA 允许 null，宁可空不可错）",
+ "postal_city": {
+  "accept_columns": [
+   "POST_CITY",
+   "POSTAL_CITY",
+   "POSTALCITY",
+   "MAIL_CITY",
+   "MAILING_CITY",
+   "CITY_POSTAL",
+   "CITY_MAILING",
+   "POST_OFFICE_CITY",
+   "PO_CITY",
+   "POSTAL_TOWN",
+   "CITY",
+   "CITY_NAME",
+   "CITYNAME",
+   "PLACE_NAME",
+   "SITUS_CITY",
+   "ADDRESS_CITY",
+   "ADDR_CITY",
+   "POSTALCITY",
+   "POST_OFFICE_CITY",
+   "PO_CITY"
+  ],
+  "reject_columns": [
+   "OWNER_CITY",
+   "OWNER_CITY_STATE",
+   "MAIL_CITY_OWNER",
+   "TAXPAYER_CITY",
+   "INC_MUNI",
+   "INCMUNI",
+   "MUNICIPALITY",
+   "MUNICIPAL_NAME",
+   "MUNI_NAME",
+   "MUNICIPAL",
+   "CITY_OF",
+   "TOWNSHIP",
+   "TOWNSHIP_NAME",
+   "COMMUNITY",
+   "TOWN",
+   "VILLAGE",
+   "HAMLET",
+   "NEIGHBORHOOD"
+  ],
+  "value_rules": [
+   "不含数字（ZIP/门牌一律拒）",
+   "不含逗号/分号（整串地址拒）",
+   "不在行政区黑话表（UNINCORPORATED/NONE/CDP 等）",
+   "长度 ≤ 40",
+   "字母开头且仅 A-Z . ' - 空格"
+  ],
+  "null_when": "值校验不过 or 层内抽样 clean_rate < 0.8 → postal_city=null, postal_city_source=null",
+  "source_enum": {
+   "native": "nad_post_city",
+   "derived": "place_derived",
+   "null": null
+  }
+ },
+ "municipal_city": {
+  "accept_columns": [
+   "INC_MUNI",
+   "INCMUNI",
+   "MUNICIPALITY",
+   "MUNICIPAL_NAME",
+   "MUNI_NAME",
+   "MUNICIPAL",
+   "CITY_OF",
+   "TOWNSHIP",
+   "TOWNSHIP_NAME"
+  ],
+  "reject_columns": [
+   "OWNER_CITY",
+   "OWNER_CITY_STATE",
+   "MAIL_CITY_OWNER",
+   "TAXPAYER_CITY",
+   "COMMUNITY",
+   "TOWN",
+   "VILLAGE",
+   "HAMLET",
+   "NEIGHBORHOOD",
+   "POST_CITY",
+   "POSTAL_CITY",
+   "POSTALCITY",
+   "MAIL_CITY",
+   "MAILING_CITY",
+   "CITY_POSTAL",
+   "CITY_MAILING",
+   "POST_OFFICE_CITY",
+   "PO_CITY",
+   "POSTAL_TOWN"
+  ],
+  "value_rules": [
+   "同 postal 的形态校验",
+   "UNINCORPORATED/UNINC. → null（非法定市政）"
+  ],
+  "source_enum": {
+   "native": "nad_inc_muni",
+   "derived": "tiger_place",
+   "null": null
+  }
+ },
+ "measured": {
+  "rows": 560,
+  "layers": 28,
+  "class_counts": {
+   "clean": 448,
+   "empty": 65,
+   "blacklist": 47
+  },
+  "agreement": {
+   "same_family": 1,
+   "diff_family": 2,
+   "examples": [
+    {
+     "layer": "es_us_mn_state_mngeo_loc_addresses_zip9_open_FeatureServer_0",
+     "col": "post_city",
+     "other": "inc_muni",
+     "a": "Not stated",
+     "b": "Saint Francis"
+    },
+    {
+     "layer": "es_us_mn_state_mngeo_loc_addresses_zip9_open_FeatureServer_0",
+     "col": "post_city",
+     "other": "inc_muni",
+     "a": "Not stated",
+     "b": "Saint Francis"
+    },
+    {
+     "layer": "es_us_mn_state_mngeo_loc_addresses_zip9_open_FeatureServer_0",
+     "col": "post_city",
+     "other": "inc_muni",
+     "a": "Not stated",
+     "b": "Saint Francis"
+    },
+    {
+     "layer": "6zC_arcgis_rest_services_parcel_file_current_FeatureServer_0",
+     "col": "taxpayer_city",
+     "other": "neighborhood",
+     "a": "DETROIT",
+     "b": "NW Goldberg"
+    },
+    {
+     "layer": "6zC_arcgis_rest_services_parcel_file_current_FeatureServer_0",
+     "col": "taxpayer_city",
+     "other": "neighborhood",
+     "a": "DETROIT",
+     "b": "NW Goldberg"
+    },
+    {
+     "layer": "6zC_arcgis_rest_services_parcel_file_current_FeatureServer_0",
+     "col": "taxpayer_city",
+     "other": "neighborhood",
+     "a": "DETROIT",
+     "b": "LaSalle Gardens"
+    }
+   ]
+  }
+ },
+ "layers": [
+  {
+   "layer_id": "UCXd1_arcgis_rest_services_USA_NAD_Addresses_FeatureServer_0",
+   "col": "addr_city",
+   "fam": "generic_city",
+   "sampled": 20,
+   "clean_rate": 1.0,
+   "classes": {
+    "clean": 20
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "aIfH92NqI_arcgis_rest_services_AddressNC_v1_FeatureServer_28",
+   "col": "Inc_Muni",
+   "fam": "municipal_named",
+   "sampled": 20,
+   "clean_rate": 0.45,
+   "classes": {
+    "empty": 11,
+    "clean": 9
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "st_services_VA_Base_Layers_VA_Address_Points_FeatureServer_0",
+   "col": "MUNICIPALITY",
+   "fam": "municipal_named",
+   "sampled": 20,
+   "clean_rate": 1.0,
+   "classes": {
+    "clean": 20
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "s_rest_services_VA_Base_Layers_VA_Address_Points_MapServer_0",
+   "col": "MUNICIPALITY",
+   "fam": "municipal_named",
+   "sampled": 20,
+   "clean_rate": 1.0,
+   "classes": {
+    "clean": 20
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "gis_rest_services_AZ911_AddressPoints_Hosted_FeatureServer_0",
+   "col": "inc_muni",
+   "fam": "municipal_named",
+   "sampled": 20,
+   "clean_rate": 0.2,
+   "classes": {
+    "empty": 16,
+    "clean": 4
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "ces_Hosted_Address_Points_of_Indiana_Current_FeatureServer_0",
+   "col": "inc_muni",
+   "fam": "municipal_named",
+   "sampled": 20,
+   "clean_rate": 0.4,
+   "classes": {
+    "empty": 5,
+    "blacklist": 7,
+    "clean": 8
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "es_us_mn_state_mngeo_loc_addresses_zip9_open_FeatureServer_0",
+   "col": "post_city",
+   "fam": "postal_named",
+   "sampled": 20,
+   "clean_rate": 1.0,
+   "classes": {
+    "clean": 20
+   },
+   "agreement": {
+    "other": "inc_muni",
+    "other_fam": "municipal_named",
+    "rate": 0.0,
+    "n": 20
+   },
+   "err": ""
+  },
+  {
+   "layer_id": "gov_gisweb01_rest_services_EGIS_HOUSTON_CITYINFO_MapServer_0",
+   "col": "CITY",
+   "fam": "generic_city",
+   "sampled": 0,
+   "err": "meta:<urlopen error timed out>"
+  },
+  {
+   "layer_id": "vices_Connecticut_CAMA_and_Parcel_Layer_2025_FeatureServer_0",
+   "col": "Mailing_City",
+   "fam": "postal_named",
+   "sampled": 20,
+   "clean_rate": 1.0,
+   "classes": {
+    "clean": 20
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "com_l8Wk45ve68ufHyvr_arcgis_rest_services_AD_FeatureServer_0",
+   "col": "City",
+   "fam": "generic_city",
+   "sampled": 20,
+   "clean_rate": 0.9,
+   "classes": {
+    "empty": 2,
+    "clean": 18
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "68ufHyvr_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "col": "City",
+   "fam": "generic_city",
+   "sampled": 20,
+   "clean_rate": 0.9,
+   "classes": {
+    "empty": 2,
+    "clean": 18
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "gis_rest_services_Address_Points_2026_County_FeatureServer_0",
+   "col": "COMMUNITY",
+   "fam": "community_named",
+   "sampled": 20,
+   "clean_rate": 1.0,
+   "classes": {
+    "clean": 20
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "idPhWCzftIe9K_arcgis_rest_services_Buildings_FeatureServer_0",
+   "col": "CITY",
+   "fam": "generic_city",
+   "sampled": 20,
+   "clean_rate": 0.55,
+   "classes": {
+    "empty": 9,
+    "clean": 11
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "rvices_Parcels_500m_From_ParksandGreenspaces_FeatureServer_0",
+   "col": "City",
+   "fam": "generic_city",
+   "sampled": 20,
+   "clean_rate": 1.0,
+   "classes": {
+    "clean": 20
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "d_arcgis_rest_services_OC_Addresses_20260811_FeatureServer_0",
+   "col": "Community",
+   "fam": "community_named",
+   "sampled": 20,
+   "clean_rate": 0.0,
+   "classes": {
+    "empty": 20
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "g_arcgis_rest_services_ADDRESS_POINTS_062526_FeatureServer_1",
+   "col": "COMMUNITY",
+   "fam": "community_named",
+   "sampled": 20,
+   "clean_rate": 1.0,
+   "classes": {
+    "clean": 20
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "st_services_Address_Points_SAMs_Lite_1030896_FeatureServer_0",
+   "col": "CITY",
+   "fam": "generic_city",
+   "sampled": 20,
+   "clean_rate": 1.0,
+   "classes": {
+    "clean": 20
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "gis_rest_services_SAMS_NAD_2025_Address_List_FeatureServer_2",
+   "col": "Post_City",
+   "fam": "postal_named",
+   "sampled": 20,
+   "clean_rate": 1.0,
+   "classes": {
+    "clean": 20
+   },
+   "agreement": {
+    "other": "MUNICIPALITY",
+    "other_fam": "municipal_named",
+    "rate": 1.0,
+    "n": 20
+   },
+   "err": ""
+  },
+  {
+   "layer_id": "Parcels_Within_500m_From_ParksandGreenspaces_FeatureServer_0",
+   "col": "City",
+   "fam": "generic_city",
+   "sampled": 20,
+   "clean_rate": 1.0,
+   "classes": {
+    "clean": 20
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "ps_com_od_rest_services_COP_OpenData_Property_MapServer_1272",
+   "col": "MAIL_CITY",
+   "fam": "postal_named",
+   "sampled": 0,
+   "err": "meta:<urlopen error timed out>"
+  },
+  {
+   "layer_id": "kIBzkUXU_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "col": "CITY",
+   "fam": "generic_city",
+   "sampled": 20,
+   "clean_rate": 1.0,
+   "classes": {
+    "clean": 20
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "es_City_of_Columbus_Address_Points_20260630_FeatureServer_21",
+   "col": "CITY",
+   "fam": "generic_city",
+   "sampled": 20,
+   "clean_rate": 1.0,
+   "classes": {
+    "clean": 20
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "gis_rest_services_Riverside_County_Addresses_FeatureServer_0",
+   "col": "addr_city",
+   "fam": "generic_city",
+   "sampled": 20,
+   "clean_rate": 1.0,
+   "classes": {
+    "clean": 20
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "dyB05xBau1dNQ_arcgis_rest_services_Addresses_FeatureServer_0",
+   "col": "MAIL_CITY",
+   "fam": "postal_named",
+   "sampled": 20,
+   "clean_rate": 1.0,
+   "classes": {
+    "clean": 20
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "PLlPw_arcgis_rest_services_Situs_20Addresses_FeatureServer_0",
+   "col": "CITY",
+   "fam": "generic_city",
+   "sampled": 20,
+   "clean_rate": 0.0,
+   "classes": {
+    "blacklist": 20
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "arcgis_rest_services_ParcelsJoin_SpatialJoin_FeatureServer_0",
+   "col": "CITY",
+   "fam": "generic_city",
+   "sampled": 20,
+   "clean_rate": 0.0,
+   "classes": {
+    "blacklist": 20
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "rest_services_Sacramento_County_CA_Addresses_FeatureServer_0",
+   "col": "addr_city",
+   "fam": "generic_city",
+   "sampled": 20,
+   "clean_rate": 1.0,
+   "classes": {
+    "clean": 20
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "f6d6e8_rest_services_CoSA_BrowseSAStoryMapLayers_MapServer_7",
+   "col": "City",
+   "fam": "generic_city",
+   "sampled": 20,
+   "clean_rate": 1.0,
+   "classes": {
+    "clean": 20
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "rps6zC_arcgis_rest_services_Parcel_File_2023_FeatureServer_1",
+   "col": "taxpayer_city",
+   "fam": "owner_named",
+   "sampled": 20,
+   "clean_rate": 1.0,
+   "classes": {
+    "clean": 20
+   },
+   "agreement": null,
+   "err": ""
+  },
+  {
+   "layer_id": "6zC_arcgis_rest_services_parcel_file_current_FeatureServer_0",
+   "col": "taxpayer_city",
+   "fam": "owner_named",
+   "sampled": 20,
+   "clean_rate": 1.0,
+   "classes": {
+    "clean": 20
+   },
+   "agreement": {
+    "other": "neighborhood",
+    "other_fam": "community_named",
+    "rate": 0.0,
+    "n": 20
+   },
+   "err": ""
+  }
+ ]
+}

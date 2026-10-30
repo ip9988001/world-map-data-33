@@ -1,0 +1,133 @@
+{
+  "schema_version": "2.0",
+  "status": "LOCKED",
+  "frozen_at": "2026-10-18T11:00:00Z",
+  "rev": 2,
+  "rev_log": [
+    {"rev": 1, "at": "2026-10-18T11:00:00Z", "by": "二仓 gold-v2", "kind": "initial",
+     "change": "v2.0 首次冻结：32 主字段 + 19 provenance 字段"},
+    {"rev": 2, "at": "2026-10-30T10:00:00Z", "by": "三仓 intake-33 接入", "kind": "minor-additive",
+     "change": "新增 4 个三仓溯源字段（additive）；32 个主字段与既有 19 个 provenance 字段的名/类型/语义均未改动",
+     "fields_added": ["src_kind", "src_layer_id", "src_layer_url", "src_parcel_id"],
+     "why": "三仓源层是 ArcGIS 点层/宗地层/线层，没有 NAD UUID / OA HASH / TIGER TLID / Overture id，既有 19 个溯源列一个都填不上；不加这 4 列地址无法回溯到原始层与原始宗地"}
+  ],
+  "grain": "一行 = 一条标准化后的美国门牌地址记录；作用域 = 单个县（county_fips）",
+  "naming": {
+    "release_tag": "gold-US-<ST>-v1",
+    "asset_shard": "ADDR-US-<ST>-<FIPS5>-<county_key>.ndjson.gz",
+    "asset_manifest": "MANIFEST.json",
+    "asset_status": "STATUS.json",
+    "asset_reject": "REJECT.json",
+    "asset_notes": "RELEASE_NOTES.md"
+  },
+  "primary_fields": [
+    {"n": 1,  "name": "house_number",        "type": "string",  "null": false, "src": "nad.Add_Number|AddNo_Full", "note": "保留原始写法，不做数值化"},
+    {"n": 2,  "name": "house_number_suffix", "type": "string",  "null": true,  "src": "nad.AddNum_Suf",            "note": "实测全源 0%，通常为 null"},
+    {"n": 3,  "name": "street_pre_dir",      "type": "string",  "null": true,  "src": "nad.St_PreDir",             "note": "归一为 North/South/East/West/NE/NW/SE/SW 全拼"},
+    {"n": 4,  "name": "street_name",         "type": "string",  "null": false, "src": "nad.St_Name",               "note": "核心路名，保留全大写原样"},
+    {"n": 5,  "name": "street_post_type",    "type": "string",  "null": true,  "src": "nad.St_PosTyp",             "note": "归一为 Road/Street/Avenue 等全称"},
+    {"n": 6,  "name": "street_post_dir",     "type": "string",  "null": true,  "src": "nad.St_PosDir",             "note": "极稀疏，ND 实测 92%、SD 0%"},
+    {"n": 7,  "name": "street_full",         "type": "string",  "null": false, "src": "nad.StNam_Full",            "note": "四源通用比对键的原形"},
+    {"n": 8,  "name": "unit",                "type": "string",  "null": true,  "src": "nad.Unit",                  "note": "Overture unit 可补（实测 4.4%）"},
+    {"n": 9,  "name": "building_floor",      "type": "string",  "null": true,  "src": "-",                         "note": "四源均无来源，恒为 null（不伪造）"},
+    {"n": 10, "name": "postal_city",         "type": "string",  "null": true,  "src": "nad.Post_City → USPS",      "note": "USPS 邮件城市名；无权威源则 null，见 postal_city_source"},
+    {"n": 11, "name": "municipal_city",      "type": "string",  "null": true,  "src": "nad.Inc_Muni → tiger places","note": "法定市政城市；Inc_Muni 需大小写归一（实测 Unincorporated/UNINCORPORATED）"},
+    {"n": 12, "name": "county_name",         "type": "string",  "null": false, "src": "nad.County",                "note": "County 字段，不含 County 后缀需归一"},
+    {"n": 13, "name": "county_fips",         "type": "string5","null": false, "src": "scope.county_fips",         "note": "5 位，来源为县分片自身（上游门禁已核）"},
+    {"n": 14, "name": "state_abbr",          "type": "string2","null": false, "src": "nad.State",                 "note": "USPS 两位州码；县片内实测 100% 等于本州"},
+    {"n": 15, "name": "state_name",          "type": "string",  "null": false, "src": "registry.admin1_name",      "note": "与 admin1_name 同值，保留兼容列"},
+    {"n": 16, "name": "state_fips",          "type": "string2","null": false, "src": "roster.state_fips",         "note": "Census FIPS"},
+    {"n": 17, "name": "zip5",                "type": "string5","null": true,  "src": "nad.Zip_Code|zcta",         "note": "来源见 zip_source；ZCTA 回填值不得当原生值使用"},
+    {"n": 18, "name": "plus4",               "type": "string4","null": true,  "src": "-",                         "note": "四源全空（NAD Plus_4 0%、TIGER PLUS4 0%），恒为 null"},
+    {"n": 19, "name": "zip9",                "type": "string",  "null": true,  "src": "zip5 + plus4",              "note": "plus4 为空时退化为 zip5（与 v1 口径一致）"},
+    {"n": 20, "name": "latitude",            "type": "float",   "null": false, "src": "nad.Latitude|_lat",         "note": "WGS84；与 Overture geometry 差 <1m"},
+    {"n": 21, "name": "longitude",           "type": "float",   "null": false, "src": "nad.Longitude|_lon",        "note": "WGS84"},
+    {"n": 22, "name": "addr_type",           "type": "enum",    "null": true,  "src": "规则重分类",                 "note": "Residential / Residential (Multi-Unit) / Commercial / Unknown；须容忍上游字面值 \"None\""},
+    {"n": 23, "name": "area_code",           "type": "string3", "null": true,  "src": "-",                         "note": "本轮统一 null。NANP 区号按 rate center 划定、跨州共享，严禁按州映射伪造"},
+    {"n": 24, "name": "timezone",            "type": "string",  "null": true,  "src": "州级 IANA 映射",              "note": "多时区州需按经度或县判定，暂按州级常量"},
+    {"n": 25, "name": "full_formatted_address","type":"string","null": false, "src": "合成",                       "note": "number street, city, state zip"},
+    {"n": 26, "name": "source_confidence",   "type": "enum",    "null": false, "src": "分级规则",                   "note": "S-Tier / A-Tier / B-Tier，明细见 source_confidence_detail"},
+    {"n": 27, "name": "country_code",        "type": "string2", "null": false, "src": "registry.countries.country_code",     "note": "ISO 3166-1 alpha-2，恒 US"},
+    {"n": 28, "name": "country_code_alpha3", "type": "string3", "null": false, "src": "registry.countries.alpha_3",          "note": "ISO 3166-1 alpha-3，恒 USA"},
+    {"n": 29, "name": "country_numeric",     "type": "string3", "null": false, "src": "registry.countries.numeric",          "note": "ISO 3166-1 numeric，恒 840"},
+    {"n": 30, "name": "admin1_code",         "type": "string",  "null": false, "src": "registry.admin_divisions.iso_3166_2", "note": "ISO 3166-2，如 US-SD；查不到即阻断发布"},
+    {"n": 31, "name": "admin1_name",         "type": "string",  "null": false, "src": "registry.admin_divisions.admin_division_name", "note": "South Dakota"},
+    {"n": 32, "name": "admin1_type",         "type": "string",  "null": true,  "src": "registry.admin_divisions.admin_division_type", "note": "State / District / Outlying Area / Territory"}
+  ],
+  "provenance_fields": [
+    {"name": "addr_id",             "type": "string",       "note": "sha1(state|county_fips|归一化地址键)，同址合并后的稳定主键"},
+    {"name": "zip_source",          "type": "enum",         "note": "nad_native | zcta_derived | null"},
+    {"name": "postal_city_source",  "type": "enum",         "note": "nad_post_city | place_derived | null"},
+    {"name": "municipal_city_source","type": "enum",        "note": "nad_inc_muni | tiger_place | null"},
+    {"name": "source_confidence_detail","type": "string",   "note": "如 S-Tier: NAD+TIGER[range]+OA"},
+    {"name": "src_nad_uuid",        "type": "string",       "note": "NAD 主键 UUID"},
+    {"name": "src_nad_objectid",    "type": "int",          "note": "NAD OBJECTID"},
+    {"name": "src_oa_hash",         "type": "string",       "note": "OpenAddresses HASH"},
+    {"name": "src_overture_id",     "type": "string",       "note": "Overture id"},
+    {"name": "src_tiger_tlid",      "type": "string",       "note": "TIGER 号段 TLID（可多条逗号分隔）"},
+    {"name": "tiger_verify",        "type": "enum",         "note": "range | street | none"},
+    {"name": "tiger_distance_m",    "type": "float",        "note": "点到号段线距离（米），≤60 才算命中"},
+    {"name": "nad_addr_type_raw",   "type": "string",       "note": "上游原值，供审计"},
+    {"name": "nad_placement_raw",   "type": "string",       "note": "Structure - Rooftop / Parcel - Other / Unknown"},
+    {"name": "nad_addclass_raw",    "type": "string",       "note": "上游 AddrClass 原值"},
+    {"name": "oa_file",             "type": "string",       "note": "OA 来源文件名"},
+    {"name": "overture_upstream",   "type": "string",       "note": "Overture sources[1].dataset，用于验证是否仍为 NAD 镜像"},
+    {"name": "dup_group",           "type": "int",          "note": "同址合并簇号；1 = 未合并"},
+    {"name": "dup_members",         "type": "int",          "note": "该簇被合并掉的成员数"},
+    {"name": "src_kind",            "type": "enum",         "note": "三仓专有：address_point | parcel_situs | street_line；street_line 无门牌号，只进 aux_street"},
+    {"name": "src_layer_id",        "type": "string",       "note": "三仓专有：源层标识，等于 Release tag collect-step<NN>-<layer_id> 里的 <layer_id>"},
+    {"name": "src_layer_url",       "type": "string",       "note": "三仓专有：源层 ArcGIS REST 端点（仅记录，不用于回抓）"},
+    {"name": "src_parcel_id",       "type": "string",       "note": "三仓专有：仅 parcel_situs 行有值（ParcelID/APN/PIN/PARCEL_NUMBER）；点层与线层恒为 null"}
+  ],
+  "enums": {
+    "addr_type": ["Residential", "Residential (Multi-Unit)", "Commercial", "Unknown"],
+    "source_confidence": ["S-Tier", "A-Tier", "B-Tier"],
+    "zip_source": ["nad_native", "zcta_derived", null],
+    "postal_city_source": ["nad_post_city", "place_derived", null],
+    "municipal_city_source": ["nad_inc_muni", "tiger_place", null],
+    "tiger_verify": ["range", "street", "none"],
+    "src_kind": ["address_point", "parcel_situs", "street_line"]
+  },
+  "grade_rules": {
+    "S-Tier": "独立源 >= 2 且含 TIGER 号段区间命中（range_verified）",
+    "A-Tier": "独立源 >= 2 但 TIGER 仅街名命中或无命中",
+    "B-Tier": "只有 1 个独立源（默认不进入精品库，仅留审计）",
+    "independent_sources": ["NAD", "TIGER", "OpenAddresses"],
+    "overture_note": "Overture 上游溯源 NAD（实测 99.68% NAD + 0.32% open_addresses），不计独立票，仅保留溯源列"
+  },
+  "funnel": {
+    "invariant": "input_rows == output_rows + out_of_bounds + malformed + unendorsed_orphan + dedup",
+    "columns": ["out_of_bounds", "malformed", "unendorsed_orphan", "dedup"],
+    "enforcement": "任何一栏对不上或总数不守恒 → Exit Code 1，不产 RELEASE"
+  },
+  "gates": {
+    "hard": [
+      "addr_id 唯一率 100%",
+      "latitude/longitude 非空且落在县 bbox 内",
+      "country_code / admin1_code 非空",
+      "admin1_code 必须存在于 global_admin_registry.admin_divisions",
+      "funnel 行数守恒"
+    ],
+    "soft": ["zip5 非空率", "postal_city 非空率", "tiger_verify=range 占比"],
+    "soft_note": "软门禁按州/县如实写入质量报告，不作为全美统一阈值（Dover 单县画像不可作全局门禁）"
+  },
+  "timezone_policy": "暂按州级常量；多时区州（SD/ND/TX/MI 等）在报告中标注 uncertainty，后续按县/经度细化",
+  "compat": {
+    "v1": "二仓 task003/task004 产出的 26 列（house_number … source_confidence）+ 溯源列",
+    "v2_changes": [
+      "追加 6 个 ISO 3166 列（country_code / country_code_alpha3 / country_numeric / admin1_code / admin1_name / admin1_type）",
+      "新增 zip_source / postal_city_source / municipal_city_source 血缘列",
+      "新增 addr_id / dup_group / dup_members",
+      "postal_city 语义收紧为 USPS 邮件城市名（v1 混用了 Inc_Muni）",
+      "area_code 统一 null（v1 曾按州硬编码 302，属伪造）"
+    ],
+    "rev2_minor_additive": "rev2 只给 provenance 加 4 列（src_kind / src_layer_id / src_layer_url / src_parcel_id），读数方可忽略；主字段、枚举、门禁、漏斗不变量与 rev1 完全一致"
+  },
+  "admin_registry": {
+    "path": "rules/geo/global_admin_registry.json",
+    "schema": "global_admin_registry/v1",
+    "generated_at": "2026-10-17T10:20:06Z",
+    "counts": {"countries": 249, "admin_divisions_iso3166_2": 5046, "admin_divisions_geonames_fallback": 277},
+    "sha256": "a0d654652b33a40334c3666e6644df8260203473e9d2d76b3c3e4006d52bec51"
+  }
+}

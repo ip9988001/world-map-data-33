@@ -18,6 +18,13 @@ on:
       unit_rows:    { description: "单元行数（0=按 steps.json）", default: "0" }
       max_shards:   { description: "最多跑几片（0=全部，灰度用）", default: "0" }
       chain:        { description: "1=本阶段全绿后自动接续下一阶段", default: "1" }
+      # ★ cancelled 片续跑入口：逗号分隔的层 id。这些层即使 done_layers 判「完成」也强制重跑。
+      #   为什么需要：cancelled 片里的层会留下「单元标完成、产物没上传」或「计划期口径差」
+      #   的半截状态，done_layers（只看 tag+checkpoint）看不见 → 不定点重跑就永久缺口。
+      force_layers: { description: "强制重跑的层 id（逗号分隔，cancelled 片续跑用）", default: "" }
+      # ★ 单层墙钟上限（分钟）。默认 60：4 层/片 × 60 < 350 分钟上限，挂死一层不拖垮整片。
+      #   大层（如 NAD 9,790 万行）分轮续跑：一轮 60 分钟只推进一部分，checkpoint 接着跑。
+      layer_timeout: { description: "单层墙钟上限（分钟，0=默认 60）", default: "0" }
       # ★ 账本重建入口：只读 Release 资产，不采一行数据。
       #   用途：某几片的账本因文件名不匹配而静默落空（已由 98bd461 修好，但那批 run
       #   用自己 checkout 的 SHA，补不回来）→ 事后以资产为唯一真值重建账本 + 收官文档。
@@ -58,6 +65,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STAGE: ${{ inputs.stage }}
+          FORCE: ${{ inputs.force_layers }}
         run: |
           set -euo pipefail
           mkdir -p collect/ledger
@@ -69,6 +77,7 @@ jobs:
           SIZE="${{ inputs.size }}"; [ "$SIZE" = "0" ] && SIZE="$DEF"
           python3 collect/run_step_${STAGE}.py --validate
           python3 collect/full_plan.py --stage "$STAGE" --size "$SIZE" \
+            ${FORCE:+--force-layers "$FORCE"} \
             --out "collect/ledger/${STAGE}_plan.json" | tee /tmp/plan.log
           N=$(python3 -c "import json;d=json.load(open('collect/ledger/${STAGE}_plan.json'));print(d['shards_n'])")
           MAX="${{ inputs.max_shards }}"
@@ -148,15 +157,22 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PILOT_HEARTBEAT_PUSH: "1"
+          FORCE: ${{ inputs.force_layers }}
+          LT: ${{ inputs.layer_timeout }}
         run: |
           set -euo pipefail
           STAGE="${{ inputs.stage }}"
+          # 0 = 用脚本默认（60 分钟）。注意：不能写成 `[ ... ] && LT=""`，
+          # 条件为假时整条命令返回值非 0，在 set -e 下会直接退出（踩过）。
+          if [ "${LT}" = "0" ]; then LT=""; fi
           # tag 与 steps.json 一致（collect-step04-<layer> 等），换 run 能续跑
           TAGPFX=$(python3 -c "import json;print(json.load(open('collect/ledger/${STAGE}_plan.json'))['tag'].replace('{layer}',''))")
           echo "TAG 前缀：$TAGPFX"
           python3 collect/full_shard.py --stage "$STAGE" --shard ${{ matrix.shard }} \
             --plan "collect/ledger/${STAGE}_plan.json" \
             --workers "${{ inputs.workers }}" --unit-rows "${{ inputs.unit_rows }}" \
+            ${FORCE:+--force-layers "$FORCE"} \
+            ${LT:+--layer-timeout "$LT"} \
             --tag-prefix "$TAGPFX"
       - name: 提交本片账本（只动自己那一个文件，用重置到 main 的方式避免并发冲突）
         if: always()
@@ -173,15 +189,10 @@ jobs:
           cp "$F" /tmp/led.json
           for i in $(seq 1 6); do
             git fetch -q origin main || true
-            # ★ 必须 -f：采集过程会在工作区留下未提交的产物（collect/progress/*.json 等），
-            #   裸 checkout 直接被 Git 拒掉（"Your local changes to the following files would be
-            #   overwritten by checkout"）→ set -e 退 1 → 整片判红，而数据早已落 Release、
-            #   账本也已生成（2026-10-30 run 41092912755 实测 shard 4/5/7/8 就是这么假红的）。
-            git checkout -qf -B main origin/main || {
-              echo "::warning::checkout -qf 仍失败 → 硬复位后再试一次"
-              git reset -q --hard HEAD; git clean -qfdx collect/progress || true
-              git checkout -qf -B main origin/main
-            }
+            # ★ 必须 -f：采采过程会在工作区留下未提交的产物（reports/*.json 等），
+            #   裸 checkout 直接被 Git 拒掉 → 整片红（2026-10-30 实测 shard 4/8 就是这样红的，
+            #   而账本本身早已正确生成、artifact 也传了）
+            git checkout -qf -B main origin/main
             mkdir -p collect/ledger
             cp /tmp/led.json "$F"
             git add -f "$F"
@@ -239,13 +250,16 @@ jobs:
             done
           fi
           ls -la collect/ledger/ | head -20
-      - name: 汇总账本 + 收官文档
+      - name: 汇总账本 + 收官文档（有片被 cancel 也要出部分账本）
         run: |
           set -euo pipefail
           STAGE="${{ inputs.stage }}"
+          # step_full_report.py 遇到缺片/partial_run 片不会退出，只把它们记成
+          # shards_incomplete 并写进文档「片完成度」节 —— 保证任何情况下都拿得到账。
           python3 collect/step_full_report.py --stage "$STAGE" \
             --plan "collect/ledger/${STAGE}_plan.json"
           ls -la docs/ | tail -5
+          ls -la collect/ledger/ | tail -10
       - name: 提交（账本 + 文档）
         id: commit
         env:
@@ -253,22 +267,18 @@ jobs:
         run: |
           set -euo pipefail
           STAGE="${{ inputs.stage }}"
-          # ★ 2026-10-30 run 41092912755 事故：merge 账本生成成功，但推送 6 次全败 ——
-          #   工作区里全是采集产物（download-artifact 落下的片账本、collect/progress/*.json），
-          #   `git rebase` 报 “cannot rebase: You have unstaged changes”（被 2>/dev/null 吞了），
+          # ★ 2026-10-30 run 41092912755 事故：merge 的账本生成成功了，但推送 6 次全败，
+          #   因为工作区里全是采集产物（download-artifact 落下的片账本、collect/progress/*.json），
+          #   `git rebase` 直接报 “cannot rebase: You have unstaged changes”（被 2>/dev/null 吞了），
           #   重试 6 次只是重复同一个错误 → 账本一行没落地。
-          #   改法：产物先搬 /tmp → checkout -qf 硬对齐 origin/main → 搬回来 → 提交 → 推送。
+          #   现在改成：产物先搬 /tmp → checkout -qf 硬对齐 origin/main → 搬回来 → 提交 → 推送。
           rm -rf /tmp/push && mkdir -p /tmp/push/ledger /tmp/push/docs
           cp -f "collect/${STAGE}_ledger.json" /tmp/push/ 2>/dev/null || true
           cp -f collect/ledger/*.json /tmp/push/ledger/ 2>/dev/null || true
           cp -f docs/*FULL-*.md /tmp/push/docs/ 2>/dev/null || true
           for i in $(seq 1 6); do
             git fetch -q origin main || true
-            git checkout -qf -B main origin/main || {
-              echo "::warning::checkout -qf 仍失败 → 硬复位后再试一次"
-              git reset -q --hard HEAD; git clean -qfdx collect/progress || true
-              git checkout -qf -B main origin/main
-            }
+            git checkout -qf -B main origin/main
             mkdir -p collect/ledger docs
             cp -f /tmp/push/${STAGE}_ledger.json collect/ 2>/dev/null || true
             cp -f /tmp/push/ledger/*.json collect/ledger/ 2>/dev/null || true
@@ -294,17 +304,18 @@ jobs:
             collect/${{ inputs.stage }}_ledger.json
             collect/ledger
           retention-days: 30
-      # ★ 接续闸门：只要还有「未完成片」或 failed 层，禁止自动接下一阶段。
-      #   闸门不改 job 结论——账本必须先落地；红的是「不许接续」这行注释，不是 merge。
+      # ★ 接续闸门（2026-10-30 立规）：只要还有「未完成片」或 failed 层，禁止自动接下一阶段。
+      #   闸门本身不改 job 结论 —— 账本必须先落地，红的是「不许接续」这件事，不是 merge。
       - name: 判定 + 自动接续下一阶段（闸门：未完成片 / failed 层一律不接续）
         id: chain
         if: always()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          STAGE: ${{ inputs.stage }}   # ★ 必须注入：python 读 os.environ["STAGE"]，
+          STAGE: ${{ inputs.stage }}   # ★ 必须在这里注入：脚本里读 os.environ["STAGE"]，
                                        #   只在 shell 里赋值不导出会 KeyError（41092912755 就是这么红的）
         run: |
           set -euo pipefail
+          STAGE="${{ inputs.stage }}"
           NEXT=""
           case "$STAGE" in 04b) NEXT=05b ;; 05b) NEXT=07b ;; 07b) NEXT=10b ;; esac
           LED="collect/${STAGE}_ledger.json"
@@ -316,13 +327,9 @@ jobs:
           import json,os
           d=json.load(open("collect/%s_ledger.json"%os.environ["STAGE"]))
           inc=d.get("shards_incomplete") or []
-          fail=d["failed"]
-          complete=d.get("complete")
-          if complete is None:   # 旧版汇总脚本没有 complete 字段 → 就地推
-              complete = bool(inc==[] and fail==0)
-          print(fail, d["partial"], d["layers_n"], d["ok"], d["empty"],
+          print(d["failed"], d["partial"], d["layers_n"], d["ok"], d["empty"],
                 d.get("skipped_done",0), len(inc), ",".join(str(x) for x in inc) or "-",
-                d.get("shards_expected","?"), d.get("shards_reported","?"), int(bool(complete)))
+                d.get("shards_expected"), d.get("shards_reported"), int(bool(d.get("complete"))))
           PY
           read FAILED PARTIAL N OK EMPTY SKIP INC INCLIST NEXP NREP COMPLETE < /tmp/verdict.txt
           echo "failed=$FAILED partial=$PARTIAL layers=$N ok=$OK empty=$EMPTY skipped=$SKIP incomplete_shards=$INC($INCLIST)"
@@ -332,7 +339,7 @@ jobs:
             [ "$INC" = "0" ] || echo "- ⛔ 未完成片存在 → 禁止自动接续 ${NEXT:-（无下一阶段）}";
           } >> "$GITHUB_STEP_SUMMARY"
           if [ "$INC" != "0" ]; then
-            echo "::error::$STAGE 有 $INC 片未完成（片号 $INCLIST）→ 禁止接续 $NEXT；先 force_layers 补跑"
+            echo "::error::$STAGE 有 $INC 片未完成（片号 $INCLIST，账本 shards_incomplete）→ 禁止接续 $NEXT；先 force_layers 补跑"
             exit 0
           fi
           if [ "$FAILED" != "0" ]; then
@@ -340,7 +347,7 @@ jobs:
             exit 0
           fi
           if [ "$COMPLETE" != "1" ]; then
-            echo "::error::$STAGE 账本 complete=false → 禁止接续 $NEXT"
+            echo "::error::$STAGE 账本 complete=false（片齐、failed=0，但仍有 partial/未完成标记）→ 禁止接续 $NEXT"
             exit 0
           fi
           if [ "${{ inputs.chain }}" != "1" ] || [ -z "$NEXT" ]; then
@@ -387,14 +394,17 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STAGE: ${{ inputs.stage }}
+          RUN_ID: ${{ inputs.plan_run_id }}
         run: |
           set -euo pipefail
+          # RUN_ID = 那次采采的 run，用来把「片 → 结论」标进账本（cancelled 片必须留痕）
+          RID=""; [ -n "${RUN_ID}" ] && RID="--run-id ${RUN_ID}"
           python3 collect/ledger_rebuild.py --stage "$STAGE" \
-            --plan "collect/ledger/${STAGE}_plan.json" \
+            --plan "collect/ledger/${STAGE}_plan.json" $RID \
             --out "collect/ledger/step${STAGE}_rebuilt.json" --jobs 8
           # 幂等自证：同状态再跑一次必须 IDENTICAL（scan_meta 已排除）
           python3 collect/ledger_rebuild.py --stage "$STAGE" \
-            --plan "collect/ledger/${STAGE}_plan.json" \
+            --plan "collect/ledger/${STAGE}_plan.json" $RID \
             --out "collect/ledger/step${STAGE}_rebuilt.json" --check
           { echo "### ${STAGE} 账本重建"; echo '```'
             python3 -c "import json;d=json.load(open('collect/ledger/step${STAGE}_rebuilt.json'));print({k:d[k] for k in ('layers_n','ok','empty','partial','failed','declared','rows','gap','gap_pct','assets_total','bytes_total')})"

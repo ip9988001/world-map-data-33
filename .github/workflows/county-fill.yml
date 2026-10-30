@@ -1,0 +1,135 @@
+name: county-fill
+
+# county_fips 逐行判定（分片版）。
+#
+# 为什么单独一个 workflow：04b/05b 那类采集 workflow 是「拉上游数据」，这个只做
+# 「读已发布资产 + 本地县界多边形判县」，负载完全不同（CPU 密集、无上游请求）。
+#
+# 分片与续跑：
+#   · plan 由 collect/county_assign.py --make-plan 生成（跨县 + 有坐标 + 有门牌/街名的层）
+#   · 每片 40 层，matrix 单元 = 片；fail-fast: false，单片失败不影响其它片
+#   · 断点续跑：每层每单元一个 collect/progress/county/<layer>/<asset>.done 标记，
+#     重跑同一片只补未完成的单元（标记随 artifact 传下去/也可由提交账本恢复）
+#
+# ⚠ 本轮（2026-10-30）**只做好可启动状态，不派大批量**：dry_run 默认 "1"，
+#   默认派发只会打印计划与矩阵，一行数据都不读。要真跑必须显式 -f dry_run=0。
+on:
+  workflow_dispatch:
+    inputs:
+      plan_run_id:  { description: "从哪个 run 取 county_plan 产物（空=现算）", default: "" }
+      shards:       { description: "只跑前 N 片（0=全部）", default: "0" }
+      size:         { description: "每片层数（现算计划时用）", default: "40" }
+      max_seconds:  { description: "单层软超时（秒，0=不限）", default: "0" }
+      ref_column:   { description: "顺带做一致性核对的上游列名（如 COUNTY，空=不做）", default: "" }
+      dry_run:      { description: "1=只打印计划不读数据（默认）", default: "1" }
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: county-fill
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      matrix: ${{ steps.p.outputs.matrix }}
+      shards: ${{ steps.p.outputs.shards }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: 取/算计划
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_ID: ${{ inputs.plan_run_id }}
+          SIZE: ${{ inputs.size }}
+        run: |
+          set -euo pipefail
+          mkdir -p collect/ledger
+          if [ -n "${RUN_ID}" ] && gh run download "${RUN_ID}" --repo "$GITHUB_REPOSITORY" \
+               -n county_plan -D collect/ledger 2>/dev/null; then
+            echo "✅ 计划来自 run ${RUN_ID}"
+          fi
+          [ -f collect/ledger/county_plan.json ] || \
+            python3 collect/county_assign.py --make-plan --size "$SIZE" \
+              --plan collect/ledger/county_plan.json
+      - id: p
+        env:
+          MAXS: ${{ inputs.shards }}
+        run: |
+          set -euo pipefail
+          N=$(python3 -c "import json;print(json.load(open('collect/ledger/county_plan.json'))['shards_n'])")
+          if [ "$MAXS" != "0" ] && [ "$N" -gt "$MAXS" ]; then N="$MAXS"; fi
+          M=$(python3 -c "import json;print(json.dumps({'include':[{'shard':i} for i in range($N)]}))")
+          echo "matrix=$M" >> "$GITHUB_OUTPUT"
+          echo "shards=$N" >> "$GITHUB_OUTPUT"
+          python3 -c "import json;d=json.load(open('collect/ledger/county_plan.json'));print('### county 计划');print('层 %d / 片 %d / 预估 %s 行'%(d['layers_n'],d['shards_n'],format(d['rows_est'],',')))" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: county_plan
+          path: collect/ledger/county_plan.json
+          retention-days: 30
+
+  assign:
+    needs: plan
+    # ★ 默认 dry_run=1 → 不真跑；显式 -f dry_run=0 才执行
+    if: inputs.dry_run != '1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix: ${{ fromJson(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install --quiet pyshp
+      - uses: actions/download-artifact@v4
+        with:
+          name: county_plan
+          path: collect/ledger
+      - name: 判县（片 ${{ matrix.shard }}）
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          python3 collect/county_assign.py \
+            --plan collect/ledger/county_plan.json --shard ${{ matrix.shard }} \
+            --out dist/county --max-seconds "${{ inputs.max_seconds }}" \
+            --ref-column "${{ inputs.ref_column }}"
+      - name: 提交本片账本
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          F=$(ls dist/county/county_ledger_shard*.json 2>/dev/null | head -1 || true)
+          [ -n "${F:-}" ] || { echo "⚠️ 本片没产出账本"; exit 0; }
+          DST="collect/ledger/county_shard$(printf %02d ${{ matrix.shard }}).json"
+          mkdir -p collect/ledger; cp "$F" "$DST"
+          for i in $(seq 1 6); do
+            git fetch -q origin main || true
+            git checkout -q -B main origin/main
+            mkdir -p collect/ledger; cp "$F" "$DST"
+            git add -f "$DST"
+            git -c user.name=collect-bot -c user.email=bot@users.noreply.github.com \
+                commit -q -m "county: 片 ${{ matrix.shard }} 判县账本" || true
+            if git push -q origin HEAD:main; then echo "✅ 账本已推送"; exit 0; fi
+            sleep $((i*3 + RANDOM % 4))
+          done
+          echo "::error::账本推送失败"; exit 1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: county-${{ matrix.shard }}
+          path: |
+            dist/county/county_ledger_shard*.json
+            dist/county/rows-*.json
+          retention-days: 30

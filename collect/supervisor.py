@@ -694,6 +694,47 @@ def entry_check():
         f"state={st.get('blocked_count')} / blocked.json={len(_blk.get('items') or [])}")
     add(28, "accept 判据有消费者", os.path.exists(os.path.join(ROOT, "collect", "verify_accept.py")),
         "collect/verify_accept.py（只陈述事实，不判合格）")
+
+    # 29. 面层必须带质心：parcel 步要显式 true，且 pilot 的默认值必须是开
+    #     （2026-10-30：1,038 层“有行无坐标”就是因为采集侧把 rings 丢了又没落 `_lat/_lon`）
+    pil_src = open(os.path.join(ROOT, "collect", "pilot.py"), encoding="utf-8").read()
+    poly_steps = sorted(k for k, s in S.items() if (s or {}).get("kind") == "parcel_situs")
+    no_flag = [k for k in poly_steps if (S[k] or {}).get("poly_centroid") is not True]
+    default_on = 'os.environ.get("PILOT_POLY_CENTROID", "1")' in pil_src and "_lat" in pil_src
+    add(29, "面层步骤强制质心", bool(poly_steps) and not no_flag and default_on,
+        f"面层步={poly_steps or '无'} 缺 poly_centroid={no_flag or '无'} pilot 默认开={default_on}")
+
+    # 30. 面层必须落简化 rings（第 ② 档拍定 2026-10-30）
+    #     验收口径不是「有代码」而是三件同时成立：步上显式 true、采集侧默认开、
+    #     简化走 parcel_centroid 那一套常量（6 位小数 + RDP 1e-5°，不许另写一套）。
+    no_rings = [k for k in poly_steps if (S[k] or {}).get("poly_rings") is not True]
+    rings_on = 'os.environ.get("PILOT_POLY_RINGS", "1")' in pil_src
+    simp_src = ""
+    try:
+        simp_src = open(os.path.join(ROOT, "collect", "parcel_centroid.py"), encoding="utf-8").read()
+    except Exception:                                # noqa: BLE001
+        pass
+    simp_ok = "def simplify_rings" in simp_src and "SIMP_EPS = 1e-5" in simp_src \
+        and "SIMP_DECIMALS = 6" in simp_src
+    wired = 'rec["rings"] = feature_rings' in pil_src
+    # 31. unit 切片必须**行数 + 字节**双上限（GitHub 单资产 2 GB）
+    #     实测 Offices_of_Physicians 32.6 KB/行 × 10 万行 = 3.26 GB → 只按行数切会撞线，
+    #     点层同样中招（一行几十个字段/超长串）。字节上限 1.5 GB，先到先切。
+    step_unit = {k: v for k, v in S.items() if (v or {}).get("unit_rows")}
+    lack_bytes = [k for k, v in step_unit.items() if not (v or {}).get("unit_bytes")]
+    bad_bytes = [k for k, v in step_unit.items()
+                 if (v or {}).get("unit_bytes") and not (0 < (v.get("unit_bytes") or 0) < 2_000_000_000)]
+    pil_b = open(os.path.join(ROOT, "collect", "pilot.py"), encoding="utf-8").read()
+    dual = ('os.environ.get("PILOT_UNIT_BYTES", "1500000000")' in pil_b
+            and "def plan_units(" in pil_b and "bytes_per_row" in pil_b
+            and "min(cap, by_bytes)" in pil_b)
+    add(31, "unit 切片行数+字节双上限", bool(step_unit) and not lack_bytes and not bad_bytes and dual,
+        f"有 unit_rows 的步={sorted(step_unit) or '无'} 缺 unit_bytes={lack_bytes or '无'} "
+        f"超 2GB={bad_bytes or '无'} pilot 双上限={dual}")
+
+    add(30, "面层落简化 rings", bool(poly_steps) and not no_rings and rings_on and simp_ok and wired,
+        f"面层步={poly_steps or '无'} 缺 poly_rings={no_rings or '无'} 默认开={rings_on} "
+        f"简化常量={simp_ok} 已接线={wired}")
     add(27, "pass 必带 metrics", "--metrics" in src and "metrics 缺判据键" in src,
         "review 拒绝空证据的 pass")
 
