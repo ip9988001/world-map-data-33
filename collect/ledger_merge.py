@@ -22,6 +22,14 @@
 
 状态优先级说明：`failed` 排在最后，所以「本次 run 把某层跑挂了」**不会**把阶段账本里
 已有的 `ok/partial` 降级 —— 这正是 NAD-view 那层（checkpoint 被新切分覆盖）需要的保护。
+
+⑤ **rows 回退不许静默**（2026-10-31 补）：状态优先级 + 取行数大者是「保住进展」的规则，
+   副作用是**真丢数据会被永久掩盖** —— 阶段账本里那一层的 rows 从此停在旧值，没人知道
+   这次 run 实测只采到更少的行。所以合并时逐层比较 rows：只要 `本次 run rows < 阶段账本 rows`
+   就写一条 `regressions[]`（层 / 旧 rows / 新 rows / 差值 / 原因 / 证据路径 / 合并怎么处置），
+   并在人读摘要里单独成节。**记录 ≠ 拦截**：能证明是「口径变了/上游真删了」的，把证据路径
+   挂到 run 账本的 `row_shrink_evidence: {<layer>: <path>}`（或逐层记录 `regression_reason`）；
+   没有证据的回退一律当事故追。
 """
 from __future__ import annotations
 
@@ -58,6 +66,91 @@ def rows_of(rec: dict) -> int:
         return int(rec.get("rows") or 0)
     except (TypeError, ValueError):
         return 0
+
+
+def _shrink_evidence(rec: dict, run_led: dict, key: str) -> str:
+    """取这一层的回退证据路径：逐层字段优先，其次 run 账本的 row_shrink_evidence 表。"""
+    for field in ("regression_evidence", "rows_evidence", "evidence"):
+        v = rec.get(field)
+        if v:
+            return str(v)
+    table = (run_led or {}).get("row_shrink_evidence")
+    if isinstance(table, dict) and table.get(key):
+        return str(table[key])
+    return ""
+
+
+def _shrink_reason(rec: dict, run_led: dict, key: str, outcome: str) -> str:
+    for field in ("regression_reason", "shrink_reason"):
+        v = rec.get(field)
+        if v:
+            return str(v)
+    table = (run_led or {}).get("row_shrink_reason")
+    if isinstance(table, dict) and table.get(key):
+        return str(table[key])
+    return {
+        "took_run_record_status_better": "状态变好但行数变少（合并取了本轮记录）",
+        "kept_stage_record_more_rows": "同状态行数变少（合并保留了更大的旧值）",
+        "kept_stage_record_status_better": "状态变差且行数变少（合并保留了旧记录）",
+    }.get(outcome, outcome)
+
+
+def row_regressions(base_records, run_records, run_led: dict | None = None,
+                    run_id: str = "", at: str = "") -> list:
+    """逐层比 rows：本轮 run < 阶段账本 → 一条回退记录（**不静默**）。"""
+    base = {layer_key(r): r for r in (base_records or []) if layer_key(r)}
+    out = []
+    for r in (run_records or []):
+        k = layer_key(r)
+        cur = base.get(k)
+        if not cur:
+            continue
+        stage_rows, run_rows = rows_of(cur), rows_of(r)
+        if run_rows >= stage_rows:
+            continue
+        sb, sn = cur.get("status"), r.get("status")
+        if rank(sn) > rank(sb):
+            outcome = "took_run_record_status_better"
+        elif rank(sn) == rank(sb):
+            outcome = "kept_stage_record_more_rows"
+        else:
+            outcome = "kept_stage_record_status_better"
+        out.append({
+            "layer": k,
+            "run_id": str(run_id),
+            "at": at,
+            "stage_rows": stage_rows,
+            "run_rows": run_rows,
+            "delta": run_rows - stage_rows,
+            "stage_status": sb,
+            "run_status": sn,
+            "merge_outcome": outcome,
+            "reason": _shrink_reason(r, run_led or {}, k, outcome),
+            "evidence": _shrink_evidence(r, run_led or {}, k),
+        })
+    return out
+
+
+def format_regressions_section(regressions, limit: int = 30) -> list:
+    """人读摘要里的「rows 回退」一节（markdown 行）。"""
+    regs = list(regressions or [])
+    if not regs:
+        return []
+    unexplained = [e for e in regs if not e.get("evidence")]
+    L = ["检测到 **%d** 层 rows 回退（其中 %d 层没有证据路径）。" % (len(regs), len(unexplained)), "",
+         "| 层 | 旧 rows | 新 rows | 差额 | 状态 旧→新 | 合并处置 | 原因 | 证据 |",
+         "|---|---|---|---|---|---|---|---|"]
+    for e in regs[:limit]:
+        L.append("| `%s` | %s | %s | %s | %s→%s | %s | %s | %s |" % (
+            e.get("layer"), f"{e.get('stage_rows'):,}" if isinstance(e.get("stage_rows"), int) else e.get("stage_rows"),
+            f"{e.get('run_rows'):,}" if isinstance(e.get("run_rows"), int) else e.get("run_rows"),
+            "{:+,}".format(e.get("delta", 0)),
+            e.get("stage_status"), e.get("run_status"),
+            e.get("merge_outcome"), e.get("reason") or "-",
+            ("`%s`" % e.get("evidence")) if e.get("evidence") else "**缺**"))
+    if len(regs) > limit:
+        L.append("| … | | | | | | 另 %d 层见 `regressions[]` | |" % (len(regs) - limit))
+    return L
 
 
 def pick_better(cur: dict, new: dict) -> tuple[dict, str]:
@@ -135,6 +228,9 @@ def merge_stage_ledger(stage: str, base: dict | None, run_led: dict, run_id: str
     base = dict(base or {})
     merged_recs, stats = merge_records(base.get("records") or [], run_led.get("records") or [])
     cnt = recount(merged_recs)
+    # ★ rows 回退：合并前先逐层比一次（取更优者会把它掩盖掉，必须先记下来）
+    regs_new = row_regressions(base.get("records") or [], run_led.get("records") or [],
+                              run_led, run_id, at)
     out = dict(base)                       # 保留阶段的额外字段（buckets/source_of_truth/...）
     out.update({
         "schema": base.get("schema") or "collect-ledger-agg/v1",
@@ -167,6 +263,15 @@ def merge_stage_ledger(stage: str, base: dict | None, run_led: dict, run_id: str
     out["complete"] = bool(merged_recs) and (not bad) and cnt["failed"] == 0
     out["buckets"] = {k: cnt[k] for k in COUNT_KEYS if k != "skipped_done"}
 
+    # regressions[] 只追加不替换；同一 (层, run) 重跑不再重复记（留最新一条）
+    regs_prev = list(base.get("regressions") or [])
+    new_keys = {(str(e.get("layer")), str(e.get("run_id"))) for e in regs_new}
+    merged_regs = [e for e in regs_prev
+                   if (str(e.get("layer")), str(e.get("run_id"))) not in new_keys] + regs_new
+    out["regressions"] = merged_regs
+    out["rows_regressions"] = len(merged_regs)
+    out["rows_regressions_unexplained"] = len([e for e in merged_regs if not e.get("evidence")])
+
     revs = list(base.get("revisions") or [])
     entry = {
         "kind": "stage_merge",
@@ -182,6 +287,8 @@ def merge_stage_ledger(stage: str, base: dict | None, run_led: dict, run_id: str
         "records_added": stats["added"], "records_updated": stats["updated"],
         "records_kept": stats["kept"],
         "downgrades_blocked": len(stats["downgrade_blocked"]),
+        "rows_regressions": len(regs_new),
+        "rows_regressions_layers": [e["layer"] for e in regs_new],
         "note": note or "单 run 结果按层合并进阶段账本（状态取更优者，同状态取行数大者）",
     }
     # 同一 run_id 只留最新一条（重跑同 run 不重复记账）
@@ -222,4 +329,10 @@ def write_run_and_stage(stage: str, run_led: dict, run_id: str, base_dir: str,
                 "stage_ok": merged["ok"], "stage_partial": merged["partial"],
                 "stage_failed": merged["failed"], "stage_complete": merged["complete"],
                 "stats": stats})
+    # rows 回退（本次合并新记的）跟着摘要一起回传给调用方，别只躺在账本里
+    regs_run = [e for e in (merged.get("regressions") or [])
+                if str(e.get("run_id")) == str(run_id)]
+    res.update({"regressions": regs_run, "rows_regressions": len(regs_run),
+                "rows_regressions_unexplained": len([e for e in regs_run if not e.get("evidence")]),
+                "rows_regressions_total": len(merged.get("regressions") or [])})
     return res
