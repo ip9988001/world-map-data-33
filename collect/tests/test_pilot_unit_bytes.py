@@ -239,5 +239,27 @@ class PlanSig(unittest.TestCase):
         self.assertEqual(pilot.resume_todo(units, ck), ([0], []))
 
 
+class IdsTruncated(unittest.TestCase):
+    """returnIdsOnly 截断必须当成信号（否则 ids 策略会安静少采 80%）。
+
+    2026-10-30 实测：NAD 层 count=97.9M，returnIdsOnly 只回 18.76M，ids 策略切 34 个单元
+    全部 done+uploaded，账面上「完美」，实际少 7,900 万行。
+    """
+
+    def test_short_ids_is_truncation(self):
+        self.assertTrue(pilot.ids_truncated(18_760_000, 97_928_946))
+
+    def test_full_ids_is_fine(self):
+        self.assertFalse(pilot.ids_truncated(97_900_000, 97_928_946))
+
+    def test_unknown_count_never_triggers(self):
+        self.assertFalse(pilot.ids_truncated(10, 0))
+        self.assertFalse(pilot.ids_truncated(10, None))
+
+    def test_tolerance_is_pct_based(self):
+        self.assertFalse(pilot.ids_truncated(995, 1000))     # 99.5% ≥ 99%
+        self.assertTrue(pilot.ids_truncated(985, 1000))      # 98.5% < 99%
+
+
 if __name__ == "__main__":
     unittest.main()

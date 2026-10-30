@@ -386,6 +386,8 @@ UNIT_ROWS = int(os.environ.get("PILOT_UNIT_ROWS", "500000"))   # 一个「单元
 UNIT_BYTES = int(os.environ.get("PILOT_UNIT_BYTES", "1500000000"))   # 1.5e9 B = 1.5 GB
 UNIT_BYTES_MARGIN = float(os.environ.get("PILOT_UNIT_BYTES_MARGIN", "1.4"))  # 估算余量
 IDS_BATCH = 800                                                # 单次 objectIds 请求最多多少个
+# returnIdsOnly 回的行数低于 count 的 99% → 判定截断，退回 keyset（截断=静默少采，见下面用法处）
+IDS_SHORT_TOL = 0.99
 
 
 # ---------------- 断点续传的底座：单元 / 检查点 / 分批发 ----------------
@@ -678,6 +680,17 @@ def plan_sig(plan):
     return hashlib.sha1(json.dumps(core, sort_keys=True).encode()).hexdigest()[:16]
 
 
+def ids_truncated(n_ids, count, tol=None):
+    """returnIdsOnly 给回的 id 数明显少于 count → 截断（不是「上游就这么多」）。
+
+    ★ 2026-10-30 实测：97.9M 行的层只回 18.76M 个 id（服务器截断），ids 策略据此切 34 个
+      单元，跑完「全单元 done + uploaded」看上去完美，实际少采 80%。这类缺口不会报错，
+      只会安静地少几千万行 —— 所以必须当成信号，退回 keyset（OID 区间不依赖 id 全量）。
+    """
+    tol = IDS_SHORT_TOL if tol is None else tol
+    return bool(count) and n_ids < count * tol
+
+
 def resume_todo(units, ck):
     """续跑该跑哪些单元：返回 (已真完成, 必须重采)。
 
@@ -867,6 +880,13 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False):
         ids = r_ids.get("objectIds") or []
         if not ids:
             log("  returnIdsOnly 失败（%s）→ 退回 keyset" % str(r_ids.get("__error__"))[:80])
+            STRATEGY = "keyset"
+        elif ids_truncated(len(ids), count):
+            # ★ 2026-10-30 实测事故：97.9M 行的层 returnIdsOnly 只回 18.76M（截断），
+            #   ids 策略据此只切 34 个单元 → 「全单元 done+uploaded」看起来完美，
+            #   实际少采 80%。截断必须当场看见：退回 keyset（OID 区间，不依赖 id 全量）。
+            log("  ⚠ returnIdsOnly 只回 %d/%d（%.1f%%）→ 判定为截断，退回 keyset 分区采"
+                % (len(ids), count, 100.0 * len(ids) / max(count, 1)))
             STRATEGY = "keyset"
     if STRATEGY == "ids":
         bpr_ids, _vm, _n = estimate_bytes_per_row(api, w_all, log=log)
