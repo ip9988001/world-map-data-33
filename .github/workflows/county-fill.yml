@@ -116,7 +116,13 @@ jobs:
           mkdir -p collect/ledger; cp "$F" "$DST"
           for i in $(seq 1 6); do
             git fetch -q origin main || true
-            git checkout -q -B main origin/main
+            # ★ 采后提交必须 -f：工作区里有采集产物（collect/progress/*.json 等）未提交，
+            #   裸 checkout 会被 Git 拒 → set -e 退 1 → 整片假红（2026-10-30 run 41092912755 同类事故）。
+            git checkout -qf -B main origin/main || {
+              echo "::warning::checkout -qf 仍失败 → 硬复位后再试一次"
+              git reset -q --hard HEAD; git clean -qfdx collect/progress || true
+              git checkout -qf -B main origin/main
+            }
             mkdir -p collect/ledger; cp "$F" "$DST"
             git add -f "$DST"
             git -c user.name=collect-bot -c user.email=bot@users.noreply.github.com \
