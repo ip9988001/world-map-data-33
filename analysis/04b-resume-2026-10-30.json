@@ -82,5 +82,33 @@
   "gap": 89984939,
   "gap_pct": 15.4931,
   "note": "partial 4 = NAD（上游 count 在不同 vantage 间 18.8M~97.9M 漂移）+ 3 层计划期口径差；failed 18 = 13 层上游 0 数据 + 5 层半截（单元未上传/短供/无 checkpoint）"
+ },
+ "merge_failure": {
+  "job": "merge",
+  "run": 41019004076,
+  "verdict": "failure",
+  "root_cause": "脚本 bug（三条叠加），不是『deps 被 cancel 必然失败』",
+  "causes": [
+   "分片账本文件名不匹配：首轮 main SHA 的 full_shard 写 step04b_shardNN.json，workflow 找 04b_shardNN.json，artifact pattern *_shard${N}.json 也匹配不到零填充名 → 账本全部静默落空",
+   "step_full_report.py 见不到任何片账本即 SystemExit → merge 整体 failure",
+   "全部片被 cancel 时 download-artifact pattern=led-* 零匹配直接报错"
+  ],
+  "fixed_by": [
+   "48d1a48 账本名统一+artifact 双 pattern+提交步兜底",
+   "本次：缺片/partial_run 记为 shards_incomplete 且脚本恒退出 0",
+   "本次：download-artifact 步 continue-on-error: true"
+  ],
+  "now": "片被 cancel 只会在账本里多一行未完成片；merge 照样产出并提交部分账本"
+ },
+ "chain_gate": {
+  "where": ".github/workflows/collect-full.yml#merge.判定+自动接续",
+  "blocking": [
+   "shards_incomplete>0",
+   "failed>0",
+   "complete==false"
+  ],
+  "allow_next": "片齐 + failed=0 + complete=true + inputs.chain==1",
+  "why_not_exit1": "上一版 failed>0 时 exit 1 把 merge 判红，与『被 cancel 也要拿到账』冲突；闸门改为 exit 0 + ::error:: 注解 + step summary",
+  "stage04b_now": "不放行 05b"
  }
 }

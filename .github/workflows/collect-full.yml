@@ -185,6 +185,7 @@ jobs:
         with: { python-version: "3.11" }
       - run: pip install --quiet pyyaml
       - uses: actions/download-artifact@v4
+        continue-on-error: true   # 全部片都被 cancel 时没有 led-* 产物，不能因此让 merge 整体失败
         with:
           path: collect/ledger
           pattern: "led-*"
@@ -193,13 +194,16 @@ jobs:
         with:
           name: plan-${{ inputs.stage }}
           path: collect/ledger
-      - name: 汇总账本 + 收官文档
+      - name: 汇总账本 + 收官文档（有片被 cancel 也要出部分账本）
         run: |
           set -euo pipefail
           STAGE="${{ inputs.stage }}"
+          # step_full_report.py 遇到缺片/partial_run 片不会退出，只把它们记成
+          # shards_incomplete 并写进文档「片完成度」节 —— 保证任何情况下都拿得到账。
           python3 collect/step_full_report.py --stage "$STAGE" \
             --plan "collect/ledger/${STAGE}_plan.json"
           ls -la docs/ | tail -5
+          ls -la collect/ledger/ | tail -10
       - name: 提交（账本 + 文档）
         id: commit
         env:
@@ -225,6 +229,7 @@ jobs:
           done
           echo "::warning::账本推送失败（文档仍在 artifact 里）"
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: final-${{ inputs.stage }}
           path: |
@@ -232,30 +237,52 @@ jobs:
             collect/${{ inputs.stage }}_ledger.json
             collect/ledger
           retention-days: 30
-      - name: 判定 + 自动接续下一阶段
+      # ★ 接续闸门（2026-10-30 立规）：只要还有「未完成片」或 failed 层，禁止自动接下一阶段。
+      #   闸门本身不改 job 结论 —— 账本必须先落地，红的是「不许接续」这件事，不是 merge。
+      - name: 判定 + 自动接续下一阶段（闸门：未完成片 / failed 层一律不接续）
         id: chain
+        if: always()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           STAGE="${{ inputs.stage }}"
-          python3 - <<'PY' > /tmp/verdict.txt
-          import json,os
-          s=os.environ["STAGE"]
-          d=json.load(open("collect/%s_ledger.json"%s))
-          print(d["failed"], d["partial"], d["layers_n"], d["ok"], d["empty"], d["skipped_done"])
-          PY
-          read FAILED PARTIAL N OK EMPTY SKIP < /tmp/verdict.txt
-          echo "failed=$FAILED partial=$PARTIAL layers=$N ok=$OK empty=$EMPTY skipped=$SKIP"
-          { echo "### $STAGE 判定"; echo "- 层 $N / ok $OK / empty $EMPTY / partial $PARTIAL / failed $FAILED / skipped $SKIP"; } >> "$GITHUB_STEP_SUMMARY"
           NEXT=""
           case "$STAGE" in 04b) NEXT=05b ;; 05b) NEXT=07b ;; 07b) NEXT=10b ;; esac
-          if [ "$FAILED" != "0" ]; then
-            echo "::error::$STAGE 有 $FAILED 层 failed → 不接续（账本已落，逐条原因见 docs）"
+          LED="collect/${STAGE}_ledger.json"
+          if [ ! -f "$LED" ]; then
+            echo "::error::$STAGE 没有汇总账本（$LED）→ 不接续，请查 merge 日志"
             exit 1
           fi
+          python3 - <<'PY' > /tmp/verdict.txt
+          import json,os
+          d=json.load(open("collect/%s_ledger.json"%os.environ["STAGE"]))
+          inc=d.get("shards_incomplete") or []
+          print(d["failed"], d["partial"], d["layers_n"], d["ok"], d["empty"],
+                d.get("skipped_done",0), len(inc), ",".join(str(x) for x in inc) or "-",
+                d.get("shards_expected"), d.get("shards_reported"), int(bool(d.get("complete"))))
+          PY
+          read FAILED PARTIAL N OK EMPTY SKIP INC INCLIST NEXP NREP COMPLETE < /tmp/verdict.txt
+          echo "failed=$FAILED partial=$PARTIAL layers=$N ok=$OK empty=$EMPTY skipped=$SKIP incomplete_shards=$INC($INCLIST)"
+          { echo "### $STAGE 判定";
+            echo "- 层 $N / ok $OK / empty $EMPTY / partial $PARTIAL / failed $FAILED / skipped $SKIP";
+            echo "- 片：应有 $NEXP / 有账本 $NREP / **未完成 $INC**（片号 $INCLIST）";
+            [ "$INC" = "0" ] || echo "- ⛔ 未完成片存在 → 禁止自动接续 ${NEXT:-（无下一阶段）}";
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$INC" != "0" ]; then
+            echo "::error::$STAGE 有 $INC 片未完成（片号 $INCLIST，账本 shards_incomplete）→ 禁止接续 $NEXT；先 force_layers 补跑"
+            exit 0
+          fi
+          if [ "$FAILED" != "0" ]; then
+            echo "::error::$STAGE 有 $FAILED 层 failed → 禁止接续 $NEXT（账本已落，逐条原因见 docs）"
+            exit 0
+          fi
+          if [ "$COMPLETE" != "1" ]; then
+            echo "::error::$STAGE 账本 complete=false（片齐、failed=0，但仍有 partial/未完成标记）→ 禁止接续 $NEXT"
+            exit 0
+          fi
           if [ "${{ inputs.chain }}" != "1" ] || [ -z "$NEXT" ]; then
-            echo "本阶段收敛（failed=0），不接续（chain=${{ inputs.chain }}，next=${NEXT:-无}）"; exit 0
+            echo "本阶段收敛（片齐 + failed=0），不接续（chain=${{ inputs.chain }}，next=${NEXT:-无}）"; exit 0
           fi
           echo "✅ $STAGE 全绿 → 自动接续 $NEXT"
           gh workflow run collect-full.yml --repo "$GITHUB_REPOSITORY" --ref main \
