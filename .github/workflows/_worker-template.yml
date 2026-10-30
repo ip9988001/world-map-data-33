@@ -138,7 +138,9 @@ jobs:
           ok=0
           for i in $(seq 1 6); do
             git fetch -q origin main || true
-            git checkout -q -B main origin/main
+            # ★ 必须 -f：汇总前工作区里有采集产物（collect/progress/*.json 等）未提交，
+            #   裸 checkout 会被 Git 拒 → set -e 退 1 → 报告推送整步假红（2026-10-30 实测）。
+            git checkout -qf -B main origin/main
             cp /tmp/pilot_report.json collect/pilot_report.json
             git add -f collect/pilot_report.json
             git -c user.name=collect-bot -c user.email=bot@users.noreply.github.com \

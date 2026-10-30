@@ -134,7 +134,11 @@ jobs:
           cp "$F" /tmp/led.json
           for i in $(seq 1 6); do
             git fetch -q origin main || true
-            git checkout -q -B main origin/main
+            # ★ 必须 -f：采集过程会在工作区留下未提交的产物（collect/progress/*.json 等），
+            #   裸 checkout 直接被 Git 拒掉（"Your local changes to the following files would be
+            #   overwritten by checkout"）→ set -e 退 1 → 整片判红，而数据早已落 Release、
+            #   账本也已生成（2026-10-30 run 41092912755 实测 shard 4/5/7/8 就是这么假红的）。
+            git checkout -qf -B main origin/main
             mkdir -p collect/ledger
             cp /tmp/led.json "$F"
             git add -f "$F"
