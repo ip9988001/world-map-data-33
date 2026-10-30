@@ -189,11 +189,24 @@ def render_doc(led, audit, evidence, sha_refs):
     A("| 层 | 旧状态 | 新状态 | 旧声明 | 新声明 | 原因 |")
     A("|---|---|---|---|---|---|")
     for r in led["revisions"]:
+        if r.get("kind") and not r.get("layer"):        # 运行级事件（复原/合并）在 3.4 单列
+            continue
         A("| `%s` | %s | %s | %s | %s | %s |" % (
             r["layer"], r["from"], r["to"],
             f"{r['declared_before']:,}" if r["declared_before"] else "-",
             f"{r['declared_after']:,}" if r["declared_after"] else "-", r["reason"]))
     A("")
+    _events = [r for r in led["revisions"] if r.get("kind") and not r.get("layer")]
+    if _events:
+        A("### 3.1b 阶段账本的运行级事件（复原 / 合并留痕，只追加不替换）")
+        A("")
+        A("| 时间 | 类型 | run | 说明 |")
+        A("|---|---|---|---|")
+        for r in _events:
+            A("| %s | %s | %s | %s |" % (r.get("at") or "-", r.get("kind") or "-",
+                                         r.get("run_id") or "-",
+                                         (r.get("note") or r.get("reason") or "")[:160]))
+        A("")
     A("### 3.2 「13 层上游 0 数据」这个口径被实测推翻")
     A("")
     A("原始交接里把 13 层说成「上游 0 数据」。本机对每层直接打 `returnCountOnly` 的结果是：")
@@ -256,6 +269,10 @@ def main() -> int:
     ap.add_argument("--audit", default="")
     ap.add_argument("--doc", default="")
     ap.add_argument("--check", action="store_true", help="只比对，不写盘；不一致退 1")
+    # ★ 阶段账本被单 run 口径覆盖后，复原动作必须留痕（只追加进 revisions[]，不替换历史）。
+    ap.add_argument("--restore-events",
+                    default=os.path.join(ROOT, "analysis", "04b-ledger-restore-events.json"),
+                    help="复原/合并事件清单（JSON: {events:[...]})，逐条追加进 revisions[]")
     a = ap.parse_args()
 
     rebuilt = jload(a.rebuilt)
@@ -355,6 +372,14 @@ def main() -> int:
         "partial_recalc": partial_recalc,
         "records": recs,
     }
+    # 运行级事件（复原 / 合并）追加在逐层 revisions 之后 —— 位置固定，--check 才能字节一致
+    if a.restore_events and os.path.exists(a.restore_events):
+        try:
+            for ev in (jload(a.restore_events).get("events") or []):
+                revisions.append(ev)
+        except Exception as e:                      # noqa: BLE001
+            print("⚠ 复原事件文件读不了（%s）：%s" % (a.restore_events, str(e)[:120]))
+
     audit_out = dict(audit) if audit else {}
     doc = render_doc(led, audit, evidence, {})
 
