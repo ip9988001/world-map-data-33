@@ -66,9 +66,11 @@ REQUIRED_FIXES = [
     ("collect/chain_policy.py", '"07b": "",',
      "07b 的 NEXT 必须为空（断链点）", "4-7 停车线（已合 main）"),
     ("collect/ledger_merge.py", "def write_run_and_stage(",
-     "单 run 账本不得覆盖阶段账本", "chore/ledger-merge-fix（PR 待合）"),
+     "单 run 账本不得覆盖阶段账本", "chore/ledger-merge-fix（已合 main f68c002）"),
+    ("collect/ledger_merge.py", "def row_regressions(",
+     "rows 回退写 regressions[]（不许静默取大）", "feat/ledger-regression-guard（已合 main 3f3c9b9）"),
     ("collect/step_full_report.py", "from ledger_merge import write_run_and_stage",
-     "merge 步骤走 ledger_merge 而不是直接写阶段账本", "chore/ledger-merge-fix（PR 待合）"),
+     "merge 步骤走 ledger_merge 而不是直接写阶段账本", "chore/ledger-merge-fix（已合 main f68c002）"),
     ("collect/ckpt_guard.py", "def merge_checkpoints(",
      "force 重跑按单元合并检查点（不许整份覆盖）", "fix/force-checkpoint-preserve（PR #12）"),
     ("collect/pilot.py", "_backup_legacy_ckpt",
@@ -78,6 +80,19 @@ REQUIRED_FIXES = [
 KEY_FILES = ("collect/chain_policy.py", "collect/pilot.py", "collect/full_shard.py",
              "collect/full_plan.py", "collect/step_full_report.py", "collect/ledger_merge.py",
              "collect/ckpt_guard.py", WF)
+
+# B3b：「已批准版本」白名单 —— main 的 sha。
+# 为什么要有它：B3 判「ref 的关键文件与 main 一致」，可 main 自己是会前进的。
+#   ① main 一合新的修复，任何停在旧 main 上的 ref 都会报「与 main 不一致」；
+#   ② 反过来，main 前进了却没人审「这些改动该不该带上」，就是真漏。
+# 把「当前 main 是哪一个已被审过的版本」写成显式数据：在白名单→PASS（并把这次批了什么
+# 写进证据），不在→WARN（不挡，但必须先把这次合并审一遍再加进来）。
+# 加一条的唯一姿势：审完那次 merge → 把 sha 前 7 位 + 一句话写进来 → 跑单测。
+APPROVED_MAIN = {
+    "d5b5db2": "4-7 停车线 + FREEZE/ROLLBACK 口径（本门禁的基线）",
+    "f68c002": "chore/ledger-merge-fix 合入（单 run 不覆盖阶段账本 + 状态优先级合并 + 04b 账本复原）",
+    "3f3c9b9": "rows 回退护栏（regressions[]，不许静默取大）合入",
+}
 
 PKG_RE = re.compile(r"-u\d{5}\.tar\.gz$")
 
@@ -265,6 +280,22 @@ def judge_other_stages(stage, active_all, offline=False, limit=2):
 
 
 # ------------------------------------------------------------------ B 代码版本
+def judge_approved_version(ref_sha, main_sha):
+    """B3b：main 在不在「已批准版本」白名单里（不在就 Warn，不挡派单）。"""
+    if not main_sha:
+        return item("B3b", "B", "已批准版本", "FAIL", "解析不到 main 的 sha（本地 main 与 origin/main 都没有）")
+    key = main_sha[:7]
+    if key in APPROVED_MAIN:
+        return item("B3b", "B", "已批准版本", "PASS",
+                    "main %s 已在白名单：%s" % (key, APPROVED_MAIN[key]),
+                    main_sha=main_sha, ref_sha=ref_sha)
+    return item("B3b", "B", "已批准版本", "WARN",
+                "main 已前进到 %s，不在已批准版本白名单（%s）→ 先把这次合并审一遍，再把它加进 "
+                "collect/preflight_dispatch.py 的 APPROVED_MAIN"
+                % (key, ", ".join(sorted(APPROVED_MAIN))),
+                main_sha=main_sha, ref_sha=ref_sha)
+
+
 def judge_code_gate(ref, main_ref="main", show=git_show, blob=git_blob):
     """B3：--ref 的关键文件 hash 是否等于 main，且已带上「修好的东西」。
 
@@ -863,6 +894,7 @@ def build_report(args) -> dict:
     else:
         citems, diffs = judge_code_gate(ref_for_git, main_for_git)
         items += citems
+    items.append(judge_approved_version(ref_sha, main_sha))
     evidence["ref"] = {"ref": ref, "sha": ref_sha, "main_sha": main_sha}
     chain_rc, chain_out, chain_err = _run(
         [sys.executable, os.path.join(HERE, "chain_policy.py"), "--stage", stage, "--dry-run"],

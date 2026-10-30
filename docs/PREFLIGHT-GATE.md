@@ -11,7 +11,7 @@
 - 派单回执必须贴 preflight 的结论行：`verdict / FAIL n / WARN n`，以及每条 `WARN` 的处置。
 - `WARN` 不拦派单，但**必须写明接受理由**（例如「本机 403 但 CI 可采」）。
 
-## 一、派单前 checklist（14 项）
+## 一、派单前 checklist（15 项）
 
 跑 `python3 collect/preflight_dispatch.py --stage <stage> [--force-layers ...]`，逐项勾。
 
@@ -25,9 +25,12 @@
 
 ### B 代码版本
 
-- [ ] **B3** 要派的 `--ref` 与 main 的关键文件 **blob sha 一致**，且 6 项已批准修复齐全
-      （`chain_policy` 断链 + `ledger_merge` 阶段账本保护 + `ckpt_guard` 检查点合并 + `pilot` 备份）。
-      → 不一致 = **FAIL**，并列出差异文件 / 缺失项。
+- [ ] **B3** 要派的 `--ref` 与 main 的关键文件 **blob sha 一致**，且 7 项已批准修复齐全
+      （`chain_policy` 断链 + `ledger_merge` 阶段账本保护 + `ledger_merge` rows 回退护栏
+      + `ckpt_guard` 检查点合并 + `pilot` 备份）。→ 不一致 = **FAIL**，并列出差异文件 / 缺失项。
+- [ ] **B3b** main 的 sha 在**已批准版本白名单**（`collect/preflight_dispatch.py::APPROVED_MAIN`）里
+      → 在 = **PASS**（证据里写明这个版本批了什么）；不在 = **WARN**（不挡派单，但先把这次合并审一遍
+      再加进白名单，否则「main 前进了却没人审」就是漏）。
 - [ ] **B4** `chain_policy.py --stage <stage> --dry-run`：04b/05b → `next ∈ {05b,07b}` 且 `child_chain=0`；
       07b/10b → `next=空` 且 `decide=stop`。→ 不符 = **FAIL**（停车线破了）。
 - [ ] **B5** 禁止清单：`10b` 需 `--authorize-heavy`（= workflow 的 `authorize_heavy=1`）；
@@ -71,6 +74,7 @@
 | A1 同组 pending | 先等/取消那个 pending（`gh run cancel <id>` 需人确认），别硬派 |
 | A1b 上游在跑 | 等上游自己派；或确认上游 `chain=0`（不会自动派）后再手派 |
 | B3 代码版本不一致 | 把缺的修复合到 `--ref` 上（PR #12 / `chore/ledger-merge-fix`），或改从 main 派 |
+| B3b main 不在白名单 | 先审这次 main 的改动（`git log --oneline <旧sha>..<新sha>`），确认该带上后把 sha 前 7 位 + 一句话加进 `APPROVED_MAIN` |
 | B4 接续策略不符 | 修 `collect/chain_policy.py` 的 `NEXT/ALLOWED/CHILD_CHAIN`，跑 `--all --dry-run` 自证 |
 | B5 未授权重阶段 | 10b：确认预算后加 `authorize_heavy=1`；08/09/10/几何：先拿口号 |
 | C6 账本缺失 | 先跑 `ledger_rebuild.py`（从 Release 资产重建）再派，别在无账本状态下跑 |
@@ -81,6 +85,19 @@
 | E12 上游 0 行 | 从计划里剔除该层（或标 `empty`），别浪费片位 |
 | E13 403/超时 | 只记录证据，先照派；片端再失败才升级（本机 ≠ CI） |
 | E14 声明不可复核 | 跑后差额分母剔除该层；服务级 token 的层直接剔或配 token |
+
+## 二之二、已批准版本白名单（`APPROVED_MAIN`）
+
+B3 判「`--ref` 的关键文件与 main 一致」，但 main 自己会前进：主库一合新修复，停在旧 main 上的 ref
+就报「不一致」；反过来 main 前进了没人审也是漏。所以把「当前 main 是哪个已审过的版本」写成数据。
+
+| main sha | 批准了什么 |
+|---|---|
+| `d5b5db2` | 4-7 停车线 + FREEZE/ROLLBACK 口径（本门禁的基线） |
+| `f68c002` | `chore/ledger-merge-fix` 合入：单 run 不覆盖阶段账本 + 状态优先级合并（ok>partial>missing>unverified>empty>failed，同状态取行数大者）+ 小 run（<1/2）只写 run 文件 + 复原 04b 阶段账本（22 层→272 层） |
+| `3f3c9b9` | rows 回退护栏：合并时逐层比 rows，变小写 `regressions[]`（层/旧/新/原因/证据）并在人读摘要单列一节；**不许静默取大** |
+
+新增白名单条目的唯一姿势：审完那次 merge → 写 sha 前 7 位 + 一句话 → 跑 `test_preflight_dispatch.py`。
 
 ## 三、跑后 30 分钟内必做（post-flight）
 

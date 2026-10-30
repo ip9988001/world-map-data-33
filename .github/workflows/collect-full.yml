@@ -73,7 +73,7 @@ jobs:
       - run: pip install --quiet pyyaml
       # ★ 派单前核验（2026-10-31 立规）：**没有 preflight 输出的派单，视为无效派单**。
       #   只读：不采集、不派发、不改账本（上游只发 returnCountOnly 计数请求）。
-      #   14 项分五组（队列/并发、代码版本、账本基线、数据重叠、上游可用性），任一 FAIL → 本 job 直接红，
+      #   15 项分五组（队列/并发、代码版本、账本基线、数据重叠、上游可用性），任一 FAIL → 本 job 直接红，
       #   shard 一个都起不来。判据与处置见 docs/PREFLIGHT-GATE.md。
       - name: 派单前核验（preflight gate）
         env:

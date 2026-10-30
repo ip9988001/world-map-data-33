@@ -49,7 +49,7 @@ class AQueue(unittest.TestCase):
 
 class BCode(unittest.TestCase):
     FILES = {"collect/chain_policy.py": 'ALLOWED = ("05b", "07b")\nNEXT = {\n "07b": "",\n}',
-             "collect/ledger_merge.py": "def write_run_and_stage(\n",
+             "collect/ledger_merge.py": "def write_run_and_stage(\n\ndef row_regressions(\n",
              "collect/step_full_report.py": "from ledger_merge import write_run_and_stage\n",
              "collect/ckpt_guard.py": "def merge_checkpoints(\n",
              "collect/pilot.py": "def _backup_legacy_ckpt():\n"}
@@ -190,6 +190,32 @@ class EUpstream(unittest.TestCase):
     def test_offline_and_no_samples_are_warn(self):
         items = P.judge_upstream([], {}, offline=True)
         self.assertTrue(all(i["status"] == "WARN" for i in items))
+
+
+class ApprovedVersion(unittest.TestCase):
+    """B3b：已批准版本白名单 —— main 前进了不能静默通过，也不能被当成「版本不一致」误判。"""
+
+    def test_new_main_after_a478570_is_whitelisted(self):
+        # 2026-10-31 合并的两笔：a478570 合入（f68c002）、rows 回退护栏（3f3c9b9）
+        for sha, why in (("f68c002", "chore/ledger-merge-fix"), ("3f3c9b9", "regressions")):
+            self.assertIn(sha, P.APPROVED_MAIN)
+            self.assertTrue(P.APPROVED_MAIN[sha].strip())
+        self.assertIn("d5b5db2", P.APPROVED_MAIN)          # 基线版本仍在
+
+    def test_whitelisted_main_passes_and_says_what_was_approved(self):
+        it = P.judge_approved_version("3f3c9b9deadbeef", "3f3c9b9deadbeef")
+        self.assertEqual(it["status"], "PASS")
+        self.assertIn("3f3c9b9", it["detail"])
+        self.assertIn("regressions", it["detail"])
+
+    def test_unknown_main_warns_instead_of_failing(self):
+        it = P.judge_approved_version("aaaaaaa", "bbbbbbb1234")
+        self.assertEqual(it["status"], "WARN")              # 不挡派单，但必须点名
+        self.assertIn("bbbbbbb", it["detail"])
+        self.assertIn("APPROVED_MAIN", it["detail"])
+
+    def test_unresolvable_main_is_fail(self):
+        self.assertEqual(P.judge_approved_version("aaaaaaa", "")["status"], "FAIL")
 
 
 class Verdict(unittest.TestCase):
