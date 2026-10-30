@@ -142,9 +142,48 @@ def test_postal_city_not_owner() -> None:
           "MUNICIPALITY 归 municipal_city")
 
 
+def test_addr_type_no_heuristics() -> None:
+    print("\n[8] addr_type：v1 一律 Unknown，除非明确分类列逐值可映射")
+    fm = json.load(open(os.path.join(ROOT, "schema", "field-map-v2.json"), encoding="utf-8"))
+    mapped = [lid for lid, e in fm["layers"].items()
+              if isinstance(e.get("addr_type"), dict) and e["addr_type"].get("src")]
+    rest = [lid for lid, e in fm["layers"].items()
+            if (e.get("addr_type") or {}).get("constant") == "Unknown"]
+    check(len(mapped) + len(rest) == len(fm["layers"]), "每层二选一：映射 or constant=Unknown（%d / %d）"
+          % (len(mapped), len(rest)))
+    # 可映射层必须在审计白名单里（不许靠 unit/标题 推出来）
+    amap = json.load(open(os.path.join(ROOT, "schema", "addr-type-map-v1.json"), encoding="utf-8"))
+    ok_layers = {r["layer_id"] for r in amap["layers_sampled"]
+                 if r["verdict"] == "map" and r["value_map"]}
+    check(set(mapped) <= ok_layers, "映射层 ⊆ 审计认定可映射层：越权 %d" % len(set(mapped) - ok_layers))
+    # 默认值不得到处写成 Unknown 以外的字面值：public_row 必须兜底 Unknown
+    r = I.public_row(row())
+    check(r["addr_type"] == "Unknown", "public_row 缺省 addr_type=Unknown（实际 %s）" % r.get("addr_type"))
+    r2 = I.public_row(row(addr_type=None))
+    check(r2["addr_type"] == "Unknown", "addr_type 即使显式 None 也不落 null")
+
+
+def test_city_value_rules() -> None:
+    print("\n[9] CITY：值形态校验与 *_source 同步")
+    check(FMV2.city_value_class("MIAMI, FL 33142-2202") == "has_punct", "`MIAMI, FL 33142-2202` → has_punct")
+    check(FMV2.city_value_class("Unincorporated Area") == "blacklist", "Unincorporated Area → blacklist")
+    check(FMV2.city_value_class("29406") == "has_digit", "纯 ZIP 值 → has_digit")
+    check(FMV2.city_value_class("SPRINGFIELD") == "clean", "SPRINGFIELD → clean")
+    check(FMV2.city_value_class("Saint Francis") == "clean", "Saint Francis → clean（小写也过）")
+    check(FMV2.city_value_class(None) == "empty", "None → empty")
+    # 有值的行必带 source；值被清空后 source 必须同步为 None
+    e = {"postal_city_source": "nad_post_city", "municipal_city_source": "nad_inc_muni"}
+    r = I.public_row(row(postal_city="AUSTIN", municipal_city=None, **e))
+    check(r["postal_city_source"] == "nad_post_city" and r["municipal_city_source"] is None,
+          "有值写 source / 无值写 null（实际 %s / %s）" % (r["postal_city_source"], r["municipal_city_source"]))
+    r2 = I.public_row(row(postal_city=None, municipal_city=None, **e))
+    check(r2["postal_city_source"] is None, "postal_city=null 时 source 同步 null")
+
+
 def main() -> int:
     for f in (test_parcel_never_addr, test_line_never_addr, test_gates, test_norm,
-              test_keys, test_reconcile, test_postal_city_not_owner):
+              test_keys, test_reconcile, test_postal_city_not_owner,
+              test_addr_type_no_heuristics, test_city_value_rules):
         f()
     print()
     if FAILS:

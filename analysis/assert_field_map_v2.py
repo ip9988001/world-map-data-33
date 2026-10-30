@@ -32,6 +32,8 @@ TARGETS = ["house_number", "house_number_suffix", "street_pre_dir", "street_name
            "county_fips", "state_abbr", "zip5", "latitude", "longitude", "addr_type",
            "full_formatted_address", "source_confidence"]
 PROV = ["src_kind", "src_layer_id", "src_layer_url", "src_parcel_id"]
+# SCHEMA 自带的溯源列，本轮也逐层落值（city 两个 source + addr_type 原始值）
+PROV_NATIVE = ["postal_city_source", "municipal_city_source", "nad_addr_type_raw"]
 
 fails: list[str] = []
 warns: list[str] = []
@@ -86,18 +88,51 @@ def main() -> int:
     missing_keys = []
     invented = set()
     for lid, e in layers.items():
-        for k in TARGETS + PROV:
+        for k in TARGETS + PROV + PROV_NATIVE:
             if k not in e:
                 missing_keys.append((lid, k))
-    ok(not missing_keys, "每层都齐 19+4 个键（缺 %d 处）" % len(missing_keys))
+    ok(not missing_keys, "每层都齐 19+4(+3 原生溯源) 个键（缺 %d 处）" % len(missing_keys))
     for e in layers.values():
         for k in e:
-            if k in PROV or k in ("rows_total", "sampled", "csv", "blocking", "mappable_primary",
-                                  "state_src", "county_scope", "county_src"):
+            if k in PROV or k in PROV_NATIVE or k in (
+                    "rows_total", "sampled", "csv", "blocking", "mappable_primary",
+                    "state_src", "county_scope", "county_src"):
                 continue
             if k not in TARGETS:
                 invented.add(k)
     ok(not invented, "层内没有 SCHEMA 之外的字段名（多出：%s）" % sorted(invented))
+
+    print("== 5b. 语义裁定不变式（addr_type / city） ==")
+    amap = json.load(open(os.path.join(ROOT, "schema", "addr-type-map-v1.json"), encoding="utf-8"))
+    mappable = {r["layer_id"] for r in amap.get("layers_sampled") or []
+                if r.get("verdict") == "map" and r.get("value_map")}
+    enum = set(amap.get("enum") or ["Residential", "Residential (Multi-Unit)",
+                                     "Commercial", "Unknown"])
+    bad_at, bad_src_at, bad_city, bad_mapval = [], [], [], []
+    for lid, e in layers.items():
+        a = e.get("addr_type") or {}
+        if a.get("src"):
+            if lid not in mappable:
+                bad_src_at.append(lid)
+            for v, m in (a.get("map") or {}).items():
+                if m not in enum or m == "Unknown":
+                    bad_mapval.append((lid, v, m))
+        else:
+            if a.get("constant") != "Unknown":
+                bad_at.append(lid)
+        # city：postal_city 为空则 postal_city_source 必须为 None（反之亦然）
+        if bool((e.get("postal_city") or {}).get("src")) != bool(e.get("postal_city_source")):
+            bad_city.append(lid)
+        if bool((e.get("municipal_city") or {}).get("src")) != bool(e.get("municipal_city_source")):
+            bad_city.append(lid + "(muni)")
+    ok(not bad_src_at, "addr_type 只给审计判定可映射的层落值（越权：%d）" % len(bad_src_at))
+    ok(not bad_at, "其余层 addr_type 均为 constant=Unknown（不符：%d）" % len(bad_at))
+    ok(not bad_mapval, "映射值 ∈ SCHEMA 枚举且不为 Unknown（越界：%d）" % len(bad_mapval))
+    ok(not bad_city, "city 值与其 *_source 同步（不一致：%d）" % len(bad_city))
+    n_const = sum(1 for e in layers.values()
+                  if (e.get("addr_type") or {}).get("constant") == "Unknown")
+    print("  ℹ️ addr_type：Unknown %d 层 / 按明确分类列映射 %d 层（共 %d）"
+          % (n_const, len(layers) - n_const, len(layers)))
 
     print("== 6. 源列必须真实存在（逐层核对画像） ==")
     prof = {}
@@ -110,7 +145,7 @@ def main() -> int:
         cols = prof.get(lid)
         if cols is None:
             continue
-        for t in TARGETS:
+        for t in TARGETS + ["nad_addr_type_raw"]:
             src = (e.get(t) or {}).get("src")
             if not src or src.startswith("[[") or src == "value_rules." + t:
                 continue

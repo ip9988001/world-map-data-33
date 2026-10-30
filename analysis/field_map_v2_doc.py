@@ -58,16 +58,35 @@ def main() -> int:
           f"{r['row_coverage_pct']:.1f}% | {r['rows_est_nonnull']:,} | "
           f"{r['rows_est_nonnull_pct']:.1f}% |")
     A("")
-    A("`addr_type` / `full_formatted_address` / `source_confidence` 没有源列，按 SCHEMA 自身的口径处理：")
+    A("`addr_type` / `full_formatted_address` / `source_confidence` 没有可直接取值的源列，按 SCHEMA 自身的口径处理：")
     A("")
-    A("- `addr_type`：SCHEMA 写「规则重分类」，三仓没有任何 Residential/Commercial 侧证据 → **全部 null**，"
-      "并逐层写入 `value_rule`（建议规则：unit 非空 → `Residential (Multi-Unit)`；层标题含 COMMERCIAL/BUSINESS → "
-      "`Commercial`；宗地无证据 → `Unknown`；其余 `Residential`）。规则要你点头才落值，本轮不伪造。")
+    A("- `addr_type`：**v1 一律 `Unknown`**，除非层内有明确分类列（AddrClass / ADDR_TYPE / UseCode / LANDUSE / "
+      "BLDG_TYPE）且该层实测 25 行里 ≥80% 取值能逐值映射到枚举。实测 40 层 × 25 行：只有 **4 层**可映射，"
+      "其余全是编码值（`L`/`S`/`T`/`110000`/`BUILDING`）→ Unknown。**禁止**的启发式：`unit` 非空 → Multi-Unit、"
+      "层标题含 COMMERCIAL → Commercial、`src_kind=parcel_situs` → Commercial、同州/同服务继承。"
+      "证据：`schema/addr-type-map-v1.json` + `docs/SEMANTIC-AUDIT-2026-10-30.md`。")
     A("- `full_formatted_address`：纯合成列，逐层标 `derivable=true` 与拼装式："
       "`house_number + ' ' + street_full + ', ' + postal_city + ', ' + state_abbr + ' ' + zip5`"
       "（缺项退化为 `house_number + ' ' + street_full + ', ' + state_abbr`）。不写死值，避免把抽样值当全量。")
     A("- `source_confidence`：按 SCHEMA `grade_rules`，**单层单源只能是 B-Tier**（S/A 需 NAD+TIGER+OA 多源 join）。"
       "逐层写 `proposed_value=B-Tier`。")
+    A("")
+    A("### city 语义与 addr_type 的审计结论（560 行实测）")
+    A("")
+    A("| 项 | 结论 |")
+    A("|---|---|")
+    A("| postal_city 收列 | 邮件城市语义列 + 值形态校验**双闸**（`schema/city-rules-v1.json`） |")
+    A("| 值形态命中率 | clean **80.0%** / 空 11.6% / 黑名单 8.4%（`Not stated`、`UNINCORPORATED`…） |")
+    A("| postal_city 拒列 | `OWNER_CITY`（`MIAMI, FL 33142-2202`）/ `MUNICIPALITY`（`Unincorporated Area`）/ `COMMUNITY` |")
+    A("| 不确定怎么办 | `postal_city=null` 且 `postal_city_source=null`（宁可空不可错） |")
+    A("| addr_type | 2360 层 `Unknown` + 4 层按明确分类列逐值映射 |")
+    A("")
+    A("SCHEMA 自带溯源列本轮逐层落值（不只是「保留」）：")
+    A("")
+    for f in (d.get("schema_provenance_filled") or {}).get("fields") or []:
+        extra = ("（原生可用 %s 层 / null %s 层）" % (f.get("layers_native"), f.get("layers_null"))
+                 if "layers_native" in f else "（有源 %s 层）" % f.get("layers_with_src"))
+        A("- `%s`：%s%s" % (f["name"], f.get("规则", ""), extra))
     A("")
     A("## 二、留 null 的原因分布（逐字段 Top）")
     A("")
@@ -146,7 +165,7 @@ def main() -> int:
                    ("municipal_city", "23.0%；绝大多数层只有 `CITY`（邮寄城市），v2 语义下不得复用 → 需 tiger places"),
                    ("unit", "5.7% 行级非空，与 SCHEMA 记的 Overture 4.4% 同量级，靠源数据补不动"),
                    ("latitude", "85.1%；缺的几乎全是**宗地层**（Polygon 无点坐标）→ 需几何质心"),
-                   ("addr_type", "0%，无源列，需规则重分类（等你点头）")):
+                   ("addr_type", "0.2% 行级（4 层）；v1 一律 Unknown（缺省不猜），映射依据见 addr-type-map-v1")):
         A(f"- `{t}`：{why}")
     A("")
     A("## 八bis、state / county 回填（B 项）")
@@ -182,7 +201,7 @@ def main() -> int:
     A("")
     A("| 字段/列 | 坑 | 处理 |")
     A("|---|---|---|")
-    A("| `CITY` | 语义族里最不确定：有的层是 USPS 城市，有的是市政城市 | 进 `postal_city` 但列为**待抽样核验项** |")
+    A("| `CITY` | 语义族里最不确定：有的层是 USPS 城市，有的是市政城市 | 进 `postal_city` 候选，但必须过值形态校验（560 行实测 clean 80%），不过则 null |")
     A("| `OWNER_CITY` | 业主邮寄城市，实测值含 `MIAMI, FL 33142-2202` | **不进** `postal_city`（v1 混用过） |")
     A("| `MUNICIPALITY` | 实测含 `Unincorporated Area` | 只进 `municipal_city` |")
     A("| `UNITID` | E911 里常混状态码（`PKG`/`RPDSEC`） | 收，但 `quality=native_weak` |")

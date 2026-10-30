@@ -1,0 +1,1016 @@
+{
+ "schema": "addr-type-map/v1",
+ "at": "2026-10-30T10:28:54Z",
+ "policy": "v1 一律 Unknown；仅当层内有明确分类列（AddrClass/ADDR_TYPE/UseCode/LANDUSE/BLDG_TYPE 等）且抽样 25 行里 ≥80% 的取值能逐值映射到 SCHEMA 枚举时，才为该层出映射表。禁止 unit/标题类启发式。",
+ "forbidden_heuristics": [
+  "unit 非空 → Residential (Multi-Unit)",
+  "层标题含 COMMERCIAL → Commercial",
+  "source=parcel_situs → Commercial",
+  "addr_type 继承同州/同服务其它层"
+ ],
+ "enum": [
+  "Residential",
+  "Residential (Multi-Unit)",
+  "Commercial",
+  "Unknown"
+ ],
+ "coverage_min": 0.8,
+ "value_map": {
+  "COMMERCIAL": "Commercial"
+ },
+ "value_map_rule": "逐层映射以 layers_sampled[].value_map 为准（只用该层自抽到的字面值）；下表是 ≥3 层共识的参考表；未抽样层一律 Unknown",
+ "unmapped_examples": [
+  "0",
+  "00003",
+  "00004",
+  "110",
+  "110000",
+  "111",
+  "121",
+  "150000",
+  "160000",
+  "22255",
+  "22320",
+  "400",
+  "41110",
+  "41210",
+  "41330",
+  "41340",
+  "430",
+  "452",
+  "480",
+  "499",
+  "500",
+  "510",
+  "53",
+  "560",
+  "620",
+  "83",
+  "91",
+  "98",
+  "A",
+  "ATTACHED CONDOMINUM",
+  "ATTACHED TOWNHOUSE",
+  "BUILDING",
+  "COUNTY VACANT LAND",
+  "CV - CONVENTIONAL",
+  "DETACHED SINGLE FAMILY",
+  "DK - DECKER",
+  "DRYFARM CLASS IID",
+  "FREE STANDING DRUGSTORE",
+  "FS - FREE STANDING",
+  "GRAZING LAND CLASS VIC"
+ ],
+ "unknown_tokens": [
+  "",
+  "-",
+  "--",
+  "0",
+  "MISC",
+  "N/A",
+  "NA",
+  "NAN",
+  "NONE",
+  "NOT SPECIFIED",
+  "NOTSPECIFIED",
+  "NULL",
+  "OTHER",
+  "UNK",
+  "UNKNOWN"
+ ],
+ "layers_sampled": [
+  {
+   "layer_id": "st_services_VA_Base_Layers_VA_Address_Points_FeatureServer_0",
+   "col": "ADDRCLASS",
+   "sampled": 0,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [],
+   "err": ""
+  },
+  {
+   "layer_id": "s_rest_services_VA_Base_Layers_VA_Address_Points_MapServer_0",
+   "col": "ADDRCLASS",
+   "sampled": 0,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [],
+   "err": ""
+  },
+  {
+   "layer_id": "es_us_mn_state_mngeo_loc_addresses_zip9_open_FeatureServer_0",
+   "col": "addrclass",
+   "sampled": 25,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "NUMBERED THOROUGHFARE ADDRESS",
+     "n": 25,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "KUeVR_arcgis_rest_services_COH_SiteAddresses_FeatureServer_0",
+   "col": "addrtype",
+   "sampled": 4,
+   "mapped": 4,
+   "coverage": 1.0,
+   "verdict": "map",
+   "value_map": {
+    "Residential": "Residential",
+    "Commercial": "Commercial"
+   },
+   "top_values": [
+    {
+     "value": "RESIDENTIAL",
+     "n": 2,
+     "as": "Residential"
+    },
+    {
+     "value": "COMMERCIAL",
+     "n": 2,
+     "as": "Commercial"
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "g_arcgis_rest_services_ADDRESS_POINTS_062526_FeatureServer_1",
+   "col": "ADDRESS_TYPE",
+   "sampled": 1,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "T",
+     "n": 1,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "g_arcgis_rest_services_ADDRESS_POINTS_022426_FeatureServer_1",
+   "col": "ADDRESS_TYPE",
+   "sampled": 1,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "T",
+     "n": 1,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "g_arcgis_rest_services_ADDRESS_POINTS_030926_FeatureServer_1",
+   "col": "ADDRESS_TYPE",
+   "sampled": 1,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "T",
+     "n": 1,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "g_arcgis_rest_services_ADDRESS_POINTS_021026_FeatureServer_1",
+   "col": "ADDRESS_TYPE",
+   "sampled": 1,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "T",
+     "n": 1,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "bBQScMtY_arcgis_rest_services_CC_PARCELS_SHP_FeatureServer_1",
+   "col": "LANDUSE",
+   "sampled": 25,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "110000",
+     "n": 16,
+     "as": null
+    },
+    {
+     "value": "0",
+     "n": 6,
+     "as": "Unknown"
+    },
+    {
+     "value": "160000",
+     "n": 2,
+     "as": null
+    },
+    {
+     "value": "150000",
+     "n": 1,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "PLlPw_arcgis_rest_services_Situs_20Addresses_FeatureServer_0",
+   "col": "ADDR_TYPE",
+   "sampled": 25,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "BUILDING",
+     "n": 25,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "arcgis_rest_services_ParcelsJoin_SpatialJoin_FeatureServer_0",
+   "col": "ADDR_TYPE",
+   "sampled": 25,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "BUILDING",
+     "n": 25,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "rest_services_Pinellas_SiteAddressPoint_view_FeatureServer_0",
+   "col": "ADDRCLASS",
+   "sampled": 0,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [],
+   "err": ""
+  },
+  {
+   "layer_id": "ccH_arcgis_rest_services_SiteAddress20231227_FeatureServer_0",
+   "col": "ADDRCLASS",
+   "sampled": 0,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [],
+   "err": ""
+  },
+  {
+   "layer_id": "s_2026_SOE_GENERAL_USE_MAP___POST_CNG_WFL1_FeatureServer_118",
+   "col": "USE_CODE",
+   "sampled": 0,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [],
+   "err": "meta:svcerr:{\"code\": 499, \"message\": \"Token Required\", \"messageCode\": \"GWM_0003\", \"de"
+  },
+  {
+   "layer_id": "rjguNyOy_arcgis_rest_services_Address_Points_FeatureServer_2",
+   "col": "ADDRTYPE",
+   "sampled": 25,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "BUILDING",
+     "n": 19,
+     "as": null
+    },
+    {
+     "value": "PARCEL",
+     "n": 6,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "Oy_arcgis_rest_services_Address_Lookup1_WFL1_FeatureServer_0",
+   "col": "ADDRTYPE",
+   "sampled": 25,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "BUILDING",
+     "n": 25,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "o_ca_arcgis_rest_services_cot_geospatial27_FeatureServer_101",
+   "col": "ADDRESS_CLASS",
+   "sampled": 25,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "L",
+     "n": 25,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "services_Address_Points__2249626704383450755_FeatureServer_0",
+   "col": "LANDUSE",
+   "sampled": 25,
+   "mapped": 25,
+   "coverage": 1.0,
+   "verdict": "map",
+   "value_map": {
+    "Residential": "Residential"
+   },
+   "top_values": [
+    {
+     "value": "RESIDENTIAL",
+     "n": 25,
+     "as": "Residential"
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "fD_arcgis_rest_services_COTGEO_ADDRESS_POINT_FeatureServer_0",
+   "col": "ADDRESS_CLASS",
+   "sampled": 25,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "L",
+     "n": 20,
+     "as": null
+    },
+    {
+     "value": "S",
+     "n": 4,
+     "as": null
+    },
+    {
+     "value": "SE",
+     "n": 1,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "vuFjG9HQX_arcgis_rest_services_Parcel_Labels_FeatureServer_0",
+   "col": "USE_DESC",
+   "sampled": 25,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "SFR GRADE 010-4 URBAN SUBDIVIDED",
+     "n": 12,
+     "as": null
+    },
+    {
+     "value": "MEDICAL DENTAL SERVICE",
+     "n": 4,
+     "as": null
+    },
+    {
+     "value": "MISC COMMERCIAL",
+     "n": 2,
+     "as": null
+    },
+    {
+     "value": "SFR DOMINANT  ADDITIONAL URBAN SUBDIVIDED",
+     "n": 2,
+     "as": null
+    },
+    {
+     "value": "COUNTY VACANT LAND",
+     "n": 1,
+     "as": null
+    },
+    {
+     "value": "STATE SCHOOL PROP",
+     "n": 1,
+     "as": null
+    },
+    {
+     "value": "FREE STANDING DRUGSTORE",
+     "n": 1,
+     "as": null
+    },
+    {
+     "value": "PART COMP MED/DENT/EMER CARE OR MED CONDO",
+     "n": 1,
+     "as": null
+    },
+    {
+     "value": "STORE FRONT COMMERCIAL BLDG",
+     "n": 1,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "vuFjG9HQX_arcgis_rest_services_Parcel_Test_3_FeatureServer_0",
+   "col": "USE_DESC",
+   "sampled": 25,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "SFR GRADE 010-4 URBAN SUBDIVIDED",
+     "n": 12,
+     "as": null
+    },
+    {
+     "value": "MEDICAL DENTAL SERVICE",
+     "n": 4,
+     "as": null
+    },
+    {
+     "value": "MISC COMMERCIAL",
+     "n": 2,
+     "as": null
+    },
+    {
+     "value": "SFR DOMINANT  ADDITIONAL URBAN SUBDIVIDED",
+     "n": 2,
+     "as": null
+    },
+    {
+     "value": "COUNTY VACANT LAND",
+     "n": 1,
+     "as": null
+    },
+    {
+     "value": "STATE SCHOOL PROP",
+     "n": 1,
+     "as": null
+    },
+    {
+     "value": "FREE STANDING DRUGSTORE",
+     "n": 1,
+     "as": null
+    },
+    {
+     "value": "PART COMP MED/DENT/EMER CARE OR MED CONDO",
+     "n": 1,
+     "as": null
+    },
+    {
+     "value": "STORE FRONT COMMERCIAL BLDG",
+     "n": 1,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "tawa_ca_arcgis_rest_services_Address_Information_MapServer_0",
+   "col": "ADDRTYPE",
+   "sampled": 25,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "MAIN",
+     "n": 20,
+     "as": null
+    },
+    {
+     "value": "SUBORDINATE",
+     "n": 5,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "es_WAEVCP_Public_Composite_Score_Parcel_View_FeatureServer_1",
+   "col": "usecode",
+   "sampled": 25,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "83",
+     "n": 22,
+     "as": null
+    },
+    {
+     "value": "98",
+     "n": 1,
+     "as": null
+    },
+    {
+     "value": "53",
+     "n": 1,
+     "as": null
+    },
+    {
+     "value": "91",
+     "n": 1,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "rps6zC_arcgis_rest_services_Parcel_File_2023_FeatureServer_1",
+   "col": "use_code",
+   "sampled": 0,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [],
+   "err": ""
+  },
+  {
+   "layer_id": "6zC_arcgis_rest_services_parcel_file_current_FeatureServer_0",
+   "col": "use_code",
+   "sampled": 25,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "41110",
+     "n": 9,
+     "as": null
+    },
+    {
+     "value": "00003",
+     "n": 7,
+     "as": null
+    },
+    {
+     "value": "22255",
+     "n": 4,
+     "as": null
+    },
+    {
+     "value": "41330",
+     "n": 1,
+     "as": null
+    },
+    {
+     "value": "00004",
+     "n": 1,
+     "as": null
+    },
+    {
+     "value": "22320",
+     "n": 1,
+     "as": null
+    },
+    {
+     "value": "41210",
+     "n": 1,
+     "as": null
+    },
+    {
+     "value": "41340",
+     "n": 1,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "is_rest_services_ParcelViewer_AddressPoints2_FeatureServer_0",
+   "col": "AddrType",
+   "sampled": 0,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [],
+   "err": ""
+  },
+  {
+   "layer_id": "ntymd_gov_arcgis_rest_services_GDX_buildings_FeatureServer_0",
+   "col": "BLDG_TYPE",
+   "sampled": 0,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [],
+   "err": ""
+  },
+  {
+   "layer_id": "P_arcgis_rest_services_Transit_Addresses_New_FeatureServer_0",
+   "col": "ADDR_TYPE",
+   "sampled": 25,
+   "mapped": 25,
+   "coverage": 1.0,
+   "verdict": "map",
+   "value_map": {
+    "SINGLE FAMILY": "Residential",
+    "COMMERCIAL": "Commercial"
+   },
+   "top_values": [
+    {
+     "value": "SINGLE FAMILY",
+     "n": 21,
+     "as": "Residential"
+    },
+    {
+     "value": "COMMERCIAL",
+     "n": 4,
+     "as": "Commercial"
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "rGr3P_arcgis_rest_services_Transit_Addresses_FeatureServer_0",
+   "col": "ADDR_TYPE",
+   "sampled": 25,
+   "mapped": 25,
+   "coverage": 1.0,
+   "verdict": "map",
+   "value_map": {
+    "SINGLE FAMILY": "Residential",
+    "COMMERCIAL": "Commercial"
+   },
+   "top_values": [
+    {
+     "value": "SINGLE FAMILY",
+     "n": 21,
+     "as": "Residential"
+    },
+    {
+     "value": "COMMERCIAL",
+     "n": 4,
+     "as": "Commercial"
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "rest_services_Address_Points_and_CPNs_Update_FeatureServer_3",
+   "col": "BLDG_TYPE",
+   "sampled": 0,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [],
+   "err": ""
+  },
+  {
+   "layer_id": "_rest_services_Arapahoe_County_Addresses_gdb_FeatureServer_0",
+   "col": "Bldg_Type",
+   "sampled": 24,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "ATTACHED TOWNHOUSE",
+     "n": 20,
+     "as": null
+    },
+    {
+     "value": "LOW-RISE CONDOMINUM",
+     "n": 2,
+     "as": null
+    },
+    {
+     "value": "ATTACHED CONDOMINUM",
+     "n": 2,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "server_rest_services_Intermap_Situs_address_WMAS_MapServer_0",
+   "col": "BUILDING_TYPE",
+   "sampled": 0,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [],
+   "err": "meta:<urlopen error timed out>"
+  },
+  {
+   "layer_id": "HQX_arcgis_rest_services_Parcels_for_Aerials_FeatureServer_0",
+   "col": "USE_DESC",
+   "sampled": 25,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "SFR GRADE 010-3 URBAN SUBDIVIDED",
+     "n": 25,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "_rest_services_Atlanta_Streets_and_Addresses_FeatureServer_0",
+   "col": "Addr_Type",
+   "sampled": 0,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [],
+   "err": ""
+  },
+  {
+   "layer_id": "rcgis_rest_services_Address_Pts_Living_Units_FeatureServer_0",
+   "col": "Bldg_Type",
+   "sampled": 25,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "DETACHED SINGLE FAMILY",
+     "n": 16,
+     "as": null
+    },
+    {
+     "value": "IMPROVED RESIDENTIAL ACREAGE",
+     "n": 5,
+     "as": null
+    },
+    {
+     "value": "LOW-RISE CONDOMINUM",
+     "n": 2,
+     "as": null
+    },
+    {
+     "value": "GRAZING LAND CLASS VIC",
+     "n": 1,
+     "as": null
+    },
+    {
+     "value": "DRYFARM CLASS IID",
+     "n": 1,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "is_rest_services_CMB_QSCF_Registered_Parcels_FeatureServer_0",
+   "col": "LANDUSE",
+   "sampled": 25,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "SINGLE UNIT DWELLING",
+     "n": 22,
+     "as": null
+    },
+    {
+     "value": "RESERVOIR DAM BORES",
+     "n": 1,
+     "as": null
+    },
+    {
+     "value": "VACANT URBAN LAND",
+     "n": 1,
+     "as": null
+    },
+    {
+     "value": "PARKS GARDENS",
+     "n": 1,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "0ba_rest_services_Auditor_StarkCountyParcels_FeatureServer_0",
+   "col": "LAND_USE_CODE",
+   "sampled": 25,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "510",
+     "n": 6,
+     "as": null
+    },
+    {
+     "value": "560",
+     "n": 2,
+     "as": null
+    },
+    {
+     "value": "110",
+     "n": 2,
+     "as": null
+    },
+    {
+     "value": "111",
+     "n": 2,
+     "as": null
+    },
+    {
+     "value": "620",
+     "n": 2,
+     "as": null
+    },
+    {
+     "value": "430",
+     "n": 2,
+     "as": null
+    },
+    {
+     "value": "480",
+     "n": 1,
+     "as": null
+    },
+    {
+     "value": "452",
+     "n": 1,
+     "as": null
+    },
+    {
+     "value": "400",
+     "n": 1,
+     "as": null
+    },
+    {
+     "value": "121",
+     "n": 1,
+     "as": null
+    },
+    {
+     "value": "500",
+     "n": 1,
+     "as": null
+    },
+    {
+     "value": "499",
+     "n": 1,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "_arcgis_rest_services_Full_Text_Index_Search_FeatureServer_0",
+   "col": "use_code",
+   "sampled": 25,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "A",
+     "n": 25,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "sessing_PROPERTY_ASSESSMENT_PARCEL_JOIN_FY26_FeatureServer_0",
+   "col": "BLDG_TYPE",
+   "sampled": 25,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [
+    {
+     "value": "DK - DECKER",
+     "n": 8,
+     "as": null
+    },
+    {
+     "value": "SD - SEMI-DET",
+     "n": 5,
+     "as": null
+    },
+    {
+     "value": "FS - FREE STANDING",
+     "n": 4,
+     "as": null
+    },
+    {
+     "value": "RM - ROW MIDDLE",
+     "n": 3,
+     "as": null
+    },
+    {
+     "value": "RE - ROW END",
+     "n": 2,
+     "as": null
+    },
+    {
+     "value": "TF - TWO FAM STACK",
+     "n": 2,
+     "as": null
+    },
+    {
+     "value": "CV - CONVENTIONAL",
+     "n": 1,
+     "as": null
+    }
+   ],
+   "err": ""
+  },
+  {
+   "layer_id": "couver_us_arcgis_rest_services_common_BasemapPUB_MapServer_0",
+   "col": "AddrType",
+   "sampled": 0,
+   "mapped": 0,
+   "coverage": 0.0,
+   "verdict": "Unknown",
+   "value_map": {},
+   "top_values": [],
+   "err": "meta:<urlopen error timed out>"
+  }
+ ],
+ "baseline": {
+  "all_layers_value": "Unknown",
+  "note": "未抽样/未达覆盖率的层直接 Unknown，缺省不猜"
+ }
+}

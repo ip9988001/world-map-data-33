@@ -256,6 +256,23 @@ class LayerMapper:
         pid = None if self.kind != "parcel_situs" else (self.e.get("src_parcel_id") or {}).get("src")
         row["src_parcel_id"] = up(raw.get(pid)) if (pid and raw.get(pid) not in (None, "")) else None
 
+        # addr_type（v1 一律 Unknown，除非 field-map 判为逐值可映射的层）
+        spec = self.e.get("addr_type") or {}
+        row["addr_type"] = "Unknown"
+        row["nad_addr_type_raw"] = None
+        if spec.get("src") and spec.get("map"):
+            rv = raw.get(spec["src"])
+            if rv not in (None, ""):
+                row["nad_addr_type_raw"] = str(rv).strip()
+                row["addr_type"] = (spec["map"].get(row["nad_addr_type_raw"])
+                                    or spec.get("default") or "Unknown")
+
+        # city 源列（SCHEMA 原生溯源）：有值才写，没值写 null；值再被清空时下面 public_row 会同步置 null
+        row["postal_city_source"] = (self.e.get("postal_city_source")
+                                      if row.get("postal_city") else None)
+        row["municipal_city_source"] = (self.e.get("municipal_city_source")
+                                        if row.get("municipal_city") else None)
+
         # 硬门禁
         bad = []
         if not row.get("house_number") or row["house_number"] in ("0", "000"):
@@ -287,15 +304,22 @@ def route(row: dict, bad: list[str], kind: str) -> tuple[str, str | None]:
 
 
 def public_row(row: dict) -> dict:
-    """只输出 SCHEMA 2.0 的 19 主字段 + 4 溯源列（不夹带内部中间量）。"""
+    """只输出 SCHEMA 2.0 的 19 主字段 + 4 三仓溯源列 + 3 个 SCHEMA 原生溯源列。"""
     keep = ["house_number", "house_number_suffix", "street_pre_dir", "street_name",
             "street_post_type", "street_post_dir", "street_full", "unit", "postal_city",
             "municipal_city", "county_name", "county_fips", "state_abbr", "zip5",
             "latitude", "longitude", "full_formatted_address",
-            "src_kind", "src_layer_id", "src_layer_url", "src_parcel_id"]
+            "src_kind", "src_layer_id", "src_layer_url", "src_parcel_id",
+            "postal_city_source", "municipal_city_source", "nad_addr_type_raw"]
     out = {k: row.get(k) for k in keep}
-    out["addr_type"] = None                 # 无源列，SCHEMA 允许 null（规则重分类待批）
+    # addr_type：v1 一律 Unknown；只有 field-map 判为「明确分类列可映射」的层才落映射值
+    out["addr_type"] = row.get("addr_type") or "Unknown"
     out["source_confidence"] = "B-Tier"     # 单层单源 → B-Tier（SCHEMA grade_rules）
+    # 城市源与值必须同步：值为空则 source 必为 None（宁可空不可错）
+    for v, s in (("postal_city", "postal_city_source"),
+                 ("municipal_city", "municipal_city_source")):
+        if not out.get(v):
+            out[s] = None
     return out
 
 

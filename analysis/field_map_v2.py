@@ -38,6 +38,12 @@ OUT = os.path.join(HERE, "out")
 SCHEMA_PIN = os.path.join(ROOT, "schema", "upstream", "SCHEMA-v2.0.world-map-data-test.json")
 SCHEMA_SHA256 = "02d5690a3c501fddeae4c338df4c7b62274c498a8a1b59bc54e6823e570ae14c"  # rev2（+4 三仓溯源字段）
 
+# 语义裁定的唯一依据（2026-10-30 审计产物，先跑 analysis/semantic_audit.py 再跑本脚本）
+ADDR_TYPE_MAP_F = os.path.join(ROOT, "schema", "addr-type-map-v1.json")
+CITY_RULES_F = os.path.join(ROOT, "schema", "city-rules-v1.json")
+ADDR_TYPE_MAP = {}
+CITY_RULES = {}
+
 # ---------------------------------------------------------------- 别名表
 # 每项 (name_regex, transform, quality)
 #   name_regex 对源字段名做**全名**匹配（re.I），避免 YEAR_BUILT/Ymin/Placement 这类前缀误命中
@@ -336,6 +342,54 @@ def has_letters(f: dict) -> bool:
     return any(re.search(r"[A-Za-z]{2,}", str(x)) for x in examples(f))
 
 
+# ---------------------------------------------------------------- city 值校验
+# 依据 schema/city-rules-v1.json（560 行实测：clean 80% / empty 11.6% / blacklist 8.4%）。
+# 判定口径是**形态**，不是猜城市名真伪：不确定一律 null（SCHEMA 允许，source 同步 null）。
+CITY_BLACK = {"UNINCORPORATED", "UNINCORPORATED AREA", "UNINC", "UNINC AREA", "NO CITY",
+              "NONE", "NULL", "N/A", "NA", "UNKNOWN", "NOT APPLICABLE", "N/A CITY",
+              "VARIOUS", "SEE ADDRESS", "SAME", "-", "--", "0", "N A", "CDP", "P O BOX",
+              "NOT STATED", "NOTSTATED"}
+
+
+def city_value_class(v) -> str:
+    """单个值的形态分类（与 analysis/semantic_audit.py 的 city_class 一致）。"""
+    if v is None:
+        return "empty"
+    s = str(v).strip()
+    if not s:
+        return "empty"
+    up = re.sub(r"\s+", " ", s.upper())
+    if up in CITY_BLACK:
+        return "blacklist"
+    if "," in up or ";" in up:
+        return "has_punct"
+    if re.search(r"\d", up):
+        return "has_digit"
+    if len(up) > 40:
+        return "too_long"
+    if not re.match(r"^[A-Z][A-Z .'\-]*$", up):
+        return "bad_chars"
+    return "clean"
+
+
+def city_examples_ok(f: dict) -> tuple[bool, str]:
+    """用该列的实际样例判一次：任一硬伤即拒该列，样例不足也不放行（宁可 null）。
+
+    实例依据（schema/city-rules-v1.json）：
+      · OWNER_CITY 值形如 `MIAMI, FL 33142-2202` → has_punct
+      · MUNICIPALITY 值含 `Unincorporated Area` → blacklist
+      · 某些层 COMMUNITY/CITY 带 5 位数字（实为 ZIP）→ has_digit
+    """
+    exs = examples(f)
+    if not exs:
+        return False, "列非空但无样例可校验 → 不确定，一律 null"
+    bad = [(str(x), city_value_class(x)) for x in exs]
+    bad = [b for b in bad if b[1] != "clean"]
+    if bad:
+        return False, "值校验不过（样例 %s=%s）→ null" % (bad[0][0][:24], bad[0][1])
+    return True, ""
+
+
 def looks_house_number(f: dict) -> bool:
     return any(extract_number(x) for x in examples(f))
 
@@ -451,6 +505,17 @@ def main() -> int:
     meta = load_csv_meta()
     if not layers:
         raise SystemExit("analysis/out 为空")
+
+    # 语义裁定前置：没有审计产物就不准跑（否则 addr_type/city 会退回“猜”）
+    global ADDR_TYPE_MAP, CITY_RULES
+    for p in (ADDR_TYPE_MAP_F, CITY_RULES_F):
+        if not os.path.exists(p):
+            raise SystemExit("缺语义裁定产物：%s（先跑 python3 analysis/semantic_audit.py both）" % p)
+    _am = json.load(open(ADDR_TYPE_MAP_F, encoding="utf-8"))
+    CITY_RULES = json.load(open(CITY_RULES_F, encoding="utf-8"))
+    ADDR_TYPE_MAP = {r["layer_id"]: r for r in (_am.get("layers_sampled") or [])
+                     if r.get("verdict") == "map" and r.get("value_map")}
+    print("[field-map] addr_type 可映射层：%d（其余一律 Unknown）" % len(ADDR_TYPE_MAP))
 
     out_layers: dict[str, dict] = {}
     cov = {t: {"with_source": 0, "null": 0, "layer_meta": 0, "derived_const": 0,
@@ -591,25 +656,53 @@ def main() -> int:
             cov["unit"]["reasons"]["无列"] = cov["unit"]["reasons"].get("无列", 0) + 1
 
         # ---- city：postal_city 与 municipal_city 严格分开（不许混用）
-        src, tr, q, rt = pick(fields, POSTAL_CITY, nums, 0.02, validator=lambda n: has_letters(fields[n]))
+        # ★ 列名 + 值形态双闸（schema/city-rules-v1.json，560 行实测）：
+        #   名字对但值是 `MIAMI, FL 33142-2202` / `Unincorporated Area` / 带 ZIP 的，一律 null。
+        #   不确定一律 null —— SCHEMA 允许，postal_city_source 同步写 null。
+        src, tr, q, rt = pick(fields, POSTAL_CITY, nums, 0.02,
+                              validator=lambda n: has_letters(fields[n]) and city_examples_ok(fields[n])[0])
         if src:
             put("postal_city", src, tr, q, rt)
+            ent["postal_city_source"] = "nad_post_city"
             cov["postal_city"]["with_source"] += 1
         else:
-            put("postal_city", None, reason="无城市列；USPS 邮件城市需外部权威源，不伪造")
+            why = "无城市列；USPS 邮件城市需外部权威源，不伪造"
+            for n in fields:
+                if re.match(r"^(?:%s)$" % "|".join([
+                        "CITY", "CITY_NAME", "CITYNAME", "PLACE_NAME", "SITUS_CITY",
+                        "ADDRESS_CITY", "ADDR_CITY", "POSTAL", "POSTALCITY"]), n, re.I):
+                    ok, msg = city_examples_ok(fields[n])
+                    if not ok:
+                        why = "%s：%s" % (n, msg)
+                    else:
+                        why = "%s 通过值校验但不在邮件城市白名单（CITY 语义不唯一）→ null" % n
+                    break
+            put("postal_city", None, reason=why)
+            ent["postal_city_source"] = None
             cov["postal_city"]["null"] += 1
-            cov["postal_city"]["reasons"]["无列"] = cov["postal_city"]["reasons"].get("无列", 0) + 1
+            cov["postal_city"]["reasons"][why.split("：")[0][:24]] = \
+                cov["postal_city"]["reasons"].get(why.split("：")[0][:24], 0) + 1
 
         src, tr, q, rt = pick(fields, MUNICIPAL_CITY, nums, MIN_RATE_LOW,
-                              validator=lambda n: has_letters(fields[n]))
+                              validator=lambda n: has_letters(fields[n]) and city_examples_ok(fields[n])[0])
         if src:
             put("municipal_city", src, tr, q, rt)
+            ent["municipal_city_source"] = "nad_inc_muni"
             cov["municipal_city"]["with_source"] += 1
         else:
             has_city = any(re.match(r"^(CITY|CITY_NAME)$", n, re.I) for n in fields)
             why = ("只有 CITY 列（可能是邮寄城市，v2 语义收紧后不得复用）→ 需 tiger places 回填"
                    if has_city else "无 Inc_Muni/Municipality 列 → 需 tiger places 回填")
+            for n in fields:
+                if re.match(r"^(?:%s)$" % "|".join([
+                        "INC_MUNI", "INCMUNI", "MUNICIPALITY", "MUNICIPAL_NAME", "MUNI_NAME",
+                        "MUNICIPAL", "CITY_OF", "TOWNSHIP", "TOWNSHIP_NAME"]), n, re.I):
+                    ok, msg = city_examples_ok(fields[n])
+                    if not ok:
+                        why = "%s：%s" % (n, msg)     # 实测 Inc_Muni 大量 Unincorporated/空
+                    break
             put("municipal_city", None, reason=why)
+            ent["municipal_city_source"] = None
             cov["municipal_city"]["null"] += 1
             cov["municipal_city"]["reasons"]["需 tiger places 回填"] = \
                 cov["municipal_city"]["reasons"].get("需 tiger places 回填", 0) + 1
@@ -727,11 +820,27 @@ def main() -> int:
         else:
             ent["src_parcel_id"] = None
 
-        # ---- addr_type / full_formatted_address / source_confidence：无源列 → 规则或 null
-        put("addr_type", None, reason="无源列，规则见 value_rules.addr_type（本轮不落值）",
-            value_rule="value_rules.addr_type")
-        cov["addr_type"]["null"] += 1
-        cov["addr_type"]["reasons"]["无源列（规则重分类）"] = cov["addr_type"]["reasons"].get("无源列（规则重分类）", 0) + 1
+        # ---- addr_type：v1 一律 Unknown，仅当该层有“明确分类列 + 逐值可映射”才落值
+        #   裁定依据 schema/addr-type-map-v1.json（40 层 × 25 行实测：只有 4 层可映射，
+        #   其余都是编码值 L/S/T/110000/BUILDING 或语义不可证）。
+        #   ★ 禁止启发式：unit 非空 / 层标题 / src_kind 都不得推导 addr_type。
+        amap = ADDR_TYPE_MAP.get(lid)
+        if amap and amap.get("value_map"):
+            e = put("addr_type", amap["col"], "token_map", "native", amap.get("coverage") or 0,
+                    value_rule="schema/addr-type-map-v1.json#value_map")
+            e["map"] = amap["value_map"]
+            e["raw_out"] = "nad_addr_type_raw"
+            e["default"] = "Unknown"
+            ent["nad_addr_type_raw"] = {"src": amap["col"], "transform": "trim"}
+            cov["addr_type"]["with_source"] += 1
+        else:
+            put("addr_type", None, reason="v1 一律 Unknown（无明确分类列 / 取值不可映射）",
+                value_rule="value_rules.addr_type")
+            ent["addr_type"]["constant"] = "Unknown"
+            ent["nad_addr_type_raw"] = None
+            cov["addr_type"]["derived_const"] += 1
+            cov["addr_type"]["reasons"]["v1 一律 Unknown（无明确分类列）"] = \
+                cov["addr_type"]["reasons"].get("v1 一律 Unknown（无明确分类列）", 0) + 1
 
         put("full_formatted_address", None, value_rule="value_rules.full_formatted_address")
         cov["full_formatted_address"]["derived_formula"] += 1
@@ -827,6 +936,24 @@ def main() -> int:
              "覆盖": f"{parcel_with_id}/{kind_n.get('parcel_situs', 0)} 宗地层"},
         ],
     }
+    # ---- SCHEMA 自带溯源列的落值情况（本轮新增：city 两个 source + addr_type 原始值）
+    pc_src = sum(1 for e in out_layers.values() if e.get("postal_city_source"))
+    mc_src = sum(1 for e in out_layers.values() if e.get("municipal_city_source"))
+    at_src = sum(1 for e in out_layers.values()
+                 if isinstance(e.get("addr_type"), dict) and e["addr_type"].get("src"))
+    doc["schema_provenance_filled"] = {
+        "why": "SCHEMA 2.0 rev2 已有这三个溯源列，本轮不只是“保留”而且逐层给出取值规则与来源",
+        "fields": [
+            {"name": "postal_city_source", "enum": ["nad_post_city", "place_derived", None],
+             "layers_native": pc_src, "layers_null": n_layer - pc_src,
+             "规则": "postal_city 有原生列且过值校验 → nad_post_city；否则 null（place_derived 需 TIGER places，本仓未做）"},
+            {"name": "municipal_city_source", "enum": ["nad_inc_muni", "tiger_place", None],
+             "layers_native": mc_src, "layers_null": n_layer - mc_src,
+             "规则": "Inc_Muni/Municipality 且过值校验 → nad_inc_muni；空则 null（tiger_place 回填后才有值）"},
+            {"name": "nad_addr_type_raw", "type": "string", "layers_with_src": at_src,
+             "规则": "addr_type 按映射落值的层，原值一律写入此列供审计；其它层为 null"},
+        ],
+    }
     doc["value_rules"] = {
         "state_abbr": "列优先（STATE/State/ST…，需 2 位合法州码）；无列时取层元数据 state（州是分片作用域属性，"
                       "SCHEMA 亦记「县片内实测 100% 等于本州」）",
@@ -839,8 +966,14 @@ def main() -> int:
         "house_number": "裸列优先；只有整串地址时按正则 ^(\\d+[A-Za-z]?) 切首段并标 quality=extracted；"
                         "0 值比例写入 zero_share（SCHEMA 允许原样保留，但下游应视 0 为无门牌号）",
         "unit": "只在有独立 unit 列时取；拆不出则 null（不把 UNIT_TYPE/UNITS 计数当 unit）",
-        "addr_type": "无源列 → 全部 null + 建议规则：unit 非空 → Residential (Multi-Unit)；parcel_situs 无证据 → Unknown；"
-                      "层标题含 COMMERCIAL/BUSINESS → Commercial；其余 Residential（需上游确认后才落值）",
+        "addr_type": "v1 **一律 Unknown**；仅当层内有明确分类列（AddrClass/ADDR_TYPE/UseCode/LANDUSE/"
+                      "BLDG_TYPE 等）且该层抽样 25 行里 ≥80% 取值能逐值映射到枚举时，才按 map 落值"
+                      "（见 schema/addr-type-map-v1.json）。**禁止**用 unit 非空 / 层标题 / src_kind 推导。",
+        "postal_city": "只认邮件城市语义列 + 值形态校验（无数字/无逗号/非行政区黑话 → 见 "
+                       "schema/city-rules-v1.json，560 行实测 clean 80%/empty 11.6%/blacklist 8.4%）；"
+                       "不过则 postal_city=null 且 postal_city_source=null（宁可空不可错）",
+        "municipal_city": "只认 Inc_Muni/Municipality 等法定市政列；值含 Unincorporated/带 ZIP 的一律 null，"
+                          "municipal_city_source 同步 null；空则待 tiger places 回填（tiger_place）",
         "full_formatted_address": "合成：house_number + ' ' + street_full + ', ' + postal_city + ', ' + state_abbr + ' ' + zip5；"
                                   "缺项退化为 house_number + ' ' + street_full + ', ' + state_abbr",
         "source_confidence": "三仓单层单源 → 恒 B-Tier（符合 SCHEMA grade_rules：只有 1 个独立源即 B-Tier；"
