@@ -1,0 +1,112 @@
+{
+ "schema": "collect-ledger-agg/v1",
+ "stage": "05b",
+ "at": "2026-10-30T20:18:56Z",
+ "layers_n": 0,
+ "ok": 0,
+ "empty": 0,
+ "partial": 0,
+ "failed": 0,
+ "skipped_done": 0,
+ "declared": 0,
+ "rows": 0,
+ "gap": 0,
+ "shards_expected": 14,
+ "shards_reported": 0,
+ "shards_incomplete": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13
+ ],
+ "shards_incomplete_detail": [
+  {
+   "shard": 0,
+   "cause": "no_ledger",
+   "layers_planned": 200
+  },
+  {
+   "shard": 1,
+   "cause": "no_ledger",
+   "layers_planned": 200
+  },
+  {
+   "shard": 2,
+   "cause": "no_ledger",
+   "layers_planned": 200
+  },
+  {
+   "shard": 3,
+   "cause": "no_ledger",
+   "layers_planned": 200
+  },
+  {
+   "shard": 4,
+   "cause": "no_ledger",
+   "layers_planned": 200
+  },
+  {
+   "shard": 5,
+   "cause": "no_ledger",
+   "layers_planned": 200
+  },
+  {
+   "shard": 6,
+   "cause": "no_ledger",
+   "layers_planned": 200
+  },
+  {
+   "shard": 7,
+   "cause": "no_ledger",
+   "layers_planned": 200
+  },
+  {
+   "shard": 8,
+   "cause": "no_ledger",
+   "layers_planned": 200
+  },
+  {
+   "shard": 9,
+   "cause": "no_ledger",
+   "layers_planned": 200
+  },
+  {
+   "shard": 10,
+   "cause": "no_ledger",
+   "layers_planned": 200
+  },
+  {
+   "shard": 11,
+   "cause": "no_ledger",
+   "layers_planned": 200
+  },
+  {
+   "shard": 12,
+   "cause": "no_ledger",
+   "layers_planned": 200
+  },
+  {
+   "shard": 13,
+   "cause": "no_ledger",
+   "layers_planned": 170
+  }
+ ],
+ "complete": false,
+ "plan": {
+  "layers_n": 2770,
+  "declared_rows": 144741233,
+  "shards_n": 14,
+  "size": 200
+ },
+ "records": []
+}
