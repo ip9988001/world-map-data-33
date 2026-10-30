@@ -191,56 +191,95 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          git config user.name  "collect-bot"
-          git config user.email "bot@users.noreply.github.com"
           STAGE="${{ inputs.stage }}"
-          DOC=$(ls docs/STEP0*-FULL-*.md 2>/dev/null | tail -1 || true)
-          git add -f collect/${STAGE}_ledger.json collect/ledger || true
-          [ -n "$DOC" ] && git add -f "$DOC" || true
-          if git diff --cached --quiet; then echo "无变化"; else
-            git commit -q -m "collect: ${STAGE} 全量收官账本 + 文档"
-          fi
+          # ★ 2026-10-30 run 41092912755 事故：merge 账本生成成功，但推送 6 次全败 ——
+          #   工作区里全是采集产物（download-artifact 落下的片账本、collect/progress/*.json），
+          #   `git rebase` 报 “cannot rebase: You have unstaged changes”（被 2>/dev/null 吞了），
+          #   重试 6 次只是重复同一个错误 → 账本一行没落地。
+          #   改法：产物先搬 /tmp → checkout -qf 硬对齐 origin/main → 搬回来 → 提交 → 推送。
+          rm -rf /tmp/push && mkdir -p /tmp/push/ledger /tmp/push/docs
+          cp -f "collect/${STAGE}_ledger.json" /tmp/push/ 2>/dev/null || true
+          cp -f collect/ledger/*.json /tmp/push/ledger/ 2>/dev/null || true
+          cp -f docs/*FULL-*.md /tmp/push/docs/ 2>/dev/null || true
           for i in $(seq 1 6); do
             git fetch -q origin main || true
-            if git rebase -q origin/main 2>/dev/null && git push -q origin HEAD:main; then
-              echo "✅ 已推送"; echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"; exit 0
+            git checkout -qf -B main origin/main
+            mkdir -p collect/ledger docs
+            cp -f /tmp/push/${STAGE}_ledger.json collect/ 2>/dev/null || true
+            cp -f /tmp/push/ledger/*.json collect/ledger/ 2>/dev/null || true
+            cp -f /tmp/push/docs/*FULL-*.md docs/ 2>/dev/null || true
+            git add -f "collect/${STAGE}_ledger.json" collect/ledger docs 2>/dev/null || true
+            if git diff --cached --quiet; then echo "无变化（账本已在 main）"; exit 0; fi
+            git -c user.name=collect-bot -c user.email=bot@users.noreply.github.com \
+                commit -q -m "collect: ${STAGE} 全量收官账本 + 文档"
+            if git push -q origin HEAD:main; then
+              echo "✅ 已推送（第 $i 次）"; echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"; exit 0
             fi
-            git rebase --abort 2>/dev/null || true
-            sleep $((i*3 + RANDOM % 4))
+            echo "⚠️ push 第 $i 次被拒，重试…"; sleep $((i*3 + RANDOM % 4))
           done
-          echo "::warning::账本推送失败（文档仍在 artifact 里）"
+          echo "::error::账本推送失败（6 次）—— 账本未上 main，需人工补"
+          exit 1
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: final-${{ inputs.stage }}
           path: |
+            docs/*FULL-*.md
             docs/STEP0*-FULL-*.md
             collect/${{ inputs.stage }}_ledger.json
             collect/ledger
           retention-days: 30
-      - name: 判定 + 自动接续下一阶段
+      # ★ 接续闸门：只要还有「未完成片」或 failed 层，禁止自动接下一阶段。
+      #   闸门不改 job 结论——账本必须先落地；红的是「不许接续」这行注释，不是 merge。
+      - name: 判定 + 自动接续下一阶段（闸门：未完成片 / failed 层一律不接续）
         id: chain
+        if: always()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STAGE: ${{ inputs.stage }}   # ★ 必须注入：python 读 os.environ["STAGE"]，
+                                       #   只在 shell 里赋值不导出会 KeyError（41092912755 就是这么红的）
         run: |
           set -euo pipefail
-          STAGE="${{ inputs.stage }}"
-          python3 - <<'PY' > /tmp/verdict.txt
-          import json,os
-          s=os.environ["STAGE"]
-          d=json.load(open("collect/%s_ledger.json"%s))
-          print(d["failed"], d["partial"], d["layers_n"], d["ok"], d["empty"], d["skipped_done"])
-          PY
-          read FAILED PARTIAL N OK EMPTY SKIP < /tmp/verdict.txt
-          echo "failed=$FAILED partial=$PARTIAL layers=$N ok=$OK empty=$EMPTY skipped=$SKIP"
-          { echo "### $STAGE 判定"; echo "- 层 $N / ok $OK / empty $EMPTY / partial $PARTIAL / failed $FAILED / skipped $SKIP"; } >> "$GITHUB_STEP_SUMMARY"
           NEXT=""
           case "$STAGE" in 04b) NEXT=05b ;; 05b) NEXT=07b ;; 07b) NEXT=10b ;; esac
-          if [ "$FAILED" != "0" ]; then
-            echo "::error::$STAGE 有 $FAILED 层 failed → 不接续（账本已落，逐条原因见 docs）"
+          LED="collect/${STAGE}_ledger.json"
+          if [ ! -f "$LED" ]; then
+            echo "::error::$STAGE 没有汇总账本（$LED）→ 不接续，请查 merge 日志"
             exit 1
           fi
+          python3 - <<'PY' > /tmp/verdict.txt
+          import json,os
+          d=json.load(open("collect/%s_ledger.json"%os.environ["STAGE"]))
+          inc=d.get("shards_incomplete") or []
+          fail=d["failed"]
+          complete=d.get("complete")
+          if complete is None:   # 旧版汇总脚本没有 complete 字段 → 就地推
+              complete = bool(inc==[] and fail==0)
+          print(fail, d["partial"], d["layers_n"], d["ok"], d["empty"],
+                d.get("skipped_done",0), len(inc), ",".join(str(x) for x in inc) or "-",
+                d.get("shards_expected","?"), d.get("shards_reported","?"), int(bool(complete)))
+          PY
+          read FAILED PARTIAL N OK EMPTY SKIP INC INCLIST NEXP NREP COMPLETE < /tmp/verdict.txt
+          echo "failed=$FAILED partial=$PARTIAL layers=$N ok=$OK empty=$EMPTY skipped=$SKIP incomplete_shards=$INC($INCLIST)"
+          { echo "### $STAGE 判定";
+            echo "- 层 $N / ok $OK / empty $EMPTY / partial $PARTIAL / failed $FAILED / skipped $SKIP";
+            echo "- 片：应有 $NEXP / 有账本 $NREP / **未完成 $INC**（片号 $INCLIST）";
+            [ "$INC" = "0" ] || echo "- ⛔ 未完成片存在 → 禁止自动接续 ${NEXT:-（无下一阶段）}";
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$INC" != "0" ]; then
+            echo "::error::$STAGE 有 $INC 片未完成（片号 $INCLIST）→ 禁止接续 $NEXT；先 force_layers 补跑"
+            exit 0
+          fi
+          if [ "$FAILED" != "0" ]; then
+            echo "::error::$STAGE 有 $FAILED 层 failed → 禁止接续 $NEXT（账本已落，逐条原因见 docs）"
+            exit 0
+          fi
+          if [ "$COMPLETE" != "1" ]; then
+            echo "::error::$STAGE 账本 complete=false → 禁止接续 $NEXT"
+            exit 0
+          fi
           if [ "${{ inputs.chain }}" != "1" ] || [ -z "$NEXT" ]; then
-            echo "本阶段收敛（failed=0），不接续（chain=${{ inputs.chain }}，next=${NEXT:-无}）"; exit 0
+            echo "本阶段收敛（片齐 + failed=0），不接续（chain=${{ inputs.chain }}，next=${NEXT:-无}）"; exit 0
           fi
           echo "✅ $STAGE 全绿 → 自动接续 $NEXT"
           gh workflow run collect-full.yml --repo "$GITHUB_REPOSITORY" --ref main \
