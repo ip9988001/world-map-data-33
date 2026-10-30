@@ -1,0 +1,156 @@
+{
+ "generated_at": "2026-10-30T12:46:08Z",
+ "coordinate_chars": {
+  "n": 300000,
+  "full_median": 39.0,
+  "full_mean": 39.01,
+  "full_p10": 38,
+  "full_p90": 40,
+  "six_dec_median": 23.0,
+  "six_dec_mean": 22.73,
+  "six_dec_shrink": 0.59
+ },
+ "gzip_county_rings": {
+  "tag": "本机真实县界环（6 位小数）",
+  "rings": 3059,
+  "vertices": 526898,
+  "raw_bytes_per_vertex": 19.12,
+  "gz_bytes_per_vertex": 5.19,
+  "ratio": 0.2714
+ },
+ "gzip_pseudo_6dec": {
+  "tag": "真实坐标值伪环（6 位小数）",
+  "rings": 1666,
+  "vertices": 19992,
+  "raw_bytes_per_vertex": 24.78,
+  "gz_bytes_per_vertex": 6.31,
+  "ratio": 0.2545
+ },
+ "gzip_pseudo_full": {
+  "tag": "真实坐标值伪环（全精度）",
+  "rings": 1666,
+  "vertices": 19992,
+  "raw_bytes_per_vertex": 30.77,
+  "gz_bytes_per_vertex": 6.67,
+  "ratio": 0.2169
+ },
+ "edge_length_deg": {
+  "n": 523839,
+  "median_deg": 0.0037483,
+  "p10_deg": 0.0014866,
+  "under_1e-5_pct": 0.0
+ },
+ "simplify_1e-5": {
+  "tolerance_deg": 1e-05,
+  "rings": 400,
+  "vertices_before": 104815,
+  "vertices_after": 104799,
+  "keep_ratio": 0.9998,
+  "median_ring_keep": 1.0
+ },
+ "rows": {
+  "parcel_layers": 1238,
+  "rows_field_map": 36473089,
+  "layers_with_assets": 1238,
+  "rows_on_disk": 36473089,
+  "agree": true,
+  "largest_layers": [
+   [
+    1742760,
+    "g_server_rest_services_Hosted_Buildings_2024_FeatureServer_2"
+   ],
+   [
+    1282833,
+    "vices_Connecticut_CAMA_and_Parcel_Layer_2025_FeatureServer_0"
+   ],
+   [
+    1202752,
+    "idPhWCzftIe9K_arcgis_rest_services_Buildings_FeatureServer_0"
+   ]
+  ]
+ },
+ "centroid_increment": {
+  "rows": 20000,
+  "null_latlon_bytes_per_row_gz": 53.99,
+  "single_bytes_per_row_gz": 73.55,
+  "dual_bytes_per_row_gz": 81.02,
+  "delta_single_bytes_per_row_gz": 19.56,
+  "delta_dual_bytes_per_row_gz": 27.03,
+  "delta_single_bytes_per_row_raw": 27.05,
+  "delta_dual_bytes_per_row_raw": 82.1
+ },
+ "tier_raw_rings": {
+  "5": {
+   "raw_bytes_per_row": 195,
+   "gz_bytes_per_row": 42,
+   "total_raw_GB": 7.11,
+   "total_gz_GB": 1.54
+  },
+  "8": {
+   "raw_bytes_per_row": 312,
+   "gz_bytes_per_row": 68,
+   "total_raw_GB": 11.38,
+   "total_gz_GB": 2.47
+  },
+  "12": {
+   "raw_bytes_per_row": 468,
+   "gz_bytes_per_row": 102,
+   "total_raw_GB": 17.07,
+   "total_gz_GB": 3.7
+  },
+  "24": {
+   "raw_bytes_per_row": 936,
+   "gz_bytes_per_row": 203,
+   "total_raw_GB": 34.14,
+   "total_gz_GB": 7.4
+  }
+ },
+ "tier_simplified_rings": {
+  "5": {
+   "raw_bytes_per_row": 115,
+   "gz_bytes_per_row": 29,
+   "total_raw_GB": 4.19,
+   "total_gz_GB": 1.07
+  },
+  "8": {
+   "raw_bytes_per_row": 184,
+   "gz_bytes_per_row": 47,
+   "total_raw_GB": 6.71,
+   "total_gz_GB": 1.71
+  },
+  "12": {
+   "raw_bytes_per_row": 276,
+   "gz_bytes_per_row": 70,
+   "total_raw_GB": 10.06,
+   "total_gz_GB": 2.56
+  },
+  "24": {
+   "raw_bytes_per_row": 552,
+   "gz_bytes_per_row": 140,
+   "total_raw_GB": 20.13,
+   "total_gz_GB": 5.12
+  }
+ },
+ "backfill_plan": {
+  "layers": 1038,
+  "rows": 31412190,
+  "pages": 30454,
+  "count_queries": 1038,
+  "requests_with_retry": 33066,
+  "payload_per_row_bytes": 100,
+  "est_payload_GB": 3.14,
+  "requests": 33066
+ },
+ "params_used": {
+  "per_vertex_full": 39.0,
+  "per_vertex_6dec": 23.0,
+  "gz_ratio_full": 0.2169,
+  "gz_ratio_6dec": 0.2545,
+  "rdp_keep_ratio": 0.9998
+ },
+ "limits": {
+  "single_file_bytes": 2000000000,
+  "assets_per_release": 1000,
+  "part_rows": 50000
+ }
+}
