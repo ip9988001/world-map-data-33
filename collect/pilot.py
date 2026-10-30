@@ -451,14 +451,16 @@ def _upload(files, log, tag=None):
         return False
     rc, o = _pub(["gh", "release", "create", tag, "--repo", rep,
                   "--title", "采集 %s（分批发）" % CUR["id"], "--notes", "unit upload", tmp])
+    e_create = ""
     if rc != 0:
+        e_create = o[:200]                    # ★ 别吞：create 失败的真实原因必须看得见（曾只看到
         rc, o = _pub(["gh", "release", "upload", tag, tmp, "--repo", rep, "--clobber"])
     try:
         os.remove(tmp)
     except Exception:
         pass
     if rc != 0:
-        log("  ✗ 上传失败 %s" % o[:150])
+        log("  ✗ 上传失败 upload=%s" % o[:150] + (" | create=%s" % e_create if e_create else ""))
         return False
     log("  ↑ 已发布 %s（%d 个 part）" % (name, len(files)))
     return True

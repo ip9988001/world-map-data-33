@@ -38,7 +38,7 @@ jobs:
     timeout-minutes: 150
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 1 }
+        with: { fetch-depth: 0 }
       - uses: actions/setup-python@v5
         with: { python-version: "3.11" }
       - run: pip install --quiet pyyaml
@@ -56,6 +56,28 @@ jobs:
           PY
         env:
           R: ${{ inputs.oid_range }}
+
+      - name: 上传链路自检（Release create/upload 到底能不能用）
+        # 2026-10-30 事故：灰度首跑 rows 全对但 `✗ 上传失败 release not found` ——
+        # create 的真实错误被 upload 的报错盖掉了（fetch-depth: 1 也参一脚）。
+        # 所以先把 create/upload 单独跑一遍，把 gh 的原始错误原样打在日志里。
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REP: ${{ github.repository }}
+        run: |
+          set +e
+          echo probe > /tmp/probe.txt
+          T="oid-probe-${GITHUB_RUN_ID}"
+          echo "--- gh auth status ---"; gh auth status 2>&1 | head -8
+          echo "--- release create ---"
+          gh release create "$T" --repo "$REP" --title probe --notes probe /tmp/probe.txt \
+            && echo "create_rc=0" || echo "create_rc=$?"
+          echo "--- release upload ---"
+          gh release upload "$T" /tmp/probe.txt --repo "$REP" --clobber \
+            && echo "upload_rc=0" || echo "upload_rc=$?"
+          gh release view "$T" --repo "$REP" --json tagName,assets -q '.tagName, (.assets[]|.name)' 2>&1
+          gh release delete "$T" --repo "$REP" --yes --cleanup-tag 2>&1 | tail -2 || true
+          echo "probe done（自检结果只看日志，不阻断采集）"
 
       - name: 跑单层指定区间（产物进 <tag>-r2）
         env:
@@ -88,3 +110,26 @@ jobs:
             collect/out/${{ inputs.layer }}/_manifest.json
           if-no-files-found: warn
           retention-days: 14
+
+      - name: 产物兜底（Release 上传失败时，灰度数据也不丢）
+        # 灰度产物只有 ~25 MB/单元：Release 挂了还能当 artifact 拿回来做比对。
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: oid-range-parts-${{ github.run_id }}
+          path: collect/out/${{ inputs.layer }}/**/*.ndjson.gz
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: 产物是否真的进了 Release（二分：tag 在不在 / 资产对不对）
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          T: ${{ inputs.tag_prefix }}${{ inputs.layer }}-r2
+        run: |
+          set +e
+          echo "tag=$T"
+          gh release view "$T" --repo "$GITHUB_REPOSITORY" --json tagName,assets \
+            -q '.tagName, "assets=" + ((.assets|length)|tostring), (.assets[]|.name)' 2>&1 | head -6
+          echo "r2_check_rc=$?"
+
