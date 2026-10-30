@@ -1,0 +1,52 @@
+{
+ "schema": "04b-partial-upstream/v1",
+ "at": "2026-10-30T21:03:04Z",
+ "layers": [
+  {
+   "layer": "s_Points_from_National_Address_Database_view_FeatureServer_0",
+   "url": "https://services.arcgis.com/xOi1kZaI0eWDREZv/ArcGIS/rest/services/Address_Points_from_National_Address_Database_view/FeatureServer/0",
+   "declared": 97928946,
+   "rows": 39875268,
+   "http": 200,
+   "count": null,
+   "raw": "{'error': {'code': 499, 'message': 'Token Required', 'messageCode': 'GWM_0003', 'details': ['Token Required']}}",
+   "elapsed_ms": 323
+  },
+  {
+   "layer": "UyC7jAmu_arcgis_rest_services_LBRSforLocator_FeatureServer_0",
+   "url": "https://services2.arcgis.com/MlJ0G8iWUyC7jAmu/arcgis/rest/services/LBRSforLocator/FeatureServer/0",
+   "declared": 5573001,
+   "rows": 2773122,
+   "http": 200,
+   "count": 5573001,
+   "raw": "{'count': 5573001}",
+   "elapsed_ms": 3010
+  },
+  {
+   "layer": "ces_Ky_911_Site_Structure_Address_Points_WGS84WM_MapServer_0",
+   "url": "https://kygisserver.ky.gov/arcgis/rest/services/WGS84WM_Services/Ky_911_Site_Structure_Address_Points_WGS84WM/MapServer/0",
+   "declared": 2485645,
+   "rows": 2416763,
+   "err": "URLError: <urlopen error timed out>",
+   "elapsed_ms": 45477
+  },
+  {
+   "layer": "fD_arcgis_rest_services_COTGEO_ADDRESS_POINT_FeatureServer_0",
+   "url": "https://services3.arcgis.com/b9WvedVPoizGfvfD/arcgis/rest/services/COTGEO_ADDRESS_POINT/FeatureServer/0",
+   "declared": 525381,
+   "rows": 479000,
+   "http": 200,
+   "count": 525381,
+   "raw": "{'count': 525381}",
+   "elapsed_ms": 489
+  },
+  {
+   "layer": "t01_rest_services_PlatTracker_PT365_PLAT_MAPPING_MapServer_5",
+   "url": "https://mycity2.houstontx.gov/geoplat01/rest/services/PlatTracker/PT365_PLAT_MAPPING/MapServer/5",
+   "declared": 315044,
+   "rows": 310418,
+   "err": "URLError: <urlopen error timed out>",
+   "elapsed_ms": 45480
+  }
+ ]
+}

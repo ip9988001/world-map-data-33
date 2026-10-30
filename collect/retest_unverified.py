@@ -179,8 +179,9 @@ def main() -> int:
     doc["summary"] = summarize(doc)
     doc["uncertain_rows"] = {
         "low": 0,
-        "high": sum(int(x.get("ledger_declared") or 0) for x in tg),
-        "note": "声明值未经上游确认，只当上界；这 6 层不计入 84.51% 的分母",
+        # 声明值取自 layer_plan.csv（未经上游确认），只当上界；不能当已采行数用
+        "high": sum(int(x.get("declared") or 0) for x in tg),
+        "note": "声明值未经上游确认，只当上界；这几层不计入缺口分母",
     }
     doc["updated_at"] = rd["at"]
     os.makedirs(os.path.dirname(path), exist_ok=True)

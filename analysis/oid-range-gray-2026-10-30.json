@@ -1,0 +1,145 @@
+{
+ "schema": "oid-range-gray/v1",
+ "generated_at": "2026-10-30T21:33:36Z",
+ "layer": "UCXd1_arcgis_rest_services_USA_NAD_Addresses_FeatureServer_0",
+ "oid_range": [
+  1,
+  999177
+ ],
+ "span": 999177,
+ "old_tag": "collect-step04-UCXd1_arcgis_rest_services_USA_NAD_Addresses_FeatureServer_0",
+ "r2_tag": "collect-step04-UCXd1_arcgis_rest_services_USA_NAD_Addresses_FeatureServer_0-r2",
+ "old_unit_files": [
+  "UCXd1_arcgis_rest_services_USA_NAD_Addresses_FeatureServer_0-u00000.tar.gz",
+  "UCXd1_arcgis_rest_services_USA_NAD_Addresses_FeatureServer_0-u00001.tar.gz",
+  "UCXd1_arcgis_rest_services_USA_NAD_Addresses_FeatureServer_0-u00002.tar.gz",
+  "UCXd1_arcgis_rest_services_USA_NAD_Addresses_FeatureServer_0-u00003.tar.gz",
+  "UCXd1_arcgis_rest_services_USA_NAD_Addresses_FeatureServer_0-u00004.tar.gz",
+  "UCXd1_arcgis_rest_services_USA_NAD_Addresses_FeatureServer_0-u00005.tar.gz",
+  "UCXd1_arcgis_rest_services_USA_NAD_Addresses_FeatureServer_0-u00006.tar.gz"
+ ],
+ "new_unit_files": [
+  "UCXd1_arcgis_rest_services_USA_NAD_Addresses_FeatureServer_0-u00000.tar.gz"
+ ],
+ "upstream_count_in_range": 999177,
+ "old_rows": 999177,
+ "new_rows": 999177,
+ "rows_equal": true,
+ "oid_common": 999177,
+ "only_old": 0,
+ "only_new": 0,
+ "only_old_examples": [],
+ "only_new_examples": [],
+ "row_level_identical": 0,
+ "row_level_differ": 999177,
+ "sampled": 1000,
+ "field_match": {
+  "add_num": 1000,
+  "addr_key": 1000,
+  "city": 1000,
+  "esn": 1000,
+  "lat": 1000,
+  "lon": 1000,
+  "post_dir": 1000,
+  "pre_dir": 1000,
+  "raw.OBJECTID": 1000,
+  "raw.addr_city": 1000,
+  "raw.addr_floor": 1000,
+  "raw.addr_housenumber": 1000,
+  "raw.addr_postcode": 1000,
+  "raw.addr_state": 1000,
+  "raw.addr_street": 1000,
+  "raw.addr_unit": 1000,
+  "raw.building": 1000,
+  "raw.source": 1000,
+  "src_layer": 1000,
+  "src_title": 1000,
+  "st_name": 1000,
+  "st_suf": 1000,
+  "unit": 1000,
+  "zip": 1000
+ },
+ "field_mismatch": {
+  "_lat": 1000,
+  "_lon": 1000
+ },
+ "mismatch_examples": [
+  {
+   "oid": 1,
+   "diff_fields": [
+    "_lat",
+    "_lon"
+   ],
+   "old": {
+    "_lat": null,
+    "_lon": null
+   },
+   "new": {
+    "_lat": 34.49359323700003,
+    "_lon": -91.54696286699999
+   }
+  },
+  {
+   "oid": 2,
+   "diff_fields": [
+    "_lat",
+    "_lon"
+   ],
+   "old": {
+    "_lat": null,
+    "_lon": null
+   },
+   "new": {
+    "_lat": 34.49357673900005,
+    "_lon": -91.54842205199998
+   }
+  },
+  {
+   "oid": 3,
+   "diff_fields": [
+    "_lat",
+    "_lon"
+   ],
+   "old": {
+    "_lat": null,
+    "_lon": null
+   },
+   "new": {
+    "_lat": 34.49353322600007,
+    "_lon": -91.54280562799994
+   }
+  },
+  {
+   "oid": 4,
+   "diff_fields": [
+    "_lat",
+    "_lon"
+   ],
+   "old": {
+    "_lat": null,
+    "_lon": null
+   },
+   "new": {
+    "_lat": 34.49342006200004,
+    "_lon": -91.53809845499995
+   }
+  },
+  {
+   "oid": 5,
+   "diff_fields": [
+    "_lat",
+    "_lon"
+   ],
+   "old": {
+    "_lat": null,
+    "_lon": null
+   },
+   "new": {
+    "_lat": 34.49410957200007,
+    "_lon": -91.55195100699996
+   }
+  }
+ ],
+ "verdict": "rows_identical_fields_differ",
+ "gate": "停 · 不出 r2 放量，旧单元保持唯一真值"
+}

@@ -1,0 +1,127 @@
+{
+ "schema": "04b-missing-evidence/v1",
+ "stage": "04b",
+ "at": "2026-10-30T21:21:25Z",
+ "method": "GET <layer_url>/query?where=1=1&returnCountOnly=true&f=json（一次；只读上游，不采数据）",
+ "layers": [
+  {
+   "layer": "cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0",
+   "url": "https://gisservices.its.ny.gov/arcgis/rest/services/SAM_Address_Points_Symbolized/MapServer/0",
+   "ledger_declared": 6585376,
+   "ledger_rows": null,
+   "tag": null,
+   "parts_assets": 0,
+   "shard": 7,
+   "shard_conclusion": "failure",
+   "ledger_reason": "上游当前 returnCount=6,585,376，本层 0 行 → 真缺口，必须重采",
+   "probe": {
+    "http": 200,
+    "count": 6585376,
+    "raw": "{\"count\":6585376}",
+    "elapsed_ms": 25898
+   }
+  },
+  {
+   "layer": "s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0",
+   "url": "https://gisservices.its.ny.gov/arcgis/rest/services/SAM_Address_Points/MapServer/0",
+   "ledger_declared": 6585376,
+   "ledger_rows": null,
+   "tag": null,
+   "parts_assets": 0,
+   "shard": 9,
+   "shard_conclusion": "cancelled",
+   "ledger_reason": "上游当前 returnCount=6,585,376，本层 0 行 → 真缺口，必须重采",
+   "probe": {
+    "http": 200,
+    "count": 6585376,
+    "raw": "{\"count\":6585376}",
+    "elapsed_ms": 25482
+   }
+  },
+  {
+   "layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1",
+   "url": "https://services.nconemap.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0",
+   "ledger_declared": 6297169,
+   "ledger_rows": null,
+   "tag": null,
+   "parts_assets": 0,
+   "shard": 2,
+   "shard_conclusion": "cancelled",
+   "ledger_reason": "上游当前 returnCount=6,297,169，本层 0 行 → 真缺口，必须重采",
+   "probe": {
+    "http": 200,
+    "count": 6297169,
+    "raw": "{\"count\":6297169}",
+    "elapsed_ms": 1301
+   }
+  },
+  {
+   "layer": "vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0",
+   "url": "https://arcgisserver.digital.mass.gov/arcgisserver/rest/services/AGOL/AddressPts_for_NG911AddressFinder/FeatureServer/0",
+   "ledger_declared": 3618012,
+   "ledger_rows": null,
+   "tag": null,
+   "parts_assets": 0,
+   "shard": 1,
+   "shard_conclusion": "cancelled",
+   "ledger_reason": "上游当前 returnCount=3,618,012，本层 0 行 → 真缺口，必须重采",
+   "probe": {
+    "http": 200,
+    "count": 3618012,
+    "raw": "{\"count\":3618012}",
+    "elapsed_ms": 1092
+   }
+  },
+  {
+   "layer": "ervices_us_mn_state_mngeo_loc_addresses_open_FeatureServer_0@未定位-1",
+   "url": "https://enterprise.gisdata.mn.gov/aghost/rest/services/us_mn_state_mngeo/loc_addresses_open/FeatureServer/0",
+   "ledger_declared": 2220021,
+   "ledger_rows": null,
+   "tag": null,
+   "parts_assets": 0,
+   "shard": 1,
+   "shard_conclusion": "cancelled",
+   "ledger_reason": "上游当前 returnCount=2,220,021，本层 0 行 → 真缺口，必须重采",
+   "probe": {
+    "http": 200,
+    "count": 2220021,
+    "raw": "{\"count\":2220021}",
+    "elapsed_ms": 1985
+   }
+  },
+  {
+   "layer": "_rgv911_org_server_rest_services_Public_Map_MIL1_MapServer_1",
+   "url": "https://gis.rgv911.org/server/rest/services/Public_Map_MIL1/MapServer/1",
+   "ledger_declared": 303175,
+   "ledger_rows": null,
+   "tag": null,
+   "parts_assets": 0,
+   "shard": 10,
+   "shard_conclusion": "cancelled",
+   "ledger_reason": "上游当前 returnCount=303,175，本层 0 行 → 真缺口，必须重采",
+   "probe": {
+    "http": 200,
+    "count": 303175,
+    "raw": "{\"count\":303175}",
+    "elapsed_ms": 797
+   }
+  },
+  {
+   "layer": "_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0",
+   "url": "https://gis.rgv911.org/server/rest/services/RGV911_OPS_MIL1/MapServer/0",
+   "ledger_declared": 303175,
+   "ledger_rows": null,
+   "tag": null,
+   "parts_assets": 0,
+   "shard": 2,
+   "shard_conclusion": "cancelled",
+   "ledger_reason": "上游当前 returnCount=303,175，本层 0 行 → 真缺口，必须重采",
+   "probe": {
+    "http": 200,
+    "count": 303175,
+    "raw": "{\"count\":303175}",
+    "elapsed_ms": 804
+   }
+  }
+ ]
+}
