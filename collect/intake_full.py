@@ -605,6 +605,114 @@ def stage_pages(outdir: str, dbpath: str, repo_dir: str) -> dict:
     return res
 
 
+DOC_TPL = """# 实体台账 + 页面基线（一次盘点 · {date}）
+
+> 数据来源：三仓已发布 Release 资产（只读），逐层流式处理，**不落中间大文件**。
+> 口径全部来自 `collect/intake_full.py` 的实现；本文数字由 `--doc` 从
+> `dist/intake-full/entity-baseline.json` 直接渲染，**不许手抄**。
+
+## 一、四表与对账
+
+| 项 | 行数 |
+|---|---|
+| 层数 | {layers_n}（{status_line}） |
+| 读入行数 | {read} |
+| `addr`（点层过五道门禁） | {addr} |
+| `aux_parcel`（宗地层，**绝不进 addr**） | {aux_parcel} |
+| `aux_street`（线层；本轮线层核定不采 → 0） | {aux_street} |
+| `aux_addr_nohouse`（有点无门牌） | {aux_nohouse} |
+| `reject`（四表都放不下） | {reject} |
+| 对账 `read = Σ四表 + reject` | {reconcile} |
+
+硬约束（测试卡死，不是靠跑完再查）：
+`addr` 行零缺 `house_number`/`street_name`；`addr_id` 是裸 40 位 sha1、
+`aux_key` 一律带 `p:`/`s:`/`n:` 前缀 → **两表主键结构上不可能相交**。
+
+## 二、三张实体台账（主键去重，不按源重复累加）
+
+| 台账 | 实体数 | 主键 |
+|---|---|---|
+| `entity_street` | {street_n} | `(state_abbr, zip5, street_norm)` |
+| `entity_zip` | {zip_n} | `zip5` |
+| `entity_city` | {city_n} | `(state_abbr, city_slug)` |
+
+`street_norm` 归一化**复用 field-map 同一套**（后缀/方向全称化 + 大写 + 压空格），
+没有第二套口径。
+
+### 字段非空率（决定页面能写到什么程度）
+
+| 层级 | 字段 | 非空率 |
+|---|---|---|
+{rate_table}
+
+## 三、页面草案（`pages.csv`）
+
+质量分公式（写死，不搞黑箱）：
+- street：`geo 30 + zip5 20 + city 15 + min(35, 35·log10(n_addr)/2)`
+- zip：`postal_city 40 + county_fips 20 + min(40, 40·log10(n_streets)/2)`
+- city：`zip_list 40 + min(30, 30·log10(n_streets)/2) + min(30, 30·log10(n_addr)/3)`
+
+分档：`live ≥ 80`（可立刻上线）/ `fill 50~80`（需补数据）/ `no_page < 50`（**不建页**）。
+
+| 层级 × 档 | 实体数 |
+|---|---|
+{band_table}
+
+入库 `pages.csv`：**{pages_in_repo} 行**（前 10 万，够验证）；本机全量 {pages_total} 行。
+sitemap 批次按质量降序：L3(zip) → L4(street) → L2(city)。
+
+## 四、耗时与资源（评估能否再跑增量）
+
+| 项 | 值 |
+|---|---|
+| 逐层处理耗时 | {wall_s}s（{concurrency} 并发） |
+| 吞吐 | {rows_per_s} 行/秒 |
+| 峰值内存 | {peak_rss_mb} MB |
+| 装载 + 聚合（SQLite） | {load_s}s + {aggregate_s}s |
+| 增量可行性 | 逐层台账 `status=ok` 即跳过 → 再跑一遍只补新增/失败层 |
+"""
+
+
+def render_doc(res: dict, progress: dict, path: str) -> str:
+    rates, bands = res["rates"], res["bands"]
+
+    def line(level, key, label=""):
+        v = rates.get(level, {}).get(key)
+        return "| %s | `%s`%s | %s |" % (level, key, label,
+                                         "-" if v is None else "%.2f%%" % v)
+
+    rate_table = "\n".join([
+        line("street", "street_name"), line("street", "zip5"), line("street", "geo"),
+        line("street", "county(由 zip 带出)"), line("street", "house_range"),
+        line("zip", "postal_city"), line("zip", "county_fips"),
+        line("city", "zip_list")])
+    band_table = "\n".join("| %s | %d |" % (k, v) for k, v in sorted(bands.items()))
+    st = progress.get("layers_by_status") or {}
+    body = DOC_TPL.format(
+        date=now()[:10],
+        layers_n=progress.get("layers_n", 0),
+        status_line="、".join("%s %d" % (k, v) for k, v in sorted(st.items())) or "-",
+        read=f"{progress.get('read', 0):,}",
+        addr=f"{(progress.get('tables') or {}).get('addr', 0):,}",
+        aux_parcel=f"{(progress.get('tables') or {}).get('aux_parcel', 0):,}",
+        aux_street=f"{(progress.get('tables') or {}).get('aux_street', 0):,}",
+        aux_nohouse=f"{(progress.get('tables') or {}).get('aux_addr_nohouse', 0):,}",
+        reject=f"{(progress.get('tables') or {}).get('reject', 0):,}",
+        reconcile="✅ 闭合" if progress.get("reconcile_ok") else "❌ 有层不闭合（见 progress.json）",
+        street_n=f"{res['counts']['street']:,}",
+        zip_n=f"{res['counts']['zip']:,}",
+        city_n=f"{res['counts']['city']:,}",
+        rate_table=rate_table, band_table=band_table,
+        pages_in_repo=f"{res['pages_in_repo']:,}", pages_total=f"{res['pages_total']:,}",
+        wall_s=progress.get("wall_s", "-"), concurrency=progress.get("concurrency", "-"),
+        rows_per_s=progress.get("rows_per_s", "-"),
+        peak_rss_mb=progress.get("peak_rss_mb", "-"),
+        load_s=res.get("load_s", "-"), aggregate_s=res.get("aggregate_s", "-"))
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    open(path, "w", encoding="utf-8").write(body)
+    return body
+
+
 # ---------------------------------------------------------------- 入口
 def all_layers() -> list[str]:
     return list(fmap()["layers"].keys())
@@ -619,6 +727,7 @@ def main() -> int:
     ap.add_argument("--layers", type=int, default=0, help="只跑前 N 层（灰度用）")
     ap.add_argument("--limit", type=int, default=0, help="每层只读前 N 行（灰度用）")
     ap.add_argument("--refresh-index", action="store_true", help="重建 release 快照")
+    ap.add_argument("--doc", default=os.path.join(ROOT, "docs", "ENTITY-BASELINE-2026-10-30.md"))
     a = ap.parse_args()
     global SNAPSHOT_F
     SNAPSHOT_F = os.path.join(a.out, "release-index.json")
@@ -633,7 +742,14 @@ def main() -> int:
     if a.stage in ("build", "all"):
         stage_build(a.out, db, limit_layers=a.layers)
     if a.stage in ("pages", "all"):
-        stage_pages(a.out, db, ROOT)
+        res = stage_pages(a.out, db, ROOT)
+        prog = {}
+        pf = os.path.join(a.out, "intake-progress.json")
+        if os.path.exists(pf):
+            prog = json.load(open(pf, encoding="utf-8"))
+        if a.doc and prog:
+            render_doc(res, prog, a.doc)
+            print("文档已渲染：%s" % a.doc)
     return 0
 
 
