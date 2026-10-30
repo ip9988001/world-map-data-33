@@ -18,6 +18,15 @@ on:
       unit_rows:    { description: "单元行数（0=按 steps.json）", default: "0" }
       max_shards:   { description: "最多跑几片（0=全部，灰度用）", default: "0" }
       chain:        { description: "1=本阶段全绿后自动接续下一阶段", default: "1" }
+      # ★ cancelled 片续跑入口：逗号分隔的层 id。这些层即使 done_layers 判「完成」也强制重跑。
+      #   为什么需要：cancelled 片里的层会留下「单元标完成、产物没上传」或「计划期口径差」
+      #   的半截状态，done_layers（只看 tag+checkpoint）看不见 → 不定点重跑就永久缺口。
+      force_layers: { description: "强制重跑的层 id（逗号分隔，cancelled 片续跑用）", default: "" }
+      # ★ 账本重建入口：只读 Release 资产，不采一行数据。
+      #   用途：某几片的账本因文件名不匹配而静默落空（已由 98bd461 修好，但那批 run
+      #   用自己 checkout 的 SHA，补不回来）→ 事后以资产为唯一真值重建账本 + 收官文档。
+      rebuild_ledger: { description: "1=只重建账本（从 Release 资产），不采数", default: "0" }
+      plan_run_id:    { description: "重建时从哪个 run 取 plan-<stage> 产物（空=本 run 里现算）", default: "" }
 
 permissions:
   contents: write
@@ -35,6 +44,7 @@ env:
 
 jobs:
   plan:
+    if: inputs.rebuild_ledger != '1'
     runs-on: ubuntu-latest
     timeout-minutes: 40
     outputs:
@@ -52,6 +62,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STAGE: ${{ inputs.stage }}
+          FORCE: ${{ inputs.force_layers }}
         run: |
           set -euo pipefail
           mkdir -p collect/ledger
@@ -63,6 +74,7 @@ jobs:
           SIZE="${{ inputs.size }}"; [ "$SIZE" = "0" ] && SIZE="$DEF"
           python3 collect/run_step_${STAGE}.py --validate
           python3 collect/full_plan.py --stage "$STAGE" --size "$SIZE" \
+            ${FORCE:+--force-layers "$FORCE"} \
             --out "collect/ledger/${STAGE}_plan.json" | tee /tmp/plan.log
           N=$(python3 -c "import json;d=json.load(open('collect/ledger/${STAGE}_plan.json'));print(d['shards_n'])")
           MAX="${{ inputs.max_shards }}"
@@ -82,7 +94,7 @@ jobs:
 
   shard:
     needs: plan
-    if: needs.plan.outputs.shards != '0'
+    if: inputs.rebuild_ledger != '1' && needs.plan.outputs.shards != '0'
     runs-on: ubuntu-latest
     timeout-minutes: 350
     strategy:
@@ -103,6 +115,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PILOT_HEARTBEAT_PUSH: "1"
+          FORCE: ${{ inputs.force_layers }}
         run: |
           set -euo pipefail
           STAGE="${{ inputs.stage }}"
@@ -112,6 +125,7 @@ jobs:
           python3 collect/full_shard.py --stage "$STAGE" --shard ${{ matrix.shard }} \
             --plan "collect/ledger/${STAGE}_plan.json" \
             --workers "${{ inputs.workers }}" --unit-rows "${{ inputs.unit_rows }}" \
+            ${FORCE:+--force-layers "$FORCE"} \
             --tag-prefix "$TAGPFX"
       - name: 提交本片账本（只动自己那一个文件，用重置到 main 的方式避免并发冲突）
         if: always()
@@ -150,7 +164,7 @@ jobs:
 
   merge:
     needs: [plan, shard]
-    if: always()
+    if: always() && inputs.rebuild_ledger != '1' && needs.plan.result == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -235,3 +249,85 @@ jobs:
           echo "✅ $STAGE 全绿 → 自动接续 $NEXT"
           gh workflow run collect-full.yml --repo "$GITHUB_REPOSITORY" --ref main \
             -f stage="$NEXT" -f chain=1 -f workers=4
+
+  # ===================================================================
+  # 账本重建（手动入口：rebuild_ledger=1）。
+  # 不采数据，只读 Release 资产：tag → checkpoint（unit_rows/unit_rows_seen/
+  # unit_uploaded/done_units/unit_errors）→ -uNNNNN.tar.gz 是否真存在。
+  # 任一环对不上判 failed，不估算。输出 collect/ledger/step<NN>b_rebuilt.json
+  # + docs/STEP<NN>-FULL-<date>.md，脚本幂等（--check 可验证字节一致）。
+  # ===================================================================
+  rebuild:
+    if: inputs.rebuild_ledger == '1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: 取计划清单（plan-<stage> 产物 / 现算兜底）
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STAGE: ${{ inputs.stage }}
+          RUN_ID: ${{ inputs.plan_run_id }}
+        run: |
+          set -euo pipefail
+          mkdir -p collect/ledger
+          if [ -n "${RUN_ID}" ] && gh run download "${RUN_ID}" --repo "$GITHUB_REPOSITORY" \
+               -n "plan-${STAGE}" -D collect/ledger 2>/dev/null; then
+            echo "✅ 计划来自 run ${RUN_ID}"
+          else
+            echo "::warning::没拿到 plan-${STAGE} 产物，按当前 steps.json 现算（层集合可能与原 run 不同）"
+            python3 collect/full_plan.py --stage "$STAGE" --size 0 \
+              --out "collect/ledger/${STAGE}_plan.json" || true
+          fi
+          ls -la collect/ledger/*_plan.json || true
+      - name: 重建账本
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STAGE: ${{ inputs.stage }}
+          RUN_ID: ${{ inputs.plan_run_id }}
+        run: |
+          set -euo pipefail
+          # RUN_ID = 那次采采的 run，用来把「片 → 结论」标进账本（cancelled 片必须留痕）
+          RID=""; [ -n "${RUN_ID}" ] && RID="--run-id ${RUN_ID}"
+          python3 collect/ledger_rebuild.py --stage "$STAGE" \
+            --plan "collect/ledger/${STAGE}_plan.json" $RID \
+            --out "collect/ledger/step${STAGE}_rebuilt.json" --jobs 8
+          # 幂等自证：同状态再跑一次必须 IDENTICAL（scan_meta 已排除）
+          python3 collect/ledger_rebuild.py --stage "$STAGE" \
+            --plan "collect/ledger/${STAGE}_plan.json" $RID \
+            --out "collect/ledger/step${STAGE}_rebuilt.json" --check
+          { echo "### ${STAGE} 账本重建"; echo '```'
+            python3 -c "import json;d=json.load(open('collect/ledger/step${STAGE}_rebuilt.json'));print({k:d[k] for k in ('layers_n','ok','empty','partial','failed','declared','rows','gap','gap_pct','assets_total','bytes_total')})"
+            echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - name: 提交账本 + 文档
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STAGE: ${{ inputs.stage }}
+        run: |
+          set -euo pipefail
+          git config user.name  "collect-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add -f "collect/ledger/step${STAGE}_rebuilt.json"
+          for f in docs/STEP*-FULL-*.md; do [ -f "$f" ] && git add -f "$f"; done
+          if git diff --cached --quiet; then echo "无变化（幂等：账本已是最新）"; exit 0; fi
+          git commit -q -m "collect: ${STAGE} 账本从 Release 资产重建（含 >1% 差额逐层说明）"
+          for i in $(seq 1 6); do
+            git fetch -q origin main || true
+            if git rebase -q origin/main 2>/dev/null && git push -q origin HEAD:main; then
+              echo "✅ 已推送 $(git rev-parse --short HEAD)"; exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            sleep $((i*3 + RANDOM % 4))
+          done
+          echo "::error::账本推送失败"; exit 1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rebuilt-${{ inputs.stage }}
+          path: |
+            collect/ledger/step${{ inputs.stage }}_rebuilt.json
+            docs/STEP*-FULL-*.md
+          retention-days: 90

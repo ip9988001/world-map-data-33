@@ -160,6 +160,24 @@ def parcel_done():
     return {k: v for k, v in parcel_audit_layers().items() if v.get("complete")}
 
 
+def _gh_page(path, tries=3):
+    """翻页专用：拿不到就重试，重试完还拿不到就抛。
+
+    ★ 2026-10-30 实测事故：`_gh` 拿不到返回 None，`release_done` 旧写法直接 break，
+      于是「扫到第 3 页失败」= 只认出 185 个 tag，剩下的 100+ 个已采层全是「没采过」→
+      续跑会把它们全部重采（浪费上百小时带宽）。扫不全必须炸，不能装。
+    """
+    for i in range(tries):
+        r = _gh(path)
+        if r is not None:
+            return r
+        if os.environ.get("WC_OFFLINE"):      # 显式离线（单测 / 本机离线）：不当失败、也不重试
+            return []
+        time.sleep(2 * (i + 1))
+    raise RuntimeError("gh api %s 连试 %d 次都失败（拒绝把「扫不全」当成「没采过」）"
+                       % (path, tries))
+
+
 def release_done(step="10", use_cache=True):
     """扫 Releases，返回 {layer: {"tag":..., "complete": bool, "how":...}}
 
@@ -184,7 +202,7 @@ def release_done(step="10", use_cache=True):
 
     seen, page = {}, 1
     while page <= 40:
-        batch = _gh("repos/%s/releases?per_page=100&page=%d" % (REPO, page))
+        batch = _gh_page("repos/%s/releases?per_page=100&page=%d" % (REPO, page))
         if not batch:
             break
         for r in batch:
@@ -208,6 +226,7 @@ def release_done(step="10", use_cache=True):
                 c = json.load(open(cache_f, encoding="utf-8")) or {}
             c.setdefault("data", {})[key] = seen
             c["at"] = time.time()
+            c.setdefault("pages", {})[key] = page
             json.dump(c, open(cache_f, "w", encoding="utf-8"), ensure_ascii=False)
         except Exception:
             pass

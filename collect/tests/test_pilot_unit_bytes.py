@@ -174,5 +174,70 @@ class NonParcel(unittest.TestCase):
             pilot.RINGS_SKIP = orig
 
 
+class ResumeTodo(unittest.TestCase):
+    """续跑口径：done_units 不等于「产物已落地」。
+
+    2026-10-30 实测：NAD 全国层 64 单元全标完成，6 个 -uNNNNN.tar.gz 根本没上传
+    （unit_uploaded=false）。新 runner 本地文件不在 → 补传必失败，若不重采，
+    这 6 个单元的行就永久缺口（账本只能永远显示 failed）。
+    """
+
+    def test_done_but_not_uploaded_must_rerun(self):
+        units = [(0, 10), (11, 20), (21, 30)]
+        ck = {"done_units": [0, 1, 2],
+              "unit_uploaded": {"0": True, "1": False, "2": True}}
+        done, redone = pilot.resume_todo(units, ck)
+        self.assertEqual(done, [0, 2])
+        self.assertEqual(redone, [1], "产物没上传的单元必须重采，不许拿 done_units 当挡箭牌")
+
+    def test_all_uploaded_keeps_done(self):
+        units = [(0, 10), (11, 20)]
+        ck = {"done_units": [0, 1], "unit_uploaded": {"0": True, "1": True}}
+        self.assertEqual(pilot.resume_todo(units, ck), ([0, 1], []))
+
+    def test_missing_uploaded_key_is_kept_but_ledger_is_the_authority(self):
+        """老 checkpoint 整段没有 unit_uploaded：不据此判「没传」（否则几十个已完成单元全重采）。
+        真缺产物的由账本按资产反查抓到，再 --force-layers 定点重跑。"""
+        units = [(0, 10)]
+        self.assertEqual(pilot.resume_todo(units, {"done_units": [0]}), ([0], []))
+
+class PlanSig(unittest.TestCase):
+    """检查点签名必须**只**由切分决定，且对历史 checkpoint 向后兼容。
+
+    2026-10-30 踩过：把整份 plan 字典丟进 sha1（含 bytes_per_row_est /
+    unit_bytes_cap / rings_skipped 这些展示字段），一加字段签名就变 →
+    续跑静默变成「从头重采」。
+    """
+
+    def test_old_format_hash_matches(self):
+        import hashlib, json
+        units = [[0, 99], [100, 199]]
+        old = {"kind": "range", "units": units}
+        legacy = hashlib.sha1(json.dumps(old, sort_keys=True).encode()).hexdigest()[:16]
+        self.assertEqual(pilot.plan_sig(old), legacy)
+
+    def test_cosmetic_fields_do_not_change_sig(self):
+        units = [[0, 99]]
+        a = {"kind": "range", "units": units}
+        b = dict(a, bytes_per_row_est=369.5, unit_bytes_cap=1500000000,
+                 unit_rows_cap=1000000, vertices_mean_est=12.0, rings_skipped="non_parcel")
+        self.assertEqual(pilot.plan_sig(a), pilot.plan_sig(b))
+
+    def test_split_change_does_change_sig(self):
+        self.assertNotEqual(pilot.plan_sig({"kind": "range", "units": [[0, 99]]}),
+                            pilot.plan_sig({"kind": "range", "units": [[0, 49], [50, 99]]}))
+
+    def test_ids_kind_keeps_batch_in_sig(self):
+        a = {"kind": "ids", "n_ids": 10, "batch": 800, "units": [["1", "2"]]}
+        b = dict(a, batch=400)
+        self.assertNotEqual(pilot.plan_sig(a), pilot.plan_sig(b))
+
+    def test_stale_unit_index_beyond_plan_is_dropped(self):
+        """重切片后 plan 变短，旧 done_units 里多出的下标不能把 todo 弄成空。"""
+        units = [(0, 10)]
+        ck = {"done_units": [0, 5], "unit_uploaded": {"0": True, "5": False}}
+        self.assertEqual(pilot.resume_todo(units, ck), ([0], []))
+
+
 if __name__ == "__main__":
     unittest.main()

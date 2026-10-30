@@ -661,6 +661,49 @@ def plan_units(count, mn, mx, bytes_per_row=0, unit_rows=None, unit_bytes=None,
     return None, cap
 
 
+def plan_sig(plan):
+    """检查点签名：**只认决定切分的字段**（kind + units [+ ids 的批参数]）。
+
+    ★ 2026-10-30 踩过：把整个 plan 字典丟进 sha1，只要多加一个纯展示字段
+      （bytes_per_row_est / unit_bytes_cap / rings_skipped …）签名就全变 →
+      已有 checkpoint 全部认不得 → 续跑静默变成「从头重采」，97.9M 行的 NAD 层
+      要重拉一遍。切分只由 kind+units 决定，签名就只该看这两个。
+      旧 format（plan 里只有 kind+units）算出来的 sha1 与新规则完全一致，
+      所以这个函数对历史 checkpoint 是向后兼容的。
+    """
+    core = {"kind": plan.get("kind"), "units": plan.get("units")}
+    if plan.get("kind") == "ids":
+        core["n_ids"] = plan.get("n_ids")
+        core["batch"] = plan.get("batch")
+    return hashlib.sha1(json.dumps(core, sort_keys=True).encode()).hexdigest()[:16]
+
+
+def resume_todo(units, ck):
+    """续跑该跑哪些单元：返回 (已真完成, 必须重采)。
+
+    ★ done_units 只代表「这单元跑到了末尾」，**不代表产物进了 Release**。
+      2026-10-30 实测：NAD 全国层 64 单元全标完成，6 个 -uNNNNN.tar.gz 根本没上传
+      （unit_uploaded=false）。新 runner 上本地文件已不在，补传不可能成功 ——
+      若继续按 done_units 跳过，这 6 个单元的行就永久缺口（账本还会显示 ok？不，
+      账本从资产反推会显示 failed，但永远补不上）。所以：产物没上传的单元一律重采。
+    """
+    done = {int(x) for x in (ck.get("done_units") or [])}
+    up = {}
+    for k, v in (ck.get("unit_uploaded") or {}).items():
+        try:
+            up[int(k)] = bool(v)
+        except (TypeError, ValueError):
+            continue
+    n_units = len(units or [])
+    # 重切片后 plan 变短 → 旧 done_units 里越界的下标一律丢掉，别让它们混进计数
+    done = {i for i in done if 0 <= i < n_units}
+    # 老 checkpoint 可能整段没有 unit_uploaded 字段：**不据此判定「没传」**
+    # （否则一次续跑会把几十个已完成单元全部重采）；真缺产物的由账本按资产反查抓到，
+    # 再用 full_shard --force-layers 定点重跑 —— 两条路各管一段，不互相假装。
+    redone = {i for i in done if up.get(i) is False}
+    return sorted(done - redone), sorted(redone)
+
+
 def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock, ck):
     """一个 OID 区间单元。返回 (rows, files, err)。"""
     conds = []
@@ -869,7 +912,7 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False):
     if limit:
         # --limit 是试采用：只跑一个单元、单线程、忽略既有检查点，免得 5 个单元各采 limit 行
         units, workers, fresh = units[:1], 1, True
-    plan_hash = hashlib.sha1(json.dumps(plan, sort_keys=True).encode()).hexdigest()[:16]
+    plan_hash = plan_sig(plan)
     ck = None if fresh else _load_ckpt(plan_hash)
     if ck is None and not fresh:
         ck = _fetch_ckpt_asset(plan_hash, log)
@@ -886,6 +929,11 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False):
                     ck.setdefault("unit_uploaded", {})[str(k)] = True
                     _purge(paths)
                     _save_ckpt(ck)
+        # 补传不成的（新 runner 上文件本来就不在）→ 重采，不拿 done_units 当挡箭牌
+        done, redone = resume_todo(units, ck)
+        if redone:
+            log("  ⚠ 检查点里 %d 个单元标了完成但产物没上传，本轮重采：%s"
+                % (len(redone), ",".join(str(i) for i in redone[:8])))
     else:
         ck = {"ver": CKPT_VER, "url": CUR.get("url"), "plan_hash": plan_hash,
               "unit_rows": {}, "unit_files": {}, "unit_uploaded": {},

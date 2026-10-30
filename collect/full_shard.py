@@ -21,6 +21,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -98,6 +99,8 @@ def main() -> int:
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--unit-rows", type=int, default=0)
     ap.add_argument("--tag-prefix", default="", help="Release tag 前缀，如 collect-step04-")
+    ap.add_argument("--force-layers", default="",
+                    help="逗号分隔的层 id：即使已判完成也强制重跑（补 cancelled 片的半截层）")
     a = ap.parse_args()
     stage = a.stage
     name = STAGE_NAMES.get(stage)
@@ -122,16 +125,40 @@ def main() -> int:
         done = set()
         print("⚠️ done_layers 取不到（%s），本片不做 skipped_done 判定" % str(e)[:100], flush=True)
 
+    # ★ 强制重跑名单：done_layers 只看 tag+checkpoint，看不见「单元标完成但产物没上传」
+    #   和「计划期口径差」。cancelled 片里就有一大批这种半截层 —— 不定点重跑就永久钉死。
+    #   同时记下「上轮已有几个单元包」，用于在账本里标「跨轮」（不假装一轮跑完）。
+    forced = {x.strip() for x in a.force_layers.split(",") if x.strip()}
+    prior = {}
+    if forced:
+        try:
+            from worker_core import release_done      # noqa: E402
+            prior = dict(release_done(base))
+        except Exception as e:  # noqa: BLE001
+            print("⚠️ release_done 取不到（%s），跨轮标注退化为无" % str(e)[:100], flush=True)
+    forced_here = [lid for lid in layers if lid in forced]
+    if forced_here:
+        print("[%s] 本片含 %d 层强制重跑：%s"
+              % (name, len(forced_here), ", ".join(forced_here[:3])), flush=True)
+
     recs = []
     for i, lid in enumerate(layers, 1):
-        if lid in done:
+        if lid in done and lid not in forced:
             recs.append({"layer": lid, "status": "skipped_done", "rows": None,
                          "declared": None, "reason": "已采（release tag / 本机 audit 判定完成）",
                          "at": now()})
             print("[%s] (%d/%d) ⏭ %s 已采" % (name, i, len(layers), lid), flush=True)
             continue
         print("[%s] (%d/%d) %s" % (name, i, len(layers), lid), flush=True)
-        recs.append(run_layer(base, lid, a.workers, unit_rows, a.tag_prefix))
+        rec = run_layer(base, lid, a.workers, unit_rows, a.tag_prefix)
+        if lid in forced:
+            pu = sum(1 for n in ((prior.get(lid) or {}).get("assets") or [])
+                     if re.search(r"-u\d{5}\.tar\.gz$", n or ""))
+            rec.update({"forced": True, "prior_units": pu, "cross_round": bool(pu)})
+            if pu:
+                note = "跨轮：上轮已有 %d 个单元包，本轮只补缺口" % pu
+                rec["reason"] = (rec.get("reason") + "；" + note) if rec.get("reason") else note
+        recs.append(rec)
 
     ok = [r for r in recs if r["status"] == "ok"]
     empty = [r for r in recs if r["status"] == "empty"]
@@ -141,6 +168,7 @@ def main() -> int:
     led = {"schema": "collect-ledger/v1", "stage": name, "step": stage, "shard": a.shard,
            "shards_total": len(shards), "size": plan.get("size"),
            "unit_rows": unit_rows, "at": now(),
+           "forced_n": len(forced_here),
            "layers_n": len(recs), "ok": len(ok), "empty": len(empty),
            "partial": len(part), "failed": len(fail), "skipped_done": len(skip),
            "rows": sum((r.get("rows") or 0) for r in recs),
