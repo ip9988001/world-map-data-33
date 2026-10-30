@@ -591,7 +591,7 @@ def render_doc(agg: dict) -> str:
                             r["status"], r.get("note") or ""))
             L += [""]
 
-    L += ["## 三、差额 > 1%% 的层（必须逐条说明）", ""]
+    L += ["## 三、差额 > 1% 的层（必须逐条说明）", ""]
     if big:
         L += ["| # | 层 | 声明 | 实采 | 缺 | 缺口% | 原因 |", "|---|---|---|---|---|---|---|"]
         for i, r in enumerate(big, 1):
@@ -602,11 +602,19 @@ def render_doc(agg: dict) -> str:
         L += ["", "**为什么会有缺口（按原因归类）**："]
         kinds = {}
         for r in big:
-            k = ("上游短供（checkpoint 有 unit_short_ack）" if any("短供" in w for w in r["warn"])
-                 else "其他 / 待查" if not r["warn"] else "见备注")
+            rs = r.get("reason") or ""
+            if "计划期口径差" in rs:
+                k = "① 计划期口径差（本层 checkpoint 计划行已跑满，是清单声明值偏大：口径/上游缩水）"
+            elif "短供" in rs or any("短供" in w for w in r["warn"]):
+                k = "② 上游短供（checkpoint 有 unit_short_ack，上游自己少了行）"
+            elif "缺口" in rs:
+                k = "③ 单元没跑完（本层自己的单元还没做完，续跑能补）"
+            else:
+                k = "④ 其他（逐条原因见上表）"
             kinds.setdefault(k, []).append(r["layer"])
-        for k, v in kinds.items():
-            L.append("- %s：%d 层" % (k, len(v)))
+        for k in sorted(kinds):
+            L.append("- %s：%d 层 —— %s" % (k, len(kinds[k]),
+                                            "、".join("`%s`" % x[:36] for x in kinds[k][:4])))
     else:
         L.append("**无。** 所有层实采与声明差额 ≤ 1%。")
     L += [""]
