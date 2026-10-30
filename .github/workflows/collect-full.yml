@@ -142,7 +142,10 @@ jobs:
           cp "$F" /tmp/led.json
           for i in $(seq 1 6); do
             git fetch -q origin main || true
-            git checkout -q -B main origin/main
+            # ★ 必须 -f：采采过程会在工作区留下未提交的产物（reports/*.json 等），
+            #   裸 checkout 直接被 Git 拒掉 → 整片红（2026-10-30 实测 shard 4/8 就是这样红的，
+            #   而账本本身早已正确生成、artifact 也传了）
+            git checkout -qf -B main origin/main
             mkdir -p collect/ledger
             cp /tmp/led.json "$F"
             git add -f "$F"
