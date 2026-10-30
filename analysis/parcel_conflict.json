@@ -1,0 +1,841 @@
+[
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "taxpayer_address",
+   "taxpayer_1",
+   "taxpayer_2",
+   "taxpayer_city"
+  ],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 800,
+  "layer_id": "6zC_arcgis_rest_services_parcel_file_current_FeatureServer_0",
+  "tag": "collect-step10-6zC_arcgis_rest_services_parcel_file_current_FeatureServer_0"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "Developer_Owner"
+  ],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 582,
+  "layer_id": "7ABWQBGTG_arcgis_rest_services_Hutto_Parcels_FeatureServer_0",
+  "tag": "collect-step10-7ABWQBGTG_arcgis_rest_services_Hutto_Parcels_FeatureServer_0"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "OWNER"
+  ],
+  "both_layers": false,
+  "rows": 78,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 78,
+  "layer_id": "7nt9ZtPWOn_arcgis_rest_services_RangeBuffers_FeatureServer_6",
+  "tag": "collect-step10-7nt9ZtPWOn_arcgis_rest_services_RangeBuffers_FeatureServer_6"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "Owner_Occupied"
+  ],
+  "both_layers": false,
+  "rows": 358,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 358,
+  "layer_id": "90D5q2_arcgis_rest_services_African_American_FeatureServer_0",
+  "tag": "collect-step10-90D5q2_arcgis_rest_services_African_American_FeatureServer_0"
+ },
+ {
+  "situs_fields": [
+   "site_address"
+  ],
+  "mail_fields": [],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 800,
+  "rows_mail_only": 0,
+  "layer_id": "9ZtPWOn_arcgis_rest_services_ValueComparison_FeatureServer_0",
+  "tag": "collect-step10-9ZtPWOn_arcgis_rest_services_ValueComparison_FeatureServer_0"
+ },
+ {
+  "situs_fields": [
+   "site_address"
+  ],
+  "mail_fields": [
+   "owner_name"
+  ],
+  "both_layers": true,
+  "rows": 800,
+  "rows_both": 637,
+  "rows_conflict": 637,
+  "rows_situs_only": 11,
+  "rows_mail_only": 89,
+  "layer_id": "AS7v_arcgis_rest_services_County_Tax_Parcels_FeatureServer_0",
+  "tag": "collect-step10-AS7v_arcgis_rest_services_County_Tax_Parcels_FeatureServer_0"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "POCEMAIL"
+  ],
+  "both_layers": false,
+  "rows": 10,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 0,
+  "layer_id": "BcwN_arcgis_rest_services_DFR_PIP_ASSET_VIEW_FeatureServer_8",
+  "tag": "collect-step10-BcwN_arcgis_rest_services_DFR_PIP_ASSET_VIEW_FeatureServer_8"
+ },
+ {
+  "situs_fields": [
+   "Site_Address"
+  ],
+  "mail_fields": [],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 800,
+  "rows_mail_only": 0,
+  "layer_id": "Buildable_Lands_Inventory__Update_June_2022__FeatureServer_0",
+  "tag": "collect-step10-Buildable_Lands_Inventory__Update_June_2022__FeatureServer_0"
+ },
+ {
+  "situs_fields": [
+   "Physical_Address"
+  ],
+  "mail_fields": [
+   "MAILADDRESS1",
+   "MAILADDRESS2",
+   "EMAILADDRESS",
+   "PRIMARYOWNERFLAG"
+  ],
+  "both_layers": true,
+  "rows": 800,
+  "rows_both": 722,
+  "rows_conflict": 722,
+  "rows_situs_only": 0,
+  "rows_mail_only": 70,
+  "layer_id": "Ef2Qb_arcgis_rest_services_CheyenneCO_Parcel_FeatureServer_0",
+  "tag": "collect-step10-Ef2Qb_arcgis_rest_services_CheyenneCO_Parcel_FeatureServer_0"
+ },
+ {
+  "situs_fields": [
+   "site_address"
+  ],
+  "mail_fields": [
+   "mailto_address1",
+   "mailto_address2",
+   "taxbill_addr1",
+   "taxbill_addr2"
+  ],
+  "both_layers": true,
+  "rows": 800,
+  "rows_both": 444,
+  "rows_conflict": 444,
+  "rows_situs_only": 0,
+  "rows_mail_only": 348,
+  "layer_id": "FMv8P_arcgis_rest_services_TaxParcels_REACH_FeatureServer_78",
+  "tag": "collect-step10-FMv8P_arcgis_rest_services_TaxParcels_REACH_FeatureServer_78"
+ },
+ {
+  "situs_fields": [
+   "site_address"
+  ],
+  "mail_fields": [
+   "taxbill_addr1",
+   "taxbill_addr2",
+   "taxbill_addr",
+   "owner1_address1"
+  ],
+  "both_layers": true,
+  "rows": 800,
+  "rows_both": 503,
+  "rows_conflict": 503,
+  "rows_situs_only": 0,
+  "rows_mail_only": 297,
+  "layer_id": "FnscPPlUa9DXXOk_arcgis_rest_services_Parcels_FeatureServer_0",
+  "tag": "collect-step10-FnscPPlUa9DXXOk_arcgis_rest_services_Parcels_FeatureServer_0"
+ },
+ {
+  "situs_fields": [
+   "SITE_ADDRESS"
+  ],
+  "mail_fields": [
+   "MAIL1",
+   "MAIL2",
+   "MAIL3",
+   "MAIL4"
+  ],
+  "both_layers": true,
+  "rows": 800,
+  "rows_both": 787,
+  "rows_conflict": 787,
+  "rows_situs_only": 3,
+  "rows_mail_only": 10,
+  "layer_id": "HQX_arcgis_rest_services_Parcels_for_Aerials_FeatureServer_0",
+  "tag": "collect-step10-HQX_arcgis_rest_services_Parcels_for_Aerials_FeatureServer_0"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 0,
+  "layer_id": "Hug9pbs2TYetbCha_arcgis_rest_services_Parcel_FeatureServer_8",
+  "tag": "collect-step10-Hug9pbs2TYetbCha_arcgis_rest_services_Parcel_FeatureServer_8"
+ },
+ {
+  "situs_fields": [
+   "Site_Address"
+  ],
+  "mail_fields": [
+   "Mailing_Address",
+   "Mailing_Address_Additional",
+   "Owner",
+   "City_State_Zip_Mailing"
+  ],
+  "both_layers": true,
+  "rows": 800,
+  "rows_both": 800,
+  "rows_conflict": 800,
+  "rows_situs_only": 0,
+  "rows_mail_only": 0,
+  "layer_id": "JZxuuX_arcgis_rest_services_New_Baden_GIS_FeatureServer_1151",
+  "tag": "collect-step10-JZxuuX_arcgis_rest_services_New_Baden_GIS_FeatureServer_1151"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "Owner"
+  ],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 800,
+  "layer_id": "Parcels_Within_500m_From_ParksandGreenspaces_FeatureServer_0",
+  "tag": "collect-step10-Parcels_Within_500m_From_ParksandGreenspaces_FeatureServer_0"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [],
+  "both_layers": false,
+  "rows": 109,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 0,
+  "layer_id": "R_Outdoor_BB_Courts_Points_Layer__10_Minutes_FeatureServer_0",
+  "tag": "collect-step10-R_Outdoor_BB_Courts_Points_Layer__10_Minutes_FeatureServer_0"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "Mail_Address_1",
+   "Mail_Address_2",
+   "Taxpayer_Name",
+   "Mail_City"
+  ],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 763,
+  "layer_id": "TrtUP3FpWpuez_arcgis_rest_services_Parcels_FeatureServer_112",
+  "tag": "collect-step10-TrtUP3FpWpuez_arcgis_rest_services_Parcels_FeatureServer_112"
+ },
+ {
+  "situs_fields": [
+   "Parcel_Address"
+  ],
+  "mail_fields": [
+   "Mailer_Address_Line_1",
+   "Mailer_Address_Line_2",
+   "Mailing_Address",
+   "Owner"
+  ],
+  "both_layers": true,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 723,
+  "layer_id": "_Antietam_Creek_Parcels_plus_mailer_20260714_FeatureServer_0",
+  "tag": "collect-step10-_Antietam_Creek_Parcels_plus_mailer_20260714_FeatureServer_0"
+ },
+ {
+  "situs_fields": [
+   "SITE_ADDRESS"
+  ],
+  "mail_fields": [
+   "OWNERNAME1",
+   "OWNERNAME2",
+   "OWNERMAILING"
+  ],
+  "both_layers": true,
+  "rows": 20,
+  "rows_both": 11,
+  "rows_conflict": 11,
+  "rows_situs_only": 0,
+  "rows_mail_only": 9,
+  "layer_id": "_arcgis_rest_services_Olanta_Zoning_Downtown_FeatureServer_0",
+  "tag": "collect-step10-_arcgis_rest_services_Olanta_Zoning_Downtown_FeatureServer_0"
+ },
+ {
+  "situs_fields": [
+   "SITEADDR",
+   "SITE_ADDR_CITY_ST",
+   "SITE_ADDR_ZIP",
+   "Site_Address"
+  ],
+  "mail_fields": [],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 755,
+  "rows_mail_only": 0,
+  "layer_id": "_rest_services_Parcels_for_Tree_Preservation_FeatureServer_0",
+  "tag": "collect-step10-_rest_services_Parcels_for_Tree_Preservation_FeatureServer_0"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "Owner"
+  ],
+  "both_layers": false,
+  "rows": 214,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 188,
+  "layer_id": "arcgis_rest_services_Solar_Approved_Projects_FeatureServer_0",
+  "tag": "collect-step10-arcgis_rest_services_Solar_Approved_Projects_FeatureServer_0"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "OWNER",
+   "OWNERNUM",
+   "OWNERDEN"
+  ],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 800,
+  "layer_id": "bBQScMtY_arcgis_rest_services_CC_PARCELS_SHP_FeatureServer_1",
+  "tag": "collect-step10-bBQScMtY_arcgis_rest_services_CC_PARCELS_SHP_FeatureServer_1"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "OWNER",
+   "OWNERNUM",
+   "OWNERDEN"
+  ],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 800,
+  "layer_id": "bBQScMtY_arcgis_rest_services_Street_Numbers_FeatureServer_0",
+  "tag": "collect-step10-bBQScMtY_arcgis_rest_services_Street_Numbers_FeatureServer_0"
+ },
+ {
+  "situs_fields": [
+   "site_address"
+  ],
+  "mail_fields": [
+   "contact_email"
+  ],
+  "both_layers": true,
+  "rows": 2,
+  "rows_both": 2,
+  "rows_conflict": 2,
+  "rows_situs_only": 0,
+  "rows_mail_only": 0,
+  "layer_id": "ces_service_f9805adcc10848acbbcd8fb0cf638b9c_FeatureServer_0",
+  "tag": "collect-step10-ces_service_f9805adcc10848acbbcd8fb0cf638b9c_FeatureServer_0"
+ },
+ {
+  "situs_fields": [
+   "site_address"
+  ],
+  "mail_fields": [],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 800,
+  "rows_mail_only": 0,
+  "layer_id": "cgis_rest_services_AGOL_Parcels_PacificTime_FeatureServer_17",
+  "tag": "collect-step10-cgis_rest_services_AGOL_Parcels_PacificTime_FeatureServer_17"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 0,
+  "layer_id": "cgis_rest_services_MyProperty_Parcel_Address_FeatureServer_0",
+  "tag": "collect-step10-cgis_rest_services_MyProperty_Parcel_Address_FeatureServer_0"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 0,
+  "layer_id": "es_WAEVCP_Public_Composite_Score_Parcel_View_FeatureServer_1",
+  "tag": "collect-step10-es_WAEVCP_Public_Composite_Score_Parcel_View_FeatureServer_1"
+ },
+ {
+  "situs_fields": [
+   "site_address"
+  ],
+  "mail_fields": [],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 800,
+  "rows_mail_only": 0,
+  "layer_id": "est_services_SpokaneParcelsTEST_CovenantJoin_FeatureServer_9",
+  "tag": "collect-step10-est_services_SpokaneParcelsTEST_CovenantJoin_FeatureServer_9"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "OwnerAddr1",
+   "OwnerAddr2",
+   "Owner"
+  ],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 800,
+  "layer_id": "fsFsB5_arcgis_rest_services_Tax_Parcels_2023_FeatureServer_0",
+  "tag": "collect-step10-fsFsB5_arcgis_rest_services_Tax_Parcels_2023_FeatureServer_0"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "OwnerAddr1",
+   "OwnerAddr2",
+   "Owner"
+  ],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 800,
+  "layer_id": "fsFsB5_arcgis_rest_services_Tax_Parcels_2024_FeatureServer_0",
+  "tag": "collect-step10-fsFsB5_arcgis_rest_services_Tax_Parcels_2024_FeatureServer_0"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "OwnerAddr1",
+   "OwnerAddr2",
+   "Owner"
+  ],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 800,
+  "layer_id": "fsFsB5_arcgis_rest_services_Tax_Parcels_2025_FeatureServer_0",
+  "tag": "collect-step10-fsFsB5_arcgis_rest_services_Tax_Parcels_2025_FeatureServer_0"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 0,
+  "layer_id": "g_server_rest_services_Hosted_Buildings_2024_FeatureServer_2",
+  "tag": "collect-step10-g_server_rest_services_Hosted_Buildings_2024_FeatureServer_2"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 0,
+  "layer_id": "gis_rest_services_KC_Parcels__Open_Data_View_FeatureServer_3",
+  "tag": "collect-step10-gis_rest_services_KC_Parcels__Open_Data_View_FeatureServer_3"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "Previous_Owner",
+   "Ownership"
+  ],
+  "both_layers": false,
+  "rows": 68,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 68,
+  "layer_id": "h_arcgis_rest_services_JSKT_Properties_2022_FeatureServer_44",
+  "tag": "collect-step10-h_arcgis_rest_services_JSKT_Properties_2022_FeatureServer_44"
+ },
+ {
+  "situs_fields": [
+   "Site_Address"
+  ],
+  "mail_fields": [],
+  "both_layers": false,
+  "rows": 24,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 14,
+  "rows_mail_only": 0,
+  "layer_id": "is_rest_services_Animal_Services_Center_Site_FeatureServer_0",
+  "tag": "collect-step10-is_rest_services_Animal_Services_Center_Site_FeatureServer_0"
+ },
+ {
+  "situs_fields": [
+   "site_address"
+  ],
+  "mail_fields": [
+   "owner_name"
+  ],
+  "both_layers": true,
+  "rows": 800,
+  "rows_both": 637,
+  "rows_conflict": 637,
+  "rows_situs_only": 11,
+  "rows_mail_only": 89,
+  "layer_id": "is_rest_services_County_Tax_Parcels_SmartGov_FeatureServer_0",
+  "tag": "collect-step10-is_rest_services_County_Tax_Parcels_SmartGov_FeatureServer_0"
+ },
+ {
+  "situs_fields": [
+   "SITE_ADDRESS"
+  ],
+  "mail_fields": [],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 794,
+  "rows_mail_only": 0,
+  "layer_id": "is_rest_services_Zoning_Initiation_Date_WFL1_FeatureServer_1",
+  "tag": "collect-step10-is_rest_services_Zoning_Initiation_Date_WFL1_FeatureServer_1"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "OwnerCategory"
+  ],
+  "both_layers": false,
+  "rows": 53,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 53,
+  "layer_id": "jRswoCb_arcgis_rest_services_BCP_Parcels_COA_FeatureServer_0",
+  "tag": "collect-step10-jRswoCb_arcgis_rest_services_BCP_Parcels_COA_FeatureServer_0"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 0,
+  "layer_id": "lopment_Capacity_by_Development_Site_Current_FeatureServer_0",
+  "tag": "collect-step10-lopment_Capacity_by_Development_Site_Current_FeatureServer_0"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "OwnerAddr1",
+   "OwnerAddr2",
+   "Owner"
+  ],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 787,
+  "layer_id": "m_AQDHTHDrZzfsFsB5_arcgis_rest_services_2022_FeatureServer_0",
+  "tag": "collect-step10-m_AQDHTHDrZzfsFsB5_arcgis_rest_services_2022_FeatureServer_0"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 0,
+  "layer_id": "ntymd_gov_arcgis_rest_services_GDX_buildings_FeatureServer_0",
+  "tag": "collect-step10-ntymd_gov_arcgis_rest_services_GDX_buildings_FeatureServer_0"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "mail_address2",
+   "last_ownership_transfer_date",
+   "owner",
+   "unmodified_owner"
+  ],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 791,
+  "layer_id": "ouCfPzTlPw_arcgis_rest_services_Demo_Parcels_FeatureServer_3",
+  "tag": "collect-step10-ouCfPzTlPw_arcgis_rest_services_Demo_Parcels_FeatureServer_3"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "AR_OWNER",
+   "OWNER_ABBR",
+   "OWNER_1",
+   "OWNER_2"
+  ],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 800,
+  "layer_id": "rcgis_rest_services_Property_Information_gdb_FeatureServer_0",
+  "tag": "collect-step10-rcgis_rest_services_Property_Information_gdb_FeatureServer_0"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 0,
+  "layer_id": "rest_services_Existing_Land_Use__10_category_FeatureServer_0",
+  "tag": "collect-step10-rest_services_Existing_Land_Use__10_category_FeatureServer_0"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "OWNER"
+  ],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 800,
+  "layer_id": "s_2026_SOE_GENERAL_USE_MAP___POST_CNG_WFL1_FeatureServer_118",
+  "tag": "collect-step10-s_2026_SOE_GENERAL_USE_MAP___POST_CNG_WFL1_FeatureServer_118"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 0,
+  "layer_id": "t_services_Planning_Land_Use_Development_DEV_FeatureServer_6",
+  "tag": "collect-step10-t_services_Planning_Land_Use_Development_DEV_FeatureServer_6"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "Owner_Name_1"
+  ],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 421,
+  "layer_id": "tmx0tv46_arcgis_rest_services_Parcel_SiouxND_FeatureServer_0",
+  "tag": "collect-step10-tmx0tv46_arcgis_rest_services_Parcel_SiouxND_FeatureServer_0"
+ },
+ {
+  "situs_fields": [
+   "SITE_ADDRESS"
+  ],
+  "mail_fields": [
+   "MAIL1",
+   "MAIL2",
+   "MAIL3",
+   "MAIL4"
+  ],
+  "both_layers": true,
+  "rows": 800,
+  "rows_both": 776,
+  "rows_conflict": 776,
+  "rows_situs_only": 3,
+  "rows_mail_only": 21,
+  "layer_id": "vuFjG9HQX_arcgis_rest_services_Parcel_Labels_FeatureServer_0",
+  "tag": "collect-step10-vuFjG9HQX_arcgis_rest_services_Parcel_Labels_FeatureServer_0"
+ },
+ {
+  "situs_fields": [
+   "SITE_ADDRESS"
+  ],
+  "mail_fields": [
+   "MAIL1",
+   "MAIL2",
+   "MAIL3",
+   "MAIL4"
+  ],
+  "both_layers": true,
+  "rows": 800,
+  "rows_both": 771,
+  "rows_conflict": 771,
+  "rows_situs_only": 2,
+  "rows_mail_only": 27,
+  "layer_id": "vuFjG9HQX_arcgis_rest_services_Parcel_Test_3_FeatureServer_0",
+  "tag": "collect-step10-vuFjG9HQX_arcgis_rest_services_Parcel_Test_3_FeatureServer_0"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "owner_name",
+   "owneradd1",
+   "owneradd2",
+   "owneradd3"
+  ],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 800,
+  "layer_id": "y3Y2xxSi397ufGR_arcgis_rest_services_Parcels_FeatureServer_0",
+  "tag": "collect-step10-y3Y2xxSi397ufGR_arcgis_rest_services_Parcels_FeatureServer_0"
+ },
+ {
+  "situs_fields": [
+   "site_address"
+  ],
+  "mail_fields": [],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 800,
+  "rows_mail_only": 0,
+  "layer_id": "zNll27nt9ZtPWOn_arcgis_rest_services_Parcels_FeatureServer_0",
+  "tag": "collect-step10-zNll27nt9ZtPWOn_arcgis_rest_services_Parcels_FeatureServer_0"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "OwnerAddr1",
+   "OwnerAddr2",
+   "Owner"
+  ],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 792,
+  "layer_id": "zfsFsB5_arcgis_rest_services_Tax_Parcels2017_FeatureServer_0",
+  "tag": "collect-step10-zfsFsB5_arcgis_rest_services_Tax_Parcels2017_FeatureServer_0"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "OwnerAddr1",
+   "OwnerAddr2",
+   "Owner"
+  ],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 797,
+  "layer_id": "zfsFsB5_arcgis_rest_services_Tax_Parcels2018_FeatureServer_0",
+  "tag": "collect-step10-zfsFsB5_arcgis_rest_services_Tax_Parcels2018_FeatureServer_0"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "OwnerAddr1",
+   "OwnerAddr2",
+   "Owner"
+  ],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 800,
+  "layer_id": "zfsFsB5_arcgis_rest_services_Tax_Parcels2020_FeatureServer_0",
+  "tag": "collect-step10-zfsFsB5_arcgis_rest_services_Tax_Parcels2020_FeatureServer_0"
+ },
+ {
+  "situs_fields": [],
+  "mail_fields": [
+   "OwnerAddr1",
+   "OwnerAddr2",
+   "Owner"
+  ],
+  "both_layers": false,
+  "rows": 800,
+  "rows_both": 0,
+  "rows_conflict": 0,
+  "rows_situs_only": 0,
+  "rows_mail_only": 792,
+  "layer_id": "zfsFsB5_arcgis_rest_services_Tax_Parcels2021_FeatureServer_0",
+  "tag": "collect-step10-zfsFsB5_arcgis_rest_services_Tax_Parcels2021_FeatureServer_0"
+ }
+]
