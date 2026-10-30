@@ -1,0 +1,17 @@
+{
+ "id": "UCXd1_arcgis_rest_services_USA_NAD_Addresses_FeatureServer_0",
+ "ts": "2026-10-30T21:25:34Z",
+ "api": "https://services6.arcgis.com/Do88DoK2xjTUCXd1/arcgis/rest/services/USA_NAD_Addresses/FeatureServer/0",
+ "count": 999177,
+ "base_rows": 0,
+ "rows": 836000,
+ "parts": 16,
+ "workers": {
+  "0": 836000
+ },
+ "strategy": "keyset",
+ "units": 1,
+ "done_units": 0,
+ "unit_rows_target": 1000000,
+ "done": false
+}
