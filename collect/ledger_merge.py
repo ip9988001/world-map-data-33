@@ -308,8 +308,13 @@ def merge_stage_ledger(stage: str, base: dict | None, run_led: dict, run_id: str
 
 
 def write_run_and_stage(stage: str, run_led: dict, run_id: str, base_dir: str,
-                        allow_stage_overwrite: bool = False, note: str = "") -> dict:
-    """写单 run 账本（总是）+ 合并阶段账本（受硬保护）。返回可打印的摘要。"""
+                        allow_stage_overwrite: bool = False, note: str = "",
+                        allow_shrink: dict | None = None) -> dict:
+    """写单 run 账本（总是）+ 合并阶段账本（受硬保护）。返回可打印的摘要。
+
+    ★ 额外的总闸门（`collect/ckpt_guard.py`）：**任何一层 rows 都不得变小**。
+      变小必须带 `regression_reason` + 证据路径（`allow_shrink={layer: evidence_path}`），
+      否则阶段账本不写、返回 `error`（调用方非零退出）——宁可不写，也不把少 33.4M 行的账盖上去。"""
     at = _now()
     os.makedirs(os.path.join(base_dir, "ledger"), exist_ok=True)
     run_led = dict(run_led, scope="single_run", run_id=str(run_id), at=at)
@@ -333,11 +338,32 @@ def write_run_and_stage(stage: str, run_led: dict, run_id: str, base_dir: str,
                        "阶段账本不动（要覆盖请显式 --allow-stage-overwrite）" % (run_layers, stage_layers))
         return res
     merged, stats = merge_stage_ledger(stage, base, run_led, run_id, at=at, note=note)
+    # ---- 总闸门（ckpt_guard）：合并后**逐层 rows 不许比阶段账本小** ----
+    #   判「合并结果 vs 旧账本」，不是「本轮 vs 旧账本」：
+    #     · 本轮 failed/0 行 = 没测到，不是测出 0 —— pick_better 已保留旧值，不算回退；
+    #     · 只有「更优状态但行数更少」（例如 partial 39.8M → ok 5M）才会真的把 rows 冲小，
+    #       这种必须有 regression_reason + 证据路径，否则拒绝写阶段账本、非零退出。
+    regs = []
+    try:
+        from ckpt_guard import guard_ledger_rows                # noqa: E402
+        regs = guard_ledger_rows((base or {}).get("records") or [],
+                                 merged.get("records") or [],
+                                 stage=stage, run_id=run_id, allow_shrink=allow_shrink)
+    except Exception as e:                                      # noqa: BLE001
+        detail = getattr(e, "detail", {}) or {}
+        res.update({"stage_written": False, "reason": "row_regression_without_evidence",
+                    "error": str(e), "regressions": detail.get("regressions") or []})
+        return res
+    if regs:
+        merged.setdefault("revisions", []).append({
+            "kind": "row_regression_allowed", "at": at, "run_id": str(run_id),
+            "note": "行数变小但带实证（regression_reason + evidence），放行并留痕",
+            "regressions": regs})
     json.dump(merged, open(stage_path, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     res.update({"stage_written": True, "stage_layers_after": merged["layers_n"],
                 "stage_ok": merged["ok"], "stage_partial": merged["partial"],
                 "stage_failed": merged["failed"], "stage_complete": merged["complete"],
-                "stats": stats})
+                "stats": stats, "row_regressions_allowed": len(regs)})
     # rows 回退（本次合并新记的）跟着摘要一起回传给调用方，别只躺在账本里
     regs_run = [e for e in (merged.get("regressions") or [])
                 if str(e.get("run_id")) == str(run_id)]

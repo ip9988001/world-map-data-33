@@ -43,6 +43,9 @@ class TestFullReportTolerance(unittest.TestCase):
         # step_full_report 现在把「单 run 账本 / 阶段账本合并」交给同目录的 ledger_merge.py
         shutil.copy(os.path.join(ROOT, "collect", "ledger_merge.py"),
                     os.path.join(self.tmp, "collect", "ledger_merge.py"))
+        # ledger_merge 的「行数只许涨」闸门（ckpt_guard.py）也必须一起带过去
+        shutil.copy(os.path.join(ROOT, "collect", "ckpt_guard.py"),
+                    os.path.join(self.tmp, "collect", "ckpt_guard.py"))
         self.plan = os.path.join(self.tmp, "collect", "ledger", "step04b_plan.json")
         json.dump({"schema": "plan/v1", "stage": "step04b", "size": 2, "layers_n": 8,
                    "shards_n": 4, "declared_rows": 400, "unit_rows": 1000, "tag": "collect-step04-{layer}",

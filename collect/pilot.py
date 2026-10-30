@@ -378,6 +378,12 @@ def geom_has_rings():
     return POLY_RINGS and str(GEOM_TYPE or "").lower() in RING_GEOMS
 STRATEGY = "keyset"
 CKPT_VER = 2
+# 本次 run / 单元包命名空间。
+#   ★ 切分变了（plan_hash 不同）时给新单元包加代际前缀 `r<planhash8>-`：
+#     `gh release upload --clobber` 是同名覆盖，不加前缀就会把旧单元包（真数据）
+#     悄悄换成新切的半截包 —— 覆盖了就没有回滚基准。
+RUN_ID = os.environ.get("GITHUB_RUN_ID") or "local"
+UNIT_NS = ""
 UNIT_ROWS = int(os.environ.get("PILOT_UNIT_ROWS", "500000"))   # 一个「单元」的**行数**上限（参考值）
 # ★ 2026-10-30 全局修正：GitHub 单资产 2 GB —— 只按行数切会撞线。
 #   实测 `Offices_of_Physicians` 32.6 KB/行 × 10 万行 = 3.26 GB（宗地层），点层同理
@@ -443,7 +449,7 @@ def _upload(files, log, tag=None):
         return False
     d = os.path.dirname(files[0])
     uid = os.path.basename(files[0]).split("-")[1] if "-" in os.path.basename(files[0]) else "x"
-    name = "%s-%s.tar.gz" % (CUR["id"], uid)
+    name = "%s-%s%s.tar.gz" % (CUR["id"], UNIT_NS, uid)
     tmp = os.path.join("/tmp", name)
     rc, o = _pub(["tar", "czf", tmp, "-C", d] + [os.path.basename(f) for f in files])
     if rc != 0:
@@ -463,16 +469,18 @@ def _upload(files, log, tag=None):
         log("  ✗ 上传失败 upload=%s" % o[:150] + (" | create=%s" % e_create if e_create else ""))
         return False
     log("  ↑ 已发布 %s（%d 个 part）" % (name, len(files)))
-    return True
+    return name          # ★ 返回真实资产名（不是 True）：检查点要记住它，才能按包名去重/核对 Release
 
 
-def _publish_ckpt(ck, log):
-    """把检查点本身也传上 Release（同一个 tag，--clobber 覆盖）。
-       没有这一步，断点续传只在「同一个 job 内重启」有效；换一次 run 就归零。"""
+def _publish_ckpt(ck, log, name: str = ""):
+    """把检查点传上 Release（同一个 tag，--clobber 覆盖）。
+       没有这一步，断点续传只在「同一个 job 内重启」有效；换一次 run 就归零。
+       `name` 只给备份用（`<layer>-checkpoint.bak-<RUN_ID>.json`），默认仍是原名的检查点。"""
     rep = os.environ.get("GITHUB_REPOSITORY")
     if not rep:
         return False
-    tmp = "/tmp/%s-checkpoint.json" % CUR["id"]
+    name = name or ("%s-checkpoint.json" % CUR["id"])
+    tmp = "/tmp/%s" % name
     try:
         with open(tmp, "w", encoding="utf-8") as f:
             json.dump(ck, f, ensure_ascii=False)
@@ -484,33 +492,135 @@ def _publish_ckpt(ck, log):
     return rc == 0
 
 
-def _fetch_ckpt_asset(plan_hash, log):
-    """本地没有检查点（新 run）→ 从 Release 把上一轮的检查点捞回来。"""
+def _gh_json(args, timeout=120):
+    """`gh <args> --json ...` → (rc, dict|None)。
+    ★ 不能用 `_pub`：它把 stdout+stderr 截到 300 字符，几十个资产的 JSON 会被截断成废串。"""
+    try:
+        r = subprocess.run(["gh"] + list(args), capture_output=True, text=True, timeout=timeout)
+    except Exception as e:                          # noqa: BLE001
+        return 1, {"err": str(e)[:160]}
+    if r.returncode != 0:
+        return r.returncode, {"err": ((r.stdout or "") + (r.stderr or ""))[:200]}
+    try:
+        return 0, json.loads(r.stdout or "{}")
+    except Exception as e:                          # noqa: BLE001
+        return 1, {"err": "JSON 解析失败：%s" % str(e)[:120]}
+
+
+def _list_assets(log=None):
+    """本层 tag 下的资产清单（dict: name → {size,state}）；拿不到返回 None。"""
     rep = os.environ.get("GITHUB_REPOSITORY")
     if not rep:
         return None
+    rc, d = _gh_json(["release", "view", _tag(), "--repo", rep, "--json", "assets"], timeout=90)
+    if rc != 0:
+        if log:
+            log("  ⚠ 资产清单取不到（%s）→ 旧单元包一律按「还在」处理" % str(d.get("err"))[:100])
+        return None
+    out = {}
+    for a in d.get("assets") or []:
+        if a.get("name"):
+            out[a["name"]] = {"size": a.get("size"), "state": a.get("state") or "uploaded"}
+    return out
+
+
+def _backup_legacy_ckpt(ck, log, assets_idx=None):
+    """★ force/重跑踩到旧检查点时，**动手之前**先留证据：
+       本地 `_checkpoint.bak-<RUN_ID>.json` + Release `<layer>-checkpoint.bak-<RUN_ID>.json`，各留 3 代。
+       事故背景：2026-10-30 22:23Z 一次 force 补采把 68 单元 / 39,875,268 行的检查点覆盖成 0 行。"""
+    try:
+        import ckpt_guard
+    except Exception as e:                          # noqa: BLE001
+        log("  ⚠ ckpt_guard 不可用（%s）→ 备份降级为本地副本" % str(e)[:80])
+        ckpt_guard = None
+    local = ""
+    if ckpt_guard:
+        local = ckpt_guard.backup_local(_ckpt_path(), RUN_ID)
+    if local:
+        log("  ⤓ 本地检查点已备份：%s" % os.path.basename(local))
+    rep = os.environ.get("GITHUB_REPOSITORY")
+    if not rep or not ckpt_guard:
+        return local
+    name = ckpt_guard.backup_name(CUR["id"], RUN_ID)
+    if _publish_ckpt(ck, log, name=name):
+        log("  ⤓ 旧检查点已备份到 Release：%s" % name)
+        for old in ckpt_guard.backup_assets_to_delete(assets_idx or {}, CUR["id"], RUN_ID):
+            rc, o = _pub(["gh", "release", "delete-asset", _tag(), old, "--repo", rep, "-y"],
+                         timeout=120)
+            log("  ⌫ 清理旧备份 %s%s" % (old, "" if rc == 0 else "（失败：%s）" % o[:80]))
+    else:
+        log("  ⚠ 旧检查点备份上传失败 → 继续（本地副本 %s）" % (os.path.basename(local) or "无"))
+    return local
+
+
+def _merge_legacy_ckpt(ck, legacy_ck, assets_idx, log):
+    """把旧检查点的完成度按**单元包名**并进本次检查点，并执行「行数只许涨」闸门。
+
+    返回合并后的新 dict（不改入参）。行数变小且拿不出实证时抛 `ckpt_guard.RowsRegression`，
+    由调用方拒绝写盘（宁可不写，也不能把 0 行盖上去）。"""
+    import ckpt_guard
+    evidence = os.environ.get("PILOT_ROWS_EVIDENCE") or ""
+    merged, rep = ckpt_guard.merge_checkpoints(
+        legacy_ck, ck, layer=CUR["id"], run_id=RUN_ID, assets=assets_idx, evidence=evidence)
+    reason = ""
+    if rep["packages_dropped"]:
+        reason = ("%d 个旧单元包已不在 Release（%s）"
+                  % (len(rep["packages_dropped"]), ",".join(rep["packages_dropped"][:3])))
+    guard = ckpt_guard.assert_rows_not_shrunk(
+        rep["rows_before"], rep["rows_after"], layer=CUR["id"], run_id=RUN_ID,
+        reason=reason, evidence=evidence)
+    if guard:
+        merged["row_regression"] = guard
+        log("  ⚠ 行数回退已放行（有实证：%s）：%s 行 → %s 行，原因：%s"
+            % (evidence, f"{guard['rows_before']:,}", f"{guard['rows_after']:,}",
+               guard["regression_reason"]))
+    merged["forced_rerun"] = (os.environ.get("PILOT_FORCE_RERUN") == "1")
+    log("  ⇄ 检查点合并：旧 %s 行（%d 单元，保留 %s 行）+ 本轮 %s 行 → 合计 %s 行"
+        % (f"{rep['rows_before']:,}", rep["units_legacy"],
+           f"{rep['rows_legacy_kept']:,}", f"{rep['rows_new']:,}", f"{rep['rows_after']:,}"))
+    if rep["split_compatible"] is False:
+        log("  ⇄ 新旧切分不兼容：units_legacy=%d / units_new=%d 两边都记，按包名去重"
+            % (rep["units_legacy"], rep["units_new"]))
+    return merged
+
+
+def _fetch_ckpt_asset(plan_hash, log, with_raw: bool = False):
+    """本地没有检查点（新 run）→ 从 Release 把上一轮的检查点捞回来。
+
+    `with_raw=True` 时返回 `(匹配本次切分的 ck | None, 原始 ck | None)`。
+    ★ 为什么要返回「不匹配的」那份：2026-10-30 22:23Z，NAD view 层就因为
+      「plan_hash 一不同就 return None」被判成「本层第一次跑」，跑完 --clobber
+      把 68 单元 / 39,875,268 行的检查点换成 441 字节的 0 行。
+      不匹配 ≠ 没用：它是 legacy 证据，交给 ckpt_guard 备份 + 按单元合并。"""
+    rep = os.environ.get("GITHUB_REPOSITORY")
+    if not rep:
+        return (None, None) if with_raw else None
     name = "%s-checkpoint.json" % CUR["id"]
     rc_v, _ = _pub(["gh", "release", "view", _tag(), "--repo", rep], timeout=60)
     if rc_v != 0:
-        return None          # tag 还不存在 = 本层第一次跑，正常，不是错误
+        return (None, None) if with_raw else None   # tag 还不存在 = 本层第一次跑，正常
     d = "/tmp/ck_%s" % CUR["id"]
     os.makedirs(d, exist_ok=True)
     pth = os.path.join(d, name)
     rc, o = _pub(["gh", "release", "download", _tag(), "-p", name, "-D", d, "--clobber"], timeout=180)
     if rc != 0 or not os.path.exists(pth):
         log("⚠️ 检查点下载失败（tag 存在但取不到）：%s → 本轮从头采" % o[:100])
-        return None
+        return (None, None) if with_raw else None
     try:
         d2 = json.load(open(pth, encoding="utf-8"))
     except Exception:
-        return None
-    if d2.get("ver") != CKPT_VER or d2.get("plan_hash") != plan_hash or d2.get("url") != CUR.get("url"):
-        log("  ⟲ 上一轮检查点与本次切分不一致 → 忽略")
-        return None
+        return (None, None) if with_raw else None
+    matched = (d2.get("ver") == CKPT_VER and d2.get("plan_hash") == plan_hash
+               and d2.get("url") == CUR.get("url"))
+    if not matched:
+        log("  ⟲ 上一轮检查点与本次切分不一致 → 不续跑，但保留为 legacy 证据（%s 行 / %s 单元）"
+            % (f"{sum((d2.get('unit_rows_seen') or d2.get('unit_rows') or {}).values()):,}",
+               len(d2.get("unit_rows") or {})))
+        return (None, d2) if with_raw else None
     os.makedirs(os.path.join(OUTBASE, CUR["id"]), exist_ok=True)
     _save_ckpt(d2)
     log("  ⟲ 已从 Release 恢复检查点：%d 个单元已完成" % len(d2.get("done_units") or []))
-    return d2
+    return (d2, d2) if with_raw else d2
 
 
 def _probe_pagination(api, log):
@@ -981,8 +1091,26 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range
         units, workers, fresh = units[:1], 1, True
     plan_hash = plan_sig(plan)
     ck = None if fresh else _load_ckpt(plan_hash)
+    legacy_ck, assets_idx = None, None
     if ck is None and not fresh:
-        ck = _fetch_ckpt_asset(plan_hash, log)
+        # ★ with_raw=True：即便切分不一致，也要把旧检查点拿在手里（证据 + 备份 + 合并）。
+        ck, legacy_ck = _fetch_ckpt_asset(plan_hash, log, with_raw=True)
+        if ck is not None:
+            legacy_ck = None                    # 同口径续跑，不是覆盖风险
+        elif legacy_ck is not None:
+            assets_idx = _list_assets(log)
+            _backup_legacy_ckpt(legacy_ck, log, assets_idx)
+        else:
+            # 旧检查点取不到：只要 Release 里还有旧单元包，就不能拿同名包去 --clobber
+            assets_idx = _list_assets(log)
+            if assets_idx and any(re.search(r"-u\d{5}\.tar\.gz$", n) for n in assets_idx):
+                log("  ⚠ Release 里已有旧单元包但检查点取不到 → 本轮单元包加代际前缀，旧包不碰")
+                globals()["UNIT_NS"] = "r%s-" % str(plan_hash)[:8]
+    if legacy_ck is not None and legacy_ck.get("plan_hash") not in (None, plan_hash):
+        globals()["UNIT_NS"] = "r%s-" % str(plan_hash)[:8]
+        log("  ⚠ 切分与旧检查点不一致（old=%s new=%s）→ 本轮单元包名加代际前缀 %r，"
+            "绝不 --clobber 覆盖旧单元包"
+            % (str(legacy_ck.get("plan_hash"))[:12], str(plan_hash)[:12], UNIT_NS))
     done = set()
     if ck:
         done = set(ck.get("done_units") or [])
@@ -992,8 +1120,10 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range
         for k, fs in (ck.get("unit_files") or {}).items():
             if int(k) in done and ck.get("unit_uploaded", {}).get(str(k)) is False:
                 paths = [os.path.join(OUTBASE, CUR["id"], f) for f in fs]
-                if all(os.path.exists(p) for p in paths) and _upload(paths, log):
+                pkg = _upload(paths, log) if all(os.path.exists(p) for p in paths) else ""
+                if pkg:
                     ck.setdefault("unit_uploaded", {})[str(k)] = True
+                    ck.setdefault("unit_package", {})[str(k)] = pkg
                     _purge(paths)
                     _save_ckpt(ck)
         # 补传不成的（新 runner 上文件本来就不在）→ 重采，不拿 done_units 当挡箭牌
@@ -1004,6 +1134,7 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range
     else:
         ck = {"ver": CKPT_VER, "url": CUR.get("url"), "plan_hash": plan_hash,
               "unit_rows": {}, "unit_files": {}, "unit_uploaded": {},
+              "unit_package": {}, "unit_ns": UNIT_NS,
               "done_units": [], "tag": _tag()}
     ck.setdefault("unit_uploaded", {})
     ck.setdefault("unit_rows", {})
@@ -1034,13 +1165,16 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range
         # ① 无错 ② 行数对得上（--limit 试采不判）③ 上传成功 —— 三条同时成立才算完成
         if not err and not limit and expect > 0 and rows < expect * 0.999:
             err = "short:%d/%d" % (rows, expect)
-        ok = False
+        ok, pkg = False, ""
         if files:                      # 数据先落地：哪怕这个单元还不算完成，拿到的行也是真的
             with up_lock:
-                ok = _upload(files, log)
+                pkg = _upload(files, log)
+                ok = bool(pkg)
         snap = None
         with lock:
             ck.setdefault("unit_uploaded", {})[str(i)] = bool(ok)
+            if pkg:
+                ck.setdefault("unit_package", {})[str(i)] = pkg  # ★ 按真实资产名去重（带代际前缀）
             ck.setdefault("unit_rows_seen", {})[str(i)] = rows   # 采到的行如实记账（不管是否算完成）
             if err.startswith("short:"):
                 # 上游真实缺失：同一单元连续两次 short 且行数一致 → 认可，不再无限重试
@@ -1083,19 +1217,35 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range
                         errs.append(e_)
     finally:
         with lock:
+            # ★ 收尾前把旧检查点的完成度按单元并进来（不许整份覆盖、不许 rows 变小）。
+            #   出事时 legacy_ck 就是「被 force 抛在后面」的那份旧证据；
+            #   没实证却要变小时不能默默写盘：抛 SystemExit，full_shard 会把本层记 failed。
+            if legacy_ck is not None and not limit:
+                try:
+                    ck = _merge_legacy_ckpt(ck, legacy_ck, assets_idx, log)
+                except Exception as e:              # noqa: BLE001
+                    log("✗ 检查点合并失败/行数回退 → 拒绝写入：%s" % str(e)[:400])
+                    raise SystemExit("✗ %s 行数回退且无实证 → 拒绝写入检查点：%s"
+                                     % (CUR["id"], str(e)[:400]))
             rows_total = sum((ck.get("unit_rows_seen") or ck.get("unit_rows") or {}).values())
+            if ck.get("rows_total"):
+                rows_total = max(rows_total, int(ck["rows_total"]))
             prog["rows"] = rows_total
             prog["done"] = True
             prog["done_units"] = len(ck.get("done_units") or [])
             _write_progress(prog)
             _save_ckpt(ck)
+            if legacy_ck is not None and not limit:
+                _publish_ckpt(ck, log)              # 合并后的检查点必须盖上去，否则证据只剩本地
         stop.set()
     parts = sum(len(v) for v in (ck.get("unit_files") or {}).values())
     resumed = len(done)
     if resumed and not errs:
         log("  ⟲ 本次续跑：跳过 %d 个已完成单元，新采 %d 行" % (resumed, rows_new))
-    return sum((ck.get("unit_rows_seen") or ck.get("unit_rows") or {}).values()), count, \
-        (";".join(errs) if errs else ""), parts
+    rows_final = sum((ck.get("unit_rows_seen") or ck.get("unit_rows") or {}).values())
+    if ck.get("rows_total"):
+        rows_final = max(rows_final, int(ck["rows_total"]))
+    return rows_final, count, (";".join(errs) if errs else ""), parts
 
 
 def verdict(rows, count, err, limit=0):
