@@ -11,3 +11,6 @@ collect/batch1_result.json
 collect/.release_index.json
 # 工头叫醒缓存：只对当次 run/本机有效，绝不进 git（2026-10-28 修：曾 264KB × 104 版本）
 collect/wake/
+
+# 账本重建的 checkpoint 缓存（按 tag@时间 内容寻址，随时可重建，绝不进 git）
+collect/ledger/.ckpt_cache/
