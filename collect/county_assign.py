@@ -832,6 +832,22 @@ def _cause_of(r: dict) -> str:
     return "坐标有值但落在美国县界之外（服务端 outSR 错或坐标脏）"
 
 
+def _under_declared(summ: dict, thr: float = 1.2) -> int:
+    """实际行数 > 声明行数 20% 以上的层数（只用于文档披露口径）。"""
+    try:
+        fm_rows = {k: (v.get("rows_total") or 0)
+                   for k, v in (json.load(open(os.path.join(ROOT, "schema", "field-map-v2.json"),
+                                               encoding="utf-8")).get("layers") or {}).items()}
+    except Exception:                                # noqa: BLE001
+        return 0
+    n = 0
+    for r in summ.get("layers") or []:
+        d = fm_rows.get(r.get("layer")) or 0
+        if d and (r.get("rows") or 0) > d * thr:
+            n += 1
+    return n
+
+
 def write_doc(summ: dict, path: str, sample: int = 20) -> str:
     """把汇总渲染成**完整**文档（数字全部来自 rows-*.json，不手抄）。"""
     b = summ["unlocated_breakdown"]
@@ -865,12 +881,12 @@ def write_doc(summ: dict, path: str, sample: int = 20) -> str:
           "| 跨州溢出 | **合法**。点落在邻县/邻州照判，不因「州不符」改判（宗地跨县是真实情况） |",
           "| 不能判 | 落 `UNLOCATED`，且必须拆成三档相加：无坐标 / 投影坐标 / 判不出 |",
           "| 可疑层 | 一层 UNLOCATED 占比 > %.0f%% → `suspect_layer`（进人工复核，不自动丢） |" % SUSPECT_UNLOC_PCT,
-          "| 县界精度 | bbox 只做网格预筛，绝不当结论（已实证 GA 县界 46%% 顶点会落进邻县 bbox） |",
+          "| 县界精度 | bbox 只做网格预筛，绝不当结论（已实证 GA 县界 46% 顶点会落进邻县 bbox） |",
           ""]
 
     L += ["## 二、覆盖（目标 vs 可判 vs 实跑）", "",
           "| 口径 | 层数 | 行数 | 说明 |", "|---|---|---|---|",
-          "| 目标（field-map v2 全量） | %s | %s | 2,364 层 = 1,238 宗地 + 1,126 点层 |"
+          "| 目标（field-map v2 **声明口径**） | %s | %s | 2,364 层 = 1,238 宗地 + 1,126 点层 |"
           % (f"{tgt_layer_all:,}", f"{tgt_row_all:,}"),
           "| **本轮可判（有 Release 资产）** | **%s** | **%s** | 计划 `county_plan_all.json` |"
           % (f"{tgt_layers:,}", f"{tgt_rows:,}"),
@@ -887,6 +903,15 @@ def write_doc(summ: dict, path: str, sample: int = 20) -> str:
     L += ["状态分布：%s"
           % "、".join("%s %d" % (k, v) for k, v in sorted((summ.get("layers_by_status") or {}).items())),
           ""]
+    # 声明 vs 实际：`layer_plan.csv` 的 row_count 是计划期估算，大层会低估（读出来比声明还多）
+    if tgt_rows and summ["rows"] and abs(summ["rows"] - tgt_rows) / tgt_rows > 0.01:
+        L += ["> ⚠️ **实际读入 %s 行 ≠ 计划声明 %s 行（%+.1f%%）**：声明值来自 `layer_plan.csv` 的 "
+              "`row_count`（计划期估算），实测大层普遍低估 —— 全部差额（%s 行）来自 %d 个层，"
+              "最大一个是全国 NAD 汇总层（声明 3,197 万 / 实际 7,594 万）。统计一律以**实际读入**为准。"
+              % (f"{summ['rows']:,}", f"{tgt_rows:,}",
+                 100.0 * (summ["rows"] - tgt_rows) / tgt_rows,
+                 f"{summ['rows'] - tgt_rows:+,}", _under_declared(summ)),
+              ""]
 
     L += ["## 三、UNLOCATED 总量与占比", "",
           "| 指标 | 值 |", "|---|---|",
@@ -921,7 +946,23 @@ def write_doc(summ: dict, path: str, sample: int = 20) -> str:
     L += ["## 四、state_anomaly 全量清单（%d 层 / %s 行）"
           % (len(an), f"{summ.get('state_anomaly_rows') or 0:,}"), ""]
     if an:
-        L += ["| # | 层 | 类型 | 清单值 | 属性值 | 县多边形州 | 行数 | 州不符行数 |",
+        kc, kr, ko = {}, {}, {}
+        for a1 in an:
+            k = a1.get("kind") or "?"
+            kc[k] = kc.get(k, 0) + 1
+            kr[k] = kr.get(k, 0) + (a1.get("rows") or 0)
+            ko[k] = ko.get(k, 0) + (a1.get("rows_off_state") or 0)
+        L += ["**按类型拆开看**（判县一行都没被过滤，这些只是记账）：", "",
+              "| 类型 | 层数 | 行数 | 其中州不符行数 | 含义 |", "|---|---|---|---|---|",
+              "| `conflict` | %d | %s | %s | 属性州 ≠ 清单州（层标错州） |"
+              % (kc.get("conflict", 0), f"{kr.get('conflict', 0):,}", f"{ko.get('conflict', 0):,}"),
+              "| `geo_conflict` | %d | %s | %s | 清单州 ≠ 绝大多数行所在县的州（清单错或跨州大层） |"
+              % (kc.get("geo_conflict", 0), f"{kr.get('geo_conflict', 0):,}",
+                 f"{ko.get('geo_conflict', 0):,}"),
+              "| `list_missing` | %d | %s | %s | 清单没有州（`未定位`/空），属性或几何能看出州 |"
+              % (kc.get("list_missing", 0), f"{kr.get('list_missing', 0):,}",
+                 f"{ko.get('list_missing', 0):,}"),
+              "", "| # | 层 | 类型 | 清单值 | 属性值 | 县多边形州 | 行数 | 州不符行数 |",
               "|---|---|---|---|---|---|---|---|"]
         for i, a in enumerate(an, 1):
             L.append("| %d | `%s` | %s | %s | %s | %s | %s | %s |"
@@ -951,7 +992,8 @@ def write_doc(summ: dict, path: str, sample: int = 20) -> str:
                         f"{r.get('outside_any_county') or 0:,}"))
         L += ["", "**复核建议（按三档分流，不要一刀切）**：",
               "1. `no_coords` 为主 → 采集侧几何没落盘。这批就是 `geom_missing`／面层未带质心的层："
-              "走 `--centroid-only` 补采（方案见 `docs/PARCEL-GEOMETRY-OPTIONS-2026-10-30.md` 第五节），补完重判。",
+              "走 `--geom-backfill` 全量几何补采（**1,238 层宗地层全部**，方案与成本见 "
+              "`docs/PARCEL-GEOMETRY-OPTIONS-2026-10-30.md` 第五节），补完重判。",
               "2. `proj_failed` 为主 → 属性里是投影坐标。走 `collect/parcel_centroid.py --audit` 的 EPSG 反推"
               "（已救回 5 层 / 479,123 行），**不唯一就记 `proj_ambiguous`，不猜**。",
               "3. `outside_any_county` 为主 → 坐标有值但不在美国境内：先查 `outSR` 是否生效、"
