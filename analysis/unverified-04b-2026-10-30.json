@@ -1,0 +1,185 @@
+{
+ "schema": "unverified-retest/v1",
+ "stage": "04b",
+ "gap_min": 30,
+ "rule": "3 轮全不可达 → 保持 unverified（非空层）；任一轮可达 → 按上游行数重判；声明值不计入分母，单列不确定区间 [0, 声明值之和]",
+ "rounds": [
+  {
+   "round": 1,
+   "at": "2026-10-30T20:57:34Z",
+   "at_epoch": 1793393854,
+   "layers": [
+    {
+     "layer": "tyil_gov_traditional_rest_services_cookVwrDynmc_MapServer_63",
+     "ledger_declared": 1381118,
+     "layer_url": "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/63",
+     "probe": {
+      "url": "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/63/query?where=1%3D1&returnCountOnly=true&f=json",
+      "http": null,
+      "count": null,
+      "raw": "",
+      "err": "URLError: <urlopen error timed out>",
+      "elapsed_ms": 25071
+     },
+     "state": "unreachable"
+    },
+    {
+     "layer": "yil_gov_traditional_rest_services_addressZipCode_MapServer_0",
+     "ledger_declared": 1381118,
+     "layer_url": "https://gis.cookcountyil.gov/traditional/rest/services/addressZipCode/MapServer/0",
+     "probe": {
+      "url": "https://gis.cookcountyil.gov/traditional/rest/services/addressZipCode/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+      "http": null,
+      "count": null,
+      "raw": "",
+      "err": "URLError: <urlopen error timed out>",
+      "elapsed_ms": 25066
+     },
+     "state": "unreachable"
+    },
+    {
+     "layer": "rvices_location_Address_Points_Modifications_FeatureServer_0",
+     "ledger_declared": 1369414,
+     "layer_url": "https://arcgis.metc.state.mn.us/data1/rest/services/location/Address_Points_Modifications/FeatureServer/0",
+     "probe": {
+      "url": "https://arcgis.metc.state.mn.us/data1/rest/services/location/Address_Points_Modifications/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+      "http": null,
+      "count": null,
+      "raw": "",
+      "err": "URLError: <urlopen error timed out>",
+      "elapsed_ms": 25724
+     },
+     "state": "unreachable"
+    },
+    {
+     "layer": "is4_ocfl_net_arcgis_rest_services_AGOL_Open_Data_MapServer_0",
+     "ledger_declared": 716472,
+     "layer_url": "https://ocgis4.ocfl.net/arcgis/rest/services/AGOL_Open_Data/MapServer/0",
+     "probe": {
+      "url": "https://ocgis4.ocfl.net/arcgis/rest/services/AGOL_Open_Data/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+      "http": null,
+      "count": null,
+      "raw": "",
+      "err": "URLError: <urlopen error [Errno -3] Temporary failure in name resolution>",
+      "elapsed_ms": 11414
+     },
+     "state": "unreachable"
+    },
+    {
+     "layer": "g_rest_services_Basemap_Address_Points_EagleView_MapServer_0",
+     "ledger_declared": 388607,
+     "layer_url": "https://gis.willcountyillinois.com/hosting/rest/services/Basemap/Address_Points_EagleView/MapServer/0",
+     "probe": {
+      "url": "https://gis.willcountyillinois.com/hosting/rest/services/Basemap/Address_Points_EagleView/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+      "http": 403,
+      "count": null,
+      "raw": "<!DOCTYPE html>\n<!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 7]>    <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 8]>    <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![endif]-->\n<head>\n<title>Attention Required! | Cloudflare</title>\n<meta charset=\"UTF-8\" />\n<meta",
+      "err": "HTTP 403",
+      "elapsed_ms": 380
+     },
+     "state": "unreachable"
+    },
+    {
+     "layer": "rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5",
+     "ledger_declared": 368312,
+     "layer_url": "https://cagisonline.hamilton-co.org/arcgis/rest/services/Countywide_Layers/Cagis_Map_Labels/MapServer/5",
+     "probe": {
+      "url": "https://cagisonline.hamilton-co.org/arcgis/rest/services/Countywide_Layers/Cagis_Map_Labels/MapServer/5/query?where=1%3D1&returnCountOnly=true&f=json",
+      "http": null,
+      "count": null,
+      "raw": "",
+      "err": "URLError: <urlopen error timed out>",
+      "elapsed_ms": 25076
+     },
+     "state": "unreachable"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "tyil_gov_traditional_rest_services_cookVwrDynmc_MapServer_63": {
+   "rounds": 1,
+   "unreachable": 1,
+   "alive": 0,
+   "counts": [],
+   "http": [
+    null
+   ],
+   "errs": [
+    "URLError: <urlopen error timed out>"
+   ],
+   "verdict": "pending_rounds"
+  },
+  "yil_gov_traditional_rest_services_addressZipCode_MapServer_0": {
+   "rounds": 1,
+   "unreachable": 1,
+   "alive": 0,
+   "counts": [],
+   "http": [
+    null
+   ],
+   "errs": [
+    "URLError: <urlopen error timed out>"
+   ],
+   "verdict": "pending_rounds"
+  },
+  "rvices_location_Address_Points_Modifications_FeatureServer_0": {
+   "rounds": 1,
+   "unreachable": 1,
+   "alive": 0,
+   "counts": [],
+   "http": [
+    null
+   ],
+   "errs": [
+    "URLError: <urlopen error timed out>"
+   ],
+   "verdict": "pending_rounds"
+  },
+  "is4_ocfl_net_arcgis_rest_services_AGOL_Open_Data_MapServer_0": {
+   "rounds": 1,
+   "unreachable": 1,
+   "alive": 0,
+   "counts": [],
+   "http": [
+    null
+   ],
+   "errs": [
+    "URLError: <urlopen error [Errno -3] Temporary failure in nam"
+   ],
+   "verdict": "pending_rounds"
+  },
+  "g_rest_services_Basemap_Address_Points_EagleView_MapServer_0": {
+   "rounds": 1,
+   "unreachable": 1,
+   "alive": 0,
+   "counts": [],
+   "http": [
+    403
+   ],
+   "errs": [
+    "HTTP 403"
+   ],
+   "verdict": "pending_rounds"
+  },
+  "rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5": {
+   "rounds": 1,
+   "unreachable": 1,
+   "alive": 0,
+   "counts": [],
+   "http": [
+    null
+   ],
+   "errs": [
+    "URLError: <urlopen error timed out>"
+   ],
+   "verdict": "pending_rounds"
+  }
+ },
+ "uncertain_rows": {
+  "low": 0,
+  "high": 0,
+  "note": "声明值未经上游确认，只当上界；这 6 层不计入 84.51% 的分母"
+ },
+ "updated_at": "2026-10-30T20:57:34Z"
+}

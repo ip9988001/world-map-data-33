@@ -408,6 +408,9 @@ def _parse(argv):
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--cfg")
     ap.add_argument("--max-layers", type=int, default=0, help="只跑前 N 层（灰度用）")
+    # ★ 定向区间补采透传：只多一个参数，不改任何选层/切分逻辑（pilot 侧才消费它）
+    ap.add_argument("--oid-range", metavar="LO:HI",
+                    help="定向区间补采：只采 OBJECTID 在 [LO,HI] 的行（产物写 <tag>-r2）")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--validate", action="store_true", help="校验 steps.json")
     ap.add_argument("--show", metavar="STEP", help="展开该步的完整参数")
@@ -486,6 +489,8 @@ def _pilot_cmd(cfg_file, layer, a):
         cmd += ["--unit-rows", str(a.unit_rows)]
     if a.limit:
         cmd += ["--limit", str(a.limit)]
+    if getattr(a, "oid_range", None):
+        cmd += ["--oid-range", str(a.oid_range)]
     return cmd
 
 

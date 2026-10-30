@@ -1,0 +1,90 @@
+name: collect-oid-range
+
+# 定向区间补采 · 灰度专用（一次只跑**一层的一个 OID 区间**）。
+#
+# 为什么单独一个 workflow 而不是复用 collect-full：
+#   ① collect-full 的并发组是 `collect-full-<stage>`，塞进去会排在在跑的阶段后面排队，
+#      灰度要等十几小时才轮到 —— 它就失去「先验 1 个区间再放量」的意义；
+#   ② 灰度**绝不写阶段账本**（不碰 collect/ledger/*、不提交任何文件），产物只进
+#      Release 的 `<原tag>-r2`：与旧 68/76 单元并存，不一致就丢新产物，旧单元不受影响。
+#
+# 口径约束（写死在 pilot.py，不在这里）：
+#   · 只换切分域 lo/hi，keyset / ids / plan_units 逻辑一行不动；
+#   · 分母换成「区间内上游行数」（否则 1M 行的区间会被拿去和全层 97.9M 行比，永远 short）；
+#   · tag = PILOT_RELEASE_TAG + "-r2"。
+on:
+  workflow_dispatch:
+    inputs:
+      stage:        { description: "阶段（决定用哪个 run_step_XXb.py 选层）", default: "04b" }
+      layer:        { description: "目标层 id（必填）", required: true }
+      oid_range:    { description: "OID 区间 lo:hi（必填）", required: true }
+      workers:      { description: "层内并发", default: "4" }
+      unit_rows:    { description: "单元行数（区间 ≤ 它 → 恰好 1 个单元）", default: "1000000" }
+      tag_prefix:   { description: "Release tag 前缀", default: "collect-step04-" }
+      layer_timeout:{ description: "单层墙钟上限（分钟）", default: "90" }
+
+permissions:
+  contents: write
+  actions: write
+
+# 同层同时间只跑一个区间（区间轮转会连续 dispatch 多次；不许互相覆盖同一个 r2 tag 的同一单元）
+concurrency:
+  group: oid-range-${{ inputs.layer }}
+  cancel-in-progress: false
+
+jobs:
+  gray:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install --quiet pyyaml
+
+      - name: 只读校验（区间参数合法性）
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os, re
+          r = os.environ["R"].strip()
+          assert re.fullmatch(r"\d+:\d+", r), "--oid-range 必须 lo:hi 纯数字，拿到 %r" % r
+          lo, hi = (int(x) for x in r.split(":"))
+          assert hi >= lo, "hi 必须 >= lo（%s）" % r
+          print("区间 [%d, %d]，跨度 %d" % (lo, hi, hi - lo + 1))
+          PY
+        env:
+          R: ${{ inputs.oid_range }}
+
+      - name: 跑单层指定区间（产物进 <tag>-r2）
+        env:
+          PILOT_RELEASE_TAG: ${{ inputs.tag_prefix }}${{ inputs.layer }}
+          PILOT_HEARTBEAT_PUSH: "1"
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          set -uo pipefail
+          set +e
+          timeout $(( ${{ inputs.layer_timeout }} * 60 )) python3 collect/run_step_${{ inputs.stage }}.py \
+            --layer "${{ inputs.layer }}" \
+            --workers ${{ inputs.workers }} \
+            --unit-rows ${{ inputs.unit_rows }} \
+            --oid-range "${{ inputs.oid_range }}"
+          rc=$?
+          echo "pilot_rc=$rc"
+          echo "::notice::区间灰度完成 rc=$rc（0=行数齐；1=有短差/错误；124=单层超时）"
+          # 灰度只做取证：不论 rc 都把 manifest 带出去，绝不因红了就静默收工
+          cat "collect/reports/${{ inputs.layer }}.json" 2>/dev/null || echo "（无 manifest）"
+          exit 0
+
+      - name: 上传 manifest 取证
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: oid-range-${{ github.run_id }}
+          path: |
+            collect/reports/${{ inputs.layer }}.json
+            collect/out/${{ inputs.layer }}/_manifest.json
+          if-no-files-found: warn
+          retention-days: 14

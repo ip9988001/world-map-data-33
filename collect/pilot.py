@@ -388,12 +388,33 @@ UNIT_BYTES_MARGIN = float(os.environ.get("PILOT_UNIT_BYTES_MARGIN", "1.4"))  # �
 IDS_BATCH = 800                                                # 单次 objectIds 请求最多多少个
 # returnIdsOnly 回的行数低于 count 的 99% → 判定截断，退回 keyset（截断=静默少采，见下面用法处）
 IDS_SHORT_TOL = 0.99
+# ★ 定向区间补采（`--oid-range lo:hi`）：**只把切分域的上下界换掉**，keyset / ids /
+#   `plan_units` 的切分逻辑一行不动（改切分口径 = 让历史 checkpoint 全部失配，属禁改项）。
+#   产物一律写独立 tag `<原tag>-r2`，与旧单元并存：先灰度 1 个区间逐行比对，
+#   一致再按区间轮转跑满全层；不一致直接回滚（旧单元包没被 --clobber 覆盖，才回滚得回）。
+OID_RANGE = None                                              # (lo, hi) 或 None
+try:
+    OID_RANGE = tuple(int(x) for x in (os.environ.get("PILOT_OID_RANGE") or "").split(":")) if \
+        os.environ.get("PILOT_OID_RANGE") else None
+except ValueError:
+    OID_RANGE = None
+if OID_RANGE is not None and len(OID_RANGE) != 2:
+    OID_RANGE = None
+OID_RANGE_TAG_SUFFIX = os.environ.get("PILOT_OID_RANGE_TAG_SUFFIX", "-r2")
 
 
 # ---------------- 断点续传的底座：单元 / 检查点 / 分批发 ----------------
 def _tag():
-    """Release tag：由 workflow 传入（collect-<run>-<layer>），本地跑则用 local- 前缀。"""
-    return os.environ.get("PILOT_RELEASE_TAG") or ("collect-local-%s" % CUR["id"])
+    """Release tag：由 workflow 传入（collect-<run>-<layer>），本地跑则用 local- 前缀。
+
+    ★ 定向区间补采（`--oid-range`）一律写独立 tag `<原tag>-r2`：
+      绝不和旧单元抢同一个 Release —— `gh release upload --clobber` 会把旧单元包
+      覆盖掉，覆盖了就没有比对基准，也就没法「不一致就回滚」。
+    """
+    t = os.environ.get("PILOT_RELEASE_TAG") or ("collect-local-%s" % CUR["id"])
+    if OID_RANGE and not t.endswith(OID_RANGE_TAG_SUFFIX):
+        t += OID_RANGE_TAG_SUFFIX
+    return t
 
 
 
@@ -847,7 +868,7 @@ def _unit_ids(api, batches, idx, log, prog, lock, limit=0):
     return rows, files, (";".join(errs) if errs else ""), expect
 
 
-def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False):
+def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range=None):
     global STRATEGY, UNIT_ROWS, GEOM_TYPE, RINGS_SKIP
     RINGS_SKIP = ""
     m = re.search(r"/(FeatureServer|MapServer)(/\d+)?$", url.rstrip("/"))
@@ -867,6 +888,25 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False):
     w_all = "(%s)" % defexpr if defexpr else "1=1"
     cnt = get_json(api + "/query?where=1%3D1&returnCountOnly=true&f=json", timeout=60)
     count = int(cnt.get("count") or 0)
+    count_full, w_est = count, w_all
+    if oid_range:
+        # 区间补采：分母换成「该区间内的上游行数」，否则 1M 行的区间会被拿去和 97.9M 行比
+        rlo, rhi = oid_range
+        conds = [w_all] if defexpr else []
+        if rlo is not None:
+            conds.append("%s>=%d" % (oid_field, int(rlo)))
+        if rhi is not None:
+            conds.append("%s<=%d" % (oid_field, int(rhi)))
+        w_est = " AND ".join(conds) or "1=1"
+        c_rng = _q(api, {"where": w_est, "returnCountOnly": "true", "f": "json"}, timeout=90)
+        try:
+            count = int(c_rng.get("count") or 0)
+        except Exception:                              # noqa: BLE001
+            count = 0
+            log("  ⚠ 区间计数取不到（%s）→ 本轮不判「行数齐不齐」"
+                % str(c_rng.get("__error__"))[:80])
+        log("  ◐ 定向区间 [%s, %s]：上游 %d 行（全层 %d 行），产物 tag 加 %s"
+            % (rlo, rhi, count, count_full, OID_RANGE_TAG_SUFFIX))
 
     ok_page, why = _probe_pagination(api, log)
     STRATEGY = "keyset" if ok_page else "ids"
@@ -905,9 +945,12 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False):
                 "bytes_per_row_est": round(bpr_ids, 1), "unit_bytes_cap": UNIT_BYTES,
                 "unit_rows_cap": cap_ids}
     else:
-        mn, mx, e = _oid_bounds(api, oid_field) if workers > 1 or count > UNIT_ROWS else (None, None, "small")
+        if oid_range and oid_range[0] is not None and oid_range[1] is not None:
+            mn, mx, e = int(oid_range[0]), int(oid_range[1]), ""      # 域由参数给定，不猜、不查
+        else:
+            mn, mx, e = _oid_bounds(api, oid_field) if workers > 1 or count > UNIT_ROWS else (None, None, "small")
         if mn is not None and mx is not None and mx > mn:
-            bpr, vmean, _n = estimate_bytes_per_row(api, w_all, log=log)
+            bpr, vmean, _n = estimate_bytes_per_row(api, w_est, log=log)
             units, cap = plan_units(count, mn, mx, bytes_per_row=bpr, kind="range")
             if cap < UNIT_ROWS:
                 log("  ⚠ 按字节切：行数上限 %d → %d（估 %.0f B/行 × 余量 %.1f，1.5 GB/单元）"
@@ -923,7 +966,9 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False):
             plan = {"kind": "range", "units": units, "bytes_per_row_est": round(bpr, 1),
                     "unit_bytes_cap": UNIT_BYTES, "unit_rows_cap": cap,
                     "vertices_mean_est": round(vmean, 1),
-                    "rings_skipped": RINGS_SKIP or None}
+                    "rings_skipped": RINGS_SKIP or None,
+                    # 纯展示字段（plan_sig 只看 kind+units，不受影响）：区间补采要能一眼看见域
+                    "oid_range": list(oid_range) if oid_range else None}
         else:
             units = [(None, None)]
             plan = {"kind": "single", "units": [[None, None]], "unit_bytes_cap": UNIT_BYTES,
@@ -1113,6 +1158,9 @@ def main():
     ap.add_argument("--fresh", action="store_true", help="忽略检查点，从头重采")
     ap.add_argument("--list", action="store_true")
     ap.add_argument("--cfg", help="图层配置文件（默认 collect/pilot_layers.json）")
+    ap.add_argument("--oid-range", metavar="LO:HI",
+                    help="定向区间补采：只采 OBJECTID 在 [LO,HI] 的行。只换切分域，不改切分逻辑；"
+                         "产物写独立 tag <原tag>-r2，与旧单元并存（灰度比对用）")
     a = ap.parse_args()
     cfg = json.load(open(a.cfg or CFG, encoding="utf-8"))
     if a.list:
@@ -1122,8 +1170,18 @@ def main():
     L = [x for x in cfg if x["id"] == a.layer]
     if not L:
         print("unknown layer"); return 2
-    global UNIT_ROWS
+    global UNIT_ROWS, OID_RANGE
     UNIT_ROWS = a.unit_rows
+    if a.oid_range:
+        try:
+            lo_s, hi_s = str(a.oid_range).split(":")
+            OID_RANGE = (int(lo_s), int(hi_s))
+        except Exception:                              # noqa: BLE001
+            print("--oid-range 需要 lo:hi 形式（如 1:1290000），拿到 %r" % a.oid_range)
+            return 2
+        if OID_RANGE[1] < OID_RANGE[0]:
+            print("--oid-range 的 hi 必须 >= lo（拿到 %s）" % a.oid_range)
+            return 2
     CUR.update(L[0])
     os.makedirs(os.path.join(OUTBASE, CUR["id"]), exist_ok=True)
     t0 = time.time()
@@ -1131,7 +1189,8 @@ def main():
     log("start %s" % CUR["url"][:90])
     _start_watchdog(log)
     if CUR["svc"] in ("FeatureServer", "MapServer"):
-        rows, count, err, parts = collect_arcgis_v2(CUR["url"], a.limit, log, a.workers, a.fresh)
+        rows, count, err, parts = collect_arcgis_v2(CUR["url"], a.limit, log, a.workers, a.fresh,
+                                                  oid_range=OID_RANGE)
     elif CUR["svc"] == "Socrata":
         rows, count, err, parts = collect_socrata(CUR["url"], a.limit, log)
     else:
@@ -1141,6 +1200,7 @@ def main():
     man = {"id": CUR["id"], "title": CUR["title"], "url": CUR["url"], "svc": CUR["svc"],
            "count": count, "rows": rows, "parts": parts, "diff": diff,
            "elapsed_s": elapsed, "err": err, "limit": a.limit, "strategy": STRATEGY,
+           "oid_range": list(OID_RANGE) if OID_RANGE else None,
            "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
     with open(os.path.join(OUTBASE, CUR["id"], "_manifest.json"), "w", encoding="utf-8") as f:
         json.dump(man, f, ensure_ascii=False, indent=1)
