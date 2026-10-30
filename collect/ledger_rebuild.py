@@ -333,6 +333,7 @@ def run_shard_jobs(repo: str, run_id: str) -> dict:
             m = SHARD_JOB_RE.match(j.get("name") or "")
             if m:
                 jobs[int(m.group(1))] = {"job_id": j.get("id"), "conclusion": j.get("conclusion"),
+                                         "run_id": str(run_id),
                                          "started_at": j.get("started_at"),
                                          "completed_at": j.get("completed_at")}
         if len(batch) < 100:
@@ -379,6 +380,7 @@ def annotate_shards(recs: list, shard_of: dict, sjobs: dict):
             cnt[r["status"]] = cnt.get(r["status"], 0) + 1
         canc_block.append({
             "shard": sn, "job_conclusion": sjobs[sn].get("conclusion"),
+            "run_id": sjobs[sn].get("run_id"),
             "job_id": sjobs[sn].get("job_id"),
             "started_at": sjobs[sn].get("started_at"),
             "completed_at": sjobs[sn].get("completed_at"),
@@ -437,15 +439,27 @@ def rebuild(stage: str, plan_path: str, cache: str, repo: str, refresh: bool,
 
     # ---- 片维度：哪片 cancelled、那片的层后来到底怎么了（必须留在账本上）
     shard_of = plan_shard_index(plan_path)
-    try:
-        sjobs = run_shard_jobs(repo, run_id)
-        rmeta = run_meta(repo, run_id)
-    except Exception as e:  # noqa: BLE001
-        print("[rebuild] ⚠ 取 run %s 的 job 结论失败：%s" % (run_id, str(e)[:120]), flush=True)
-        sjobs, rmeta = {}, {}
+    run_ids = [x.strip() for x in str(run_id or "").split(",") if x.strip()]
+    sjobs, runs_meta, merged = {}, [], {}
+    for rid in run_ids:
+        try:
+            one = run_shard_jobs(repo, rid)
+            meta = run_meta(repo, rid)
+            meta["shards"] = {str(n): j.get("conclusion") for n, j in sorted(one.items())}
+            runs_meta.append(meta)
+        except Exception as e:  # noqa: BLE001
+            print("[rebuild] ⚠ 取 run %s 的 job 结论失败：%s" % (rid, str(e)[:120]), flush=True)
+            continue
+        # 片号是每轮各自编的：同一片号在后续轮次里重跑过就以**后续轮**为准
+        for n, j in one.items():
+            merged.setdefault(n, []).append(j)
+            sjobs[n] = j
+    rmeta = runs_meta[-1] if runs_meta else {}
     cancelled, canc_block = annotate_shards(recs, shard_of, sjobs)
 
     run_block = dict(rmeta)
+    if len(runs_meta) > 1:
+        run_block["rounds"] = runs_meta
     if sjobs:
         run_block["shards"] = {str(n): j.get("conclusion") for n, j in sorted(sjobs.items())}
         run_block["shards_cancelled"] = cancelled
@@ -525,6 +539,22 @@ def render_doc(agg: dict) -> str:
     rb = agg.get("run") or {}
     cb = agg.get("cancelled_shards") or []
     L += ["## 二、片维度：哪片被 cancelled，那片的层到底怎么了", ""]
+    if rb.get("rounds"):
+        L += ["- 轮次（同号片以后续轮为准）：", "",
+              "| 轮 | run | 结论 | 起 | 止 | 片结论（success/cancelled/failure） |",
+              "|---|---|---|---|---|---|"]
+        for i, r in enumerate(rb["rounds"], 1):
+            sh = r.get("shards") or {}
+            cnt = {}
+            for c in sh.values():
+                cnt[c] = cnt.get(c, 0) + 1
+            summ = ("success %d / cancelled %d / failure %d"
+                    % (cnt.get("success", 0), cnt.get("cancelled", 0), cnt.get("failure", 0))
+                    if sh else "无片（计划/取数轮）")
+            L.append("| 第 %d 轮 | `%s` | %s | %s | %s | %s |"
+                     % (i, r.get("id"), r.get("conclusion"),
+                        (r.get("created_at") or "")[:16], (r.get("updated_at") or "")[:16], summ))
+        L += [""]
     if rb.get("id"):
         L += ["- run：`%s`（conclusion=**%s**，%s → %s）"
               % (rb["id"], rb.get("conclusion"), rb.get("created_at"), rb.get("updated_at"))]
@@ -537,12 +567,14 @@ def render_doc(agg: dict) -> str:
     else:
         L += ["- 未指定 `--run-id`，本账只看资产、不标片结论。"]
     if cb:
-        L += ["", "| 片 | job | 起 | 止 | 层 | ok | partial | failed | 声明 | 实采 | 覆盖率 |",
-              "|---|---|---|---|---|---|---|---|---|---|---|"]
+        L += ["", "> 层号归属按**首轮计划**切分；同号片在后续轮次里重跑过，以最后一轮 job 结论为准。", "",
+              "| 片 | 轮(run) | job | 起 | 止 | 层 | ok | partial | failed | 声明 | 实采 | 覆盖率 |",
+              "|---|---|---|---|---|---|---|---|---|---|---|---|"]
         for c in cb:
             cov = 100.0 * (c["rows"] or 0) / max(c["declared"] or 1, 1)
-            L.append("| %d | %s | %s | %s | %d | %d | %d | %d | %s | %s | %.1f%% |"
-                     % (c["shard"], c["job_id"], (c.get("started_at") or "-")[11:16],
+            L.append("| %d | `%s` | %s | %s | %s | %d | %d | %d | %d | %s | %s | %.1f%% |"
+                     % (c["shard"], c.get("run_id") or "-", c["job_id"],
+                        (c.get("started_at") or "-")[11:16],
                         (c.get("completed_at") or "-")[11:16], c["layers_n"], c["ok"],
                         c["partial"], c["failed"], f"{c['declared']:,}", f"{c['rows']:,}", cov))
         L += ["", "**逐层痕迹（cancelled 片里的每一层都在这里，没有一个凭空消失）**：", ""]
@@ -660,7 +692,8 @@ def main() -> int:
     ap.add_argument("--refresh", action="store_true", help="忽略 checkpoint 缓存，全部重下")
     ap.add_argument("--generated-at", default="", help="覆盖 generated_at（默认取最新资产时间）")
     ap.add_argument("--run-id", default="",
-                    help="本次采采的 workflow run id：取「片 → 结论」，把 cancelled 片标到逐层账上")
+                    help="采采的 workflow run id，可用逗号分隔多轮（cancelled 片 → 续跑轮），"
+                         "取「片 → 结论」标到逐层账上")
     ap.add_argument("--check", action="store_true", help="只比对现有输出是否一致，不写盘")
     a = ap.parse_args()
 
