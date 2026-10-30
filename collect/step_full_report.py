@@ -23,6 +23,12 @@ from datetime import datetime, timezone
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 TITLES = {"step04b": ("STEP04", "全州放量（大层 row_count>300,000 全量补采）"),
+          # 片文件名用 04b 前缀（collect/ledger/04b_shardNN.json）+ 汇总账本落 collect/04b_ledger.json，
+          # 与 workflow 找的文件名一致；两种写法都认。
+          "04b": ("STEP04B", "全州放量 04b（round-2 续跑：36 层 / 9 片）"),
+          "05b": ("STEP05B", "县市碎片 05b（5,000~300,000 行）"),
+          "07b": ("STEP07B", "碎片补齐 07b（1~4,999 行）"),
+          "10b": ("STEP10B", "宗地面层 batch2+ 10b（strong/weak 有效层）"),
           "step05b": ("STEP05", "县市碎片（5,000~300,000 行）全量补采"),
           "step07b": ("STEP07", "碎片补齐（1~4,999 行）全量补采"),
           "step10b": ("STEP10", "宗地面层 batch2+（strong/weak 有效层）")}
@@ -56,13 +62,37 @@ def collect_shards(files, plan):
 
 
 def expected_of(plan):
+    """计划里「本该有哪几片」。
+
+    full_plan.py 写的是 [{"shard":0,"layers":[...]}, ...]；早期/手写计划是 [[layer,...], ...]。
+    两种都要认，否则片号对不上、未完成片就漏报。
+    """
     shards = plan.get("shards")
     if isinstance(shards, list) and shards:
-        return list(range(len(shards)))
+        out = []
+        for i, s in enumerate(shards):
+            sid = s.get("shard") if isinstance(s, dict) else None
+            out.append(sid if isinstance(sid, int) else i)
+        return out
     n = plan.get("shards_n")
     if isinstance(n, int) and n > 0:
         return list(range(n))
     return []
+
+
+def planned_layers_of(plan, sid):
+    """某片计划了多少层（缺片时说得出「至少少了多少层」）。"""
+    shards = plan.get("shards")
+    if not isinstance(shards, list):
+        return None
+    for i, s in enumerate(shards):
+        if isinstance(s, dict):
+            key = s.get("shard")
+            if (key if isinstance(key, int) else i) == sid:
+                return len(s.get("layers") or [])
+        elif i == sid:
+            return len(s or [])
+    return None
 
 
 def main() -> int:
@@ -118,8 +148,7 @@ def main() -> int:
     for sid in sorted(set(expected) | set(shard_info)):
         si = shard_info.get(sid)
         if si is None:
-            planned = len(plan["shards"][sid]) if isinstance(plan.get("shards"), list) \
-                and sid is not None and sid < len(plan["shards"]) else None
+            planned = planned_layers_of(plan, sid)
             state, lost = "未完成：无账本（片被取消/没启动）", planned
             shard_rows.append((sid, planned, 0, 0, state))
             incomplete.append({"shard": sid, "cause": "no_ledger", "layers_planned": planned})

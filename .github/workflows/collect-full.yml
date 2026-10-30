@@ -210,29 +210,40 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          git config user.name  "collect-bot"
-          git config user.email "bot@users.noreply.github.com"
           STAGE="${{ inputs.stage }}"
-          DOC=$(ls docs/STEP0*-FULL-*.md 2>/dev/null | tail -1 || true)
-          git add -f collect/${STAGE}_ledger.json collect/ledger || true
-          [ -n "$DOC" ] && git add -f "$DOC" || true
-          if git diff --cached --quiet; then echo "无变化"; else
-            git commit -q -m "collect: ${STAGE} 全量收官账本 + 文档"
-          fi
+          # ★ 2026-10-30 run 41092912755 事故：merge 的账本生成成功了，但推送 6 次全败，
+          #   因为工作区里全是采集产物（download-artifact 落下的片账本、collect/progress/*.json），
+          #   `git rebase` 直接报 “cannot rebase: You have unstaged changes”（被 2>/dev/null 吞了），
+          #   重试 6 次只是重复同一个错误 → 账本一行没落地。
+          #   现在改成：产物先搬 /tmp → checkout -qf 硬对齐 origin/main → 搬回来 → 提交 → 推送。
+          rm -rf /tmp/push && mkdir -p /tmp/push/ledger /tmp/push/docs
+          cp -f "collect/${STAGE}_ledger.json" /tmp/push/ 2>/dev/null || true
+          cp -f collect/ledger/*.json /tmp/push/ledger/ 2>/dev/null || true
+          cp -f docs/*FULL-*.md /tmp/push/docs/ 2>/dev/null || true
           for i in $(seq 1 6); do
             git fetch -q origin main || true
-            if git rebase -q origin/main 2>/dev/null && git push -q origin HEAD:main; then
-              echo "✅ 已推送"; echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"; exit 0
+            git checkout -qf -B main origin/main
+            mkdir -p collect/ledger docs
+            cp -f /tmp/push/${STAGE}_ledger.json collect/ 2>/dev/null || true
+            cp -f /tmp/push/ledger/*.json collect/ledger/ 2>/dev/null || true
+            cp -f /tmp/push/docs/*FULL-*.md docs/ 2>/dev/null || true
+            git add -f "collect/${STAGE}_ledger.json" collect/ledger docs 2>/dev/null || true
+            if git diff --cached --quiet; then echo "无变化（账本已在 main）"; exit 0; fi
+            git -c user.name=collect-bot -c user.email=bot@users.noreply.github.com \
+                commit -q -m "collect: ${STAGE} 全量收官账本 + 文档"
+            if git push -q origin HEAD:main; then
+              echo "✅ 已推送（第 $i 次）"; echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"; exit 0
             fi
-            git rebase --abort 2>/dev/null || true
-            sleep $((i*3 + RANDOM % 4))
+            echo "⚠️ push 第 $i 次被拒，重试…"; sleep $((i*3 + RANDOM % 4))
           done
-          echo "::warning::账本推送失败（文档仍在 artifact 里）"
+          echo "::error::账本推送失败（6 次）—— 账本未上 main，需人工补"
+          exit 1
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: final-${{ inputs.stage }}
           path: |
+            docs/*FULL-*.md
             docs/STEP0*-FULL-*.md
             collect/${{ inputs.stage }}_ledger.json
             collect/ledger
@@ -244,6 +255,8 @@ jobs:
         if: always()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STAGE: ${{ inputs.stage }}   # ★ 必须在这里注入：脚本里读 os.environ["STAGE"]，
+                                       #   只在 shell 里赋值不导出会 KeyError（41092912755 就是这么红的）
         run: |
           set -euo pipefail
           STAGE="${{ inputs.stage }}"

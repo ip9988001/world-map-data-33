@@ -108,6 +108,25 @@ class TestFullReportTolerance(unittest.TestCase):
         self.assertEqual(led["shards_incomplete"], [])
         self.assertTrue(led["complete"])
 
+    def test_plan_dict_shards_schema(self):
+        """full_plan.py 真实写法：[{"shard":0,"layers":[...]}] —— 片号与层数都要认得。"""
+        json.dump({"schema": "plan/v1", "stage": "step04b", "size": 2, "layers_n": 4,
+                   "shards_n": 2, "declared_rows": 200, "unit_rows": 1000,
+                   "tag": "collect-step04-{layer}",
+                   "shards": [{"shard": 0, "layers": [{"layer": "a"}, {"layer": "b"}]},
+                              {"shard": 1, "layers": [{"layer": "c"}, {"layer": "d"}]}]},
+                  open(self.plan, "w", encoding="utf-8"), ensure_ascii=False)
+        self._led(0, [{"layer": "a", "status": "ok", "rows": 10, "declared": 10}],
+                  partial=True, planned=2)
+        r = self._run()
+        self.assertEqual(r.returncode, 0, r.stderr)
+        led = json.load(open(os.path.join(self.tmp, "collect", "step04b_ledger.json"), encoding="utf-8"))
+        self.assertEqual(led["shards_incomplete"], [0, 1])
+        detail = {d["shard"]: d for d in led["shards_incomplete_detail"]}
+        self.assertEqual(detail[1]["layers_planned"], 2)   # 缺片也要说出「本该 2 层」
+        doc = open(os.path.join(self.tmp, "docs", "STEP04-FULL-2026-10-30-shards.md"), encoding="utf-8").read()
+        self.assertIn("| 1 | 2 | 0 | 0 | 未完成", doc)
+
     def test_no_shard_but_plan_still_reports(self):
         """一片账本都没有（全被 cancel）→ 仍写真值：全片未完成，退出码 0。"""
         r = self._run()
