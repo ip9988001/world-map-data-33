@@ -275,6 +275,27 @@ def judge(layer: str, declared, rel, ck, ck_err: str) -> dict:
     return rec
 
 
+def scope_layers(ids: list, releases: dict, prefix: str) -> list:
+    """本次账本该算哪些层。
+
+    计划里有就用计划；**没有计划时只能拿 Release 里真实存在的 tag 反推层 id，
+    并且必须去掉 tag 前缀** —— 2026-10-30 实测踩过：直接 sorted(releases) 拿到的是
+    `collect-step04-<layer>`，再去 releases.get(prefix + layer) 就永远 None，
+    238 个真资产的层被整片标成 empty（empty 会掩盖 failed，是最坏的一种静默）。
+    """
+    if ids:
+        return list(ids)
+    return [t[len(prefix):] for t in sorted(releases) if t.startswith(prefix)]
+
+
+def extras_not_in_plan(ids: list, releases: dict, prefix: str) -> list:
+    """前缀下真实存在、但不在本次计划里的 tag（往轮 pilot / 其他阶段的产物）。"""
+    if not ids:
+        return []
+    idset = set(ids)
+    return [t for t in sorted(releases) if t[len(prefix):] not in idset]
+
+
 def rebuild(stage: str, plan_path: str, cache: str, repo: str, refresh: bool,
             jobs: int, max_pages: int, generated_at: str = "") -> dict:
     prefix, tag, title = STAGE_TAG[stage]
@@ -286,12 +307,11 @@ def rebuild(stage: str, plan_path: str, cache: str, repo: str, refresh: bool,
     releases = list_releases(repo, prefix, max_pages=max_pages)
     print("[rebuild] Release 扫描：前缀 %s 命中 %d 个 tag" % (prefix, len(releases)), flush=True)
 
-    scope = ids or sorted(releases)
-    todo = [i for i in scope if releases.get(prefix + i)]
+    scope = scope_layers(ids, releases, prefix)
 
     def work(layer: str) -> dict:
         rel = releases.get(prefix + layer)
-        declared = dec.get(layer) if ids else None
+        declared = dec.get(layer)          # 清单声明与「有没有计划文件」无关
         ck, err = None, ""
         if rel:
             a = next((x for x in rel["assets"] if x["name"].endswith("-checkpoint.json")), None)
@@ -315,7 +335,7 @@ def rebuild(stage: str, plan_path: str, cache: str, repo: str, refresh: bool,
         stamps = [r["last_upload"] for r in recs if r.get("last_upload")]
         generated_at = max(stamps) if stamps else "unknown"
 
-    extras = [t for t in sorted(releases) if not ids or t[len(prefix):] not in set(ids)]
+    extras = extras_not_in_plan(ids, releases, prefix)
     agg = {
         "schema": "collect-ledger-rebuild/v1",
         "stage": stage,

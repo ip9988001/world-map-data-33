@@ -12,7 +12,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from ledger_rebuild import judge                      # noqa: E402
+from ledger_rebuild import judge, scope_layers, extras_not_in_plan   # noqa: E402
 
 
 def rel(tag="collect-step04-L", units=(0,), ckpt=True, size=1000):
@@ -135,3 +135,46 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
+# ---------------------------------------------------------------- 无计划文件的兜底路径
+def test_scope_without_plan_strips_tag_prefix():
+    """无计划文件时必须用「去前缀的层 id」——否则 releases.get(prefix+layer) 恒 None，
+    真资产层会被整片误标成 empty（2026-10-30 实测 238 层踩过）。"""
+    rels = {"collect-step04-a": {"tag": "collect-step04-a", "assets": []},
+            "collect-step04-b": {"tag": "collect-step04-b", "assets": []}}
+    got = scope_layers([], rels, "collect-step04-")
+    assert got == ["a", "b"], got
+    assert all(("collect-step04-" + lid) in rels for lid in got)
+
+
+def test_scope_with_plan_keeps_plan_order():
+    rels = {"collect-step04-a": {}, "collect-step04-z": {}}
+    assert scope_layers(["z", "a"], rels, "collect-step04-") == ["z", "a"]
+
+
+def test_extras_empty_when_no_plan():
+    rels = {"collect-step04-a": {}, "collect-step04-b": {}}
+    assert extras_not_in_plan([], rels, "collect-step04-") == []
+
+
+def test_extras_lists_out_of_plan_tags():
+    rels = {"collect-step04-a": {}, "collect-step04-old": {}}
+    assert extras_not_in_plan(["a"], rels, "collect-step04-") == ["collect-step04-old"]
+
+
+# ---------------------------------------------------------------- unittest 收口
+# 这个文件是「函数 + 自己的 runner」写法，`python3 -m unittest discover` 收不到函数，
+# 于是 ci-smoke 的单测那一步其实从没跑过这些契约（2026-10-30 发现）。
+# 这里把模块级 test_* 挂到一个 TestCase 上，让 discover 也能跑 —— 不改测试写法。
+import unittest as _unittest  # noqa: E402
+
+
+class LedgerRebuildContract(_unittest.TestCase):
+    pass
+
+
+for _name, _fn in list(globals().items()):
+    if callable(_fn) and (_name.startswith("test_") or _name.startswith("t_")):
+        _alias = _name if _name.startswith("test_") else "test_" + _name
+        setattr(LedgerRebuildContract, _alias, staticmethod(_fn))
