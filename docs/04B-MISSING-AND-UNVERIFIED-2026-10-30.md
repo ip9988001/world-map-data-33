@@ -23,7 +23,7 @@
 
 1. **上游全活**，且返回行数与 `layer_plan.csv` 的声明值**逐层完全相等**（7/7 相等，无一例外）
    ⇒ 这 25,912,304 行不是「上游没数据」，是**我们一行都没采到**。
-2. **Release 上零资产**（`parts_assets=0`），所以不是「采了没上传」，是**压根没采**：
+2. **Release 上零资产**（`parts_assets=0`，取证时刻的快照），所以不是「采了没上传」，是**当时压根没采**：
    6 层挂在 `cancelled` 片（另 1 层在 failure 片），与「片被掐成 cancelled → 整片零痕迹」的历史事故同源。
 3. **它们已在跑**：定向 run `41121952357`（feat/gold-intake，20:17 起，未取消）的 plan 是 3 片 × 6 层，
    正好覆盖这 7 层 + 6 层 unverified + `FLEXMOBILE`。跑完按 `ledger_rebuild --check` 复验。
@@ -37,16 +37,27 @@
 |---|---|---|
 | 轮 1 | 2026-10-30T20:57:34Z | — |
 | 轮 2 | 2026-10-30T21:29:08Z | 31.6 分钟 |
-| 轮 3 | 待跑（>= 21:59Z） | — |
+| 轮 3 | 2026-10-30T22:00:13Z | 31.1 分钟 |
 
-| 层 | 轮次 | 可达次数 | HTTP / 错误 | 当前判定 |
+| 层 | 轮次 | 可达次数 | HTTP / 错误 | 终判 |
 |---|---|---|---|---|
-| `tyil_gov_traditional_rest_services_cookVwrDynmc_MapServer_63` | 2 | 0 | 超时 / 超时 | pending_rounds |
-| `yil_gov_traditional_rest_services_addressZipCode_MapServer_0` | 2 | 0 | 超时 / 超时 | pending_rounds |
-| `rvices_location_Address_Points_Modifications_FeatureServer_0` | 2 | 0 | 超时 / 超时 | pending_rounds |
-| `is4_ocfl_net_arcgis_rest_services_AGOL_Open_Data_MapServer_0` | 2 | 0 | 超时 / 超时 | pending_rounds |
-| `g_rest_services_Basemap_Address_Points_EagleView_MapServer_0` | 2 | 0 | **403 / 403** | pending_rounds |
-| `rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5` | 2 | 0 | 超时 / 超时 | pending_rounds |
+| `tyil_gov_traditional_rest_services_cookVwrDynmc_MapServer_63` | 3 | 0 | 超时 ×3 | unreachable_all_rounds |
+| `yil_gov_traditional_rest_services_addressZipCode_MapServer_0` | 3 | 0 | 超时 ×3 | unreachable_all_rounds |
+| `rvices_location_Address_Points_Modifications_FeatureServer_0` | 3 | 0 | 超时 ×3 | **见下：CI 侧可达（已采成）** |
+| `is4_ocfl_net_arcgis_rest_services_AGOL_Open_Data_MapServer_0` | 3 | 0 | 超时 ×3 | unreachable_all_rounds |
+| `g_rest_services_Basemap_Address_Points_EagleView_MapServer_0` | 3 | 0 | **403 ×3** | unreachable_all_rounds（服务活着、不给读） |
+| `rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5` | 3 | 0 | 超时 ×3 | unreachable_all_rounds |
+
+### ⚠️ 重要限定：这里是「从本机不可达」，不等于「从 CI 不可达」
+
+反例已出现：`rvices_location_Address_Points_Modifications_FeatureServer_0` 本机 3 轮全超时，
+但定向 run `41121952357` 在 GitHub runner 上把同一层采到 **1,369,487 行 / 2 个单元包**
+（`ledger_rebuild` 里已转 `ok`）。所以：
+
+- 本文的 `unreachable_all_rounds` 只能当**本机观测**结论；
+- 去留判据要加一条：**若该层在任一采集轮里出现了单元包/行数，就不再是 `unverified`**，按实测行数重判；
+- 这也是「不许拿不可达当 `empty`」的正面证据：说「不可达」的层，换个出口就能采到。
+
 
 判据（写死在脚本里）：
 
@@ -95,3 +106,35 @@ HTTP 200  {"error":{"code":499,"message":"Token Required","messageCode":"GWM_000
 ① 定向 run `41121952357` 跑完且这 9 层（7 missing + 2 partial）全部 `ok` 或给出上游确证的短采理由；
 ② NAD view 层拿到 token 复核声明值（或按 `unverified` 移出分母并写进文档）；
 ③ 6 层 `unverified` 走完 3 轮重测并给出终判。
+
+## 五、现状更新（21:45 → 22:05 UTC 快照）—— 上面是「刚取证时」的状态，这里是「正在被填」的状态
+
+⚠️ 先纠正我自己的一个误读：**不能拿 `gh release list` 的 `created_at` 判断有没有在采** ——
+往**已存在**的 tag 继续传资产不会改这个时间。要看「有没有在采」，唯一可信的是
+`ledger_rebuild` 里的 `parts_assets`（资产数）。按资产数看，定向 run 一直在干活：
+
+| 层 | 取证时 | 21:45 现状 | 说明 |
+|---|---|---|---|
+| `UyC7jAmu_…_LBRSforLocator_FeatureServer_0` | failed / 2,773,122 行 / 3 包 | **ok / 5,573,001 行 / 7 包** | = 上游 count，缺口补齐 |
+| `fD_…_COTGEO_ADDRESS_POINT_FeatureServer_0` | partial / 479,000 / 1 包 | **ok / 525,381 / 1 包** | = 上游 count |
+| `ces_Ky_911_Site_Structure_…_MapServer_0` | failed / 2,416,763 / 3 包 | **ok / 2,489,597 / 4 包** | 已补齐 |
+| `rvices_location_Address_Points_Modifications_FeatureServer_0` | unverified（403）/ 0 包 | **ok / 1,369,487 / 2 包** | 那层 403 是可采的 |
+| `t01_…_PlatTracker_PT365_PLAT_MAPPING_MapServer_5` | partial / 310,418 | partial / 310,520 | 仍差 4,524 |
+| `_secure_…_NC1Map_Addresses_MapServer_0@未定位-1` | missing / 0 行 / 0 包 | **6,648,000 行 / 4 包（进行中）** | 已在采，未收官 |
+
+口径变化（`ledger_rebuild` raw 口径；两次快照都不含任何 run-id 误输入）：
+
+```
+          rows             gap           gap_pct        ok/partial/failed
+21:45  495,110,230      85,696,256       14.7547       254 / 3 / 15
+22:05  497,330,251      83,476,235       14.3725       255 / 3 / 14     ← 定向 run 仍在跑，数字还会动
+```
+
+已转 `ok` 的层（含 `missing` 转正）：
+`ervices_us_mn_state_mngeo_loc_addresses_open_FeatureServer_0@未定位-1`
+**2,220,021 行 = 上游 count**（原来 0 行 0 包）；`_services_AGOL_AddressPts_for_NG911AddressFinder_MapServer_0`
+3,618,012 行（= 声明）；`_secure_…_NC1Map_Addresses@未定位-1` 已有 6,648,000 行 / 4 包（未收官）。
+
+⇒ 所以「complete 不成立」是**当下判词**，不是终局：缺口正在被定向 run 填。
+等 `41121952357` 跑完（job 上限 20:17 + 350 min）再按 ① 复验一次 `ledger_rebuild --check`，
+IDENTICAL 才叫「账本对资产说真话」。
