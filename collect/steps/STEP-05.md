@@ -56,7 +56,8 @@ python3 collect/supervisor.py --kick 05 --workers 4 --offset 0 --size 100
   "state_exclude": [
    "未定位",
    ""
-  ]
+  ],
+  "skip_done": true
  },
  "workers": 4,
  "unit_rows": 100000,
