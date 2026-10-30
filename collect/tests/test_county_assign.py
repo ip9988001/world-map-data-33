@@ -86,3 +86,85 @@ class TestOutputs(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestStatePolicy(unittest.TestCase):
+    """州口径（2026-10-30 裁定）：清单州为准，属性州只做校验，跨州溢出合法。"""
+
+    def test_norm_state_variants(self):
+        self.assertEqual(C.norm_state("Kentucky"), "KY")
+        self.assertEqual(C.norm_state("KY"), "KY")
+        self.assertEqual(C.norm_state(" ky "), "KY")
+        self.assertEqual(C.norm_state("KY 911"), "KY")
+        self.assertEqual(C.norm_state("未定位"), "")
+        self.assertEqual(C.norm_state(None), "")
+        self.assertEqual(C.norm_state("ZZ"), "")
+
+    def test_conflict_uses_list_state_as_authority(self):
+        """肯塔基层被清单标成 IN、数据里是 KY → 记 conflict，但清单值仍是 IN（不改判）"""
+        a = C.state_verdict("ces_Ky_911_x", "IN", "KY", "KY", rows=1659731, rows_off=1659731)
+        self.assertEqual(a["kind"], "conflict")
+        self.assertEqual(a["list_state"], "IN")
+        self.assertEqual(a["attr_state"], "KY")
+        self.assertEqual(a["rows"], 1659731)
+
+    def test_list_missing_is_anomaly(self):
+        a = C.state_verdict("x", "", "KY", "KY", rows=10, rows_off=0)
+        self.assertEqual(a["kind"], "list_missing")
+
+    def test_geo_conflict_when_dominant_county_state_differs(self):
+        a = C.state_verdict("x", "IN", "", "KY", rows=100, rows_off=100)
+        self.assertEqual(a["kind"], "geo_conflict")
+
+    def test_cross_state_spillover_is_not_anomaly(self):
+        """清单/属性/县多边形三者一致时无 anomaly（哪怕有跨州行，见 rows_off_state）"""
+        self.assertEqual(C.state_verdict("x", "KY", "KY", "KY", rows=100, rows_off=7), {})
+
+    def test_attr_state_sampled_from_named_column(self):
+        """属性州取自 field-map 点名的真实列；元数据型 [[layer_meta.state]] 不算数据列"""
+        p = C.StateProbe("x", {"state_abbr": {"src": "State"}})
+        for v in ("Kentucky", "KY", "Kentucky", ""):
+            p.feed({"raw": {"State": v}})
+        self.assertEqual(p.top(), "KY")
+        self.assertEqual(p.col, "State")
+        p2 = C.StateProbe("y", {"state_abbr": {"src": "[[layer_meta.state]]"}})
+        p2.feed({"raw": {"OBJECTID": 1}})
+        self.assertEqual(p2.top(), "")
+
+    def test_geo_top_state(self):
+        self.assertEqual(C.geo_top_state({"21": 100, "18": 5}), "KY")
+        self.assertEqual(C.geo_top_state({}), "")
+
+
+class TestResumeContract(unittest.TestCase):
+    def test_old_verdict_is_not_done(self):
+        """v2 结果（没有 verdict_ver）不算完成 —— 口径变了必须复核"""
+        self.assertFalse(C.is_done({"status": "ok"}))
+        self.assertFalse(C.is_done({"status": "ok", "verdict_ver": 2}))
+        self.assertFalse(C.is_done({"status": "ok", "verdict_ver": C.VERDICT_VER,
+                                    "max_seconds_hit": True}))
+        self.assertFalse(C.is_done({"status": "partial", "verdict_ver": C.VERDICT_VER}))
+        self.assertTrue(C.is_done({"status": "ok", "verdict_ver": C.VERDICT_VER}))
+
+    def test_suspect_threshold(self):
+        """UNLOCATED 占比 > 50% 才是 suspect；边界值 50% 不算"""
+        self.assertEqual(C.SUSPECT_UNLOC_PCT, 50.0)
+
+
+class TestSnapshot(unittest.TestCase):
+    def test_assets_of_reads_snapshot_without_api(self):
+        """快照命中时不许打 API（1,158 层 × 4 tag = 4,600 次会撞配额）"""
+        import tempfile
+        d = tempfile.mkdtemp()
+        fp = os.path.join(d, "release-snapshot.json")
+        json.dump({"map": {"collect-step10-L1": [{"n": "L1-u00000.tar.gz", "u": "", "s": 1}]}},
+                  open(fp, "w"))
+        old = (C.SNAPSHOT_F, C._SNAP["m"])
+        try:
+            C.SNAPSHOT_F, C._SNAP["m"] = fp, None
+            self.assertEqual(len(C.assets_of("collect-step10-L1")), 1)
+            self.assertEqual(C.assets_of("collect-step10-nope"), [])
+        finally:
+            C.SNAPSHOT_F, C._SNAP["m"] = old
+            import shutil
+            shutil.rmtree(d, ignore_errors=True)

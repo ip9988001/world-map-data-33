@@ -1,0 +1,12 @@
+{
+ "at": "2026-10-30T13:20:00Z",
+ "what": "断点续跑实测：6 层小样，跑 12 秒后 kill -9，重启同命令",
+ "killed_after_s": 12,
+ "layers_before": 4,
+ "skipped": 4,
+ "todo": 2,
+ "rows_before": 20259,
+ "rows_after": 10387,
+ "verdict": "重启后「跳过已完成 4 层」，只跑剩余 2 层，行数相加与 6 层计划一致（30,646 行）；已完成层的 rows-<layer>.json 未重写（mtime 不变），单元级 .done 标记同样生效",
+ "progress_dir": "/tmp/ct-prog-resume（隔离目录，避免污染全量跑的 .done）"
+}
