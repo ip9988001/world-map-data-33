@@ -21,7 +21,7 @@ on:
       workers:      { description: "层内并发", default: "4" }
       unit_rows:    { description: "单元行数（区间 ≤ 它 → 恰好 1 个单元）", default: "1000000" }
       tag_prefix:   { description: "Release tag 前缀", default: "collect-step04-" }
-      layer_timeout:{ description: "单层墙钟上限（分钟）", default: "90" }
+      layer_timeout: { description: "单层墙钟上限（分钟）", default: "90" }
 
 permissions:
   contents: write
