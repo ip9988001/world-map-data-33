@@ -65,3 +65,43 @@ python3 collect/ledger_rebuild.py --stage 04b --plan collect/ledger/04b_plan.jso
   --out collect/ledger/step04b_rebuilt.json \
   --doc docs/STEP04-FULL-2026-10-30.md --check
 ```
+
+## 五、停车线：07b 之后断开（2026-10-30 定案）
+
+**口径**：只把点类 `04b → 05b → 07b` 采完就停。`08`（去重算真实地址数）、`09`（增量拉变更）、
+`10b`（宗地 8,116 层 / 20~85 GB）、几何，**一律不自动接**，等口号再开。
+
+改之前有两处会自动越界，叠加起来正是「一停就漏」：
+
+| # | 原状 | 后果 |
+|---|---|---|
+| 1 | 接续表 `case "$STAGE" in 04b) NEXT=05b ;; 05b) NEXT=07b ;; 07b) NEXT=10b ;; esac` | 07b 全绿 → 自动派 **10b 宗地**（20~85 GB） |
+| 2 | 接续那行硬编码 `gh workflow run ... -f chain=1` | 接续出去的子 run 自己也带 chain=1 → 一路级联到底，人没有插手的缝 |
+
+**现在的实现**（唯一真值 `collect/chain_policy.py`，11 条单测 `collect/tests/test_chain_policy.py`）：
+
+| 约束 | 内容 |
+|---|---|
+| ① 接续表 | `04b→05b`、`05b→07b`、**`07b→（空）`**、`10b→（空）` |
+| ② 允许清单 | `ALLOWED = ("05b","07b")`；`NEXT` 若不在这两个里（例如有人手滑写回 `10b`）→ `stop / next_not_in_allowlist` |
+| ③ 子 run chain | `CHILD_CHAIN = {04b:0, 05b:0, 07b:0, 10b:0}` → **单跳，不级联**；要两跳必须人改这个表并 review |
+| ④ 重阶段闸门 | `plan` job 第一步：`stage=10b` 且 `authorize_heavy != 1` → 直接 `::error::` 失败，谁也派不出去 |
+| ⑤ 默认值 | `chain` 输入默认 **`0`**（原来默认 1）→ 手动 dispatch 不带 `-f chain=1` 就绝不接续 |
+
+workflow 侧只做「读结论 + 执行」：`python3 collect/chain_policy.py --stage $STAGE --chain ${{ inputs.chain }} --write-env /tmp/chain.env`
+→ `source` 后按 `CHAIN_DECIDE / CHAIN_NEXT / CHAIN_CHILD_CHAIN` 决定是否 `gh workflow run`。
+条目级的「片齐 / failed=0 / complete=true」三道闸门**原样保留**在前，策略表只管「往哪走」。
+
+**自证（dry-run，不派任何 run）**：
+
+```bash
+python3 collect/chain_policy.py --all --dry-run
+# [chain] stage=04b next=05b child_chain=0 decide=dispatch  → -f stage=05b -f chain=0
+# [chain] stage=05b next=07b child_chain=0 decide=dispatch  → -f stage=07b -f chain=0
+# [chain] stage=07b next=-   child_chain=0 decide=stop      reason=no_next_stage
+# [chain] stage=10b next=-   child_chain=0 decide=stop      reason=no_next_stage
+```
+
+**已知的「旧 YAML 影子」**：run `41123309047`（05b，20:27 派，`-f chain=1`）用的是 `7ed74c8` 的旧
+workflow —— 它自己的 merge 仍按旧表判「05b→07b」。但它 dispatch 子 run 时是 `--ref main`，
+07b 会读到**新版** workflow ⇒ 07b 到停车线即停，不会落到 10b。这也是「接续表必须进 main 才算数」的原因。

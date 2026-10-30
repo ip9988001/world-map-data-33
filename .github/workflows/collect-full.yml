@@ -1,6 +1,13 @@
 name: collect-full
 
-# 全量补采 · 四阶段连续滚（step04b → 05b → 07b → 10b），全部在 runner 上跑。
+# 全量补采 · 四阶段滚（step04b → 05b → 07b，**到此为止**），全部在 runner 上跑。
+#
+# ★ 停车线（2026-10-30 定案，改之前先看 collect/chain_policy.py）：
+#   只把点类 04b → 05b → 07b 采完就停。**07b 跑完不许自动接 10b（宗地 8,116 层 / 20~85 GB）**，
+#   08（去重）/ 09（增量）/ 10b / 几何一律等口令。
+#   接续表与允许清单的唯一真值是 `collect/chain_policy.py`（有单测）：
+#     ① 07b 的 NEXT 为空 ② 允许清单只放 05b / 07b ③ 接续出去的子 run 一律 chain=0（单跳，不级联）
+#   另外 10b 派发前还有 `authorize_heavy=1` 硬闸门。
 #
 # 为什么是「分片」而不是「一层一个 matrix job」：GitHub matrix 硬上限 256 job/run，
 # 而本仓剩 272/2,770/667/3,898 层。所以 matrix 的单元是**片**：
@@ -12,12 +19,16 @@ name: collect-full
 on:
   workflow_dispatch:
     inputs:
-      stage:        { description: "04b / 05b / 07b / 10b", default: "04b" }
+      stage:        { description: "04b / 05b / 07b / 10b（10b 需同时给 authorize_heavy=1）", default: "04b" }
       size:         { description: "每片层数（0=按阶段默认）", default: "0" }
       workers:      { description: "层内并发线程", default: "4" }
       unit_rows:    { description: "单元行数（0=按 steps.json）", default: "0" }
       max_shards:   { description: "最多跑几片（0=全部，灰度用）", default: "0" }
-      chain:        { description: "1=本阶段全绿后自动接续下一阶段", default: "1" }
+      # ★ 默认 0（2026-10-30 改）：不主动接续。要接续必须显式 -f chain=1。
+      #   接续出去的子 run 只带 chain=0（单跳），见 collect/chain_policy.py。
+      chain:        { description: "1=本阶段全绿后接续下一阶段（子 run 强制 chain=0，仅一跳）", default: "0" }
+      # ★ 重阶段闸门：10b（宗地 8,116 层 / 20~85 GB）默认关闭，必须显式 -f authorize_heavy=1 才可派。
+      authorize_heavy: { description: "1=授权重阶段（10b 宗地）；其余阶段忽略", default: "0" }
       # ★ cancelled 片续跑入口：逗号分隔的层 id。这些层即使 done_layers 判「完成」也强制重跑。
       #   为什么需要：cancelled 片里的层会留下「单元标完成、产物没上传」或「计划期口径差」
       #   的半截状态，done_layers（只看 tag+checkpoint）看不见 → 不定点重跑就永久缺口。
@@ -60,6 +71,16 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: "3.11" }
       - run: pip install --quiet pyyaml
+      # ★ 重阶段闸门（2026-10-30 定案）：10b = 宗地 8,116 层 / 20~85 GB，属于「等口号」范围。
+      #   不加这一步，任何人 `-f stage=10b` 就能把它放出去；加了之后必须同时给 authorize_heavy=1。
+      - name: 重阶段闸门（10b 默认关闭）
+        run: |
+          set -euo pipefail
+          if [ "${{ inputs.stage }}" = "10b" ] && [ "${{ inputs.authorize_heavy }}" != "1" ]; then
+            echo "::error::10b（宗地 8,116 层 / 20~85 GB）默认关闭：须显式 -f authorize_heavy=1 才可派。08/09/10b/几何一律等口号。"
+            exit 1
+          fi
+          python3 collect/chain_policy.py --all --dry-run   # 顺带自证策略模块可导入、表未变
       - id: p
         name: 算待采层 + 切片
         env:
@@ -316,8 +337,12 @@ jobs:
         run: |
           set -euo pipefail
           STAGE="${{ inputs.stage }}"
-          NEXT=""
-          case "$STAGE" in 04b) NEXT=05b ;; 05b) NEXT=07b ;; 07b) NEXT=10b ;; esac
+          # ★ 接续策略的唯一真值在 collect/chain_policy.py（带单测）：
+          #   04b→05b→07b，**07b 之后为空**；允许清单只放 05b/07b；子 run 一律 chain=0。
+          #   这里不再写 case 表，也不再硬编码 -f chain=1（那是 07b 会派出 10b 的根因）。
+          python3 collect/chain_policy.py --stage "$STAGE" --chain "${{ inputs.chain }}" \
+            --write-env /tmp/chain.env
+          . /tmp/chain.env   # CHAIN_DECIDE / CHAIN_NEXT / CHAIN_CHILD_CHAIN / CHAIN_REASON
           LED="collect/${STAGE}_ledger.json"
           if [ ! -f "$LED" ]; then
             echo "::error::$STAGE 没有汇总账本（$LED）→ 不接续，请查 merge 日志"
@@ -336,26 +361,28 @@ jobs:
           { echo "### $STAGE 判定";
             echo "- 层 $N / ok $OK / empty $EMPTY / partial $PARTIAL / failed $FAILED / skipped $SKIP";
             echo "- 片：应有 $NEXP / 有账本 $NREP / **未完成 $INC**（片号 $INCLIST）";
-            [ "$INC" = "0" ] || echo "- ⛔ 未完成片存在 → 禁止自动接续 ${NEXT:-（无下一阶段）}";
+            [ "$INC" = "0" ] || echo "- ⛔ 未完成片存在 → 禁止自动接续 ${CHAIN_NEXT:-（无下一阶段）}";
+            echo "- 接续策略：decide=$CHAIN_DECIDE reason=$CHAIN_REASON next=${CHAIN_NEXT:-（无）} 子 run chain=$CHAIN_CHILD_CHAIN";
           } >> "$GITHUB_STEP_SUMMARY"
           if [ "$INC" != "0" ]; then
-            echo "::error::$STAGE 有 $INC 片未完成（片号 $INCLIST，账本 shards_incomplete）→ 禁止接续 $NEXT；先 force_layers 补跑"
+            echo "::error::$STAGE 有 $INC 片未完成（片号 $INCLIST，账本 shards_incomplete）→ 禁止接续 ${CHAIN_NEXT:-（无）}；先 force_layers 补跑"
             exit 0
           fi
           if [ "$FAILED" != "0" ]; then
-            echo "::error::$STAGE 有 $FAILED 层 failed → 禁止接续 $NEXT（账本已落，逐条原因见 docs）"
+            echo "::error::$STAGE 有 $FAILED 层 failed → 禁止接续 ${CHAIN_NEXT:-（无）}（账本已落，逐条原因见 docs）"
             exit 0
           fi
           if [ "$COMPLETE" != "1" ]; then
-            echo "::error::$STAGE 账本 complete=false（片齐、failed=0，但仍有 partial/未完成标记）→ 禁止接续 $NEXT"
+            echo "::error::$STAGE 账本 complete=false（片齐、failed=0，但仍有 partial/未完成标记）→ 禁止接续 ${CHAIN_NEXT:-（无）}"
             exit 0
           fi
-          if [ "${{ inputs.chain }}" != "1" ] || [ -z "$NEXT" ]; then
-            echo "本阶段收敛（片齐 + failed=0），不接续（chain=${{ inputs.chain }}，next=${NEXT:-无}）"; exit 0
+          if [ "$CHAIN_DECIDE" != "dispatch" ]; then
+            echo "本阶段收敛（片齐 + failed=0），不接续（chain=${{ inputs.chain }}，reason=$CHAIN_REASON，next=${CHAIN_NEXT:-无}）"
+            exit 0
           fi
-          echo "✅ $STAGE 全绿 → 自动接续 $NEXT"
+          echo "✅ $STAGE 全绿 → 接续 $CHAIN_NEXT（子 run chain=$CHAIN_CHILD_CHAIN，单跳不级联）"
           gh workflow run collect-full.yml --repo "$GITHUB_REPOSITORY" --ref main \
-            -f stage="$NEXT" -f chain=1 -f workers=4
+            -f stage="$CHAIN_NEXT" -f chain="$CHAIN_CHILD_CHAIN" -f workers=4
 
   # ===================================================================
   # 账本重建（手动入口：rebuild_ledger=1）。

@@ -1,0 +1,37 @@
+{
+ "schema": "07b-overlap/v1",
+ "at": "2026-10-30T22:14:28Z",
+ "source": {
+  "plan": "collect/full_plan.py --stage 07b --size 670（skip_done 后）",
+  "collected_scan": "analysis/scan_collected.py（Releases tag + checkpoint）"
+ },
+ "groups": {
+  "07b_candidates_pending": 667,
+  "07b_done_step07": 436,
+  "already_done_step03": 111,
+  "already_done_step04": 308,
+  "already_done_step05": 1468,
+  "collected_layers_total": 2327
+ },
+ "overlap": {
+  "03": {
+   "n": 0,
+   "layers": []
+  },
+  "04": {
+   "n": 0,
+   "layers": []
+  },
+  "05": {
+   "n": 0,
+   "layers": []
+  },
+  "07": {
+   "n": 0,
+   "layers": []
+  }
+ },
+ "overlap_any_n": 0,
+ "overlap_any": [],
+ "verdict": "no_double_collect"
+}
