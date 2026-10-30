@@ -109,6 +109,7 @@ class Snapshot:
                 tag = rel.get("tag_name")
                 if tag:
                     self.map[tag] = [{"n": a.get("name"), "u": a.get("url"),
+                                      "b": a.get("browser_download_url"),
                                       "s": a.get("size")}
                                      for a in (rel.get("assets") or [])]
             if len(batch) < 100:
@@ -419,31 +420,31 @@ def stage_build(outdir: str, dbpath: str, limit_layers: int = 0) -> dict:
     """)
     print("entity_street 建好 %.0fs" % (time.time() - t1), flush=True)
 
-    # ---- 坐标中位（分两次窗口取中位，不猜、不拿平均当中位）
+    # ---- 坐标中位（分两次窗口取真正的中位，不猜、不拿平均当中位）
+    # 地理键只用 (state, street_norm)：带 zip 会让「没 zip 的行」拿不到坐标中位，
+    # 实测 60 层样本里 zip 缺失占 25%，那样 streets 的 geo 非空率会被 zip 缺失拖死。
     t2 = time.time()
     for col in ("lat", "lon"):
         con.executescript("""
         DROP TABLE IF EXISTS med_%(c)s;
         CREATE TABLE med_%(c)s AS
-        SELECT state, zip5, street_norm, AVG(v) AS %(c)s_med FROM (
-          SELECT state, zip5, street_norm, %(c)s AS v,
-                 ROW_NUMBER() OVER (PARTITION BY state, zip5, street_norm ORDER BY %(c)s) rn,
-                 COUNT(*)     OVER (PARTITION BY state, zip5, street_norm) c
+        SELECT state, street_norm, AVG(v) AS %(c)s_med FROM (
+          SELECT state, street_norm, %(c)s AS v,
+                 ROW_NUMBER() OVER (PARTITION BY state, street_norm ORDER BY %(c)s) rn,
+                 COUNT(*)     OVER (PARTITION BY state, street_norm) c
           FROM addr WHERE %(c)s IS NOT NULL AND street_norm <> '')
         WHERE rn IN ((c + 1) / 2, (c + 2) / 2)
-        GROUP BY 1, 2, 3;
+        GROUP BY 1, 2;
+        CREATE INDEX ix_med_%(c)s ON med_%(c)s(state, street_norm);
         """ % {"c": col})
         print("  %s 中位 %.0fs" % (col, time.time() - t2), flush=True)
         t2 = time.time()
     con.executescript("""
     ALTER TABLE entity_street ADD COLUMN lat_med REAL;
     ALTER TABLE entity_street ADD COLUMN lon_med REAL;
-    CREATE INDEX ix_es ON entity_street(state_abbr, zip5, street_norm);
     UPDATE entity_street SET
-      lat_med = (SELECT lat_med FROM med_lat m WHERE m.state=state_abbr AND m.zip5=zip5 AND m.street_norm=street_norm),
-      lon_med = (SELECT lon_med FROM med_lon m WHERE m.state=state_abbr AND m.zip5=zip5 AND m.street_norm=street_norm);
-    CREATE INDEX ix_ml ON med_lat(state, zip5, street_norm);
-    CREATE INDEX ix_mo ON med_lon(state, zip5, street_norm);
+      lat_med = (SELECT lat_med FROM med_lat m WHERE m.state=state_abbr AND m.street_norm=street_norm),
+      lon_med = (SELECT lon_med FROM med_lon m WHERE m.state=state_abbr AND m.street_norm=street_norm);
     """)
 
     # ---- entity_zip：主键 zip5
@@ -514,10 +515,13 @@ def stage_pages(outdir: str, dbpath: str, repo_dir: str) -> dict:
     # ---- 非空率（决定页面质量）
     def rate(rows, key):
         return round(100.0 * sum(1 for r in rows if r.get(key)) / max(1, len(rows)), 2)
+    zip_county = {z["zip5"]: z["county_fips"] for z in zips if z.get("county_fips")}
+    for r in street:
+        r["has_county"] = bool(zip_county.get(r["zip5"] or ""))
     rates = {
         "street": {"n": len(street), "street_name": rate(street, "street_name_display"),
                    "zip5": rate(street, "has_zip"), "geo": rate(street, "has_geo"),
-                   "county(来自 zip)": None, "house_range": rate(
+                   "county(由 zip 带出)": rate(street, "has_county"), "house_range": rate(
                        [r for r in street if r["house_min"] is not None], "house_min")},
         "zip": {"n": len(zips), "postal_city": rate(zips, "has_city"),
                 "county_fips": rate(zips, "has_county"), "streets": 100.0},

@@ -1,104 +1,16 @@
 {
- "generated_by": "collect/stat_plan.py（只读统计，不改 CSV）",
- "total": 42496,
- "located": 38145,
- "still_unknown": 4351,
- "still_unknown_rows": 667324386,
- "kept_rows": 2731517721,
- "located_rate": 0.8976,
- "top_states": [
-  [
-   "CA",
-   4726
-  ],
-  [
-   "未定位",
-   4351
-  ],
-  [
-   "FL",
-   2184
-  ],
-  [
-   "TX",
-   2111
-  ],
-  [
-   "NY",
-   1700
-  ],
-  [
-   "NC",
-   1616
-  ],
-  [
-   "WA",
-   1332
-  ],
-  [
-   "VA",
-   1244
-  ],
-  [
-   "MA",
-   1212
-  ],
-  [
-   "IL",
-   1193
-  ]
- ],
- "unknown_by_host": [
-  {
-   "host": "services.arcgis.com",
-   "layers": 817,
-   "rows": 107999017
-  },
-  {
-   "host": "services1.arcgis.com",
-   "layers": 743,
-   "rows": 25119735
-  },
-  {
-   "host": "services2.arcgis.com",
-   "layers": 473,
-   "rows": 46209733
-  },
-  {
-   "host": "services5.arcgis.com",
-   "layers": 470,
-   "rows": 7054589
-  },
-  {
-   "host": "services3.arcgis.com",
-   "layers": 359,
-   "rows": 14768972
-  },
-  {
-   "host": "services7.arcgis.com",
-   "layers": 289,
-   "rows": 6016358
-  },
-  {
-   "host": "services6.arcgis.com",
-   "layers": 283,
-   "rows": 9744772
-  },
-  {
-   "host": "services8.arcgis.com",
-   "layers": 274,
-   "rows": 2176791
-  },
-  {
-   "host": "services-eu1.arcgis.com",
-   "layers": 199,
-   "rows": 38477165
-  },
-  {
-   "host": "services-ap1.arcgis.com",
-   "layers": 133,
-   "rows": 63175501
-  }
- ],
- "note": "数字来自 layer_plan_clean.csv（已含 geo-fill a2a5b27 补州结果）。禁止用 plan_clean.py 重算——它会读到未补州的原始 CSV。"
+ "total": 60695,
+ "kept": 42496,
+ "dropped": {
+  "plan=skip": 5273,
+  "row_count=0": 12926
+ },
+ "fixed_by": {
+  "title-name": 290,
+  "domain-abbr": 139,
+  "domain-suffix": 596,
+  "domain-name": 82
+ },
+ "still_unknown": 19949,
+ "kept_rows": 2731517721
 }

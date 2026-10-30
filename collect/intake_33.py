@@ -142,14 +142,20 @@ def iter_layer_rows(tag: str, limit: int = 0, repo: str = REPO, names: list | No
     if not assets:
         return
     if limit:                      # 只要前若干行：Range 拉第一段，走部分解压
-        from profile import partial_targz_rows  # analysis/profile.py
-        for ln in partial_targz_rows(assets[0]["u"], 4 << 20, limit):
-            if ln.strip():
-                try:
-                    yield json.loads(ln)
-                except Exception:  # noqa: BLE001
-                    continue
-        return
+        try:
+            from profile import partial_targz_rows  # analysis/profile.py
+            got = 0
+            for ln in partial_targz_rows(assets[0].get("b") or assets[0]["u"], 4 << 20, limit):
+                if ln.strip():
+                    try:
+                        yield json.loads(ln)
+                        got += 1
+                    except Exception:  # noqa: BLE001
+                        continue
+            if got:
+                return
+        except Exception:          # noqa: BLE001
+            pass                   # 部分解压不可用（鉴权/重定向/压缩头）→ 退回整包，绝不假成功
     CHUNK = 8          # 一次 gh 调用下 8 个单元：进程启动开销才是小层的大头
     with tempfile.TemporaryDirectory() as td:
         for i in range(0, len(assets), CHUNK):
