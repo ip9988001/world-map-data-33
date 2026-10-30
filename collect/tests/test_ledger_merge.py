@@ -160,5 +160,111 @@ class RevisionsAppendOnly(unittest.TestCase):
             self.assertIn(k, ev)
 
 
+class RowsRegressionNotSilent(unittest.TestCase):
+    """状态优先 + 取行数大者的副作用：真退化会被永久掩盖 → 必须逐层写 regressions[]。"""
+
+    def test_same_status_fewer_rows_is_recorded(self):
+        merged, _ = lm.merge_records([_rec("a", "ok", 500)], [_rec("a", "ok", 300)])
+        regs = lm.row_regressions([_rec("a", "ok", 500)], [_rec("a", "ok", 300)],
+                                  run_id="R1", at="T")
+        self.assertEqual(merged[0]["rows"], 500)          # 仍然保进展（取大者）
+        self.assertEqual(len(regs), 1)                    # 但不静默
+        self.assertEqual(regs[0]["stage_rows"], 500)
+        self.assertEqual(regs[0]["run_rows"], 300)
+        self.assertEqual(regs[0]["delta"], -200)
+        self.assertEqual(regs[0]["merge_outcome"], "kept_stage_record_more_rows")
+
+    def test_better_status_with_fewer_rows_is_recorded(self):
+        # 唯一真会冲小 rows 的路径：partial 39.8M → ok 5M
+        base = [_rec("nad", "partial", 39_875_268)]
+        run = [_rec("nad", "ok", 5_000_000)]
+        out, _ = lm.merge_stage_ledger("04b", {"records": base, "layers_n": 1}, 
+                                       {"records": run, "layers_n": 1}, "R2", at="T")
+        self.assertEqual(out["records"][0]["status"], "ok")
+        self.assertEqual(out["records"][0]["rows"], 5_000_000)   # 合并结果确实变小了
+        self.assertEqual(out["rows_regressions"], 1)            # 所以必须留账
+        self.assertEqual(out["regressions"][0]["merge_outcome"], "took_run_record_status_better")
+        self.assertEqual(out["regressions"][0]["delta"], 5_000_000 - 39_875_268)
+        self.assertEqual(out["rows_regressions_unexplained"], 1)
+
+    def test_worse_status_fewer_rows_is_recorded_too(self):
+        out, _ = lm.merge_stage_ledger("04b", {"records": [_rec("a", "ok", 900)], "layers_n": 1},
+                                       {"records": [_rec("a", "failed", 0)], "layers_n": 1}, "R3")
+        self.assertEqual(out["records"][0]["rows"], 900)
+        self.assertEqual(out["regressions"][0]["merge_outcome"], "kept_stage_record_status_better")
+
+    def test_growth_or_equal_is_not_a_regression(self):
+        regs = lm.row_regressions([_rec("a", "ok", 100), _rec("b", "ok", 100)],
+                                  [_rec("a", "ok", 100), _rec("b", "ok", 200)], run_id="R")
+        self.assertEqual(regs, [])
+        out, _ = lm.merge_stage_ledger("04b", {"records": [_rec("a", "ok", 100)], "layers_n": 1},
+                                       {"records": [_rec("a", "ok", 300)], "layers_n": 1}, "R4")
+        self.assertEqual(out["regressions"], [])
+        self.assertEqual(out["rows_regressions"], 0)
+
+    def test_new_layers_are_not_regressions(self):
+        regs = lm.row_regressions([], [_rec("brand_new", "ok", 10)], run_id="R")
+        self.assertEqual(regs, [])
+
+    def test_regressions_are_append_only_keyed_by_layer_and_run(self):
+        base = {"records": [_rec("a", "ok", 500)], "layers_n": 1}
+        r1 = {"records": [_rec("a", "ok", 300)], "layers_n": 1}
+        out1, _ = lm.merge_stage_ledger("04b", base, r1, "R1")
+        self.assertEqual(out1["rows_regressions"], 1)
+        # 同一 run 再合一次 → 不重复记账
+        out2, _ = lm.merge_stage_ledger("04b", out1, r1, "R1")
+        self.assertEqual(out2["rows_regressions"], 1)
+        # 新 run 再退化 → 追加第二条，历史不丢
+        out3, _ = lm.merge_stage_ledger("04b", out2, {"records": [_rec("a", "ok", 100)],
+                                                       "layers_n": 1}, "R2")
+        self.assertEqual(out3["rows_regressions"], 2)
+        self.assertEqual([e["run_id"] for e in out3["regressions"]], ["R1", "R2"])
+        self.assertEqual(out3["revisions"][-1]["rows_regressions"], 1)
+
+    def test_evidence_and_reason_pass_through(self):
+        rec = _rec("a", "ok", 10)
+        rec["regression_reason"] = "upstream 删了 3 个 county"
+        rec["evidence"] = "analysis/upstream-diff-20261101.json"
+        out, _ = lm.merge_stage_ledger("04b", {"records": [_rec("a", "ok", 50)], "layers_n": 1},
+                                       {"records": [rec], "layers_n": 1, "scope": "single_run"}, "R5")
+        e = out["regressions"][0]
+        self.assertEqual(e["reason"], "upstream 删了 3 个 county")
+        self.assertEqual(e["evidence"], "analysis/upstream-diff-20261101.json")
+        self.assertEqual(out["rows_regressions_unexplained"], 0)
+        # 也可从 run 账本的 row_shrink_evidence 表里取
+        regs = lm.row_regressions([_rec("a", "ok", 50)], [_rec("a", "ok", 10)],
+                                  {"row_shrink_evidence": {"a": "/tmp/ev.json"}}, run_id="R6")
+        self.assertEqual(regs[0]["evidence"], "/tmp/ev.json")
+
+    def test_human_section_lists_layer_old_new_and_missing_evidence(self):
+        regs = lm.row_regressions([_rec("nad", "partial", 39_875_268)],
+                                  [_rec("nad", "ok", 5_000_000)], run_id="R7")
+        lines = lm.format_regressions_section(regs)
+        text = "\n".join(lines)
+        self.assertIn("层 rows 回退", text)
+        self.assertIn("-34,875,268", text)
+        self.assertIn("nad", text)
+        self.assertIn("39,875,268", text)
+        self.assertIn("5,000,000", text)
+        self.assertIn("**缺**", text)
+
+    def test_write_run_and_stage_persists_regressions_and_returns_them(self):
+        with tempfile.TemporaryDirectory() as d:
+            os.makedirs(os.path.join(d, "ledger"))
+            json.dump(_stage(4), open(os.path.join(d, "04b_ledger.json"), "w"))
+            run = {"layers_n": 4, "ok": 4, "failed": 0, "shards_expected": 1,
+                   "shards_reported": 1, "shards_incomplete": [],
+                   "records": [_rec("layer_%03d" % i, "ok", 1000) for i in range(4)]}
+            run["records"][2] = _rec("layer_002", "ok", 10)      # 这一层 rows 回退
+            res = lm.write_run_and_stage("04b", run, "R8", base_dir=d)
+            self.assertTrue(res["stage_written"])
+            self.assertEqual(res["rows_regressions"], 1)
+            self.assertEqual(res["regressions"][0]["layer"], "layer_002")
+            stage = json.load(open(os.path.join(d, "04b_ledger.json")))
+            self.assertEqual(stage["rows_regressions"], 1)
+            self.assertEqual(stage["records"][2]["rows"], 1000)   # 合并仍取更大值
+            self.assertEqual(stage["regressions"][0]["run_rows"], 10)
+
+
 if __name__ == "__main__":
     unittest.main()

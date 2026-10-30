@@ -246,8 +246,6 @@ def main() -> int:
     # 默认文件名带 `-shards`：与 ledger_rebuild.py 产出的「Release 资产真值」文档
     # （docs/STEP04-FULL-<date>.md）分开，避免分片口径覆盖真值口径。
     out = a.out or os.path.join(ROOT, "docs", tag + "-FULL-2026-10-30-shards.md")
-    os.makedirs(os.path.dirname(out), exist_ok=True)
-    open(out, "w", encoding="utf-8").write("\n".join(L))
 
     # 本次 run 的汇总（内存对象；写盘由 ledger_merge 决定去哪个文件）
     led = {"schema": "collect-ledger-agg/v1", "stage": stage, "at":
@@ -268,16 +266,33 @@ def main() -> int:
     #   collect/<stage>_ledger.json。改为：① 单 run 结果 → collect/ledger/<stage>_run<RUN_ID>.json；
     #   ② 阶段账本按 layer_id 合并（状态取更优者，同状态取行数大者）；③ 小 run（<1/2）默认不碰阶段账本。
     #   详见 collect/ledger_merge.py（带单测）。
-    from ledger_merge import write_run_and_stage        # noqa: E402
+    from ledger_merge import write_run_and_stage, format_regressions_section   # noqa: E402
     run_id = a.run_id or os.environ.get("GITHUB_RUN_ID") or "local"
     res = write_run_and_stage(stage, led, run_id, base_dir=a.base_dir,
                               allow_stage_overwrite=a.allow_stage_overwrite)
+
+    # ★ rows 回退单独成节（2026-10-31）：状态取优者 + 行数取大者会把「真丢数据」掩盖成
+    #   「本次没采到那么多」，所以只要本轮某层 rows < 阶段账本 rows，就必须在这里点名。
+    regs = res.get("regressions") or []
+    if regs:
+        L += ["", "## 七、rows 回退（本次合并检测到，未静默取大）", ""]
+        L += format_regressions_section(regs)
+        L += ["",
+              "> 处置：回退不拦截（保进展靠取优者），但**必须点名**。能证明是「口径变了/上游真删了」的，"
+              "把证据路径写进 run 账本的 `row_shrink_evidence: {<layer>: <path>}`（或逐层 `regression_reason`）；"
+              "无证据的回退一律当事故追。累计视图看 `collect/%s_ledger.json` 的 `regressions[]`。" % stage, ""]
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    open(out, "w", encoding="utf-8").write("\n".join(L))
+
     print(json.dumps({k: led[k] for k in ("stage", "layers_n", "ok", "empty", "partial",
-                                          "failed", "skipped_done", "declared", "rows",
+                                         "failed", "skipped_done", "declared", "rows",
                                           "shards_expected", "shards_reported",
                                           "shards_incomplete", "complete")},
                      ensure_ascii=False))
     print(json.dumps({"run_ledger": res}, ensure_ascii=False))
+    if regs:
+        print("::warning::rows 回退 %d 层（无证据 %d 层）→ 见 %s 第七节"
+              % (len(regs), res.get("rows_regressions_unexplained", 0), out))
     print("写入 %s 与 %s" % (out, res["run_path"]))
     return 0
 
