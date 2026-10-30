@@ -1,0 +1,101 @@
+{
+ "schema": "county-selftest/v1",
+ "at": "2026-10-30T10:47:47Z",
+ "layers": [
+  {
+   "layer": "7ABWQBGTG_arcgis_rest_services_Hutto_Parcels_FeatureServer_0",
+   "tag": "collect-step10-7ABWQBGTG_arcgis_rest_services_Hutto_Parcels_FeatureServer_0",
+   "rows": 23591,
+   "located": 0,
+   "unlocated": 0,
+   "no_coords": 23591,
+   "ref_checked": 0,
+   "ref_agree": 0,
+   "ref_disagree": [],
+   "elapsed_s": 4.0,
+   "err": "",
+   "max_seconds_hit": false,
+   "state": "TX",
+   "unlocated_total": 23591,
+   "unlocated_pct": 100.0,
+   "rps": 5897.8,
+   "by_county": {}
+  },
+  {
+   "layer": "8lct5k3LSbyO_arcgis_rest_services_AddressULM_FeatureServer_1",
+   "tag": "collect-step05-8lct5k3LSbyO_arcgis_rest_services_AddressULM_FeatureServer_1",
+   "rows": 28996,
+   "located": 28993,
+   "unlocated": 0,
+   "no_coords": 3,
+   "ref_checked": 0,
+   "ref_agree": 0,
+   "ref_disagree": [],
+   "elapsed_s": 5.17,
+   "err": "",
+   "max_seconds_hit": false,
+   "state": "TX",
+   "unlocated_total": 3,
+   "unlocated_pct": 0.01,
+   "rps": 5608.5,
+   "by_county": {
+    "48121": 28382,
+    "48439": 611
+   }
+  },
+  {
+   "layer": "Gr3P_arcgis_rest_services_ETJ_addresses_WFL1_FeatureServer_1",
+   "tag": "collect-step05-Gr3P_arcgis_rest_services_ETJ_addresses_WFL1_FeatureServer_1",
+   "rows": 25081,
+   "located": 25081,
+   "unlocated": 0,
+   "no_coords": 0,
+   "ref_checked": 25081,
+   "ref_agree": 25081,
+   "ref_disagree": [],
+   "elapsed_s": 5.75,
+   "err": "",
+   "max_seconds_hit": false,
+   "state": "TX",
+   "ref_boundary": 1,
+   "unlocated_total": 0,
+   "unlocated_pct": 0.0,
+   "rps": 4361.9,
+   "by_county": {
+    "48491": 25072,
+    "48453": 9
+   }
+  },
+  {
+   "layer": "cgis_rest_services_AGOL_Parcels_PacificTime_FeatureServer_17",
+   "tag": "collect-step10-cgis_rest_services_AGOL_Parcels_PacificTime_FeatureServer_17",
+   "rows": 211139,
+   "located": 0,
+   "unlocated": 0,
+   "no_coords": 211139,
+   "ref_checked": 0,
+   "ref_agree": 0,
+   "ref_disagree": [],
+   "elapsed_s": 11.51,
+   "err": "",
+   "max_seconds_hit": false,
+   "state": "WA",
+   "unlocated_total": 211139,
+   "unlocated_pct": 100.0,
+   "rps": 18344.0,
+   "by_county": {}
+  }
+ ],
+ "totals": {
+  "rows": 288807,
+  "located": 54074,
+  "no_coords": 234733,
+  "ref_checked": 25081,
+  "ref_agree": 25081,
+  "ref_boundary": 1,
+  "elapsed_s": 26.4,
+  "rps": 10927.2,
+  "addrfeat_rows": 11910,
+  "addrfeat_agree": 11910
+ }
+}
