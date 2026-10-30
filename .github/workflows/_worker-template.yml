@@ -140,7 +140,11 @@ jobs:
             git fetch -q origin main || true
             # ★ 必须 -f：汇总前工作区里有采集产物（collect/progress/*.json 等）未提交，
             #   裸 checkout 会被 Git 拒 → set -e 退 1 → 报告推送整步假红（2026-10-30 实测）。
-            git checkout -qf -B main origin/main
+            git checkout -qf -B main origin/main || {
+              echo "::warning::checkout -qf 仍失败 → 硬复位后再试一次"
+              git reset -q --hard HEAD; git clean -qfdx collect/progress || true
+              git checkout -qf -B main origin/main
+            }
             cp /tmp/pilot_report.json collect/pilot_report.json
             git add -f collect/pilot_report.json
             git -c user.name=collect-bot -c user.email=bot@users.noreply.github.com \
