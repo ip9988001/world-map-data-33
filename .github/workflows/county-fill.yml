@@ -131,5 +131,5 @@ jobs:
           name: county-${{ matrix.shard }}
           path: |
             dist/county/county_ledger_shard*.json
-            dist/county/county.*.json
+            dist/county/rows-*.json
           retention-days: 30

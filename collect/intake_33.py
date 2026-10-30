@@ -46,6 +46,9 @@ UA = {"User-Agent": "world-map-data-33/intake"}
 
 SUFFIX = FMV2  # 别名：归一化表都在 field_map_v2 里
 
+# fips 前两位 → 州邮政码（TIGER 权威；用于「层清单没州 / 州码非法」时反推，不是启发式猜测）
+FIPS2STATE = {str(v).zfill(2): k for k, v in getattr(CT, "STATE_FIPS", {}).items()}
+
 GATES = ["no_house_number", "no_street_name", "state_invalid", "geo_missing", "county_unresolved"]
 
 
@@ -122,10 +125,20 @@ def declared_rows(tag: str, repo: str = REPO) -> int | None:
     return sum(int(v) for v in ur.values()) if ur else None
 
 
-def iter_layer_rows(tag: str, limit: int = 0, repo: str = REPO):
-    """逐行产出 ndjson 记录（信封格式，原始字段在 rec['raw']）。"""
-    assets = sorted([a for a in release_assets(tag, repo) if a["n"].endswith(".tar.gz")],
-                    key=lambda a: a["n"])
+def iter_layer_rows(tag: str, limit: int = 0, repo: str = REPO, names: list | None = None):
+    """逐行产出 ndjson 记录（信封格式，原始字段在 rec['raw']）。
+
+    names 给了就用它（调用方从「一次性 release 快照」里拿），不再逐层打 API —— 全量
+    2,364 层逐层 `gh release view` 会撞 5,000 次/小时的配额，快照一次只要几十次。
+    """
+    if names is not None:
+        # 快照里给的是 [{n,u,s}]；也兼容只给名字列表的工作流
+        dicts = [x if isinstance(x, dict) else {"n": x} for x in names]
+        assets = sorted([a for a in dicts if str(a.get("n") or "").endswith(".tar.gz")],
+                        key=lambda a: a["n"])
+    else:
+        assets = sorted([a for a in release_assets(tag, repo) if a["n"].endswith(".tar.gz")],
+                        key=lambda a: a["n"])
     if not assets:
         return
     if limit:                      # 只要前若干行：Range 拉第一段，走部分解压
@@ -137,11 +150,19 @@ def iter_layer_rows(tag: str, limit: int = 0, repo: str = REPO):
                 except Exception:  # noqa: BLE001
                     continue
         return
+    CHUNK = 8          # 一次 gh 调用下 8 个单元：进程启动开销才是小层的大头
     with tempfile.TemporaryDirectory() as td:
+        for i in range(0, len(assets), CHUNK):
+            group = assets[i:i + CHUNK]
+            cmd = ["gh", "release", "download", tag, "--repo", repo, "-D", td, "--clobber"]
+            for a in group:
+                cmd += ["-p", a["n"]]
+            r = subprocess.run(cmd, capture_output=True, text=True, timeout=3600)
+            missing = [a["n"] for a in group if not os.path.exists(os.path.join(td, a["n"]))]
+            if missing:
+                raise SystemExit("资产下载失败 %s：%s" % (missing[:2], (r.stderr or "")[-160:]))
         for a in assets:
             p = os.path.join(td, a["n"])
-            subprocess.run(["gh", "release", "download", tag, "--repo", repo, "-p", a["n"],
-                            "-D", td, "--clobber"], capture_output=True, timeout=1800)
             if not os.path.exists(p):
                 continue
             with tarfile.open(p, "r:gz") as tf:
@@ -172,10 +193,13 @@ class LayerMapper:
         self.kind = e.get("src_kind") or "address_point"
         self._idx = None
 
-    def county_index(self, state: str):
-        if self._idx is None and state:
+    def county_index(self, state: str = ""):
+        """判县用**全国**索引：层的 state 会错也会空，按州索引会把它整层判成未定位。
+        （2026-10-30 实测：KY 911 层被标成 IN、另一层 state 为空 → 490 万行假 unlocated）"""
+        if self._idx is None:
             try:
-                self._idx = CT.fetch_state(state)
+                from county_index import get_national
+                self._idx = get_national()
             except Exception:      # noqa: BLE001
                 self._idx = False
         return self._idx or None
@@ -248,6 +272,14 @@ class LayerMapper:
                 if fips:
                     row["county_fips"] = fips
                     row["county_name"] = idx.by_fips[fips]["name"]
+
+        # 州码兜底：层清单没州 / 州码非法时，用县 fips 前两位反推（权威，不猜）
+        if (not row.get("state_abbr")) or row["state_abbr"] not in FMV2.ABBR:
+            fips = row.get("county_fips")
+            if fips:
+                st2 = FIPS2STATE.get(str(fips)[:2])
+                if st2:
+                    row["state_abbr"] = st2
 
         # 溯源 4 列
         row["src_kind"] = self.kind
@@ -323,29 +355,48 @@ def public_row(row: dict) -> dict:
     return out
 
 
-def run_layer(lid: str, fmap: dict, outdir: str, limit: int = 0) -> dict:
+def run_layer(lid: str, fmap: dict, outdir: str, limit: int = 0,
+              compress: bool = False, declared_hint: int | None = None,
+              extra_keys=None, tag_hint: str | None = None,
+              assets_hint: list | None = None, write_reject: bool = True) -> dict:
+    """逐层跑：读资产 → 逐行过门禁 → 分流四表。
+
+    compress     True 时落 `<table>.<layer>.ndjson.gz`（全量盘点用，省 5~7 倍磁盘）
+    declared_hint 计划期声明行数（layer_plan.csv），给了就不再为每层下载 checkpoint
+    extra_keys   row → dict，附加**辅助列**（台账聚合用，如 `_street_norm`）
+    """
     m = LayerMapper(lid, fmap)
-    tag = None
-    for cand in ("collect-step10-", "collect-step04-", "collect-step05-", "collect-step07-",
-                 "collect-step03-"):
-        t = cand + lid
-        if release_assets(t):
-            tag = t
-            break
+    tag = tag_hint
+    if tag is None:
+        for cand in ("collect-step10-", "collect-step04-", "collect-step05-", "collect-step07-",
+                     "collect-step03-"):
+            t = cand + lid
+            if release_assets(t):
+                tag = t
+                break
     if not tag:
         raise SystemExit("找不到 Release：%s" % lid)
 
-    declared = declared_rows(tag)
-    led = {"layer": lid, "tag": tag, "kind": m.kind, "rows_total": declared, "read": 0,
+    declared = declared_rows(tag) if declared_hint is None else declared_hint
+    led = {"layer": lid, "tag": tag, "kind": m.kind, "state": (fmap["layers"][lid] or {}).get("state_abbr"),
+           "rows_total": declared, "read": 0, "unlocated": 0, "read_errors": 0,
            "with_number": 0, "without_number": 0, "dropped_reason": {},
            "geo_missing": 0, "tables": {"addr": 0, "aux_parcel": 0, "aux_street": 0,
                                         "aux_addr_nohouse": 0, "reject": 0},
            "partial_read": bool(limit)}
     os.makedirs(outdir, exist_ok=True)
-    fh = {k: open(os.path.join(outdir, "%s.%s.ndjson" % (led_tag(k), lid)), "w", encoding="utf-8")
-          for k in ("addr", "aux_parcel", "aux_street", "aux_addr_nohouse", "reject")}
+    _open = gzip.open if compress else open
+    _ext = ".ndjson.gz" if compress else ".ndjson"
+    # write_reject=False 时 reject 行**只记数不落盘**（保留 5 条抽样进账本）：
+    # 全量盘点里 reject 占一半行，落盘纯属写垃圾；计数与抽样已经足够定位原因。
+    _ks = ("addr", "aux_parcel", "aux_street", "aux_addr_nohouse") + \
+          (("reject",) if write_reject else ())
+    fh = {k: _open(os.path.join(outdir, "%s.%s%s" % (led_tag(k), lid, _ext)), "wt",
+                   encoding="utf-8") for k in _ks}
+    fh.setdefault("reject", None)
+    led["reject_samples"] = []
     try:
-        for rec in iter_layer_rows(tag, limit):
+        for rec in iter_layer_rows(tag, limit, names=assets_hint):
             row, bad = m.map_row(rec)
             led["read"] += 1
             if row.get("house_number"):
@@ -354,11 +405,15 @@ def run_layer(lid: str, fmap: dict, outdir: str, limit: int = 0) -> dict:
                 led["without_number"] += 1
             if "geo_missing" in bad:
                 led["geo_missing"] += 1
+            if row.get("latitude") is not None and not row.get("county_fips"):
+                led["unlocated"] += 1        # 有坐标但判不出县（含州界缺失）
             table, reason = route(row, bad, m.kind)
             if reason:
                 led["dropped_reason"][reason] = led["dropped_reason"].get(reason, 0) + 1
             led["tables"][table] += 1
             pr = public_row(row)
+            if extra_keys is not None:
+                pr.update(extra_keys(row) or {})
             if table == "addr":
                 pr["addr_id"] = addr_id(row)
                 pr["full_formatted_address"] = full_formatted(row)
@@ -373,10 +428,16 @@ def run_layer(lid: str, fmap: dict, outdir: str, limit: int = 0) -> dict:
                     ("%s|%s|%s" % (lid, pr.get("street_full"), pr.get("zip5"))).encode()).hexdigest()
             if table == "reject":
                 pr["reject_reason"] = reason
-            fh[table].write(json.dumps(pr, ensure_ascii=False) + "\n")
+            if fh.get(table) is None:            # reject 不落盘时留抽样
+                if len(led["reject_samples"]) < 5:
+                    led["reject_samples"].append(
+                        {"reason": reason, "layer": lid, "raw": pr})
+            else:
+                fh[table].write(json.dumps(pr, ensure_ascii=False) + "\n")
     finally:
         for f in fh.values():
-            f.close()
+            if f is not None:
+                f.close()
 
     if declared is not None and not limit:
         led["reconcile_ok"] = (led["with_number"] + led["without_number"] == declared == led["read"])

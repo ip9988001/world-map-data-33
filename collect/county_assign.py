@@ -44,6 +44,7 @@ sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(ROOT, "analysis"))
 
 import county_tiger as CT                       # noqa: E402
+from county_index import NationalIndex, locate, get_national   # noqa: E402,F401
 from intake_33 import release_assets             # noqa: E402
 from field_map_v2 import STATE_ABBR             # noqa: E402
 
@@ -115,18 +116,6 @@ class Index:
                         "GEOID": fips, "NAME": pr.get("NAME") or pr.get("name") or fips},
                         "geometry": f.get("geometry")})
         return CT.CountyIndex(st, feats) if feats else None
-
-
-def locate(idx, lat, lon):
-    """射线法判定。bbox 只做预筛（禁用 bbox 当结论），命中必须过 PIP。"""
-    if idx is None or lat is None or lon is None:
-        return None
-    for fips, e in idx.by_fips.items():
-        if not CT.in_bbox(lat, lon, e["bbox"]):
-            continue
-        if CT.pip(lat, lon, e["geom"]):
-            return fips
-    return None
 
 
 def boundary_case(idx, lat: float, lon: float, ref_name: str, eps: float = 0.001) -> bool:
@@ -205,41 +194,85 @@ def extract(rec: dict) -> tuple:
     return None, None
 
 
-def iter_rows(tag: str, layer: str, state: str, refresh: bool = False):
-    """逐单元（asset）产出 (asset_name, rows_iter)。每个 asset 完成即写 .done 标记。"""
+# 像坐标的列名（用于把「投影坐标」从「根本没坐标」里分出来）
+_COORD_KEY_RE = re.compile(
+    r"(?i)^(x|y|lon|lng|long|longitude|lat|latitude|lat_dd|lon_dd|"
+    r"x_?coord(inate)?|y_?coord(inate)?|easting|northing|xcoord|ycoord)$")
+
+
+def coord_kind(rec: dict) -> tuple:
+    """三分类：ok（WGS84 经纬可用）/ proj_failed（有坐标列但不是经纬，典型是投影坐标）/ no_coords。
+
+    为什么要分：2026-10-30 裁定要求「落不了县的一条不漏」，而「投影坐标」与「根本没坐标」
+    是两种完全不同的缺口 —— 前者能靠反推 EPSG 救（宗地那批救回 47.9 万行），后者只能等上游补。
+    把它们混成一个 no_coords 会让救援优先级失去依据。
+    """
+    lat, lon = extract(rec)
+    if lat is not None and lon is not None:
+        return "ok", lat, lon
+    raw = rec.get("raw") if isinstance(rec.get("raw"), dict) else {}
+    hits = [k for k, v in raw.items()
+            if isinstance(v, (int, float)) and not isinstance(v, bool) and _COORD_KEY_RE.match(str(k))]
+    if len(hits) >= 2:                      # 有坐标列，但值不是合法经纬 → 投影坐标
+        return "proj_failed", None, None
+    return "no_coords", None, None
+
+
+def safe_name(lid: str) -> str:
+    """层 id → 安全文件名（只去路径分隔符与空白；可读性优先，不做哈希）。"""
+    s = re.sub(r"[\\/\s]+", "_", str(lid)).strip("_")
+    return s[:180] or "layer"
+
+
+def stream_asset(tag: str, asset_name: str) -> "object":
+    """流式读一个单元包，逐条 yield 记录 —— 不把整包 ndjson 读进内存。
+
+    2026-10-30 改：老实现 rows.append(json.loads(ln)) 把一整个单元（最大 100 万行）堆在内存里，
+    4 并发时会直接打爆 16G。现在 tarfile 用 "r|gz" 流式模式 + gzip 逐行解码，常驻内存只有一行。
+    """
+    with tempfile.TemporaryDirectory() as td:
+        p = os.path.join(td, asset_name)
+        r = subprocess.run(["gh", "release", "download", tag, "--repo", REPO,
+                            "-p", asset_name, "-D", td, "--clobber"],
+                           capture_output=True, text=True, timeout=3600)
+        if not os.path.exists(p):
+            # 不许静默丢单元：拿不到包就整层判 failed（带原因），下次续跑再来
+            raise RuntimeError("下载失败 %s rc=%s %s"
+                               % (asset_name, r.returncode, (r.stderr or "")[-160:]))
+        with tarfile.open(p, "r|gz") as tf:
+            for m in tf:
+                if not m.name.endswith(".ndjson.gz"):
+                    continue
+                fh = tf.extractfile(m)
+                if fh is None:
+                    continue
+                with gzip.GzipFile(fileobj=fh) as gz:
+                    for ln in gz:
+                        if not ln.strip():
+                            continue
+                        try:
+                            yield json.loads(ln)
+                        except Exception:            # noqa: BLE001
+                            continue
+
+
+def iter_rows(tag: str, layer: str, state: str = "", refresh: bool = False):
+    """逐单元（asset）产出 (asset_name, records)。records 是**列表**，只为兼容老调用方；
+    run_layer 已改用 stream_asset 逐行流式，新代码不要再走这里。"""
+    for a in iter_assets(tag, layer, refresh):
+        yield a["n"], list(stream_asset(tag, a["n"]))
+
+
+def iter_assets(tag: str, layer: str, refresh: bool = False):
+    """本层还没跑完的单元包（按名字排序；有 .done 标记就跳）。"""
     assets = [a for a in release_assets(tag) if UNIT_RE.search(a["n"])]
     assets.sort(key=lambda a: a["n"])
     d = os.path.join(PROGRESS, layer)
     os.makedirs(d, exist_ok=True)
     for a in assets:
-        mark = os.path.join(d, a["n"] + ".done")
-        if os.path.exists(mark) and not refresh:
+        if os.path.exists(os.path.join(d, a["n"] + ".done")) and not refresh:
             continue
-        with tempfile.TemporaryDirectory() as td:
-            p = os.path.join(td, a["n"])
-            subprocess.run(["gh", "release", "download", tag, "--repo", REPO,
-                            "-p", a["n"], "-D", td, "--clobber"],
-                           capture_output=True, timeout=3600)
-            if not os.path.exists(p):
-                continue
-            rows = []
-            with tarfile.open(p, "r:gz") as tf:
-                for m in tf.getmembers():
-                    if not m.name.endswith(".ndjson.gz"):
-                        continue
-                    fh = tf.extractfile(m)
-                    if fh is None:
-                        continue
-                    with gzip.GzipFile(fileobj=fh) as gz:
-                        for ln in gz:
-                            if not ln.strip():
-                                continue
-                            try:
-                                rows.append(json.loads(ln))
-                            except Exception:            # noqa: BLE001
-                                continue
-            open(mark, "w").write(now())
-            yield a["n"], rows
+        yield a
 
 
 def run_layer(lid: str, idx: Index, outdir: str = "", ref_col: str = "",
@@ -255,64 +288,78 @@ def run_layer(lid: str, idx: Index, outdir: str = "", ref_col: str = "",
                 break
         except Exception:                            # noqa: BLE001
             continue
-    st = {"layer": lid, "tag": tag, "rows": 0, "located": 0, "unlocated": 0,
-          "no_coords": 0, "by_county": {}, "ref_checked": 0, "ref_agree": 0,
-          "ref_disagree": [], "elapsed_s": 0.0, "err": "", "max_seconds_hit": False}
+    st = {"layer": lid, "at": now(), "tag": tag, "state": "", "status": "ok",
+          "rows": 0, "located": 0, "unlocated": 0, "no_coords": 0, "proj_failed": 0,
+          "by_county": {}, "ref_checked": 0, "ref_agree": 0, "ref_disagree": [],
+          "assets_done": 0, "elapsed_s": 0.0, "err": "", "max_seconds_hit": False}
     if not tag:
         st["err"] = "无 Release 资产"
+        st["status"] = "no_assets"              # 待 04b 补采完再跑一遍，不算 unlocated
+        _dump_layer(st, outdir)
         return st
     base_state = layer_state or state_of_layer(lid, ent)
     st["state"] = base_state
-    idx_cache = {}
-    for asset, rows in iter_rows(tag, lid, base_state, refresh):
-        for rec in rows:
+    st["state_mismatch"] = 0        # 层属性里的州 vs 县多边形反推的州，不一致的行数（暴露假 unlocated）
+    st["fips_state"] = {}           # 由县多边形反推的州码 → 行数
+    for a in iter_assets(tag, lid, refresh):
+        st["assets_done"] += 1
+        for rec in stream_asset(tag, a["n"]):
             st["rows"] += 1
-            lat, lon = extract(rec)
-            if lat is None or lon is None:
-                st["no_coords"] += 1
+            kind, lat, lon = coord_kind(rec)
+            if kind != "ok":                         # no_coords / proj_failed 各计各的
+                st[kind] += 1
                 continue
-            state = base_state
-            if not state:                            # 层元数据没州时再看行属性
-                rv = (rec.get("raw") or {}).get("STATE") or (rec.get("raw") or {}).get("STATE_ABBR") or ""
-                sv = str(rv).strip().upper()
-                state = STATE_ABBR.get(sv, sv)[:2] if sv else ""
-            if state not in idx_cache:
-                idx_cache[state] = idx.get(state) if state else None
-            ix = idx_cache[state]
-            fips = locate(ix, lat, lon)
+            # ★ 判县只用点本身 + 全国县多边形，**不信层的州属性**（会错会空，见 NationalIndex 注释）
+            fips = locate(idx, lat, lon)
             if fips:
                 st["located"] += 1
                 st["by_county"][fips] = st["by_county"].get(fips, 0) + 1
+                f2 = fips[:2]
+                st["fips_state"][f2] = st["fips_state"].get(f2, 0) + 1
+                got_st = (getattr(idx, "fips2state", {}) or {}).get(f2, "")
+                if base_state and got_st and got_st != base_state:
+                    st["state_mismatch"] += 1
             else:
                 st["unlocated"] += 1
             if ref_col:
                 rv = (rec.get("raw") or {}).get(ref_col)
                 if rv:
                     ref_name = re.sub(r"\s+(COUNTY|PARISH)$", "", str(rv).strip().upper())
-                    got = ix.by_fips.get(fips, {}).get("name", "") if (ix and fips) else ""
+                    got = idx.by_fips.get(fips, {}).get("name", "") if (idx and fips) else ""
                     got_n = re.sub(r"\s+(COUNTY|PARISH)$", "", got.upper())
                     st["ref_checked"] += 1
                     if got_n == ref_name:
                         st["ref_agree"] += 1
-                    elif ix and boundary_case(ix, lat, lon, ref_name):
+                    elif idx and boundary_case(idx, lat, lon, ref_name):
                         # 县界点：±0.001°(≈111m) 抖动就能落到参照县 → 记 boundary，不算硬冲突
                         st["ref_boundary"] = st.get("ref_boundary", 0) + 1
                         st["ref_agree"] += 1
                     elif len(st["ref_disagree"]) < 5:
                         st["ref_disagree"].append({"ref": ref_name, "got": got, "fips": fips,
                                                    "lat": lat, "lon": lon})
+        # 单元读到底才盖 .done：否则半截读完也被当完成，重跑就永远补不回来了
+        open(os.path.join(PROGRESS, lid, a["n"] + ".done"), "w").write(now())
         if max_seconds and time.time() - t0 > max_seconds:
             st["max_seconds_hit"] = True
+            st["status"] = "partial"
             break
-    st["unlocated_total"] = st["no_coords"] + st["unlocated"]   # 落不了县的总数（含无坐标）
+    # 落不了县的 = 行数 - 判到县的；一条不漏（无坐标 / 投影坐标 / 判不出 三档相加必须相等）
+    st["unlocated_total"] = st["rows"] - st["located"]
+    assert st["unlocated_total"] == st["no_coords"] + st["proj_failed"] + st["unlocated"], lid
     st["unlocated_pct"] = round(100.0 * st["unlocated_total"] / max(1, st["rows"]), 3)
     st["elapsed_s"] = round(time.time() - t0, 2)
     st["rps"] = round(st["rows"] / st["elapsed_s"], 1) if st["elapsed_s"] else 0.0
-    if outdir:
-        os.makedirs(outdir, exist_ok=True)
-        json.dump(st, open(os.path.join(outdir, "county.%s.json" % lid), "w",
-                           encoding="utf-8"), ensure_ascii=False, indent=1)
+    _dump_layer(st, outdir)
     return st
+
+
+def _dump_layer(st: dict, outdir: str) -> None:
+    """逐层落盘：analysis/tiger_county/rows-<layer_id>.json"""
+    if not outdir:
+        return
+    os.makedirs(outdir, exist_ok=True)
+    p = os.path.join(outdir, "rows-%s.json" % safe_name(st["layer"]))
+    json.dump(st, open(p, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 
 
 # ---------------------------------------------------------------- selftest（5 层一致率）
@@ -429,62 +476,202 @@ def selftest(outdir: str, refresh: bool = True) -> int:
     return 0
 
 
+_IDX = None
+
+
+def _worker_init():
+    """每个 worker 进程自己建一份**全国**县索引（不跨进程传对象：几何几十 MB，序列化不值）。"""
+    global _IDX
+    _IDX = get_national()
+
+
+def _run_one(job) -> dict:
+    lid, outdir, ref_col, max_seconds, refresh, layer_state = job
+    t0 = time.time()
+    try:
+        return run_layer(lid, _IDX, outdir=outdir, ref_col=ref_col,
+                         max_seconds=max_seconds, refresh=refresh, layer_state=layer_state)
+    except Exception as e:                           # noqa: BLE001
+        st = {"layer": lid, "at": now(), "status": "failed", "err": str(e)[:200],
+              "tag": None, "state": layer_state, "rows": 0, "located": 0, "unlocated": 0,
+              "no_coords": 0, "proj_failed": 0, "by_county": {}, "assets_done": 0,
+              "elapsed_s": round(time.time() - t0, 2), "max_seconds_hit": False,
+              "unlocated_total": 0, "unlocated_pct": 0.0, "rps": 0.0}
+        _dump_layer(st, outdir)
+        return st
+
+
+# ---------------------------------------------------------------- 汇总
+def write_summary(outdir: str, out_path: str, plan_path: str = "") -> dict:
+    """把 rows-<layer>.json 合成一份总账：各层覆盖率 / UNLOCATED 总量与占比。
+
+    口径（2026-10-30 裁定，与 run_layer 里的断言一致）：
+      rows = located + unlocated + no_coords + proj_failed
+      unlocated_total = rows - located = 无坐标 + 投影坐标 + 判不出（一条不漏）
+    """
+    import glob
+    files = sorted(glob.glob(os.path.join(outdir, "rows-*.json")))
+    recs = []
+    for f in files:
+        try:
+            recs.append(json.load(open(f, encoding="utf-8")))
+        except Exception:                            # noqa: BLE001
+            continue
+    rows = sum(r.get("rows") or 0 for r in recs)
+    located = sum(r.get("located") or 0 for r in recs)
+    by_kind = {k: sum(r.get(k) or 0 for r in recs)
+               for k in ("unlocated", "no_coords", "proj_failed")}
+    status = {}
+    for r in recs:
+        status[r.get("status") or "ok"] = status.get(r.get("status") or "ok", 0) + 1
+    by_state = {}
+    for r in recs:
+        s = (r.get("state") or "?").upper() or "?"
+        d = by_state.setdefault(s, {"layers": 0, "rows": 0, "located": 0, "unlocated_total": 0})
+        d["layers"] += 1
+        d["rows"] += r.get("rows") or 0
+        d["located"] += r.get("located") or 0
+        d["unlocated_total"] += r.get("unlocated_total") or 0
+    for s, d in by_state.items():
+        d["coverage_pct"] = round(100.0 * d["located"] / max(1, d["rows"]), 3)
+    unloc_total = rows - located
+    summ = {
+        "schema": "county-assign-summary/v1",
+        "at": now(),
+        "outdir": outdir,
+        "layers_total": len(recs),
+        "layers_by_status": status,
+        "rows": rows,
+        "located": located,
+        "coverage_pct": round(100.0 * located / max(1, rows), 4),
+        "unlocated_total": unloc_total,
+        "unlocated_pct": round(100.0 * unloc_total / max(1, rows), 4),
+        "unlocated_breakdown": {
+            "no_coords": by_kind["no_coords"],
+            "proj_failed": by_kind["proj_failed"],
+            "outside_any_county": by_kind["unlocated"],
+        },
+        "by_state": dict(sorted(by_state.items())),
+        "layers": sorted(recs, key=lambda r: -(r.get("rows") or 0)),
+    }
+    if plan_path and os.path.exists(plan_path):
+        try:
+            pl = json.load(open(plan_path, encoding="utf-8"))
+            summ["plan"] = {"path": plan_path, "layers_n": pl.get("layers_n"),
+                            "rows_est": pl.get("rows_est")}
+            summ["coverage_vs_plan_pct"] = round(
+                100.0 * rows / max(1, pl.get("rows_est") or 1), 3)
+        except Exception:                            # noqa: BLE001
+            pass
+    os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
+    json.dump(summ, open(out_path, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    return summ
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--layers", default="", help="逗号分隔层 id")
     ap.add_argument("--plan", default="", help="分片计划 JSON（含 shards[].layers）")
     ap.add_argument("--shard", type=int, default=-1)
-    ap.add_argument("--out", default="", help="输出目录（逐层 JSON 统计）")
+    ap.add_argument("--out", default=os.path.join(ROOT, "analysis", "tiger_county"),
+                    help="输出目录（默认 analysis/tiger_county，逐层 rows-<layer>.json）")
     ap.add_argument("--ref-column", default="", help="用于一致性核对的上游属性列（如 COUNTY）")
     ap.add_argument("--max-seconds", type=int, default=0, help="单层软超时（秒）")
-    ap.add_argument("--refresh", action="store_true", help="忽略 .done 标记，重读")
+    ap.add_argument("--refresh", action="store_true", help="忽略 .done 标记与已有结果，全部重读")
+    ap.add_argument("--concurrency", type=int, default=1, help="按层并发进程数（IO 密集，建议 4）")
+    ap.add_argument("--no-skip-done", action="store_true", help="不跳过已有 rows-*.json 的层")
     ap.add_argument("--keep-cache", action="store_true", help="selftest 时复用 .done 标记")
     ap.add_argument("--selftest", action="store_true")
     ap.add_argument("--make-plan", action="store_true")
+    ap.add_argument("--summary", action="store_true", help="只汇总，不出采集")
+    ap.add_argument("--summary-out", default=os.path.join(ROOT, "analysis", "county-assign-summary.json"))
     ap.add_argument("--size", type=int, default=40, help="每片层数（--make-plan 用）")
     a = ap.parse_args()
     if a.make_plan:
         return make_plan(a.size, a.plan or os.path.join(HERE, "ledger", "county_plan.json"))
     if a.selftest:
         return selftest(a.out or "/tmp/county-selftest", refresh=not a.keep_cache)
+    if a.summary:
+        s = write_summary(a.out, a.summary_out, a.plan or os.path.join(HERE, "ledger", "county_plan.json"))
+        print(json.dumps({k: s[k] for k in ("layers_total", "layers_by_status", "rows", "located",
+                                            "coverage_pct", "unlocated_total", "unlocated_pct",
+                                            "unlocated_breakdown")}, ensure_ascii=False, indent=1))
+        return 0
 
     layers = [x for x in a.layers.split(",") if x]
     if a.plan:
         plan = json.load(open(a.plan, encoding="utf-8"))
         shards = plan.get("shards") or []
-        if a.shard < 0:
-            raise SystemExit("--plan 必须配 --shard")
         if a.shard >= len(shards):
             raise SystemExit("shard %d 越界（共 %d 片）" % (a.shard, len(shards)))
-        layers = shards[a.shard].get("layers") or []
+        if a.shard >= 0:
+            layers = shards[a.shard].get("layers") or []
+        else:                                        # 不指定分片 = 整个计划（本机放量跑法）
+            layers = [lid for s in shards for lid in (s.get("layers") or [])]
     if not layers:
         raise SystemExit("没有层可跑：给 --layers 或 --plan/--shard")
 
-    idx = Index()
+    # 续跑：已经跑到 status=ok 且没撞软超时的层直接跳过（no_assets/partial 下次还要跑）
+    skipped = []
+    if not a.refresh and not a.no_skip_done:
+        keep = []
+        for lid in layers:
+            p = os.path.join(a.out, "rows-%s.json" % safe_name(lid))
+            if os.path.exists(p):
+                try:
+                    o = json.load(open(p, encoding="utf-8"))
+                except Exception:                    # noqa: BLE001
+                    o = {}
+                if o.get("status") == "ok" and not o.get("max_seconds_hit"):
+                    skipped.append(lid)
+                    continue
+            keep.append(lid)
+        layers = keep
+    print("待跑 %d 层（跳过已完成 %d 层），并发 %d，输出 %s"
+          % (len(layers), len(skipped), max(1, a.concurrency), a.out), flush=True)
+
+    jobs = [(lid, a.out, a.ref_column, a.max_seconds, a.refresh, "") for lid in layers]
+    t_all = time.time()
     out = []
-    for i, lid in enumerate(layers, 1):
-        st = run_layer(lid, idx, outdir=a.out, ref_col=a.ref_column,
-                       max_seconds=a.max_seconds, refresh=a.refresh)
-        out.append(st)
-        print("[%d/%d] %-52s rows=%-8d located=%-8d unloc=%-6d %.0f 行/秒 %s"
-              % (i, len(layers), lid[:52], st["rows"], st["located"], st["unlocated"],
-                 st["rps"], st["err"] or ""), flush=True)
+    if a.concurrency <= 1:
+        _worker_init()
+        for i, job in enumerate(jobs, 1):
+            st = _run_one(job)
+            out.append(st)
+            print("[%d/%d] %-46s rows=%-9d located=%-9d unloc=%-7d proj=%-6d %.0f 行/秒 %s"
+                  % (i, len(jobs), st["layer"][:46], st["rows"], st["located"],
+                     st["unlocated"], st["proj_failed"], st["rps"], st["err"] or ""), flush=True)
+    else:
+        from concurrent.futures import ProcessPoolExecutor, as_completed
+        with ProcessPoolExecutor(max_workers=a.concurrency, initializer=_worker_init) as ex:
+            futs = {ex.submit(_run_one, j): j[0] for j in jobs}
+            for i, fut in enumerate(as_completed(futs), 1):
+                st = fut.result()
+                out.append(st)
+                print("[%d/%d] %-46s rows=%-9d located=%-9d unloc=%-7d proj=%-6d status=%s %s"
+                      % (i, len(jobs), st["layer"][:46], st["rows"], st.get("located", 0),
+                         st.get("unlocated", 0), st.get("proj_failed", 0),
+                         st.get("status"), st.get("err") or ""), flush=True)
+    wall = round(time.time() - t_all, 1)
     agg = {"at": now(), "layers_n": len(out),
-           "rows": sum(s["rows"] for s in out),
-           "located": sum(s["located"] for s in out),
-           "unlocated": sum(s["unlocated"] for s in out),
-           "no_coords": sum(s["no_coords"] for s in out),
-           "elapsed_s": round(sum(s["elapsed_s"] for s in out), 1),
+           "rows": sum(s.get("rows") or 0 for s in out),
+           "located": sum(s.get("located") or 0 for s in out),
+           "unlocated": sum(s.get("unlocated") or 0 for s in out),
+           "no_coords": sum(s.get("no_coords") or 0 for s in out),
+           "proj_failed": sum(s.get("proj_failed") or 0 for s in out),
+           "skipped_done": len(skipped),
+           "wall_s": wall, "concurrency": a.concurrency,
            "records": out}
-    agg["unlocated_pct"] = round(100.0 * agg["unlocated"] / max(1, agg["rows"]), 3)
-    agg["rps"] = round(agg["rows"] / max(1e-9, agg["elapsed_s"]), 1)
+    agg["unlocated_total"] = agg["rows"] - agg["located"]
+    agg["unlocated_pct"] = round(100.0 * agg["unlocated_total"] / max(1, agg["rows"]), 3)
+    agg["rows_per_s"] = round(agg["rows"] / max(1e-9, wall), 1)
     if a.out:
         os.makedirs(a.out, exist_ok=True)
-        json.dump(agg, open(os.path.join(a.out, "county_ledger_shard%02d.json"
-                                         % max(0, a.shard)), "w", encoding="utf-8"),
-                  ensure_ascii=False, indent=1)
-    print(json.dumps({k: agg[k] for k in ("layers_n", "rows", "located", "unlocated",
-                                          "unlocated_pct", "rps")}, ensure_ascii=False))
+        json.dump(agg, open(os.path.join(a.out, "county_ledger_shard%02d.json" % max(0, a.shard)),
+                            "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    print(json.dumps({k: agg[k] for k in ("layers_n", "rows", "located", "unlocated_total",
+                                          "unlocated_pct", "wall_s", "rows_per_s")},
+                     ensure_ascii=False))
     return 0
 
 

@@ -17,3 +17,6 @@ dist/
 # 账本重建的 checkpoint 缓存（按 tag@时间 内容寻址，随时可重建）
 collect/ledger/.ckpt_cache/
 dist/
+
+# county 逐层判县结果（可重跑；汇总进 analysis/county-assign-summary.json）
+analysis/tiger_county/rows-*.json
