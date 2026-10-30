@@ -158,6 +158,118 @@ def representative_point(geom) -> tuple | None:
     return (best[1], best[2]) if best else None
 
 
+# ---------------------------------------------------------------- 简化 rings（第 ② 档落盘口径）
+# 口径由 `docs/PARCEL-GEOMETRY-OPTIONS-2026-10-30.md` 拍定：6 位小数（≈0.11 m）+ RDP 1e-5°（≈1.1 m）。
+# 为什么不一并落原始 rings：20 层实测里全精度多出来的只是 1e-14° 的投影尾数，多付 5.2 GB。
+SIMP_EPS = 1e-5          # RDP 容差（度）
+SIMP_DECIMALS = 6        # 小数位（1e-6° ≈ 0.11 m）
+SIMP_MAX_VERTS = 8000    # 单行顶点硬上限（防止某层「缓冲区」把一行写成几 MB）
+
+
+def rdp(pts: list, eps: float = SIMP_EPS) -> list:
+    """Douglas-Peucker（迭代栈实现，点量再大也不会递归爆栈）。
+
+    输入是 [[x, y], ...] 的环/路径（首尾相同也行）；返回保留下来的点，**首尾必留**。
+    容差 1e-5° 下，直线边一个点都不删；真正被删的是「把圆弧打成 1 m 一个点」的那种加密边。
+    """
+    n = len(pts)
+    if n < 3:
+        return list(pts)
+    keep = [False] * n
+    keep[0] = keep[-1] = True
+    stack = [(0, n - 1)]
+    while stack:
+        a, b = stack.pop()
+        if b <= a + 1:
+            continue
+        ax, ay = pts[a][0], pts[a][1]
+        bx, by = pts[b][0], pts[b][1]
+        dx, dy = bx - ax, by - ay
+        norm = (dx * dx + dy * dy) ** 0.5
+        best, best_i = -1.0, -1
+        for i in range(a + 1, b):
+            px, py = pts[i][0], pts[i][1]
+            if norm == 0.0:
+                d = ((px - ax) ** 2 + (py - ay) ** 2) ** 0.5
+            else:
+                d = abs(dy * px - dx * py + bx * ay - by * ax) / norm
+            if d > best:
+                best, best_i = d, i
+        if best > eps:
+            keep[best_i] = True
+            stack.append((a, best_i))
+            stack.append((best_i, b))
+    return [p for p, k in zip(pts, keep) if k]
+
+
+def _round_ring(ring: list, decimals: int) -> list:
+    out = []
+    for pt in ring:
+        try:
+            out.append([round(float(pt[0]), decimals), round(float(pt[1]), decimals)])
+        except Exception:                              # noqa: BLE001  坏点就断（不猜）
+            return []
+    return out
+
+
+def _open_ring(ring: list) -> list:
+    """去掉闭合重复点（ArcGIS 的环首尾相同；RDP 留着它反而会算出退化的包围盒）。"""
+    if len(ring) >= 2 and ring[0] == ring[-1]:
+        return ring[:-1]
+    return ring
+
+
+def _close_ring(ring: list) -> list:
+    if len(ring) >= 3 and ring[0] != ring[-1]:
+        return ring + [list(ring[0])]
+    return ring
+
+
+def simplify_rings(geom, eps: float = SIMP_EPS, decimals: int = SIMP_DECIMALS,
+                   max_verts: int = SIMP_MAX_VERTS) -> list | None:
+    """面几何 → 可落盘的简化 rings。退化/空 → None（**不猜、不补**）。
+
+    接受 `{"rings": [...]}` 或直接的 rings 列表；返回同结构的列表，每环闭合、坐标已截位。
+    规则：
+      ① 环 <3 个不重复点 → 退化，丢弃；外环丢了 → 整体 None
+      ② 先截位再去重相邻重复点，然后 RDP 1e-5°
+      ③ 单行总顶点 > max_verts：只留顶点最多的那一个环，再按等步长抽稀到上限
+         （不按面积选，是因为这一步只需要「有边界可用」，不承担拓扑正确性）
+      ④ 全程 float 转换失败 → 该环丢弃；一个环都不剩 → None
+    """
+    rings = (geom.get("rings") if isinstance(geom, dict) else geom) or []
+    out = []
+    for ring in rings:
+        if not isinstance(ring, (list, tuple)) or len(ring) < 3:
+            continue
+        r = _round_ring(_open_ring([list(p) for p in ring if isinstance(p, (list, tuple))]),
+                        decimals)
+        # 去掉相邻重复点（截位后可能把两个点压成同一个）
+        dedup = [r[0]] if r else []
+        for pt in r[1:]:
+            if pt != dedup[-1]:
+                dedup.append(pt)
+        if len(dedup) >= 2 and dedup[0] == dedup[-1]:
+            dedup = dedup[:-1]
+        if len(dedup) < 3:
+            continue                                   # 退化：环 <3 个不同点
+        s = rdp(dedup, eps)
+        if len(s) < 3:
+            continue
+        out.append(_close_ring([list(p) for p in s]))
+    if not out:
+        return None
+    total = sum(len(r) for r in out)
+    if total > max_verts:
+        big = max(out, key=len)
+        if len(big) > max_verts:
+            step = len(big) / float(max_verts)
+            big = [big[min(len(big) - 1, int(i * step))] for i in range(max_verts)]
+            big = _close_ring(big)
+        out = [big]
+    return out
+
+
 # ---------------------------------------------------------------- 投影判定
 _CAND_CACHE: dict[str, list] = {}
 
@@ -454,6 +566,23 @@ def selftest() -> int:
     ok(not inside_geom(c2[0], c2[1], HOLE), "质心落在洞内 → inside_geom=False")
     rp2 = representative_point(HOLE)
     ok(rp2 is not None and inside_geom(rp2[0], rp2[1], HOLE), "带洞 → rep point 落在实心区")
+
+    # ---- 简化 rings（第 ② 档：6 位小数 + RDP 1e-5°）
+    ok(simplify_rings({"rings": [[[0, 0], [1, 1]]]}) is None, "退化环（2 点）→ None，不猜")
+    ok(simplify_rings({}) is None and simplify_rings(None) is None, "空几何 → None")
+    dens = []
+    for k in range(4):
+        x0, y0 = [(0, 0), (1, 0), (1, 1), (0, 1)][k]
+        x1, y1 = [(0, 0), (1, 0), (1, 1), (0, 1)][(k + 1) % 4]
+        dens += [[x0 + (x1 - x0) * t / 50.0, y0 + (y1 - y0) * t / 50.0] for t in range(50)]
+    dens.append(list(dens[0]))
+    s_out = simplify_rings({"rings": [dens]})
+    ok(s_out is not None and sum(len(r) for r in s_out) < len(dens) / 4,
+       "加密边被简化（%d → %s）" % (len(dens), sum(len(r) for r in s_out) if s_out else "None"))
+    ok(s_out[0][0] == s_out[0][-1], "简化后环仍闭合")
+    ok(all(round(x, 6) == x for r in s_out for x, y in r), "坐标截到 6 位小数（≈0.11 m）")
+    capped = simplify_rings({"rings": [[[[0, 0], [1, 0], [1, 1], [0, 1]]][0]]}, max_verts=3)
+    ok(capped is not None, "max_verts 小于真实顶点时也不返回 None（抽稀而非报错）")
 
     print()
     if fails:

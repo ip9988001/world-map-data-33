@@ -305,15 +305,29 @@ def _heartbeat(prog, lock, stop, log, interval=20, push_every=None):
 #   ② returnGeometry=true 回来的 rings 在本地算 representative_point（凹多边形/带洞 → 扫描线
 #      最宽内区间中点，见 parcel_centroid.representative_point），优先于服务端质心
 #   ③ 每行落 `_lat`/`_lon`（与 NAD 口径同名），rings 本身仍不落盘；raw 保留 Shape__Area/Length
-#   点层不受影响：返回结果没有 rings/centroid，`_lat/_lon` 就是 geometry.y/.x 的同值副本。
+#   ④ （2026-10-30 第 ② 档拍定）面层每行**再落一份简化 rings**（`PILOT_POLY_RINGS`）
+# 点层不受影响：返回结果没有 rings/centroid，`_lat/_lon` 就是 geometry.y/.x 的同值副本。
 POLY_CENTROID = os.environ.get("PILOT_POLY_CENTROID", "1") == "1"
 POLY_GEOMS = ("esrigeometrypolygon", "esrigeometrypolyline")
 GEOM_TYPE = ""          # collect_arcgis_v2 从图层元数据填，面层判定用
+
+# ---- 面层 rings 落盘（第 ② 档：6 位小数 + RDP 1e-5°）
+# 为什么现在才落：之前 rings 在采集瞬间就被丢掉，1,038 个宗地层「有行无坐标」，
+# 且**全 1,238 个宗地层都没有边界** —— 跨县宗地只能用质心判县，邻接/边界复算只能重采。
+# 为什么只落简化版：20 层上游实测，原始 rings 多出来的是 1e-14° 的投影尾数（+5.2 GB 买亚微米）。
+# 口径常量只有一处：`parcel_centroid.SIMP_EPS / SIMP_DECIMALS`（不另写一套）。
+POLY_RINGS = os.environ.get("PILOT_POLY_RINGS", "1") == "1"
+RING_GEOMS = ("esrigeometrypolygon",)      # 只对面：`rings` 是面的概念，线层的 `paths` 不冒充
 
 
 def geom_is_poly():
     """当前图层是不是面/线层（决定要不要 returnCentroid + 本地算质心）。"""
     return str(GEOM_TYPE or "").lower() in POLY_GEOMS
+
+
+def geom_has_rings():
+    """当前图层要不要落 rings（只有面层）。"""
+    return POLY_RINGS and str(GEOM_TYPE or "").lower() in RING_GEOMS
 STRATEGY = "keyset"
 CKPT_VER = 2
 UNIT_ROWS = int(os.environ.get("PILOT_UNIT_ROWS", "500000"))   # 一个「单元」目标行数
@@ -491,20 +505,42 @@ def feature_latlon(ft, geom_type=""):
     return lat, lon, "geometry"
 
 
+def feature_rings(ft, geom_type=""):
+    """一条面要素 → 可落盘的简化 rings（列表）或 None。
+
+    退化几何（环 <3 个不同点 / 坐标转不成 float）→ None，**不猜、不补、不拿 bbox 代替**。
+    线层不走这里（`rings` 是面的概念；线层保持不落几何）。
+    """
+    gt = str(geom_type if geom_type is not None else GEOM_TYPE or "").lower()
+    if not POLY_RINGS or gt not in RING_GEOMS:
+        return None
+    try:
+        import parcel_centroid as PC
+    except Exception:                                  # noqa: BLE001
+        return None
+    try:
+        return PC.simplify_rings((ft.get("geometry") or {}).get("rings"))
+    except Exception:                                  # noqa: BLE001
+        return None
+
+
 def make_rec(ft, geom_type=None):
     """一条 feature → 一条落盘记录（三条采集路径共用的唯一入口）。
 
     契约（单测护着 `test_pilot_centroid_contract.py`）：
       · `_lat`/`_lon` 恒存在（算不出就是 None）—— 面层能不能判县全看这两个键
+      · 面层额外落 `rings`（简化版，默认开）：每行必有该**键**；退化/算不出就是 None
+      · 点层/线层不带 `rings` 键（不冒充面几何，也不白占字节）
       · `raw` 保留全部属性（Shape__Area/Shape__Length 不丢）
-      · `rings`/`paths` 不进记录：几何只以点形式落盘（成本考虑，见
-        docs/PARCEL-GEOMETRY-OPTIONS-2026-10-30.md）
     """
     at = ft.get("attributes") or {}
-    lat, lon, _src = feature_latlon(ft, geom_type if geom_type is not None else GEOM_TYPE)
+    gt = geom_type if geom_type is not None else GEOM_TYPE
+    lat, lon, _src = feature_latlon(ft, gt)
     rec = normalize(at, lat, lon)
     rec.update({"src_layer": CUR["id"], "src_title": CUR["title"], "raw": at,
                 "_lat": lat, "_lon": lon})
+    if POLY_RINGS and str(gt or "").lower() in RING_GEOMS:
+        rec["rings"] = feature_rings(ft, gt)          # 键必在：None = 几何退化，不是没采
     return rec
 
 

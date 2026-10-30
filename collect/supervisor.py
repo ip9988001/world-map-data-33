@@ -703,6 +703,23 @@ def entry_check():
     default_on = 'os.environ.get("PILOT_POLY_CENTROID", "1")' in pil_src and "_lat" in pil_src
     add(29, "面层步骤强制质心", bool(poly_steps) and not no_flag and default_on,
         f"面层步={poly_steps or '无'} 缺 poly_centroid={no_flag or '无'} pilot 默认开={default_on}")
+
+    # 30. 面层必须落简化 rings（第 ② 档拍定 2026-10-30）
+    #     验收口径不是「有代码」而是三件同时成立：步上显式 true、采集侧默认开、
+    #     简化走 parcel_centroid 那一套常量（6 位小数 + RDP 1e-5°，不许另写一套）。
+    no_rings = [k for k in poly_steps if (S[k] or {}).get("poly_rings") is not True]
+    rings_on = 'os.environ.get("PILOT_POLY_RINGS", "1")' in pil_src
+    simp_src = ""
+    try:
+        simp_src = open(os.path.join(ROOT, "collect", "parcel_centroid.py"), encoding="utf-8").read()
+    except Exception:                                # noqa: BLE001
+        pass
+    simp_ok = "def simplify_rings" in simp_src and "SIMP_EPS = 1e-5" in simp_src \
+        and "SIMP_DECIMALS = 6" in simp_src
+    wired = 'rec["rings"] = feature_rings' in pil_src
+    add(30, "面层落简化 rings", bool(poly_steps) and not no_rings and rings_on and simp_ok and wired,
+        f"面层步={poly_steps or '无'} 缺 poly_rings={no_rings or '无'} 默认开={rings_on} "
+        f"简化常量={simp_ok} 已接线={wired}")
     add(27, "pass 必带 metrics", "--metrics" in src and "metrics 缺判据键" in src,
         "review 拒绝空证据的 pass")
 

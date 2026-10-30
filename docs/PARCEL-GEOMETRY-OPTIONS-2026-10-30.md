@@ -5,8 +5,9 @@
 > 若存原始 rings 则 → 13.3 GB（+8.3 GB），多付的 5.2 GB 买的是亚微米级投影噪声；
 > **只存质心**最省（+0.7~1.0 GB），但丢掉边界，跨县宗地永远只能靠质心判县。
 >
-> 本轮**只出数、不动代码**：几何采集侧仍按 `PILOT_POLY_CENTROID`（默认开）只落质心；
-> 1,038 个 `geom_missing` 层的补采方案见第五节，**排期在 04b/05b/07b/10b 全部结束之后**。
+> 本轮**已落地第 ② 档的采集侧**（`PILOT_POLY_RINGS` 默认开，面层每行落简化 `rings`）：
+> **只影响新采集**，已有 part 资产一个字节不改；**1,238 层全量几何补采**（`--geom-backfill`）
+> 方案与成本见第五节，闸门未过，**本轮未派发任何批次**。
 
 复现（两个脚本，互补；**以第六节的实测为准**）：
 
@@ -109,54 +110,77 @@ python3 analysis/parcel_rings_sample.py --json   # 实测：抽 20 层真 upstre
 
 ---
 
-## 五、1,038 个 `geom_missing` 层的补采方案（**只出计划，本轮不派发任何批次**）
+## 五、全量几何补采方案：**1,238 层宗地层，全部**（只出计划，本轮不派发任何批次）
 
-### 5.1 入口设计：`--centroid-only`
+### 5.0 为什么从 1,038 层改成 1,238 层
 
-只补**质心**，不重取属性、不动已有数据资产：
+上一版按 `schema/coord-salvage-v1.json` 的 `status=geom_missing` 取 **1,038 层**，这是按「没有坐标」筛的。
+但真正的原因是 **rings 从来没落过盘**（老实现只读 `geometry.y/.x`）—— 所以**全部**宗地层都没有边界，
+包括那些有坐标的层。只补那 1,038 层会留下「有坐标、有县、但没边界」的层，
+跨县宗地永远只能靠质心判县，邻接/边界复算下一次还得重采。
+
+| 口径 | 层数 | 行数 | 来源 |
+|---|---|---|---|
+| 上一版（只补坐标） | 1,038 | 31,412,190 | `coord-salvage-v1.json` 的 `geom_missing` |
+| **本版（全量几何）** | **1,238** | **36,473,089** | field-map v2 里 `src_kind=parcel_situs` 的全部层 |
+| 差额 | +200 | +5,060,899 | 有坐标但没边界的层 |
+
+### 5.1 入口设计：`--geom-backfill`
+
+一次请求同时拿 **简化 rings + 质心**，只写几何边车，**不重写任何已有属性 part 资产**：
 
 ```
-python3 collect/pilot.py --layer <id> --centroid-only          # 单层直跑
-python3 collect/centroid_backfill.py --plan collect/ledger/centroid_plan.json --concurrency 4
+python3 collect/pilot.py --geom-backfill --layer <id>                      # 单层
+python3 collect/geom_backfill.py --plan collect/ledger/geom_plan.json --concurrency 4
 ```
-
-> 为什么不是 `--kick 10c`：`steps.json` 的步号文法只允许「基础步 0..NN」和「`<基础步>b`」
-> （`supervisor.py --entry-check` 第 19 条），`10c` 会当场判红。补采几何是**一次性运维动作**，
-> 不写进 steps.json 的步骤表，走独立入口 + 独立账本（`collect/ledger/centroid_plan.json`）。
 
 强制语义（写进 argparse 就固化，不给调用者改的余地）：
 
 | 参数 | 值 | 理由 |
 |---|---|---|
 | `outFields` | **只取主键**（`objectIdField`） | 属性已经在资产里，重取 = 白花流量 |
-| `returnGeometry` | **false** | 只要质心，不要 rings；单页载荷从 ~1.2 KB/行降到 ~100 B/行 |
-| `returnCentroid` | **true** | 服务端算质心，`outSR=4326` 直接是 WGS84 |
+| `returnGeometry` | **true** | 这次要的就是 rings |
+| `returnCentroid` | **true** | 同一页白拿服务端质心（本地算不出来时兜底） |
 | `outSR` | `4326` | 与既有资产同口径，不做二次投影 |
-| 落盘 | `collect/out/<layer>/centroid-<unit>.ndjson.gz`，行格式 `{oid, _lat, _lon, src_layer}` | **不写 part-*.ndjson.gz**，现有数据资产一个字节都不改 |
-| 检查点 | `<tag>-centroid` 独立 tag + 独立 `plan_hash` | 与属性采集的检查点互不干扰，失败重跑不会污染原账本 |
-| 合并 | 新增 `collect/geo_patch.py`：按 `oid` 把 `_lat/_lon` 回填进 `dist/intake-full` 的 addr/aux_parcel 表 | 只加两列，不重跑 intake |
+| 落盘口径 | `parcel_centroid.simplify_rings`（6 位小数 + RDP 1e-5°） | 与 STEP-10/10b 新采同一个函数、同一套常量 |
+| 落盘 | `collect/out/<layer>/geom-<unit>.ndjson.gz`，行格式 `{oid, rings, _lat, _lon, src_layer}` | **不写 part-*.ndjson.gz**，现有数据资产一个字节都不改 |
+| 检查点 | `<tag>-geom` 独立 tag + 独立 `plan_hash` | 与属性采集的检查点互不干扰 |
+| 合并 | 新增 `collect/geo_patch.py`：按 `oid` 把 `_lat/_lon` 补进 `dist/intake-full`；rings 落边车，**不进 SQLite** | 台账不被几何拖大（81 B/行 → 不改） |
+| 二仓读数 | `rings_ref = geom://<layer_id>/<oid>` + `geom_bbox`（`SCHEMA.json` rev3） | 引用式：几何不属于地址行，不复制、不改 grain |
 
-铁律：**补采只增加坐标，不重写任何已有行**。任一层补采失败 → 该层保持 `geom_missing`，
-下一轮再来，不阻塞其它层。
+铁律：① **只增加几何，不重写任何已有行**；② 单层失败 → 该层保留 `geom_missing`，
+下一轮再来，不阻塞其它层；③ 退化几何落 `rings=null` 并计 `geom_invalid`，**不猜**。
 
-### 5.2 成本（全部按本地数据算，无一次上游调用）
+### 5.2 成本（页大小/行数按本地 `layer_plan.csv` 逐层算完再求和，无一次上游调用）
 
 | 项 | 值 | 依据 |
 |---|---|---|
-| 层数 | **1,038** | `schema/coord-salvage-v1.json` 里 `status=geom_missing` 的层 |
-| 行数 | **31,412,190** | 同文件逐层 `rows` 求和 |
-| 分页请求 | **30,454** 次 | 逐层 `⌈rows / min(layer_plan.pagesize, 2000)⌉`（pagesize 是当初实测的页大小，不是一律按 2000） |
-| count 请求 | **1,038** 次 | 每层一次 `returnCountOnly`，用于对账（行数不齐要能发现） |
-| 合计请求 | **33,066** 次（含 5% 重试冗余） | 30,454 + 1,038，×1.05 |
-| 下行流量 | **≈3.1 GB** | 100 B/行 × 31.4M（`{"attributes":{"OBJECTID":…},"centroid":{"x":…,"y":…}}`） |
-| 耗时（乐观） | **≈1–2 h**（4 层并行 × 4 线程） | 单页 ~1,031 行、~1 页/秒/线程 → ~1,031 行/秒/线程 |
-| 耗时（保守） | **≈3.2 h**（4 层并行） | 按与「全属性采集同速」676 行/秒·job 反推：31.4M/676 = 775 job-分钟 |
+| 层数 / 行数 | **1,238 层 / 36,473,089 行** | field-map v2 `parcel_situs` |
+| 分页请求 | **42,178 次** | 逐层 `⌈rows / pagesize⌉`，`pagesize` 取 `layer_plan.csv` 实测值（中位 2 页/层） |
+| count 请求 | **1,238 次** | 每层一次 `returnCountOnly` 用于对账 |
+| 合计请求 | **45,586 次**（含 5% 重试冗余） | (42,178 + 1,238) × 1.05 |
+| 下行流量（未压） | **24.9 GB** | 20 层实测加权 **682 B/行** × 36.47M |
+| 下行流量（gzip） | **≈8.3 GB** | 实测 gzip 227.7 B/行（服务端压缩生效时） |
+| 落盘（简化后 gzip） | **3.15 GB** | 实测 86.3 B/行 × 36.47M（未压则 12.4 GB） |
+| 加权顶点数 | **18.2 / 宗地** | 20 层实测按行份额加权（中位 9.75，均值被 buffer 层拉高） |
+| 耗时（乐观） | **≈2.5 h**（152 job-分钟） | 4 层并行 × 1,000 行/秒 |
+| 耗时（中位） | **≈5.1 h**（304 job-分钟） | 4 层并行 × 500 行/秒 |
+| 耗时（保守） | **≈8.4 h**（507 job-分钟） | 4 层并行 × 300 行/秒（rings 载荷比纯属性重 1 个量级，比质心补采慢） |
 
-耗时口径的两个锚点：intake 从 GitHub Release 下载+解析实测 **2,542 行/秒·进程**；
-STEP-10 的验收预算 `budget_min_max ≤ 900 job-分钟` 反推全属性采集 ≈676 行/秒·job。
-质心补采的单页载荷只有全属性的 ~1/12，落在两者之间偏乐观一侧。
+三个耗时的锚点：intake 从 Release 下载+解析实测 **2,542 行/秒·进程**；STEP-10 验收预算
+`budget_min_max ≤ 900 job-分钟` 反推全属性采集 ≈**676 行/秒·job**；质心补采（100 B/行）单页 ~1 页/秒/线程。
+本次单页是 ~1.2 KB × 页大小，比质心补采重 ~12 倍 → 采信「中位」一档作为排期依据，乐观/保守做区间。
 
-### 5.3 排期闸门（**硬约束，写死在计划里**）
+### 5.3 灰度与推进（10 层 → 40 层/批）
+
+1. **10 层灰度**：挑 `rows_total` 最大的 10 层（覆盖 5 个州以上），核对五条：
+   页数对不对、行数齐不齐、`rings` 非空率、**实际落盘字节/行是否落在 86 B/行 ±30%**、无 4xx/5xx；
+2. 灰度对账全绿 → **40 层/批**推进，批间核对 `geom` 入账与 `geom_invalid` 占比（>5% 停批查源）；
+3. 全部完成后跑 `collect/geo_patch.py` 回填 `_lat/_lon`，再跑 `county_assign.py` 抽样 5 层复核
+   （按**边界**判县应比按质心判县的不确定行更少）；
+4. `schema/coord-salvage-v1.json` 里这 1,238 层的 `status` 由 `geom_missing` → `geom_backfilled`。
+
+### 5.4 排期闸门（**硬约束，写死在计划里；本轮不满足，未派发**）
 
 ```
 禁止派发条件（任一为真即不许开跑）：
@@ -166,12 +190,6 @@ STEP-10 的验收预算 `budget_min_max ≤ 900 job-分钟` 反推全属性采�
 理由：补采是**同一批 ArcGIS 服务**的并发增量，抢并发会把在跑的补采拖成 no_progress，
       而且 04b/05b/07b/10b 的 unit 重试逻辑对并发敏感（STEP-12 卡死阈值的教训）。
 ```
-
-闸门通过后的执行顺序：
-1. `--centroid-only` 先跑 **10 层灰度**（挑 rows 最大的 10 层），核对：请求数 / 行数 / 非空率 / 无 4xx；
-2. 灰度对账全绿 → 按每批 40 层推进，批间核对 `centroid` 入账；
-3. 全部完成后跑 `collect/geo_patch.py` 回填，再跑 `county_assign.py` 单层复核 5 层（判出县应与已有坐标层同量级）；
-4. `schema/coord-salvage-v1.json` 里这 1,038 层的 `status` 由 `geom_missing` → `centroid_backfilled`。
 
 ---
 
