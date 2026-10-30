@@ -22,6 +22,9 @@ on:
       #   为什么需要：cancelled 片里的层会留下「单元标完成、产物没上传」或「计划期口径差」
       #   的半截状态，done_layers（只看 tag+checkpoint）看不见 → 不定点重跑就永久缺口。
       force_layers: { description: "强制重跑的层 id（逗号分隔，cancelled 片续跑用）", default: "" }
+      # ★ 单层墙钟上限（分钟）。默认 60：4 层/片 × 60 < 350 分钟上限，挂死一层不拖垮整片。
+      #   大层（如 NAD 9,790 万行）分轮续跑：一轮 60 分钟只推进一部分，checkpoint 接着跑。
+      layer_timeout: { description: "单层墙钟上限（分钟，0=默认 60）", default: "0" }
       # ★ 账本重建入口：只读 Release 资产，不采一行数据。
       #   用途：某几片的账本因文件名不匹配而静默落空（已由 98bd461 修好，但那批 run
       #   用自己 checkout 的 SHA，补不回来）→ 事后以资产为唯一真值重建账本 + 收官文档。
@@ -116,9 +119,13 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PILOT_HEARTBEAT_PUSH: "1"
           FORCE: ${{ inputs.force_layers }}
+          LT: ${{ inputs.layer_timeout }}
         run: |
           set -euo pipefail
           STAGE="${{ inputs.stage }}"
+          # 0 = 用脚本默认（60 分钟）。注意：不能写成 `[ ... ] && LT=""`，
+          # 条件为假时整条命令返回值非 0，在 set -e 下会直接退出（踩过）。
+          if [ "${LT}" = "0" ]; then LT=""; fi
           # tag 与 steps.json 一致（collect-step04-<layer> 等），换 run 能续跑
           TAGPFX=$(python3 -c "import json;print(json.load(open('collect/ledger/${STAGE}_plan.json'))['tag'].replace('{layer}',''))")
           echo "TAG 前缀：$TAGPFX"
@@ -126,6 +133,7 @@ jobs:
             --plan "collect/ledger/${STAGE}_plan.json" \
             --workers "${{ inputs.workers }}" --unit-rows "${{ inputs.unit_rows }}" \
             ${FORCE:+--force-layers "$FORCE"} \
+            ${LT:+--layer-timeout "$LT"} \
             --tag-prefix "$TAGPFX"
       - name: 提交本片账本（只动自己那一个文件，用重置到 main 的方式避免并发冲突）
         if: always()
