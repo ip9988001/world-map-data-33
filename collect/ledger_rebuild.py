@@ -558,12 +558,11 @@ def render_doc(agg: dict) -> str:
     if rb.get("id"):
         L += ["- run：`%s`（conclusion=**%s**，%s → %s）"
               % (rb["id"], rb.get("conclusion"), rb.get("created_at"), rb.get("updated_at"))]
-        sh = rb.get("shards") or {}
-        if sh:
-            okn = len(rb.get("shards_success") or [])
-            L += ["- 片结论：共 %d 片 → success %d / cancelled %d%s"
-                  % (len(sh), okn, len(cb),
-                     "（shard %s）" % "、".join(str(c["shard"]) for c in cb) if cb else "")]
+        if cb:
+            # 片号是**每轮各自编的**：跨轮不能相加。这里只报「以最后一轮为准，
+            # 仍是 cancelled 的片号」，逐轮明细看上表。
+            L += ["- 以最后一轮为准：仍有 %d 个片号是 cancelled（shard %s）；"
+                  "这些片里的层逐条见下表" % (len(cb), "、".join(str(c["shard"]) for c in cb))]
     else:
         L += ["- 未指定 `--run-id`，本账只看资产、不标片结论。"]
     if cb:

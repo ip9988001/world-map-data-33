@@ -64,10 +64,23 @@
  },
  "round4": {
   "run_id": 41116421397,
-  "status": "in_progress",
-  "purpose": "NAD 单层 keyset 分轮续跑",
-  "max_shards": 1,
-  "layer_timeout_min": 300
+  "status": "cancelled(人工取消)",
+  "purpose": "NAD 单层续跑（max_shards=1 / layer_timeout=300）",
+  "result": "NAD 68 个单元全部 done+uploaded（实采 39,875,268 行）；随后进入同片另外 3 个已知挂死层，取消以免空转 5 小时"
  },
- "ledger_truth": "以 Release 资产为准：collect/ledger/step04b_rebuilt.json + docs/STEP04-FULL-2026-10-30.md"
+ "ledger_truth": "以 Release 资产为准：collect/ledger/step04b_rebuilt.json + docs/STEP04-FULL-2026-10-30.md",
+ "final": {
+  "ledger_file": "collect/ledger/step04b_rebuilt.json",
+  "doc": "docs/STEP04-FULL-2026-10-30.md",
+  "layers_n": 272,
+  "ok": 250,
+  "partial": 4,
+  "failed": 18,
+  "empty": 0,
+  "declared": 580806486,
+  "rows": 490821547,
+  "gap": 89984939,
+  "gap_pct": 15.4931,
+  "note": "partial 4 = NAD（上游 count 在不同 vantage 间 18.8M~97.9M 漂移）+ 3 层计划期口径差；failed 18 = 13 层上游 0 数据 + 5 层半截（单元未上传/短供/无 checkpoint）"
+ }
 }

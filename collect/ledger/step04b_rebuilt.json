@@ -3,7 +3,7 @@
  "stage": "04b",
  "source_of_truth": "github release assets（checkpoint + unit 包），非 workflow 账本",
  "tag_prefix": "collect-step04-",
- "generated_at": "2026-10-30T19:27:00Z",
+ "generated_at": "2026-10-30T19:42:48Z",
  "generated_note": "generated_at = 最新资产上传时间（不取 now()），保证同状态重跑字节一致",
  "tolerance": {
   "gap_partial": 0.01
@@ -20,15 +20,23 @@
  "layers_n": 272,
  "ok": 250,
  "empty": 0,
- "partial": 3,
- "failed": 19,
+ "partial": 4,
+ "failed": 18,
  "declared": 580806486,
- "rows": 488475943,
- "gap": 92330543,
- "gap_pct": 15.897,
- "assets_total": 633,
- "bytes_total": 37849842314,
+ "rows": 490821547,
+ "gap": 89984939,
+ "gap_pct": 15.4931,
+ "assets_total": 634,
+ "bytes_total": 37778259692,
  "gap_gt_tol": [
+  {
+   "layer": "s_Points_from_National_Address_Database_view_FeatureServer_0",
+   "declared": 97928946,
+   "rows": 39875268,
+   "gap": 58053678,
+   "gap_pct": 59.2814,
+   "reason": "实采已等于本层 checkpoint 计划行 39,875,268，但清单声明 97,928,946：计划期口径差 59.28%，需按上游当前 returnCount 重采"
+  },
   {
    "layer": "fn_arcgis_rest_services_NG911_Address_Points_FeatureServer_0",
    "declared": 1928880,
@@ -55,15 +63,6 @@
   }
  ],
  "failed_layers": [
-  {
-   "layer": "s_Points_from_National_Address_Database_view_FeatureServer_0",
-   "reason": "unit 22 未上传（unit_uploaded=false）；unit 23 未上传（unit_uploaded=false）；unit 58 未上传（unit_uploaded=false）",
-   "problems": [
-    "unit 22 未上传（unit_uploaded=false）",
-    "unit 23 未上传（unit_uploaded=false）",
-    "unit 58 未上传（unit_uploaded=false）"
-   ]
-  },
   {
    "layer": "cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0",
    "reason": "无 Release 资产（tag 不存在）—— 该层从未跑成，不猜行数",
@@ -179,16 +178,16 @@
  ],
  "empty_layers": [],
  "run": {
-  "id": 41092912755,
+  "id": 41116421397,
   "conclusion": "cancelled",
   "status": "completed",
-  "created_at": "2026-10-30T16:46:28Z",
-  "updated_at": "2026-10-30T19:19:02Z",
+  "created_at": "2026-10-30T19:34:59Z",
+  "updated_at": "2026-10-30T19:47:37Z",
   "run_attempt": 1,
   "shards": {
    "0": "cancelled",
    "1": "cancelled",
-   "2": "success",
+   "2": "cancelled",
    "3": "cancelled",
    "4": "failure",
    "5": "failure",
@@ -244,18 +243,43 @@
      "7": "failure",
      "8": "failure"
     }
+   },
+   {
+    "id": 41114330819,
+    "conclusion": "cancelled",
+    "status": "completed",
+    "created_at": "2026-10-30T19:19:39Z",
+    "updated_at": "2026-10-30T19:33:37Z",
+    "run_attempt": 1,
+    "shards": {
+     "0": "cancelled",
+     "1": "cancelled",
+     "2": "cancelled",
+     "3": "cancelled"
+    }
+   },
+   {
+    "id": 41116421397,
+    "conclusion": "cancelled",
+    "status": "completed",
+    "created_at": "2026-10-30T19:34:59Z",
+    "updated_at": "2026-10-30T19:47:37Z",
+    "run_attempt": 1,
+    "shards": {
+     "0": "cancelled"
+    }
    }
   ],
   "shards_cancelled": [
    0,
    1,
+   2,
    3,
    6,
    9,
    10
   ],
   "shards_success": [
-   2,
    11,
    12,
    13
@@ -265,10 +289,10 @@
   {
    "shard": 0,
    "job_conclusion": "cancelled",
-   "run_id": "41092912755",
-   "job_id": 124191472957,
-   "started_at": "2026-10-30T16:47:11Z",
-   "completed_at": "2026-10-30T19:16:59Z",
+   "run_id": "41116421397",
+   "job_id": 124272066497,
+   "started_at": "2026-10-30T19:35:47Z",
+   "completed_at": "2026-10-30T19:47:20Z",
    "layers_n": 20,
    "ok": 19,
    "empty": 0,
@@ -482,10 +506,10 @@
   {
    "shard": 1,
    "job_conclusion": "cancelled",
-   "run_id": "41092912755",
-   "job_id": 124191472891,
-   "started_at": "2026-10-30T16:47:11Z",
-   "completed_at": "2026-10-30T19:16:32Z",
+   "run_id": "41114330819",
+   "job_id": 124264831179,
+   "started_at": "2026-10-30T19:20:24Z",
+   "completed_at": "2026-10-30T19:31:56Z",
    "layers_n": 20,
    "ok": 15,
    "empty": 0,
@@ -697,12 +721,229 @@
    ]
   },
   {
+   "shard": 2,
+   "job_conclusion": "cancelled",
+   "run_id": "41114330819",
+   "job_id": 124264831126,
+   "started_at": "2026-10-30T19:20:24Z",
+   "completed_at": "2026-10-30T19:31:58Z",
+   "layers_n": 20,
+   "ok": 15,
+   "empty": 0,
+   "partial": 0,
+   "failed": 5,
+   "declared": 17820023,
+   "rows": 9083386,
+   "layers": [
+    {
+     "layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1",
+     "status": "failed",
+     "declared": 6297169,
+     "rows": null,
+     "parts_assets": 0,
+     "units_done": null,
+     "units": null,
+     "note": "本层在 cancelled 片内，一个字节都没落 → 从未跑成"
+    },
+    {
+     "layer": "tyil_gov_traditional_rest_services_cookVwrDynmc_MapServer_63",
+     "status": "failed",
+     "declared": 1381118,
+     "rows": null,
+     "parts_assets": 0,
+     "units_done": null,
+     "units": null,
+     "note": "本层在 cancelled 片内，一个字节都没落 → 从未跑成"
+    },
+    {
+     "layer": "rcgis_rest_services_Address_Points_shapefile_FeatureServer_0",
+     "status": "ok",
+     "declared": 1254346,
+     "rows": 1254346,
+     "parts_assets": 2,
+     "units_done": 2,
+     "units": 2,
+     "note": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
+    },
+    {
+     "layer": "g_arcgis_rest_services_ADDRESS_POINTS_072926_FeatureServer_2",
+     "status": "ok",
+     "declared": 1131611,
+     "rows": 1131611,
+     "parts_assets": 2,
+     "units_done": 2,
+     "units": 2,
+     "note": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
+    },
+    {
+     "layer": "wY_arcgis_rest_services_DSUSD_Address_Points_FeatureServer_0",
+     "status": "ok",
+     "declared": 938981,
+     "rows": 938981,
+     "parts_assets": 1,
+     "units_done": 1,
+     "units": 1,
+     "note": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
+    },
+    {
+     "layer": "MP_arcgis_rest_services_NG911_Address_Points_FeatureServer_0",
+     "status": "ok",
+     "declared": 711923,
+     "rows": 712005,
+     "parts_assets": 1,
+     "units_done": 1,
+     "units": 1,
+     "note": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
+    },
+    {
+     "layer": "gov_server_rest_services_MasterAddressPoints_FeatureServer_0",
+     "status": "ok",
+     "declared": 679079,
+     "rows": 679114,
+     "parts_assets": 1,
+     "units_done": 1,
+     "units": 1,
+     "note": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
+    },
+    {
+     "layer": "services_King_County_Address_Points_Land_Use_FeatureServer_1",
+     "status": "ok",
+     "declared": 668781,
+     "rows": 668781,
+     "parts_assets": 1,
+     "units_done": 1,
+     "units": 1,
+     "note": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
+    },
+    {
+     "layer": "is_rest_services_municipal_address_points_pj_FeatureServer_0",
+     "status": "ok",
+     "declared": 526790,
+     "rows": 526790,
+     "parts_assets": 1,
+     "units_done": 1,
+     "units": 1,
+     "note": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
+    },
+    {
+     "layer": "ZzfsFsB5_arcgis_rest_services_Address_Points_FeatureServer_0",
+     "status": "ok",
+     "declared": 490319,
+     "rows": 490319,
+     "parts_assets": 1,
+     "units_done": 1,
+     "units": 1,
+     "note": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
+    },
+    {
+     "layer": "st_services_Address_Points_with_Joint_Fields_FeatureServer_0",
+     "status": "ok",
+     "declared": 440698,
+     "rows": 440698,
+     "parts_assets": 1,
+     "units_done": 1,
+     "units": 1,
+     "note": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
+    },
+    {
+     "layer": "st_services_Tri_County_Parcels_and_Addresses_FeatureServer_0",
+     "status": "ok",
+     "declared": 401295,
+     "rows": 401295,
+     "parts_assets": 1,
+     "units_done": 1,
+     "units": 1,
+     "note": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
+    },
+    {
+     "layer": "_rest_services_Address_Points_North_Carolina_FeatureServer_0",
+     "status": "ok",
+     "declared": 392818,
+     "rows": 392818,
+     "parts_assets": 1,
+     "units_done": 1,
+     "units": 1,
+     "note": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
+    },
+    {
+     "layer": "9EYLSnPE_arcgis_rest_services_Address_Points_FeatureServer_0",
+     "status": "ok",
+     "declared": 389884,
+     "rows": 389884,
+     "parts_assets": 1,
+     "units_done": 1,
+     "units": 1,
+     "note": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
+    },
+    {
+     "layer": "g_rest_services_Basemap_Address_Points_EagleView_MapServer_0",
+     "status": "failed",
+     "declared": 388607,
+     "rows": null,
+     "parts_assets": 0,
+     "units_done": null,
+     "units": null,
+     "note": "本层在 cancelled 片内，一个字节都没落 → 从未跑成"
+    },
+    {
+     "layer": "GptQt_arcgis_rest_services_Address_Points_RG_FeatureServer_0",
+     "status": "ok",
+     "declared": 374426,
+     "rows": 374426,
+     "parts_assets": 1,
+     "units_done": 1,
+     "units": 1,
+     "note": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
+    },
+    {
+     "layer": "est_services_ParcelViewer_AddressPoints_View_FeatureServer_0",
+     "status": "ok",
+     "declared": 374142,
+     "rows": 374142,
+     "parts_assets": 1,
+     "units_done": 1,
+     "units": 1,
+     "note": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
+    },
+    {
+     "layer": "_arcgis1_rest_services_FLEXMOBILE_Address_Points_MapServer_0",
+     "status": "failed",
+     "declared": 367002,
+     "rows": null,
+     "parts_assets": 0,
+     "units_done": null,
+     "units": null,
+     "note": "本层在 cancelled 片内，一个字节都没落 → 从未跑成"
+    },
+    {
+     "layer": "uYNYH_arcgis_rest_services_TRANSPO_MAFDAP_PV_FeatureServer_0",
+     "status": "ok",
+     "declared": 308114,
+     "rows": 308176,
+     "parts_assets": 1,
+     "units_done": 1,
+     "units": 1,
+     "note": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
+    },
+    {
+     "layer": "_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0",
+     "status": "failed",
+     "declared": 302920,
+     "rows": null,
+     "parts_assets": 0,
+     "units_done": null,
+     "units": null,
+     "note": "本层在 cancelled 片内，一个字节都没落 → 从未跑成"
+    }
+   ]
+  },
+  {
    "shard": 3,
    "job_conclusion": "cancelled",
-   "run_id": "41092912755",
-   "job_id": 124191472928,
-   "started_at": "2026-10-30T16:47:11Z",
-   "completed_at": "2026-10-30T19:16:34Z",
+   "run_id": "41114330819",
+   "job_id": 124264831226,
+   "started_at": "2026-10-30T19:20:24Z",
+   "completed_at": "2026-10-30T19:31:57Z",
    "layers_n": 20,
    "ok": 20,
    "empty": 0,
@@ -1624,25 +1865,23 @@
    "tag": "collect-step04-s_Points_from_National_Address_Database_view_FeatureServer_0",
    "declared": 97928946,
    "declared_src": "layer_plan.csv",
-   "rows": 37529664,
+   "rows": 39875268,
    "rows_src": "unit_rows_seen",
-   "parts_assets": 67,
-   "parts_ckpt": 768,
-   "bytes": 4668589659,
-   "units": 67,
-   "units_done": 67,
-   "first_upload": "2026-10-30T09:48:29Z",
-   "last_upload": "2026-10-30T19:12:21Z",
-   "problems": [
-    "unit 22 未上传（unit_uploaded=false）",
-    "unit 23 未上传（unit_uploaded=false）",
-    "unit 58 未上传（unit_uploaded=false）"
-   ],
+   "parts_assets": 68,
+   "parts_ckpt": 816,
+   "bytes": 4597007037,
+   "units": 68,
+   "units_done": 68,
+   "first_upload": "2026-10-30T16:56:31Z",
+   "last_upload": "2026-10-30T19:42:48Z",
+   "problems": [],
    "warn": [
-    "checkpoint 计划行 37,529,664 与清单声明 97,928,946 差 -61.68%"
+    "checkpoint 计划行 39,875,268 与清单声明 97,928,946 差 -59.28%"
    ],
-   "status": "failed",
-   "reason": "unit 22 未上传（unit_uploaded=false）；unit 23 未上传（unit_uploaded=false）；unit 58 未上传（unit_uploaded=false）",
+   "status": "partial",
+   "reason": "实采已等于本层 checkpoint 计划行 39,875,268，但清单声明 97,928,946：计划期口径差 59.28%，需按上游当前 returnCount 重采",
+   "gap": 58053678,
+   "gap_pct": 59.2814,
    "shard": 7,
    "shard_conclusion": "failure"
   },
@@ -1903,7 +2142,9 @@
    "status": "failed",
    "reason": "无 Release 资产（tag 不存在）—— 该层从未跑成，不猜行数",
    "shard": 2,
-   "shard_conclusion": "success"
+   "shard_conclusion": "cancelled",
+   "shard_cancelled": true,
+   "note_cancelled": "本层在 cancelled 片内，一个字节都没落 → 从未跑成"
   },
   {
    "layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2",
@@ -3124,7 +3365,9 @@
    "status": "failed",
    "reason": "无 Release 资产（tag 不存在）—— 该层从未跑成，不猜行数",
    "shard": 2,
-   "shard_conclusion": "success"
+   "shard_conclusion": "cancelled",
+   "shard_cancelled": true,
+   "note_cancelled": "本层在 cancelled 片内，一个字节都没落 → 从未跑成"
   },
   {
    "layer": "yil_gov_traditional_rest_services_addressZipCode_MapServer_0",
@@ -3356,7 +3599,9 @@
    "gap": 0,
    "gap_pct": 0.0,
    "shard": 2,
-   "shard_conclusion": "success"
+   "shard_conclusion": "cancelled",
+   "shard_cancelled": true,
+   "note_cancelled": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
   },
   {
    "layer": "gis_rest_services_Address_Points_2026_County_FeatureServer_0",
@@ -3569,7 +3814,9 @@
    "gap": 0,
    "gap_pct": 0.0,
    "shard": 2,
-   "shard_conclusion": "success"
+   "shard_conclusion": "cancelled",
+   "shard_cancelled": true,
+   "note_cancelled": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
   },
   {
    "layer": "g_arcgis_rest_services_ADDRESS_POINTS_062526_FeatureServer_1",
@@ -3997,7 +4244,9 @@
    "gap": 0,
    "gap_pct": 0.0,
    "shard": 2,
-   "shard_conclusion": "success"
+   "shard_conclusion": "cancelled",
+   "shard_cancelled": true,
+   "note_cancelled": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
   },
   {
    "layer": "st_services_Miami_Dade_County_Address_Points_FeatureServer_0",
@@ -4671,7 +4920,9 @@
    "gap": -82,
    "gap_pct": -0.0115,
    "shard": 2,
-   "shard_conclusion": "success"
+   "shard_conclusion": "cancelled",
+   "shard_cancelled": true,
+   "note_cancelled": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
   },
   {
    "layer": "NARefyPVtAeuJPU_arcgis_rest_services_Address_FeatureServer_0",
@@ -4788,7 +5039,9 @@
    "gap": -35,
    "gap_pct": -0.0052,
    "shard": 2,
-   "shard_conclusion": "success"
+   "shard_conclusion": "cancelled",
+   "shard_cancelled": true,
+   "note_cancelled": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
   },
   {
    "layer": "ov_arcgis_rest_services_CountyData_MasterAddress_MapServer_0",
@@ -4928,7 +5181,9 @@
    "gap": 0,
    "gap_pct": 0.0,
    "shard": 2,
-   "shard_conclusion": "success"
+   "shard_conclusion": "cancelled",
+   "shard_cancelled": true,
+   "note_cancelled": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
   },
   {
    "layer": "arcgis_rest_services_Address_Points_20260709_FeatureServer_0",
@@ -5621,7 +5876,9 @@
    "gap": 0,
    "gap_pct": 0.0,
    "shard": 2,
-   "shard_conclusion": "success"
+   "shard_conclusion": "cancelled",
+   "shard_cancelled": true,
+   "note_cancelled": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
   },
   {
    "layer": "rcgis_rest_services_municipal_address_points_FeatureServer_0",
@@ -5936,7 +6193,9 @@
    "gap": 0,
    "gap_pct": 0.0,
    "shard": 2,
-   "shard_conclusion": "success"
+   "shard_conclusion": "cancelled",
+   "shard_cancelled": true,
+   "note_cancelled": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
   },
   {
    "layer": "est_services_BASE_BASE_NS_CivicAddress_File_UT83_MapServer_0",
@@ -6147,7 +6406,9 @@
    "gap": 0,
    "gap_pct": 0.0,
    "shard": 2,
-   "shard_conclusion": "success"
+   "shard_conclusion": "cancelled",
+   "shard_cancelled": true,
+   "note_cancelled": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
   },
   {
    "layer": "DUN35YwdCEcMm_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -6675,7 +6936,9 @@
    "gap": 0,
    "gap_pct": 0.0,
    "shard": 2,
-   "shard_conclusion": "success"
+   "shard_conclusion": "cancelled",
+   "shard_cancelled": true,
+   "note_cancelled": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
   },
   {
    "layer": "arcgis_rest_services_Building_Address_Points_FeatureServer_0",
@@ -6796,7 +7059,9 @@
    "gap": 0,
    "gap_pct": 0.0,
    "shard": 2,
-   "shard_conclusion": "success"
+   "shard_conclusion": "cancelled",
+   "shard_cancelled": true,
+   "note_cancelled": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
   },
   {
    "layer": "s_DuPage_County_IL_AddressPointsUnderDevelopment_MapServer_0",
@@ -6892,7 +7157,9 @@
    "gap": 0,
    "gap_pct": 0.0,
    "shard": 2,
-   "shard_conclusion": "success"
+   "shard_conclusion": "cancelled",
+   "shard_cancelled": true,
+   "note_cancelled": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
   },
   {
    "layer": "_arcgis_rest_services_Address_Points_Current_FeatureServer_0",
@@ -7007,7 +7274,9 @@
    "status": "failed",
    "reason": "无 Release 资产（tag 不存在）—— 该层从未跑成，不猜行数",
    "shard": 2,
-   "shard_conclusion": "success"
+   "shard_conclusion": "cancelled",
+   "shard_cancelled": true,
+   "note_cancelled": "本层在 cancelled 片内，一个字节都没落 → 从未跑成"
   },
   {
    "layer": "HnF97m_arcgis_rest_services_Address_Points_V_FeatureServer_0",
@@ -7176,7 +7445,9 @@
    "gap": 0,
    "gap_pct": 0.0,
    "shard": 2,
-   "shard_conclusion": "success"
+   "shard_conclusion": "cancelled",
+   "shard_cancelled": true,
+   "note_cancelled": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
   },
   {
    "layer": "s_rest_services_Parcel_Viewer_SitusAddresses_FeatureServer_0",
@@ -7222,7 +7493,9 @@
    "gap": 0,
    "gap_pct": 0.0,
    "shard": 2,
-   "shard_conclusion": "success"
+   "shard_conclusion": "cancelled",
+   "shard_cancelled": true,
+   "note_cancelled": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
   },
   {
    "layer": "is_rest_services_ParcelViewer_AddressPoints2_FeatureServer_0",
@@ -7289,7 +7562,9 @@
    "status": "failed",
    "reason": "无 Release 资产（tag 不存在）—— 该层从未跑成，不猜行数",
    "shard": 2,
-   "shard_conclusion": "success"
+   "shard_conclusion": "cancelled",
+   "shard_cancelled": true,
+   "note_cancelled": "本层在 cancelled 片内，一个字节都没落 → 从未跑成"
   },
   {
    "layer": "ClqmipKpmFK_arcgis_rest_services_FBC_ADDRESS_FeatureServer_0",
@@ -7911,7 +8186,9 @@
    "gap": -62,
    "gap_pct": -0.0201,
    "shard": 2,
-   "shard_conclusion": "success"
+   "shard_conclusion": "cancelled",
+   "shard_cancelled": true,
+   "note_cancelled": "本层在 cancelled 片内，但资产完整（片子被杀前已落盘）"
   },
   {
    "layer": "8_arcgis_rest_services_Parcel_Data_Addresses_FeatureServer_0",
@@ -8072,7 +8349,9 @@
    "status": "failed",
    "reason": "无 Release 资产（tag 不存在）—— 该层从未跑成，不猜行数",
    "shard": 2,
-   "shard_conclusion": "success"
+   "shard_conclusion": "cancelled",
+   "shard_cancelled": true,
+   "note_cancelled": "本层在 cancelled 片内，一个字节都没落 → 从未跑成"
   },
   {
    "layer": "arcgis_rest_services_Poland_Addresses_2_view_FeatureServer_0",
