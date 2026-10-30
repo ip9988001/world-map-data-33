@@ -351,6 +351,7 @@
   },
   "10": {
    "kind": "parcel_situs",
+   "poly_centroid": true,
    "title": "宗地地址扩采",
    "desc": "从 Polygon/Polyline 层里挑出真正带房产地址字段的层；按实测有效率只采高产出层，不按声明行数全采",
    "select": {
@@ -396,6 +397,7 @@
   },
   "10b": {
    "kind": "parcel_situs",
+   "poly_centroid": true,
    "title": "宗地地址扩采 batch2+",
    "desc": "batch1 之外的强/弱有效层全部采（reject 只记账不采）",
    "select": {

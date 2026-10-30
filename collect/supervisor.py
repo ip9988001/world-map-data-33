@@ -694,6 +694,15 @@ def entry_check():
         f"state={st.get('blocked_count')} / blocked.json={len(_blk.get('items') or [])}")
     add(28, "accept 判据有消费者", os.path.exists(os.path.join(ROOT, "collect", "verify_accept.py")),
         "collect/verify_accept.py（只陈述事实，不判合格）")
+
+    # 29. 面层必须带质心：parcel 步要显式 true，且 pilot 的默认值必须是开
+    #     （2026-10-30：1,038 层“有行无坐标”就是因为采集侧把 rings 丢了又没落 `_lat/_lon`）
+    pil_src = open(os.path.join(ROOT, "collect", "pilot.py"), encoding="utf-8").read()
+    poly_steps = sorted(k for k, s in S.items() if (s or {}).get("kind") == "parcel_situs")
+    no_flag = [k for k in poly_steps if (S[k] or {}).get("poly_centroid") is not True]
+    default_on = 'os.environ.get("PILOT_POLY_CENTROID", "1")' in pil_src and "_lat" in pil_src
+    add(29, "面层步骤强制质心", bool(poly_steps) and not no_flag and default_on,
+        f"面层步={poly_steps or '无'} 缺 poly_centroid={no_flag or '无'} pilot 默认开={default_on}")
     add(27, "pass 必带 metrics", "--metrics" in src and "metrics 缺判据键" in src,
         "review 拒绝空证据的 pass")
 

@@ -24,6 +24,11 @@
 4. **抽样实测**：分层抽 200 层真下载，量 声明→实采→有效地址→去重净新增 四层漏斗
 5. **全库快测**：剩余层各取 300 行测有效率，按 `eff_min` 筛层
 6. **决策**：只采达标层，按产出/分钟排序，绝不按声明行数全采
+7. **面层带质心（硬判据，`steps.json#steps.10.poly_centroid=true`）**：`PILOT_POLY_CENTROID` 默认已开，
+   面层每行落 `_lat`/`_lon`（rings 本地算 `representative_point`，算不出才退回 `returnCentroid=true` 的服务端质心，`outSR=4326`）。
+   **2026-10-30 踩过的坑（防回归）**：老实现只读 `geometry.y/.x`，`rings` 在采集瞬间就被丢掉 ——
+   1,038 个宗地层「有行、有 Shape__Area、无坐标」，县判定与坐标补齐全部卡死，只能整层重采。
+   现在：面层缺 `_lat`/`_lon` 键 = 采集失败；回归保护在 `collect/tests/test_pilot_centroid_contract.py`。
 
 ## 验收判据（机器判；判定权在大脑）
 | 指标 | 阈值 |
@@ -49,6 +54,7 @@ python3 collect/supervisor.py --review pass --note "宗地扩采收尾"
 {
  "step": "10",
  "kind": "parcel_situs",
+ "poly_centroid": true,
  "title": "宗地地址扩采",
  "select": {
   "source": "layer_plan",

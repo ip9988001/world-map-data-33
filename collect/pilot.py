@@ -49,11 +49,13 @@ def page_size_for(api):
 
 
 def collect_arcgis(url, limit=0, log=print):
+    global GEOM_TYPE
     m = re.search(r"/(FeatureServer|MapServer)(/\d+)?$", url.rstrip("/"))
     api = url.split("?")[0].rstrip("/")
     if m and not m.group(2):
         api += "/0"
     ps, maxrc, meta = page_size_for(api)
+    GEOM_TYPE = str(meta.get("geometryType") or "")      # 老路径同样认面层，不许两套行为
     oid_field = meta.get("objectIdField") or meta.get("objectIdFieldName")
     if not oid_field:
         # ★ 2026-10-23 san_juan：MapServer 的 objectIdField 为 null，实际主键叫 FID。
@@ -92,6 +94,8 @@ def collect_arcgis(url, limit=0, log=print):
         q = {"where": where, "outFields": "*", "returnGeometry": "true",
              "outSR": "4326", "f": "json", "resultRecordCount": ps,
              "orderByFields": oid_field}
+        if POLY_CENTROID and geom_is_poly():
+            q["returnCentroid"] = "true"
         u = api + "/query?" + urllib.parse.urlencode(q)
         d = get_json(u, timeout=180)
         if "__error__" in d:
@@ -110,9 +114,7 @@ def collect_arcgis(url, limit=0, log=print):
                 break
         for ft in feats:
             a = ft.get("attributes") or {}
-            g = (ft.get("geometry") or {})
-            rec = normalize(a, g.get("y"), g.get("x"))
-            rec.update({"src_layer": CUR["id"], "src_title": CUR["title"], "raw": a})
+            rec = make_rec(ft)
             buf.append(rec)
             rows += 1
             oid = a.get(oid_field)
@@ -295,11 +297,23 @@ def _heartbeat(prog, lock, stop, log, interval=20, push_every=None):
         stop.wait(interval)
 
 
-# 面层（Polygon）默认只落点几何：lat/lon 取自 geometry.y/.x，rings 被丢弃。
-# ★ 2026-10-30 实测：1,060 个宗地层因几何未持久化全部无坐标 → 县判定卡死。
-#   打开 PILOT_POLY_CENTROID=1 后请求 returnCentroid=true（ArcGIS 服务端质心，
-#   outSR=4326 即 WGS84），面层就能带上 lat/lon。默认关，不改变在跑批次的行为。
-POLY_CENTROID = os.environ.get("PILOT_POLY_CENTROID", "0") == "1"
+# 面层（Polygon/Polyline）必须落质心 —— 2026-10-30 结构性回归的修复。
+# ★ 事实：`normalize()` 只吃 (attrs, lat, lon)，rings 在采集瞬间就被丢掉；1,038 个宗地层
+#   因此「有行无坐标」，下游县判定与坐标补齐全部卡死，只能整层重采（代价 = 全部行）。
+# ★ 现在默认开（PILOT_POLY_CENTROID=1）：
+#   ① 请求 returnCentroid=true（服务端质心，outSR=4326 = WGS84）
+#   ② returnGeometry=true 回来的 rings 在本地算 representative_point（凹多边形/带洞 → 扫描线
+#      最宽内区间中点，见 parcel_centroid.representative_point），优先于服务端质心
+#   ③ 每行落 `_lat`/`_lon`（与 NAD 口径同名），rings 本身仍不落盘；raw 保留 Shape__Area/Length
+#   点层不受影响：返回结果没有 rings/centroid，`_lat/_lon` 就是 geometry.y/.x 的同值副本。
+POLY_CENTROID = os.environ.get("PILOT_POLY_CENTROID", "1") == "1"
+POLY_GEOMS = ("esrigeometrypolygon", "esrigeometrypolyline")
+GEOM_TYPE = ""          # collect_arcgis_v2 从图层元数据填，面层判定用
+
+
+def geom_is_poly():
+    """当前图层是不是面/线层（决定要不要 returnCentroid + 本地算质心）。"""
+    return str(GEOM_TYPE or "").lower() in POLY_GEOMS
 STRATEGY = "keyset"
 CKPT_VER = 2
 UNIT_ROWS = int(os.environ.get("PILOT_UNIT_ROWS", "500000"))   # 一个「单元」目标行数
@@ -423,6 +437,77 @@ def _probe_pagination(api, log):
 
 
 # ---------------- 单元采集 ----------------
+def poly_point(geom):
+    """面层取一个「落在实心区内」的点 → (lat, lon) 或 None。
+
+    ArcGIS JSON 不是 GeoJSON：面是 `rings`，线是 `paths`。面走 representative_point
+    （先面积加权质心，质心落在多边形外/洞里才退回扫描线最宽内区间中点）；线没有面积，
+    取最长 path 的中点。纯 stdlib，不依赖 pyproj；几何缺失/退化 → None（调用方退回服务端质心）。
+    """
+    if not geom:
+        return None
+    try:
+        import parcel_centroid as PC
+    except Exception:                                  # noqa: BLE001
+        return None
+    rings = geom.get("rings")
+    if not rings:
+        paths = [p for p in (geom.get("paths") or []) if len(p or []) >= 3]
+        if not paths:
+            return None
+        mid = max(paths, key=len)[len(max(paths, key=len)) // 2]
+        try:
+            return (float(mid[1]), float(mid[0]))
+        except Exception:                              # noqa: BLE001
+            return None
+    try:
+        p = PC.representative_point(rings)
+    except Exception:                                  # noqa: BLE001
+        return None
+    if not p:
+        return None
+    try:
+        lon, lat = float(p[0]), float(p[1])
+    except Exception:                                  # noqa: BLE001
+        return None
+    if not (-180.0 <= lon <= -60.0 and 15.0 <= lat <= 72.0):
+        return None                                    # outSR 没生效/几何是投影坐标 → 不猜
+    return (lat, lon)
+
+
+def feature_latlon(ft, geom_type=""):
+    """一条 feature → (lat, lon, 来源)。来源：rep_point / centroid / geometry。"""
+    g = ft.get("geometry") or {}
+    want_poly = POLY_CENTROID and str(geom_type or "").lower() in POLY_GEOMS
+    if want_poly:
+        p = poly_point(g)
+        if p:
+            return p[0], p[1], "rep_point"
+    lat, lon = g.get("y"), g.get("x")
+    if lat is None and want_poly:
+        cen = ft.get("centroid") or {}
+        if cen:
+            return cen.get("y"), cen.get("x"), "centroid"
+    return lat, lon, "geometry"
+
+
+def make_rec(ft, geom_type=None):
+    """一条 feature → 一条落盘记录（三条采集路径共用的唯一入口）。
+
+    契约（单测护着 `test_pilot_centroid_contract.py`）：
+      · `_lat`/`_lon` 恒存在（算不出就是 None）—— 面层能不能判县全看这两个键
+      · `raw` 保留全部属性（Shape__Area/Shape__Length 不丢）
+      · `rings`/`paths` 不进记录：几何只以点形式落盘（成本考虑，见
+        docs/PARCEL-GEOMETRY-OPTIONS-2026-10-30.md）
+    """
+    at = ft.get("attributes") or {}
+    lat, lon, _src = feature_latlon(ft, geom_type if geom_type is not None else GEOM_TYPE)
+    rec = normalize(at, lat, lon)
+    rec.update({"src_layer": CUR["id"], "src_title": CUR["title"], "raw": at,
+                "_lat": lat, "_lon": lon})
+    return rec
+
+
 def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock, ck):
     """一个 OID 区间单元。返回 (rows, files, err)。"""
     conds = []
@@ -439,8 +524,8 @@ def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock
     except Exception:
         expect = 0
     base = {"where": w0, "outFields": "*", "returnGeometry": "true", "outSR": "4326", "f": "json"}
-    if POLY_CENTROID:
-        base["returnCentroid"] = "true"
+    if POLY_CENTROID and geom_is_poly():
+        base["returnCentroid"] = "true"          # 服务端质心 = 本地算不出来时的兜底
     d = os.path.join(OUTBASE, CUR["id"])
     os.makedirs(d, exist_ok=True)
     if expect == 0:
@@ -488,13 +573,7 @@ def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock
                 break
         for ft in feats:
             at = ft.get("attributes") or {}
-            g = ft.get("geometry") or {}
-            cen = ft.get("centroid") or {}
-            lat, lon = g.get("y"), g.get("x")
-            if lat is None and cen:                       # 面层：用服务端质心
-                lat, lon = cen.get("y"), cen.get("x")
-            rec = normalize(at, lat, lon)
-            rec.update({"src_layer": CUR["id"], "src_title": CUR["title"], "raw": at})
+            rec = make_rec(ft)
             buf.append(rec)
             rows += 1
             oid = at.get(oid_field)
@@ -529,17 +608,15 @@ def _unit_ids(api, batches, idx, log, prog, lock, limit=0):
     for bi, batch in batches:
         q = {"objectIds": ",".join(str(x) for x in batch), "outFields": "*",
              "returnGeometry": "true", "outSR": "4326", "f": "json"}
+        if POLY_CENTROID and geom_is_poly():
+            q["returnCentroid"] = "true"
         r = _q(api, q)
         if "__error__" in r:
             errs.append("batch%d:%s" % (bi, str(r["__error__"])[:120]))
             continue
         recs = []
         for ft in (r.get("features") or []):
-            at = ft.get("attributes") or {}
-            g = ft.get("geometry") or {}
-            rec = normalize(at, g.get("y"), g.get("x"))
-            rec.update({"src_layer": CUR["id"], "src_title": CUR["title"], "raw": at})
-            recs.append(rec)
+            recs.append(make_rec(ft))
         if limit and rows + len(recs) > limit:      # --limit 试采：多出来的直接裁掉
             recs = recs[:max(0, limit - rows)]
         if not recs:
@@ -562,12 +639,15 @@ def _unit_ids(api, batches, idx, log, prog, lock, limit=0):
 
 
 def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False):
-    global STRATEGY, UNIT_ROWS
+    global STRATEGY, UNIT_ROWS, GEOM_TYPE
     m = re.search(r"/(FeatureServer|MapServer)(/\d+)?$", url.rstrip("/"))
     api = url.split("?")[0].rstrip("/")
     if m and not m.group(2):
         api += "/0"
     ps, maxrc, meta = page_size_for(api)
+    GEOM_TYPE = str(meta.get("geometryType") or "")
+    if POLY_CENTROID and geom_is_poly():
+        log("  面层（%s）→ 质心开：rings 就地算 representative_point，落 _lat/_lon" % GEOM_TYPE)
     oid_field = meta.get("objectIdField") or meta.get("objectIdFieldName")
     if not oid_field:
         fns = [f.get("name") for f in (meta.get("fields") or [])]

@@ -2,7 +2,9 @@
 
 > 结论先写：**「用宗地几何算质心」在当前已采资产上不可行** —— 三仓采集器只落点几何，
 > Polygon 的 `rings` 从未写盘。本轮把能离线救的坐标全救了（5 层 / 479,123 行），
-> 并把「下一轮采集就能自动带上质心」的开关做好（`PILOT_POLY_CENTROID=1`）。
+> 并已把采集侧改成**默认带质心**（`PILOT_POLY_CENTROID` 默认开）：面层每行落 `_lat`/`_lon`，
+> 新采层不会再出现「有行无坐标」。几何是否落盘的成本另见
+> `docs/PARCEL-GEOMETRY-OPTIONS-2026-10-30.md`（三档实测 + 推荐）。
 
 ## 一、为什么几何路径走不通（两条硬证据）
 
@@ -65,13 +67,17 @@
 
 （usable v3 只 +2 而 county_multi_no_geo −3，差别在 1 层是宗地但缺地址字段，本来就不算 usable。）
 
-## 五、解卡路径（已写好，未启用）
+## 五、解卡路径（**已启用**）
 
-1. **采集侧**：`collect/pilot.py` 新增 `PILOT_POLY_CENTROID=1` —— 面层查询自动加
-   `returnCentroid=true`（ArcGIS 原生服务端质心，`outSR=4326` 即 WGS84），并把
-   `centroid.y/.x` 落成 lat/lon。默认关，不影响在跑批次。
-   效果：**下次采宗地时 1,060 层直接带坐标**，无需二次计算、无需下几何。
-2. **计算侧**：`collect/parcel_centroid.py` 的几何库已就绪并单测（8 条）：
+1. **采集侧（已默认开）**：`collect/pilot.py` 的 `PILOT_POLY_CENTROID` **默认 = 1** —— 面层查询自动加
+   `returnCentroid=true`（ArcGIS 原生服务端质心，`outSR=4326` 即 WGS84），并**优先**用返回的 `rings`
+   在本地算 `representative_point`（凹多边形/带洞才用扫描线中点），算不出来才退回服务端质心；
+   每行落 `_lat`/`_lon`（与 NAD 口径同名）。rings 本身仍不落盘（成本见
+   `docs/PARCEL-GEOMETRY-OPTIONS-2026-10-30.md`）。
+   效果：**下次采宗地时直接带坐标**，无需二次计算、无需下几何。
+   回归保护：`collect/tests/test_pilot_centroid_contract.py`（11 条）+ `--entry-check` 第 29 条
+   （面层步骤必须在 steps.json 里声明 `poly_centroid=true`，且 pilot 默认值必须是开）。
+2. **计算侧**：`collect/parcel_centroid.py` 的几何库已就绪并单测（10 条）：
    - `polygon_centroid`（环有符号面积，洞自动相减）
    - `representative_point`（**质心落在凹多边形外**时用扫描线最宽内区间中点 —— L 形自测通过）
    - `pip` / `inside_geom`（奇偶规则，洞判在内）
@@ -81,7 +87,7 @@
 ## 六、复现
 
 ```bash
-python3 collect/parcel_centroid.py --selftest        # 几何库 8 条自测
+python3 collect/parcel_centroid.py --selftest        # 几何库 10 条自测
 python3 collect/parcel_centroid.py --audit --backfill  # 逐层分类 + 写 schema/coord-salvage-v1.json
 python3 analysis/field_map_v2.py                     # 读 coord-salvage 覆盖 lat/lon
 ```

@@ -73,8 +73,24 @@ class TestStepsContract(unittest.TestCase):
                          "check_docs.py 判红（判据卡与 steps.json 不一致）：\n%s%s"
                          % (r.stdout[-3000:], r.stderr[-800:]))
 
+    def test_polygon_steps_require_centroid(self):
+        """面层步骤必须声明 poly_centroid，且 pilot 采集侧默认开 + 落 `_lat`/`_lon`。
+
+        2026-10-30 的 1,038 层「有行无坐标」就是这一步没锁 —— 一旦有人把
+        PILOT_POLY_CENTROID 改回默认关，或者新增的面层步骤忘了声明，这里当场红。
+        """
+        poly = [k for k, s in self.steps.items() if (s or {}).get("kind") == "parcel_situs"]
+        self.assertTrue(poly, "steps.json 里没有任何面层（parcel_situs）步骤？")
+        lack = [k for k in poly if (self.steps[k] or {}).get("poly_centroid") is not True]
+        self.assertEqual(lack, [], "面层步骤没声明 poly_centroid=true：%s" % lack)
+        src = open(os.path.join(COLLECT, "pilot.py"), encoding="utf-8").read()
+        self.assertIn('os.environ.get("PILOT_POLY_CENTROID", "1")', src,
+                      "pilot.py 的 PILOT_POLY_CENTROID 默认值被改成关了")
+        self.assertIn('"_lat": lat', src, "pilot.py 不再落 `_lat`/`_lon` —— 面层会再次无坐标")
+        self.assertIn("def poly_point(", src, "pilot.py 丢了面层取点实现（representative_point）")
+
     def test_structure_gate_is_green(self):
-        """ci-smoke 第 3 步的同一道闸：结构自检必须 28/28。"""
+        """ci-smoke 第 3 步的同一道闸：结构自检必须全绿（现在是 29 条）。"""
         r = subprocess.run([sys.executable, os.path.join(COLLECT, "supervisor.py"), "--entry-check"],
                            capture_output=True, text=True)
         self.assertEqual(r.returncode, 0,

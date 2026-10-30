@@ -27,9 +27,15 @@ reject 档**只记账不采** —— 宗地面层是采集面最大的缺口，�
 ## 怎么做
 - 切 200 层/片；片数上限 250
 - 按 `rows_desc`：宗地层产出/分钟最高，先吃大的
-- 面层默认不带点几何：采集侧用 `PILOT_POLY_CENTROID=1`（`returnCentroid=true`，`outSR=4326` 已是 WGS84）
-  直接拿服务端质心；几何仍缺的层记 `geom_missing` 计数，**不猜坐标**（质心/代表点救援口径属
-  gold 分支的分析侧工作，不在本步采集链路里）
+- **面层必须带质心（硬判据，`steps.json#steps.10b.poly_centroid=true`）**：
+  `PILOT_POLY_CENTROID` 默认已开。面层每行落 `_lat`/`_lon`（= rings 本地算的
+  `representative_point`，算不出来才退回 `returnCentroid=true` 的服务端质心，`outSR=4326` 即 WGS84）。
+  几何仍缺的层记 `geom_missing` 计数，**不猜坐标**
+- **2026-10-30 踩过的坑（防回归）**：老实现只读 `geometry.y/.x`，Polygon 的 `rings` 在采集瞬间
+  就被丢掉、`normalize()` 签名里也没有落坐标的位置 —— 结果 1,038 个宗地层「有行、有 Shape__Area、
+  无坐标」，下游县判定与坐标补齐全部卡死，只能整层重采（代价 = 全部行数）。
+  所以现在：**面层缺 `_lat`/`_lon` 键 = 采集失败**，不允许「先采属性、以后再补几何」。
+  回归保护：`collect/tests/test_pilot_centroid_contract.py`（11 条，含「面层每行必有 _lat/_lon」）
 - 每层四态落账；实采与声明差 > 0.2% 记 `partial`（宗地层声明数是服务端估算，差额常见）
 
 ## 验收判据（机器判；**判定权在大脑**）
@@ -58,6 +64,7 @@ python3 collect/step_full_report.py --stage step10b
 {
  "step": "10b",
  "kind": "parcel_situs",
+ "poly_centroid": true,
  "title": "宗地地址扩采 batch2+",
  "select": {
   "source": "layer_plan",
