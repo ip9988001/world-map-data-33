@@ -40,6 +40,9 @@ class TestFullReportTolerance(unittest.TestCase):
         os.makedirs(os.path.join(self.tmp, "collect", "ledger"))
         os.makedirs(os.path.join(self.tmp, "docs"))
         shutil.copy(SCRIPT, os.path.join(self.tmp, "collect", "step_full_report.py"))
+        # step_full_report 现在把「单 run 账本 / 阶段账本合并」交给同目录的 ledger_merge.py
+        shutil.copy(os.path.join(ROOT, "collect", "ledger_merge.py"),
+                    os.path.join(self.tmp, "collect", "ledger_merge.py"))
         self.plan = os.path.join(self.tmp, "collect", "ledger", "step04b_plan.json")
         json.dump({"schema": "plan/v1", "stage": "step04b", "size": 2, "layers_n": 8,
                    "shards_n": 4, "declared_rows": 400, "unit_rows": 1000, "tag": "collect-step04-{layer}",

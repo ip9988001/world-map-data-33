@@ -105,6 +105,12 @@
 | `_rgv911_org_server_rest_services_Public_Map_MIL1_MapServer_1` | failed | missing | 302,920 | 303,175 | 声明值改用上游当前 returnCount（证据：2026-10-30T20:08:38Z） |
 | `_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0` | failed | missing | 302,920 | 303,175 | 声明值改用上游当前 returnCount（证据：2026-10-30T20:08:38Z） |
 
+### 3.1b 阶段账本的运行级事件（复原 / 合并留痕，只追加不替换）
+
+| 时间 | 类型 | run | 说明 |
+|---|---|---|---|
+| 2026-10-30T22:34:43Z | stage_ledger_restored | 41121952357 | collect/04b_ledger.json 被单 run 41121952357（定向补采 31 层）的分片汇总覆盖（提交 466a952，layers_n 272→31、shards_expected=3）。已从 466a952^ 的 272 层版本 + collect/ledger/step04b_rebuil |
+
 ### 3.2 「13 层上游 0 数据」这个口径被实测推翻
 
 原始交接里把 13 层说成「上游 0 数据」。本机对每层直接打 `returnCountOnly` 的结果是：
