@@ -43,6 +43,8 @@ ADDR_TYPE_MAP_F = os.path.join(ROOT, "schema", "addr-type-map-v1.json")
 CITY_RULES_F = os.path.join(ROOT, "schema", "city-rules-v1.json")
 ADDR_TYPE_MAP = {}
 CITY_RULES = {}
+COORD_SALVAGE_F = os.path.join(ROOT, "schema", "coord-salvage-v1.json")
+COORD_SALVAGE = {}
 
 # ---------------------------------------------------------------- 别名表
 # 每项 (name_regex, transform, quality)
@@ -507,7 +509,7 @@ def main() -> int:
         raise SystemExit("analysis/out 为空")
 
     # 语义裁定前置：没有审计产物就不准跑（否则 addr_type/city 会退回“猜”）
-    global ADDR_TYPE_MAP, CITY_RULES
+    global ADDR_TYPE_MAP, CITY_RULES, COORD_SALVAGE
     for p in (ADDR_TYPE_MAP_F, CITY_RULES_F):
         if not os.path.exists(p):
             raise SystemExit("缺语义裁定产物：%s（先跑 python3 analysis/semantic_audit.py both）" % p)
@@ -515,6 +517,13 @@ def main() -> int:
     CITY_RULES = json.load(open(CITY_RULES_F, encoding="utf-8"))
     ADDR_TYPE_MAP = {r["layer_id"]: r for r in (_am.get("layers_sampled") or [])
                      if r.get("verdict") == "map" and r.get("value_map")}
+    if os.path.exists(COORD_SALVAGE_F):
+        _cs = json.load(open(COORD_SALVAGE_F, encoding="utf-8"))
+        COORD_SALVAGE = {r["layer"]: r for r in (_cs.get("fixable") or {}).get("detail") or []}
+        print("[field-map] 坐标救援可用层：%d（proj_ok %d / attr_latlon %d）"
+              % (len(COORD_SALVAGE),
+                 sum(1 for r in COORD_SALVAGE.values() if r["status"] == "proj_ok"),
+                 sum(1 for r in COORD_SALVAGE.values() if r["status"] == "salvaged")))
     print("[field-map] addr_type 可映射层：%d（其余一律 Unknown）" % len(ADDR_TYPE_MAP))
 
     out_layers: dict[str, dict] = {}
@@ -806,7 +815,19 @@ def main() -> int:
                 put(name, geo, "geometry", "geometry", r2)
                 cov[name]["with_source"] += 1
             else:
-                put(name, None, reason="无坐标列且 geometry 不可用")
+                # ③ 坐标救援（schema/coord-salvage-v1.json）：投影坐标 pyproj 转 WGS84，
+                #    或属性里本就是经纬度但被范围校验误杀。转不出来的一律留 null（不猜）。
+                sv = COORD_SALVAGE.get(lid)
+                col = (sv or {}).get("x_col" if name == "longitude" else "y_col")
+                if sv and col:
+                    tr = ("proj_epsg:%s" % sv["epsg"]) if sv["status"] == "proj_ok" else "attr_latlon"
+                    put(name, col, tr, "derived_proj", sv.get("rate"))
+                    cov[name]["with_source"] += 1
+                    cov[name]["derived_proj"] = cov[name].get("derived_proj", 0) + 1
+                else:
+                    put(name, None, reason="无坐标列且 geometry 不可用"
+                                           + ("（几何未落盘：采集器只留点几何）"
+                                              if kind == "parcel_situs" else ""))
                 cov[name]["null"] += 1
                 cov[name]["reasons"]["无坐标"] = cov[name]["reasons"].get("无坐标", 0) + 1
 

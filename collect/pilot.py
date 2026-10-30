@@ -295,6 +295,11 @@ def _heartbeat(prog, lock, stop, log, interval=20, push_every=None):
         stop.wait(interval)
 
 
+# 面层（Polygon）默认只落点几何：lat/lon 取自 geometry.y/.x，rings 被丢弃。
+# ★ 2026-10-30 实测：1,060 个宗地层因几何未持久化全部无坐标 → 县判定卡死。
+#   打开 PILOT_POLY_CENTROID=1 后请求 returnCentroid=true（ArcGIS 服务端质心，
+#   outSR=4326 即 WGS84），面层就能带上 lat/lon。默认关，不改变在跑批次的行为。
+POLY_CENTROID = os.environ.get("PILOT_POLY_CENTROID", "0") == "1"
 STRATEGY = "keyset"
 CKPT_VER = 2
 UNIT_ROWS = int(os.environ.get("PILOT_UNIT_ROWS", "500000"))   # 一个「单元」目标行数
@@ -434,6 +439,8 @@ def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock
     except Exception:
         expect = 0
     base = {"where": w0, "outFields": "*", "returnGeometry": "true", "outSR": "4326", "f": "json"}
+    if POLY_CENTROID:
+        base["returnCentroid"] = "true"
     d = os.path.join(OUTBASE, CUR["id"])
     os.makedirs(d, exist_ok=True)
     if expect == 0:
@@ -482,7 +489,11 @@ def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock
         for ft in feats:
             at = ft.get("attributes") or {}
             g = ft.get("geometry") or {}
-            rec = normalize(at, g.get("y"), g.get("x"))
+            cen = ft.get("centroid") or {}
+            lat, lon = g.get("y"), g.get("x")
+            if lat is None and cen:                       # 面层：用服务端质心
+                lat, lon = cen.get("y"), cen.get("x")
+            rec = normalize(at, lat, lon)
             rec.update({"src_layer": CUR["id"], "src_title": CUR["title"], "raw": at})
             buf.append(rec)
             rows += 1
