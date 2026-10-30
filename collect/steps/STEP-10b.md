@@ -27,8 +27,9 @@ reject 档**只记账不采** —— 宗地面层是采集面最大的缺口，�
 ## 怎么做
 - 切 200 层/片；片数上限 250
 - 按 `rows_desc`：宗地层产出/分钟最高，先吃大的
-- 面层默认不带点几何：坐标走 `PILOT_POLY_CENTROID=1`（`returnCentroid=true`，`outSR=4326` 已是 WGS84）；
-  几何缺失的层走 `collect/parcel_centroid.py`（EPSG 反推 + 质心/代表点），落不了记 `geom_missing`
+- 面层默认不带点几何：采集侧用 `PILOT_POLY_CENTROID=1`（`returnCentroid=true`，`outSR=4326` 已是 WGS84）
+  直接拿服务端质心；几何仍缺的层记 `geom_missing` 计数，**不猜坐标**（质心/代表点救援口径属
+  gold 分支的分析侧工作，不在本步采集链路里）
 - 每层四态落账；实采与声明差 > 0.2% 记 `partial`（宗地层声明数是服务端估算，差额常见）
 
 ## 验收判据（机器判；**判定权在大脑**）
