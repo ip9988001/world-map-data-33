@@ -4,6 +4,17 @@
 > `collect/ledger/step04b_rebuilt.json`（Release 资产重建）+ `analysis/04b-upstream-evidence-*.json`
 > （逐层上游 returnCount 实测）。**没有一行是估的**；每处改判都能落到下面某条证据。
 
+## 零、账本口径约定（先看这一节，别读错文件）
+
+| 文件 | 口径 | 真值来源 | 数字含义 |
+|---|---|---|---|
+| `collect/${STAGE}_ledger.json`（如 `collect/04b_ledger.json`） | **阶段级** | Release 资产 checkpoint + 上游 returnCount 实测 | 跨 run 合并的全阶段账（04b = 272 层） |
+| `collect/ledger/${STAGE}_run<id>.json`（如 `04b_run41092912755.json`） | **单 run 级** | 该 run 的片账本（artifact / git） | 单轮跑到哪、哪几片没跑完（04b 那一轮 = 20 层 / 5 片 / 4 片未完成） |
+| `collect/ledger/step<NN>b_rebuilt.json` | 阶段级·重建 | 只读 Release 资产反推 | 逐层 declared vs 实采（本文件的上游） |
+
+**两者数字本来就不同，不许混读**：阶段级 272 层回答「04b 到底采了多少」，
+单 run 级回答「那一次 run 有几片被掐」。文档引用时必须写明用的是哪一份。
+
 ## 一、集合对账（计划分母 vs 账本 vs 上游取证）
 
 - 计划层数（round1 plan）：**272**
