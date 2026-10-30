@@ -18,10 +18,12 @@ import glob
 import json
 import os
 import re
+import sys
 from datetime import datetime, timezone
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
+sys.path.insert(0, HERE)          # 为了 import ledger_merge（同目录）
 TITLES = {"step04b": ("STEP04", "全州放量（大层 row_count>300,000 全量补采）"),
           # 片文件名用 04b 前缀（collect/ledger/04b_shardNN.json）+ 汇总账本落 collect/04b_ledger.json，
           # 与 workflow 找的文件名一致；两种写法都认。
@@ -100,16 +102,22 @@ def main() -> int:
     ap.add_argument("--stage", required=True, help="step04b / step05b / step07b / step10b")
     ap.add_argument("--out", default="")
     ap.add_argument("--plan", default="")
+    # ★ 单 run 账本 / 阶段账本分离（2026-10-30 第二次覆盖事故后加）：
+    #   本 run 的结果写 collect/ledger/<stage>_run<RUN_ID>.json，阶段账本只做按层合并。
+    ap.add_argument("--run-id", default="", help="本次 run id；空则取环境 GITHUB_RUN_ID")
+    ap.add_argument("--base-dir", default=HERE, help="账本根目录（默认脚本所在的 collect/；测试用）")
+    ap.add_argument("--allow-stage-overwrite", action="store_true",
+                    help="显式允许小 run 覆盖阶段账本（默认禁止：run 层数 < 阶段账本的 1/2 时只写 run 文件）")
     a = ap.parse_args()
     stage = a.stage
     tag, title = TITLES.get(stage, (stage.upper(), stage))
-    files = sorted(glob.glob(os.path.join(HERE, "ledger", stage + "_shard*.json")))
+    files = sorted(glob.glob(os.path.join(a.base_dir, "ledger", stage + "_shard*.json")))
 
     plan = {}
     if a.plan and os.path.exists(a.plan):
         plan = json.load(open(a.plan, encoding="utf-8"))
     else:
-        guess = os.path.join(HERE, "ledger", stage + "_plan.json")
+        guess = os.path.join(a.base_dir, "ledger", stage + "_plan.json")
         if os.path.exists(guess):
             plan = json.load(open(guess, encoding="utf-8"))
 
@@ -238,10 +246,8 @@ def main() -> int:
     # 默认文件名带 `-shards`：与 ledger_rebuild.py 产出的「Release 资产真值」文档
     # （docs/STEP04-FULL-<date>.md）分开，避免分片口径覆盖真值口径。
     out = a.out or os.path.join(ROOT, "docs", tag + "-FULL-2026-10-30-shards.md")
-    os.makedirs(os.path.dirname(out), exist_ok=True)
-    open(out, "w", encoding="utf-8").write("\n".join(L))
 
-    # 汇总账本（单一文件，spec 要求的 collect/step04b_ledger.json）
+    # 本次 run 的汇总（内存对象；写盘由 ledger_merge 决定去哪个文件）
     led = {"schema": "collect-ledger-agg/v1", "stage": stage, "at":
            datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
            "layers_n": len(recs), "ok": cnt.get("ok", 0), "empty": cnt.get("empty", 0),
@@ -254,14 +260,40 @@ def main() -> int:
            "complete": (not incomplete) and cnt.get("failed", 0) == 0,
            "plan": {k: plan.get(k) for k in ("layers_n", "declared_rows", "shards_n", "size")},
            "records": recs}
-    agg = os.path.join(HERE, stage + "_ledger.json")
-    json.dump(led, open(agg, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+
+    # 汇总账本
+    # ★ 2026-10-30 第二次事故（run 41121952357 把 272 层阶段账本冲成 31 层）：这里不再直接写
+    #   collect/<stage>_ledger.json。改为：① 单 run 结果 → collect/ledger/<stage>_run<RUN_ID>.json；
+    #   ② 阶段账本按 layer_id 合并（状态取更优者，同状态取行数大者）；③ 小 run（<1/2）默认不碰阶段账本。
+    #   详见 collect/ledger_merge.py（带单测）。
+    from ledger_merge import write_run_and_stage, format_regressions_section   # noqa: E402
+    run_id = a.run_id or os.environ.get("GITHUB_RUN_ID") or "local"
+    res = write_run_and_stage(stage, led, run_id, base_dir=a.base_dir,
+                              allow_stage_overwrite=a.allow_stage_overwrite)
+
+    # ★ rows 回退单独成节（2026-10-31）：状态取优者 + 行数取大者会把「真丢数据」掩盖成
+    #   「本次没采到那么多」，所以只要本轮某层 rows < 阶段账本 rows，就必须在这里点名。
+    regs = res.get("regressions") or []
+    if regs:
+        L += ["", "## 七、rows 回退（本次合并检测到，未静默取大）", ""]
+        L += format_regressions_section(regs)
+        L += ["",
+              "> 处置：回退不拦截（保进展靠取优者），但**必须点名**。能证明是「口径变了/上游真删了」的，"
+              "把证据路径写进 run 账本的 `row_shrink_evidence: {<layer>: <path>}`（或逐层 `regression_reason`）；"
+              "无证据的回退一律当事故追。累计视图看 `collect/%s_ledger.json` 的 `regressions[]`。" % stage, ""]
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    open(out, "w", encoding="utf-8").write("\n".join(L))
+
     print(json.dumps({k: led[k] for k in ("stage", "layers_n", "ok", "empty", "partial",
-                                          "failed", "skipped_done", "declared", "rows",
+                                         "failed", "skipped_done", "declared", "rows",
                                           "shards_expected", "shards_reported",
                                           "shards_incomplete", "complete")},
                      ensure_ascii=False))
-    print("写入 %s 与 %s" % (out, agg))
+    print(json.dumps({"run_ledger": res}, ensure_ascii=False))
+    if regs:
+        print("::warning::rows 回退 %d 层（无证据 %d 层）→ 见 %s 第七节"
+              % (len(regs), res.get("rows_regressions_unexplained", 0), out))
+    print("写入 %s 与 %s" % (out, res["run_path"]))
     return 0
 
 

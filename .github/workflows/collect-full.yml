@@ -300,7 +300,10 @@ jobs:
           STAGE="${{ inputs.stage }}"
           # step_full_report.py 遇到缺片/partial_run 片不会退出，只把它们记成
           # shards_incomplete 并写进文档「片完成度」节 —— 保证任何情况下都拿得到账。
-          python3 collect/step_full_report.py --stage "$STAGE" \
+          # ★ --run-id 必传：step_full_report 现在把本 run 结果写 collect/ledger/<stage>_run<RUN_ID>.json，
+          #   阶段账本 collect/<stage>_ledger.json 只做按层合并（状态取更优者），
+          #   小 run（层数 < 阶段账本的 1/2）默认不碰阶段账本 —— 见 collect/ledger_merge.py。
+          python3 collect/step_full_report.py --stage "$STAGE" --run-id "$GITHUB_RUN_ID" \
             --plan "collect/ledger/${STAGE}_plan.json"
           ls -la docs/ | tail -5
           ls -la collect/ledger/ | tail -10

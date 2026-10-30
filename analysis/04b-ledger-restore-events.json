@@ -1,0 +1,19 @@
+{
+ "schema": "04b-ledger-restore-events/v1",
+ "events": [
+  {
+   "kind": "stage_ledger_restored",
+   "at": "2026-10-30T22:34:43Z",
+   "run_id": "41121952357",
+   "scope": "stage",
+   "note": "collect/04b_ledger.json 被单 run 41121952357（定向补采 31 层）的分片汇总覆盖（提交 466a952，layers_n 272→31、shards_expected=3）。已从 466a952^ 的 272 层版本 + collect/ledger/step04b_rebuilt.json 复原；写入逻辑已在 chore/ledger-merge-fix 修好（单 run → collect/ledger/04b_run<id>.json，阶段账本只做按层合并，小 run 默认不覆盖）。",
+   "overwritten_commit": "466a952",
+   "restore_source": [
+    "466a952^:collect/04b_ledger.json",
+    "collect/ledger/step04b_rebuilt.json",
+    "466a952^:collect/ledger/04b_plan.json"
+   ],
+   "lost": "无层数据丢失（行数与层结论均来自 Release 资产与既有证据），仅阶段账本口径被冲掉"
+  }
+ ]
+}
