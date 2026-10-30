@@ -1,0 +1,202 @@
+{
+ "plan_layers_n": 36,
+ "shards_n": 9,
+ "size": 4,
+ "cancelled_shards": [
+  0,
+  1,
+  3,
+  6
+ ],
+ "per_shard": [
+  {
+   "shard": 0,
+   "layers": [
+    {
+     "layer": "s_Points_from_National_Address_Database_view_FeatureServer_0",
+     "in_ledger": true,
+     "ledger_status": "partial",
+     "declared": 97928946,
+     "rows": 39875268,
+     "progress": "half",
+     "note": "取消时半截",
+     "asset_rows": 39875268
+    },
+    {
+     "layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2",
+     "in_ledger": true,
+     "ledger_status": "failed",
+     "declared": 6297169,
+     "rows": 6648000,
+     "progress": "done",
+     "note": "取消前已完成（资产在 Release）",
+     "asset_rows": 6648000
+    },
+    {
+     "layer": "UyC7jAmu_arcgis_rest_services_LBRSforLocator_FeatureServer_0",
+     "in_ledger": true,
+     "ledger_status": "failed",
+     "declared": 5573001,
+     "rows": 2773122,
+     "progress": "half",
+     "note": "取消时半截",
+     "asset_rows": 2773122
+    },
+    {
+     "layer": "ces_Ky_911_Site_Structure_Address_Points_WGS84WM_MapServer_0",
+     "in_ledger": true,
+     "ledger_status": "failed",
+     "declared": 2485645,
+     "rows": 2416763,
+     "progress": "half",
+     "note": "取消时半截",
+     "asset_rows": 2416763
+    }
+   ]
+  },
+  {
+   "shard": 1,
+   "layers": [
+    {
+     "layer": "conemap_gov_secure_rest_services_NC1Map_Location_MapServer_0",
+     "in_ledger": true,
+     "ledger_status": "failed",
+     "declared": 4939912,
+     "rows": 7816000,
+     "progress": "done",
+     "note": "取消前已完成（资产在 Release）",
+     "asset_rows": 7816000
+    },
+    {
+     "layer": "vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0",
+     "in_ledger": true,
+     "ledger_status": "failed",
+     "declared": 3618012,
+     "rows": null,
+     "progress": "none",
+     "note": "取消时 0 行（未开始 / 上游一行未返回）",
+     "asset_rows": null
+    },
+    {
+     "layer": "ervices_us_mn_state_mngeo_loc_addresses_open_FeatureServer_0@未定位-1",
+     "in_ledger": true,
+     "ledger_status": "failed",
+     "declared": 2220021,
+     "rows": null,
+     "progress": "none",
+     "note": "取消时 0 行（未开始 / 上游一行未返回）",
+     "asset_rows": null
+    },
+    {
+     "layer": "rvices_location_Address_Points_Modifications_FeatureServer_0",
+     "in_ledger": true,
+     "ledger_status": "failed",
+     "declared": 1369414,
+     "rows": null,
+     "progress": "none",
+     "note": "取消时 0 行（未开始 / 上游一行未返回）",
+     "asset_rows": null
+    }
+   ]
+  },
+  {
+   "shard": 3,
+   "layers": [
+    {
+     "layer": "_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0",
+     "in_ledger": true,
+     "ledger_status": "failed",
+     "declared": 302920,
+     "rows": null,
+     "progress": "none",
+     "note": "取消时 0 行（未开始 / 上游一行未返回）",
+     "asset_rows": null
+    },
+    {
+     "layer": "g_rest_services_Basemap_Address_Points_EagleView_MapServer_0",
+     "in_ledger": true,
+     "ledger_status": "failed",
+     "declared": 388607,
+     "rows": null,
+     "progress": "none",
+     "note": "取消时 0 行（未开始 / 上游一行未返回）",
+     "asset_rows": null
+    },
+    {
+     "layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1",
+     "in_ledger": true,
+     "ledger_status": "failed",
+     "declared": 6297169,
+     "rows": null,
+     "progress": "none",
+     "note": "取消时 0 行（未开始 / 上游一行未返回）",
+     "asset_rows": null
+    },
+    {
+     "layer": "tyil_gov_traditional_rest_services_cookVwrDynmc_MapServer_63",
+     "in_ledger": true,
+     "ledger_status": "failed",
+     "declared": 1381118,
+     "rows": null,
+     "progress": "none",
+     "note": "取消时 0 行（未开始 / 上游一行未返回）",
+     "asset_rows": null
+    }
+   ]
+  },
+  {
+   "shard": 6,
+   "layers": [
+    {
+     "layer": "tync_gov_arcgis_rest_services_GISDV_Base_Map_FeatureServer_1",
+     "in_ledger": true,
+     "ledger_status": "ok",
+     "declared": 347569,
+     "rows": 347577,
+     "progress": "done",
+     "note": "取消前已完成（资产在 Release）",
+     "asset_rows": 347577
+    },
+    {
+     "layer": "UGfPrN7o_arcgis_rest_services_Address_Labels_FeatureServer_0",
+     "in_ledger": true,
+     "ledger_status": "ok",
+     "declared": 320255,
+     "rows": 553175,
+     "progress": "done",
+     "note": "取消前已完成（资产在 Release）",
+     "asset_rows": 553175
+    },
+    {
+     "layer": "ricopa_County_Address_Points__Non_Commercial_FeatureServer_0",
+     "in_ledger": true,
+     "ledger_status": "ok",
+     "declared": 1406150,
+     "rows": 1406138,
+     "progress": "done",
+     "note": "取消前已完成（资产在 Release）",
+     "asset_rows": 1406138
+    },
+    {
+     "layer": "_rgv911_org_server_rest_services_Public_Map_MIL1_MapServer_1",
+     "in_ledger": true,
+     "ledger_status": "failed",
+     "declared": 302920,
+     "rows": null,
+     "progress": "none",
+     "note": "取消时 0 行（未开始 / 上游一行未返回）",
+     "asset_rows": null
+    }
+   ]
+  }
+ ],
+ "totals": {
+  "layers": 16,
+  "done": 5,
+  "half": 3,
+  "none": 8,
+  "missing_in_ledger": 0
+ },
+ "cancelled_at": "2026-10-30T19:16:05Z（gh run cancel 41092912755；四 job completed_at 19:16:32–19:16:59）",
+ "method": "完成度按 Release 资产反推（该 SHA 尚无增量落盘，本地无半截账本）"
+}

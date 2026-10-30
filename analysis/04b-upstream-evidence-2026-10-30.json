@@ -1,0 +1,338 @@
+{
+ "schema": "04b-upstream-evidence/v1",
+ "stage": "04b",
+ "generated_at": "2026-10-30T20:08:38Z",
+ "method": "GET <layer_url>/query?where=1=1&returnCountOnly=true&f=json（每层最多 2 次）",
+ "layers": [
+  {
+   "layer": "s_Points_from_National_Address_Database_view_FeatureServer_0",
+   "ledger_status": "partial",
+   "ledger_declared": 97928946,
+   "ledger_rows": 39875268,
+   "layer_url": "https://services.arcgis.com/xOi1kZaI0eWDREZv/ArcGIS/rest/services/Address_Points_from_National_Address_Database_view/FeatureServer/0",
+   "probe": {
+    "url": "https://services.arcgis.com/xOi1kZaI0eWDREZv/ArcGIS/rest/services/Address_Points_from_National_Address_Database_view/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+    "http": 200,
+    "count": 97928946,
+    "raw": "{\"count\":97928946}",
+    "err": ""
+   },
+   "verdict": "upstream_alive"
+  },
+  {
+   "layer": "cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0",
+   "ledger_status": "failed",
+   "ledger_declared": 6583495,
+   "ledger_rows": null,
+   "layer_url": "https://gisservices.its.ny.gov/arcgis/rest/services/SAM_Address_Points_Symbolized/MapServer/0",
+   "probe": {
+    "url": "https://gisservices.its.ny.gov/arcgis/rest/services/SAM_Address_Points_Symbolized/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+    "http": 200,
+    "count": 6585376,
+    "raw": "{\"count\":6585376}",
+    "err": ""
+   },
+   "verdict": "upstream_alive"
+  },
+  {
+   "layer": "s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0",
+   "ledger_status": "failed",
+   "ledger_declared": 6583495,
+   "ledger_rows": null,
+   "layer_url": "https://gisservices.its.ny.gov/arcgis/rest/services/SAM_Address_Points/MapServer/0",
+   "probe": {
+    "url": "https://gisservices.its.ny.gov/arcgis/rest/services/SAM_Address_Points/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+    "http": 200,
+    "count": 6585376,
+    "raw": "{\"count\":6585376}",
+    "err": ""
+   },
+   "verdict": "upstream_alive"
+  },
+  {
+   "layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1",
+   "ledger_status": "failed",
+   "ledger_declared": 6297169,
+   "ledger_rows": null,
+   "layer_url": "https://services.nconemap.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0",
+   "probe": {
+    "url": "https://services.nconemap.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+    "http": 200,
+    "count": 6297169,
+    "raw": "{\"count\":6297169}",
+    "err": ""
+   },
+   "verdict": "upstream_alive"
+  },
+  {
+   "layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2",
+   "ledger_status": "failed",
+   "ledger_declared": 6297169,
+   "ledger_rows": 6648000,
+   "layer_url": "https://services.nconemap.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0",
+   "probe": {
+    "url": "https://services.nconemap.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+    "http": 200,
+    "count": 6297169,
+    "raw": "{\"count\":6297169}",
+    "err": ""
+   },
+   "verdict": "upstream_alive"
+  },
+  {
+   "layer": "UyC7jAmu_arcgis_rest_services_LBRSforLocator_FeatureServer_0",
+   "ledger_status": "failed",
+   "ledger_declared": 5573001,
+   "ledger_rows": 2773122,
+   "layer_url": "https://services2.arcgis.com/MlJ0G8iWUyC7jAmu/arcgis/rest/services/LBRSforLocator/FeatureServer/0",
+   "probe": {
+    "url": "https://services2.arcgis.com/MlJ0G8iWUyC7jAmu/arcgis/rest/services/LBRSforLocator/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+    "http": 200,
+    "count": 5573001,
+    "raw": "{\"count\":5573001}",
+    "err": ""
+   },
+   "verdict": "upstream_alive"
+  },
+  {
+   "layer": "conemap_gov_secure_rest_services_NC1Map_Location_MapServer_0",
+   "ledger_status": "failed",
+   "ledger_declared": 4939912,
+   "ledger_rows": 7816000,
+   "layer_url": "https://services.nconemap.gov/secure/rest/services/NC1Map_Location/MapServer/0",
+   "probe": {
+    "url": "https://services.nconemap.gov/secure/rest/services/NC1Map_Location/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+    "http": 200,
+    "count": 4939912,
+    "raw": "{\"count\":4939912}",
+    "err": ""
+   },
+   "verdict": "upstream_alive"
+  },
+  {
+   "layer": "vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0",
+   "ledger_status": "failed",
+   "ledger_declared": 3618012,
+   "ledger_rows": null,
+   "layer_url": "https://arcgisserver.digital.mass.gov/arcgisserver/rest/services/AGOL/AddressPts_for_NG911AddressFinder/FeatureServer/0",
+   "probe": {
+    "url": "https://arcgisserver.digital.mass.gov/arcgisserver/rest/services/AGOL/AddressPts_for_NG911AddressFinder/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+    "http": 200,
+    "count": 3618012,
+    "raw": "{\"count\":3618012}",
+    "err": ""
+   },
+   "verdict": "upstream_alive"
+  },
+  {
+   "layer": "ces_Ky_911_Site_Structure_Address_Points_WGS84WM_MapServer_0",
+   "ledger_status": "failed",
+   "ledger_declared": 2485645,
+   "ledger_rows": 2416763,
+   "layer_url": "https://kygisserver.ky.gov/arcgis/rest/services/WGS84WM_Services/Ky_911_Site_Structure_Address_Points_WGS84WM/MapServer/0",
+   "probe": {
+    "url": "https://kygisserver.ky.gov/arcgis/rest/services/WGS84WM_Services/Ky_911_Site_Structure_Address_Points_WGS84WM/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+    "http": null,
+    "count": null,
+    "raw": "",
+    "err": "URLError: <urlopen error timed out>"
+   },
+   "verdict": "upstream_unreachable"
+  },
+  {
+   "layer": "ervices_us_mn_state_mngeo_loc_addresses_open_FeatureServer_0@未定位-1",
+   "ledger_status": "failed",
+   "ledger_declared": 2220021,
+   "ledger_rows": null,
+   "layer_url": "https://enterprise.gisdata.mn.gov/aghost/rest/services/us_mn_state_mngeo/loc_addresses_open/FeatureServer/0",
+   "probe": {
+    "url": "https://enterprise.gisdata.mn.gov/aghost/rest/services/us_mn_state_mngeo/loc_addresses_open/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+    "http": 200,
+    "count": 2220021,
+    "raw": "{\"count\":2220021}",
+    "err": ""
+   },
+   "verdict": "upstream_alive"
+  },
+  {
+   "layer": "fn_arcgis_rest_services_NG911_Address_Points_FeatureServer_0",
+   "ledger_status": "partial",
+   "ledger_declared": 1928880,
+   "ledger_rows": 1254000,
+   "layer_url": "https://services.arcgis.com/3xOwF6p0r7IHIjfn/arcgis/rest/services/NG911_Address_Points/FeatureServer/0",
+   "probe": {
+    "url": "https://services.arcgis.com/3xOwF6p0r7IHIjfn/arcgis/rest/services/NG911_Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+    "http": 200,
+    "count": 1254000,
+    "raw": "{\"count\":1254000,\"serverGens\":{\"minServerGen\":3889382,\"serverGen\":3889382}}",
+    "err": ""
+   },
+   "verdict": "upstream_alive"
+  },
+  {
+   "layer": "tyil_gov_traditional_rest_services_cookVwrDynmc_MapServer_63",
+   "ledger_status": "failed",
+   "ledger_declared": 1381118,
+   "ledger_rows": null,
+   "layer_url": "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/63",
+   "probe": {
+    "url": "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/63/query?where=1%3D1&returnCountOnly=true&f=json",
+    "http": null,
+    "count": null,
+    "raw": "",
+    "err": "URLError: <urlopen error timed out>"
+   },
+   "verdict": "upstream_unreachable"
+  },
+  {
+   "layer": "yil_gov_traditional_rest_services_addressZipCode_MapServer_0",
+   "ledger_status": "failed",
+   "ledger_declared": 1381118,
+   "ledger_rows": null,
+   "layer_url": "https://gis.cookcountyil.gov/traditional/rest/services/addressZipCode/MapServer/0",
+   "probe": {
+    "url": "https://gis.cookcountyil.gov/traditional/rest/services/addressZipCode/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+    "http": null,
+    "count": null,
+    "raw": "",
+    "err": "URLError: <urlopen error timed out>"
+   },
+   "verdict": "upstream_unreachable"
+  },
+  {
+   "layer": "rvices_location_Address_Points_Modifications_FeatureServer_0",
+   "ledger_status": "failed",
+   "ledger_declared": 1369414,
+   "ledger_rows": null,
+   "layer_url": "https://arcgis.metc.state.mn.us/data1/rest/services/location/Address_Points_Modifications/FeatureServer/0",
+   "probe": {
+    "url": "https://arcgis.metc.state.mn.us/data1/rest/services/location/Address_Points_Modifications/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+    "http": null,
+    "count": null,
+    "raw": "",
+    "err": "URLError: <urlopen error timed out>"
+   },
+   "verdict": "upstream_unreachable"
+  },
+  {
+   "layer": "is4_ocfl_net_arcgis_rest_services_AGOL_Open_Data_MapServer_0",
+   "ledger_status": "failed",
+   "ledger_declared": 716472,
+   "ledger_rows": null,
+   "layer_url": "https://ocgis4.ocfl.net/arcgis/rest/services/AGOL_Open_Data/MapServer/0",
+   "probe": {
+    "url": "https://ocgis4.ocfl.net/arcgis/rest/services/AGOL_Open_Data/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+    "http": null,
+    "count": null,
+    "raw": "",
+    "err": "URLError: <urlopen error [Errno -3] Temporary failure in name resolution>"
+   },
+   "verdict": "upstream_unreachable"
+  },
+  {
+   "layer": "fD_arcgis_rest_services_COTGEO_ADDRESS_POINT_FeatureServer_0",
+   "ledger_status": "partial",
+   "ledger_declared": 525371,
+   "ledger_rows": 479000,
+   "layer_url": "https://services3.arcgis.com/b9WvedVPoizGfvfD/arcgis/rest/services/COTGEO_ADDRESS_POINT/FeatureServer/0",
+   "probe": {
+    "url": "https://services3.arcgis.com/b9WvedVPoizGfvfD/arcgis/rest/services/COTGEO_ADDRESS_POINT/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+    "http": 200,
+    "count": 525381,
+    "raw": "{\"count\":525381}",
+    "err": ""
+   },
+   "verdict": "upstream_alive"
+  },
+  {
+   "layer": "g_rest_services_Basemap_Address_Points_EagleView_MapServer_0",
+   "ledger_status": "failed",
+   "ledger_declared": 388607,
+   "ledger_rows": null,
+   "layer_url": "https://gis.willcountyillinois.com/hosting/rest/services/Basemap/Address_Points_EagleView/MapServer/0",
+   "probe": {
+    "url": "https://gis.willcountyillinois.com/hosting/rest/services/Basemap/Address_Points_EagleView/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+    "http": 403,
+    "count": null,
+    "raw": "<!DOCTYPE html>\n<!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 7]>    <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 8]>    <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![endif]-->\n<head>\n<title>Attention Required! | Cloudflare</title>\n<meta charset=\"UTF-8\" />\n<meta",
+    "err": "HTTP 403"
+   },
+   "verdict": "upstream_unreachable"
+  },
+  {
+   "layer": "rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5",
+   "ledger_status": "failed",
+   "ledger_declared": 368312,
+   "ledger_rows": null,
+   "layer_url": "https://cagisonline.hamilton-co.org/arcgis/rest/services/Countywide_Layers/Cagis_Map_Labels/MapServer/5",
+   "probe": {
+    "url": "https://cagisonline.hamilton-co.org/arcgis/rest/services/Countywide_Layers/Cagis_Map_Labels/MapServer/5/query?where=1%3D1&returnCountOnly=true&f=json",
+    "http": null,
+    "count": null,
+    "raw": "",
+    "err": "URLError: <urlopen error timed out>"
+   },
+   "verdict": "upstream_unreachable"
+  },
+  {
+   "layer": "_arcgis1_rest_services_FLEXMOBILE_Address_Points_MapServer_0",
+   "ledger_status": "failed",
+   "ledger_declared": 367002,
+   "ledger_rows": null,
+   "layer_url": "https://gis.macombgov.org/arcgis1/rest/services/FLEXMOBILE/Address_Points/MapServer/0",
+   "probe": {
+    "url": "https://gis.macombgov.org/arcgis1/rest/services/FLEXMOBILE/Address_Points/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+    "http": 200,
+    "count": null,
+    "raw": "{\"error\":{\"code\":404,\"message\":\"Service not found\",\"details\":[]}}",
+    "err": "esri_error: {'code': 404, 'message': 'Service not found', 'details': []}"
+   },
+   "verdict": "upstream_unreachable"
+  },
+  {
+   "layer": "t01_rest_services_PlatTracker_PT365_PLAT_MAPPING_MapServer_5",
+   "ledger_status": "partial",
+   "ledger_declared": 315044,
+   "ledger_rows": 310418,
+   "layer_url": "https://mycity2.houstontx.gov/geoplat01/rest/services/PlatTracker/PT365_PLAT_MAPPING/MapServer/5",
+   "probe": {
+    "url": "https://mycity2.houstontx.gov/geoplat01/rest/services/PlatTracker/PT365_PLAT_MAPPING/MapServer/5/query?where=1%3D1&returnCountOnly=true&f=json",
+    "http": null,
+    "count": null,
+    "raw": "",
+    "err": "URLError: <urlopen error timed out>"
+   },
+   "verdict": "upstream_unreachable"
+  },
+  {
+   "layer": "_rgv911_org_server_rest_services_Public_Map_MIL1_MapServer_1",
+   "ledger_status": "failed",
+   "ledger_declared": 302920,
+   "ledger_rows": null,
+   "layer_url": "https://gis.rgv911.org/server/rest/services/Public_Map_MIL1/MapServer/1",
+   "probe": {
+    "url": "https://gis.rgv911.org/server/rest/services/Public_Map_MIL1/MapServer/1/query?where=1%3D1&returnCountOnly=true&f=json",
+    "http": 200,
+    "count": 303175,
+    "raw": "{\"count\":303175}",
+    "err": ""
+   },
+   "verdict": "upstream_alive"
+  },
+  {
+   "layer": "_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0",
+   "ledger_status": "failed",
+   "ledger_declared": 302920,
+   "ledger_rows": null,
+   "layer_url": "https://gis.rgv911.org/server/rest/services/RGV911_OPS_MIL1/MapServer/0",
+   "probe": {
+    "url": "https://gis.rgv911.org/server/rest/services/RGV911_OPS_MIL1/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+    "http": 200,
+    "count": 303175,
+    "raw": "{\"count\":303175}",
+    "err": ""
+   },
+   "verdict": "upstream_alive"
+  }
+ ]
+}
