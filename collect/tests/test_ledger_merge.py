@@ -86,6 +86,44 @@ class StatusPriority(unittest.TestCase):
         self.assertEqual(ranks, sorted(ranks, reverse=True))
         self.assertEqual(len(set(ranks)), len(ranks))
 
+    def test_capped_sits_between_ok_and_partial(self):
+        """capped_by_upstream 比 partial 好、比 ok 差：它不会被续采改写，但也没有可复核的声明。
+
+        排序必须让它稳定胜出，否则一次重跑就能把 capped 层降级回 partial/failed。
+        """
+        self.assertGreater(lm.rank("capped_by_upstream"), lm.rank("partial"))
+        self.assertLess(lm.rank("capped_by_upstream"), lm.rank("ok"))
+        merged, _ = lm.merge_records([_rec("a", "capped_by_upstream", 39_875_268)],
+                                     [_rec("a", "partial", 1_000)])
+        self.assertEqual(merged[0]["status"], "capped_by_upstream")
+
+
+class RecountCappedSemantics(unittest.TestCase):
+    """recount 必须与 adjudicate_04b 同口径：分母不含 capped 层，分子也扣它的行数。"""
+
+    def test_gap_is_like_for_like(self):
+        recs = [{"layer": "normal", "status": "ok", "declared": 100, "rows": 100},
+                {"layer": "short", "status": "missing", "declared": 60, "rows": 10},
+                {"layer": "capped", "status": "capped_by_upstream", "declared": None,
+                 "declared_unverifiable": 500, "rows": 300}]
+        c = lm.recount(recs)
+        self.assertEqual(c["capped_by_upstream"], 1)
+        self.assertEqual(c["declared"], 160)                 # 500 不在分母
+        self.assertEqual(c["declared_unverifiable"], 500)
+        self.assertEqual(c["rows"], 410)                     # 实采全算
+        self.assertEqual(c["rows_capped"], 300)
+        self.assertEqual(c["rows_verifiable"], 110)
+        self.assertEqual(c["gap"], 50)                       # 160 − 110，不是 160 − 410
+        self.assertGreater(c["gap"], 0)                      # 不许出现“负缺口”
+        self.assertEqual(c["gap_pct"], 31.25)
+
+    def test_no_capped_layer_keeps_old_semantics(self):
+        c = lm.recount([{"layer": "a", "status": "ok", "declared": 100, "rows": 100},
+                        {"layer": "b", "status": "missing", "declared": 60, "rows": 0}])
+        self.assertEqual(c["gap"], 60)
+        self.assertEqual(c["rows_capped"], 0)
+        self.assertEqual(c["declared_unverifiable"], 0)
+
     def test_better_status_wins_regardless_of_order(self):
         merged, stats = lm.merge_records(
             [_rec("a", "partial", 500)],

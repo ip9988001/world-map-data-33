@@ -82,7 +82,11 @@ HTTP 200  {"error":{"code":499,"message":"Token Required","messageCode":"GWM_000
 
 - 它的 `declared`（9792.9 万）**无法再复核**，不能继续拿它当「我们欠 58M 行」的证据；
 - 也不该因此把它改判 `empty` 或 `ok`（那是拿口径凑数）；
-- 正确去向是 `unverified`（上游不可验证），并单列进「不确定行数区间」，等拿到 token 再判。
+- ~~正确去向是 `unverified`~~ **【2026-10-31 改判】**：更进一步，这层已是**服务级 token**
+  （`/0?f=json` 也 499，连续两轮一致）→ 状态改为 **`capped_by_upstream`**：
+  已采 39,875,268 行照旧计入 `rows`，97,928,946 移出分母记 `declared_unverifiable`。
+  依据 `analysis/04b-token-499-evidence-2026-10-31.json`，落点 `collect/04b_ledger.json`，
+  来龙去脉见 `docs/STEP04-ADJUDICATED-2026-10-30.md` §3.0 与故障清单 `W33-033`。
 
 其余 `partial` 4 层里，两层的声明值已被上游确认（`LBRSforLocator` 5,573,001 = 声明；
 `COTGEO` 525,381 = 声明 ⇒ 缺口 2,799,879 / 46,381 是真缺口，且两层都在定向 run 的 plan 里）；

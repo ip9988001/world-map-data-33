@@ -93,6 +93,9 @@ APPROVED_MAIN = {
     "f68c002": "chore/ledger-merge-fix 合入（单 run 不覆盖阶段账本 + 状态优先级合并 + 04b 账本复原）",
     "3f3c9b9": "rows 回退护栏（regressions[]，不许静默取大）合入",
     "f55f6a5": "回退摘要加「处置分布」（分清哪类真把阶段账本 rows 改小；只动说明与单测，不改合并规则）",
+    "a39ba76": "PR #12 合入（force 重跑不覆盖完成度证据 + 按单元合并 + 行数只许涨 + NAD 检查点与 272 层账本复原）",
+    "a4f12f7": "重建产物分审结快照/活态 + --check 改判输入指纹 + 写回前硬门禁",
+    "780e9b4": "PR #13 合入（派单前核验门禁 16 项 + F16 故障清单接线 + 已批准版本白名单）",
 }
 
 PKG_RE = re.compile(r"-u\d{5}\.tar\.gz$")
@@ -278,6 +281,151 @@ def judge_other_stages(stage, active_all, offline=False, limit=2):
                      runs=others)]
     return [item("A2", "A", "跨阶段并发", "PASS",
                  "其他阶段在跑 %d 个（阈值 %d）" % (len(others), limit))]
+
+
+# ------------------------------------------------------------------ F 故障清单
+# 本仓唯一故障台账（docs/WORKFLOW-FAILURE-LEDGER.md）的机器读法。
+# 为什么要在门禁里读它：坑已经被记下来了，但**记下来不等于会被查**——派单的人不会每次翻表，
+# 所以把「本次改动碰到哪条已知坑」变成机械判据：
+#   · 触及「未规避」（关联提交为空/未修/待修）的条目 → WARN，并直接把该条的«修法»当规避动作打出来；
+#   · 触及「复发过 ≥2 次」的条目 → **FAIL**（同一坑不能第三次踩）；确认已规避就 `--ledger-waive` 显式豁免，
+#     豁免会写进证据（谁、哪条、为什么）。
+LEDGER_REL = os.path.join("docs", "WORKFLOW-FAILURE-LEDGER.md")
+LEDGER_COLUMNS = ("id", "date", "category", "symptom", "root_cause", "impact",
+                  "fix", "verify", "commits", "recurrence")
+LEDGER_ID_RE = re.compile(r"^[A-Z]+\d+-\d{3}$")
+LEDGER_CATEGORIES = ("并发队列", "artifact与下载", "git提交", "账本与口径", "checkpoint与断点",
+                     "切分与体积", "采集器逻辑", "上游不可达", "缓存与签名", "测试与CI")
+
+# 改动文件 → 涉及类别（只圈**代码/流程**，不圈 *.json 数据：账本数据每次跑都在变，
+# 一旦把数据文件算成「撕账本类」，每轮都会蹬出复发 ≥2 的 FAIL，门禁就废了）。
+PATH_CATEGORY = (
+    (r"^\.github/workflows/", ("并发队列", "artifact与下载", "git提交")),
+    (r"collect/(ledger_merge|step_full_report|ledger_rebuild|adjudicate_04b)\.py$", ("账本与口径",)),
+    (r"collect/(pilot|full_shard|worker_core)\.py$", ("checkpoint与断点", "切分与体积", "采集器逻辑")),
+    (r"collect/(chain_policy|full_plan)\.py$", ("采集器逻辑", "并发队列")),
+    (r"collect/ckpt_guard\.py$", ("checkpoint与断点",)),
+    (r"collect/(county_assign|county_index)\.py$", ("采集器逻辑",)),
+    (r"collect/tests/|collect/check_docs\.py|collect/supervisor\.py$", ("测试与CI",)),
+    (r"collect/preflight_dispatch\.py$", ("测试与CI",)),
+)
+
+
+def parse_failure_ledger(text: str) -> list:
+    """把台账 markdown 表解析成行（一次一行，不合并条目）。"""
+    rows = []
+    for line in (text or "").splitlines():
+        s = line.strip()
+        if not s.startswith("|"):
+            continue
+        cells = [c.strip().replace("**", "") for c in s.strip("|").split("|")]
+        if len(cells) != len(LEDGER_COLUMNS):
+            continue
+        if not LEDGER_ID_RE.match(cells[0]):
+            continue                                   # 表头 / 分隔行 / 别的表
+        row = dict(zip(LEDGER_COLUMNS, cells))
+        m = re.search(r"\d+", row["recurrence"] or "")
+        row["recurrence"] = int(m.group(0)) if m else 0
+        ref = row["commits"] or ""
+        # 「已规避」的判据：有关联提交（7+ 位 sha），或指向仓内具体实现/文档；
+        # 写「无」/「未修」/「待修」/空 → 未规避（只能靠流程，门禁必须点名）。
+        row["mitigated"] = bool(re.search(r"\b[0-9a-f]{7,40}\b", ref)) \
+            or not re.match(r"^(无|未修|待修|[-—\s])", ref)
+        rows.append(row)
+    return rows
+
+
+def categories_of_paths(paths) -> set:
+    """改动文件 → 类别集合。"""
+    out = set()
+    for p in paths or []:
+        for pat, cats in PATH_CATEGORY:
+            if re.search(pat, p):
+                out.update(cats)
+    return out
+
+
+def _entry_files(row, cache=None):
+    """一条台账的关联提交落了哪些文件（用于判「本次改动是否真的碰到这条坑」）。"""
+    cache = cache if cache is not None else {}
+    files = set()
+    for tok in re.findall(r"\b[0-9a-f]{7,40}\b", row.get("commits") or ""):
+        if tok in cache:
+            files.update(cache[tok])
+            continue
+        rc, out, _ = _run(["git", "show", "--name-only", "--format=", tok], timeout=30)
+        got = [x.strip() for x in (out or "").splitlines() if x.strip()] if rc == 0 else []
+        cache[tok] = got
+        files.update(got)
+    return files
+
+
+def judge_failure_ledger(text: str, categories=None, changed_paths=None,
+                         waive=(), offline=False, ledger_path=""):
+    """F16：本次派单/改动是否踩到已知坑。返回 (item, hits)。"""
+    cats = set(categories or ())
+    derived = categories_of_paths(changed_paths or ())
+    cats |= derived
+    waive = {str(w).strip().upper() for w in (waive or ()) if str(w).strip()}
+    if not (text or "").strip():
+        return item("F16", "F", "故障清单", "WARN",
+                    "本仓还没有 %s（先按 docs/WORKFLOW-FAILURE-LEDGER.md 模板建一份）"
+                    % LEDGER_REL.replace(os.sep, "/"), ledger_hits=[]), []
+    unknown = sorted(c for c in cats if c not in LEDGER_CATEGORIES)
+    if unknown:
+        return item("F16", "F", "故障清单", "WARN",
+                    "类别写错（%s），台账没比对；固定 10 类：%s"
+                    % (", ".join(unknown), " / ".join(LEDGER_CATEGORIES)),
+                    ledger_hits=[], ledger_categories=sorted(cats)), []
+    if not cats:
+        return item("F16", "F", "故障清单", "WARN",
+                    "本次没声明涉及的类别（--ledger-category），台账未比对；派单里必须写 "
+                    "`故障清单已查：<编号>|无` 并列出类别", ledger_hits=[], ledger_categories=[]), []
+    rows = parse_failure_ledger(text)
+    if not rows:
+        return item("F16", "F", "故障清单", "FAIL",
+                    "%s 解析不出任何台账行（表头 10 列 / 编号形如 W33-001 不能破）"
+                    % LEDGER_REL.replace(os.sep, "/"), ledger_hits=[]), []
+    cache, hits = {}, []
+    for row in rows:
+        cat_hit = row["category"] in cats
+        if not cat_hit:
+            continue
+        files = _entry_files(row, cache)
+        path_hit = bool(files & set(changed_paths or ())) if changed_paths else True
+        if not path_hit and row["mitigated"] and not (categories and row["category"] in set(categories)):
+            continue                                # 只由路径推导出的类别 → 必须真有文件重叠
+        hits.append({
+            "id": row["id"], "category": row["category"], "recurrence": row["recurrence"],
+            "mitigated": row["mitigated"], "status": row["symptom"][:160],
+            "mitigation": row["fix"][:300], "verify": row["verify"][:200],
+            "waived": row["id"].upper() in waive,
+        })
+    if not hits:
+        return item("F16", "F", "故障清单", "PASS",
+                    "本次涉及的类别（%s）不命中任何已知坑（台账 %d 条已全量比对）"
+                    % (", ".join(sorted(cats)) or "未指定", len(rows)),
+                    ledger_hits=[], ledger_categories=sorted(cats)), []
+    fatal = [h for h in hits if h["recurrence"] >= 2 and not h["waived"]]
+    urgent = [h for h in hits if not h["mitigated"]]
+    if fatal:
+        return item("F16", "F", "故障清单", "FAIL",
+                    "触及 %d 条**复发 ≥2 次**的已知坑（同一坑不能再踩）：%s —— 先在派单里写规避动作，"
+                    "确认已规避后用 --ledger-waive %s 显式豁免"
+                    % (len(fatal), "; ".join("%s(%s×%d)" % (h["id"], h["category"], h["recurrence"])
+                                              for h in fatal[:4]),
+                       ",".join(h["id"] for h in fatal)),
+                    ledger_hits=hits, ledger_categories=sorted(cats)), hits
+    if urgent:
+        return item("F16", "F", "故障清单", "WARN",
+                    "触及 %d 条**未规避**的已知坑：%s —— 规避动作：%s"
+                    % (len(urgent), ", ".join("%s(%s)" % (h["id"], h["category"]) for h in urgent[:4]),
+                       urgent[0]["mitigation"][:180]),
+                    ledger_hits=hits, ledger_categories=sorted(cats)), hits
+    return item("F16", "F", "故障清单", "PASS",
+                "触及 %d 条已修条目（%s），均已带修复提交，不拦派单"
+                % (len(hits), ", ".join(h["id"] for h in hits[:6])),
+                ledger_hits=hits, ledger_categories=sorted(cats)), hits
 
 
 # ------------------------------------------------------------------ B 代码版本
@@ -637,8 +785,14 @@ def classify_probe(res):
     return "unverifiable"
 
 
-def judge_upstream(samples, results=None, offline=False, min_samples=5):
-    """E12/E13/E14：抽样计数 → 0 行层 / 403 超时层 / 声明不可复核层。"""
+def judge_upstream(samples, results=None, offline=False, min_samples=5, stage="", urls=None):
+    """E12/E13/E14：抽样计数 → 0 行层 / 403 超时层 / 声明不可复核层。
+
+    ★ E14 硬判据（2026-10-31 用户要求）：同一层**连续两次**探测都是服务级 499
+      （HTTP 200 + body code=499 `Token Required`，连 `?f=json` 也一样）
+      → 自动**建议** `capped_by_upstream`，并打印建议命令；
+      **不自动改账本**（改口径必须人点头，账本只认 `adjudicate_04b --capped`）。
+    """
     items = []
     if offline:
         return [item("E12", "E", "上游抽样", "WARN", "offline：跳过上游计数探测"),
@@ -675,10 +829,29 @@ def judge_upstream(samples, results=None, offline=False, min_samples=5):
         if service_token:
             extra = ("；其中 %d 层是**服务级** token（连 `?f=json` 都 499）→ CI 也采不到，"
                      "要么配 token，要么从计划里剔掉" % len(service_token))
+        # ★ 连续两轮都是服务级 499 → 建议 capped_by_upstream（只建议，不改账本）
+        capped = [k for k in service_token if (res.get(k) or {}).get("confirm_service_token") is True]
+        capped_cmds = []
+        if capped:
+            date = datetime.now(timezone.utc).strftime("%Y%m%d")
+            ev = "analysis/%s-token-499-evidence-%s.json" % (stage or "04b", date)
+            extra += ("；其中 **%d 层连续两轮都是服务级 499** → 建议改判 `capped_by_upstream`"
+                      "（已采行数照旧计 `rows`，declared 移出分母记 `declared_unverifiable`）；"
+                      "**账本不会自动改**，下面单独打印确认后的命令" % len(capped))
+            for k in capped:
+                u = (urls or {}).get(k, "<layer api url>")
+                capped_cmds.append({
+                    "layer": k,
+                    "probe_cmd": ("python3 collect/probe_service_token.py --target '%s=%s' "
+                                  "--stage %s --out %s --append" % (k, u, stage or "04b", ev)),
+                    "adjudicate_cmd": ("python3 collect/adjudicate_04b.py --capped %s "
+                                       "--capped-evidence %s" % (k, ev)),
+                })
         items.append(item("E14", "E", "声明可复核率", "WARN",
                           "%d 层声明不可复核（Token Required / 非 JSON 响应），标记 declared_unverifiable，"
                           "不计入分母：%s%s" % (len(unver), ", ".join(unver[:4]), extra),
-                          layers=unver, service_token=service_token))
+                          layers=unver, service_token=service_token, capped_candidates=capped,
+                          capped_commands=capped_cmds))
     else:
         items.append(item("E14", "E", "声明可复核率", "PASS",
                           "%d 层声明都可复核（用于跑后差额分母）" % len(res)))
@@ -896,6 +1069,29 @@ def build_report(args) -> dict:
         citems, diffs = judge_code_gate(ref_for_git, main_for_git)
         items += citems
     items.append(judge_approved_version(ref_sha, main_sha))
+
+    # ---- F 故障清单（F16）：本次改动碰到哪条已知坑 ----
+    ledger_path = args.ledger or os.path.join(ROOT, LEDGER_REL)
+    ledger_text = ""
+    if os.path.exists(ledger_path):
+        try:
+            ledger_text = open(ledger_path, encoding="utf-8").read()
+        except Exception as e:                             # noqa: BLE001
+            ledger_text = ""
+            evidence["ledger_err"] = str(e)[:160]
+    changed = []
+    if ref_sha:
+        rc, out, _ = _run(["git", "diff", "--name-only", "%s...%s" % (main_for_git, ref_for_git)],
+                          timeout=60)
+        changed = [x.strip() for x in (out or "").splitlines() if x.strip()] if rc == 0 else []
+    ledger_item, ledger_hits = judge_failure_ledger(
+        ledger_text, categories=[x.strip() for x in (args.ledger_category or "").split(",") if x.strip()],
+        changed_paths=changed,
+        waive=args.ledger_waive, offline=offline, ledger_path=ledger_path)
+    items.append(ledger_item)
+    evidence["ledger"] = {"path": os.path.relpath(ledger_path, ROOT), "changed_files": changed[:80],
+                          "categories": ledger_item.get("ledger_categories", []),
+                          "hits": ledger_hits, "waived": list(args.ledger_waive or [])}
     evidence["ref"] = {"ref": ref, "sha": ref_sha, "main_sha": main_sha}
     chain_rc, chain_out, chain_err = _run(
         [sys.executable, os.path.join(HERE, "chain_policy.py"), "--stage", stage, "--dry-run"],
@@ -978,15 +1174,27 @@ def build_report(args) -> dict:
         tok = [k for k, v in results.items() if classify_probe(v) in ("token", "unverifiable")]
         for k in tok:
             results[k]["meta_token"] = bool(probe_meta(urls[k]).get("token"))
+        # ★ E14 硬判据（2026-10-31）：服务级 token 要**连续两轮**都成立才算数。
+        #   一次 499 可能是临时风控/单次配额；只有两轮都 499 才能建议改判 capped_by_upstream。
+        for k in [x for x in tok if results[x].get("meta_token")]:
+            time.sleep(2)
+            again, meta2 = probe_count(urls[k]), probe_meta(urls[k])
+            results[k]["confirm_at"] = now()
+            results[k]["confirm_service_token"] = bool(
+                meta2.get("token") and again.get("count") is None)
+            results[k]["confirm_http"] = again.get("http")
+            results[k]["confirm_raw"] = str(again.get("body") or "")[:160]
     if not samples and not offline:
         items += [item("E12", "E", "上游抽样", "WARN",
                        "没有可抽样层（--force-layers 为空且清单里没有分档候选）：上游可用性未核"),
                   item("E13", "E", "上游 403/超时", "WARN", "未抽样"),
                   item("E14", "E", "声明可复核率", "WARN", "未抽样，declared_unverifiable 未标注")]
     else:
-        items += judge_upstream(samples, results, offline=offline or not samples)
+        items += judge_upstream(samples, results, offline=offline or not samples,
+                                stage=stage, urls=urls)
     evidence["upstream_probe"] = {k: {kk: v.get(kk) for kk in ("http", "count", "err", "elapsed_s",
-                                                               "meta_token")}
+                                                               "meta_token", "confirm_service_token",
+                                                               "confirm_at", "confirm_http")}
                                   for k, v in results.items()}
 
     fails = [i for i in items if i["status"] == "FAIL"]
@@ -1049,6 +1257,14 @@ def human_summary(rep: dict) -> str:
     for i in rep["checks"]:
         lines.append("%s %-4s %-24s %s" % (mark.get(i["status"], "?"), i["id"],
                                            i["title"][:24], i["detail"][:150]))
+        for c in (i.get("capped_commands") or []):
+            lines += ["",
+                      "   ⚠️  `%s` 连续两轮服务级 499 → 建议改判 `capped_by_upstream`"
+                      "（已采行数计 rows，declared 进 declared_unverifiable）；"
+                      "**账本不会自动改**，确认后手工执行：" % c["layer"],
+                      "     %s" % c["probe_cmd"],
+                      "     %s" % c["adjudicate_cmd"],
+                      ""]
     lines.append("-" * 78)
     if rep["fail_n"]:
         lines.append("❌ 门禁未通过：修完上面标 ❌ 的项再派单（处置见 docs/PREFLIGHT-GATE.md）")
@@ -1064,6 +1280,12 @@ def main() -> int:
     ap.add_argument("--size", default="0")
     ap.add_argument("--max-shards", default="0")
     ap.add_argument("--ref", default="main", help="要派的 ref（默认 main）：其代码就是将要跑的代码")
+    # ★ F16 故障清单：本次派单涉及的类别（逗号分隔，不写则只按 --ref 的改动文件推导）
+    ap.add_argument("--ledger-category", default="",
+                    help="本次派单涉及的类别（逗号分隔）：并发队列/artifact与下载/git提交/账本与口径/…")
+    ap.add_argument("--ledger-waive", action="append", default=[],
+                    help="豁免某条「复发≥2 次」的编号（如 --ledger-waive W33-011）；豁免写进证据")
+    ap.add_argument("--ledger", default="", help="台账路径（默认 docs/WORKFLOW-FAILURE-LEDGER.md）")
     ap.add_argument("--repo", default=DEFAULT_REPO)
     ap.add_argument("--authorize-heavy", action="store_true", help="10b 重阶段授权（= workflow 的 authorize_heavy=1）")
     ap.add_argument("--authorize-manual", default="", help="08/09/10/几何：显式口号（逗号分隔）")

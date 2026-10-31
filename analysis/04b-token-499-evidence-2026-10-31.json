@@ -1,0 +1,96 @@
+{
+ "schema": "upstream-token-evidence/v1",
+ "stage": "04b",
+ "generated_at": "2026-10-31T00:45:17Z",
+ "method": "每轮探 3 个端点（`?f=json` / returnCountOnly / returnIdsOnly），间隔 ≥60 秒连探 2 轮。判据只看响应体：HTTP 200 + body 里 code=499 `Token Required` 才算服务级 token —— 只看状态码会误判成「服务正常」。",
+ "layers": [
+  {
+   "layer": "s_Points_from_National_Address_Database_view_FeatureServer_0",
+   "layer_url": "https://services.arcgis.com/xOi1kZaI0eWDREZv/ArcGIS/rest/services/Address_Points_from_National_Address_Database_view/FeatureServer/0",
+   "rounds": [
+    {
+     "round": 1,
+     "at": "2026-10-31T00:45:17Z",
+     "probes": {
+      "service_metadata": {
+       "url": "https://services.arcgis.com/xOi1kZaI0eWDREZv/ArcGIS/rest/services/Address_Points_from_National_Address_Database_view/FeatureServer/0?f=json",
+       "http": "200",
+       "raw": "{\"error\":{\"code\":499,\"message\":\"Token Required\",\"messageCode\":\"GWM_0003\",\"details\":[\"Token Required\"]}}",
+       "error_code": 499,
+       "error_message": "Token Required",
+       "message_code": "GWM_0003",
+       "count": null,
+       "service_level_token": true,
+       "endpoint_ok": false
+      },
+      "returnCountOnly": {
+       "url": "https://services.arcgis.com/xOi1kZaI0eWDREZv/ArcGIS/rest/services/Address_Points_from_National_Address_Database_view/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+       "http": "200",
+       "raw": "{\"error\":{\"code\":499,\"message\":\"Token Required\",\"messageCode\":\"GWM_0003\",\"details\":[\"Token Required\"]}}",
+       "error_code": 499,
+       "error_message": "Token Required",
+       "message_code": "GWM_0003",
+       "count": null,
+       "service_level_token": true,
+       "endpoint_ok": false
+      },
+      "returnIdsOnly": {
+       "url": "https://services.arcgis.com/xOi1kZaI0eWDREZv/ArcGIS/rest/services/Address_Points_from_National_Address_Database_view/FeatureServer/0/query?where=1%3D1&returnIdsOnly=true&f=json",
+       "http": "200",
+       "raw": "{\"error\":{\"code\":499,\"message\":\"Token Required\",\"messageCode\":\"GWM_0003\",\"details\":[\"Token Required\"]}}",
+       "error_code": 499,
+       "error_message": "Token Required",
+       "message_code": "GWM_0003",
+       "count": null,
+       "service_level_token": true,
+       "endpoint_ok": false
+      }
+     }
+    },
+    {
+     "round": 2,
+     "at": "2026-10-31T00:46:18Z",
+     "probes": {
+      "service_metadata": {
+       "url": "https://services.arcgis.com/xOi1kZaI0eWDREZv/ArcGIS/rest/services/Address_Points_from_National_Address_Database_view/FeatureServer/0?f=json",
+       "http": "200",
+       "raw": "{\"error\":{\"code\":499,\"message\":\"Token Required\",\"messageCode\":\"GWM_0003\",\"details\":[\"Token Required\"]}}",
+       "error_code": 499,
+       "error_message": "Token Required",
+       "message_code": "GWM_0003",
+       "count": null,
+       "service_level_token": true,
+       "endpoint_ok": false
+      },
+      "returnCountOnly": {
+       "url": "https://services.arcgis.com/xOi1kZaI0eWDREZv/ArcGIS/rest/services/Address_Points_from_National_Address_Database_view/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+       "http": "200",
+       "raw": "{\"error\":{\"code\":499,\"message\":\"Token Required\",\"messageCode\":\"GWM_0003\",\"details\":[\"Token Required\"]}}",
+       "error_code": 499,
+       "error_message": "Token Required",
+       "message_code": "GWM_0003",
+       "count": null,
+       "service_level_token": true,
+       "endpoint_ok": false
+      },
+      "returnIdsOnly": {
+       "url": "https://services.arcgis.com/xOi1kZaI0eWDREZv/ArcGIS/rest/services/Address_Points_from_National_Address_Database_view/FeatureServer/0/query?where=1%3D1&returnIdsOnly=true&f=json",
+       "http": "200",
+       "raw": "{\"error\":{\"code\":499,\"message\":\"Token Required\",\"messageCode\":\"GWM_0003\",\"details\":[\"Token Required\"]}}",
+       "error_code": 499,
+       "error_message": "Token Required",
+       "message_code": "GWM_0003",
+       "count": null,
+       "service_level_token": true,
+       "endpoint_ok": false
+      }
+     }
+    }
+   ],
+   "rounds_n": 2,
+   "verdict": "service_level_token",
+   "all_rounds_token": true,
+   "conclusion": "服务级 token：连 `?f=json` 都 499，returnCountOnly / returnIdsOnly 同样 499，连续两轮一致 → 本层已无法再采一个字节，也无法复核 declared。"
+  }
+ ]
+}

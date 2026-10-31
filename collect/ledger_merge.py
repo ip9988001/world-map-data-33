@@ -38,15 +38,20 @@ import os
 from datetime import datetime, timezone
 
 # 状态优先级：数值越大越「好」。未知状态按 0 处理（永远输给已知状态）。
+# capped_by_upstream（2026-10-31 起）= 上游改成服务级 token，本层已尽取：它比 partial 好
+#   （partial 还会被续采改写，capped 不会），但比 ok 差（没有可复核的声明）。
+#   排序必须让它稳定胜出，否则一次重跑就能把 capped 层降级成 partial/failed。
 STATUS_RANK = {
-    "ok": 6,
+    "ok": 7,
+    "capped_by_upstream": 6,
     "partial": 5,
     "missing": 4,
     "unverified": 3,
     "empty": 2,
     "failed": 1,
 }
-COUNT_KEYS = ("ok", "partial", "missing", "unverified", "empty", "failed", "skipped_done")
+COUNT_KEYS = ("ok", "capped_by_upstream", "partial", "missing", "unverified", "empty",
+              "failed", "skipped_done")
 
 
 def _now() -> str:
@@ -202,19 +207,32 @@ def merge_records(base_records, run_records):
 
 
 def recount(records):
-    """按合并后的逐层记录重算顶层计数（不信任任何一方自报的数字）。"""
+    """按合并后的逐层记录重算顶层计数（不信任任何一方自报的数字）。
+
+    ★ 分母口径（2026-10-31）：`capped_by_upstream` 层的 `declared` 是 None（另记
+      `declared_unverifiable`）。所以这里的 gap 必须与 `adjudicate_04b` 一致：
+      `gap = declared − (rows − rows_capped)`，否则分子含 capped 行数、分母不含它的声明，
+      会算出个负数缺口，看着像「超采」，其实是两只脚踩在两只船上。
+    """
     cnt = {k: 0 for k in COUNT_KEYS}
-    declared = rows = 0
+    declared = rows = rows_capped = declared_unver = 0
     for r in records:
         st = str(r.get("status") or "").lower()
         if st in cnt:
             cnt[st] += 1
         declared += int(r.get("declared") or 0)
         rows += rows_of(r)
+        if st == "capped_by_upstream":
+            rows_capped += rows_of(r)
+            declared_unver += int(r.get("declared_unverifiable") or 0)
     cnt["declared"] = declared
+    cnt["declared_unverifiable"] = declared_unver
     cnt["rows"] = rows
-    cnt["gap"] = declared - rows
-    cnt["gap_pct"] = round(100.0 * (declared - rows) / declared, 4) if declared else None
+    cnt["rows_capped"] = rows_capped
+    cnt["rows_verifiable"] = rows - rows_capped
+    cnt["gap"] = declared - (rows - rows_capped)
+    cnt["gap_pct"] = (round(100.0 * (declared - (rows - rows_capped)) / declared, 4)
+                      if declared else None)
     cnt["layers_n"] = len(records)
     return cnt
 

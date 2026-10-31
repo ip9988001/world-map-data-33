@@ -9,6 +9,8 @@
   · 上游能给出 returnCount，本层跑到一半          → **partial**（定向续采）
   · 上游彻底连不上 / 报错，本层也没数据           → **unverified**（无法归因，不许当 0 数据）
   · 上游明确 0 行 / 服务下线（esri 404）           → **empty**（不是采集失败）
+  · 上游改成**服务级 token**（连 `/0?f=json` 都 499）→ **capped_by_upstream**（永远采不到更多；
+    declared 移出分母、记 `declared_unverifiable`，已采行数照旧计入 rows）
 
 判据全部来自 `analysis/04b-upstream-evidence-*.json`（逐层 returnCount + HTTP/原始响应），
 不做任何估算；声明值一律改成**上游当前 returnCount**，改动逐条记在 revisions 里。
@@ -174,16 +176,38 @@ def render_doc(led, audit, evidence, sha_refs):
                     f"{x['declared']:,}" if x["declared"] else "-",
                     f"{x['rows']:,}" if x["rows"] else "0", x["note"]))
         A("")
-    A("## 三、判定修正（failed → 有实证的四类）")
+    A("## 三、判定修正（failed → 有实证的五类）")
     A("")
     A("| 状态 | 层数 | 含义 |")
     A("|---|---|---|")
-    for k in ("ok", "partial", "missing", "unverified", "empty", "skipped_done"):
+    for k in ("ok", "partial", "capped_by_upstream", "missing", "unverified", "empty", "skipped_done"):
         A("| %s | %d | %s |" % (k, led["buckets"].get(k, 0), led["bucket_meaning"][k]))
     A("")
     A("**failed = %d**（成品账本里不再有「failed」这个状态：每一层要么有资产、要么有明确归因）。"
       % led["failed"])
     A("")
+    if led.get("capped_layers"):
+        A("### 3.0 `capped_by_upstream`：上游改口径导致永久不可采")
+        A("")
+        A("判据：**服务级** token —— 连 `<api>/0?f=json` 都 499，`returnCountOnly` / `returnIdsOnly` 同样 499，")
+        A("且连续两轮探测一致（间隔 ≥60s）。这种事 HTTP 状态码是 **200**，token 拦在响应体里，")
+        A("只看 status code 会把它当「服务正常」→ 于是整层 0 行被当成「我们没采」，日复一日徒劳重采。")
+        A("")
+        A("| 层 | 已采行数（计入 rows） | declared_unverifiable（移出分母） | 探测 | 证据 |")
+        A("|---|---|---|---|---|")
+        for c in led["capped_layers"]:
+            A("| `%s` | %s | %s | %d 轮 × 3 端点全 499（%s） | `%s` |" % (
+                c["layer"], f"{c['rows']:,}", f"{c['declared_unverifiable']:,}",
+                c["rounds_n"], c.get("last_probe_at") or "-", c["evidence_path"]))
+        A("")
+        A("分母口径（本节之后的所有百分比都用这个）：")
+        A("")
+        A("- `rows` = %s（全部实采，含 capped 层的 %s）" % (f"{led['rows']:,}", f"{led['rows_capped']:,}"))
+        A("- `declared` = %s（**不含** capped 层）" % f"{led['declared']:,}")
+        A("- `rows_verifiable` = %s（与分母同口径的分子 = rows − capped 行数）" % f"{led['rows_verifiable']:,}")
+        A("- `gap` = declared − rows_verifiable = **%s 行（%.4f%%）**" % (f"{led['gap']:,}", led["gap_pct"] or 0))
+        A("- capped 层的 declared 另记 `declared_unverifiable` = %s，**永远不进分母**" % f"{led['declared_unverifiable']:,}")
+        A("")
     A("### 3.1 与旧账的差异（逐条）")
     A("")
     A("| 层 | 旧状态 | 新状态 | 旧声明 | 新声明 | 原因 |")
@@ -235,9 +259,58 @@ def render_doc(led, audit, evidence, sha_refs):
     A("其中 NG911 层旧声明 1,928,880 是计划期快照，上游现在就是 1,254,000，正好等于实采 → 差额归零，")
     A("这一层不是「没采全」，是**旧声明过期**。")
     A("")
+    # ---- 3.4 剩余缺口逐层拆解（按口径算，不是拍脑袋）----
+    why = {"missing": "**上游有数据但没采**（本层 0 行）",
+           "partial": "**上游有数据但没采全**（半截）",
+           "unverified": "**上游不可达**（未验证，不许当 0）",
+           "empty": "上游 0 行（不是缺口，别算进分母）"}
+    deficit = [r for r in led["records"]
+               if (r.get("declared") or 0) > (r.get("rows") or 0)
+               and r["status"] != "capped_by_upstream"]
+    deficit.sort(key=lambda r: (r.get("declared") or 0) - (r.get("rows") or 0), reverse=True)
+    gap_layers = [r for r in deficit if r["status"] != "empty"]
+    empty_rows = [r for r in deficit if r["status"] == "empty"]
+    over = [(r, (r.get("rows") or 0) - (r.get("declared") or 0)) for r in led["records"]
+            if (r.get("rows") or 0) > (r.get("declared") or 0)]
+    over.sort(key=lambda x: x[1], reverse=True)
+    sum_gap = sum((r.get("declared") or 0) - (r.get("rows") or 0) for r in gap_layers)
+    sum_empty = sum((r.get("declared") or 0) - (r.get("rows") or 0) for r in empty_rows)
+    sum_over = sum(x[1] for x in over)
+    A("### 3.4 剩余缺口逐层拆解")
+    A("")
+    A("账本净缺口 = **%s 行（%.4f%%）**，由三块构成（加减号都是账本数字，不是估的）："
+      % (f"{led['gap']:,}", led["gap_pct"] or 0))
+    A("")
+    A("- 真缺口（`missing` / `partial` / `unverified`，共 %d 层）：**+%s**"
+      % (len(gap_layers), f"{sum_gap:,}"))
+    A("- `empty` 层的旧声明（上游 0 行，不是缺口）：**+%s**（%d 层；旧声明不该再进分母）"
+      % (f"{sum_empty:,}", len(empty_rows)))
+    A("- 已采超出声明的层（上游后来缩水/声明过期）：**−%s**（%d 层）"
+      % (f"{sum_over:,}", len(over)))
+    A("")
+    A("| 层 | 状态 | 声明 | 实采 | 缺口 | 缺口% | 归因 |")
+    A("|---|---|---|---|---|---|---|")
+    for r in gap_layers:
+        d, rw = (r.get("declared") or 0), (r.get("rows") or 0)
+        A("| `%s` | %s | %s | %s | %s | %.2f%% | %s |" % (
+            r["layer"], r["status"], f"{d:,}", f"{rw:,}", f"{d - rw:,}",
+            100.0 * (d - rw) / d, why.get(r["status"], r.get("reason") or "-")))
+    A("")
+    A("> 注：`capped_by_upstream` 层不出现在上表（无分母）；它的 %s 行已在 `rows` 里。"
+      % f"{led.get('rows_capped') or 0:,}")
+    A("")
     A("## 四、口径提醒")
     A("")
     A("- 行数合计仍是 **%s**（本次不采一行数据，只改判定与声明）。" % f"{led['rows']:,}")
+    if led.get("capped_layers"):
+        A("- 剔除 capped 层后的分母 = **%s**，与分母同口径的实采 = **%s**，缺口 = **%s（%.4f%%）**。"
+          % (f"{led['declared']:,}", f"{led['rows_verifiable']:,}", f"{led['gap']:,}", led["gap_pct"] or 0))
+        A("- 与**不剔除**口径（declared 含 capped）= %s 行 / %s 行 / %.4f%% 对照时，差值就是 capped 层的"
+          "declared_unverifiable %s：两个百分比**不可直接比较**，引用时必须写明是否剔除。"
+          % (f"{led['declared_kept_in_denominator']:,}", f"{led['rows']:,}",
+             led["gap_pct_kept_in_denominator"], f"{led['declared_unverifiable']:,}"))
+        A("- 未剔除口径的数字怎么来的：`declared_kept_in_denominator = declared + declared_unverifiable`，"
+          "`gap_kept_in_denominator = 它 − rows`（旧口径，分子含 capped 行数）。")
     A("- `docs/STEP04-FULL-2026-10-30.md` 保持 `ledger_rebuild.py` 生成的字节不变（`--check` 依赖它）；")
     A("  本文是它的**修正层**，两者冲突时以本文为准，并注明证据出处。")
     A("- 修正后的账本是 `collect/04b_ledger.json`（main 侧闸门读的就是这个文件）。")
@@ -273,9 +346,29 @@ def main() -> int:
     ap.add_argument("--restore-events",
                     default=os.path.join(ROOT, "analysis", "04b-ledger-restore-events.json"),
                     help="复原/合并事件清单（JSON: {events:[...]})，逐条追加进 revisions[]")
+    # ★ capped_by_upstream（2026-10-31 用户批准）：上游改成服务级 token 的层永久不可采，
+    #   账本必须承认「已尽取」，而不是永远挂 partial/failed 天天重采。
+    ap.add_argument("--capped", action="append", default=[], metavar="LAYER",
+                    help="把该层判为 capped_by_upstream（可多次）。需配 --capped-evidence")
+    ap.add_argument("--capped-evidence", default="",
+                    help="服务级 499 探测证据（analysis/04b-token-499-evidence-*.json）；"
+                         "其 layers[] 里 verdict=service_level_token 且 all_rounds_token=true 的层"
+                         "自动进 capped 集（不传 --capped 也行）")
     a = ap.parse_args()
 
     rebuilt = jload(a.rebuilt)
+    capped_set, capped_ev = {}, {}
+    if a.capped_evidence and os.path.exists(a.capped_evidence):
+        tev = jload(a.capped_evidence)
+        for x in ([tev] if tev.get("layer") else (tev.get("layers") or [])):
+            if x.get("verdict") == "service_level_token" and x.get("all_rounds_token"):
+                x = dict(x)
+                x.setdefault("generated_at", tev.get("generated_at"))
+                capped_set[x["layer"]] = x
+                capped_ev[x["layer"]] = a.capped_evidence
+    for L in (a.capped or []):
+        capped_set.setdefault(L, {})
+        capped_ev.setdefault(L, a.capped_evidence)
     plan = jload(a.plan) if os.path.exists(a.plan) else {}
     evidence = jload(a.evidence)
     ev_by = {x["layer"]: x for x in evidence["layers"]}
@@ -284,10 +377,20 @@ def main() -> int:
     recs, revisions, partial_recalc = [], [], []
     buckets = {}
     rows_total = declared_total = 0
+    rows_capped = unver_total = 0
+    capped_layers = []
     for r in rebuilt["records"]:
         rec = dict(r)
         ev = ev_by.get(rec["layer"])
         new_status, reason, new_decl = classify(rec, ev)
+        capped = rec["layer"] in capped_set
+        if capped:
+            tev = capped_set.get(rec["layer"]) or {}
+            new_status, new_decl = "capped_by_upstream", None
+            reason = ("服务级 token：连 `<api>/0?f=json` 都 499（%s 轮 × 3 端点全 499，最后一次 %s）"
+                      "→ 本层已无法再采、也无法复核声明；已采 %s 行即全部可得"
+                      % (tev.get("rounds_n") or 1,
+                         (tev.get("generated_at") or "-"), f"{rec.get('rows') or 0:,}"))
         if new_decl is not None and new_decl != rec.get("declared"):
             revisions.append({"layer": rec["layer"], "from": rec["status"], "to": new_status,
                               "declared_before": rec.get("declared"), "declared_after": new_decl,
@@ -301,17 +404,46 @@ def main() -> int:
         rec["reason"] = reason
         if new_decl is not None:
             rec["declared"] = new_decl
+        if capped:
+            # declared 移出分母，但数字不许丢：记以 declared_unverifiable，永远不进任何百分比
+            rec["declared_unverifiable"] = rec.get("declared")
+            rec["declared"] = None
+            rec["gap"] = rec["gap_pct"] = None
         d, rw = rec.get("declared") or 0, rec.get("rows") or 0
         rec["gap"] = (d - rw) if rec.get("declared") is not None else None
         rec["gap_pct"] = round(100.0 * (d - rw) / d, 4) if d else None
-        rec["evidence"] = ({"verdict": ev["verdict"], "upstream_count": ev["probe"].get("count"),
-                            "http": ev["probe"].get("http"),
-                            "probe_url": ev["probe"].get("url")} if ev else None)
+        if capped:
+            tev = capped_set.get(rec["layer"]) or {}
+            rounds = tev.get("rounds") or []
+            rec["evidence"] = {
+                "verdict": "service_level_token", "token_error_code": 499,
+                "http": 200, "message": "Token Required",
+                "rounds_n": tev.get("rounds_n") or len(rounds),
+                "probe_at": [x.get("at") for x in rounds] or None,
+                "probe_urls": [p.get("url") for x in rounds for p in (x.get("probes") or {}).values()][:3],
+                "evidence": capped_ev.get(rec["layer"]) or None,
+                "layer_url": tev.get("layer_url") or (ev or {}).get("layer_url"),
+            }
+            rows_capped += rw
+            unver_total += rec.get("declared_unverifiable") or 0
+            capped_layers.append({
+                "layer": rec["layer"], "rows": rw,
+                "declared_unverifiable": rec.get("declared_unverifiable"),
+                "units_done": rec.get("units_done"), "packages": rec.get("parts_assets"),
+                "rounds_n": rec["evidence"]["rounds_n"],
+                "last_probe_at": (rec["evidence"]["probe_at"] or [None])[-1],
+                "evidence_path": capped_ev.get(rec["layer"]),
+            })
+        elif ev is not None:
+            rec["evidence"] = {"verdict": ev["verdict"], "upstream_count": ev["probe"].get("count"),
+                               "http": ev["probe"].get("http"),
+                               "probe_url": ev["probe"].get("url")}
         buckets[new_status] = buckets.get(new_status, 0) + 1
         declared_total += d
         rows_total += rw
         recs.append(rec)
-        if ev and ev["ledger_status"] == "partial" and ev["probe"].get("count") is not None:
+        if (ev and ev["ledger_status"] == "partial" and ev["probe"].get("count") is not None
+                and not capped):
             cb = ev["ledger_declared"] or 0
             partial_recalc.append({
                 "layer": rec["layer"], "declared_before": cb,
@@ -349,6 +481,7 @@ def main() -> int:
         "ok": buckets.get("ok", 0),
         "empty": buckets.get("empty", 0),
         "partial": buckets.get("partial", 0),
+        "capped_by_upstream": buckets.get("capped_by_upstream", 0),
         "failed": 0,
         "missing": buckets.get("missing", 0),
         "unverified": buckets.get("unverified", 0),
@@ -357,16 +490,31 @@ def main() -> int:
         "bucket_meaning": {
             "ok": "实采 ≥ 上游当前 returnCount×(1-1%)",
             "partial": "实采 < 上游当前 returnCount×(1-1%) 且 >0 → 定向续采",
+            "capped_by_upstream": ("上游改成服务级 token（连 `<api>/0?f=json` 都 499，连探两轮）→ "
+                                   "永远采不到更多；已采行数计入 rows，declared 移出分母记 "
+                                   "declared_unverifiable"),
             "missing": "上游有数据、本层 0 行 → 必须重采",
             "unverified": "上游不可达/无响应，本层无数据 → 无法归因（不许当空层）",
             "empty": "上游明确 0 行或服务下线（esri 404）",
             "skipped_done": "计划期已判完成而跳过",
         },
         "declared": declared_total,
+        "declared_unverifiable": unver_total,
         "rows": rows_total,
-        "gap": declared_total - rows_total,
-        "gap_pct": round(100.0 * (declared_total - rows_total) / declared_total, 4) if declared_total else 0,
+        "rows_capped": rows_capped,
+        "rows_verifiable": rows_total - rows_capped,
+        "gap": declared_total - (rows_total - rows_capped),
+        "gap_pct": (round(100.0 * (declared_total - (rows_total - rows_capped)) / declared_total, 4)
+                    if declared_total else 0),
+        "declared_kept_in_denominator": declared_total + unver_total,
+        "gap_pct_kept_in_denominator": (round(100.0 * (declared_total + unver_total - rows_total)
+                                             / (declared_total + unver_total), 4)
+                                        if (declared_total + unver_total) else 0),
+        "denominator_note": ("分母只含可复核的 declared（不含 capped_by_upstream 层）；"
+                             "gap = declared − rows_verifiable（rows 去掉 capped 层已采行数），"
+                             "两边同口径才可相除。rows 仍是全部实采（含 capped 层）。"),
         "complete": buckets.get("missing", 0) == 0 and buckets.get("unverified", 0) == 0,
+        "capped_layers": capped_layers,
         "set_reconciliation": recon,
         "revisions": revisions,
         "partial_recalc": partial_recalc,
@@ -410,9 +558,13 @@ def main() -> int:
         os.makedirs(os.path.dirname(os.path.abspath(a.doc)), exist_ok=True)
         open(a.doc, "w", encoding="utf-8").write(doc)
     print(json.dumps({"layers_n": led["layers_n"], "ok": led["ok"], "partial": led["partial"],
+                      "capped_by_upstream": led["capped_by_upstream"],
                       "missing": led["missing"], "unverified": led["unverified"],
                       "empty": led["empty"], "failed": led["failed"], "complete": led["complete"],
-                      "declared": led["declared"], "rows": led["rows"], "gap_pct": led["gap_pct"],
+                      "declared": led["declared"], "declared_unverifiable": led["declared_unverifiable"],
+                      "rows": led["rows"], "rows_verifiable": led["rows_verifiable"],
+                      "gap": led["gap"], "gap_pct": led["gap_pct"],
+                      "gap_pct_kept_in_denominator": led["gap_pct_kept_in_denominator"],
                       "revisions": len(revisions)}, ensure_ascii=False))
     return 0
 

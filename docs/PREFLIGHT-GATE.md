@@ -9,9 +9,11 @@
 
 - 门禁不通过（任一 `FAIL`）→ 退出码非 0 → `plan` job 直接红，shard 一个都起不来。
 - 派单回执必须贴 preflight 的结论行：`verdict / FAIL n / WARN n`，以及每条 `WARN` 的处置。
+- 派单里必须写 **`故障清单已查：<编号列表 | 无>`**（模板见 `docs/DISPATCH-TEMPLATE.md`），没有这行视为无效派单。
+- **故障台账唯一真值** = `docs/WORKFLOW-FAILURE-LEDGER.md`（写之前必查、跑后必补；新坑当天补，commit 写 `ledger: +N <类别>`）。
 - `WARN` 不拦派单，但**必须写明接受理由**（例如「本机 403 但 CI 可采」）。
 
-## 一、派单前 checklist（15 项）
+## 一、派单前 checklist（16 项）
 
 跑 `python3 collect/preflight_dispatch.py --stage <stage> [--force-layers ...]`，逐项勾。
 
@@ -55,6 +57,13 @@
 - [ ] **D11** 目标层是否已有检查点/单元包 → 有就必须先备份（pilot 会自动备份保留 3 代；
       没有 `.bak` 时给出手工备份命令）→ WARN。
 
+### F 已知坑
+
+- [ ] **F16** 本次改动 / 本次派单有没有碰到 `docs/WORKFLOW-FAILURE-LEDGER.md` 里的坑？
+      → 门禁自动读台账（`--ledger-category` 指定类别，不写则按 `--ref` 的改动文件推导）+ 输出 `ledger_hits[]`：
+      触及**未规避**（关联提交=未修）的条目 = **WARN**（把该条「修法」当规避动作打出来）；
+      触及**复发 ≥2 次**的条目 = **FAIL**（同一坑不能第三次踩；确认已规避用 `--ledger-waive W33-011` 显式豁免，豁免写进证据）。
+
 ### E 上游可用性（只发 `returnCountOnly`，不取一行数据）
 
 - [ ] **E12** 抽样 ≥5 层打一次计数：返回 0 行的层单独列出（跑了也白跑）。
@@ -74,6 +83,7 @@
 | A1 同组 pending | 先等/取消那个 pending（`gh run cancel <id>` 需人确认），别硬派 |
 | A1b 上游在跑 | 等上游自己派；或确认上游 `chain=0`（不会自动派）后再手派 |
 | B3 代码版本不一致 | 把缺的修复合到 `--ref` 上（PR #12 / `chore/ledger-merge-fix`），或改从 main 派 |
+| F16 触及复发≥2 的坑 | 先在派单里写清规避动作 + 证据；确认已规避后 `--ledger-waive <编号>`，并把规避方式补进台账「验证方式」列 |
 | B3b main 不在白名单 | 先审这次 main 的改动（`git log --oneline <旧sha>..<新sha>`），确认该带上后把 sha 前 7 位 + 一句话加进 `APPROVED_MAIN` |
 | B4 接续策略不符 | 修 `collect/chain_policy.py` 的 `NEXT/ALLOWED/CHILD_CHAIN`，跑 `--all --dry-run` 自证 |
 | B5 未授权重阶段 | 10b：确认预算后加 `authorize_heavy=1`；08/09/10/几何：先拿口号 |
@@ -173,3 +183,37 @@ PY
 —— 连 `<api>/0?f=json` 都返回 `{"error":{"code":499,"message":"Token Required"}}`，
 不是我们这边的 egress 问题。也就是说这层现在**没法再采**（68 个单元包是能拿到的全部），
 门禁按规矩把它标成 `declared_unverifiable` / 服务级 token 点名，而不是当成「本机不可达」放行。
+
+## 六、案例（都是真事，用来校准「门禁该不该开口」）
+
+### 案例 1 · D9 真好用：同层 force 直接堵死（2026-10-31）
+
+背景：run `41126178216` 正在写 22 层（2 片）。当时想「顺手 force 重跑 NAD view 那 2 层」，
+preflight 一跑就 FAIL：
+
+```
+❌ D9  目标层撞车   这 2 层正在被 #41126178216 写（计划层交集 2）→ 现在 force 会两个 job 同 tag 并发
+                    upload --clobber，谁后传谁赢，检查点会被打成「1 unit / 0 行」
+```
+
+**这就是它存在的意义**：D9 不是「防手滑」，是把 2026-10-30 22:23Z 那次事故的形状
+（同一 tag 双写 → checkpoint 被覆盖 → 账本从 partial(39.9M) 掉成 failed(0)）在**派单前**
+挡下来。所以 D9 一旦报交集，处置只有两条：从 `--force-layers` 里去掉正在被写的层，
+或者等那个 run 结束。**没有「先跑着看看」这个选项。**
+
+实测值：`--force-layers <NAD view 层>` → `FAIL`（交集 2）→ 去掉后 PASS。
+
+### 案例 2 · E14 只建议、不改账：「服务级 499」不该靠人记得（2026-10-31）
+
+同一层上游改成**服务级 token**：`<api>/0?f=json`、`returnCountOnly`、`returnIdsOnly`
+三个端点全返回 **HTTP 200** + body `{"error":{"code":499,"message":"Token Required","messageCode":"GWM_0003"}}`。
+HTTP 200 是关键 —— 只看状态码的检查会心满意足地说「服务正常」。
+
+E14 现在的硬判据（连续两轮都服务级 499）：
+
+- 打印建议命令（`probe_service_token.py` 出两轮证据 → `adjudicate_04b.py --capped`），
+- **但不自动改账本** —— 改口径要人点头，账本只认 `--capped` 这一次显式动作；
+- 已采行数照旧计入 `rows`，`declared` 移出分母记 `declared_unverifiable`。
+
+落点：`collect/probe_service_token.py`（探测+证据）、`collect/adjudicate_04b.py --capped`（改判）、
+`collect/04b_ledger.json` 的 `capped_by_upstream` 状态与 `capped_layers[]`。

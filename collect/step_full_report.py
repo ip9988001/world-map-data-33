@@ -140,7 +140,8 @@ def main() -> int:
     by = {}
     for r in recs:                                  # 同一层出现多次取「最好」的那次
         prev = by.get(r["layer"])
-        rank = {"ok": 4, "empty": 3, "skipped_done": 2, "partial": 1, "failed": 0}
+        rank = {"ok": 5, "capped_by_upstream": 4, "empty": 3, "skipped_done": 2, "partial": 1,
+                "failed": 0}
         if prev is None or rank.get(r["status"], 0) > rank.get(prev["status"], 0):
             by[r["layer"]] = r
     recs = sorted(by.values(), key=lambda r: -(r.get("declared") or 0))
@@ -150,6 +151,11 @@ def main() -> int:
         cnt[r["status"]] = cnt.get(r["status"], 0) + 1
     declared = sum((r.get("declared") or 0) for r in recs)
     rows = sum((r.get("rows") or 0) for r in recs)
+    # capped_by_upstream 层的声明不可复核（declared=None）→ 与 adjudicate/ledger_merge 同口径：
+    # 分子也要拿掉它的已采行数，否则两个百分比不可比。
+    rows_capped = sum((r.get("rows") or 0) for r in recs if r["status"] == "capped_by_upstream")
+    declared_unver = sum((r.get("declared_unverifiable") or 0) for r in recs
+                         if r["status"] == "capped_by_upstream")
     gaps = [r for r in recs if (r.get("declared") or 0) > (r.get("rows") or 0)]
     gaps.sort(key=lambda r: ((r.get("declared") or 0) - (r.get("rows") or 0)), reverse=True)
     bad = [r for r in recs if r["status"] in ("failed", "partial")]
@@ -180,14 +186,20 @@ def main() -> int:
          f"- 计划：{plan.get('layers_n', '?')} 层 / 声明 {plan.get('declared_rows', 0):,} 行 / "
          f"{plan.get('shards_n', '?')} 片（每片 {plan.get('size', '?')} 层，unit_rows={plan.get('unit_rows', '?')}）",
          f"- 账本覆盖：**{len(recs)} 层**（片文件 {len(files)} 个）",
-         f"- 逐态：**ok {cnt.get('ok', 0)}** / empty {cnt.get('empty', 0)} / "
-         f"partial {cnt.get('partial', 0)} / failed {cnt.get('failed', 0)} / "
-         f"skipped_done {cnt.get('skipped_done', 0)}",
+         f"- 逐态：**ok {cnt.get('ok', 0)}** / capped_by_upstream {cnt.get('capped_by_upstream', 0)} / "
+         f"empty {cnt.get('empty', 0)} / partial {cnt.get('partial', 0)} / "
+         f"failed {cnt.get('failed', 0)} / skipped_done {cnt.get('skipped_done', 0)}",
          f"- 片完成度：应有 **{len(expected)}** 片，有账本 {len(shard_info)} 片，"
          f"**未完成 {len(incomplete)} 片**"
          + (("：片号 " + ", ".join(str(s['shard']) for s in incomplete)) if incomplete else ""),
          f"- 声明行合计：**{declared:,}**；实采行合计：**{rows:,}**；"
-         f"差额 {declared - rows:,}（{100.0 * (declared - rows) / max(declared, 1):.3f}%）", "",
+         f"差额 {declared - (rows - rows_capped):,}"
+         f"（{100.0 * (declared - (rows - rows_capped)) / max(declared, 1):.3f}%）",
+         ((("- capped_by_upstream 层：**%d 层**，已采 %s 行计入实采；其声明 %s 行不可复核"
+            "（`declared_unverifiable`），不入分母，差额分子也同步扣除它们 → 上面百分比才是同口径的。")
+           % (cnt.get("capped_by_upstream", 0), f"{rows_capped:,}", f"{declared_unver:,}"))
+          if rows_capped else ""),
+         "",
          "> 差额口径：`declared` 是上游 returnCount 的声明值，`rows` 是实采并落 Release 的行数。",
          "> 结论只按账本事实写，不做「大概齐」的模糊表述；每条差额都能落到下面逐层表的具体一层。",
          "> 未完成片里的层**没有账本条目**，既不计入 ok 也不算 failed —— 必须按上面的片号单独补跑。", ""]
@@ -254,9 +266,13 @@ def main() -> int:
     led = {"schema": "collect-ledger-agg/v1", "stage": stage, "at":
            datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
            "layers_n": len(recs), "ok": cnt.get("ok", 0), "empty": cnt.get("empty", 0),
+           "capped_by_upstream": cnt.get("capped_by_upstream", 0),
            "partial": cnt.get("partial", 0), "failed": cnt.get("failed", 0),
            "skipped_done": cnt.get("skipped_done", 0),
-           "declared": declared, "rows": rows, "gap": declared - rows,
+           "declared": declared, "rows": rows, "rows_capped": rows_capped,
+           "rows_verifiable": rows - rows_capped,
+           "declared_unverifiable": declared_unver,
+           "gap": declared - (rows - rows_capped),
            "shards_expected": len(expected), "shards_reported": len(shard_info),
            "shards_incomplete": [s["shard"] for s in incomplete],
            "shards_incomplete_detail": incomplete,
