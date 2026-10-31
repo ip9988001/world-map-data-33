@@ -278,6 +278,17 @@
 
 > 口径提醒：「按声明分母」与「按可核实分母」两个覆盖率必须同屏报（见 3.0.1）；四类里的 `capped` 不进分母，其余三类都还在分母里 —— 它们是真缺口，不许隐身。
 
+### 3.6 定稿口径：两个覆盖率 + 四类挂账（同屏，缺一不可）
+
+| 口径 | 分母 | 分子（rows_verifiable） | 覆盖率 | 缺口 | 缺口% |
+|---|---|---|---|---|---|
+| **按声明分母** | 475,909,773 | 454,834,132 | **95.57%** | 21,075,641 | 4.4285% |
+| **按可核实分母** | 476,162,973 | 454,834,132 | **95.52%** | 21,328,841 | 4.4793% |
+
+- 两个数**不可直接相减**：声明值是计划期快照，上游会缩水/删数据/改口径；相差的 253,200 行就是刷新差异。
+- 可核实口径的 `declared_refreshed_at` = **2026-10-31T01:03:54Z**（223 层被上游 returnCount 替换）
+- 分母与分子同口径：分子 = rows − rows_capped − rows_with_partition_dup = 454,834,132
+
 ## 四、口径提醒
 
 - 行数合计仍是 **497,330,251**（本次不采一行数据，只改判定与声明）。
@@ -301,6 +312,7 @@ python3 collect/adjudicate_04b.py \
   --duplicate-partitions analysis/04b-duplicate-partitions-2026-10-31.json \
   --capped-evidence analysis/04b-token-499-evidence-2026-10-31.json \
   --attempt-log analysis/04b-attempt-log.json --max-attempts 3 \
+  --declared-refresh analysis/04b-declared-refresh-2026-10-31.json \
   --out collect/04b_ledger.json \
   --audit analysis/04b-cancel-audit-2026-10-30.json \
   --doc docs/STEP04-ADJUDICATED-2026-10-30.md --check

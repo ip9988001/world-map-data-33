@@ -154,6 +154,52 @@ def _gap_by_class(recs) -> dict:
     return out
 
 
+def _coverage(recs, rows_verifiable, refresh_path) -> dict:
+    """两个口径的覆盖率（用户 2026-10-31 立规：两个数必须同屏，禁止只报一个）。
+
+    · `by_declared`   = rows_verifiable ÷ Σ declared（剔除 capped / 分区重复声明层）
+    · `by_verifiable` = rows_verifiable ÷ Σ（已刷新层用上游 returnCount，未刷新层用旧声明）
+    不可两者相减，也不可只报一个 —— 声明值是计划期快照，上游会缩水/删数据/改口径。
+    """
+    declared = sum((r.get("declared") or 0) for r in recs)
+    fresh, fresh_n = {}, 0
+    meta = {"path": "", "at": "", "layers_refreshed_n": 0}
+    if refresh_path and os.path.exists(refresh_path):
+        try:
+            rep = jload(refresh_path)
+            meta = {"path": os.path.relpath(refresh_path, ROOT), "at": rep.get("at") or "",
+                    "layers_refreshed_n": 0}
+            for x in (rep.get("layers") or []):
+                if x.get("declared_new") is not None:
+                    fresh[x["layer"]] = int(x["declared_new"])
+        except Exception:                                   # noqa: BLE001
+            fresh, meta = {}, {"path": os.path.relpath(refresh_path, ROOT), "at": "",
+                               "layers_refreshed_n": 0}
+    verifiable = 0
+    for r in recs:
+        if r.get("declared") is None:
+            continue
+        if r["layer"] in fresh:
+            fresh_n += 1
+            verifiable += fresh[r["layer"]]
+        else:
+            verifiable += r.get("declared") or 0
+    meta["layers_refreshed_n"] = fresh_n
+
+    def _blk(denom):
+        gap = denom - rows_verifiable
+        return {"denominator": denom, "numerator": rows_verifiable,
+                "coverage_pct": round(100.0 * rows_verifiable / denom, 4) if denom else None,
+                "gap": gap,
+                "gap_pct": round(100.0 * gap / denom, 4) if denom else None}
+
+    return {"by_declared": _blk(declared), "by_verifiable": _blk(verifiable),
+            "rule": ("两个口径必须同屏：按声明分母 = rows_verifiable ÷ declared；"
+                     "按可核实分母 = rows_verifiable ÷（已刷新层用上游 returnCount + 未刷新层用旧声明）。"
+                     "两个百分比不可直接相减"),
+            "refresh": meta}
+
+
 def cancel_audit(cancel_plan, truth, rebuilt):
     """被取消的片 0/1/3/6：逐层在账本里是否命中 + 取消时的完成度（按 Release 资产）。"""
     shards = {d["shard"]: d["layers"] for d in cancel_plan["shards"]}
@@ -551,6 +597,29 @@ def render_doc(led, audit, evidence, sha_refs):
         A("> 口径提醒：「按声明分母」与「按可核实分母」两个覆盖率必须同屏报（见 3.0.1）；"
           "四类里的 `capped` 不进分母，其余三类都还在分母里 —— 它们是真缺口，不许隐身。")
         A("")
+    cov = led.get("coverage") or {}
+    if cov.get("by_declared"):
+        bd, bv = cov["by_declared"], cov.get("by_verifiable") or {}
+        A("### 3.6 定稿口径：两个覆盖率 + 四类挂账（同屏，缺一不可）")
+        A("")
+        A("| 口径 | 分母 | 分子（rows_verifiable） | 覆盖率 | 缺口 | 缺口% |")
+        A("|---|---|---|---|---|---|")
+        A("| **按声明分母** | %s | %s | **%.2f%%** | %s | %.4f%% |" % (
+            f"{bd['denominator']:,}", f"{bd['numerator']:,}", bd["coverage_pct"] or 0,
+            f"{bd['gap']:,}", bd["gap_pct"] or 0))
+        if bv:
+            A("| **按可核实分母** | %s | %s | **%.2f%%** | %s | %.4f%% |" % (
+                f"{bv['denominator']:,}", f"{bv['numerator']:,}", bv["coverage_pct"] or 0,
+                f"{bv['gap']:,}", bv["gap_pct"] or 0))
+        A("")
+        rf = cov.get("refresh") or {}
+        A("- 两个数**不可直接相减**：声明值是计划期快照，上游会缩水/删数据/改口径；相差的 %s 行就是刷新差异。"
+          % f"{(bv.get('denominator') or 0) - (bd.get('denominator') or 0):,}")
+        A("- 可核实口径的 `declared_refreshed_at` = **%s**（%s 层被上游 returnCount 替换）"
+          % (rf.get("at") or "未刷新", rf.get("layers_refreshed_n") or 0))
+        A("- 分母与分子同口径：分子 = rows − rows_capped − rows_with_partition_dup = %s"
+          % f"{bd['numerator']:,}")
+        A("")
     A("## 四、口径提醒")
     A("")
     A("- 行数合计仍是 **%s**（本次不采一行数据，只改判定与声明）。" % f"{led['rows']:,}")
@@ -583,6 +652,7 @@ def render_doc(led, audit, evidence, sha_refs):
     A("  --duplicate-partitions analysis/04b-duplicate-partitions-2026-10-31.json \\")
     A("  --capped-evidence analysis/04b-token-499-evidence-2026-10-31.json \\")
     A("  --attempt-log analysis/04b-attempt-log.json --max-attempts 3 \\")
+    A("  --declared-refresh analysis/04b-declared-refresh-2026-10-31.json \\")
     A("  --out collect/04b_ledger.json \\")
     A("  --audit analysis/04b-cancel-audit-2026-10-30.json \\")
     A("  --doc docs/STEP04-ADJUDICATED-2026-10-30.md --check")
@@ -870,6 +940,9 @@ def main() -> int:
                     help="连续失败上限（默认 3；0=关闭该判据）")
     ap.add_argument("--force-unstable-layer", action="append", default=[], metavar="LAYER",
                     help="即使已到重试上限也照旧重试/保留原判（可多次）——「仍要试」的唯一显式开关")
+    ap.add_argument("--declared-refresh",
+                    default=os.path.join(ROOT, "analysis", "04b-declared-refresh-2026-10-31.json"),
+                    help="声明刷新差异表（算「按可核实分母」的覆盖率用）；不存在则两个口径同值")
     a = ap.parse_args()
 
     # ---- 声明刷新两条路径：都不走下面的 04b 判定主流程 ----
@@ -1192,6 +1265,7 @@ def main() -> int:
             "applied_n": len(unstable_layers_out),
         }),
         "gap_by_class": _gap_by_class(recs),
+        "coverage": _coverage(recs, rows_total - rows_capped - rows_dup, a.declared_refresh),
         "capped_layers": capped_layers,
         "set_reconciliation": recon,
         "revisions": revisions,
@@ -1244,6 +1318,9 @@ def main() -> int:
                       "rows": led["rows"], "rows_with_partition_dup": led["rows_with_partition_dup"],
                       "rows_verifiable": led["rows_verifiable"],
                       "gap": led["gap"], "gap_pct": led["gap_pct"],
+                      "coverage_by_declared_pct": (led.get("coverage") or {}).get("by_declared", {}).get("coverage_pct"),
+                      "coverage_by_verifiable_pct": (led.get("coverage") or {}).get("by_verifiable", {}).get("coverage_pct"),
+                      "upstream_unstable": led["upstream_unstable"],
                       "gap_pct_kept_in_denominator": led["gap_pct_kept_in_denominator"],
                       "revisions": len(revisions)}, ensure_ascii=False))
     return 0

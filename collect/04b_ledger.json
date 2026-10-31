@@ -146,6 +146,28 @@
    ]
   }
  },
+ "coverage": {
+  "by_declared": {
+   "denominator": 475909773,
+   "numerator": 454834132,
+   "coverage_pct": 95.5715,
+   "gap": 21075641,
+   "gap_pct": 4.4285
+  },
+  "by_verifiable": {
+   "denominator": 476162973,
+   "numerator": 454834132,
+   "coverage_pct": 95.5207,
+   "gap": 21328841,
+   "gap_pct": 4.4793
+  },
+  "rule": "两个口径必须同屏：按声明分母 = rows_verifiable ÷ declared；按可核实分母 = rows_verifiable ÷（已刷新层用上游 returnCount + 未刷新层用旧声明）。两个百分比不可直接相减",
+  "refresh": {
+   "path": "analysis/04b-declared-refresh-2026-10-31.json",
+   "at": "2026-10-31T01:03:54Z",
+   "layers_refreshed_n": 223
+  }
+ },
  "capped_layers": [
   {
    "layer": "s_Points_from_National_Address_Database_view_FeatureServer_0",
