@@ -14,6 +14,20 @@
     "466a952^:collect/ledger/04b_plan.json"
    ],
    "lost": "无层数据丢失（行数与层结论均来自 Release 资产与既有证据），仅阶段账本口径被冲掉"
+  },
+  {
+   "kind": "stage_ledger_restored",
+   "at": "2026-10-31T01:15:56Z",
+   "run_id": "41126178216",
+   "scope": "stage",
+   "note": "collect/04b_ledger.json 被 run 41126178216（22 层计划的 2 片 16 层，head_sha=cb86f42 = 合并前的旧代码）的 merge 直写覆盖。已用**审结快照** collect/ledger/step04b_rebuilt_20261030-committed.json + 272 层 plan 原样复原（纯复原，不混入之后的活态进展），并追加本条事件。写入逻辑已在 main 修好：单 run → ledger/<stage>_run<id>.json，阶段账本只做按层合并，rows 回退写 regressions[]。",
+   "overwritten_commit": "3ebe379",
+   "restore_source": [
+    "collect/ledger/step04b_rebuilt_20261030-committed.json",
+    "analysis/04b-upstream-evidence-2026-10-30.json",
+    "collect/ledger/04b_plan.json"
+   ],
+   "lost": "无层数据丢失（复原用审结快照；活态 step04b_rebuilt.json 另存，不参与复原）"
   }
  ]
 }
