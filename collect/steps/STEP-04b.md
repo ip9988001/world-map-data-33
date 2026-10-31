@@ -34,6 +34,16 @@
   账本记：已采行数照旧计入 `rows`；`declared` 置空、另记 `declared_unverifiable`，**不入缺口分母**；
   证据必须带 499 原文 + 探测时间 + 层 id（`analysis/04b-token-499-evidence-*.json`）。
   判据与改判命令见 `collect/adjudicate_04b.py --capped`；preflight E14 只**建议**不改账（改口径要人点头）。
+- `upstream_unstable`（2026-10-31 新增）：**可连通、但连续 N 次（默认 3）尝试都超时 / 503 / 返回非 JSON，
+  且没有进展**（每次尝试的 rows / 已有单元包数逐次不变）→ 重试收益趋零，停手。
+  与另外两个「采不到」严格区分：`capped_by_upstream` = 要 token（永远采不到）；
+  `unverified` = 连不上（等网络）；`upstream_unstable` = 连得上但给不出数据（换时间也没用）。
+  账本记：`declared` **不动**（行确实没采到，分母与 gap 照算）、逐层 `attempts_n` / `failure_kinds` /
+  `attempt_log[]`（每次的时间/类型/耗时）/ `attempts_elapsed_min`；阶段级 `upstream_unstable_layers[]` 出收口表。
+  判据来源：`collect/attempt_log.py`（把逐轮 shard/run 账本里的 failed 记录聚成尝试账本，
+  失败类型四分类：超时 / 503 / 非 JSON / token）；preflight **D13** 点名并默认剔除，
+  `full_plan.py` 不再把它们排进待采队列；要再试必须显式 `--force-unstable-layer <层>`。
+  目标：**同一个层不许连续吃掉 3 轮 CI**。
 - 单层 3h 硬超时；失败层必须带原因（rc / err / 差额），**不吞错、不 `|| true`**
 - 实采与声明差 > 0.2% 记 `partial`：不是失败，但收官文档必须写清是「单元没跑完」还是「计划期口径差」
 - 每单元完成即传即删；checkpoint 在 Release 上，重跑只补缺口

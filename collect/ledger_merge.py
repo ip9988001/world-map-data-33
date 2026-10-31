@@ -41,17 +41,24 @@ from datetime import datetime, timezone
 # capped_by_upstream（2026-10-31 起）= 上游改成服务级 token，本层已尽取：它比 partial 好
 #   （partial 还会被续采改写，capped 不会），但比 ok 差（没有可复核的声明）。
 #   排序必须让它稳定胜出，否则一次重跑就能把 capped 层降级成 partial/failed。
+# 状态优先级：合并两本账时取「更优」的那个（数字越大越优）。
+# ★ upstream_unstable（2026-10-31 用户立规）排在 partial **之后**、missing **之前**：
+#   「可连通但连续 N 次超时/503/非 JSON、无进展」比「上游有数但未排上」（missing）
+#   更接近终结态（已经试过了），但比「半截已采」（partial）差（人家至少采了一部分）。
+#   重新编号是故意的：原来一套是 7..1，插一个进去会重叠，rank 只能用浮点或重排；
+#   重排更安全（没有浮点比较、也没有两个状态同 rank）。
 STATUS_RANK = {
-    "ok": 7,
-    "capped_by_upstream": 6,
-    "partial": 5,
+    "ok": 8,
+    "capped_by_upstream": 7,
+    "partial": 6,
+    "upstream_unstable": 5,
     "missing": 4,
     "unverified": 3,
     "empty": 2,
     "failed": 1,
 }
-COUNT_KEYS = ("ok", "capped_by_upstream", "partial", "missing", "unverified", "empty",
-              "failed", "skipped_done")
+COUNT_KEYS = ("ok", "capped_by_upstream", "partial", "upstream_unstable", "missing",
+              "unverified", "empty", "failed", "skipped_done")
 
 
 def _now() -> str:
@@ -215,13 +222,17 @@ def recount(records):
       会算出个负数缺口，看着像「超采」，其实是两只脚踩在两只船上。
     """
     cnt = {k: 0 for k in COUNT_KEYS}
-    declared = rows = rows_capped = declared_unver = 0
+    declared = rows = rows_capped = declared_unver = rows_dup = 0
     for r in records:
         st = str(r.get("status") or "").lower()
         if st in cnt:
             cnt[st] += 1
         declared += int(r.get("declared") or 0)
         rows += rows_of(r)
+        # 分区重复采样（同源重复）与 rows_duplicate[] 的估算行：都在 rows 里，但**不进**可核实分子。
+        # 不扣就会让覆盖率虚高 —— 与 adjudicate_04b 的口径必须完全一致。
+        rows_dup += int(r.get("rows_partition_duplicate_est") or 0) or (
+            rows_of(r) if r.get("partition_duplicate_sampled") else 0)
         if st == "capped_by_upstream":
             rows_capped += rows_of(r)
             declared_unver += int(r.get("declared_unverifiable") or 0)
@@ -229,9 +240,10 @@ def recount(records):
     cnt["declared_unverifiable"] = declared_unver
     cnt["rows"] = rows
     cnt["rows_capped"] = rows_capped
-    cnt["rows_verifiable"] = rows - rows_capped
-    cnt["gap"] = declared - (rows - rows_capped)
-    cnt["gap_pct"] = (round(100.0 * (declared - (rows - rows_capped)) / declared, 4)
+    cnt["rows_with_partition_dup"] = rows_dup
+    cnt["rows_verifiable"] = rows - rows_capped - rows_dup
+    cnt["gap"] = declared - (rows - rows_capped - rows_dup)
+    cnt["gap_pct"] = (round(100.0 * (declared - (rows - rows_capped - rows_dup)) / declared, 4)
                       if declared else None)
     cnt["layers_n"] = len(records)
     return cnt

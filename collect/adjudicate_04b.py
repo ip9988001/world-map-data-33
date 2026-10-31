@@ -40,6 +40,12 @@ from concurrent.futures import ThreadPoolExecutor
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
+if HERE not in sys.path:                # 同目录模块（attempt_log）不依赖调用方式
+    sys.path.insert(0, HERE)
+try:
+    import attempt_log                   # 失败类型分类 + 连续失败次数 + 无进展判定
+except Exception:                        # noqa: BLE001  —— 单文件分发/迁移场景不许整条判据崩掉
+    attempt_log = None
 TOL = 0.01          # 与 ledger_rebuild 的 GAP_TOL 一致：差额 >1% 才算没采全
 
 # ★ 2026-10-31 新规矩（用户明令）：声明分母不许永久当分母。
@@ -57,26 +63,36 @@ def jload(p):
 
 
 def load_duplicate_partitions(path):
-    """分区重复声明清单（人工批准后落盘）→ (by_layer, sampled_layers, groups)。
+    """分区重复声明清单（人工批准后落盘）→ (by_layer, sampled_layers, groups, rows_dup_by_layer)。
 
     ★ 为什么要有这个文件（2026-10-31 用户批准）：同一 base 层的 `@<分区>` 孪生层各写全量
       declared 时，分母把同一批行数了两遍，制造整层假缺口。实例：NC1Map@未定位-1/-2
       Σ declared 12,594,338 = 2× 上游 6,297,169，而 -2 已采 6,648,000 ≥ 全量。
       改判只能由人点头（写进本文件）后重放，**脚本不许自己猜**。
 
-    文件缺失 → 三个空值：旧账本可以用同一条命令原样重放（--check 才能 IDENTICAL）。
+    ★ `rows_duplicate[]`（2026-10-31 用户决定）：Maricopa `AZ-1/-2`、Hennepin `MN-1/-2` 是
+      **不同 host 上的同一份镜像**，但两个分区都已经实采（2.14M / 0.48M）。这类**不改 declared**
+      （把 declared 置 null 会让分母变小、rows 不变 → 覆盖率虚高，是自己给自己灌水），
+      只在逐层记 `rows_partition_duplicate_est` + `duplicate_source_layer`，
+      并计入阶段级 `rows_with_partition_dup`，由 08 的 3 元组去重吃掉。
+
+    文件缺失 → 空值：旧账本可以用同一条命令原样重放（--check 才能 IDENTICAL）。
     """
     if not path or not os.path.exists(path):
-        return {}, set(), []
+        return {}, set(), [], {}
     d = jload(path)
-    by_layer, sampled = {}, set()
+    by_layer, sampled, rows_dup = {}, set(), {}
     groups = d.get("groups") or []
     for g in groups:
         for lid in (g.get("duplicate_layers") or []):
             by_layer[lid] = dict(g)
         for lid in (g.get("duplicate_sampled") or []):
             sampled.add(lid)
-    return by_layer, sampled, groups
+    for x in (d.get("rows_duplicate") or []):
+        lid = x.get("layer")
+        if lid:
+            rows_dup[lid] = dict(x)
+    return by_layer, sampled, groups, rows_dup
 
 
 def classify(rec, ev):
@@ -112,6 +128,30 @@ def classify(rec, ev):
     if rec["status"] == "failed":
         return "unverified", "无上游取证（探测未覆盖）", declared
     return rec["status"], rec.get("reason") or "", declared
+
+
+def _gap_by_class(recs) -> dict:
+    """四类挂账（capped / upstream_unstable / unverified / missing）：层数 + 行数。
+
+    为什么要单列（2026-10-31 用户定）：这四类的**处置完全不同**，混成一个「缺口」
+    就会天天在同一批层上白跑：
+      · `capped_by_upstream` — 上游要 token，永远采不到 → 已采多少算多少，declared 移出分母
+      · `upstream_unstable` — 可连通但连续 N 次超时/503/非 JSON → 停手，不再吃 CI
+      · `unverified`      — 连不上（超时/403/DNS）→ 等网络/换出口再试
+      · `missing`         — 上游有数、本层 0 行 → 真缺口，还能试但没排上
+    行数按「声明行 / 已采行 / 缺口行」三个口径给，不然「层少但行多」会被当成小事。
+    """
+    out = {}
+    for k in ("capped_by_upstream", "upstream_unstable", "unverified", "missing"):
+        rows = [r for r in recs if r.get("status") == k]
+        declared = sum((r.get("declared") or r.get("declared_unverifiable") or 0) for r in rows)
+        got = sum((r.get("rows") or 0) for r in rows)
+        out[k] = {"layers_n": len(rows),
+                  "declared_rows": declared,
+                  "rows": got,
+                  "gap_rows": max(0, declared - got),
+                  "layers": [r["layer"] for r in rows]}
+    return out
 
 
 def cancel_audit(cancel_plan, truth, rebuilt):
@@ -218,7 +258,8 @@ def render_doc(led, audit, evidence, sha_refs):
     A("")
     A("| 状态 | 层数 | 含义 |")
     A("|---|---|---|")
-    for k in ("ok", "partial", "capped_by_upstream", "missing", "unverified", "empty", "skipped_done"):
+    for k in ("ok", "partial", "capped_by_upstream", "upstream_unstable", "missing",
+              "unverified", "empty", "skipped_done"):
         A("| %s | %d | %s |" % (k, led["buckets"].get(k, 0), led["bucket_meaning"][k]))
     A("")
     A("**failed = %d**（成品账本里不再有「failed」这个状态：每一层要么有资产、要么有明确归因）。"
@@ -294,6 +335,27 @@ def render_doc(led, audit, evidence, sha_refs):
         A("- 重复声明合计（移出分母、但数字保留）：**%s 行**；`declared` 现在 = %s（不含它）"
           % (f"{led['declared_duplicate_partition']:,}", f"{led['declared']:,}"))
         A("")
+        _rd = [r for r in led["records"] if r.get("rows_partition_duplicate_est")]
+        if _rd:
+            A("**行侧同源重复（`rows_partition_duplicate_est`）——2026-10-31 用户决定：不改 declared**")
+            A("")
+            A("> 与上面 NC1Map 那种「重复声明」不同：这类是**不同 host 上的同一份镜像**，而且"
+              "**两个分区都已经实采了**。把其中一个的 `declared` 置 null 会让分母变小、rows 不变"
+              "→ 覆盖率虚高，等于自己给自己灌水。所以：**declared 全部保留、分母不动**，"
+              "只在逐层记「行侧同源重复估算」，计入阶段级 `rows_with_partition_dup`，"
+              "由 **08 的 3 元组去重**把它们吃掉。")
+            A("")
+            A("| 层 | declared（不动） | 已采行 | rows_partition_duplicate_est | duplicate_source_layer | 依据 |")
+            A("|---|---|---|---|---|---|")
+            for r in _rd:
+                A("| `%s` | %s | %s | %s | `%s` | %s |" % (
+                    r["layer"], f"{r['declared']:,}" if r.get("declared") else "-",
+                    f"{r.get('rows') or 0:,}", f"{r['rows_partition_duplicate_est']:,}",
+                    r.get("duplicate_source_layer") or "-", r.get("rows_partition_duplicate_note") or "-"))
+            A("")
+            A("- 行侧同源重复合计（已含在 `rows_with_partition_dup` 里）：**%s 行**"
+              % f"{sum(r['rows_partition_duplicate_est'] for r in _rd):,}")
+            A("")
         A("**两处「不许想当然」**（都实测过）：")
         A("")
         A("1. 分区层的 url 必须回 `collect/layer_plan.csv` 按行序取（`<id>@<state>-<k>`，见 "
@@ -316,8 +378,52 @@ def render_doc(led, audit, evidence, sha_refs):
         A("  重跑分区不阻止（缺数据不能靠去重补，重复能靠去重吃掉），但账上必须分开记，")
         A("  否则覆盖率虚高，且没人知道 08 到底要吃掉多少行。")
         for x in led.get("duplicate_partition_layers") or []:
-            A("- 重复采样层：`%s` — rows_including_duplicate = %s（duplicate_of `%s`）"
-              % (x["layer"], f"{x['rows_including_duplicate']:,}", x.get("duplicate_of") or "-"))
+            A("- 重复采样层：`%s` — rows_including_duplicate = %s（duplicate_of `%s`%s）"
+              % (x["layer"], f"{x['rows_including_duplicate']:,}", x.get("duplicate_of") or "-",
+                 "；declared 未动：%s" % f"{x['declared_kept']:,}" if x.get("declared_kept") else ""))
+        A("")
+    if led.get("upstream_unstable_layers") or led.get("retry_cap"):
+        rc = led.get("retry_cap") or {}
+        A("### 3.0.3 `upstream_unstable`：上游不稳，重试收益趋零（重试上限 %s 次）"
+          % rc.get("cap", "3"))
+        A("")
+        A("判据（与 preflight **D13**、`collect/attempt_log.py` 同一条）：**可连通、但连续 N 次尝试"
+          "都超时 / 503 / 返回非 JSON，且没有进展**（每次尝试的 rows 与已有单元包数逐次不变）。")
+        A("与另外两个「采不到」的状态严格分开：")
+        A("")
+        A("| 状态 | 判据 | 处置 |")
+        A("|---|---|---|")
+        A("| `capped_by_upstream` | 服务级 token（连 `/0?f=json` 都 499，连探两轮） | 永远采不到；declared 移出分母 |")
+        A("| `unverified` | 连不上（超时 / 403 / DNS 解析失败）且无数据 | 等网络/换出口再试，不许当 0 数据 |")
+        A("| **`upstream_unstable`** | **可连通，但连续 %s 次超时/503/非 JSON 且无进展** | **停手：从待采队列剔除，显式 `--force-unstable-layer` 才放回** |" % rc.get("cap", "3"))
+        A("")
+        if led["upstream_unstable_layers"]:
+            A("| 层 | 声明 | 已采 | 尝试次数 | 每次失败类型 | 累计耗时（分钟） | 首次 / 末次 |")
+            A("|---|---|---|---|---|---|---|")
+            zh = rc.get("kind_zh") or {}
+            for c in led["upstream_unstable_layers"]:
+                A("| `%s` | %s | %s | %d | %s | %.1f | %s / %s |" % (
+                    c["layer"], f"{c['declared']:,}" if c.get("declared") else "-",
+                    f"{c['rows']:,}", c["attempts_n"],
+                    " → ".join(zh.get(k, k) for k in c["kinds"]),
+                    c["elapsed_min"], c.get("first_at") or "-", c.get("last_at") or "-"))
+            A("")
+            A("合计：**%d 层 / %s 行缺口 / %s 分钟尝试时间**。这些层不是「不想采」，是上游给不出："
+              "本表就是「我们尽力了」的凭据（逐次类型 + 耗时，不是估算）。"
+              % (len(led["upstream_unstable_layers"]),
+                 f"{sum((c['gap'] or 0) for c in led['upstream_unstable_layers']):,}",
+                 f"{sum(c['elapsed_min'] for c in led['upstream_unstable_layers']):.1f}"))
+            A("")
+        else:
+            A("本轮**没有**层达到上限（判据已就位、尝试记录在 `%s`，%s 条尝试 / %s 层）。"
+              % (rc.get("path") or "-", rc.get("attempts_logged_n", 0), rc.get("layers_logged_n", 0)))
+            A("")
+        if rc.get("forced_back"):
+            A("显式点名「仍要试」的层（不剔除）：%s" % "、".join("`%s`" % x for x in rc["forced_back"]))
+            A("")
+        A("失败类型怎么归的（顺序就是判据，不能换）：先 token(499) → 503 → 非 JSON → 超时 → 4xx → "
+          "DNS/TLS → other。503 的正文里带 «Wait timeout…»，所以必须排在「超时」之前，"
+          "否则 503 会被误记成超时。")
         A("")
     A("### 3.1 与旧账的差异（逐条）")
     A("")
@@ -410,6 +516,41 @@ def render_doc(led, audit, evidence, sha_refs):
     A("> 注：`capped_by_upstream` 层不出现在上表（无分母）；它的 %s 行已在 `rows` 里。"
       % f"{led.get('rows_capped') or 0:,}")
     A("")
+    # ---- 3.5 四类挂账（收口用：层数 + 行数，按声明/可核实/缺口三个口径）----
+    gbc = led.get("gap_by_class") or {}
+    if gbc:
+        A("### 3.5 收口挂账：四类缺口逐类点数（层数 / 行数）")
+        A("")
+        A("这四类**处置完全不同**，合成一个「缺口」就会天天在同一批层上白跑；"
+          "所以收口时必须逐类点名，并且同时给三个行数口径（只看层数会被大层骗）。")
+        A("")
+        A("| 类别 | 层数 | 声明行 | 已采行 | 缺口行 | 怎么办 |")
+        A("|---|---|---|---|---|---|")
+        _how = {"capped_by_upstream": "上游要 token，永远采不到；已采多少算多少，declared 移出分母",
+                "upstream_unstable": "连续 N 次超时/503/非 JSON 且无进展 → 停手，不再吃 CI；"
+                                     "显式 `--force-unstable-layer` 才放回",
+                "unverified": "连不上（超时/403/DNS）→ 等网络/换出口，不许当 0 数据",
+                "missing": "上游有数、本层 0 行 → 真缺口，还能试但本轮没排上"}
+        _tot = {"layers_n": 0, "declared_rows": 0, "rows": 0, "gap_rows": 0}
+        for k in ("capped_by_upstream", "upstream_unstable", "unverified", "missing"):
+            v = gbc.get(k) or {}
+            for kk in _tot:
+                _tot[kk] += v.get(kk) or 0
+            A("| `%s` | %d | %s | %s | %s | %s |" % (
+                k, v.get("layers_n", 0), f"{v.get('declared_rows', 0):,}",
+                f"{v.get('rows', 0):,}", f"{v.get('gap_rows', 0):,}", _how[k]))
+        A("| **合计** | **%d** | **%s** | **%s** | **%s** | — |" % (
+            _tot["layers_n"], f"{_tot['declared_rows']:,}", f"{_tot['rows']:,}",
+            f"{_tot['gap_rows']:,}"))
+        A("")
+        for k in ("capped_by_upstream", "upstream_unstable", "unverified", "missing"):
+            v = gbc.get(k) or {}
+            if v.get("layers"):
+                A("- `%s`（%d 层）：%s" % (k, len(v["layers"]), "、".join("`%s`" % x for x in v["layers"])))
+        A("")
+        A("> 口径提醒：「按声明分母」与「按可核实分母」两个覆盖率必须同屏报（见 3.0.1）；"
+          "四类里的 `capped` 不进分母，其余三类都还在分母里 —— 它们是真缺口，不许隐身。")
+        A("")
     A("## 四、口径提醒")
     A("")
     A("- 行数合计仍是 **%s**（本次不采一行数据，只改判定与声明）。" % f"{led['rows']:,}")
@@ -441,6 +582,7 @@ def render_doc(led, audit, evidence, sha_refs):
     A("  --cancel-plan collect/ledger/04b_round2_plan.json \\")
     A("  --duplicate-partitions analysis/04b-duplicate-partitions-2026-10-31.json \\")
     A("  --capped-evidence analysis/04b-token-499-evidence-2026-10-31.json \\")
+    A("  --attempt-log analysis/04b-attempt-log.json --max-attempts 3 \\")
     A("  --out collect/04b_ledger.json \\")
     A("  --audit analysis/04b-cancel-audit-2026-10-30.json \\")
     A("  --doc docs/STEP04-ADJUDICATED-2026-10-30.md --check")
@@ -718,6 +860,16 @@ def main() -> int:
     ap.add_argument("--duplicate-partitions",
                     default=os.path.join(ROOT, "analysis", "04b-duplicate-partitions-2026-10-31.json"),
                     help="分区重复声明清单（人工批准落盘的 JSON）；文件不存在 = 不改判")
+    # ★ upstream_unstable + 重试上限（2026-10-31 用户立规）：同一层连续 N 次尝试都超时/503/非 JSON
+    #   且无进展 → 重试收益趋零。状态与「连不上」（unverified）、「要 token」（capped）分开记，
+    #   because 三者处置完全不同：一个该换时间重试、一个永远采不到、一个连不上。
+    ap.add_argument("--attempt-log",
+                    default=os.path.join(ROOT, "analysis", "04b-attempt-log.json"),
+                    help="逐层尝试账本（collect/attempt_log.py 产物）；缺失 = 不判 upstream_unstable")
+    ap.add_argument("--max-attempts", type=int, default=3,
+                    help="连续失败上限（默认 3；0=关闭该判据）")
+    ap.add_argument("--force-unstable-layer", action="append", default=[], metavar="LAYER",
+                    help="即使已到重试上限也照旧重试/保留原判（可多次）——「仍要试」的唯一显式开关")
     a = ap.parse_args()
 
     # ---- 声明刷新两条路径：都不走下面的 04b 判定主流程 ----
@@ -752,7 +904,23 @@ def main() -> int:
     evidence = jload(a.evidence)
     ev_by = {x["layer"]: x for x in evidence["layers"]}
     truth = {r["layer"]: r for r in rebuilt["records"]}
-    dup_by, dup_sampled, dup_groups = load_duplicate_partitions(a.duplicate_partitions)
+    dup_by, dup_sampled, dup_groups, rows_dup_by = load_duplicate_partitions(a.duplicate_partitions)
+    # 尝试账本（同一层被反复重试的事实）：给 upstream_unstable 判据用，缺文件时整条判据失效
+    att_summary, att_log, att_meta = {}, {}, {}
+    if attempt_log is not None and a.attempt_log and a.max_attempts and os.path.exists(a.attempt_log):
+        att_obj = jload(a.attempt_log)
+        att_summary = attempt_log.summarize(att_obj.get("attempts") or [], a.max_attempts)
+        att_meta = {"path": os.path.relpath(a.attempt_log, ROOT),
+                    "cap": a.max_attempts,
+                    "attempts_logged_n": len(att_obj.get("attempts") or []),
+                    "layers_logged_n": len(att_summary)}
+        for lid in att_summary:
+            att_log[lid] = [x for x in (att_obj.get("attempts") or []) if x.get("layer") == lid]
+    else:
+        att_meta = {"path": os.path.relpath(a.attempt_log, ROOT) if a.attempt_log else "",
+                    "cap": a.max_attempts, "attempts_logged_n": 0, "layers_logged_n": 0,
+                    "disabled": ("--max-attempts 0" if not a.max_attempts else "尝试账本不存在")}
+    force_unstable = {x.strip() for x in (a.force_unstable_layer or []) if x.strip()}
 
     recs, revisions, partial_recalc = [], [], []
     buckets = {}
@@ -761,6 +929,7 @@ def main() -> int:
     capped_layers = []
     rows_dup = declared_dup = 0
     dup_layers = []
+    unstable_layers_out = []
     for r in rebuilt["records"]:
         rec = dict(r)
         ev = ev_by.get(rec["layer"])
@@ -786,6 +955,20 @@ def main() -> int:
                       % (len(dg.get("partitions") or []), f"{dg.get('sum_declared') or 0:,}",
                          float(dg.get("ratio") or 0), f"{dg.get('upstream_return_count') or 0:,}",
                          dg.get("survivor") or "-", f"{dg.get('survivor_rows') or 0:,}"))
+        # ★ upstream_unstable（2026-10-31 用户立规）：可连通但连续 N 次尝试都超时/503/非 JSON 且无进展。
+        #   与 capped（要 token，永远采不到）、unverified（连不上，等网络）分开记 —— 三者处置不同。
+        #   闸门：只对「还有缺口」的层生效；只要尝试记录里 rows/prior_units 涨过，就算有进展、不翻。
+        ai = att_summary.get(rec["layer"])
+        if (ai and ai.get("unstable") and ai.get("attempts_n", 0) >= a.max_attempts
+                and rec["layer"] not in force_unstable
+                and new_status in ("missing", "unverified", "partial", "failed", "upstream_unstable")
+                and new_decl is not None):
+            new_status = "upstream_unstable"
+            reason = ("上游不稳：连续 %d 次尝试失败且无进展（%s），累计 %.1f 分钟 → 重试收益趋零。"
+                      "默认从待采队列剔除；要再试请显式 `--force-unstable-layer %s`"
+                      % (ai["attempts_n"],
+                         "、".join(attempt_log.KIND_ZH.get(k, k) for k in ai["kinds"]),
+                         ai["elapsed_min"], rec["layer"]))
         if new_decl is not None and new_decl != rec.get("declared") and not capped and dg is None:
             revisions.append({"layer": rec["layer"], "from": rec["status"], "to": new_status,
                               "declared_before": rec.get("declared"), "declared_after": new_decl,
@@ -824,6 +1007,32 @@ def main() -> int:
         d, rw = rec.get("declared") or 0, rec.get("rows") or 0
         rec["gap"] = (d - rw) if rec.get("declared") is not None else None
         rec["gap_pct"] = round(100.0 * (d - rw) / d, 4) if d else None
+        if ai:
+            # 逐层留全：第几次、什么时候、失败类型、耗时；这是「我们尽力了」的凭据，不是估算
+            rec["attempts_n"] = ai["attempts_n"]
+            rec["failure_kinds"] = ai["kinds"]
+            rec["attempts_elapsed_min"] = ai["elapsed_min"]
+            rec["attempt_log"] = [{"at": x.get("at"), "kind": x.get("kind"),
+                                   "elapsed_s": x.get("elapsed_s"), "rows": x.get("rows"),
+                                   "prior_units": x.get("prior_units"), "rc": x.get("rc"),
+                                   "shard": x.get("shard"), "run": x.get("run"),
+                                   "err": x.get("err")} for x in att_log.get(rec["layer"], [])]
+        rd = rows_dup_by.get(rec["layer"])
+        if rd:
+            # ★ 2026-10-31 用户决定：Maricopa/Hennepin 这类「不同 host 的同一份镜像」**不改 declared**
+            #   （置 null 会让分母变小、rows 不变 → 覆盖率虚高）。只单列行侧同源重复估算，
+            #   计入 rows_with_partition_dup，不进 rows_verifiable —— 由 08（3 元组去重）吃掉。
+            rec["rows_partition_duplicate_est"] = int(rd.get("rows_partition_duplicate_est") or 0)
+            rec["duplicate_source_layer"] = rd.get("source_layer")
+            rec["rows_partition_duplicate_note"] = rd.get("note")
+            rows_dup += rec["rows_partition_duplicate_est"]
+            dup_layers.append({"layer": rec["layer"],
+                               "rows_including_duplicate": rec["rows_partition_duplicate_est"],
+                               "duplicate_of": rd.get("source_layer"),
+                               "declared_kept": rec.get("declared"),
+                               "basis": rd.get("basis"),
+                               "status": rec["status"],
+                               "counted_in_rows_with_partition_dup": True})
         if rec["layer"] in dup_sampled:
             # ★ 同源重复采样（用户明令：不阻止它跑，但账上必须分开）
             #   本层采到的行与 survivor 是同一批 → 阶段级另列 rows_with_partition_dup，
@@ -870,6 +1079,15 @@ def main() -> int:
         buckets[new_status] = buckets.get(new_status, 0) + 1
         declared_total += d
         rows_total += rw
+        if new_status == "upstream_unstable":
+            unstable_layers_out.append({
+                "layer": rec["layer"], "declared": rec.get("declared"), "rows": rw,
+                "gap": rec.get("gap"), "attempts_n": ai["attempts_n"],
+                "kinds": ai["kinds"], "elapsed_min": ai["elapsed_min"],
+                "first_at": ai["first_at"], "last_at": ai["last_at"],
+                "no_progress": ai["no_progress"], "runs": ai["runs"],
+                "forced_back": rec["layer"] in force_unstable,
+                "evidence": att_meta.get("path")})
         recs.append(rec)
         if (ev and ev["ledger_status"] == "partial" and ev["probe"].get("count") is not None
                 and not capped):
@@ -914,6 +1132,7 @@ def main() -> int:
         "failed": 0,
         "missing": buckets.get("missing", 0),
         "unverified": buckets.get("unverified", 0),
+        "upstream_unstable": buckets.get("upstream_unstable", 0),
         "skipped_done": buckets.get("skipped_done", 0),
         "buckets": buckets,
         "bucket_meaning": {
@@ -925,6 +1144,8 @@ def main() -> int:
                                    "declared_unverifiable"),
             "missing": "上游有数据、本层 0 行 → 必须重采",
             "unverified": "上游不可达/无响应，本层无数据 → 无法归因（不许当空层）",
+            "upstream_unstable": ("可连通、但连续 N 次（默认 3）尝试都超时/503/返回非 JSON 且**无进展**"
+                                  " → 重试收益趋零；默认从待采队列剔除，`--force-unstable-layer` 才放回"),
             "empty": "上游明确 0 行或服务下线（esri 404）",
             "skipped_done": "计划期已判完成而跳过",
         },
@@ -957,6 +1178,20 @@ def main() -> int:
                                      "采到的重复行进 rows_with_partition_dup，"
                                      "**08（3 元组去重）之前任何对外覆盖率不许包含重复行**。"),
         "complete": buckets.get("missing", 0) == 0 and buckets.get("unverified", 0) == 0,
+        "complete_note": ("complete = 「没有还能试的缺口」（missing/unverified 均为 0）；"
+                          "upstream_unstable 是「试过 N 次、收益趋零」的终结状态，不再算作可重试缺口，"
+                          "但仍计入 declared 分母与 gap（行确实没采到，不许隐身）"),
+        "upstream_unstable_layers": unstable_layers_out,
+        "retry_cap": dict(att_meta, **{
+            "rule": ("同一层连续 %d 次尝试失败且无进展（rows/prior_units 逐次不变）→ 判 upstream_unstable；"
+                     "默认从待采队列剔除（full_plan / preflight D13），只有 "
+                     "`--force-unstable-layer <层>` 能放回去" % a.max_attempts),
+            "failed_kinds": list(attempt_log.KINDS) if attempt_log else [],
+            "kind_zh": dict(attempt_log.KIND_ZH) if attempt_log else {},
+            "forced_back": sorted(force_unstable),
+            "applied_n": len(unstable_layers_out),
+        }),
+        "gap_by_class": _gap_by_class(recs),
         "capped_layers": capped_layers,
         "set_reconciliation": recon,
         "revisions": revisions,

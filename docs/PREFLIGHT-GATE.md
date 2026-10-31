@@ -13,7 +13,7 @@
 - **故障台账唯一真值** = `docs/WORKFLOW-FAILURE-LEDGER.md`（写之前必查、跑后必补；新坑当天补，commit 写 `ledger: +N <类别>`）。
 - `WARN` 不拦派单，但**必须写明接受理由**（例如「本机 403 但 CI 可采」）。
 
-## 一、派单前 checklist（17 项｜D12 分区重复声明于 2026-10-31 加入）
+## 一、派单前 checklist（18 项｜D13 重试上限、D12 分区重复声明均于 2026-10-31 加入）
 
 跑 `python3 collect/preflight_dispatch.py --stage <stage> [--force-layers ...]`，逐项勾。
 
@@ -62,6 +62,13 @@
       （`adjudicate_04b.py --duplicate-partitions`）—— **只建议，账本不自动改**。
       已人复核的组写进清单 `reviewed[]`（判词点名「已复核 N 组」，不 WARN 但也不消失）；
       拿不到 returnCount 又无清单代理值 → **WARN「未能判定」，不许给 PASS**。
+- [ ] **D13** 重试上限 `upstream_unstable`（W33-037）：同一层连续 **3 次**尝试都超时 / 503 /
+      返回非 JSON **且无进展** → 重试收益趋零。判词逐层点名（次数 / 每次失败类型 / 累计耗时）并声明
+      **默认从待采队列剔除**；`full_plan.py` 已同样剔除（计划里带 `excluded_unstable[]`）。
+      要再试必须显式 `--force-unstable-layer <层>` / `--force-layers <层>`（人比规则大）。
+      判据与产物：`collect/attempt_log.py` → `analysis/04b-attempt-log.json`；
+      日志不存在 → INFO（不假装通过），日志读不了 → WARN。
+      若计划里仍含已到上限的层（旧计划/没跑 full_plan 的剔除）→ 判词里单独标「本次计划里仍有 N 层」。
 
 ### F 已知坑
 
@@ -106,6 +113,7 @@
 | D10 已采重叠 | 确认是补采：用 `--force-layers` 点名缺口层，不要整片重跑 |
 | D11 检查点未备份 | 先 `gh release upload <tag> <layer>-checkpoint.bak-<RUN_ID>.json`（pilot 会自动做） |
 | D12 分区重复声明（WARN） | 先核 survivor 是否已实采 ≥ 全量：是 → 写清单 `duplicate_layers` 并重放`adjudicate_04b.py --duplicate-partitions`；两分区都已有实采行 → 属 rows 侧重复（08 去重），结论写进清单 `reviewed[]`，不在本阶段改账 |
+| D13 重试上限（WARN） | 先看判词里的失败类型：**503/非 JSON/超时且无进展** → 接受 `upstream_unstable`，别再派；确需再试 → `--force-unstable-layer <层>`（或 `full_plan --force-layers`），一次只放回一层 |
 | E12 上游 0 行 | 从计划里剔除该层（或标 `empty`），别浪费片位 |
 | E13 403/超时 | 只记录证据，先照派；片端再失败才升级（本机 ≠ CI） |
 | E14 声明不可复核 | 跑后差额分母剔除该层；服务级 token 的层直接剔或配 token |
@@ -159,6 +167,7 @@ PY
 | D10 | 硬判据（有 plan 时）；估算时标注 | 没有 plan 文件 → 分档估算，标 `estimate(band)` |
 | D11 | WARN + 命令 | 只看资产清单（不下载检查点内容），判断有没有 `.bak` |
 | D12 | 硬判据（Σ declared vs returnCount 1.5×）+ **只建议** | 逐 host 实测 returnCount 取最大；离线用清单 `row_count` 代理并标注；已复核组读清单 `reviewed[]` |
+| D13 | 硬判据（连续失败次数 + 无进展）+ **默认剔除** | 只读 `analysis/04b-attempt-log.json`（不联网）；无日志 → INFO、日志坏 → WARN，都不给 PASS；已到上限的层同时核一遍「计划里是不是又排上了」 |
 | E12 | 硬判据 | 抽样 ≥5 层（force 优先，再按分档均匀抽） |
 | E13 | **只 WARN** | 本机 ≠ CI，403/超时不算死 |
 | E14 | 硬判据（分类）+ WARN | `Token Required` / 非 JSON → `declared_unverifiable`；服务级 token（`?f=json` 也 499）点名 |

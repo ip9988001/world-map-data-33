@@ -1,0 +1,480 @@
+{
+ "schema": "collect-attempt-log/v1",
+ "stage": "04b",
+ "cap": 3,
+ "at": "2026-10-31T01:30:57Z",
+ "sources": [
+  "collect/ledger/04b_run41092912755.json",
+  "collect/ledger/04b_run41155023558_plan.json",
+  "collect/ledger/04b_shard00.json",
+  "collect/ledger/04b_shard01.json",
+  "collect/ledger/04b_shard02.json",
+  "collect/ledger/04b_shard03.json",
+  "collect/ledger/04b_shard04.json",
+  "collect/ledger/04b_shard05.json",
+  "collect/ledger/04b_shard07.json",
+  "collect/ledger/04b_shard08.json"
+ ],
+ "append": true,
+ "kept_from_prev_n": 0,
+ "attempts_n": 13,
+ "layers_n": 11,
+ "unstable_n": 0,
+ "kind_rule": "失败类型先判 token(499) → 503 → 非 JSON → 超时 → 4xx → DNS/TLS → other；503 的正文里带 «Wait timeout…»，所以必须排在「超时」之前，否则会被误记成超时。",
+ "cap_rule": "同一层连续 3 次尝试失败且**没有进展**（每次尝试的 rows/prior_units 全一样）→ 判 upstream_unstable：默认从待采队列剔除，只有 `--force-unstable-layer <层>` 能放回去",
+ "unstable": [],
+ "attempts": [
+  {
+   "layer": "_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0",
+   "at": "2026-10-31T01:14:07Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3300.0,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 1,
+   "source": "04b_shard01.json",
+   "err": ""
+  },
+  {
+   "layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1",
+   "at": "2026-10-31T01:14:07Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3300.2,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 1,
+   "source": "04b_shard01.json",
+   "err": ""
+  },
+  {
+   "layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2",
+   "at": "2026-10-31T00:18:56Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3300.1,
+   "rows": 0,
+   "prior_units": 4,
+   "run": "",
+   "shard": 0,
+   "source": "04b_shard00.json",
+   "err": ""
+  },
+  {
+   "layer": "cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0",
+   "at": "2026-10-30T17:09:02Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 3,
+   "elapsed_s": 1291.1,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "41092912755",
+   "shard": 0,
+   "source": "04b_run41092912755.json",
+   "err": ""
+  },
+  {
+   "layer": "conemap_gov_secure_rest_services_NC1Map_Location_MapServer_0",
+   "at": "2026-10-31T00:18:56Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3300.1,
+   "rows": 0,
+   "prior_units": 5,
+   "run": "",
+   "shard": 0,
+   "source": "04b_shard00.json",
+   "err": ""
+  },
+  {
+   "layer": "is4_ocfl_net_arcgis_rest_services_AGOL_Open_Data_MapServer_0",
+   "at": "2026-10-30T17:00:14Z",
+   "at_src": "record",
+   "kind": "non_json",
+   "rc": 1,
+   "elapsed_s": 33.2,
+   "rows": 2000,
+   "prior_units": 1,
+   "run": "41092912755",
+   "shard": 0,
+   "source": "04b_run41092912755.json",
+   "err": "query_fail:Expecting value: line 1 column 1 (char 0)"
+  },
+  {
+   "layer": "is4_ocfl_net_arcgis_rest_services_AGOL_Open_Data_MapServer_0",
+   "at": "2026-10-31T01:30:57Z",
+   "at_src": "record",
+   "kind": "non_json",
+   "rc": 1,
+   "elapsed_s": 33.4,
+   "rows": 2000,
+   "prior_units": 0,
+   "run": "",
+   "shard": 3,
+   "source": "04b_shard03.json",
+   "err": "query_fail:Expecting value: line 1 column 1 (char 0)"
+  },
+  {
+   "layer": "rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5",
+   "at": "2026-10-30T17:02:09Z",
+   "at_src": "record",
+   "kind": "http_4xx",
+   "rc": 1,
+   "elapsed_s": 115.5,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "41092912755",
+   "shard": 0,
+   "source": "04b_run41092912755.json",
+   "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU"
+  },
+  {
+   "layer": "s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0",
+   "at": "2026-10-30T17:41:40Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 3,
+   "elapsed_s": 1291.0,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "41092912755",
+   "shard": 0,
+   "source": "04b_run41092912755.json",
+   "err": ""
+  },
+  {
+   "layer": "tyil_gov_traditional_rest_services_cookVwrDynmc_MapServer_63",
+   "at": "2026-10-31T01:14:07Z",
+   "at_src": "record",
+   "kind": "http_503",
+   "rc": 1,
+   "elapsed_s": 345.4,
+   "rows": 0,
+   "prior_units": 1,
+   "run": "",
+   "shard": 1,
+   "source": "04b_shard01.json",
+   "err": "query_fail:svcerr:{\"code\": 503, \"message\": \"Error handling service request :Wait timeout for the request exceeded.\", \"details\": []}"
+  },
+  {
+   "layer": "vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0",
+   "at": "2026-10-31T01:14:07Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3300.0,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 1,
+   "source": "04b_shard01.json",
+   "err": ""
+  },
+  {
+   "layer": "yil_gov_traditional_rest_services_addressZipCode_MapServer_0",
+   "at": "2026-10-30T16:59:40Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 310.7,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "41092912755",
+   "shard": 0,
+   "source": "04b_run41092912755.json",
+   "err": ""
+  },
+  {
+   "layer": "yil_gov_traditional_rest_services_addressZipCode_MapServer_0",
+   "at": "2026-10-31T01:30:24Z",
+   "at_src": "record",
+   "kind": "http_503",
+   "rc": 1,
+   "elapsed_s": 346.1,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 3,
+   "source": "04b_shard03.json",
+   "err": "query_fail:svcerr:{\"code\": 503, \"message\": \"Error handling service request :Wait timeout for the request exceeded.\", \"details\": []}"
+  }
+ ],
+ "layers": {
+  "_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0": {
+   "layer": "_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0",
+   "attempts_n": 1,
+   "kinds": [
+    "timeout"
+   ],
+   "kinds_n": {
+    "timeout": 1
+   },
+   "first_at": "2026-10-31T01:14:07Z",
+   "last_at": "2026-10-31T01:14:07Z",
+   "last_kind": "timeout",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 3300.0,
+   "elapsed_min": 55.0,
+   "unstable": false,
+   "runs": [],
+   "shards": [
+    1
+   ]
+  },
+  "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1": {
+   "layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1",
+   "attempts_n": 1,
+   "kinds": [
+    "timeout"
+   ],
+   "kinds_n": {
+    "timeout": 1
+   },
+   "first_at": "2026-10-31T01:14:07Z",
+   "last_at": "2026-10-31T01:14:07Z",
+   "last_kind": "timeout",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 3300.2,
+   "elapsed_min": 55.0,
+   "unstable": false,
+   "runs": [],
+   "shards": [
+    1
+   ]
+  },
+  "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2": {
+   "layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2",
+   "attempts_n": 1,
+   "kinds": [
+    "timeout"
+   ],
+   "kinds_n": {
+    "timeout": 1
+   },
+   "first_at": "2026-10-31T00:18:56Z",
+   "last_at": "2026-10-31T00:18:56Z",
+   "last_kind": "timeout",
+   "rows_at_last": 0,
+   "prior_units_at_last": 4,
+   "no_progress": true,
+   "elapsed_s": 3300.1,
+   "elapsed_min": 55.0,
+   "unstable": false,
+   "runs": [],
+   "shards": [
+    0
+   ]
+  },
+  "cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0": {
+   "layer": "cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0",
+   "attempts_n": 1,
+   "kinds": [
+    "other"
+   ],
+   "kinds_n": {
+    "other": 1
+   },
+   "first_at": "2026-10-30T17:09:02Z",
+   "last_at": "2026-10-30T17:09:02Z",
+   "last_kind": "other",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 1291.1,
+   "elapsed_min": 21.5,
+   "unstable": false,
+   "runs": [
+    "41092912755"
+   ],
+   "shards": [
+    0
+   ]
+  },
+  "conemap_gov_secure_rest_services_NC1Map_Location_MapServer_0": {
+   "layer": "conemap_gov_secure_rest_services_NC1Map_Location_MapServer_0",
+   "attempts_n": 1,
+   "kinds": [
+    "timeout"
+   ],
+   "kinds_n": {
+    "timeout": 1
+   },
+   "first_at": "2026-10-31T00:18:56Z",
+   "last_at": "2026-10-31T00:18:56Z",
+   "last_kind": "timeout",
+   "rows_at_last": 0,
+   "prior_units_at_last": 5,
+   "no_progress": true,
+   "elapsed_s": 3300.1,
+   "elapsed_min": 55.0,
+   "unstable": false,
+   "runs": [],
+   "shards": [
+    0
+   ]
+  },
+  "is4_ocfl_net_arcgis_rest_services_AGOL_Open_Data_MapServer_0": {
+   "layer": "is4_ocfl_net_arcgis_rest_services_AGOL_Open_Data_MapServer_0",
+   "attempts_n": 2,
+   "kinds": [
+    "non_json",
+    "non_json"
+   ],
+   "kinds_n": {
+    "non_json": 2
+   },
+   "first_at": "2026-10-30T17:00:14Z",
+   "last_at": "2026-10-31T01:30:57Z",
+   "last_kind": "non_json",
+   "rows_at_last": 2000,
+   "prior_units_at_last": 0,
+   "no_progress": false,
+   "elapsed_s": 66.6,
+   "elapsed_min": 1.1,
+   "unstable": false,
+   "runs": [
+    "41092912755"
+   ],
+   "shards": [
+    0,
+    3
+   ]
+  },
+  "rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5": {
+   "layer": "rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5",
+   "attempts_n": 1,
+   "kinds": [
+    "http_4xx"
+   ],
+   "kinds_n": {
+    "http_4xx": 1
+   },
+   "first_at": "2026-10-30T17:02:09Z",
+   "last_at": "2026-10-30T17:02:09Z",
+   "last_kind": "http_4xx",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 115.5,
+   "elapsed_min": 1.9,
+   "unstable": false,
+   "runs": [
+    "41092912755"
+   ],
+   "shards": [
+    0
+   ]
+  },
+  "s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0": {
+   "layer": "s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0",
+   "attempts_n": 1,
+   "kinds": [
+    "other"
+   ],
+   "kinds_n": {
+    "other": 1
+   },
+   "first_at": "2026-10-30T17:41:40Z",
+   "last_at": "2026-10-30T17:41:40Z",
+   "last_kind": "other",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 1291.0,
+   "elapsed_min": 21.5,
+   "unstable": false,
+   "runs": [
+    "41092912755"
+   ],
+   "shards": [
+    0
+   ]
+  },
+  "tyil_gov_traditional_rest_services_cookVwrDynmc_MapServer_63": {
+   "layer": "tyil_gov_traditional_rest_services_cookVwrDynmc_MapServer_63",
+   "attempts_n": 1,
+   "kinds": [
+    "http_503"
+   ],
+   "kinds_n": {
+    "http_503": 1
+   },
+   "first_at": "2026-10-31T01:14:07Z",
+   "last_at": "2026-10-31T01:14:07Z",
+   "last_kind": "http_503",
+   "rows_at_last": 0,
+   "prior_units_at_last": 1,
+   "no_progress": true,
+   "elapsed_s": 345.4,
+   "elapsed_min": 5.8,
+   "unstable": false,
+   "runs": [],
+   "shards": [
+    1
+   ]
+  },
+  "vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0": {
+   "layer": "vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0",
+   "attempts_n": 1,
+   "kinds": [
+    "timeout"
+   ],
+   "kinds_n": {
+    "timeout": 1
+   },
+   "first_at": "2026-10-31T01:14:07Z",
+   "last_at": "2026-10-31T01:14:07Z",
+   "last_kind": "timeout",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 3300.0,
+   "elapsed_min": 55.0,
+   "unstable": false,
+   "runs": [],
+   "shards": [
+    1
+   ]
+  },
+  "yil_gov_traditional_rest_services_addressZipCode_MapServer_0": {
+   "layer": "yil_gov_traditional_rest_services_addressZipCode_MapServer_0",
+   "attempts_n": 2,
+   "kinds": [
+    "other",
+    "http_503"
+   ],
+   "kinds_n": {
+    "http_503": 1,
+    "other": 1
+   },
+   "first_at": "2026-10-30T16:59:40Z",
+   "last_at": "2026-10-31T01:30:24Z",
+   "last_kind": "http_503",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 656.8,
+   "elapsed_min": 10.9,
+   "unstable": false,
+   "runs": [
+    "41092912755"
+   ],
+   "shards": [
+    0,
+    3
+   ]
+  }
+ }
+}

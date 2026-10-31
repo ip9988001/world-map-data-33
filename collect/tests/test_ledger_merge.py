@@ -97,6 +97,30 @@ class StatusPriority(unittest.TestCase):
                                      [_rec("a", "partial", 1_000)])
         self.assertEqual(merged[0]["status"], "capped_by_upstream")
 
+    def test_upstream_unstable_sits_between_partial_and_missing(self):
+        """upstream_unstable（2026-10-31 用户立规）排在 partial 之后、missing 之前。
+
+        理由：「可连通但连续 N 次超时/503/非 JSON、无进展」已经试过了，比「上游有数但没排上」
+        （missing）更接近终结态；但比「半截已采」（partial）差 —— 人家至少采到了一部分。
+        这个 rank 必须稳定，否则一次重跑就会把「已停手」的层改回“还能试”，又去吃 CI。
+        """
+        self.assertGreater(lm.rank("partial"), lm.rank("upstream_unstable"))
+        self.assertGreater(lm.rank("upstream_unstable"), lm.rank("missing"))
+        self.assertGreater(lm.rank("upstream_unstable"), lm.rank("unverified"))
+        self.assertIn("upstream_unstable", lm.COUNT_KEYS)
+        merged, _ = lm.merge_records([_rec("a", "upstream_unstable", 0)],
+                                     [_rec("a", "missing", 0)])
+        self.assertEqual(merged[0]["status"], "upstream_unstable")
+
+    def test_recount_subtracts_rows_partition_duplicate_est(self):
+        """行侧同源重复估算不许算进 rows_verifiable（否则覆盖率虚高）。"""
+        c = lm.recount([{"layer": "a", "status": "ok", "declared": 300, "rows": 300},
+                        {"layer": "b", "status": "ok", "declared": 300, "rows": 300,
+                         "rows_partition_duplicate_est": 300}])
+        self.assertEqual(c["rows_with_partition_dup"], 300)
+        self.assertEqual(c["rows_verifiable"], 300)
+        self.assertEqual(c["gap"], 300)
+
 
 class RecountCappedSemantics(unittest.TestCase):
     """recount 必须与 adjudicate_04b 同口径：分母不含 capped 层，分子也扣它的行数。"""

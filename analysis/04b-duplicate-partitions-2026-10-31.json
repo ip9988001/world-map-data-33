@@ -3,7 +3,7 @@
  "stage": "04b",
  "at": "2026-10-31T01:55:00Z",
  "approved": "用户 2026-10-31 明确批准（派单前核验回执①）：「把它移出分母…这是重复计数，不是改口径凑数」。账本不自动改：必须本文件人工点头后重放（adjudicate_04b.py --duplicate-partitions）。",
- "rule": "同一 base 层的 `@<分区>` 层：Σ declared > 1.5 × 该 base 的上游 returnCount → `duplicate_declared`（分母把同一批行数两遍）。处置：duplicate_layers 的 declared 置 null（原值留在 declared_duplicate_partition）、status 改 partial（数据在 survivor 里）；survivor 不动。preflight D12 用同一条判据自动点名，只建议不改账。",
+ "rule": "同一 base 层的 `@<分区>` 层：Σ declared > 1.5 × 该 base 的上游 returnCount → `duplicate_declared`（分母把同一批行数两遍）。处置：duplicate_layers 的 declared 置 null（原值留在 declared_duplicate_partition）、status 改 partial（数据在 survivor 里）；survivor 不动。preflight D12 用同一条判据自动点名，只建议不改账。 另有 `rows_duplicate[]`：不同 host 的同一份镜像且**两个分区都已实采** → declared 全部保留（置 null 会让分母变小、rows 不变 → 覆盖率虚高），只记逐层 `rows_partition_duplicate_est` + `duplicate_source_layer`，计入 `rows_with_partition_dup`，由 08 的 3 元组去重吃掉。",
  "groups": [
   {
    "base_layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0",
@@ -51,9 +51,13 @@
     "services.arcgis.com (AZ-1)": 2139242,
     "services6.arcgis.com (AZ-2)": 2139742
    },
-   "declared": {"AZ-1": 2139288, "AZ-2": 2078539},
-   "decision": "不改判（本次）。两个 host 的上游计数只差 500 行（≈0.02%）→ 极可能镜像同一份县数据；但**两个分区都已实采**（2,139,242 / 2,139,742 行），把其中一个的 declared 置 null 等于抹掉真实已采行、且会让 rows 口径更乱。重复行属 rows 侧问题（3 元组去重），单独立项，不与 NC1Map 混。",
-   "impact": "rows 侧疑似同源重复 ≈2.14M 行（占全账 0.43%）；declared 侧 Σ 4,217,827 对每 host ≈2× "
+   "declared": {
+    "AZ-1": 2139288,
+    "AZ-2": 2078539
+   },
+   "decision": "**已定（用户 2026-10-31）：不改 declared。** 两个分区都已实采（2,139,242 / 2,139,742），把其中一个 declared 置 null 会让分母变小、rows 不变 → 覆盖率虚高，是自己给自己灌水。所以：declared 全部保留、分母不动；只在逐层加 `rows_partition_duplicate_est` = 2,139,242 + `duplicate_source_layer`（AZ-1），并计入阶段级 `rows_with_partition_dup`。由 08 的 3 元组去重把它们吃掉；08 之前对外覆盖率不许扣、也不许含。",
+   "impact": "rows 侧疑似同源重复 ≈2.14M 行（占全账 0.43%）；declared 侧 Σ 4,217,827 对每 host ≈2× ",
+   "final": true
   },
   {
    "base_layer": "rest_services_hennepin_county_address_points_FeatureServer_0",
@@ -63,10 +67,39 @@
     "services1.arcgis.com (MN-1)": 481609,
     "services.arcgis.com (MN-2)": 480300
    },
-   "declared": {"MN-1": 481609, "MN-2": 480300},
-   "decision": "不改判（本次）。与 Maricopa 同类：每个分区的 declared 恰好等于自己 host 的 returnCount（481,609 / 480,300，差 1,309 行）→ 声明拆分本身没错，重复在 rows 侧（两 host 镜像同一份县数据）。留给人定 rows 口径。",
-   "impact": "rows 侧疑似同源重复 ≈480,300 行"
+   "declared": {
+    "MN-1": 481609,
+    "MN-2": 480300
+   },
+   "decision": "**已定（用户 2026-10-31）：不改 declared。** 与 Maricopa 同一条：declared 保留、分母不动；逐层加 `rows_partition_duplicate_est` = 481,609 + `duplicate_source_layer`（MN-1），计入 `rows_with_partition_dup`，由 08 去重吃掉。",
+   "impact": "rows 侧疑似同源重复 ≈480,300 行",
+   "final": true
   }
  ],
- "note": "preflight D12 对 reviewed[] 里的组不再 WARN（但判词会点名「已复核 N 组」）；对未复核且 Σ declared > 1.5× 同 base returnCount 的组一律 WARN 并打印改判命令。"
+ "note": "preflight D12 对 reviewed[] 里的组不再 WARN（但判词会点名「已复核 N 组」）；对未复核且 Σ declared > 1.5× 同 base returnCount 的组一律 WARN 并打印改判命令。 rows_duplicate[] 是「行侧同源重复」，与 groups[]（声明侧重复计数）严格分开：前者不改 declared，后者改。",
+ "rows_duplicate": [
+  {
+   "layer": "rest_services_Maricopa_County_Address_Points_FeatureServer_0@AZ-2",
+   "base_layer": "rest_services_Maricopa_County_Address_Points_FeatureServer_0",
+   "source_layer": "rest_services_Maricopa_County_Address_Points_FeatureServer_0@AZ-1",
+   "rows_partition_duplicate_est": 2139242,
+   "declared_kept": 2078539,
+   "basis": "上游计数 services6.arcgis.com=2,139,742 vs services.arcgis.com=2,139,242（差 500 = 0.02%），两个分区都已实采 → 同一份县数据的镜像 host。重复行取 **survivor 侧已采行数**（2,139,242）作上界估算，不按 declared 算。",
+   "note": "declared 全部保留、分母不动：置 null 只会让分母变小、rows 不变 → 覆盖率虚高。行侧重复由 08（3 元组去重）吃掉。",
+   "approved": "用户 2026-10-31 决定：「declared 全部保留、分母不动；只在逐层加 rows_partition_duplicate_est + duplicate_source_layer，并计入阶段级 rows_with_partition_dup」",
+   "at": "2026-10-31T02:20:00Z"
+  },
+  {
+   "layer": "rest_services_hennepin_county_address_points_FeatureServer_0@MN-2",
+   "base_layer": "rest_services_hennepin_county_address_points_FeatureServer_0",
+   "source_layer": "rest_services_hennepin_county_address_points_FeatureServer_0@MN-1",
+   "rows_partition_duplicate_est": 481609,
+   "declared_kept": 480300,
+   "basis": "上游计数 services1.arcgis.com=481,609 vs services.arcgis.com=480,300（差 1,309 = 0.27%）；每个分区的 declared 恰好等于自己 host 的 returnCount → 声明拆分没错，重复在 rows 侧。重复行取 survivor 侧已采行数 481,609 作上界估算。",
+   "note": "同上：declared 不动，行侧重复交 08 去重。",
+   "approved": "用户 2026-10-31 决定（与 Maricopa 同一条）",
+   "at": "2026-10-31T02:20:00Z"
+  }
+ ],
+ "reviewed_note": "两条 reviewed 已于 2026-10-31 由用户定案：declared 不动（见 rows_duplicate[]），preflight D12 对这两组继续不 WARN，但判词点名「已复核 N 组」。"
 }

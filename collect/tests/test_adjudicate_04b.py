@@ -40,6 +40,10 @@ class TestAdjudicate04b(unittest.TestCase):
         for d in ("collect/ledger", "docs", "analysis"):
             os.makedirs(os.path.join(self.tmp, d), exist_ok=True)
         shutil.copy(SCRIPT, os.path.join(self.tmp, "collect", "adjudicate_04b.py"))
+        # 重试上限判据在 collect/attempt_log.py（同目录模块）：单文件分发会 import 失败、
+        # 整条 upstream_unstable 判据静默失效 —— 测试里必须一并带上，才能真跑到那条分支。
+        shutil.copy(os.path.join(ROOT, "collect", "attempt_log.py"),
+                    os.path.join(self.tmp, "collect", "attempt_log.py"))
         self.rebuilt = os.path.join(self.tmp, "collect", "ledger", "rebuilt.json")
         json.dump({"schema": "rebuilt/v1", "layers_n": 5, "records": [
             rec("ok_layer", "ok", 100, 100),
@@ -244,6 +248,128 @@ class TestAdjudicate04b(unittest.TestCase):
         self.assertEqual(d["rows"], 200)
         self.assertEqual(d["rows_with_partition_dup"], 100)
         self.assertEqual(d["rows_verifiable"], 100)
+    # ---------------------------------------------------------- upstream_unstable / 重试上限
+    def _attempt_fixture(self, layer, n=3, kind="non_json", elapsed_s=33.4):
+        """给某层写 n 次失败尝试（无进展）—— 与 collect/attempt_log.py 的产物同结构。"""
+        atts = []
+        for i in range(n):
+            atts.append({"layer": layer, "at": "2026-10-31T0%d:10:00Z" % (i + 1),
+                         "at_src": "record", "kind": kind, "rc": 1, "elapsed_s": elapsed_s,
+                         "rows": 0, "prior_units": 0, "run": "41155023558", "shard": 3,
+                         "source": "04b_shard03.json", "err": "Expecting value: line 1 column 1"})
+        p = os.path.join(self.tmp, "analysis", "04b-attempt-log.json")
+        json.dump({"schema": "collect-attempt-log/v1", "stage": "04b", "cap": 3,
+                   "at": atts[-1]["at"], "sources": [], "attempts_n": len(atts),
+                   "layers_n": 1, "unstable_n": 1, "unstable": [],
+                   "attempts": atts, "layers": {}}, open(p, "w", encoding="utf-8"),
+                  ensure_ascii=False)
+        return p
+
+    def test_three_failures_flip_to_upstream_unstable(self):
+        """连续 3 次超时/503/非 JSON 且无进展 → upstream_unstable；**declared 不许动**。"""
+        self._attempt_fixture("zero_but_alive", n=3)
+        out = os.path.join(self.tmp, "collect", "04b_ledger.json")
+        doc = os.path.join(self.tmp, "docs", "d.md")
+        r = self._run("--out", out, "--doc", doc, "--max-attempts", "3")
+        self.assertEqual(r.returncode, 0, r.stderr)
+        d = json.load(open(out, encoding="utf-8"))
+        by = {x["layer"]: x for x in d["records"]}
+        lay = by["zero_but_alive"]
+        self.assertEqual(lay["status"], "upstream_unstable")
+        self.assertEqual(lay["declared"], 777)              # 分母不动：行确实没采到
+        self.assertEqual(lay["attempts_n"], 3)
+        self.assertEqual(lay["failure_kinds"], ["non_json"] * 3)
+        self.assertEqual(len(lay["attempt_log"]), 3)        # 逐次留痕
+        self.assertEqual(d["upstream_unstable"], 1)
+        self.assertEqual(d["retry_cap"]["applied_n"], 1)
+        self.assertEqual(d["gap_by_class"]["upstream_unstable"]["layers_n"], 1)
+        self.assertEqual(d["gap_by_class"]["upstream_unstable"]["gap_rows"], 777)
+        md = open(doc, encoding="utf-8").read()
+        self.assertIn("upstream_unstable", md)
+        self.assertIn("累计耗时", md)                        # 收口表：层/声明/次数/类型/耗时
+        self.assertIn("四类缺口", md)
+
+    def test_below_cap_keeps_missing(self):
+        self._attempt_fixture("zero_but_alive", n=2)
+        out = os.path.join(self.tmp, "collect", "04b_ledger.json")
+        r = self._run("--out", out, "--max-attempts", "3")
+        self.assertEqual(r.returncode, 0, r.stderr)
+        d = json.load(open(out, encoding="utf-8"))
+        by = {x["layer"]: x for x in d["records"]}
+        self.assertEqual(by["zero_but_alive"]["status"], "missing")   # 还有重试价值
+        self.assertEqual(by["zero_but_alive"]["attempts_n"], 2)       # 但尝试事实照记
+        self.assertEqual(d["upstream_unstable"], 0)
+
+    def test_force_unstable_layer_keeps_it_retryable(self):
+        """「仍要试」必须显式点名：点名后不改判，但落进 retry_cap.forced_back。"""
+        self._attempt_fixture("zero_but_alive", n=3)
+        out = os.path.join(self.tmp, "collect", "04b_ledger.json")
+        r = self._run("--out", out, "--max-attempts", "3",
+                      "--force-unstable-layer", "zero_but_alive")
+        self.assertEqual(r.returncode, 0, r.stderr)
+        d = json.load(open(out, encoding="utf-8"))
+        by = {x["layer"]: x for x in d["records"]}
+        self.assertEqual(by["zero_but_alive"]["status"], "missing")
+        self.assertEqual(d["retry_cap"]["forced_back"], ["zero_but_alive"])
+
+    def test_max_attempts_zero_disables_the_rule(self):
+        self._attempt_fixture("zero_but_alive", n=3)
+        out = os.path.join(self.tmp, "collect", "04b_ledger.json")
+        r = self._run("--out", out, "--max-attempts", "0")
+        self.assertEqual(r.returncode, 0, r.stderr)
+        d = json.load(open(out, encoding="utf-8"))
+        by = {x["layer"]: x for x in d["records"]}
+        self.assertEqual(by["zero_but_alive"]["status"], "missing")
+        self.assertEqual(d["upstream_unstable"], 0)
+
+    def test_missing_attempt_log_does_not_break_the_ledger(self):
+        """尝试账本不存在 → 整条判据失效，但账本照常产出（不许因此少一层）。"""
+        out = os.path.join(self.tmp, "collect", "04b_ledger.json")
+        r = self._run("--out", out, "--attempt-log", os.path.join(self.tmp, "nope.json"))
+        self.assertEqual(r.returncode, 0, r.stderr)
+        d = json.load(open(out, encoding="utf-8"))
+        self.assertEqual(d["layers_n"], 5)
+        self.assertIn("disabled", json.dumps(d["retry_cap"], ensure_ascii=False))
+
+    # ---------------------------------------------------------- 行侧同源重复（不改 declared）
+    def test_rows_duplicate_est_keeps_declared_and_counts_separately(self):
+        """Maricopa/Hennepin 口径：declared 全部保留，只把行侧重复估算单列。"""
+        # 两个分区**都已实采**（各 100 行）、都写全量 declared（不是重复声明）→ 不进 groups[]，
+        # 只进 rows_duplicate[]。这正是 Maricopa/Hennepin 的形态。
+        json.dump({"schema": "rebuilt/v1", "layers_n": 2, "records": [
+            rec("P@X-1", "failed", 100, 100),
+            rec("P@X-2", "failed", 100, 100),
+        ]}, open(self.rebuilt, "w", encoding="utf-8"), ensure_ascii=False)
+        json.dump({"schema": "04b-upstream-evidence/v1", "generated_at": "2026-10-31T02:00:00Z",
+                   "layers": [ev("P@X-1", "upstream_alive", 100),
+                              ev("P@X-2", "upstream_alive", 100)]},
+                  open(self.evidence, "w", encoding="utf-8"), ensure_ascii=False)
+        spec = os.path.join(self.tmp, "analysis", "04b-duplicate-partitions-2026-10-31.json")
+        json.dump({"schema": "04b-duplicate-partitions/v1", "stage": "04b",
+                   "groups": [], "reviewed": [],
+                   "rows_duplicate": [{"layer": "P@X-2", "source_layer": "P@X-1",
+                                       "rows_partition_duplicate_est": 100,
+                                       "basis": "镜像 host 同一份数据",
+                                       "note": "declared 不动"}]},
+                  open(spec, "w", encoding="utf-8"), ensure_ascii=False)
+        out = os.path.join(self.tmp, "collect", "04b_ledger.json")
+        doc = os.path.join(self.tmp, "docs", "d.md")
+        r = self._run("--out", out, "--doc", doc)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        d = json.load(open(out, encoding="utf-8"))
+        by = {x["layer"]: x for x in d["records"]}
+        surv = by["P@X-2"]
+        self.assertEqual(surv["declared"], 100)                    # 分母不动
+        self.assertEqual(surv["status"], "ok")
+        self.assertEqual(surv["rows_partition_duplicate_est"], 100)
+        self.assertEqual(surv["duplicate_source_layer"], "P@X-1")
+        self.assertEqual(d["declared"], 200)
+        self.assertEqual(d["rows"], 200)                            # rows 不改
+        self.assertEqual(d["rows_with_partition_dup"], 100)         # 单列
+        self.assertEqual(d["rows_verifiable"], 100)                 # 不算进可核实分子
+        md = open(doc, encoding="utf-8").read()
+        self.assertIn("rows_partition_duplicate_est", md)
+        self.assertIn("08", md)
 
 
 if __name__ == "__main__":

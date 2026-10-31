@@ -439,5 +439,57 @@ class Verdict(unittest.TestCase):
         self.assertEqual(P.stage_of_run(4, {}, ["plan-xx"]), "")
 
 
+class RetryCap(unittest.TestCase):
+    """D13：已到重试上限（upstream_unstable）的层默认从待采队列剔除，并点名到每层。
+
+    事故背景（2026-10-31）：同一层连续吃 3 轮 CI——`41155023558` 两层全 failed
+    （`503 Wait timeout` / `Expecting value: line 1 column 1`），上一轮三个 missing 层全是
+    单层超时 55 分钟。不是采集 bug，是上游不稳；不管就会无限重试。
+    """
+
+    def _summary(self, n=3, kind="non_json", no_progress=True):
+        import attempt_log as A
+        atts = [A.attempt_of({"layer": "L1", "status": "failed", "err": "Expecting value",
+                              "elapsed_s": 33.4, "rc": 1, "rows": 0, "prior_units": 0,
+                              "at": "2026-10-31T0%d:00:00Z" % (i + 1)}) for i in range(n)]
+        return A.summarize(atts, 3)
+
+    def test_cap_reached_is_warn_and_named(self):
+        it = P.judge_retry_cap(self._summary(3), {"path": "analysis/04b-attempt-log.json",
+                                                  "cap": 3, "attempts_n": 3})
+        self.assertEqual(it["status"], "WARN")
+        self.assertIn("L1", it["detail"])
+        self.assertIn("3 次", it["detail"])
+        self.assertIn("--force-unstable-layer", it["detail"])
+        self.assertEqual(it["retry_cap_unstable"][0]["layer"], "L1")
+
+    def test_below_cap_passes(self):
+        it = P.judge_retry_cap(self._summary(2), {"path": "x", "cap": 3, "attempts_n": 2})
+        self.assertEqual(it["status"], "PASS")
+        self.assertEqual(it["retry_cap_unstable"], [])
+
+    def test_missing_log_is_info_not_pass(self):
+        it = P.judge_retry_cap({}, {"path": "analysis/04b-attempt-log.json", "missing": True})
+        self.assertEqual(it["status"], "INFO")
+        self.assertIn("attempt_log.py", it["detail"])
+
+    def test_broken_log_is_warn_not_pass(self):
+        it = P.judge_retry_cap({}, {"path": "x", "error": "JSONDecodeError"})
+        self.assertEqual(it["status"], "WARN")
+
+    def test_force_moves_it_out_of_the_warning_list(self):
+        it = P.judge_retry_cap(self._summary(3), {"path": "x", "cap": 3, "attempts_n": 3},
+                               force_unstable=("L1",))
+        self.assertEqual(it["status"], "PASS")
+        self.assertEqual([x["layer"] for x in it["retry_cap_forced"]], ["L1"])
+
+    def test_plan_still_contains_it_is_called_out(self):
+        """计划是旧的（没跑 full_plan 的剔除）→ 必须点名，不能只看「日志里有」就完事。"""
+        it = P.judge_retry_cap(self._summary(3), {"path": "x", "cap": 3, "attempts_n": 3},
+                               planned=[{"layer": "L1"}])
+        self.assertEqual(it["retry_cap_in_plan"], ["L1"])
+        self.assertIn("本次计划里仍有", it["detail"])
+
+
 if __name__ == "__main__":
     unittest.main()

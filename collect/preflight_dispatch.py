@@ -318,6 +318,7 @@ PATH_CATEGORY = (
     (r"collect/(county_assign|county_index)\.py$", ("采集器逻辑",)),
     (r"collect/tests/|collect/check_docs\.py|collect/supervisor\.py$", ("测试与CI",)),
     (r"collect/preflight_dispatch\.py$", ("测试与CI",)),
+    (r"collect/attempt_log\.py$", ("上游不可达",)),
 )
 
 
@@ -787,6 +788,82 @@ def judge_duplicate_declared(records, url_of=None, probe=None, offline=False,
                 % (len(ok_rows), best, threshold, extra),
                 duplicate_declared=[], duplicate_declared_ok=ok_rows,
                 duplicate_declared_reviewed=reviewed_rows)
+
+
+# ---------------------------------------------------------------- D13 重试上限（upstream_unstable）
+#
+# W33-037 的自动检查（2026-10-31 用户立规）：同一层连续 N 次（默认 3）尝试都超时 / 503 / 返回非 JSON
+# 且**无进展** → `upstream_unstable`：可连通但重试收益趋零。判据在 `collect/attempt_log.py`，
+# 这里只负责两件事：① 把到上限的层**点名**（含每次失败类型与累计耗时）；
+# ② 核一下待采计划里是不是又把它们排上了——排上了就 WARN，除非显式 `--force-unstable-layer`。
+#
+# 为什么单独立一项而不是塞进 D10：D10 只看「计划层 vs 已采层」重叠，而这里的问题是
+# 「计划层 vs 已被证伪的层」——同一层反复吃 CI 的根源就在这，不看就永远发现不了。
+ATTEMPT_LOG = os.path.join(ANALYSIS, "04b-attempt-log.json")
+
+
+def attempt_log_path(path=None):
+    return path or ATTEMPT_LOG
+
+
+def load_attempt_summary(path=None, cap=3):
+    """返回 (summary, meta)。文件不存在 → ({}, {"missing": True})，不假装通过。"""
+    p = attempt_log_path(path)
+    if not os.path.exists(p):
+        return {}, {"path": os.path.relpath(p, ROOT), "missing": True, "cap": cap}
+    try:
+        d = json.load(open(p, encoding="utf-8"))
+    except Exception as e:                                       # noqa: BLE001
+        return {}, {"path": os.path.relpath(p, ROOT), "error": str(e)[:160], "cap": cap}
+    sys.path.insert(0, HERE)
+    import attempt_log                                           # noqa: E402
+    attempts = d.get("attempts") or []
+    summary = attempt_log.summarize(attempts, cap)
+    return summary, {"path": os.path.relpath(p, ROOT), "cap": cap, "attempts_n": len(attempts),
+                     "unstable_n": len(attempt_log.unstable_layers(summary, cap))}
+
+
+def judge_retry_cap(summary, meta=None, planned=None, force_unstable=(), cap=3,
+                    attempt_log_p=ATTEMPT_LOG):
+    """D13：已到重试上限的层是否还在待采队列里。"""
+    meta = dict(meta or {})
+    base = {"attempt_log": meta.get("path") or os.path.relpath(attempt_log_p, ROOT),
+            "cap": cap, "attempts_n": meta.get("attempts_n", 0)}
+    if meta.get("missing"):
+        return item("D13", "D", "重试上限 upstream_unstable", "INFO",
+                    "没有尝试账本（%s）：本轮无「已证伪」的层可剔除。建议每次派单前跑一句 "
+                    "`python3 collect/attempt_log.py --stage 04b`" % base["attempt_log"], **base)
+    if meta.get("error"):
+        return item("D13", "D", "重试上限 upstream_unstable", "WARN",
+                    "尝试账本读不了（%s）：无法判重试上限 → 不假装通过，派单前手工看一眼"
+                    % meta["error"][:100], **base)
+    sys.path.insert(0, HERE)
+    import attempt_log                                           # noqa: E402
+    force = tuple(force_unstable or ())
+    rows = [v for v in (summary or {}).values() if v.get("unstable")]
+    rows.sort(key=lambda x: (-x["attempts_n"], -x["elapsed_s"], x["layer"]))
+    rows_back = [r for r in rows if r["layer"] in force]
+    rows = [r for r in rows if r["layer"] not in force]
+    if not rows:
+        return item("D13", "D", "重试上限 upstream_unstable", "PASS",
+                    "没有层连续失败达到 %d 次（已记 %d 层 / %d 条尝试%s）"
+                    % (cap, len(summary or {}), meta.get("attempts_n", 0),
+                       "；%d 层被显式点名「仍要试」" % len(rows_back) if rows_back else ""),
+                    retry_cap_unstable=rows, retry_cap_forced=rows_back, **base)
+    in_plan = sorted({x.get("layer") for x in (planned or [])} & {r["layer"] for r in rows})
+    detail = ("%d 层已到重试上限（连续 %d 次失败且无进展）→ **默认从待采队列剔除**：%s。"
+              "要再试必须显式 `--force-unstable-layer <层>`"
+              % (len(rows), cap,
+                 "；".join("`%s` %d 次（%s，%.1f 分钟）"
+                          % (r["layer"], r["attempts_n"],
+                             "/".join(attempt_log.KIND_ZH.get(k, k) for k in r["kinds"]),
+                             r["elapsed_min"]) for r in rows[:4])))
+    if in_plan:
+        detail += "。⛔ 本次计划里仍有 %d 层在其中（计划是旧的/没跑 full_plan 的剔除）：%s" % (
+            len(in_plan), ", ".join(in_plan[:4]))
+    return item("D13", "D", "重试上限 upstream_unstable", "WARN", detail,
+                retry_cap_unstable=rows, retry_cap_in_plan=in_plan,
+                retry_cap_forced=rows_back, **base)
 
 
 def ledger_paths(stage):
@@ -1388,6 +1465,22 @@ def build_report(args) -> dict:
     evidence["duplicate_declared_reviewed"] = d12.get("duplicate_declared_reviewed") or []
     evidence["duplicate_declared_ok"] = d12.get("duplicate_declared_ok") or []
 
+    # ---- D13 重试上限（W33-037）：已证伪的层不得再进待采队列 ----
+    att_sum, att_meta = load_attempt_summary(getattr(args, "attempt_log", "") or None,
+                                             int(getattr(args, "max_attempts", 3) or 3))
+    force_unstable = [x.strip() for x in (getattr(args, "force_unstable_layer", "") or "").split(",")
+                      if x.strip()]
+    planned_ids = [{"layer": x} for x in (planned or [])]
+    d13 = judge_retry_cap(att_sum, att_meta, planned=planned_ids, force_unstable=force_unstable,
+                          cap=int(getattr(args, "max_attempts", 3) or 3),
+                          attempt_log_p=(getattr(args, "attempt_log", "") or ATTEMPT_LOG))
+    items.append(d13)
+    evidence["retry_cap"] = {"attempt_log": att_meta.get("path"), "cap": att_meta.get("cap"),
+                             "attempts_n": att_meta.get("attempts_n", 0),
+                             "unstable": d13.get("retry_cap_unstable") or [],
+                             "in_plan": d13.get("retry_cap_in_plan") or [],
+                             "forced": d13.get("retry_cap_forced") or []}
+
     # ---- E 上游可用性 ----
     # 抽样口径：force 层优先（本次真要跑的），再按分档均匀抽样（避免全挤在最小/最大层）
     pool = list(force)
@@ -1541,6 +1634,12 @@ def main() -> int:
     ap.add_argument("--authorize-heavy", action="store_true", help="10b 重阶段授权（= workflow 的 authorize_heavy=1）")
     ap.add_argument("--authorize-manual", default="", help="08/09/10/几何：显式口号（逗号分隔）")
     ap.add_argument("--offline", action="store_true", help="跳过网络项（转 WARN）；单测/断网排障用")
+    # ★ D13 重试上限（2026-10-31）：默认读 analysis/04b-attempt-log.json；
+    #   「仍要试」必须显式点名，否则已判 upstream_unstable 的层默认被剔出待采队列。
+    ap.add_argument("--attempt-log", default="", help="逐层尝试账本（默认 analysis/04b-attempt-log.json）")
+    ap.add_argument("--max-attempts", type=int, default=3, help="连续失败上限（默认 3）")
+    ap.add_argument("--force-unstable-layer", default="",
+                    help="逗号分隔的层 id：即使已到重试上限也不剔除（「仍要试」的显式开关）")
     ap.add_argument("--json-out", default="", help="默认 analysis/preflight-<stage>-<ts>.json")
     ap.add_argument("--baseline-out", default="", help="默认 analysis/rows-baseline-<stage>-<ts>.json")
     ap.add_argument("--no-write", action="store_true", help="不写 analysis 产物（只打印）")
