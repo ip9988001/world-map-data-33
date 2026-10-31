@@ -264,13 +264,15 @@
 
 这四类**处置完全不同**，合成一个「缺口」就会天天在同一批层上白跑；所以收口时必须逐类点名，并且同时给三个行数口径（只看层数会被大层骗）。
 
-| 类别 | 层数 | 声明行 | 已采行 | 缺口行 | 怎么办 |
-|---|---|---|---|---|---|
-| `capped_by_upstream` | 1 | 97,928,946 | 39,875,268 | 58,053,678 | 上游要 token，永远采不到；已采多少算多少，declared 移出分母 |
-| `upstream_unstable` | 0 | 0 | 0 | 0 | 连续 N 次超时/503/非 JSON 且无进展 → 停手，不再吃 CI；显式 `--force-unstable-layer` 才放回 |
-| `unverified` | 5 | 4,235,627 | 0 | 4,235,627 | 连不上（超时/403/DNS）→ 等网络/换出口，不许当 0 数据 |
-| `missing` | 5 | 17,395,114 | 0 | 17,395,114 | 上游有数、本层 0 行 → 真缺口，还能试但本轮没排上 |
-| **合计** | **11** | **119,559,687** | **39,875,268** | **79,684,419** | — |
+| 类别 | 层数 | 声明行 | 其中进分母 | 已采行 | 缺口行 | 怎么办 |
+|---|---|---|---|---|---|---|
+| `capped_by_upstream` | 1 | 97,928,946 | 0 | 39,875,268 | 58,053,678 | 上游要 token，永远采不到；已采多少算多少，declared 移出分母 |
+| `upstream_unstable` | 0 | 0 | 0 | 0 | 0 | 连续 N 次超时/503/非 JSON 且无进展 → 停手，不再吃 CI；显式 `--force-unstable-layer` 才放回 |
+| `unverified` | 5 | 4,235,627 | 4,235,627 | 0 | 4,235,627 | 连不上（超时/403/DNS）→ 等网络/换出口，不许当 0 数据 |
+| `missing` | 5 | 17,395,114 | 17,395,114 | 0 | 17,395,114 | 上游有数、本层 0 行 → 真缺口，还能试但本轮没排上 |
+| **合计** | **11** | **119,559,687** | **21,630,741** | **39,875,268** | **79,684,419** | — |
+
+> 合计里的「缺口行」含 capped 的 58,053,678（那部分声明**不在分母**，别拿它算覆盖率）。进分母的四类缺口 = 21,630,741；账本 `gap` = 21,075,641（§3.6），四类比账本**多 555,100** —— 差额是 4 层 `partial` 已经采到的行（它们既不是「0 行」也不是「已停手」，所以不在四类里，但确实抵掉了部分缺口）。
 
 - `capped_by_upstream`（1 层）：`s_Points_from_National_Address_Database_view_FeatureServer_0`
 - `unverified`（5 层）：`tyil_gov_traditional_rest_services_cookVwrDynmc_MapServer_63`、`yil_gov_traditional_rest_services_addressZipCode_MapServer_0`、`is4_ocfl_net_arcgis_rest_services_AGOL_Open_Data_MapServer_0`、`g_rest_services_Basemap_Address_Points_EagleView_MapServer_0`、`rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5`

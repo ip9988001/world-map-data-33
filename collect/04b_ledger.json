@@ -106,6 +106,7 @@
   "capped_by_upstream": {
    "layers_n": 1,
    "declared_rows": 97928946,
+   "declared_in_denominator": 0,
    "rows": 39875268,
    "gap_rows": 58053678,
    "layers": [
@@ -115,6 +116,7 @@
   "upstream_unstable": {
    "layers_n": 0,
    "declared_rows": 0,
+   "declared_in_denominator": 0,
    "rows": 0,
    "gap_rows": 0,
    "layers": []
@@ -122,6 +124,7 @@
   "unverified": {
    "layers_n": 5,
    "declared_rows": 4235627,
+   "declared_in_denominator": 4235627,
    "rows": 0,
    "gap_rows": 4235627,
    "layers": [
@@ -135,6 +138,7 @@
   "missing": {
    "layers_n": 5,
    "declared_rows": 17395114,
+   "declared_in_denominator": 17395114,
    "rows": 0,
    "gap_rows": 17395114,
    "layers": [

@@ -148,6 +148,9 @@ def _gap_by_class(recs) -> dict:
         got = sum((r.get("rows") or 0) for r in rows)
         out[k] = {"layers_n": len(rows),
                   "declared_rows": declared,
+                  # capped 的声明已移出分母（另记 declared_unverifiable）：合计时不许算进「进分母的声明」，
+                  # 否则四类合计会把「永远采不到」的 9,792 万行混进覆盖率的分母里。
+                  "declared_in_denominator": 0 if k == "capped_by_upstream" else declared,
                   "rows": got,
                   "gap_rows": max(0, declared - got),
                   "layers": [r["layer"] for r in rows]}
@@ -570,24 +573,36 @@ def render_doc(led, audit, evidence, sha_refs):
         A("这四类**处置完全不同**，合成一个「缺口」就会天天在同一批层上白跑；"
           "所以收口时必须逐类点名，并且同时给三个行数口径（只看层数会被大层骗）。")
         A("")
-        A("| 类别 | 层数 | 声明行 | 已采行 | 缺口行 | 怎么办 |")
-        A("|---|---|---|---|---|---|")
+        A("| 类别 | 层数 | 声明行 | 其中进分母 | 已采行 | 缺口行 | 怎么办 |")
+        A("|---|---|---|---|---|---|---|")
         _how = {"capped_by_upstream": "上游要 token，永远采不到；已采多少算多少，declared 移出分母",
                 "upstream_unstable": "连续 N 次超时/503/非 JSON 且无进展 → 停手，不再吃 CI；"
                                      "显式 `--force-unstable-layer` 才放回",
                 "unverified": "连不上（超时/403/DNS）→ 等网络/换出口，不许当 0 数据",
                 "missing": "上游有数、本层 0 行 → 真缺口，还能试但本轮没排上"}
-        _tot = {"layers_n": 0, "declared_rows": 0, "rows": 0, "gap_rows": 0}
+        _tot = {"layers_n": 0, "declared_rows": 0, "declared_in_denominator": 0,
+                "rows": 0, "gap_rows": 0}
         for k in ("capped_by_upstream", "upstream_unstable", "unverified", "missing"):
             v = gbc.get(k) or {}
             for kk in _tot:
                 _tot[kk] += v.get(kk) or 0
-            A("| `%s` | %d | %s | %s | %s | %s |" % (
+            A("| `%s` | %d | %s | %s | %s | %s | %s |" % (
                 k, v.get("layers_n", 0), f"{v.get('declared_rows', 0):,}",
+                f"{v.get('declared_in_denominator', v.get('declared_rows', 0)):,}",
                 f"{v.get('rows', 0):,}", f"{v.get('gap_rows', 0):,}", _how[k]))
-        A("| **合计** | **%d** | **%s** | **%s** | **%s** | — |" % (
-            _tot["layers_n"], f"{_tot['declared_rows']:,}", f"{_tot['rows']:,}",
+        A("| **合计** | **%d** | **%s** | **%s** | **%s** | **%s** | — |" % (
+            _tot["layers_n"], f"{_tot['declared_rows']:,}",
+            f"{_tot['declared_in_denominator']:,}", f"{_tot['rows']:,}",
             f"{_tot['gap_rows']:,}"))
+        A("")
+        _in = sum((gbc.get(k) or {}).get("gap_rows", 0) for k in gbc if k != "capped_by_upstream")
+        _diff = _in - (led["gap"] or 0)
+        A("> 合计里的「缺口行」含 capped 的 %s（那部分声明**不在分母**，别拿它算覆盖率）。"
+          "进分母的四类缺口 = %s；账本 `gap` = %s（§3.6），四类比账本**多 %s** —— 差额是 %d 层 "
+          "`partial` 已经采到的行（它们既不是「0 行」也不是「已停手」，所以不在四类里，"
+          "但确实抵掉了部分缺口）。"
+          % (f"{(gbc.get('capped_by_upstream') or {}).get('gap_rows', 0):,}", f"{_in:,}",
+             f"{led['gap']:,}", f"{_diff:,}", led.get("partial") or 0))
         A("")
         for k in ("capped_by_upstream", "upstream_unstable", "unverified", "missing"):
             v = gbc.get(k) or {}
