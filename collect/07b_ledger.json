@@ -1378,8 +1378,13 @@
    "diff": 1.0,
    "parts": 0,
    "svc": "MapServer",
-   "status": "failed",
-   "reason": "rc=1 err=batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch2:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch3:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch4:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<"
+   "status": "unverified",
+   "reason": "rc=1 err=batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch2:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch3:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch4:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<",
+   "status_before_adjudication": "failed",
+   "gap_class": "unverified",
+   "gap_reason": "端点 404/HTML 页：服务没了或路径变了，无法核实（W33-027）",
+   "adjudicated_at": "2026-10-31T09:13:49Z",
+   "adjudicated_by": "adjudicate_07b.py"
   },
   {
    "layer": "O3qhR0j8kvKI_arcgis_rest_services_911Address_FeatureServer_0",
@@ -2904,8 +2909,13 @@
    "diff": 0.0727,
    "parts": 1,
    "svc": "MapServer",
-   "status": "failed",
-   "reason": "rc=1 err=?"
+   "status": "partial",
+   "reason": "rc=1 err=?",
+   "status_before_adjudication": "failed",
+   "gap_class": "partial",
+   "gap_reason": "有数据（2,131 行），缺口 167 行——能补、要补，不是 failed",
+   "adjudicated_at": "2026-10-31T09:13:49Z",
+   "adjudicated_by": "adjudicate_07b.py"
   },
   {
    "layer": "8dX_arcgis_rest_services_AddressTest_Service_FeatureServer_0",
@@ -9360,12 +9370,12 @@
  },
  "ok": 661,
  "capped_by_upstream": 0,
- "partial": 0,
+ "partial": 1,
  "upstream_unstable": 0,
  "missing": 0,
- "unverified": 0,
+ "unverified": 1,
  "empty": 4,
- "failed": 2,
+ "failed": 0,
  "skipped_done": 0,
  "shards_expected": 3,
  "shards_reported": 3,
@@ -9376,12 +9386,12 @@
  "buckets": {
   "ok": 661,
   "capped_by_upstream": 0,
-  "partial": 0,
+  "partial": 1,
   "upstream_unstable": 0,
   "missing": 0,
-  "unverified": 0,
+  "unverified": 1,
   "empty": 4,
-  "failed": 2
+  "failed": 0
  },
  "regressions": [],
  "rows_regressions": 0,
@@ -9408,5 +9418,42 @@
    "rows_regressions_layers": [],
    "note": "单 run 结果按层合并进阶段账本（状态取更优者，同状态取行数大者）"
   }
- ]
+ ],
+ "adjudicated_at": "2026-10-31T09:13:49Z",
+ "adjudicated_by": "adjudicate_07b.py",
+ "adjudicated_layers": 2,
+ "gap_by_class": {
+  "partial": {
+   "layers_n": 1,
+   "declared": 2298,
+   "rows": 2131,
+   "gap": 167,
+   "declared_unknown_n": 0,
+   "next": "下一轮按层续跑（checkpoint 在，只补缺口）"
+  },
+  "upstream_unstable": {
+   "layers_n": 0,
+   "declared": 0,
+   "rows": 0,
+   "gap": 0,
+   "declared_unknown_n": 0,
+   "next": "默认不排；要再试必须 --force-unstable-layer 点名"
+  },
+  "unverified": {
+   "layers_n": 1,
+   "declared": 3821,
+   "rows": 0,
+   "gap": 3821,
+   "declared_unknown_n": 0,
+   "next": "端点已没了，等形态变化或人工复核，不复派"
+  },
+  "missing": {
+   "layers_n": 0,
+   "declared": 0,
+   "rows": 0,
+   "gap": 0,
+   "declared_unknown_n": 0,
+   "next": "下一轮可直接重排（没有上游拒绝的证据）"
+  }
+ }
 }

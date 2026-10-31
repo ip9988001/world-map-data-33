@@ -1,0 +1,44 @@
+{
+ "schema": "collect-gap-classification/v1",
+ "stage": "07b",
+ "at": "2026-10-31T09:13:49Z",
+ "run_id": "41184978867",
+ "rule": "判序即判据：404/HTML → unverified；超时 / 5xx·svcerr → upstream_unstable；其余有行 → partial；0 行且无上游证据 → missing。不猜上游。",
+ "counts": {
+  "partial": 1,
+  "upstream_unstable": 0,
+  "unverified": 1,
+  "missing": 0
+ },
+ "layers_n": 2,
+ "layers": [
+  {
+   "layer": "138c05_rest_services_MiddlesexCounty_Base_Layers_MapServer_0",
+   "from_status": "failed",
+   "class": "partial",
+   "reason": "有数据（2,131 行），缺口 167 行——能补、要补，不是 failed",
+   "rows": 2131,
+   "declared": 2298,
+   "elapsed_s": 8.7,
+   "attempts_n": 1,
+   "failure_kinds": [
+    "other"
+   ],
+   "attempts_elapsed_min": 0.1
+  },
+  {
+   "layer": "rcgis_rest_services_Addressing_Addressing_public_MapServer_0",
+   "from_status": "failed",
+   "class": "unverified",
+   "reason": "端点 404/HTML 页：服务没了或路径变了，无法核实（W33-027）",
+   "rows": 0,
+   "declared": 3821,
+   "elapsed_s": 5.3,
+   "attempts_n": 1,
+   "failure_kinds": [
+    "http_4xx"
+   ],
+   "attempts_elapsed_min": 0.1
+  }
+ ]
+}
