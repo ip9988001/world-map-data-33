@@ -316,6 +316,13 @@ jobs:
           #   小 run（层数 < 阶段账本的 1/2）默认不碰阶段账本 —— 见 collect/ledger_merge.py。
           python3 collect/step_full_report.py --stage "$STAGE" --run-id "$GITHUB_RUN_ID" \
             --plan "collect/ledger/${STAGE}_plan.json"
+          # ★ 尝试账本（W33-037，2026-10-31）：每轮把 failed 记录**追加**进
+          #   analysis/<stage>-attempt-log.json。不追加的话，片账本被下一轮覆盖后历史尝试就没了，
+          #   「连续 3 次失败」永远凑不满，上游不稳的层就会一直留在待采队列里吃 CI。
+          #   失败在这里只打 warning：账本已落，不因一次统计失败把 merge 判红。
+          python3 collect/attempt_log.py --stage "$STAGE" \
+            --out "analysis/${STAGE}-attempt-log.json" \
+            || echo "::warning::尝试账本生成失败（不影响本轮账本落地，但下一轮重试上限会少记本轮的失败）"
           ls -la docs/ | tail -5
           ls -la collect/ledger/ | tail -10
       - name: 提交（账本 + 文档）
@@ -330,18 +337,20 @@ jobs:
           #   `git rebase` 直接报 “cannot rebase: You have unstaged changes”（被 2>/dev/null 吞了），
           #   重试 6 次只是重复同一个错误 → 账本一行没落地。
           #   现在改成：产物先搬 /tmp → checkout -qf 硬对齐 origin/main → 搬回来 → 提交 → 推送。
-          rm -rf /tmp/push && mkdir -p /tmp/push/ledger /tmp/push/docs
+          rm -rf /tmp/push && mkdir -p /tmp/push/ledger /tmp/push/docs /tmp/push/analysis
           cp -f "collect/${STAGE}_ledger.json" /tmp/push/ 2>/dev/null || true
           cp -f collect/ledger/*.json /tmp/push/ledger/ 2>/dev/null || true
           cp -f docs/*FULL-*.md /tmp/push/docs/ 2>/dev/null || true
+          cp -f analysis/*-attempt-log.json /tmp/push/analysis/ 2>/dev/null || true
           for i in $(seq 1 6); do
             git fetch -q origin main || true
             git checkout -qf -B main origin/main
-            mkdir -p collect/ledger docs
+            mkdir -p collect/ledger docs analysis
             cp -f /tmp/push/${STAGE}_ledger.json collect/ 2>/dev/null || true
             cp -f /tmp/push/ledger/*.json collect/ledger/ 2>/dev/null || true
             cp -f /tmp/push/docs/*FULL-*.md docs/ 2>/dev/null || true
-            git add -f "collect/${STAGE}_ledger.json" collect/ledger docs 2>/dev/null || true
+            cp -f /tmp/push/analysis/*-attempt-log.json analysis/ 2>/dev/null || true
+            git add -f "collect/${STAGE}_ledger.json" collect/ledger docs analysis/*-attempt-log.json 2>/dev/null || true
             if git diff --cached --quiet; then echo "无变化（账本已在 main）"; exit 0; fi
             git -c user.name=collect-bot -c user.email=bot@users.noreply.github.com \
                 commit -q -m "collect: ${STAGE} 全量收官账本 + 文档"
