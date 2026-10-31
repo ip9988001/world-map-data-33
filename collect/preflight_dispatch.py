@@ -96,6 +96,7 @@ APPROVED_MAIN = {
     "a39ba76": "PR #12 合入（force 重跑不覆盖完成度证据 + 按单元合并 + 行数只许涨 + NAD 检查点与 272 层账本复原）",
     "a4f12f7": "重建产物分审结快照/活态 + --check 改判输入指纹 + 写回前硬门禁",
     "780e9b4": "PR #13 合入（派单前核验门禁 16 项 + F16 故障清单接线 + 已批准版本白名单）",
+    "aa4bd73": "NAD-view 改判 capped_by_upstream 合入（declared 移出分母）+ E14 两轮 499 硬判据 + 故障清单 W33-033",
 }
 
 PKG_RE = re.compile(r"-u\d{5}\.tar\.gz$")
