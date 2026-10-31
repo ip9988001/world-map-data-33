@@ -1384,6 +1384,9 @@ def build_report(args) -> dict:
                                    offline=offline or not d12_recs)
     items.append(d12)
     evidence["duplicate_declared"] = d12.get("duplicate_declared") or []
+    # 复核过的组与同量级的组也要进证据：不然「为什么这次没报警」事后无法复核
+    evidence["duplicate_declared_reviewed"] = d12.get("duplicate_declared_reviewed") or []
+    evidence["duplicate_declared_ok"] = d12.get("duplicate_declared_ok") or []
 
     # ---- E 上游可用性 ----
     # 抽样口径：force 层优先（本次真要跑的），再按分档均匀抽样（避免全挤在最小/最大层）
