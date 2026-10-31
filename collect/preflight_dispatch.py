@@ -99,6 +99,8 @@ APPROVED_MAIN = {
     "aa4bd73": "用户 2026-10-31 批准：capped 改判（declared 移出分母、记 declared_unverifiable）+ 三组口径"
                 "（declared / declared_unverifiable / rows_verifiable，两边同口径才可相除）+ E14 两轮 499 硬判据"
                 " + 故障清单 W33-033",
+    "688c313": "备份代序按数字比（W33-039）：bak_sort_key 取代 mtime/字符串序，只留 3 代不再随机挑一代"
+                 "+5 条单测，不改变采集/合并规则",
 }
 
 PKG_RE = re.compile(r"-u\d{5}\.tar\.gz$")
