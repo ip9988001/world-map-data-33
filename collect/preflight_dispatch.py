@@ -96,6 +96,7 @@ APPROVED_MAIN = {
     "a39ba76": "PR #12 合入（force 重跑不覆盖完成度证据 + 按单元合并 + 行数只许涨 + NAD 检查点与 272 层账本复原）",
     "a4f12f7": "重建产物分审结快照/活态 + --check 改判输入指纹 + 写回前硬门禁",
     "780e9b4": "PR #13 合入（派单前核验门禁 16 项 + F16 故障清单接线 + 已批准版本白名单）",
+    "aa4bd73": "NAD-view 改判 capped_by_upstream 合入（declared 移出分母）+ E14 两轮 499 硬判据 + 故障清单 W33-033",
 }
 
 PKG_RE = re.compile(r"-u\d{5}\.tar\.gz$")
@@ -286,10 +287,17 @@ def judge_other_stages(stage, active_all, offline=False, limit=2):
 # ------------------------------------------------------------------ F 故障清单
 # 本仓唯一故障台账（docs/WORKFLOW-FAILURE-LEDGER.md）的机器读法。
 # 为什么要在门禁里读它：坑已经被记下来了，但**记下来不等于会被查**——派单的人不会每次翻表，
-# 所以把「本次改动碰到哪条已知坑」变成机械判据：
-#   · 触及「未规避」（关联提交为空/未修/待修）的条目 → WARN，并直接把该条的«修法»当规避动作打出来；
-#   · 触及「复发过 ≥2 次」的条目 → **FAIL**（同一坑不能第三次踩）；确认已规避就 `--ledger-waive` 显式豁免，
-#     豁免会写进证据（谁、哪条、为什么）。
+# 所以把「本次改动碰到哪条已知坑」变成机械判据。
+#
+# ★ 判据 2026-10-31 改版（用户明令：防门禁自我腐化）：
+#   · 复发 ≥2 **且未规避**（关联提交为空/未修/待修）→ **FAIL**（明知踩过两次还没修，才是真危险）；
+#   · 复发 ≥2 **且已规避** → **WARN**，固定文案「这条踩过 N 次，已修于 <sha>，本次改动请确认未重新
+#     引入 <具体行为>」+ 打印该条「验证方式」；
+#   · 未规避且复发 = 1 → WARN；
+#   · 台账缺失 / 表解析失败 → **FAIL**（不许静默）。
+#   为什么不再「复发≥2 一律 FAIL」：改 `.github/workflows/` 必然撞 W33-004/007（复发≥2），一律 FAIL
+#   会把人训练成无脑 `--ledger-waive`，豁免变成固定动作，门禁只剩仪式。
+#   `--ledger-waive` 也因此**必须带理由**（`编号=理由`），空理由拒绝执行并写进证据。
 LEDGER_REL = os.path.join("docs", "WORKFLOW-FAILURE-LEDGER.md")
 LEDGER_COLUMNS = ("id", "date", "category", "symptom", "root_cause", "impact",
                   "fix", "verify", "commits", "recurrence")
@@ -309,6 +317,48 @@ PATH_CATEGORY = (
     (r"collect/tests/|collect/check_docs\.py|collect/supervisor\.py$", ("测试与CI",)),
     (r"collect/preflight_dispatch\.py$", ("测试与CI",)),
 )
+
+
+WAIVE_ID_RE = re.compile(r"^[A-Z]+\d+-\d{3}$")
+WAIVE_VOID = {"无", "无。", "-", "—", "n/a", "na", "none", "nil", "ok", "okay",
+              "已确认", "确认", "已核实", "同前", "见上"}
+
+
+def parse_ledger_waivers(entries):
+    """`--ledger-waive` 的解析：**必须带理由**，写成 `编号=理由`（也收 `编号:理由`）。
+
+    为什么要强制理由（2026-10-31 用户明令）：豁免是「人替门禁签字」。签字不写理由，
+    豁免就会退化成改 workflow 前的固定动作，门禁从此只剩仪式。
+    空理由 / 空壳理由（无、ok、已确认…）→ ValueError，**拒绝执行**（rc=2，不写证据）。
+    """
+    out = []
+    for raw in entries or ():
+        s = str(raw or "").strip()
+        if not s:
+            continue
+        m = re.match(r"^\s*([A-Za-z]+\d+-\d{3})\s*[=:：]\s*(.*)$", s)
+        if not m:
+            raise ValueError(
+                "--ledger-waive 必须带理由：`%s` → 写成 `编号=理由`（例："
+                "--ledger-waive W33-011=a478570 已改按层合并且 test_ledger_merge 全绿）" % s)
+        wid, reason = m.group(1).upper(), m.group(2).strip()
+        if not WAIVE_ID_RE.match(wid):
+            raise ValueError("--ledger-waive 编号格式不对：%r（应形如 W33-011 / W1-002）" % wid)
+        if len(reason) < 8 or reason.lower() in WAIVE_VOID:
+            raise ValueError(
+                "--ledger-waive %s 的理由是空壳（%r）→ 拒绝执行：写清「凭什么是已规避」"
+                "（改了哪个文件 / 跑了什么验证）" % (wid, reason))
+        if any(w["id"] == wid for w in out):
+            continue
+        out.append({"id": wid, "reason": reason})
+    return out
+
+
+def _behaviour(row, limit=60):
+    """一条台账的「具体行为」：取症状里最像错误原文的那段（给 WARN 文案用）。"""
+    s = str(row.get("status") or row.get("symptom") or "").strip()
+    s = s.replace("|", "/").replace("**", "").replace("`", "")
+    return s[:limit] + ("…" if len(s) > limit else "")
 
 
 def parse_failure_ledger(text: str) -> list:
@@ -366,10 +416,12 @@ def judge_failure_ledger(text: str, categories=None, changed_paths=None,
     cats = set(categories or ())
     derived = categories_of_paths(changed_paths or ())
     cats |= derived
-    waive = {str(w).strip().upper() for w in (waive or ()) if str(w).strip()}
+    waivers = parse_ledger_waivers(waive)
+    waived_ids = {w["id"] for w in waivers}
     if not (text or "").strip():
-        return item("F16", "F", "故障清单", "WARN",
-                    "本仓还没有 %s（先按 docs/WORKFLOW-FAILURE-LEDGER.md 模板建一份）"
+        # 台账缺失 = 无从比对，等于「没查就派单」→ FAIL（不许静默）
+        return item("F16", "F", "故障清单", "FAIL",
+                    "本仓还没有 %s → 无从比对已知坑（先按模板建一份再派单）"
                     % LEDGER_REL.replace(os.sep, "/"), ledger_hits=[]), []
     unknown = sorted(c for c in cats if c not in LEDGER_CATEGORIES)
     if unknown:
@@ -395,37 +447,55 @@ def judge_failure_ledger(text: str, categories=None, changed_paths=None,
         path_hit = bool(files & set(changed_paths or ())) if changed_paths else True
         if not path_hit and row["mitigated"] and not (categories and row["category"] in set(categories)):
             continue                                # 只由路径推导出的类别 → 必须真有文件重叠
+        sha = (re.findall(r"\b[0-9a-f]{7,40}\b", row["commits"] or "") or [""])[0]
         hits.append({
             "id": row["id"], "category": row["category"], "recurrence": row["recurrence"],
             "mitigated": row["mitigated"], "status": row["symptom"][:160],
             "mitigation": row["fix"][:300], "verify": row["verify"][:200],
-            "waived": row["id"].upper() in waive,
+            "fix_sha": sha, "commits": (row["commits"] or "")[:80],
+            "waived": row["id"].upper() in waived_ids,
+            "waiver_reason": next((w["reason"] for w in waivers
+                                   if w["id"] == row["id"].upper()), ""),
         })
     if not hits:
         return item("F16", "F", "故障清单", "PASS",
                     "本次涉及的类别（%s）不命中任何已知坑（台账 %d 条已全量比对）"
                     % (", ".join(sorted(cats)) or "未指定", len(rows)),
                     ledger_hits=[], ledger_categories=sorted(cats)), []
-    fatal = [h for h in hits if h["recurrence"] >= 2 and not h["waived"]]
-    urgent = [h for h in hits if not h["mitigated"]]
+    live = [h for h in hits if not h["waived"]]           # 豁免的只留痕，不参与判定
+    fatal = [h for h in live if h["recurrence"] >= 2 and not h["mitigated"]]
+    chronic = [h for h in live if h["recurrence"] >= 2 and h["mitigated"]]   # 踩过多次但已修
+    urgent = [h for h in live if h["recurrence"] < 2 and not h["mitigated"]]
     if fatal:
         return item("F16", "F", "故障清单", "FAIL",
-                    "触及 %d 条**复发 ≥2 次**的已知坑（同一坑不能再踩）：%s —— 先在派单里写规避动作，"
-                    "确认已规避后用 --ledger-waive %s 显式豁免"
-                    % (len(fatal), "; ".join("%s(%s×%d)" % (h["id"], h["category"], h["recurrence"])
-                                              for h in fatal[:4]),
-                       ",".join(h["id"] for h in fatal)),
-                    ledger_hits=hits, ledger_categories=sorted(cats)), hits
+                    "触及 %d 条**复发 ≥2 次且未规避**的已知坑（明知踩过两次还没修）：%s —— 先修再派；"
+                    "真已规避则 `--ledger-waive 编号=理由`（空理由拒绝执行，豁免写进证据）"
+                    % (len(fatal), "; ".join("%s(%s×%d,%s)" % (h["id"], h["category"], h["recurrence"],
+                                               (h["commits"] or "无关联提交")[:24])
+                                              for h in fatal[:4])),
+                    ledger_hits=hits, ledger_categories=sorted(cats),
+                    ledger_waivers=waivers), hits
+    if chronic:
+        return item("F16", "F", "故障清单", "WARN",
+                    "%s" % " | ".join(
+                        "这条踩过 %d 次，已修于 %s，本次改动请确认未重新引入「%s」"
+                        % (h["recurrence"], h["fix_sha"] or h["commits"] or "?", _behaviour(h))
+                        for h in chronic[:3]),
+                    ledger_hits=hits, ledger_categories=sorted(cats),
+                    ledger_waivers=waivers, ledger_chronic=[h["id"] for h in chronic]), hits
     if urgent:
         return item("F16", "F", "故障清单", "WARN",
                     "触及 %d 条**未规避**的已知坑：%s —— 规避动作：%s"
                     % (len(urgent), ", ".join("%s(%s)" % (h["id"], h["category"]) for h in urgent[:4]),
                        urgent[0]["mitigation"][:180]),
-                    ledger_hits=hits, ledger_categories=sorted(cats)), hits
+                    ledger_hits=hits, ledger_categories=sorted(cats), ledger_waivers=waivers), hits
+    wv = [h for h in hits if h["waived"]]
     return item("F16", "F", "故障清单", "PASS",
-                "触及 %d 条已修条目（%s），均已带修复提交，不拦派单"
-                % (len(hits), ", ".join(h["id"] for h in hits[:6])),
-                ledger_hits=hits, ledger_categories=sorted(cats)), hits
+                ("触及 %d 条已比对条目（%s），其中 %d 条本次已豁免（理由见证据 ledger.waivers），不拦派单"
+                 % (len(hits), ", ".join(h["id"] for h in hits[:6]), len(wv))) if wv else
+                ("触及 %d 条已修条目（%s），均已带修复提交，不拦派单"
+                 % (len(hits), ", ".join(h["id"] for h in hits[:6]))),
+                ledger_hits=hits, ledger_categories=sorted(cats), ledger_waivers=waivers), hits
 
 
 # ------------------------------------------------------------------ B 代码版本
@@ -1091,7 +1161,9 @@ def build_report(args) -> dict:
     items.append(ledger_item)
     evidence["ledger"] = {"path": os.path.relpath(ledger_path, ROOT), "changed_files": changed[:80],
                           "categories": ledger_item.get("ledger_categories", []),
-                          "hits": ledger_hits, "waived": list(args.ledger_waive or [])}
+                          "hits": ledger_hits,
+                          "waivers": ledger_item.get("ledger_waivers", []),
+                          "waived": [w["id"] for w in ledger_item.get("ledger_waivers", [])]}
     evidence["ref"] = {"ref": ref, "sha": ref_sha, "main_sha": main_sha}
     chain_rc, chain_out, chain_err = _run(
         [sys.executable, os.path.join(HERE, "chain_policy.py"), "--stage", stage, "--dry-run"],
@@ -1266,6 +1338,20 @@ def human_summary(rep: dict) -> str:
                       "     %s" % c["adjudicate_cmd"],
                       ""]
     lines.append("-" * 78)
+    led = next((i for i in rep["checks"] if i["id"] == "F16"), None)
+    if led and led.get("ledger_hits"):
+        lines.append("F16 故障清单比对（%d 条命中）：" % len(led["ledger_hits"]))
+        for h in led["ledger_hits"]:
+            state = ("已修于 %s" % (h["fix_sha"] or h["commits"]) if h["mitigated"]
+                     else "**未规避**")
+            lines.append("  · %s [%s] 复发×%d %s%s"
+                         % (h["id"], h["category"], h["recurrence"], state,
+                            "（本次已豁免）" if h["waived"] else ""))
+            lines.append("      症状：%s" % (h["status"] or "?")[:140])
+            lines.append("      验证方式：%s" % (h["verify"] or "（台账未写）"))
+            if h["waived"]:
+                lines.append("      豁免理由：%s" % (h["waiver_reason"] or "?"))
+        lines.append("-" * 78)
     if rep["fail_n"]:
         lines.append("❌ 门禁未通过：修完上面标 ❌ 的项再派单（处置见 docs/PREFLIGHT-GATE.md）")
     else:
@@ -1284,7 +1370,8 @@ def main() -> int:
     ap.add_argument("--ledger-category", default="",
                     help="本次派单涉及的类别（逗号分隔）：并发队列/artifact与下载/git提交/账本与口径/…")
     ap.add_argument("--ledger-waive", action="append", default=[],
-                    help="豁免某条「复发≥2 次」的编号（如 --ledger-waive W33-011）；豁免写进证据")
+                    help="豁免某条「复发≥2 次且未规避」的编号，**必须带理由**："
+                         "`--ledger-waive 编号=理由`（空理由拒绝执行；豁免与理由写进证据）")
     ap.add_argument("--ledger", default="", help="台账路径（默认 docs/WORKFLOW-FAILURE-LEDGER.md）")
     ap.add_argument("--repo", default=DEFAULT_REPO)
     ap.add_argument("--authorize-heavy", action="store_true", help="10b 重阶段授权（= workflow 的 authorize_heavy=1）")
@@ -1294,6 +1381,13 @@ def main() -> int:
     ap.add_argument("--baseline-out", default="", help="默认 analysis/rows-baseline-<stage>-<ts>.json")
     ap.add_argument("--no-write", action="store_true", help="不写 analysis 产物（只打印）")
     a = ap.parse_args()
+    # ★ 豁免必须带理由：空壳理由 → 拒绝执行（rc=2，不跑任何检查、不写证据）
+    try:
+        parse_ledger_waivers(a.ledger_waive)
+    except ValueError as e:
+        print("❌ 拒绝执行：%s" % e)
+        print("   理由写清「凭什么是已规避」：改了哪个文件 / 跑了什么验证 / 证据路径。")
+        return 2
     if a.offline:
         os.environ["PREFLIGHT_OFFLINE"] = "1"
     globals()["DEFAULT_REPO"] = a.repo

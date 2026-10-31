@@ -3,9 +3,13 @@
 > 立规：2026-10-31。用户原话：**每个仓建一份 workflow 故障清单，写之前必查、跑后必补。**
 > 本文是该仓 workflow 的**唯一故障台账**（唯一真值）。别处写的「踩坑记录」一律以本文为准并回链到编号。
 >
+> **本表条目以代码 / 文档可复核证据为准，记忆与传闻不入表。**（证据路径见 §3；复核不了的一律标「待复核」或搬进附录 A）
+>
 > 三条铁律：
 > 1. **写之前必查**：派单前先查本文 + 本次涉及的类别，派单里写 `故障清单已查：<编号列表 | 无>`，没有这行视为无效派单。
->    机械门禁：`collect/preflight_dispatch.py` 的 **F16** 读本文 → 输出 `ledger_hits[]`（未规避 → WARN；复发 ≥2 次 → FAIL，可用 `--ledger-waive` 显式豁免）。
+>    机械门禁：`collect/preflight_dispatch.py` 的 **F16** 读本文 → 输出 `ledger_hits[]`
+    （2026-10-31 改版：**复发 ≥2 且未规避 → FAIL**；**复发 ≥2 且已规避 → WARN**（打印修复 sha + 验证方式）；
+    未规避且复发 = 1 → WARN；台账缺失 / 表解析失败 → FAIL。`--ledger-waive 编号=理由` 显式豁免，**空理由拒绝执行**）。
 > 2. **跑后必补**：新踩的坑**当天**补进本文（含错误原文关键行、证据路径、修法、验证方式、关联提交），**不许事后凭记忆补**。
 > 3. **补完提交**：commit message 写 `ledger: +N <类别>`（例如 `ledger: +2 账本与口径`）。
 >
@@ -62,8 +66,11 @@
 ```bash
 # ① 派单前：查清单 + 本次涉及的类别（preflight F16 会自动读本文并输出 ledger_hits[]）
 python3 collect/preflight_dispatch.py --stage 04b --ledger-category 账本与口径,并发队列
-#   复发 ≥2 次的条目默认 FAIL；确认已规避要显式豁免（并在派单里写理由）
-python3 collect/preflight_dispatch.py --stage 04b --ledger-waive W33-011
+#   复发 ≥2 且**未规避** → FAIL；复发 ≥2 且**已修** → WARN（只提醒「确认未重新引入」+ 打印验证方式）
+#   真已规避还要豁免时：理由必填（空理由 / ok / 无 → rc=2 拒绝执行）
+python3 collect/preflight_dispatch.py --stage 04b \
+    --ledger-waive 'W33-011=a478570 已按层合并且 test_ledger_merge 全绿，本单只动 preflight'
+#   豁免与理由写进 analysis/preflight-*.json 的 evidence.ledger.waivers[]
 
 # ② 派单里必须写这一行（没有 = 无效派单）
 #    故障清单已查：W33-011,W33-013（或「无」）
@@ -85,3 +92,18 @@ git commit -m "ledger: +1 账本与口径   # 例：W33-034 ..."
 - `analysis/04b-upstream-evidence-2026-10-30.json`（上游 returnCount 取证）
 - `analysis/04b-token-499-evidence-2026-10-31.json`（服务级 token：2 轮 × 3 端点全 499，含 499 原文）
 - `collect/tests/test_ledger_merge.py` / `test_ckpt_guard.py` / `test_chain_policy.py`（对应修法的回归）
+
+## 附录 A：被推翻的传闻（2026-10-31 首次实战）
+
+> 本节记「曾经当事实流传、复核后被推翻」的说法。**保留原文 + 推翻依据**，防止它们换个说法再回来。
+> 用户 2026-10-31 原话：这五条「全部按你的证据改，我这边不再坚持」——清单的第一次实战价值就是**把人的错也筛出来**。
+
+| # | 传闻（原说法） | 复核结果 | 推翻依据（可复核） |
+|---|---|---|---|
+| A1 | 一仓「TIGER 补抓 GA 有 46.2% 顶点落进邻县 bbox」 | **无出处，不作数** | 一仓 `grep -r '46.2'` 零命中；已用可核数字替换（`docs/NAD-COVERAGE-2026-10-28.md`：Clayton bbox 235 / 多边形 0；`docs/NAD-COVERAGE-FULL-2026-10-30.md`：`bbox_false_positive_n: 32`） |
+| A2 | 「Kentucky 层属性州标成 IN → 490 万行假 UNLOCATED」是**一仓**的坑 | **属三仓**（已记 `W33-025`） | 一仓 `grep -rn UNLOCATED` 0 命中；实现与证据都在三仓：`collect/county_assign.py`、`docs/COUNTY-ASSIGN-2026-10-30.md:334` |
+| A3 | 「NAD 汇总层与县层重复（声明 3,197 万 / 实际 7,594 万）」是**一仓**的账本坑 | **属三仓**（已记 `W33-017`） | 同上：`docs/COUNTY-ASSIGN-2026-10-30.md:36`（三仓 `collect/` 侧统计口径），一仓无对应实现 |
+| A4 | 二仓「G3 缺 addrfeat 不拒跑 / G9 无离线自测 / G11 `oa_rows` 恒 None」按**现状缺陷**记 | **均已修**，只能按历史记（`W2-009`/`W2-011` 等已标「已修」） | 二仓 `scripts/gold_preflight.py:139-141`（G3 只 WARN）、`tests/test_gold_offline.py` 存在（G9）、`scripts/gold_coalesce.py:1016-1017`（G11 已回填 `oa_rows`） |
+| A5 | 二仓「Overture 缓存键只有文件名，多包互相覆盖」 | **更严重**：不是「按包名拼目录」，而是**固定单目录** `cache_dir/overture/`（`W2-013`） | `scripts/gold_coalesce.py:476-490`；三个缓存（OA 包名目录 / Overture 固定目录 / Actions `gold-cache-<ST>-v1`）**全都没有 size/hash/mtime** |
+
+另注（**待复核，不是事实**）：`W33-005`（自研重试重复解压 `FileExistsError`）与 `W33-006`（文档名 `04B-FULL` vs glob `STEP0*-FULL`）的**精确 run id / 原始日志**尚未捞到；目前只按同批 artifact 修复（`cf8ab47` / `7ed74c8`）挂账，标「待复核」。**捞到前不许当已钉死的事实引用。**
