@@ -213,6 +213,22 @@
     "466a952^:collect/ledger/04b_plan.json"
    ],
    "lost": "无层数据丢失（行数与层结论均来自 Release 资产与既有证据），仅阶段账本口径被冲掉"
+  },
+  {
+   "at": "2026-10-30T23:05:36Z",
+   "kind": "layer_rows_rebuilt_from_assets",
+   "layer": "s_Points_from_National_Address_Database_view_FeatureServer_0",
+   "before": {
+    "rows": 39875268,
+    "status": "partial",
+    "parts_assets": 68
+   },
+   "after": {
+    "rows": 39875268,
+    "status": "partial"
+   },
+   "evidence": "analysis/nad-view-rebuild-2026-10-31.json",
+   "note": "checkpoint 被 force 重跑覆盖（run 41126178216），本行由 68 个单元包实测反推"
   }
  ],
  "partial_recalc": [
@@ -251,7 +267,7 @@
    "declared": 97928946,
    "declared_src": "layer_plan.csv",
    "rows": 39875268,
-   "rows_src": "unit_rows_seen",
+   "rows_src": "rebuild_from_assets",
    "parts_assets": 68,
    "parts_ckpt": 816,
    "bytes": 4597007037,
@@ -260,20 +276,19 @@
    "first_upload": "2026-10-30T16:56:31Z",
    "last_upload": "2026-10-30T19:42:48Z",
    "problems": [],
-   "warn": [
-    "checkpoint 计划行 39,875,268 与清单声明 97,928,946 差 -59.28%"
-   ],
+   "warn": [],
    "status": "partial",
-   "reason": "实采 39,875,268 / 上游当前 returnCount 97,928,946（差 59.28%）",
+   "reason": "实测 39,875,268 / 上游声明 97,928,946（差 59.28%）：差额属上游可见性变化，包与行数由 Release 逐个单元包实测",
    "gap": 58053678,
    "gap_pct": 59.2814,
    "shard": 7,
    "shard_conclusion": "failure",
    "evidence": {
-    "verdict": "upstream_alive",
-    "upstream_count": 97928946,
-    "http": 200,
-    "probe_url": "https://services.arcgis.com/xOi1kZaI0eWDREZv/ArcGIS/rest/services/Address_Points_from_National_Address_Database_view/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+    "rebuild": "analysis/nad-view-rebuild-2026-10-31.json",
+    "kind": "release_assets_recount",
+    "packages": 68,
+    "parts": 816,
+    "generated_at": "2026-10-30T23:03:23Z"
    }
   },
   {

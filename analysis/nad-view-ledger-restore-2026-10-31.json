@@ -1,0 +1,16 @@
+{
+ "events": [
+  {
+   "at": "2026-10-30T23:05:36Z",
+   "kind": "layer_rows_rebuilt_from_assets",
+   "layer": "s_Points_from_National_Address_Database_view_FeatureServer_0",
+   "run_id": "41126178216",
+   "stage": "04b",
+   "before_rows": 39875268,
+   "after_rows": 39875268,
+   "before_status": "partial",
+   "after_status": "partial",
+   "evidence": "analysis/nad-view-rebuild-2026-10-31.json"
+  }
+ ]
+}

@@ -108,6 +108,9 @@ def main() -> int:
     ap.add_argument("--base-dir", default=HERE, help="账本根目录（默认脚本所在的 collect/；测试用）")
     ap.add_argument("--allow-stage-overwrite", action="store_true",
                     help="显式允许小 run 覆盖阶段账本（默认禁止：run 层数 < 阶段账本的 1/2 时只写 run 文件）")
+    ap.add_argument("--row-shrink-evidence", action="append", default=[], metavar="LAYER=PATH",
+                    help="某层 rows 允许变小的实证（可重复）：没有它时，任何一层 rows 变小都会"
+                         "拒绝写阶段账本并非零退出（2026-10-30 NAD view 被覆盖事故的总闸门）")
     a = ap.parse_args()
     stage = a.stage
     tag, title = TITLES.get(stage, (stage.upper(), stage))
@@ -268,8 +271,14 @@ def main() -> int:
     #   详见 collect/ledger_merge.py（带单测）。
     from ledger_merge import write_run_and_stage, format_regressions_section   # noqa: E402
     run_id = a.run_id or os.environ.get("GITHUB_RUN_ID") or "local"
+    allow_shrink = {}
+    for spec in a.row_shrink_evidence:
+        if "=" in spec:
+            lay, pth = spec.split("=", 1)
+            allow_shrink[lay.strip()] = pth.strip()
     res = write_run_and_stage(stage, led, run_id, base_dir=a.base_dir,
-                              allow_stage_overwrite=a.allow_stage_overwrite)
+                              allow_stage_overwrite=a.allow_stage_overwrite,
+                              allow_shrink=allow_shrink)
 
     # ★ rows 回退单独成节（2026-10-31）：状态取优者 + 行数取大者会把「真丢数据」掩盖成
     #   「本次没采到那么多」，所以只要本轮某层 rows < 阶段账本 rows，就必须在这里点名。
@@ -294,6 +303,10 @@ def main() -> int:
         print("::warning::rows 回退 %d 层（无证据 %d 层）→ 见 %s 第七节"
               % (len(regs), res.get("rows_regressions_unexplained", 0), out))
     print("写入 %s 与 %s" % (out, res["run_path"]))
+    if res.get("error"):
+        # 行数回退且无实证：阶段账本一个字没动。非零退出，让 workflow 看得见。
+        print("::error::阶段账本拒绝写入（行数回退无实证）：%s" % str(res["error"])[:500], flush=True)
+        return 2
     return 0
 
 

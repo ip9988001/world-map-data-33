@@ -45,8 +45,11 @@ def now() -> str:
 
 
 def run_layer(step: str, lid: str, workers: int, unit_rows: int, tag_prefix: str = "",
-              layer_timeout_min: float = LAYER_TIMEOUT_MIN) -> dict:
-    """跑一层，返回账本记录（四态之一 + 原因）。"""
+              layer_timeout_min: float = LAYER_TIMEOUT_MIN, force_rerun: bool = False) -> dict:
+    """跑一层，返回账本记录（四态之一 + 原因）。
+
+    `force_rerun=True` → 传 `PILOT_FORCE_RERUN=1`：pilot 会先把旧检查点备份成
+    `_checkpoint.bak-<RUN_ID>`（本地 + Release 各留 3 代），再按单元合并而不是整份覆盖。"""
     t0 = time.time()
     cmd = [sys.executable, os.path.join(HERE, "run_step_%s.py" % step),
            "--layer", lid, "--workers", str(workers), "--unit-rows", str(unit_rows)]
@@ -57,6 +60,8 @@ def run_layer(step: str, lid: str, workers: int, unit_rows: int, tag_prefix: str
         # 否则全量补采会把数据塞进 tag 名为空/默认的 Release，续跑也就对不上了。
         env["PILOT_RELEASE_TAG"] = tag_prefix + lid
         env["PILOT_HEARTBEAT_PUSH"] = "1"
+    if force_rerun:
+        env["PILOT_FORCE_RERUN"] = "1"
     try:
         r = subprocess.run(cmd, capture_output=True, text=True,
                            timeout=max(60, int(layer_timeout_min * 60)), env=env)
@@ -139,7 +144,8 @@ def main() -> int:
     ap.add_argument("--layer-timeout", type=float, default=LAYER_TIMEOUT_MIN,
                     help="单层墙钟上限（分钟，默认 60；必须远小于 job 的 350 分钟）")
     ap.add_argument("--force-layers", default="",
-                    help="逗号分隔的层 id：即使已判完成也强制重跑（补 cancelled 片的半截层）")
+                    help="逗号分隔的层 id：即使已判完成也强制重跑（补 cancelled 片的半截层）。"
+                         "重跑前 pilot 会先备份旧检查点、再按单元合并，绝不让某层 rows 变小")
     a = ap.parse_args()
     stage = a.stage
     name = STAGE_NAMES.get(stage)
@@ -198,7 +204,8 @@ def main() -> int:
             flush()
             continue
         print("[%s] (%d/%d) %s" % (name, i, len(layers), lid), flush=True)
-        rec = run_layer(base, lid, a.workers, unit_rows, a.tag_prefix, a.layer_timeout)
+        rec = run_layer(base, lid, a.workers, unit_rows, a.tag_prefix, a.layer_timeout,
+                        force_rerun=(lid in forced))
         if lid in forced:
             pu = sum(1 for n in ((prior.get(lid) or {}).get("assets") or [])
                      if re.search(r"-u\d{5}\.tar\.gz$", n or ""))
