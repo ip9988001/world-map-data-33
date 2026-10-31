@@ -27,13 +27,28 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import os
+import ssl
 import sys
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
+from concurrent.futures import ThreadPoolExecutor
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 TOL = 0.01          # 与 ledger_rebuild 的 GAP_TOL 一致：差额 >1% 才算没采全
+
+# ★ 2026-10-31 新规矩（用户明令）：声明分母不许永久当分母。
+#   事实：81 层实采超过声明、净额 −43,423,188 行 ⇒ 「声明行数」普遍是过期快照
+#   （上游缩水/删除/口径变），拿它当分母会让覆盖率系统性失真。
+#   下面这套是**只读**刷新：打上游 returnCount、出差异表、只给建议；改账本必须人工点头。
+DECLARED_REFRESH_STATUSES = ("ok", "missing", "partial")
+DECLARED_CONFIRM_PHRASE = "I-APPROVE-DECLARED-REFRESH"
+UA = {"User-Agent": "collect-audit/1.0 (+world-map-data-33)"}
 
 
 def jload(p):
@@ -208,6 +223,29 @@ def render_doc(led, audit, evidence, sha_refs):
         A("- `gap` = declared − rows_verifiable = **%s 行（%.4f%%）**" % (f"{led['gap']:,}", led["gap_pct"] or 0))
         A("- capped 层的 declared 另记 `declared_unverifiable` = %s，**永远不进分母**" % f"{led['declared_unverifiable']:,}")
         A("")
+        A("### 3.0.1 分母口径硬规矩（2026-10-31 用户定：声明值不是永久分母）")
+        A("")
+        A("> **1）声明值来自 `layer_plan.csv` 的计划期快照，上游会缩水/删数据/改口径。**")
+        A("> 实测（本账本口径，可复现）：**80 层实采 > 声明，超采合计 3,547,920 行**")
+        A("> （rebuilt 口径 81 层 / 3,547,930）；全账 `gap` = %s 行。拿过期声明当分母，" % f"{led['gap']:,}")
+        A("> 覆盖率系统性失真，而且「按声明 / 按可核实」两个百分比天生不可相减。")
+        A(">")
+        A("> **2）对外覆盖一律报两个数，禁止只报一个：**")
+        A("> - **`按声明分母`** = `rows_verifiable ÷ declared`（declared 剔除 capped 层）")
+        A("> - **`按可核实分母`** = `rows_verifiable ÷ (已刷新层用上游 returnCount + 未刷新层用旧声明)`，同时剔除 capped")
+        A("> 两个数必须同屏出现并标注 `declared_refreshed_at`（账本顶层；没刷过就写「未刷新」）。")
+        A("> 单独抛出任何一个数都算无效报表。")
+        A(">")
+        A("> **3）刷新是只读 + 人工点头：**")
+        A("> ```bash")
+        A("> # 只读：逐层打 returnCount，出「旧声明 / 新声明 / 实采 / 关系」差异表；不改账本")
+        A("> python3 collect/adjudicate_04b.py --refresh-declared --json-out analysis/04b-declared-refresh-<date>.json")
+        A("> # 采纳：写前备份 + 追加 revisions[kind=declared_refreshed]")
+        A("> python3 collect/adjudicate_04b.py --apply-declared-refresh <json> --declared-confirm I-APPROVE-DECLARED-REFRESH")
+        A("> ```")
+        A("> 只对 `ok / missing / partial` 且上游可达的层生效；`capped_by_upstream` / `unverified` / `empty` 一律不碰。")
+        A("> 当前 `declared_refreshed_at` = %s" % (led.get("declared_refreshed_at") or "未刷新"))
+        A("")
     A("### 3.1 与旧账的差异（逐条）")
     A("")
     A("| 层 | 旧状态 | 新状态 | 旧声明 | 新声明 | 原因 |")
@@ -332,13 +370,237 @@ def render_doc(led, audit, evidence, sha_refs):
     return "\n".join(L)
 
 
+# ---------------------------------------------------------------- 声明分母刷新（只读）
+#
+# 为什么必须做（2026-10-31）：04b 现有账本里 **81 层实采 > 声明**，净额 −43,423,188 行。
+# 声明值来自 `layer_plan.csv`（计划期估算的快照），上游缩水/删除/改口径后不跟新，
+# 于是：按声明分母算覆盖率系统性偏高或偏低，而且「按声明 / 按可核实」两个百分比
+# 永远不能直接相减——解释负担本可避免。
+#
+# 判据：只对 `ok / missing / partial` 且上游可达的层逐层打 `returnCount`；
+# 输出差异表（旧声明 / 新声明 / 实采 / 三者关系），**只输出建议、不改账本**；
+# 改账本必须人工点头（`--apply-declared-refresh` + 口号）并留 `revisions[kind=declared_refreshed]`。
+
+
+def plan_csv_urls(path):
+    """layer_id → api url（`layer_plan_clean.csv`）。"""
+    idx = {}
+    if not os.path.exists(path):
+        return idx
+    with open(path, encoding="utf-8", errors="replace") as f:
+        for r in csv.DictReader(f):
+            lid, url = (r.get("layer_id") or "").strip(), (r.get("url") or "").strip()
+            if lid and url:
+                idx[lid] = url
+    return idx
+
+
+def probe_return_count(url, timeout=25):
+    """一次只读 `returnCountOnly`。返回 {http, count, raw, err, elapsed_ms, url}。"""
+    q = url.rstrip("/") + "/query?" + urllib.parse.urlencode(
+        {"where": "1=1", "returnCountOnly": "true", "f": "json"})
+    t0 = time.time()
+    rec = {"url": q, "http": None, "count": None, "raw": "", "err": "", "elapsed_ms": None}
+    try:
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        req = urllib.request.Request(q, headers=UA)
+        with urllib.request.urlopen(req, timeout=timeout, context=ctx) as resp:
+            body = resp.read(4000).decode("utf-8", "replace")
+            rec.update(http=resp.status, raw=body[:300])
+            try:
+                j = json.loads(body)
+                if isinstance(j, dict) and "count" in j:
+                    rec["count"] = int(j["count"])
+                elif isinstance(j, dict) and j.get("error"):
+                    rec["err"] = "esri_error: %s" % str(j["error"])[:200]
+            except Exception:                              # noqa: BLE001
+                rec["err"] = "非 JSON 响应"
+    except urllib.error.HTTPError as e:
+        body = ""
+        try:
+            body = e.read(400).decode("utf-8", "replace")
+        except Exception:                                  # noqa: BLE001
+            pass
+        rec.update(http=e.code, raw=body[:300], err="HTTP %s" % e.code)
+    except Exception as e:                                 # noqa: BLE001
+        rec["err"] = "%s: %s" % (type(e).__name__, str(e)[:160])
+    rec["elapsed_ms"] = int((time.time() - t0) * 1000)
+    return rec
+
+
+def _relation(rows, new_decl, tol=TOL):
+    """实采 vs 上游当前声明：超采 / 一致 / 欠采 / 上游 0 行。"""
+    if new_decl is None:
+        return "不可复核"
+    if new_decl == 0:
+        return "上游 0 行（声明作废）"
+    if rows > new_decl * (1 + tol):
+        return "超采（上游缩水/删数据）"
+    if rows >= new_decl * (1 - tol):
+        return "一致"
+    return "欠采（真缺口按新声明）"
+
+
+def refresh_declared(ledger_path, plan_csv, out_json, limit=0, concurrency=6,
+                     timeout=25, quiet=False):
+    """逐层刷 `returnCount`，出差异表。**不写账本**，只写建议 JSON。"""
+    led = jload(ledger_path)
+    urls = plan_csv_urls(plan_csv)
+    targets = [r for r in (led.get("records") or [])
+               if r.get("status") in DECLARED_REFRESH_STATUSES]
+    if limit:
+        targets = targets[:limit]
+    no_url = [r["layer"] for r in targets if r["layer"] not in urls]
+    targets = [r for r in targets if r["layer"] in urls]
+
+    def one(rec):
+        p = probe_return_count(urls[rec["layer"]], timeout=timeout)
+        old = rec.get("declared")
+        rows = rec.get("rows") or 0
+        new = p.get("count")
+        rel = _relation(rows, new)
+        cov_old = round(100.0 * rows / old, 4) if old else None
+        cov_new = round(100.0 * rows / new, 4) if new else None
+        return {"layer": rec["layer"], "status": rec["status"],
+                "declared_old": old, "declared_new": new, "rows": rows,
+                "delta": (new - old) if (new is not None and old is not None) else None,
+                "relation": rel,
+                "coverage_by_declared_old_pct": cov_old,
+                "coverage_by_declared_new_pct": cov_new,
+                "probe": {k: p.get(k) for k in ("http", "count", "err", "elapsed_ms", "url")}}
+
+    with ThreadPoolExecutor(max_workers=max(1, concurrency)) as ex:
+        rows_out = list(ex.map(one, targets))
+
+    usable = [x for x in rows_out if x["declared_new"] is not None]
+    stale = [x for x in usable if x["relation"].startswith("超采")]
+    short = [x for x in usable if x["relation"].startswith("欠采")]
+    same = [x for x in usable if x["relation"] == "一致"]
+    zero = [x for x in usable if x["relation"].startswith("上游 0 行")]
+    dead = [x for x in rows_out if x["declared_new"] is None]
+    sum_old = sum((x["declared_old"] or 0) for x in usable)
+    sum_new = sum((x["declared_new"] or 0) for x in usable)
+    sum_rows = sum(x["rows"] for x in usable)
+    report = {
+        "schema": "declared-refresh/v1",
+        "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "ledger": os.path.relpath(ledger_path, ROOT),
+        "plan_csv": os.path.relpath(plan_csv, ROOT),
+        "method": ("只读：对 status∈ok/missing/partial 且有 url 的层逐层打 `returnCountOnly`；"
+                   "不改账本。采纳需 `--apply-declared-refresh` + 口号，并留 revisions[kind=declared_refreshed]"),
+        "probed_n": len(rows_out), "no_url_n": len(no_url), "no_url_layers": no_url[:20],
+        "usable_n": len(usable), "unreachable_n": len(dead),
+        "stale_over_declared_n": len(stale), "short_n": len(short),
+        "consistent_n": len(same), "upstream_zero_n": len(zero),
+        "sums": {"declared_old": sum_old, "declared_new": sum_new, "rows": sum_rows,
+                 "delta": sum_new - sum_old, "net_rows_minus_declared": sum_rows - sum_new},
+        "suggestion": ("用 declared_new 做分母重算覆盖率；两者不可相减，报表必须同时给两个口径"
+                       if sum_new != sum_old else "无需刷新（新声明与旧声明同值）"),
+        "layers": rows_out,
+    }
+    if out_json:
+        os.makedirs(os.path.dirname(os.path.abspath(out_json)), exist_ok=True)
+        json.dump(report, open(out_json, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    if not quiet:
+        print("声明刷新（只读）%s  层 %d 可复核 %d / 不可达 %d"
+              % (report["at"], len(rows_out), len(usable), len(dead)))
+        print("  超采 %d / 一致 %d / 欠采 %d / 上游 0 行 %d"
+              % (len(stale), len(same), len(short), len(zero)))
+        print("  合计：旧声明 %s → 新声明 %s（%+d）；实采 %s（实采−新声明 %+d）"
+              % (f"{sum_old:,}", f"{sum_new:,}", sum_new - sum_old,
+                 f"{sum_rows:,}", sum_rows - sum_new))
+        # 只打差得多的 top 20（全表在 JSON 里）
+        diffs = sorted([x for x in usable if x["declared_old"] != x["declared_new"]],
+                       key=lambda x: -abs((x["delta"] or 0)))[:20]
+        if diffs:
+            print("  %-52s %12s %12s %12s %s" % ("layer", "旧声明", "新声明", "实采", "关系"))
+            for x in diffs:
+                print("  %-52s %12s %12s %12s %s"
+                      % (x["layer"][:52], f"{x['declared_old']:,}" if x["declared_old"] is not None else "-",
+                         f"{x['declared_new']:,}", f"{x['rows']:,}", x["relation"]))
+        print("  建议：%s" % report["suggestion"])
+        print("  账本未动（只读）。采纳：--apply-declared-refresh %s --declared-confirm %s"
+              % (os.path.relpath(out_json, ROOT) if out_json else "<json>", DECLARED_CONFIRM_PHRASE))
+    return report
+
+
+def apply_declared_refresh(ledger_path, report_path, confirm, backup_dir=None):
+    """人工点头后把新声明写进账本 + 留 `revisions[kind=declared_refreshed]`。
+
+    只改 ok/missing/partial 层；capped/unverified/empty 一律不碰（它们本来就不在分母里
+    或本就没有可核实声明）。写盘前先备份。
+    """
+    if confirm != DECLARED_CONFIRM_PHRASE:
+        raise SystemExit("拒绝写账本：--declared-confirm 必须等于 %r（人工点头口号）"
+                         % DECLARED_CONFIRM_PHRASE)
+    led = jload(ledger_path)
+    rep = jload(report_path)
+    by = {x["layer"]: x for x in (rep.get("layers") or [])}
+    per_layer, changed = [], 0
+    for r in (led.get("records") or []):
+        x = by.get(r["layer"])
+        if not x or x.get("declared_new") is None:
+            continue
+        if r.get("status") not in DECLARED_REFRESH_STATUSES:
+            continue
+        if x["declared_new"] == r.get("declared"):
+            continue
+        per_layer.append({"layer": r["layer"], "declared_before": r.get("declared"),
+                          "declared_after": x["declared_new"], "rows": r.get("rows"),
+                          "relation": x["relation"]})
+        r["declared"] = x["declared_new"]
+        r["declared_src"] = "upstream_returnCount %s" % rep.get("at")
+        r["gap"] = r["declared"] - (r.get("rows") or 0)
+        r["gap_pct"] = (round(100.0 * r["gap"] / r["declared"], 4) if r["declared"] else None)
+        changed += 1
+
+    declared_total = sum((r.get("declared") or 0) for r in (led.get("records") or []))
+    rows_total = sum((r.get("rows") or 0) for r in (led.get("records") or []))
+    rows_capped = led.get("rows_capped") or 0
+    unver = led.get("declared_unverifiable") or 0
+    led["declared"] = declared_total
+    led["rows"] = rows_total
+    led["rows_verifiable"] = rows_total - rows_capped
+    led["gap"] = declared_total - (rows_total - rows_capped)
+    led["gap_pct"] = (round(100.0 * led["gap"] / declared_total, 4) if declared_total else 0)
+    led["declared_kept_in_denominator"] = declared_total + unver
+    led["gap_pct_kept_in_denominator"] = (
+        round(100.0 * (declared_total + unver - rows_total) / (declared_total + unver), 4)
+        if (declared_total + unver) else 0)
+    led["declared_refreshed_at"] = rep.get("at")
+    led.setdefault("revisions", []).append({
+        "kind": "declared_refreshed",
+        "at": rep.get("at"),
+        "evidence": os.path.relpath(report_path, ROOT),
+        "confirm": confirm,
+        "layers_changed_n": changed,
+        "declared_before": rep.get("sums", {}).get("declared_old"),
+        "declared_after": declared_total,
+        "policy": "声明分母定期用上游 returnCount 刷新；两个口径（按声明/按可核实）必须同时报",
+        "per_layer": per_layer,
+    })
+    stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+    bak = os.path.join(backup_dir or os.path.dirname(os.path.abspath(ledger_path)),
+                       os.path.basename(ledger_path) + ".bak-" + stamp + "-predeclaredrefresh.json")
+    json.dump(jload(ledger_path), open(bak, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    json.dump(led, open(ledger_path, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    print("✅ 已写账本：%d 层声明更新；declared %s→%s；备份 %s"
+          % (changed, f"{rep.get('sums', {}).get('declared_old'):,}" if rep.get("sums") else "-",
+             f"{declared_total:,}", os.path.relpath(bak, ROOT)))
+    return 0
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--rebuilt", default=os.path.join(HERE, "ledger", "step04b_rebuilt.json"))
-    ap.add_argument("--evidence", required=True)
+    ap.add_argument("--evidence", default="",
+                    help="04b-upstream-evidence-*.json（逐层 returnCount 取证）；"
+                         "--refresh-declared / --apply-declared-refresh 不需要")
     ap.add_argument("--plan", default=os.path.join(HERE, "ledger", "04b_plan.json"))
     ap.add_argument("--cancel-plan", default="", help="run 41092912755 的 plan-04b（36 层 / 9 片）")
-    ap.add_argument("--out", required=True)
+    ap.add_argument("--out", default="", help="输出账本（--check / --refresh-declared 模式下可省）")
     ap.add_argument("--audit", default="")
     ap.add_argument("--doc", default="")
     ap.add_argument("--check", action="store_true", help="只比对，不写盘；不一致退 1")
@@ -354,7 +616,40 @@ def main() -> int:
                     help="服务级 499 探测证据（analysis/04b-token-499-evidence-*.json）；"
                          "其 layers[] 里 verdict=service_level_token 且 all_rounds_token=true 的层"
                          "自动进 capped 集（不传 --capped 也行）")
+    # ★ 2026-10-31 新规矩：声明分母不许永久当分母（只读刷新 + 人工点头才写账本）
+    ap.add_argument("--refresh-declared", action="store_true",
+                    help="只读：对 ok/missing/partial 且上游可达的层逐层打 returnCount，"
+                         "出「旧声明/新声明/实采/三者关系」差异表；**不改账本**")
+    ap.add_argument("--ledger", default=os.path.join(HERE, "04b_ledger.json"),
+                    help="阶段账本（--refresh-declared 的输入；--apply-declared-refresh 的目标）")
+    ap.add_argument("--plan-csv", default=os.path.join(HERE, "layer_plan_clean.csv"),
+                    help="layer_id → api url 的源（默认 collect/layer_plan_clean.csv）")
+    ap.add_argument("--json-out", default="",
+                    help="刷新建议 JSON（默认 analysis/04b-declared-refresh-<date>.json）")
+    ap.add_argument("--limit", type=int, default=0, help="只探前 N 层（排障用）")
+    ap.add_argument("--concurrency", type=int, default=6)
+    ap.add_argument("--timeout", type=int, default=25)
+    ap.add_argument("--apply-declared-refresh", default="", metavar="JSON",
+                    help="人工点头后按刷新 JSON 写账本（必须配 --declared-confirm %s）；"
+                         "写前备份 + 追加 revisions[kind=declared_refreshed]" % DECLARED_CONFIRM_PHRASE)
+    ap.add_argument("--declared-confirm", default="", help="人工点头口号（防误触发）")
+    ap.add_argument("--backup-dir", default="", help="写账本前的备份目录（默认与账本同目录）")
     a = ap.parse_args()
+
+    # ---- 声明刷新两条路径：都不走下面的 04b 判定主流程 ----
+    if a.apply_declared_refresh:
+        return apply_declared_refresh(a.ledger, a.apply_declared_refresh, a.declared_confirm,
+                                      a.backup_dir or None)
+    if a.refresh_declared:
+        out = a.json_out or os.path.join(
+            ROOT, "analysis", "04b-declared-refresh-%s.json" % time.strftime("%Y%m%d", time.gmtime()))
+        refresh_declared(a.ledger, a.plan_csv, out, limit=a.limit,
+                         concurrency=a.concurrency, timeout=a.timeout)
+        return 0
+    if not a.evidence:
+        ap.error("--evidence 必填（除 --refresh-declared / --apply-declared-refresh）")
+    if not a.out:
+        ap.error("--out 必填（除 --refresh-declared / --apply-declared-refresh）")
 
     rebuilt = jload(a.rebuilt)
     capped_set, capped_ev = {}, {}

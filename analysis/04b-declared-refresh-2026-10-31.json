@@ -1,0 +1,4610 @@
+{
+ "schema": "declared-refresh/v1",
+ "at": "2026-10-31T01:03:54Z",
+ "ledger": "collect/04b_ledger.json",
+ "plan_csv": "collect/layer_plan_clean.csv",
+ "method": "只读：对 status∈ok/missing/partial 且有 url 的层逐层打 `returnCountOnly`；不改账本。采纳需 `--apply-declared-refresh` + 口号，并留 revisions[kind=declared_refreshed]",
+ "probed_n": 254,
+ "no_url_n": 11,
+ "no_url_layers": [
+  "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1",
+  "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2",
+  "rest_services_AGOL_MassGIS_Master_Address_Points_MapServer_0@未定位-2",
+  "ervices_us_mn_state_mngeo_loc_addresses_open_FeatureServer_0@未定位-1",
+  "rest_services_Maricopa_County_Address_Points_FeatureServer_0@AZ-1",
+  "rest_services_Maricopa_County_Address_Points_FeatureServer_0@AZ-2",
+  "s_rest_services_Maine_E911_Addresses_Feature_FeatureServer_0@未定位-1",
+  "_rest_services_Site_Structure_Address_Points_FeatureServer_0@CA-1",
+  "rest_services_hennepin_county_address_points_FeatureServer_0@MN-1",
+  "rest_services_hennepin_county_address_points_FeatureServer_0@MN-2",
+  "gis_rest_services_SiteStructureAddressPoints_FeatureServer_0@未定位-3"
+ ],
+ "usable_n": 223,
+ "unreachable_n": 31,
+ "stale_over_declared_n": 1,
+ "short_n": 3,
+ "consistent_n": 219,
+ "upstream_zero_n": 0,
+ "sums": {
+  "declared_old": 413239943,
+  "declared_new": 413493143,
+  "rows": 412144185,
+  "delta": 253200,
+  "net_rows_minus_declared": -1348958
+ },
+ "suggestion": "用 declared_new 做分母重算覆盖率；两者不可相减，报表必须同时给两个口径",
+ "layers": [
+  {
+   "layer": "UCXd1_arcgis_rest_services_USA_NAD_Addresses_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 75937418,
+   "declared_new": 75937418,
+   "rows": 75937418,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 75937418,
+    "err": "",
+    "elapsed_ms": 246,
+    "url": "https://services6.arcgis.com/Do88DoK2xjTUCXd1/arcgis/rest/services/USA_NAD_Addresses/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "N_arcgis_rest_services_OSM_Address_Points_EU_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 32730200,
+   "declared_new": 32730200,
+   "rows": 32730200,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 32730200,
+    "err": "",
+    "elapsed_ms": 232,
+    "url": "https://services-eu1.arcgis.com/zci5bUiJ8olAal7N/arcgis/rest/services/OSM_Address_Points_EU/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "arcgis_rest_services_national_address_points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 15949543,
+   "declared_new": 15949543,
+   "rows": 15949543,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 15949543,
+    "err": "",
+    "elapsed_ms": 286,
+    "url": "https://services-ap1.arcgis.com/ypkPEy1AmwPKGNNv/arcgis/rest/services/national_address_points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "TUCXd1_arcgis_rest_services_OSM_Addresses_NA_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 15765750,
+   "declared_new": 15765750,
+   "rows": 15765750,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 15765750,
+    "err": "",
+    "elapsed_ms": 228,
+    "url": "https://services6.arcgis.com/Do88DoK2xjTUCXd1/arcgis/rest/services/OSM_Addresses_NA/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "is_rest_services_EXP_national_address_points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 15057532,
+   "declared_new": 15057532,
+   "rows": 15057532,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 15057532,
+    "err": "",
+    "elapsed_ms": 235,
+    "url": "https://services-ap1.arcgis.com/EiaPtTiEArHVnvWM/arcgis/rest/services/EXP_national_address_points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "FO4fjN9P_arcgis_rest_services_Address_Points_FeatureServer_1",
+   "status": "ok",
+   "declared_old": 11349117,
+   "declared_new": 11349117,
+   "rows": 11349117,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 11349117,
+    "err": "",
+    "elapsed_ms": 1436,
+    "url": "https://services2.arcgis.com/iDGPUUUgFO4fjN9P/arcgis/rest/services/Address_Points/FeatureServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "VJ3k_ArcGIS_rest_services_NYS_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 6583495,
+   "declared_new": 6585376,
+   "rows": 6585376,
+   "delta": 1881,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0286,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 6585376,
+    "err": "",
+    "elapsed_ms": 408,
+    "url": "https://services6.arcgis.com/EbVsqZ18sv1kVJ3k/ArcGIS/rest/services/NYS_Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0",
+   "status": "missing",
+   "declared_old": 6585376,
+   "declared_new": null,
+   "rows": 0,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 0.0,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": null,
+    "count": null,
+    "err": "TimeoutError: The read operation timed out",
+    "elapsed_ms": 21559,
+    "url": "https://gisservices.its.ny.gov/arcgis/rest/services/SAM_Address_Points_Symbolized/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0",
+   "status": "missing",
+   "declared_old": 6585376,
+   "declared_new": null,
+   "rows": 0,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 0.0,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": null,
+    "count": null,
+    "err": "TimeoutError: The read operation timed out",
+    "elapsed_ms": 21604,
+    "url": "https://gisservices.its.ny.gov/arcgis/rest/services/SAM_Address_Points/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "EH8C_arcgis_rest_services_NYS_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 6562982,
+   "declared_new": 6562982,
+   "rows": 6562982,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 6562982,
+    "err": "",
+    "elapsed_ms": 755,
+    "url": "https://services7.arcgis.com/OUQwbZ6ksl00EH8C/arcgis/rest/services/NYS_Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "aIfH92NqI_arcgis_rest_services_AddressNC_v1_FeatureServer_28",
+   "status": "ok",
+   "declared_old": 5703287,
+   "declared_new": 5703287,
+   "rows": 5703287,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 5703287,
+    "err": "",
+    "elapsed_ms": 1829,
+    "url": "https://services5.arcgis.com/mSDBiLWaIfH92NqI/arcgis/rest/services/AddressNC_v1/FeatureServer/28/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "UyC7jAmu_arcgis_rest_services_LBRSforLocator_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 5573001,
+   "declared_new": 5573001,
+   "rows": 5573001,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 5573001,
+    "err": "",
+    "elapsed_ms": 7702,
+    "url": "https://services2.arcgis.com/MlJ0G8iWUyC7jAmu/arcgis/rest/services/LBRSforLocator/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_rest_services_Statewide_LBRS_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 5573001,
+   "declared_new": 5573001,
+   "rows": 5573001,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 5573001,
+    "err": "",
+    "elapsed_ms": 360,
+    "url": "https://services2.arcgis.com/MlJ0G8iWUyC7jAmu/arcgis/rest/services/Statewide_LBRS_Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "conemap_gov_secure_rest_services_NC1Map_Location_MapServer_0",
+   "status": "ok",
+   "declared_old": 4939912,
+   "declared_new": 4939912,
+   "rows": 7816000,
+   "delta": 0,
+   "relation": "超采（上游缩水/删数据）",
+   "coverage_by_declared_old_pct": 158.2214,
+   "coverage_by_declared_new_pct": 158.2214,
+   "probe": {
+    "http": 200,
+    "count": 4939912,
+    "err": "",
+    "elapsed_ms": 1087,
+    "url": "https://services.nconemap.gov/secure/rest/services/NC1Map_Location/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "is_rest_services_NC_SBOE_Address_Points_WFL1_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 4636331,
+   "declared_new": 4636331,
+   "rows": 4636331,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 4636331,
+    "err": "",
+    "elapsed_ms": 713,
+    "url": "https://services.arcgis.com/ycIuRaoIC4UuCDAS/arcgis/rest/services/NC_SBOE_Address_Points_WFL1/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "f4LlBZ84_arcgis_rest_services_Vicmap_Address_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 4229277,
+   "declared_new": 4231130,
+   "rows": 4231130,
+   "delta": 1853,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0438,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 4231130,
+    "err": "",
+    "elapsed_ms": 635,
+    "url": "https://services-ap1.arcgis.com/P744lA0wf4LlBZ84/arcgis/rest/services/Vicmap_Address/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rest_services_Tennessee_NG911_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 3951840,
+   "declared_new": 3951840,
+   "rows": 3951840,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 3951840,
+    "err": "",
+    "elapsed_ms": 480,
+    "url": "https://services1.arcgis.com/YuVBSS7Y1of2Qud1/arcgis/rest/services/Tennessee_NG911_Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "s_rest_services_VA_Base_Layers_VA_Address_Points_MapServer_0",
+   "status": "ok",
+   "declared_old": 3881020,
+   "declared_new": 3881020,
+   "rows": 3881020,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 3881020,
+    "err": "",
+    "elapsed_ms": 1379,
+    "url": "https://vginmaps.vdem.virginia.gov/arcgis/rest/services/VA_Base_Layers/VA_Address_Points/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "st_services_VA_Base_Layers_VA_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 3881020,
+   "declared_new": 3881020,
+   "rows": 3881020,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 3881020,
+    "err": "",
+    "elapsed_ms": 1391,
+    "url": "https://vginmaps.vdem.virginia.gov/arcgis/rest/services/VA_Base_Layers/VA_Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "TUCXd1_arcgis_rest_services_Virginia_address_FeatureServer_1",
+   "status": "ok",
+   "declared_old": 3879153,
+   "declared_new": 3879153,
+   "rows": 3879153,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 3879153,
+    "err": "",
+    "elapsed_ms": 630,
+    "url": "https://services6.arcgis.com/Do88DoK2xjTUCXd1/arcgis/rest/services/Virginia_address/FeatureServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "OJ5P6ngMu_arcgis_rest_services_AddressPoints_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 3758585,
+   "declared_new": 3758585,
+   "rows": 3758585,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 3758585,
+    "err": "",
+    "elapsed_ms": 556,
+    "url": "https://services2.arcgis.com/XVOqAjTOJ5P6ngMu/arcgis/rest/services/AddressPoints/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "gis_rest_services_AZ911_AddressPoints_Hosted_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 3734802,
+   "declared_new": 3735462,
+   "rows": 3735462,
+   "delta": 660,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0177,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 3735462,
+    "err": "",
+    "elapsed_ms": 473,
+    "url": "https://services6.arcgis.com/clPWQMwZfdWn4MQZ/arcgis/rest/services/AZ911_AddressPoints_Hosted/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_services_AGOL_MassGIS_Master_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 3715904,
+   "declared_new": 3716441,
+   "rows": 3716441,
+   "delta": 537,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0145,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 3716441,
+    "err": "",
+    "elapsed_ms": 1164,
+    "url": "https://arcgisserver.digital.mass.gov/arcgisserver/rest/services/AGOL/MassGIS_Master_Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_Address_Pts_for_NG911_Address_Finder_Hosted_FeatureServer_1",
+   "status": "ok",
+   "declared_old": 3624459,
+   "declared_new": 3624695,
+   "rows": 3624695,
+   "delta": 236,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0065,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 3624695,
+    "err": "",
+    "elapsed_ms": 451,
+    "url": "https://services1.arcgis.com/hGdibHYSPO59RG1h/arcgis/rest/services/MAD_Address_Pts_for_NG911_Address_Finder_Hosted/FeatureServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "2bbc_rest_services_AGOL_MAD_AGOL_R2R_ADDRPTS_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 3623798,
+   "declared_new": 3623798,
+   "rows": 3623798,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 3623798,
+    "err": "",
+    "elapsed_ms": 4676,
+    "url": "https://utility.arcgis.com/usrsvcs/servers/b07397bd4d7c4bd0ab935ac0f8622bbc/rest/services/AGOL/MAD_AGOL_R2R_ADDRPTS/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_services_AGOL_AddressPts_for_NG911AddressFinder_MapServer_0",
+   "status": "ok",
+   "declared_old": 3618012,
+   "declared_new": 3618012,
+   "rows": 3618012,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 3618012,
+    "err": "",
+    "elapsed_ms": 1337,
+    "url": "https://arcgisserver.digital.mass.gov/arcgisserver/rest/services/AGOL/AddressPts_for_NG911AddressFinder/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0",
+   "status": "missing",
+   "declared_old": 3618012,
+   "declared_new": 3618012,
+   "rows": 0,
+   "delta": 0,
+   "relation": "欠采（真缺口按新声明）",
+   "coverage_by_declared_old_pct": 0.0,
+   "coverage_by_declared_new_pct": 0.0,
+   "probe": {
+    "http": 200,
+    "count": 3618012,
+    "err": "",
+    "elapsed_ms": 1138,
+    "url": "https://arcgisserver.digital.mass.gov/arcgisserver/rest/services/AGOL/AddressPts_for_NG911AddressFinder/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "jRiEOyN05_arcgis_rest_services_Address063022_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 3391025,
+   "declared_new": 3391025,
+   "rows": 3391025,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 3391025,
+    "err": "",
+    "elapsed_ms": 567,
+    "url": "https://services5.arcgis.com/ZqUZ99cjRiEOyN05/arcgis/rest/services/Address063022/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "ces_Hosted_Address_Points_of_Indiana_Current_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 3326690,
+   "declared_new": 3326690,
+   "rows": 3326690,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 3326690,
+    "err": "",
+    "elapsed_ms": 1131,
+    "url": "https://gisdata.in.gov/server/rest/services/Hosted/Address_Points_of_Indiana_Current/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "vices_AZ_NG911_Site_Structure_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 3316394,
+   "declared_new": 3316394,
+   "rows": 3316394,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 3316394,
+    "err": "",
+    "elapsed_ms": 489,
+    "url": "https://services6.arcgis.com/clPWQMwZfdWn4MQZ/arcgis/rest/services/AZ_NG911_Site_Structure_Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rvices_Hosted_Address_Points_of_Indiana_2024_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 3313192,
+   "declared_new": 3313192,
+   "rows": 3313192,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 3313192,
+    "err": "",
+    "elapsed_ms": 1386,
+    "url": "https://gisdata.in.gov/server/rest/services/Hosted/Address_Points_of_Indiana_2024/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rvices_Hosted_Address_Points_of_Indiana_2023_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 3291399,
+   "declared_new": 3291399,
+   "rows": 3291399,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 3291399,
+    "err": "",
+    "elapsed_ms": 1271,
+    "url": "https://gisdata.in.gov/server/rest/services/Hosted/Address_Points_of_Indiana_2023/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rvices_Hosted_Address_Points_of_Indiana_2020_FeatureServer_6",
+   "status": "ok",
+   "declared_old": 3247979,
+   "declared_new": 3247979,
+   "rows": 3247979,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 3247979,
+    "err": "",
+    "elapsed_ms": 1193,
+    "url": "https://gisdata.in.gov/server/rest/services/Hosted/Address_Points_of_Indiana_2020/FeatureServer/6/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rvices_Hosted_Address_Points_of_Indiana_2021_FeatureServer_1",
+   "status": "ok",
+   "declared_old": 3146263,
+   "declared_new": 3146263,
+   "rows": 3146263,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 3146263,
+    "err": "",
+    "elapsed_ms": 1296,
+    "url": "https://gisdata.in.gov/server/rest/services/Hosted/Address_Points_of_Indiana_2021/FeatureServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "Address_and_Parcel_Colorado_Public_Addresses_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 2790190,
+   "declared_new": null,
+   "rows": 2790190,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": null,
+    "count": null,
+    "err": "URLError: <urlopen error timed out>",
+    "elapsed_ms": 20101,
+    "url": "https://gis.colorado.gov/public/rest/services/Address_and_Parcel/Colorado_Public_Addresses/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "st_services_eGIS_Addressing_ADDRESS_POINTSv2_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 2693272,
+   "declared_new": 2693332,
+   "rows": 2693332,
+   "delta": 60,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0022,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 2693332,
+    "err": "",
+    "elapsed_ms": 430,
+    "url": "https://services.arcgis.com/RmCCgQtiZLDCtblq/arcgis/rest/services/eGIS_Addressing_ADDRESS_POINTSv2/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "ces_WI_NG911_Site_Structure_Address_Points_2_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 2550488,
+   "declared_new": 2551345,
+   "rows": 2551345,
+   "delta": 857,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0336,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 2551345,
+    "err": "",
+    "elapsed_ms": 499,
+    "url": "https://services3.arcgis.com/GoOAGCoqFEhZEh7f/arcgis/rest/services/WI_NG911_Site_Structure_Address_Points_2/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "ces_Ky_911_Site_Structure_Address_Points_gdb_FeatureServer_1",
+   "status": "ok",
+   "declared_old": 2489597,
+   "declared_new": 2489939,
+   "rows": 2489939,
+   "delta": 342,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0137,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 2489939,
+    "err": "",
+    "elapsed_ms": 436,
+    "url": "https://services3.arcgis.com/ghsX9CKghMvyYjBU/arcgis/rest/services/Ky_911_Site_Structure_Address_Points_gdb/FeatureServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "ces_Ky_911_Site_Structure_Address_Points_WGS84WM_MapServer_0",
+   "status": "partial",
+   "declared_old": 2485645,
+   "declared_new": null,
+   "rows": 2489597,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.159,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": null,
+    "count": null,
+    "err": "URLError: <urlopen error timed out>",
+    "elapsed_ms": 20657,
+    "url": "https://kygisserver.ky.gov/arcgis/rest/services/WGS84WM_Services/Ky_911_Site_Structure_Address_Points_WGS84WM/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "es_Ky_911_Site_Structure_Address_Points_temp_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 2451742,
+   "declared_new": 2451742,
+   "rows": 2451742,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 2451742,
+    "err": "",
+    "elapsed_ms": 11424,
+    "url": "https://services3.arcgis.com/ghsX9CKghMvyYjBU/arcgis/rest/services/Ky_911_Site_Structure_Address_Points_temp/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "yZiCB_arcgis_rest_services_LINZ_NZ_Addresses_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 2433227,
+   "declared_new": 2433794,
+   "rows": 2433794,
+   "delta": 567,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0233,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 2433794,
+    "err": "",
+    "elapsed_ms": 317,
+    "url": "https://services.arcgis.com/xdsHIIxuCWByZiCB/arcgis/rest/services/LINZ_NZ_Addresses/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "911_Site_Structure_Address_Points_TEST_Share_FeatureServer_1",
+   "status": "ok",
+   "declared_old": 2414725,
+   "declared_new": 2414725,
+   "rows": 2414725,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 2414725,
+    "err": "",
+    "elapsed_ms": 11276,
+    "url": "https://services3.arcgis.com/ghsX9CKghMvyYjBU/arcgis/rest/services/Ky_911_Site_Structure_Address_Points_TEST_Share/FeatureServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "lystPropertyServices_GISTeamCorePropertyServices_MapServer_1",
+   "status": "ok",
+   "declared_old": 2403567,
+   "declared_new": null,
+   "rows": 2403567,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": 403,
+    "count": null,
+    "err": "HTTP 403",
+    "elapsed_ms": 130,
+    "url": "https://geospatial.propertygroup.co.nz/arcgis/rest/services/AnalystPropertyServices/GISTeamCorePropertyServices/MapServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "sidential_Commercial_and_Mixed_Use_Buildings_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 2277917,
+   "declared_new": 2277917,
+   "rows": 2277917,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 2277917,
+    "err": "",
+    "elapsed_ms": 750,
+    "url": "https://services6.arcgis.com/Vx9miIJ7oMVDgH95/arcgis/rest/services/Residential_Commercial_and_Mixed_Use_Buildings/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "U_arcgis_rest_services_Oregon_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1942377,
+   "declared_new": 1942377,
+   "rows": 1942377,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1942377,
+    "err": "",
+    "elapsed_ms": 840,
+    "url": "https://services8.arcgis.com/8PAo5HGmvRMlF2eU/arcgis/rest/services/Oregon_Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "fn_arcgis_rest_services_NG911_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1254000,
+   "declared_new": 1254000,
+   "rows": 1254000,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1254000,
+    "err": "",
+    "elapsed_ms": 580,
+    "url": "https://services.arcgis.com/3xOwF6p0r7IHIjfn/arcgis/rest/services/NG911_Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "vzKRJ_arcgis_rest_services_AddressPoint_GIO_FeatureServer_45",
+   "status": "ok",
+   "declared_old": 1567568,
+   "declared_new": 1567568,
+   "rows": 1567568,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1567568,
+    "err": "",
+    "elapsed_ms": 657,
+    "url": "https://services.arcgis.com/ykpntM6e3tHvzKRJ/arcgis/rest/services/AddressPoint_GIO/FeatureServer/45/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "KUeVR_arcgis_rest_services_COH_SiteAddresses_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1550454,
+   "declared_new": 1550454,
+   "rows": 1550454,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1550454,
+    "err": "",
+    "elapsed_ms": 613,
+    "url": "https://services.arcgis.com/NummVBqZSIJKUeVR/arcgis/rest/services/COH_SiteAddresses/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "tIe9K_ArcGIS_rest_services_UtahAddressPoints_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1501596,
+   "declared_new": 1504833,
+   "rows": 1504833,
+   "delta": 3237,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.2156,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1504833,
+    "err": "",
+    "elapsed_ms": 370,
+    "url": "https://services1.arcgis.com/99lidPhWCzftIe9K/ArcGIS/rest/services/UtahAddressPoints/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "vivmaQ_arcgis_rest_services_AddressPoints_AK_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1485539,
+   "declared_new": 1485539,
+   "rows": 1485539,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1485539,
+    "err": "",
+    "elapsed_ms": 634,
+    "url": "https://services8.arcgis.com/QQGMu3AgoCvivmaQ/arcgis/rest/services/AddressPoints_AK/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "gis_rest_services_NSW_Geocoded_Address_Point_FeatureServer_1",
+   "status": "ok",
+   "declared_old": 1464858,
+   "declared_new": 1464858,
+   "rows": 1464858,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1464858,
+    "err": "",
+    "elapsed_ms": 510,
+    "url": "https://services7.arcgis.com/uFAr0LUPy14bDaLg/arcgis/rest/services/NSW_Geocoded_Address_Point/FeatureServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "N_arcgis_rest_services_OSM_Address_Points_AS_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1458232,
+   "declared_new": 1458232,
+   "rows": 1458232,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1458232,
+    "err": "",
+    "elapsed_ms": 1217,
+    "url": "https://services-eu1.arcgis.com/zci5bUiJ8olAal7N/arcgis/rest/services/OSM_Address_Points_AS/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "ricopa_County_Address_Points__Non_Commercial_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1406150,
+   "declared_new": 1406138,
+   "rows": 1406138,
+   "delta": -12,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 99.9991,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1406138,
+    "err": "",
+    "elapsed_ms": 528,
+    "url": "https://services.arcgis.com/ykpntM6e3tHvzKRJ/arcgis/rest/services/Maricopa_County_Address_Points_(Non-Commercial)/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rvices_location_Address_Points_Modifications_FeatureServer_0",
+   "status": "partial",
+   "declared_old": 1369414,
+   "declared_new": null,
+   "rows": 1369487,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0053,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": null,
+    "count": null,
+    "err": "URLError: <urlopen error timed out>",
+    "elapsed_ms": 20783,
+    "url": "https://arcgis.metc.state.mn.us/data1/rest/services/location/Address_Points_Modifications/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "arcgis_rest_services_PSU_PEMA_ADDRESS_POINTS_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1321760,
+   "declared_new": 1321760,
+   "rows": 1321760,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1321760,
+    "err": "",
+    "elapsed_ms": 504,
+    "url": "https://services1.arcgis.com/fmL63zawJNFGptQt/arcgis/rest/services/PSU_PEMA_ADDRESS_POINTS/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_data1_rest_services_location_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1295754,
+   "declared_new": null,
+   "rows": 1295755,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0001,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": null,
+    "count": null,
+    "err": "URLError: <urlopen error timed out>",
+    "elapsed_ms": 20537,
+    "url": "https://arcgis.metc.state.mn.us/data1/rest/services/location/Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "t_services_GISLibrary_VWAddressPointsCommons_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1295754,
+   "declared_new": null,
+   "rows": 1295755,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0001,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": null,
+    "count": null,
+    "err": "URLError: <urlopen error timed out>",
+    "elapsed_ms": 20274,
+    "url": "https://arcgis.metc.state.mn.us/server/rest/services/GISLibrary/VWAddressPointsCommons/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "DCrBlhlg_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1270113,
+   "declared_new": 1270113,
+   "rows": 1270113,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1270113,
+    "err": "",
+    "elapsed_ms": 697,
+    "url": "https://services1.arcgis.com/QsZ6YNp8DCrBlhlg/arcgis/rest/services/Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "68ufHyvr_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1254346,
+   "declared_new": 1254346,
+   "rows": 1254346,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1254346,
+    "err": "",
+    "elapsed_ms": 873,
+    "url": "https://services4.arcgis.com/l8Wk45ve68ufHyvr/arcgis/rest/services/Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "com_l8Wk45ve68ufHyvr_arcgis_rest_services_AD_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1254346,
+   "declared_new": 1254346,
+   "rows": 1254346,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1254346,
+    "err": "",
+    "elapsed_ms": 988,
+    "url": "https://services4.arcgis.com/l8Wk45ve68ufHyvr/arcgis/rest/services/AD/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "fHyvr_arcgis_rest_services_AD_address_points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1254346,
+   "declared_new": 1254346,
+   "rows": 1254346,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1254346,
+    "err": "",
+    "elapsed_ms": 1022,
+    "url": "https://services4.arcgis.com/l8Wk45ve68ufHyvr/arcgis/rest/services/AD_address_points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rcgis_rest_services_Address_Points_shapefile_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1254346,
+   "declared_new": 1254346,
+   "rows": 1254346,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1254346,
+    "err": "",
+    "elapsed_ms": 961,
+    "url": "https://services4.arcgis.com/l8Wk45ve68ufHyvr/arcgis/rest/services/Address_Points_shapefile/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "gis_rest_services_Address_Points_2026_County_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1216910,
+   "declared_new": 1216910,
+   "rows": 1216910,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1216910,
+    "err": "",
+    "elapsed_ms": 684,
+    "url": "https://services9.arcgis.com/4ps2gTIu2PKBN4dk/arcgis/rest/services/Address_Points_2026_County/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "is_rest_services_ADDRESS_POINTS_110525_WGS84_FeatureServer_1",
+   "status": "ok",
+   "declared_old": 1215105,
+   "declared_new": 1215105,
+   "rows": 1215105,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1215105,
+    "err": "",
+    "elapsed_ms": 695,
+    "url": "https://services7.arcgis.com/uFAr0LUPy14bDaLg/arcgis/rest/services/ADDRESS_POINTS_110525_WGS84/FeatureServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "is_rest_services_ADDRESS_POINTS_110725_WGS84_FeatureServer_1",
+   "status": "ok",
+   "declared_old": 1215105,
+   "declared_new": 1215105,
+   "rows": 1215105,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1215105,
+    "err": "",
+    "elapsed_ms": 595,
+    "url": "https://services7.arcgis.com/uFAr0LUPy14bDaLg/arcgis/rest/services/ADDRESS_POINTS_110725_WGS84/FeatureServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "xPS_arcgis_rest_services_HCUS_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1205971,
+   "declared_new": 1205971,
+   "rows": 1205971,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1205971,
+    "err": "",
+    "elapsed_ms": 413,
+    "url": "https://services.arcgis.com/su8ic9KbA7PYVxPS/arcgis/rest/services/HCUS_Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rcgis_rest_services_County_37_LBRS_Addresses_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1186185,
+   "declared_new": 1186185,
+   "rows": 1186185,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1186185,
+    "err": "",
+    "elapsed_ms": 714,
+    "url": "https://services5.arcgis.com/t4xYDjfDFWC8eyBj/arcgis/rest/services/County_37_LBRS_Addresses/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "14bDaLg_arcgis_rest_services_ADDRESS_APN_num_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1168559,
+   "declared_new": 1168559,
+   "rows": 1168559,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1168559,
+    "err": "",
+    "elapsed_ms": 865,
+    "url": "https://services7.arcgis.com/uFAr0LUPy14bDaLg/arcgis/rest/services/ADDRESS_APN_num/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "TaevMOAtV9Qd_arcgis_rest_services_OC_Address_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1148110,
+   "declared_new": 1148110,
+   "rows": 1148110,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1148110,
+    "err": "",
+    "elapsed_ms": 656,
+    "url": "https://services7.arcgis.com/vhU7TaevMOAtV9Qd/arcgis/rest/services/OC_Address/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "arcgis_rest_services_ADDRESS_POINTS_072926v2_FeatureServer_2",
+   "status": "ok",
+   "declared_old": 1131611,
+   "declared_new": 1131611,
+   "rows": 1131611,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1131611,
+    "err": "",
+    "elapsed_ms": 512,
+    "url": "https://services7.arcgis.com/uFAr0LUPy14bDaLg/arcgis/rest/services/ADDRESS_POINTS_072926v2/FeatureServer/2/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "g_arcgis_rest_services_ADDRESS_POINTS_072926_FeatureServer_2",
+   "status": "ok",
+   "declared_old": 1131611,
+   "declared_new": 1131611,
+   "rows": 1131611,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1131611,
+    "err": "",
+    "elapsed_ms": 578,
+    "url": "https://services7.arcgis.com/uFAr0LUPy14bDaLg/arcgis/rest/services/ADDRESS_POINTS_072926/FeatureServer/2/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "g_arcgis_rest_services_ADDRESS_POINTS_062526_FeatureServer_1",
+   "status": "ok",
+   "declared_old": 1130804,
+   "declared_new": 1130804,
+   "rows": 1130804,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1130804,
+    "err": "",
+    "elapsed_ms": 562,
+    "url": "https://services7.arcgis.com/uFAr0LUPy14bDaLg/arcgis/rest/services/ADDRESS_POINTS_062526/FeatureServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "g_arcgis_rest_services_ADDRESS_POINTS_022426_FeatureServer_1",
+   "status": "ok",
+   "declared_old": 1128359,
+   "declared_new": 1128359,
+   "rows": 1128359,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1128359,
+    "err": "",
+    "elapsed_ms": 552,
+    "url": "https://services7.arcgis.com/uFAr0LUPy14bDaLg/arcgis/rest/services/ADDRESS_POINTS_022426/FeatureServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "g_arcgis_rest_services_ADDRESS_POINTS_030926_FeatureServer_1",
+   "status": "ok",
+   "declared_old": 1128332,
+   "declared_new": 1128332,
+   "rows": 1128332,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1128332,
+    "err": "",
+    "elapsed_ms": 565,
+    "url": "https://services7.arcgis.com/uFAr0LUPy14bDaLg/arcgis/rest/services/ADDRESS_POINTS_030926/FeatureServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "g_arcgis_rest_services_ADDRESS_POINTS_021026_FeatureServer_1",
+   "status": "ok",
+   "declared_old": 1127949,
+   "declared_new": 1127949,
+   "rows": 1127949,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1127949,
+    "err": "",
+    "elapsed_ms": 580,
+    "url": "https://services7.arcgis.com/uFAr0LUPy14bDaLg/arcgis/rest/services/ADDRESS_POINTS_021026/FeatureServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "arcgis_rest_services_Regional_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1123045,
+   "declared_new": 1123045,
+   "rows": 1123045,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1123045,
+    "err": "",
+    "elapsed_ms": 486,
+    "url": "https://services5.arcgis.com/8DjE4f6iFLArDhsU/arcgis/rest/services/Regional_Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "i_arcgis_rest_services_PSEGLI_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1077272,
+   "declared_new": 1077272,
+   "rows": 1077272,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1077272,
+    "err": "",
+    "elapsed_ms": 452,
+    "url": "https://services1.arcgis.com/0cYxNkh7FJosf1xi/arcgis/rest/services/PSEGLI_Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "st_services_SFDView_E911_Addresses_7_10_2026_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1060594,
+   "declared_new": null,
+   "rows": 1060594,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": null,
+    "count": null,
+    "err": "URLError: <urlopen error timed out>",
+    "elapsed_ms": 60151,
+    "url": "https://gis.emnrd.nm.gov/arcgis/rest/services/SFDView/E911_Addresses_7_10_2026/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "WBIR4LYH_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1044333,
+   "declared_new": 1044333,
+   "rows": 1044333,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1044333,
+    "err": "",
+    "elapsed_ms": 624,
+    "url": "https://services2.arcgis.com/Q4NxsjNmWBIR4LYH/arcgis/rest/services/Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "gis_rest_services_SAMS_NAD_2025_Address_List_FeatureServer_2",
+   "status": "ok",
+   "declared_old": 1040301,
+   "declared_new": 1040301,
+   "rows": 1040301,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1040301,
+    "err": "",
+    "elapsed_ms": 876,
+    "url": "https://services3.arcgis.com/XQfPLTVDElDOMEad/arcgis/rest/services/SAMS_NAD_2025_Address_List/FeatureServer/2/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "is_rest_services_AddressPoints_NG911_ALL_GCS_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1035861,
+   "declared_new": 1035861,
+   "rows": 1035861,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1035861,
+    "err": "",
+    "elapsed_ms": 509,
+    "url": "https://services6.arcgis.com/7XhimSpf8B7lHIMy/arcgis/rest/services/AddressPoints_NG911_ALL_GCS/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "DFA_911_Address_Structure_Points_August_2023_FeatureServer_1",
+   "status": "ok",
+   "declared_old": 1034827,
+   "declared_new": 1034827,
+   "rows": 1034827,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1034827,
+    "err": "",
+    "elapsed_ms": 631,
+    "url": "https://services5.arcgis.com/f4lpEvI6fkgVYigk/arcgis/rest/services/DFA_911_Address_Structure_Points_August_2023/FeatureServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "vices_New_Mexico_911_Address_Points_May_2024_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 1028149,
+   "declared_new": 1028149,
+   "rows": 1028149,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1028149,
+    "err": "",
+    "elapsed_ms": 645,
+    "url": "https://services.arcgis.com/XG15cJAlne2vxtgt/arcgis/rest/services/New_Mexico_911_Address_Points_May_2024/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "gis_rest_services_NM_E911_Addresses_Nov_2022_FeatureServer_1",
+   "status": "ok",
+   "declared_old": 1014431,
+   "declared_new": 1014431,
+   "rows": 1014431,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 1014431,
+    "err": "",
+    "elapsed_ms": 565,
+    "url": "https://services1.arcgis.com/Pat8LQYI0Udhgy4G/arcgis/rest/services/NM_E911_Addresses_Nov_2022/FeatureServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "iO9fj_arcgis_rest_services_AddressPoint_view_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 967871,
+   "declared_new": 967871,
+   "rows": 967871,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 967871,
+    "err": "",
+    "elapsed_ms": 803,
+    "url": "https://services6.arcgis.com/yG5s3afENB5iO9fj/arcgis/rest/services/AddressPoint_view/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rest_services_NYS_Address_Points_Boroughs_v1_FeatureServer_1",
+   "status": "ok",
+   "declared_old": 967362,
+   "declared_new": 967362,
+   "rows": 967362,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 967362,
+    "err": "",
+    "elapsed_ms": 599,
+    "url": "https://services1.arcgis.com/VVapzOPgBae5joyC/arcgis/rest/services/NYS_Address_Points_Boroughs_v1/FeatureServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "XqeF9q_arcgis_rest_services_AIS_Address_Points_FeatureServer",
+   "status": "ok",
+   "declared_old": 954000,
+   "declared_new": null,
+   "rows": 954000,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": 200,
+    "count": null,
+    "err": "",
+    "elapsed_ms": 364,
+    "url": "https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/AIS_Address_Points/FeatureServer/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "s_arcgis_mapping_rest_services_OpenData_General_MapServer_10",
+   "status": "ok",
+   "declared_old": 943474,
+   "declared_new": null,
+   "rows": 944670,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.1268,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": null,
+    "count": null,
+    "err": "URLError: <urlopen error [Errno -3] Temporary failure in name resolution>",
+    "elapsed_ms": 13845,
+    "url": "https://gis.countyofriverside.us/arcgis_mapping/rest/services/OpenData/General/MapServer/10/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "wY_arcgis_rest_services_DSUSD_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 938981,
+   "declared_new": 938981,
+   "rows": 938981,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 938981,
+    "err": "",
+    "elapsed_ms": 530,
+    "url": "https://services3.arcgis.com/KkgpUIloCxkczPwY/arcgis/rest/services/DSUSD_Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "st_services_Miami_Dade_County_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 930192,
+   "declared_new": 930192,
+   "rows": 930192,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 930192,
+    "err": "",
+    "elapsed_ms": 552,
+    "url": "https://services7.arcgis.com/uFAr0LUPy14bDaLg/arcgis/rest/services/Miami_Dade_County_Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "i9Bag_arcgis_rest_services_LeadAddressPoints_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 919884,
+   "declared_new": 919884,
+   "rows": 919884,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 919884,
+    "err": "",
+    "elapsed_ms": 662,
+    "url": "https://services.arcgis.com/at3rDjch5X7i9Bag/arcgis/rest/services/LeadAddressPoints/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "arcgis_rest_services_Master_Address_File_MAF_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 903757,
+   "declared_new": 903828,
+   "rows": 903828,
+   "delta": 71,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0079,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 903828,
+    "err": "",
+    "elapsed_ms": 493,
+    "url": "https://services2.arcgis.com/McQ0OlIABe29rJJy/arcgis/rest/services/Master_Address_File_MAF/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_gov_Enterprise_rest_services_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 878424,
+   "declared_new": null,
+   "rows": 878424,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": null,
+    "count": null,
+    "err": "URLError: <urlopen error timed out>",
+    "elapsed_ms": 26161,
+    "url": "https://gis.ne.gov/Enterprise/rest/services/Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rest_services_Address_Points_From_Footprints_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 873374,
+   "declared_new": 873374,
+   "rows": 873374,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 873374,
+    "err": "",
+    "elapsed_ms": 580,
+    "url": "https://services1.arcgis.com/CNPdEkvnGl65jCX8/arcgis/rest/services/Address_Points_From_Footprints/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "ces_AddressDataManagement_SBC_Site_Addresses_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 871802,
+   "declared_new": 872235,
+   "rows": 872232,
+   "delta": 433,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0493,
+   "coverage_by_declared_new_pct": 99.9997,
+   "probe": {
+    "http": 200,
+    "count": 872235,
+    "err": "",
+    "elapsed_ms": 2222,
+    "url": "https://maps.sbcounty.gov/gis/rest/services/AddressDataManagement/SBC_Site_Addresses/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_gov_arcgis_rest_services_Schemas_RegionalLayers_MapServer_0",
+   "status": "ok",
+   "declared_old": 865119,
+   "declared_new": null,
+   "rows": 865160,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0047,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": 522,
+    "count": null,
+    "err": "HTTP 522",
+    "elapsed_ms": 19538,
+    "url": "https://maps2.columbus.gov/arcgis/rest/services/Schemas/RegionalLayers/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "kIBzkUXU_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 865118,
+   "declared_new": 865160,
+   "rows": 865160,
+   "delta": 42,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0049,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 865160,
+    "err": "",
+    "elapsed_ms": 362,
+    "url": "https://services1.arcgis.com/9yy6msODkIBzkUXU/arcgis/rest/services/Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "agsext_rest_services_Theme_Based_ODP_SPLIT_6_FeatureServer_1",
+   "status": "ok",
+   "declared_old": 864423,
+   "declared_new": 864423,
+   "rows": 864423,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 864423,
+    "err": "",
+    "elapsed_ms": 6287,
+    "url": "https://esapqa.capetown.gov.za/agsext/rest/services/Theme_Based/ODP_SPLIT_6/FeatureServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "es_City_of_Columbus_Address_Points_20260630_FeatureServer_21",
+   "status": "ok",
+   "declared_old": 858998,
+   "declared_new": 858998,
+   "rows": 858998,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 858998,
+    "err": "",
+    "elapsed_ms": 772,
+    "url": "https://services3.arcgis.com/KkgpUIloCxkczPwY/arcgis/rest/services/City_of_Columbus_Address_Points_20260630/FeatureServer/21/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "lin_oh_us_arcgis_rest_services_Streets_Addresses_MapServer_3",
+   "status": "ok",
+   "declared_old": 856651,
+   "declared_new": 856652,
+   "rows": 856652,
+   "delta": 1,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0001,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 856652,
+    "err": "",
+    "elapsed_ms": 1388,
+    "url": "https://mapping.dublin.oh.us/arcgis/rest/services/Streets_Addresses/MapServer/3/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "is_rest_services_Sheriff_Address_Points_view_FeatureServer_2",
+   "status": "ok",
+   "declared_old": 806677,
+   "declared_new": 806677,
+   "rows": 806677,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 806677,
+    "err": "",
+    "elapsed_ms": 885,
+    "url": "https://services5.arcgis.com/TiBPJbi9Tj52qsV8/arcgis/rest/services/Sheriff_Address_Points_view/FeatureServer/2/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "FpTOq1dFgzIjQg_arcgis_rest_services_Situs_XY_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 796925,
+   "declared_new": 796925,
+   "rows": 796925,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 796925,
+    "err": "",
+    "elapsed_ms": 597,
+    "url": "https://services1.arcgis.com/zsFpTOq1dFgzIjQg/arcgis/rest/services/Situs_XY/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rvices_Address_Points_Search_and_Labels_VIEW_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 784068,
+   "declared_new": 784068,
+   "rows": 784068,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 784068,
+    "err": "",
+    "elapsed_ms": 560,
+    "url": "https://services2.arcgis.com/tcv2cMrq63AgvbHF/arcgis/rest/services/Address_Points_Search_and_Labels_VIEW/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "a_rest_services_Collector_AddressDamage_2019_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 781563,
+   "declared_new": 781563,
+   "rows": 781563,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 781563,
+    "err": "",
+    "elapsed_ms": 1742,
+    "url": "https://utility.arcgis.com/usrsvcs/servers/de53c225eb3d41f4ac962ce0a5c6e92a/rest/services/Collector/AddressDamage_2019/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "services_Collector_AddressDamage_2019_Labels_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 781563,
+   "declared_new": 781563,
+   "rows": 781563,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 781563,
+    "err": "",
+    "elapsed_ms": 1512,
+    "url": "https://utility.arcgis.com/usrsvcs/servers/a92dd097e14a41b5b957c04642663cde/rest/services/Collector/AddressDamage_2019_Labels/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_arcgis_rest_services_OwnerMailAddressPoints_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 771821,
+   "declared_new": 771821,
+   "rows": 771821,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 771821,
+    "err": "",
+    "elapsed_ms": 565,
+    "url": "https://services.arcgis.com/JMAJrTsHNLrSsWf5/arcgis/rest/services/OwnerMailAddressPoints/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "s_rest_services_AddressesForHeatAppOnly_2022_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 769181,
+   "declared_new": 769181,
+   "rows": 769181,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 769181,
+    "err": "",
+    "elapsed_ms": 521,
+    "url": "https://services.arcgis.com/apTfC6SUmnNfnxuF/arcgis/rest/services/AddressesForHeatAppOnly_2022/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "nxuF_arcgis_rest_services_Site_Address_Point_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 753758,
+   "declared_new": 753782,
+   "rows": 753782,
+   "delta": 24,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0032,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 753782,
+    "err": "",
+    "elapsed_ms": 565,
+    "url": "https://services.arcgis.com/apTfC6SUmnNfnxuF/arcgis/rest/services/Site_Address_Point/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rcgis_rest_services_AddressPoints_AgeOfBldgs_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 753449,
+   "declared_new": 753449,
+   "rows": 753449,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 753449,
+    "err": "",
+    "elapsed_ms": 503,
+    "url": "https://services.arcgis.com/Ej0PsM5Aw677QF1W/arcgis/rest/services/AddressPoints_AgeOfBldgs/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "nNfnxuF_arcgis_rest_services_SiteAddressEGIS_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 726587,
+   "declared_new": 726587,
+   "rows": 726587,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 726587,
+    "err": "",
+    "elapsed_ms": 533,
+    "url": "https://services.arcgis.com/apTfC6SUmnNfnxuF/arcgis/rest/services/SiteAddressEGIS/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "Wf5_arcgis_rest_services_MunicipalCodeAppPts_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 724258,
+   "declared_new": 724258,
+   "rows": 724258,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 724258,
+    "err": "",
+    "elapsed_ms": 576,
+    "url": "https://services.arcgis.com/JMAJrTsHNLrSsWf5/arcgis/rest/services/MunicipalCodeAppPts/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "JrTsHNLrSsWf5_arcgis_rest_services_ZoningApp_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 724253,
+   "declared_new": 724253,
+   "rows": 724253,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 724253,
+    "err": "",
+    "elapsed_ms": 545,
+    "url": "https://services.arcgis.com/JMAJrTsHNLrSsWf5/arcgis/rest/services/ZoningApp/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rcgis_rest_services_OpenData_StreetsandAddresses_MapServer_0",
+   "status": "ok",
+   "declared_old": 719218,
+   "declared_new": null,
+   "rows": 719231,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0018,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": 200,
+    "count": null,
+    "err": "非 JSON 响应",
+    "elapsed_ms": 250,
+    "url": "https://arcgis.tampagov.net/arcgis/rest/services/OpenData/StreetsandAddresses/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "aps_raleighnc_gov_arcgis_rest_services_Addresses_MapServer_2",
+   "status": "ok",
+   "declared_old": 719124,
+   "declared_new": null,
+   "rows": 719661,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0747,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": null,
+    "count": null,
+    "err": "URLError: <urlopen error timed out>",
+    "elapsed_ms": 20109,
+    "url": "https://maps.raleighnc.gov/arcgis/rest/services/Addresses/MapServer/2/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "MP_arcgis_rest_services_NG911_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 711923,
+   "declared_new": 712007,
+   "rows": 712005,
+   "delta": 84,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0115,
+   "coverage_by_declared_new_pct": 99.9997,
+   "probe": {
+    "http": 200,
+    "count": 712007,
+    "err": "",
+    "elapsed_ms": 568,
+    "url": "https://services2.arcgis.com/LvWGAAhHwbCJ2GMP/arcgis/rest/services/NG911_Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "NARefyPVtAeuJPU_arcgis_rest_services_Address_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 710970,
+   "declared_new": 711028,
+   "rows": 711028,
+   "delta": 58,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0082,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 711028,
+    "err": "",
+    "elapsed_ms": 455,
+    "url": "https://services1.arcgis.com/5NARefyPVtAeuJPU/arcgis/rest/services/Address/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rcgis_rest_services_NG911AddressPoints_VESTA_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 708251,
+   "declared_new": 708302,
+   "rows": 708302,
+   "delta": 51,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0072,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 708302,
+    "err": "",
+    "elapsed_ms": 535,
+    "url": "https://services2.arcgis.com/LvWGAAhHwbCJ2GMP/arcgis/rest/services/NG911AddressPoints_VESTA/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "tyohio_gov_hosting_rest_services_Addressing_LBRS_MapServer_0",
+   "status": "ok",
+   "declared_old": 707755,
+   "declared_new": null,
+   "rows": 707755,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": null,
+    "count": null,
+    "err": "URLError: <urlopen error timed out>",
+    "elapsed_ms": 20108,
+    "url": "https://gis.franklincountyohio.gov/hosting/rest/services/Addressing/LBRS/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "services_Wake_County_MAR_Address_Data_Public_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 694628,
+   "declared_new": 695153,
+   "rows": 695153,
+   "delta": 525,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0756,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 695153,
+    "err": "",
+    "elapsed_ms": 476,
+    "url": "https://services1.arcgis.com/a7CWfuGP5ZnLYE7I/arcgis/rest/services/Wake_County_MAR_Address_Data_Public/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "gov_server_rest_services_MasterAddressPoints_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 679079,
+   "declared_new": null,
+   "rows": 679114,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0052,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": 403,
+    "count": null,
+    "err": "HTTP 403",
+    "elapsed_ms": 125,
+    "url": "https://meckgis.mecklenburgcountync.gov/server/rest/services/MasterAddressPoints/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "ov_arcgis_rest_services_CountyData_MasterAddress_MapServer_0",
+   "status": "ok",
+   "declared_old": 679073,
+   "declared_new": null,
+   "rows": 679114,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.006,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": null,
+    "count": null,
+    "err": "URLError: <urlopen error timed out>",
+    "elapsed_ms": 20083,
+    "url": "https://gis.charlottenc.gov/arcgis/rest/services/CountyData/MasterAddress/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "7QF1W_arcgis_rest_services_ADDRESS_POINT_642_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 675130,
+   "declared_new": 675218,
+   "rows": 675218,
+   "delta": 88,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.013,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 675218,
+    "err": "",
+    "elapsed_ms": 301,
+    "url": "https://services.arcgis.com/Ej0PsM5Aw677QF1W/arcgis/rest/services/ADDRESS_POINT_642/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rcgis_rest_services_Address_KingCo_AddressPoints_MapServer_0",
+   "status": "ok",
+   "declared_old": 675130,
+   "declared_new": 675218,
+   "rows": 675218,
+   "delta": 88,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.013,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 675218,
+    "err": "",
+    "elapsed_ms": 707,
+    "url": "https://gismaps.kingcounty.gov/arcgis/rest/services/Address/KingCo_AddressPoints/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "s_Montana_Structures_and_Addresses_Framework_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 674469,
+   "declared_new": 674469,
+   "rows": 674469,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 674469,
+    "err": "",
+    "elapsed_ms": 430,
+    "url": "https://services.arcgis.com/qnjIrwR8z5Izc0ij/arcgis/rest/services/Montana_Structures_and_Addresses_Framework/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "s_rest_services_msdi_structures_addresses_map_v1_MapServer_0",
+   "status": "ok",
+   "declared_old": 674469,
+   "declared_new": 674469,
+   "rows": 674469,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 674469,
+    "err": "",
+    "elapsed_ms": 785,
+    "url": "https://gisservice.mt.gov/arcgis/rest/services/msdi_structures_addresses_map_v1/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "services_King_County_Address_Points_Land_Use_FeatureServer_1",
+   "status": "ok",
+   "declared_old": 668781,
+   "declared_new": 668781,
+   "rows": 668781,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 668781,
+    "err": "",
+    "elapsed_ms": 543,
+    "url": "https://services.arcgis.com/Ej0PsM5Aw677QF1W/arcgis/rest/services/King_County_Address_Points_Land_Use/FeatureServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "arcgis_rest_services_Address_Points_20260709_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 667289,
+   "declared_new": 667289,
+   "rows": 667289,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 667289,
+    "err": "",
+    "elapsed_ms": 1814,
+    "url": "https://services3.arcgis.com/zqe2kwz79KUqUvxC/arcgis/rest/services/Address_Points_20260709/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "is_rest_services_King_Co_Address_Points_View_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 667280,
+   "declared_new": 667280,
+   "rows": 667280,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 667280,
+    "err": "",
+    "elapsed_ms": 607,
+    "url": "https://services.arcgis.com/aDVuwZJfhoSYo0Ie/arcgis/rest/services/King_Co_Address_Points_View/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "est_services_Addressing_Addressing_AddressPoints_MapServer_0",
+   "status": "ok",
+   "declared_old": 664529,
+   "declared_new": 664977,
+   "rows": 664977,
+   "delta": 448,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0674,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 664977,
+    "err": "",
+    "elapsed_ms": 818,
+    "url": "https://gisdata.alleghenycounty.us/arcgis/rest/services/Addressing/Addressing_AddressPoints/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "arcgis_rest_services_Address_Points_20260710_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 662742,
+   "declared_new": 662742,
+   "rows": 662742,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 662742,
+    "err": "",
+    "elapsed_ms": 462,
+    "url": "https://services3.arcgis.com/zqe2kwz79KUqUvxC/arcgis/rest/services/Address_Points_20260710/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "NM6dENSD_arcgis_rest_services_address_points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 662589,
+   "declared_new": 662589,
+   "rows": 662589,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 662589,
+    "err": "",
+    "elapsed_ms": 572,
+    "url": "https://services1.arcgis.com/ERdCHt0sNM6dENSD/arcgis/rest/services/address_points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "est_services_Allegheny_County_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 644497,
+   "declared_new": 644497,
+   "rows": 644497,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 644497,
+    "err": "",
+    "elapsed_ms": 694,
+    "url": "https://services5.arcgis.com/eYH3NsaQKd0zpREV/arcgis/rest/services/Allegheny_County_Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "joZ2Wm1P_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 637196,
+   "declared_new": 637196,
+   "rows": 637196,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 637196,
+    "err": "",
+    "elapsed_ms": 501,
+    "url": "https://services5.arcgis.com/ROBnTHSNjoZ2Wm1P/arcgis/rest/services/Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rcgis_rest_services_Address_Master_Address_Total_MapServer_0",
+   "status": "ok",
+   "declared_old": 626310,
+   "declared_new": null,
+   "rows": 626310,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": 403,
+    "count": null,
+    "err": "HTTP 403",
+    "elapsed_ms": 121,
+    "url": "https://maps.arvada.org/arcgis/rest/services/Address/Master_Address_Total/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "eMgspWrYp_arcgis_rest_services_COSA_Address_FeatureServer_15",
+   "status": "ok",
+   "declared_old": 625732,
+   "declared_new": 625768,
+   "rows": 625768,
+   "delta": 36,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0058,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 625768,
+    "err": "",
+    "elapsed_ms": 430,
+    "url": "https://services.arcgis.com/g1fRTDLeMgspWrYp/arcgis/rest/services/COSA_Address/FeatureServer/15/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "f6d6e8_rest_services_CoSA_BrowseSAStoryMapLayers_MapServer_7",
+   "status": "ok",
+   "declared_old": 622969,
+   "declared_new": 622968,
+   "rows": 622970,
+   "delta": -1,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0002,
+   "coverage_by_declared_new_pct": 100.0003,
+   "probe": {
+    "http": 200,
+    "count": 622968,
+    "err": "",
+    "elapsed_ms": 2163,
+    "url": "https://utility.arcgis.com/usrsvcs/servers/bdb2f284d62647fc8e0c4d1bfbf6d6e8/rest/services/CoSA/BrowseSAStoryMapLayers/MapServer/7/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "erenceLayers_CWD_Service_Area_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 614933,
+   "declared_new": null,
+   "rows": 614934,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0002,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": null,
+    "count": null,
+    "err": "URLError: <urlopen error timed out>",
+    "elapsed_ms": 20119,
+    "url": "https://www.clevelandgis.org/arcgis/rest/services/ReferenceLayers/CWD_Service_Area_Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "ices_LocalGovernmentSQLData_SiteAddressPoint_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 603324,
+   "declared_new": null,
+   "rows": 603355,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0051,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": 403,
+    "count": null,
+    "err": "HTTP 403",
+    "elapsed_ms": 145,
+    "url": "https://gis.suffolkcountyny.gov/server/rest/services/LocalGovernmentSQLData/SiteAddressPoint/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "DKC97XHbtyzbfkd_arcgis_rest_services_RKC_Map_FeatureServer_1",
+   "status": "ok",
+   "declared_old": 601478,
+   "declared_new": 601478,
+   "rows": 601478,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 601478,
+    "err": "",
+    "elapsed_ms": 629,
+    "url": "https://services7.arcgis.com/BDKC97XHbtyzbfkd/arcgis/rest/services/RKC_Map/FeatureServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rest_services_Pinellas_SiteAddressPoint_view_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 581682,
+   "declared_new": 581688,
+   "rows": 581687,
+   "delta": 6,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0009,
+   "coverage_by_declared_new_pct": 99.9998,
+   "probe": {
+    "http": 200,
+    "count": 581688,
+    "err": "",
+    "elapsed_ms": 539,
+    "url": "https://services.arcgis.com/f5HgUpxURgEzTccH/arcgis/rest/services/Pinellas_SiteAddressPoint_view/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "ltlakecounty_gov_slcogis_rest_services_Reference_MapServer_5",
+   "status": "ok",
+   "declared_old": 578556,
+   "declared_new": 578799,
+   "rows": 578799,
+   "delta": 243,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.042,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 578799,
+    "err": "",
+    "elapsed_ms": 874,
+    "url": "https://apps.saltlakecounty.gov/slcogis/rest/services/Reference/MapServer/5/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_egis_pinellas_gov_gis_rest_services_AGO_Parcels_MapServer_2",
+   "status": "ok",
+   "declared_old": 569027,
+   "declared_new": 569031,
+   "rows": 569030,
+   "delta": 4,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0005,
+   "coverage_by_declared_new_pct": 99.9998,
+   "probe": {
+    "http": 200,
+    "count": 569031,
+    "err": "",
+    "elapsed_ms": 1602,
+    "url": "https://egis.pinellas.gov/gis/rest/services/AGO/Parcels/MapServer/2/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "ellas_gov_gis_rest_services_PublicWebGIS_Parcels_MapServer_0",
+   "status": "ok",
+   "declared_old": 569027,
+   "declared_new": 569031,
+   "rows": 569030,
+   "delta": 4,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0005,
+   "coverage_by_declared_new_pct": 99.9998,
+   "probe": {
+    "http": 200,
+    "count": 569031,
+    "err": "",
+    "elapsed_ms": 2016,
+    "url": "https://egis.pinellas.gov/gis/rest/services/PublicWebGIS/Parcels/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "es_Enterprise_EnterpriseOpenParcelDataMapService_MapServer_0",
+   "status": "ok",
+   "declared_old": 559689,
+   "declared_new": 559701,
+   "rows": 559701,
+   "delta": 12,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0021,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 559701,
+    "err": "",
+    "elapsed_ms": 1065,
+    "url": "https://gisservices.oakgov.com/arcgis/rest/services/Enterprise/EnterpriseOpenParcelDataMapService/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "gis_rest_services_GISAddressPoints_FloodZone_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 553941,
+   "declared_new": 553941,
+   "rows": 553941,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 553941,
+    "err": "",
+    "elapsed_ms": 789,
+    "url": "https://services.arcgis.com/JMAJrTsHNLrSsWf5/arcgis/rest/services/GISAddressPoints_FloodZone/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "is_rest_services_Accela_Address_Parcel_Newer_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 550620,
+   "declared_new": 550620,
+   "rows": 550620,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 550620,
+    "err": "",
+    "elapsed_ms": 543,
+    "url": "https://services.arcgis.com/f5HgUpxURgEzTccH/arcgis/rest/services/Accela_Address_Parcel_Newer/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "osting_rest_services_Maps_ASR_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 549170,
+   "declared_new": null,
+   "rows": 549176,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0011,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": 403,
+    "count": null,
+    "err": "HTTP 403",
+    "elapsed_ms": 377,
+    "url": "https://maps.stlouisco.com/hosting/rest/services/Maps/ASR_Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "83377937711d_rest_services_DSM_Pub_CIPP_Viewer_MapServer_140",
+   "status": "ok",
+   "declared_old": 543816,
+   "declared_new": 543816,
+   "rows": 543816,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 543816,
+    "err": "",
+    "elapsed_ms": 2080,
+    "url": "https://utility.arcgis.com/usrsvcs/servers/2e8b57c4ccf34283b2e183377937711d/rest/services/DSM_Pub/CIPP_Viewer/MapServer/140/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "d_rest_services_DSM_Pub_DSM_Basemap_Experience_MapServer_113",
+   "status": "ok",
+   "declared_old": 543816,
+   "declared_new": 543816,
+   "rows": 543816,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 543816,
+    "err": "",
+    "elapsed_ms": 2228,
+    "url": "https://utility.arcgis.com/usrsvcs/servers/308fcb9b1fe34adaabf9604d07851b9d/rest/services/DSM_Pub/DSM_Basemap_Experience/MapServer/113/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rjguNyOy_arcgis_rest_services_Address_Points_FeatureServer_2",
+   "status": "ok",
+   "declared_old": 542647,
+   "declared_new": 542647,
+   "rows": 542647,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 542647,
+    "err": "",
+    "elapsed_ms": 600,
+    "url": "https://services2.arcgis.com/w657bnjzrjguNyOy/arcgis/rest/services/Address_Points/FeatureServer/2/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_rest_services_SECTO_NBI_MASTER_ADDRESS_LIST_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 530776,
+   "declared_new": 530776,
+   "rows": 530776,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 530776,
+    "err": "",
+    "elapsed_ms": 565,
+    "url": "https://services1.arcgis.com/iLnjttk8pGiISSJD/arcgis/rest/services/SECTO_NBI_MASTER_ADDRESS_LIST/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rvices_SECTO_NBI_MASTER_ADDRESS_LIST__ATTACH_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 530776,
+   "declared_new": 530776,
+   "rows": 530776,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 530776,
+    "err": "",
+    "elapsed_ms": 523,
+    "url": "https://services1.arcgis.com/iLnjttk8pGiISSJD/arcgis/rest/services/SECTO_NBI_MASTER_ADDRESS_LIST__ATTACH/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "wake_gov_arcgis_rest_services_Property_Addresses_MapServer_0",
+   "status": "ok",
+   "declared_old": 527725,
+   "declared_new": null,
+   "rows": 527756,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0059,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": null,
+    "count": null,
+    "err": "URLError: <urlopen error timed out>",
+    "elapsed_ms": 20823,
+    "url": "https://maps.wake.gov/arcgis/rest/services/Property/Addresses/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "is_rest_services_municipal_address_points_pj_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 526790,
+   "declared_new": 526790,
+   "rows": 526790,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 526790,
+    "err": "",
+    "elapsed_ms": 515,
+    "url": "https://services1.arcgis.com/DwLTn0u9VBSZvUPe/arcgis/rest/services/municipal_address_points_pj/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rcgis_rest_services_municipal_address_points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 526790,
+   "declared_new": 526790,
+   "rows": 526790,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 526790,
+    "err": "",
+    "elapsed_ms": 573,
+    "url": "https://services1.arcgis.com/DwLTn0u9VBSZvUPe/arcgis/rest/services/municipal_address_points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "es_Trimble_COT_Geospatial_Address_Point_View_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 525371,
+   "declared_new": 525381,
+   "rows": 525381,
+   "delta": 10,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0019,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 525381,
+    "err": "",
+    "elapsed_ms": 573,
+    "url": "https://services3.arcgis.com/b9WvedVPoizGfvfD/arcgis/rest/services/Trimble_COT_Geospatial_Address_Point_View/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "fD_arcgis_rest_services_COTGEO_ADDRESS_POINT_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 525381,
+   "declared_new": 525381,
+   "rows": 525381,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 525381,
+    "err": "",
+    "elapsed_ms": 649,
+    "url": "https://services3.arcgis.com/b9WvedVPoizGfvfD/arcgis/rest/services/COTGEO_ADDRESS_POINT/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "o_ca_arcgis_rest_services_cot_geospatial27_FeatureServer_101",
+   "status": "ok",
+   "declared_old": 525371,
+   "declared_new": 525370,
+   "rows": 525381,
+   "delta": -1,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0019,
+   "coverage_by_declared_new_pct": 100.0021,
+   "probe": {
+    "http": 200,
+    "count": 525370,
+    "err": "",
+    "elapsed_ms": 793,
+    "url": "https://gis.toronto.ca/arcgis/rest/services/cot_geospatial27/FeatureServer/101/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "Cie_arcgis_rest_services_ADDRESS_POINT_WGS84_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 524679,
+   "declared_new": 524679,
+   "rows": 524679,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 524679,
+    "err": "",
+    "elapsed_ms": 593,
+    "url": "https://services.arcgis.com/p3UBboyC0NH1uCie/arcgis/rest/services/ADDRESS_POINT_WGS84/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "shlD6Twu_arcgis_rest_services_Street_Address_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 519819,
+   "declared_new": 519819,
+   "rows": 519819,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 519819,
+    "err": "",
+    "elapsed_ms": 641,
+    "url": "https://services3.arcgis.com/HO0zfySJshlD6Twu/arcgis/rest/services/Street_Address/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_arcgis_rest_services_TO_addresspoints_Merge_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 516566,
+   "declared_new": 516566,
+   "rows": 516566,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 516566,
+    "err": "",
+    "elapsed_ms": 435,
+    "url": "https://services1.arcgis.com/9NvE8jKNWWlDGsUJ/arcgis/rest/services/TO_addresspoints_Merge/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "iUWhdA_arcgis_rest_services_OCAddressLocator_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 512950,
+   "declared_new": 512950,
+   "rows": 512950,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 512950,
+    "err": "",
+    "elapsed_ms": 417,
+    "url": "https://services9.arcgis.com/r1v86axQrMiUWhdA/arcgis/rest/services/OCAddressLocator/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "8QWuX759_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 503923,
+   "declared_new": 506552,
+   "rows": 506552,
+   "delta": 2629,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.5217,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 506552,
+    "err": "",
+    "elapsed_ms": 527,
+    "url": "https://services6.arcgis.com/ONZht79c8QWuX759/arcgis/rest/services/Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "services_Address_Points__2249626704383450755_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 496450,
+   "declared_new": 496450,
+   "rows": 496450,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 496450,
+    "err": "",
+    "elapsed_ms": 1533,
+    "url": "https://services5.arcgis.com/OTdNpvC9YulsqUyQ/arcgis/rest/services/Address_Points__2249626704383450755/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_arcgis_rest_services_HennepinData_LAND_PROPERTY_MapServer_0",
+   "status": "ok",
+   "declared_old": 493787,
+   "declared_new": 493787,
+   "rows": 493787,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 493787,
+    "err": "",
+    "elapsed_ms": 1483,
+    "url": "https://gis.hennepin.us/arcgis/rest/services/HennepinData/LAND_PROPERTY/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "st_services_GeoHubDownloads_GISAddressPoints_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 492979,
+   "declared_new": 492979,
+   "rows": 492979,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 492979,
+    "err": "",
+    "elapsed_ms": 1414,
+    "url": "https://bcgishub.broward.org/server/rest/services/GeoHubDownloads/GISAddressPoints/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "ZzfsFsB5_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 490319,
+   "declared_new": 490319,
+   "rows": 490319,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 490319,
+    "err": "",
+    "elapsed_ms": 424,
+    "url": "https://services1.arcgis.com/AQDHTHDrZzfsFsB5/arcgis/rest/services/Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "est_services_BASE_BASE_NS_CivicAddress_File_UT83_MapServer_0",
+   "status": "ok",
+   "declared_old": 485350,
+   "declared_new": null,
+   "rows": 485466,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0239,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": null,
+    "count": null,
+    "err": "URLError: <urlopen error timed out>",
+    "elapsed_ms": 20269,
+    "url": "https://nsgiwa.novascotia.ca/arcgis/rest/services/BASE/BASE_NS_CivicAddress_File_UT83/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "st_services_Milwaukee_County_Address_Points_FeatureServer_56",
+   "status": "ok",
+   "declared_old": 484867,
+   "declared_new": 485485,
+   "rows": 485485,
+   "delta": 618,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.1275,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 485485,
+    "err": "",
+    "elapsed_ms": 496,
+    "url": "https://services2.arcgis.com/s1wgJQKbKJihhhaT/arcgis/rest/services/Milwaukee_County_Address_Points/FeatureServer/56/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "5_arcgis_rest_services_OpenDataAddressPoints_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 483733,
+   "declared_new": 483733,
+   "rows": 483733,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 483733,
+    "err": "",
+    "elapsed_ms": 459,
+    "url": "https://services.arcgis.com/JMAJrTsHNLrSsWf5/arcgis/rest/services/OpenDataAddressPoints/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "UPy14bDaLg_arcgis_rest_services_HI_Addresses_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 472164,
+   "declared_new": 472164,
+   "rows": 472164,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 472164,
+    "err": "",
+    "elapsed_ms": 501,
+    "url": "https://services7.arcgis.com/uFAr0LUPy14bDaLg/arcgis/rest/services/HI_Addresses/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "arcgis_rest_services_LOCATION_address_points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 466144,
+   "declared_new": 466362,
+   "rows": 466362,
+   "delta": 218,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0468,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 466362,
+    "err": "",
+    "elapsed_ms": 337,
+    "url": "https://services.arcgis.com/0L95CJ0VTaxqcmED/arcgis/rest/services/LOCATION_address_points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "ova_Scotia_Civic_Address_File___Civic_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 463470,
+   "declared_new": 463470,
+   "rows": 463470,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 463470,
+    "err": "",
+    "elapsed_ms": 625,
+    "url": "https://services6.arcgis.com/KWm9s5p6RXCEu9Ox/arcgis/rest/services/Nova_Scotia_Civic_Address_File___Civic_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "st_services_Address_Points_with_Joint_Fields_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 440698,
+   "declared_new": 440698,
+   "rows": 440698,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 440698,
+    "err": "",
+    "elapsed_ms": 632,
+    "url": "https://services1.arcgis.com/HGcSYZ5bvjRswoCb/arcgis/rest/services/Address_Points_with_Joint_Fields/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "DUN35YwdCEcMm_arcgis_rest_services_Addresses_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 440479,
+   "declared_new": 440479,
+   "rows": 440479,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 440479,
+    "err": "",
+    "elapsed_ms": 541,
+    "url": "https://services.arcgis.com/xYjDUN35YwdCEcMm/arcgis/rest/services/Addresses/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_services_NDGISHUBSiteStructureAddressPoints_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 438139,
+   "declared_new": 438257,
+   "rows": 438257,
+   "delta": 118,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0269,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 438257,
+    "err": "",
+    "elapsed_ms": 495,
+    "url": "https://services1.arcgis.com/GOcSXpzwBHyk2nog/arcgis/rest/services/NDGISHUBSiteStructureAddressPoints/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "teHGiq_arcgis_rest_services_Addresses_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 432403,
+   "declared_new": 432403,
+   "rows": 432403,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 432403,
+    "err": "",
+    "elapsed_ms": 511,
+    "url": "https://services.arcgis.com/JyZag7oO4NteHGiq/arcgis/rest/services/Addresses_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rkmaps_ca_arcgis_rest_services_OpenData_Location_MapServer_0",
+   "status": "ok",
+   "declared_old": 431863,
+   "declared_new": 431970,
+   "rows": 431970,
+   "delta": 107,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0248,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 431970,
+    "err": "",
+    "elapsed_ms": 1764,
+    "url": "https://ww8.yorkmaps.ca/arcgis/rest/services/OpenData/Location/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "toncounty_gov_arcgis_rest_services_Public_Safety_MapServer_8",
+   "status": "ok",
+   "declared_old": 429575,
+   "declared_new": 431212,
+   "rows": 431210,
+   "delta": 1637,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.3806,
+   "coverage_by_declared_new_pct": 99.9995,
+   "probe": {
+    "http": 200,
+    "count": 431212,
+    "err": "",
+    "elapsed_ms": 1364,
+    "url": "https://gis.dentoncounty.gov/arcgis/rest/services/Public_Safety/MapServer/8/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_rest_services_Address_Points_Wake_County_NC_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 429008,
+   "declared_new": 429008,
+   "rows": 429008,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 429008,
+    "err": "",
+    "elapsed_ms": 682,
+    "url": "https://services8.arcgis.com/QQGMu3AgoCvivmaQ/arcgis/rest/services/Address_Points_Wake_County_NC/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "a261a66abddf0b_rest_services_PublicMaps_Location_MapServer_1",
+   "status": "ok",
+   "declared_old": 427533,
+   "declared_new": 427338,
+   "rows": 427338,
+   "delta": -195,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 99.9544,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 427338,
+    "err": "",
+    "elapsed_ms": 841,
+    "url": "https://utility.arcgis.com/usrsvcs/servers/ec02b1e2fe4b4b74b0a261a66abddf0b/rest/services/PublicMaps/Location/MapServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "exas_gov_arcgis_rest_services_Base_AddressPoints_MapServer_0",
+   "status": "ok",
+   "declared_old": 422499,
+   "declared_new": null,
+   "rows": 422559,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0142,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": null,
+    "count": null,
+    "err": "URLError: <urlopen error timed out>",
+    "elapsed_ms": 20110,
+    "url": "https://maps.roundrocktexas.gov/arcgis/rest/services/Base/AddressPoints/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rest_services_WC_Address_Points_Hosted_NewDB_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 421036,
+   "declared_new": 421036,
+   "rows": 421036,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 421036,
+    "err": "",
+    "elapsed_ms": 557,
+    "url": "https://services1.arcgis.com/PuB3FWUAxkScvfQy/arcgis/rest/services/WC_Address_Points_Hosted_NewDB/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_services_FACILITY_AddressPoints_E911domains_FeatureServer_5",
+   "status": "ok",
+   "declared_old": 420441,
+   "declared_new": 420441,
+   "rows": 420441,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 420441,
+    "err": "",
+    "elapsed_ms": 461,
+    "url": "https://services2.arcgis.com/S8zZg9pg23JUEexQ/arcgis/rest/services/FACILITY_AddressPoints_E911domains/FeatureServer/5/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "e_Exposure_Forecast_Values_by_Parcel_Address_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 419850,
+   "declared_new": 419850,
+   "rows": 419850,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 419850,
+    "err": "",
+    "elapsed_ms": 506,
+    "url": "https://services1.arcgis.com/AVP60cs0Q9PEA8rH/arcgis/rest/services/Current_and_Proposed_Noise_Exposure_Forecast_Values_by_Parcel_Address/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rcgis_rest_services_FACILITY_Sites_E911_24r1_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 417719,
+   "declared_new": 417719,
+   "rows": 417719,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 417719,
+    "err": "",
+    "elapsed_ms": 683,
+    "url": "https://services2.arcgis.com/S8zZg9pg23JUEexQ/arcgis/rest/services/FACILITY_Sites_E911_24r1/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "leRbndX_arcgis_rest_services_Address_Points_FeatureServer_16",
+   "status": "ok",
+   "declared_old": 417659,
+   "declared_new": 417659,
+   "rows": 417659,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 417659,
+    "err": "",
+    "elapsed_ms": 940,
+    "url": "https://services3.arcgis.com/RfpmnkSAQleRbndX/arcgis/rest/services/Address_Points/FeatureServer/16/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "1ubjUPmd_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 416118,
+   "declared_new": 416479,
+   "rows": 416174,
+   "delta": 361,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0135,
+   "coverage_by_declared_new_pct": 99.9268,
+   "probe": {
+    "http": 200,
+    "count": 416479,
+    "err": "",
+    "elapsed_ms": 283,
+    "url": "https://services2.arcgis.com/1UvBaQ5y1ubjUPmd/arcgis/rest/services/Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_rest_services_ODC_CITY_LOC_ADDRESSPUBLIC_P_FeatureServer_31",
+   "status": "ok",
+   "declared_old": 415730,
+   "declared_new": 415988,
+   "rows": 415981,
+   "delta": 258,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0604,
+   "coverage_by_declared_new_pct": 99.9983,
+   "probe": {
+    "http": 200,
+    "count": 415988,
+    "err": "",
+    "elapsed_ms": 428,
+    "url": "https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/ODC_CITY_LOC_ADDRESSPUBLIC_P/FeatureServer/31/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "ountytx_gov_arcgis_rest_services_AdMas_AdMas_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 412033,
+   "declared_new": null,
+   "rows": 412046,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0032,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": null,
+    "count": null,
+    "err": "URLError: <urlopen error timed out>",
+    "elapsed_ms": 20091,
+    "url": "https://taxmaps.traviscountytx.gov/arcgis/rest/services/AdMas/AdMas/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "La03VQ_arcgis_rest_services_Parcel_Addresses_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 408995,
+   "declared_new": 408995,
+   "rows": 408995,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 408995,
+    "err": "",
+    "elapsed_ms": 688,
+    "url": "https://services.arcgis.com/u40t8uZJuoLa03VQ/arcgis/rest/services/Parcel_Addresses/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "egis_ri_gov_hosting_rest_services_E911_e911Sites_MapServer_0",
+   "status": "ok",
+   "declared_old": 408892,
+   "declared_new": null,
+   "rows": 408892,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": null,
+    "count": null,
+    "err": "URLError: <urlopen error timed out>",
+    "elapsed_ms": 20100,
+    "url": "https://risegis.ri.gov/hosting/rest/services/E911/e911Sites/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "s_rest_services_Address_Points_Albany_092526_FeatureServer_1",
+   "status": "ok",
+   "declared_old": 408159,
+   "declared_new": 408159,
+   "rows": 408159,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 408159,
+    "err": "",
+    "elapsed_ms": 952,
+    "url": "https://services7.arcgis.com/uFAr0LUPy14bDaLg/arcgis/rest/services/Address_Points_Albany_092526/FeatureServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "tawa_ca_arcgis_rest_services_Address_Information_MapServer_0",
+   "status": "ok",
+   "declared_old": 404911,
+   "declared_new": 404959,
+   "rows": 404751,
+   "delta": 48,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 99.9605,
+   "coverage_by_declared_new_pct": 99.9486,
+   "probe": {
+    "http": 200,
+    "count": 404959,
+    "err": "",
+    "elapsed_ms": 5020,
+    "url": "https://maps.ottawa.ca/arcgis/rest/services/Address_Information/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "cgis_rest_services_Address_Points_Monroe_shp_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 401528,
+   "declared_new": 401528,
+   "rows": 401528,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 401528,
+    "err": "",
+    "elapsed_ms": 587,
+    "url": "https://services2.arcgis.com/RQcpPaCpMAXzUI5g/arcgis/rest/services/Address_Points_Monroe_shp/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "st_services_Tri_County_Parcels_and_Addresses_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 401295,
+   "declared_new": 401295,
+   "rows": 401295,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 401295,
+    "err": "",
+    "elapsed_ms": 774,
+    "url": "https://services5.arcgis.com/HPK9d3vzjakSFUjJ/arcgis/rest/services/Tri_County_Parcels_and_Addresses/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "arcgis_rest_services_Building_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 397876,
+   "declared_new": 397926,
+   "rows": 397926,
+   "delta": 50,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0126,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 397926,
+    "err": "",
+    "elapsed_ms": 490,
+    "url": "https://services6.arcgis.com/z6WYi9VRHfgwgtyW/arcgis/rest/services/Building_Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "albcountyga_gov_mapping_rest_services_TaxParcels_MapServer_3",
+   "status": "ok",
+   "declared_old": 397340,
+   "declared_new": 397444,
+   "rows": 397444,
+   "delta": 104,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0262,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 397444,
+    "err": "",
+    "elapsed_ms": 1070,
+    "url": "https://dcgis.dekalbcountyga.gov/mapping/rest/services/TaxParcels/MapServer/3/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rOlof_arcgis_rest_services_AddressPointsAGOL_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 396214,
+   "declared_new": 396214,
+   "rows": 396214,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 396214,
+    "err": "",
+    "elapsed_ms": 543,
+    "url": "https://services3.arcgis.com/t6ulOHDjzlBrOlof/arcgis/rest/services/AddressPointsAGOL/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "KSwyTBcwN_arcgis_rest_services_AddressPoints_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 395948,
+   "declared_new": 395966,
+   "rows": 395965,
+   "delta": 18,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0043,
+   "coverage_by_declared_new_pct": 99.9997,
+   "probe": {
+    "http": 200,
+    "count": 395966,
+    "err": "",
+    "elapsed_ms": 578,
+    "url": "https://services2.arcgis.com/rwnOSbfKSwyTBcwN/arcgis/rest/services/AddressPoints/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_rest_services_Address_Points_North_Carolina_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 392818,
+   "declared_new": 392818,
+   "rows": 392818,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 392818,
+    "err": "",
+    "elapsed_ms": 804,
+    "url": "https://services.arcgis.com/bkrWlSKcjUDFDtgw/arcgis/rest/services/Address_Points_North_Carolina/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "s_DuPage_County_IL_AddressPointsUnderDevelopment_MapServer_0",
+   "status": "ok",
+   "declared_old": 392044,
+   "declared_new": 392073,
+   "rows": 392073,
+   "delta": 29,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0074,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 392073,
+    "err": "",
+    "elapsed_ms": 1254,
+    "url": "https://gis.dupageco.org/arcgis/rest/services/DuPage_County_IL/AddressPointsUnderDevelopment/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "tyga_gov_hosted_rest_services_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 391817,
+   "declared_new": 391897,
+   "rows": 391896,
+   "delta": 80,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0202,
+   "coverage_by_declared_new_pct": 99.9997,
+   "probe": {
+    "http": 200,
+    "count": 391897,
+    "err": "",
+    "elapsed_ms": 880,
+    "url": "https://dcgis.dekalbcountyga.gov/hosted/rest/services/Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "nPE_arcgis_rest_services_SiteAddressPointsOD_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 391746,
+   "declared_new": 391819,
+   "rows": 391819,
+   "delta": 73,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0186,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 391819,
+    "err": "",
+    "elapsed_ms": 537,
+    "url": "https://services2.arcgis.com/IxVN2oUE9EYLSnPE/arcgis/rest/services/SiteAddressPointsOD/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "9EYLSnPE_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 389884,
+   "declared_new": 389884,
+   "rows": 389884,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 389884,
+    "err": "",
+    "elapsed_ms": 490,
+    "url": "https://services2.arcgis.com/IxVN2oUE9EYLSnPE/arcgis/rest/services/Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_arcgis_rest_services_Address_Points_Current_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 389884,
+   "declared_new": 389884,
+   "rows": 389884,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 389884,
+    "err": "",
+    "elapsed_ms": 689,
+    "url": "https://services2.arcgis.com/IxVN2oUE9EYLSnPE/arcgis/rest/services/Address_Points_Current/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "E_arcgis_rest_services_AddressingData_Public_FeatureServer_8",
+   "status": "ok",
+   "declared_old": 389172,
+   "declared_new": 389172,
+   "rows": 389172,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 389172,
+    "err": "",
+    "elapsed_ms": 584,
+    "url": "https://services2.arcgis.com/IxVN2oUE9EYLSnPE/arcgis/rest/services/AddressingData_Public/FeatureServer/8/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "arcgis_rest_services_Site_Address_Points_IPS_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 388841,
+   "declared_new": 388841,
+   "rows": 388841,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 388841,
+    "err": "",
+    "elapsed_ms": 775,
+    "url": "https://services2.arcgis.com/IxVN2oUE9EYLSnPE/arcgis/rest/services/Site_Address_Points_IPS/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "v4nmmrag_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 388628,
+   "declared_new": 388628,
+   "rows": 388628,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 388628,
+    "err": "",
+    "elapsed_ms": 602,
+    "url": "https://services1.arcgis.com/In9TiV3Fv4nmmrag/arcgis/rest/services/Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "HnF97m_arcgis_rest_services_Address_Points_V_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 388335,
+   "declared_new": 388335,
+   "rows": 388335,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 388335,
+    "err": "",
+    "elapsed_ms": 598,
+    "url": "https://services.arcgis.com/fGsbyIOAuxHnF97m/arcgis/rest/services/Address_Points_V/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "cgis_rest_services_Master_Address_Repository_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 388038,
+   "declared_new": 388039,
+   "rows": 388039,
+   "delta": 1,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0003,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 388039,
+    "err": "",
+    "elapsed_ms": 514,
+    "url": "https://services1.arcgis.com/ioennV6PpG5Xodq0/arcgis/rest/services/Master_Address_Repository/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "0J_arcgis_rest_services_Address_Parcel_Map_2_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 386224,
+   "declared_new": 386224,
+   "rows": 386224,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 386224,
+    "err": "",
+    "elapsed_ms": 626,
+    "url": "https://services7.arcgis.com/C81tFfLw9MSkIZ0J/arcgis/rest/services/Address_Parcel_Map_2/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "pG5Xodq0_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 377722,
+   "declared_new": 377692,
+   "rows": 377692,
+   "delta": -30,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 99.9921,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 377692,
+    "err": "",
+    "elapsed_ms": 370,
+    "url": "https://services1.arcgis.com/ioennV6PpG5Xodq0/arcgis/rest/services/Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "cgis_rest_services_MCECD_Address_Points_view_FeatureServer_1",
+   "status": "ok",
+   "declared_old": 376624,
+   "declared_new": 376624,
+   "rows": 376624,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 376624,
+    "err": "",
+    "elapsed_ms": 407,
+    "url": "https://services1.arcgis.com/PRoAPGnMSUqvTrzq/arcgis/rest/services/MCECD_Address_Points_view/FeatureServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "st_services_fairfax_county_va_address_points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 375396,
+   "declared_new": 375396,
+   "rows": 375396,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 375396,
+    "err": "",
+    "elapsed_ms": 629,
+    "url": "https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/fairfax_county_va_address_points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "GptQt_arcgis_rest_services_Address_Points_RG_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 374426,
+   "declared_new": 374426,
+   "rows": 374426,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 374426,
+    "err": "",
+    "elapsed_ms": 933,
+    "url": "https://services1.arcgis.com/fmL63zawJNFGptQt/arcgis/rest/services/Address_Points_RG/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "s_rest_services_Parcel_Viewer_SitusAddresses_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 374277,
+   "declared_new": 374277,
+   "rows": 374277,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 374277,
+    "err": "",
+    "elapsed_ms": 437,
+    "url": "https://services3.arcgis.com/4LOAHoFXfea6Y3Et/arcgis/rest/services/Parcel_Viewer_SitusAddresses/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "est_services_ParcelViewer_AddressPoints_View_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 374142,
+   "declared_new": 374142,
+   "rows": 374142,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 374142,
+    "err": "",
+    "elapsed_ms": 1006,
+    "url": "https://services3.arcgis.com/4LOAHoFXfea6Y3Et/arcgis/rest/services/ParcelViewer_AddressPoints_View/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "is_rest_services_ParcelViewer_AddressPoints2_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 374142,
+   "declared_new": 374142,
+   "rows": 374142,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 374142,
+    "err": "",
+    "elapsed_ms": 1022,
+    "url": "https://services3.arcgis.com/4LOAHoFXfea6Y3Et/arcgis/rest/services/ParcelViewer_AddressPoints2/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "ClqmipKpmFK_arcgis_rest_services_FBC_ADDRESS_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 362521,
+   "declared_new": 362675,
+   "rows": 362521,
+   "delta": 154,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 99.9575,
+   "probe": {
+    "http": 200,
+    "count": 362675,
+    "err": "",
+    "elapsed_ms": 600,
+    "url": "https://services.arcgis.com/HfQs2ClqmipKpmFK/arcgis/rest/services/FBC_ADDRESS/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "st_services_Montgomery_County_Address_Points_FeatureServer_2",
+   "status": "ok",
+   "declared_old": 360893,
+   "declared_new": 360893,
+   "rows": 360893,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 360893,
+    "err": "",
+    "elapsed_ms": 470,
+    "url": "https://services1.arcgis.com/kOChldNuKsox8qZD/arcgis/rest/services/Montgomery_County_Address_Points/FeatureServer/2/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "y_SiteStructureAddressPoint_point_SP_v1_VIEW_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 354508,
+   "declared_new": 354563,
+   "rows": 354563,
+   "delta": 55,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0155,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 354563,
+    "err": "",
+    "elapsed_ms": 544,
+    "url": "https://services1.arcgis.com/BkFxaEFNwHqX3tAw/arcgis/rest/services/FS_VCGI_OPENDATA_Emergency_SiteStructureAddressPoint_point_SP_v1_VIEW/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "FS_VCGI_OPENDATA_Emergency_ESITE_point_SP_v1_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 353161,
+   "declared_new": 353161,
+   "rows": 353161,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 353161,
+    "err": "",
+    "elapsed_ms": 495,
+    "url": "https://services1.arcgis.com/BkFxaEFNwHqX3tAw/arcgis/rest/services/FS_VCGI_OPENDATA_Emergency_ESITE_point_SP_v1/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "SCdqoXK_arcgis_rest_services_OpenDataAddress_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 351307,
+   "declared_new": 351304,
+   "rows": 351307,
+   "delta": -3,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0009,
+   "probe": {
+    "http": 200,
+    "count": 351304,
+    "err": "",
+    "elapsed_ms": 451,
+    "url": "https://services6.arcgis.com/FStub7HlCSCdqoXK/arcgis/rest/services/OpenDataAddress/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "tync_gov_arcgis_rest_services_GISDV_Base_Map_FeatureServer_1",
+   "status": "ok",
+   "declared_old": 347569,
+   "declared_new": 347578,
+   "rows": 347577,
+   "delta": 9,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0023,
+   "coverage_by_declared_new_pct": 99.9997,
+   "probe": {
+    "http": 200,
+    "count": 347578,
+    "err": "",
+    "elapsed_ms": 1177,
+    "url": "https://gcgis.guilfordcountync.gov/arcgis/rest/services/GISDV/Base_Map/FeatureServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "st_services_Hosted_RSP_Address_Data_agolview_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 346955,
+   "declared_new": 347150,
+   "rows": 347144,
+   "delta": 195,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0545,
+   "coverage_by_declared_new_pct": 99.9983,
+   "probe": {
+    "http": 200,
+    "count": 347150,
+    "err": "",
+    "elapsed_ms": 2152,
+    "url": "https://utility.arcgis.com/usrsvcs/servers/d630d918273845808b3a0313ff94ee4b/rest/services/Hosted/RSP_Address_Data_agolview/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_services_InteractiveMap_Address_Points_Info_FeatureServer_1",
+   "status": "ok",
+   "declared_old": 342958,
+   "declared_new": 342958,
+   "rows": 342958,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 342958,
+    "err": "",
+    "elapsed_ms": 776,
+    "url": "https://gisportal.fortbendcountytx.gov/arcgis/rest/services/InteractiveMap/Address_Points_Info/FeatureServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rest_services_InteractiveMap_Address_Points_Info_MapServer_1",
+   "status": "ok",
+   "declared_old": 342958,
+   "declared_new": 342958,
+   "rows": 342958,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 342958,
+    "err": "",
+    "elapsed_ms": 813,
+    "url": "https://gisportal.fortbendcountytx.gov/arcgis/rest/services/InteractiveMap/Address_Points_Info/MapServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "nF97m_arcgis_rest_services_Address_Points_RE_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 341779,
+   "declared_new": 341779,
+   "rows": 341779,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 341779,
+    "err": "",
+    "elapsed_ms": 530,
+    "url": "https://services.arcgis.com/fGsbyIOAuxHnF97m/arcgis/rest/services/Address_Points_RE/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "ces_hennepin_county_address_points_selection_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 337127,
+   "declared_new": 337127,
+   "rows": 337127,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 337127,
+    "err": "",
+    "elapsed_ms": 476,
+    "url": "https://services1.arcgis.com/7EzQnrfw48ewO24q/arcgis/rest/services/hennepin_county_address_points_selection/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "net_server_rest_services_Hosted_AddressPoint_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 334092,
+   "declared_new": 334331,
+   "rows": 334331,
+   "delta": 239,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0715,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 334331,
+    "err": "",
+    "elapsed_ms": 1406,
+    "url": "https://ags3.scgov.net/server/rest/services/Hosted/AddressPoint/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "gency_Management_9_1_1_Emergency_Response_Layers_MapServer_0",
+   "status": "ok",
+   "declared_old": 334062,
+   "declared_new": null,
+   "rows": 334063,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0003,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": null,
+    "count": null,
+    "err": "URLError: <urlopen error [Errno 111] Connection refused>",
+    "elapsed_ms": 272,
+    "url": "https://gis.brevardfl.gov/gissrv/rest/services/Emergency_Management/9_1_1_Emergency_Response_Layers/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "J0_arcgis_rest_services_SSMMA_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 330860,
+   "declared_new": 330860,
+   "rows": 330860,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 330860,
+    "err": "",
+    "elapsed_ms": 567,
+    "url": "https://services1.arcgis.com/kZsOWCED80XbRyJ0/arcgis/rest/services/SSMMA_Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "97m_arcgis_rest_services_Address_Points_AGOL_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 324246,
+   "declared_new": 324246,
+   "rows": 324246,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 324246,
+    "err": "",
+    "elapsed_ms": 525,
+    "url": "https://services.arcgis.com/fGsbyIOAuxHnF97m/arcgis/rest/services/Address_Points_AGOL/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "UGfPrN7o_arcgis_rest_services_Address_Labels_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 320255,
+   "declared_new": 553175,
+   "rows": 553175,
+   "delta": 232920,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 172.7295,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 553175,
+    "err": "",
+    "elapsed_ms": 398,
+    "url": "https://services2.arcgis.com/Q6Lq3evZUGfPrN7o/arcgis/rest/services/Address_Labels/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "P_arcgis_rest_services_Transit_Addresses_New_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 317258,
+   "declared_new": 317258,
+   "rows": 317258,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 317258,
+    "err": "",
+    "elapsed_ms": 494,
+    "url": "https://services.arcgis.com/KaARkuoKF9vrGr3P/arcgis/rest/services/Transit_Addresses_New/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rGr3P_arcgis_rest_services_Transit_Addresses_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 317258,
+   "declared_new": 317258,
+   "rows": 317258,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 317258,
+    "err": "",
+    "elapsed_ms": 516,
+    "url": "https://services.arcgis.com/KaARkuoKF9vrGr3P/arcgis/rest/services/Transit_Addresses/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "MVWH4R8h_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 316594,
+   "declared_new": 316594,
+   "rows": 316594,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 316594,
+    "err": "",
+    "elapsed_ms": 724,
+    "url": "https://services7.arcgis.com/JL4XvjbjMVWH4R8h/arcgis/rest/services/Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "arcgis_rest_services_WillCounty_AddressPoint_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 315460,
+   "declared_new": 315460,
+   "rows": 315460,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 315460,
+    "err": "",
+    "elapsed_ms": 411,
+    "url": "https://services.arcgis.com/fGsbyIOAuxHnF97m/arcgis/rest/services/WillCounty_AddressPoint/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "t01_rest_services_PlatTracker_PT365_PLAT_MAPPING_MapServer_5",
+   "status": "partial",
+   "declared_old": 315044,
+   "declared_new": null,
+   "rows": 310520,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 98.564,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": null,
+    "count": null,
+    "err": "URLError: <urlopen error timed out>",
+    "elapsed_ms": 20485,
+    "url": "https://mycity2.houstontx.gov/geoplat01/rest/services/PlatTracker/PT365_PLAT_MAPPING/MapServer/5/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rcgis_rest_services_LakeCounty_AddressPoints_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 313855,
+   "declared_new": 313887,
+   "rows": 313887,
+   "delta": 32,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0102,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 313887,
+    "err": "",
+    "elapsed_ms": 411,
+    "url": "https://services3.arcgis.com/HESxeTbDliKKvec2/arcgis/rest/services/LakeCounty_AddressPoints/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_gov_arcgis_rest_services_Essentials_CCGISLayers_MapServer_0",
+   "status": "ok",
+   "declared_old": 310474,
+   "declared_new": null,
+   "rows": 310616,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0457,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": 522,
+    "count": null,
+    "err": "HTTP 522",
+    "elapsed_ms": 19743,
+    "url": "https://agis3.charlottecountyfl.gov/arcgis/rest/services/Essentials/CCGISLayers/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "ZRrnUtfb_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 309509,
+   "declared_new": 309509,
+   "rows": 309509,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 309509,
+    "err": "",
+    "elapsed_ms": 1017,
+    "url": "https://services2.arcgis.com/VaUIIBnfZRrnUtfb/arcgis/rest/services/Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "uYNYH_arcgis_rest_services_TRANSPO_MAFDAP_PV_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 308114,
+   "declared_new": 308183,
+   "rows": 308176,
+   "delta": 69,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0201,
+   "coverage_by_declared_new_pct": 99.9977,
+   "probe": {
+    "http": 200,
+    "count": 308183,
+    "err": "",
+    "elapsed_ms": 494,
+    "url": "https://services.arcgis.com/ZOyb2t4B0UYuYNYH/arcgis/rest/services/TRANSPO_MAFDAP_PV/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "8_arcgis_rest_services_Parcel_Data_Addresses_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 306865,
+   "declared_new": 306865,
+   "rows": 306865,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 306865,
+    "err": "",
+    "elapsed_ms": 941,
+    "url": "https://services9.arcgis.com/2ynJbr9BE17vXxR8/arcgis/rest/services/Parcel_Data_Addresses/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_gov_arcgis_rest_services_GeneralUse_LandRecords_MapServer_0",
+   "status": "ok",
+   "declared_old": 306770,
+   "declared_new": null,
+   "rows": 306770,
+   "delta": null,
+   "relation": "不可复核",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": null,
+   "probe": {
+    "http": null,
+    "count": null,
+    "err": "URLError: <urlopen error _ssl.c:975: The handshake operation timed out>",
+    "elapsed_ms": 20243,
+    "url": "https://gis.coloradosprings.gov/arcgis/rest/services/GeneralUse/LandRecords/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "R7gSDOB2_arcgis_rest_services_ADDRESS_POINTS_FeatureServer_2",
+   "status": "ok",
+   "declared_old": 305383,
+   "declared_new": 305612,
+   "rows": 305612,
+   "delta": 229,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.075,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 305612,
+    "err": "",
+    "elapsed_ms": 455,
+    "url": "https://services1.arcgis.com/t03WDvnSR7gSDOB2/arcgis/rest/services/ADDRESS_POINTS/FeatureServer/2/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "anatee_org_gisits_rest_services_opendata_General_MapServer_5",
+   "status": "ok",
+   "declared_old": 305381,
+   "declared_new": 306043,
+   "rows": 306043,
+   "delta": 662,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.2168,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 306043,
+    "err": "",
+    "elapsed_ms": 478,
+    "url": "https://www.mymanatee.org/gisits/rest/services/opendata/General/MapServer/5/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_rest_services_Public_CadastreAndAdministrative_MapServer_43",
+   "status": "ok",
+   "declared_old": 305262,
+   "declared_new": 305333,
+   "rows": 305333,
+   "delta": 71,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0233,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 305333,
+    "err": "",
+    "elapsed_ms": 2024,
+    "url": "https://services.thelist.tas.gov.au/arcgis/rest/services/Public/CadastreAndAdministrative/MapServer/43/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_rgv911_org_server_rest_services_Public_Map_MIL1_MapServer_1",
+   "status": "missing",
+   "declared_old": 303175,
+   "declared_new": 303175,
+   "rows": 0,
+   "delta": 0,
+   "relation": "欠采（真缺口按新声明）",
+   "coverage_by_declared_old_pct": 0.0,
+   "coverage_by_declared_new_pct": 0.0,
+   "probe": {
+    "http": 200,
+    "count": 303175,
+    "err": "",
+    "elapsed_ms": 858,
+    "url": "https://gis.rgv911.org/server/rest/services/Public_Map_MIL1/MapServer/1/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0",
+   "status": "missing",
+   "declared_old": 303175,
+   "declared_new": 303175,
+   "rows": 0,
+   "delta": 0,
+   "relation": "欠采（真缺口按新声明）",
+   "coverage_by_declared_old_pct": 0.0,
+   "coverage_by_declared_new_pct": 0.0,
+   "probe": {
+    "http": 200,
+    "count": 303175,
+    "err": "",
+    "elapsed_ms": 820,
+    "url": "https://gis.rgv911.org/server/rest/services/RGV911_OPS_MIL1/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "arcgis_rest_services_Poland_Addresses_2_view_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 301951,
+   "declared_new": 301951,
+   "rows": 301951,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 301951,
+    "err": "",
+    "elapsed_ms": 539,
+    "url": "https://services6.arcgis.com/Do88DoK2xjTUCXd1/arcgis/rest/services/Poland_Addresses_2_view/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rest_services_Sarasota_County_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "declared_old": 301910,
+   "declared_new": 301910,
+   "rows": 301910,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 301910,
+    "err": "",
+    "elapsed_ms": 472,
+    "url": "https://services3.arcgis.com/AWDwYUpli8WqpWxQ/arcgis/rest/services/Sarasota_County_Address_Points/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  },
+  {
+   "layer": "rest_services_Address_Points_and_CPNs_Update_FeatureServer_3",
+   "status": "ok",
+   "declared_old": 300211,
+   "declared_new": 300211,
+   "rows": 300211,
+   "delta": 0,
+   "relation": "一致",
+   "coverage_by_declared_old_pct": 100.0,
+   "coverage_by_declared_new_pct": 100.0,
+   "probe": {
+    "http": 200,
+    "count": 300211,
+    "err": "",
+    "elapsed_ms": 527,
+    "url": "https://services2.arcgis.com/gEFt9c3jUfWMXCEP/arcgis/rest/services/Address_Points_and_CPNs_Update/FeatureServer/3/query?where=1%3D1&returnCountOnly=true&f=json"
+   }
+  }
+ ]
+}
