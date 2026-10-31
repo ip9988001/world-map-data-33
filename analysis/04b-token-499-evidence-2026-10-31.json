@@ -1,8 +1,8 @@
 {
  "schema": "upstream-token-evidence/v1",
  "stage": "04b",
- "generated_at": "2026-10-31T00:45:17Z",
- "method": "每轮探 3 个端点（`?f=json` / returnCountOnly / returnIdsOnly），间隔 ≥60 秒连探 2 轮。判据只看响应体：HTTP 200 + body 里 code=499 `Token Required` 才算服务级 token —— 只看状态码会误判成「服务正常」。",
+ "generated_at": "2026-10-31T01:08:58Z",
+ "method": "每轮探 3 个端点（`?f=json` / returnCountOnly / returnIdsOnly），间隔 ≥65 秒连探 2 轮。判据只看响应体：HTTP 200 + body 里 code=499 `Token Required` 才算服务级 token —— 只看状态码会误判成「服务正常」。",
  "layers": [
   {
    "layer": "s_Points_from_National_Address_Database_view_FeatureServer_0",
@@ -91,6 +91,446 @@
    "verdict": "service_level_token",
    "all_rounds_token": true,
    "conclusion": "服务级 token：连 `?f=json` 都 499，returnCountOnly / returnIdsOnly 同样 499，连续两轮一致 → 本层已无法再采一个字节，也无法复核 declared。"
+  },
+  {
+   "layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1",
+   "layer_url": "https://services.gis.nc.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0",
+   "rounds": [
+    {
+     "round": 1,
+     "at": "2026-10-31T01:08:58Z",
+     "probes": {
+      "service_metadata": {
+       "url": "https://services.gis.nc.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0?f=json",
+       "http": "200",
+       "raw": "{\"currentVersion\":10.91,\"cimVersion\":\"2.9.0\",\"id\":0,\"name\":\"AddressNC\",\"type\":\"Feature Layer\",\"description\":\"AddressNC has been prioritized by the North Carolina Geographic Information Coordinating Council (GICC) as a critical framework dataset. The AddressNC Program runs parallel to and is derived from the North Carolina 911 Board Next Generation 911 (NG911) Program.\\u202f Address data has been i",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": null,
+       "service_level_token": false,
+       "endpoint_ok": true
+      },
+      "returnCountOnly": {
+       "url": "https://services.gis.nc.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+       "http": "200",
+       "raw": "{\"count\":6297169}",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": 6297169,
+       "service_level_token": false,
+       "endpoint_ok": true
+      },
+      "returnIdsOnly": {
+       "url": "https://services.gis.nc.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0/query?where=1%3D1&returnIdsOnly=true&f=json",
+       "http": "000",
+       "raw": "{\"count\":6297169}",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": 6297169,
+       "service_level_token": false,
+       "endpoint_ok": true
+      }
+     }
+    },
+    {
+     "round": 2,
+     "at": "2026-10-31T01:10:36Z",
+     "probes": {
+      "service_metadata": {
+       "url": "https://services.gis.nc.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0?f=json",
+       "http": "200",
+       "raw": "{\"currentVersion\":10.91,\"cimVersion\":\"2.9.0\",\"id\":0,\"name\":\"AddressNC\",\"type\":\"Feature Layer\",\"description\":\"AddressNC has been prioritized by the North Carolina Geographic Information Coordinating Council (GICC) as a critical framework dataset. The AddressNC Program runs parallel to and is derived from the North Carolina 911 Board Next Generation 911 (NG911) Program.\\u202f Address data has been i",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": null,
+       "service_level_token": false,
+       "endpoint_ok": true
+      },
+      "returnCountOnly": {
+       "url": "https://services.gis.nc.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+       "http": "200",
+       "raw": "{\"count\":6297169}",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": 6297169,
+       "service_level_token": false,
+       "endpoint_ok": true
+      },
+      "returnIdsOnly": {
+       "url": "https://services.gis.nc.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0/query?where=1%3D1&returnIdsOnly=true&f=json",
+       "http": "000",
+       "raw": "{\"count\":6297169}",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": 6297169,
+       "service_level_token": false,
+       "endpoint_ok": true
+      }
+     }
+    }
+   ],
+   "rounds_n": 2,
+   "verdict": "reachable",
+   "all_rounds_token": false,
+   "conclusion": "至少一个端点能读到数据 → 不是服务级 token（单次 query 被拦另说）"
+  },
+  {
+   "layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2",
+   "layer_url": "https://services.gis.nc.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0",
+   "rounds": [
+    {
+     "round": 1,
+     "at": "2026-10-31T01:11:11Z",
+     "probes": {
+      "service_metadata": {
+       "url": "https://services.gis.nc.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0?f=json",
+       "http": "200",
+       "raw": "{\"currentVersion\":10.91,\"cimVersion\":\"2.9.0\",\"id\":0,\"name\":\"AddressNC\",\"type\":\"Feature Layer\",\"description\":\"AddressNC has been prioritized by the North Carolina Geographic Information Coordinating Council (GICC) as a critical framework dataset. The AddressNC Program runs parallel to and is derived from the North Carolina 911 Board Next Generation 911 (NG911) Program.\\u202f Address data has been i",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": null,
+       "service_level_token": false,
+       "endpoint_ok": true
+      },
+      "returnCountOnly": {
+       "url": "https://services.gis.nc.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+       "http": "200",
+       "raw": "{\"count\":6297169}",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": 6297169,
+       "service_level_token": false,
+       "endpoint_ok": true
+      },
+      "returnIdsOnly": {
+       "url": "https://services.gis.nc.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0/query?where=1%3D1&returnIdsOnly=true&f=json",
+       "http": "000",
+       "raw": "{\"count\":6297169}",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": 6297169,
+       "service_level_token": false,
+       "endpoint_ok": true
+      }
+     }
+    },
+    {
+     "round": 2,
+     "at": "2026-10-31T01:12:50Z",
+     "probes": {
+      "service_metadata": {
+       "url": "https://services.gis.nc.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0?f=json",
+       "http": "200",
+       "raw": "{\"currentVersion\":10.91,\"cimVersion\":\"2.9.0\",\"id\":0,\"name\":\"AddressNC\",\"type\":\"Feature Layer\",\"description\":\"AddressNC has been prioritized by the North Carolina Geographic Information Coordinating Council (GICC) as a critical framework dataset. The AddressNC Program runs parallel to and is derived from the North Carolina 911 Board Next Generation 911 (NG911) Program.\\u202f Address data has been i",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": null,
+       "service_level_token": false,
+       "endpoint_ok": true
+      },
+      "returnCountOnly": {
+       "url": "https://services.gis.nc.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+       "http": "200",
+       "raw": "{\"count\":6297169}",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": 6297169,
+       "service_level_token": false,
+       "endpoint_ok": true
+      },
+      "returnIdsOnly": {
+       "url": "https://services.gis.nc.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0/query?where=1%3D1&returnIdsOnly=true&f=json",
+       "http": "000",
+       "raw": "{\"count\":6297169}",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": 6297169,
+       "service_level_token": false,
+       "endpoint_ok": true
+      }
+     }
+    }
+   ],
+   "rounds_n": 2,
+   "verdict": "reachable",
+   "all_rounds_token": false,
+   "conclusion": "至少一个端点能读到数据 → 不是服务级 token（单次 query 被拦另说）"
+  },
+  {
+   "layer": "conemap_gov_secure_rest_services_NC1Map_Location_MapServer_0",
+   "layer_url": "https://services.nconemap.gov/secure/rest/services/NC1Map_Location/MapServer/0",
+   "rounds": [
+    {
+     "round": 1,
+     "at": "2026-10-31T01:13:24Z",
+     "probes": {
+      "service_metadata": {
+       "url": "https://services.nconemap.gov/secure/rest/services/NC1Map_Location/MapServer/0?f=json",
+       "http": "200",
+       "raw": "{\"currentVersion\":10.91,\"cimVersion\":\"2.9.0\",\"id\":0,\"name\":\"NC Master Address Dataset - 2014\",\"type\":\"Feature Layer\",\"description\":\"<DIV STYLE=\\\"text-align:Left;\\\"><DIV><DIV><P><SPAN>The NC Master Address Dataset represents a compilation of the best available representation of situs addresses and their location. The Center for Geographic Information and Analysis contacted county and municipal gove",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": null,
+       "service_level_token": false,
+       "endpoint_ok": true
+      },
+      "returnCountOnly": {
+       "url": "https://services.nconemap.gov/secure/rest/services/NC1Map_Location/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+       "http": "200",
+       "raw": "{\"count\":4939912}",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": 4939912,
+       "service_level_token": false,
+       "endpoint_ok": true
+      },
+      "returnIdsOnly": {
+       "url": "https://services.nconemap.gov/secure/rest/services/NC1Map_Location/MapServer/0/query?where=1%3D1&returnIdsOnly=true&f=json",
+       "http": "000",
+       "raw": "{\"count\":4939912}",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": 4939912,
+       "service_level_token": false,
+       "endpoint_ok": true
+      }
+     }
+    },
+    {
+     "round": 2,
+     "at": "2026-10-31T01:15:04Z",
+     "probes": {
+      "service_metadata": {
+       "url": "https://services.nconemap.gov/secure/rest/services/NC1Map_Location/MapServer/0?f=json",
+       "http": "200",
+       "raw": "{\"currentVersion\":10.91,\"cimVersion\":\"2.9.0\",\"id\":0,\"name\":\"NC Master Address Dataset - 2014\",\"type\":\"Feature Layer\",\"description\":\"<DIV STYLE=\\\"text-align:Left;\\\"><DIV><DIV><P><SPAN>The NC Master Address Dataset represents a compilation of the best available representation of situs addresses and their location. The Center for Geographic Information and Analysis contacted county and municipal gove",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": null,
+       "service_level_token": false,
+       "endpoint_ok": true
+      },
+      "returnCountOnly": {
+       "url": "https://services.nconemap.gov/secure/rest/services/NC1Map_Location/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+       "http": "200",
+       "raw": "{\"count\":4939912}",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": 4939912,
+       "service_level_token": false,
+       "endpoint_ok": true
+      },
+      "returnIdsOnly": {
+       "url": "https://services.nconemap.gov/secure/rest/services/NC1Map_Location/MapServer/0/query?where=1%3D1&returnIdsOnly=true&f=json",
+       "http": "200",
+       "raw": "{\"error\":{\"code\":500,\"message\":\"Error performing query operation\",\"details\":[]}}",
+       "error_code": 500,
+       "error_message": "Error performing query operation",
+       "message_code": null,
+       "count": null,
+       "service_level_token": false,
+       "endpoint_ok": false
+      }
+     }
+    }
+   ],
+   "rounds_n": 2,
+   "verdict": "reachable",
+   "all_rounds_token": false,
+   "conclusion": "至少一个端点能读到数据 → 不是服务级 token（单次 query 被拦另说）"
+  },
+  {
+   "layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0",
+   "layer_url": "https://services.nconemap.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0",
+   "rounds": [
+    {
+     "round": 1,
+     "at": "2026-10-31T01:15:33Z",
+     "probes": {
+      "service_metadata": {
+       "url": "https://services.nconemap.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0?f=json",
+       "http": "200",
+       "raw": "{\"currentVersion\":10.91,\"cimVersion\":\"2.9.0\",\"id\":0,\"name\":\"AddressNC\",\"type\":\"Feature Layer\",\"description\":\"AddressNC has been prioritized by the North Carolina Geographic Information Coordinating Council (GICC) as a critical framework dataset. The AddressNC Program runs parallel to and is derived from the North Carolina 911 Board Next Generation 911 (NG911) Program.\\u202f Address data has been i",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": null,
+       "service_level_token": false,
+       "endpoint_ok": true
+      },
+      "returnCountOnly": {
+       "url": "https://services.nconemap.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+       "http": "200",
+       "raw": "{\"count\":6297169}",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": 6297169,
+       "service_level_token": false,
+       "endpoint_ok": true
+      },
+      "returnIdsOnly": {
+       "url": "https://services.nconemap.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0/query?where=1%3D1&returnIdsOnly=true&f=json",
+       "http": "000",
+       "raw": "{\"count\":6297169}",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": 6297169,
+       "service_level_token": false,
+       "endpoint_ok": true
+      }
+     }
+    },
+    {
+     "round": 2,
+     "at": "2026-10-31T01:17:12Z",
+     "probes": {
+      "service_metadata": {
+       "url": "https://services.nconemap.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0?f=json",
+       "http": "200",
+       "raw": "{\"currentVersion\":10.91,\"cimVersion\":\"2.9.0\",\"id\":0,\"name\":\"AddressNC\",\"type\":\"Feature Layer\",\"description\":\"AddressNC has been prioritized by the North Carolina Geographic Information Coordinating Council (GICC) as a critical framework dataset. The AddressNC Program runs parallel to and is derived from the North Carolina 911 Board Next Generation 911 (NG911) Program.\\u202f Address data has been i",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": null,
+       "service_level_token": false,
+       "endpoint_ok": true
+      },
+      "returnCountOnly": {
+       "url": "https://services.nconemap.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+       "http": "200",
+       "raw": "{\"count\":6297169}",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": 6297169,
+       "service_level_token": false,
+       "endpoint_ok": true
+      },
+      "returnIdsOnly": {
+       "url": "https://services.nconemap.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0/query?where=1%3D1&returnIdsOnly=true&f=json",
+       "http": "000",
+       "raw": "{\"count\":6297169}",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": 6297169,
+       "service_level_token": false,
+       "endpoint_ok": true
+      }
+     }
+    }
+   ],
+   "rounds_n": 2,
+   "verdict": "reachable",
+   "all_rounds_token": false,
+   "conclusion": "至少一个端点能读到数据 → 不是服务级 token（单次 query 被拦另说）"
+  },
+  {
+   "layer": "ure_rest_services_AddressNC_NC1Map_Addresses_FeatureServer_0",
+   "layer_url": "https://services.nconemap.gov/secure/rest/services/AddressNC/NC1Map_Addresses/FeatureServer/0",
+   "rounds": [
+    {
+     "round": 1,
+     "at": "2026-10-31T01:17:45Z",
+     "probes": {
+      "service_metadata": {
+       "url": "https://services.nconemap.gov/secure/rest/services/AddressNC/NC1Map_Addresses/FeatureServer/0?f=json",
+       "http": "200",
+       "raw": "{\"currentVersion\":10.91,\"cimVersion\":\"2.9.0\",\"id\":0,\"name\":\"AddressNC\",\"type\":\"Feature Layer\",\"parentLayer\":null,\"defaultVisibility\":false,\"minScale\":0,\"maxScale\":0,\"canScaleSymbols\":false,\"geometryType\":\"esriGeometryPoint\",\"description\":\"AddressNC has been prioritized by the North Carolina Geographic Information Coordinating Council (GICC) as a critical framework dataset. The AddressNC Program ru",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": null,
+       "service_level_token": false,
+       "endpoint_ok": true
+      },
+      "returnCountOnly": {
+       "url": "https://services.nconemap.gov/secure/rest/services/AddressNC/NC1Map_Addresses/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+       "http": "200",
+       "raw": "{\"count\":6297169}",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": 6297169,
+       "service_level_token": false,
+       "endpoint_ok": true
+      },
+      "returnIdsOnly": {
+       "url": "https://services.nconemap.gov/secure/rest/services/AddressNC/NC1Map_Addresses/FeatureServer/0/query?where=1%3D1&returnIdsOnly=true&f=json",
+       "http": "200",
+       "raw": "{\"error\":{\"code\":500,\"message\":\"Error performing query operation\",\"details\":[]}}",
+       "error_code": 500,
+       "error_message": "Error performing query operation",
+       "message_code": null,
+       "count": null,
+       "service_level_token": false,
+       "endpoint_ok": false
+      }
+     }
+    },
+    {
+     "round": 2,
+     "at": "2026-10-31T01:19:19Z",
+     "probes": {
+      "service_metadata": {
+       "url": "https://services.nconemap.gov/secure/rest/services/AddressNC/NC1Map_Addresses/FeatureServer/0?f=json",
+       "http": "200",
+       "raw": "{\"currentVersion\":10.91,\"cimVersion\":\"2.9.0\",\"id\":0,\"name\":\"AddressNC\",\"type\":\"Feature Layer\",\"parentLayer\":null,\"defaultVisibility\":false,\"minScale\":0,\"maxScale\":0,\"canScaleSymbols\":false,\"geometryType\":\"esriGeometryPoint\",\"description\":\"AddressNC has been prioritized by the North Carolina Geographic Information Coordinating Council (GICC) as a critical framework dataset. The AddressNC Program ru",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": null,
+       "service_level_token": false,
+       "endpoint_ok": true
+      },
+      "returnCountOnly": {
+       "url": "https://services.nconemap.gov/secure/rest/services/AddressNC/NC1Map_Addresses/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+       "http": "200",
+       "raw": "{\"count\":6297169}",
+       "error_code": null,
+       "error_message": null,
+       "message_code": null,
+       "count": 6297169,
+       "service_level_token": false,
+       "endpoint_ok": true
+      },
+      "returnIdsOnly": {
+       "url": "https://services.nconemap.gov/secure/rest/services/AddressNC/NC1Map_Addresses/FeatureServer/0/query?where=1%3D1&returnIdsOnly=true&f=json",
+       "http": "200",
+       "raw": "{\"error\":{\"code\":500,\"message\":\"Error performing query operation\",\"details\":[]}}",
+       "error_code": 500,
+       "error_message": "Error performing query operation",
+       "message_code": null,
+       "count": null,
+       "service_level_token": false,
+       "endpoint_ok": false
+      }
+     }
+    }
+   ],
+   "rounds_n": 2,
+   "verdict": "reachable",
+   "all_rounds_token": false,
+   "conclusion": "至少一个端点能读到数据 → 不是服务级 token（单次 query 被拦另说）"
   }
  ]
 }
