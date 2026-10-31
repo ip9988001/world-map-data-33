@@ -1,0 +1,414 @@
+{
+ "schema": "preflight/v1",
+ "at": "2026-10-31T08:32:32Z",
+ "stage": "07b",
+ "ref": "main",
+ "ref_sha": "f97e15fffc30f45a559985e7c5afbd1971b02441",
+ "main_sha": "f97e15fffc30f45a559985e7c5afbd1971b02441",
+ "repo": "ip9988001/world-map-data-33",
+ "inputs": {
+  "stage": "07b",
+  "force_layers": [],
+  "size": "300",
+  "max_shards": "0",
+  "ref": "main",
+  "authorize_heavy": false
+ },
+ "verdict": "PASS_WITH_WARNINGS",
+ "fail_n": 0,
+ "warn_n": 3,
+ "checks": [
+  {
+   "id": "A1",
+   "group": "A",
+   "title": "同组占用",
+   "status": "PASS",
+   "detail": "同组空闲（无 in_progress / pending）"
+  },
+  {
+   "id": "A1b",
+   "group": "A",
+   "title": "上游阶段在跑",
+   "status": "PASS",
+   "detail": "上游 05b 没有在跑（无自动派 07b 的冲突）"
+  },
+  {
+   "id": "A2",
+   "group": "A",
+   "title": "跨阶段并发",
+   "status": "PASS",
+   "detail": "其他阶段在跑 0 个（阈值 2）"
+  },
+  {
+   "id": "B3",
+   "group": "B",
+   "title": "代码版本",
+   "status": "PASS",
+   "detail": "关键文件与 main 逐一对齐，且 6 项已批准修复齐全"
+  },
+  {
+   "id": "B3b",
+   "group": "B",
+   "title": "已批准版本",
+   "status": "WARN",
+   "detail": "main 已前进到 f97e15f，不在已批准版本白名单（3f3c9b9, 688c313, 780e9b4, a39ba76, a4f12f7, aa4bd73, d5b5db2, f55f6a5, f68c002）→ 先把这次合并审一遍，再把它加进 collect/preflight_dispatch.py 的 APPROVED_MAIN",
+   "main_sha": "f97e15fffc30f45a559985e7c5afbd1971b02441",
+   "ref_sha": "f97e15fffc30f45a559985e7c5afbd1971b02441"
+  },
+  {
+   "id": "F16",
+   "group": "F",
+   "title": "故障清单",
+   "status": "WARN",
+   "detail": "本次没声明涉及的类别（--ledger-category），台账未比对；派单里必须写 `故障清单已查：<编号>|无` 并列出类别",
+   "ledger_hits": [],
+   "ledger_categories": []
+  },
+  {
+   "id": "B4",
+   "group": "B",
+   "title": "接续策略 dry-run",
+   "status": "PASS",
+   "detail": "07b → next=空 / decide=stop（停车线正确，不会自动接下一阶段）",
+   "next": "-"
+  },
+  {
+   "id": "B5",
+   "group": "B",
+   "title": "阶段授权",
+   "status": "PASS",
+   "detail": "07b 在四阶段常规范围，无需额外授权"
+  },
+  {
+   "id": "C6",
+   "group": "C",
+   "title": "账本现值",
+   "status": "WARN",
+   "detail": "阶段账本 - 层/- 行；rebuilt - 层/- 行；最近 run - 层/- 行（缺：stage_ledger,rebuilt,last_run）",
+   "ledgers": {
+    "stage_ledger": {
+     "path": "",
+     "exists": false
+    },
+    "rebuilt": {
+     "path": "",
+     "exists": false
+    },
+    "last_run": {
+     "path": "",
+     "exists": false
+    }
+   }
+  },
+  {
+   "id": "C8",
+   "group": "C",
+   "title": "账本写入保护",
+   "status": "PASS",
+   "detail": "单 run 不覆盖阶段账本 + 逐层 rows 不减 + 检查点按单元合并，三项齐全",
+   "checks": {
+    "ledger_merge.write_run_and_stage": true,
+    "ledger_merge.stage_overwrite_allowed": true,
+    "step_full_report 走 ledger_merge": true,
+    "step_full_report 带行数闸门": true,
+    "ckpt_guard.merge_checkpoints": true,
+    "pilot 收尾合并检查点": true
+   }
+  },
+  {
+   "id": "D9",
+   "group": "D",
+   "title": "目标层撞车",
+   "status": "INFO",
+   "detail": "本次没有 --force-layers，无「点名层撞车」风险（按计划切片仍可能重叠，见 D10）"
+  },
+  {
+   "id": "D10",
+   "group": "D",
+   "title": "已采重叠",
+   "status": "PASS",
+   "detail": "计划 27530 层 vs 已采 436 层，交集 0 —— 全是新层（口径：全档估算，非 full_plan 精确计划）",
+   "overlap_n": 0
+  },
+  {
+   "id": "D11",
+   "group": "D",
+   "title": "检查点备份",
+   "status": "INFO",
+   "detail": "本次无 --force-layers，跳过逐层检查点核查"
+  },
+  {
+   "id": "D12",
+   "group": "D",
+   "title": "分区重复声明 duplicate_declared",
+   "status": "INFO",
+   "detail": "本阶段账本没有 `@<分区>` 多分区层（无重复声明风险）",
+   "duplicate_declared": []
+  },
+  {
+   "id": "D13",
+   "group": "D",
+   "title": "重试上限 upstream_unstable",
+   "status": "PASS",
+   "detail": "没有层连续失败达到 3 次（尝试账本记了 12 层 / 38 条失败；其中 7 层本轮已采成、不再算 unstable）",
+   "retry_cap_unstable": [],
+   "retry_cap_forced": [],
+   "attempt_log": "analysis/04b-attempt-log.json",
+   "cap": 3,
+   "attempts_n": 38,
+   "cleared_by_success": [
+    "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1",
+    "_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0",
+    "yil_gov_traditional_rest_services_addressZipCode_MapServer_0",
+    "rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5",
+    "vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0",
+    "cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0",
+    "s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0"
+   ]
+  },
+  {
+   "id": "E12",
+   "group": "E",
+   "title": "上游 0 行层",
+   "status": "PASS",
+   "detail": "抽样 7 层，无 0 行层（7 层有行）"
+  },
+  {
+   "id": "E13",
+   "group": "E",
+   "title": "上游 403/超时",
+   "status": "PASS",
+   "detail": "7 层抽样无 403/超时"
+  },
+  {
+   "id": "E14",
+   "group": "E",
+   "title": "声明可复核率",
+   "status": "PASS",
+   "detail": "7 层声明都可复核（用于跑后差额分母）"
+  }
+ ],
+ "rows_baseline": {},
+ "evidence": {
+  "active_runs": [
+   {
+    "id": 41184978867,
+    "status": "in_progress",
+    "stage": "",
+    "created_at": "2026-10-31T08:31:53Z",
+    "head_sha": "f97e15fff",
+    "dur_min": 0
+   },
+   {
+    "id": 41167836540,
+    "status": "completed",
+    "stage": "05b",
+    "created_at": "2026-10-31T04:15:47Z",
+    "head_sha": "c0ad65cb4",
+    "dur_min": 244
+   },
+   {
+    "id": 41155023558,
+    "status": "completed",
+    "stage": "",
+    "created_at": "2026-10-31T01:22:14Z",
+    "head_sha": "366a632cd",
+    "dur_min": 144
+   },
+   {
+    "id": 41126178216,
+    "status": "completed",
+    "stage": "",
+    "created_at": "2026-10-30T20:48:56Z",
+    "head_sha": "cb86f4263",
+    "dur_min": 265
+   },
+   {
+    "id": 41124980564,
+    "status": "completed",
+    "stage": "",
+    "created_at": "2026-10-30T20:39:57Z",
+    "head_sha": "cb86f4263",
+    "dur_min": 9
+   },
+   {
+    "id": 41123309047,
+    "status": "completed",
+    "stage": "",
+    "created_at": "2026-10-30T20:27:06Z",
+    "head_sha": "7ed74c893",
+    "dur_min": 428
+   },
+   {
+    "id": 41122821137,
+    "status": "completed",
+    "stage": "",
+    "created_at": "2026-10-30T20:23:38Z",
+    "head_sha": "a3483511f",
+    "dur_min": 6
+   },
+   {
+    "id": 41121952357,
+    "status": "completed",
+    "stage": "",
+    "created_at": "2026-10-30T20:17:18Z",
+    "head_sha": "e758d2639",
+    "dur_min": 124
+   },
+   {
+    "id": 41120626718,
+    "status": "completed",
+    "stage": "",
+    "created_at": "2026-10-30T20:06:25Z",
+    "head_sha": "ab56323e2",
+    "dur_min": 16
+   },
+   {
+    "id": 41116421397,
+    "status": "completed",
+    "stage": "",
+    "created_at": "2026-10-30T19:34:59Z",
+    "head_sha": "404fa5021",
+    "dur_min": 12
+   },
+   {
+    "id": 41114330819,
+    "status": "completed",
+    "stage": "",
+    "created_at": "2026-10-30T19:19:39Z",
+    "head_sha": "404fa5021",
+    "dur_min": 13
+   },
+   {
+    "id": 41092912755,
+    "status": "completed",
+    "stage": "",
+    "created_at": "2026-10-30T16:46:28Z",
+    "head_sha": "48d1a48e5",
+    "dur_min": 152
+   },
+   {
+    "id": 41019004076,
+    "status": "completed",
+    "stage": "",
+    "created_at": "2026-10-30T07:15:46Z",
+    "head_sha": "b1bc572b2",
+    "dur_min": 528
+   }
+  ],
+  "runs_err": "",
+  "plan_commits": {
+   "05b": {
+    "run_id": "41167836540",
+    "commit": "e4bf61f12",
+    "layers_n": 1033
+   }
+  },
+  "ledger": {
+   "path": "docs/WORKFLOW-FAILURE-LEDGER.md",
+   "changed_files": [],
+   "categories": [],
+   "hits": [],
+   "waivers": [],
+   "waived": []
+  },
+  "ref": {
+   "ref": "main",
+   "sha": "f97e15fffc30f45a559985e7c5afbd1971b02441",
+   "main_sha": "f97e15fffc30f45a559985e7c5afbd1971b02441"
+  },
+  "chain_dry_run": "[chain] stage=07b next=-   child_chain=0 decide=stop     reason=no_next_stage\n[chain] 不接续（no_next_stage）—— 到此为止，等口号\n[chain] dry-run：没有派发任何 run",
+  "stage_ledger_path": "",
+  "rows_baseline_layers": 0,
+  "inflight_targets": {},
+  "planned": {
+   "layers_n": 27530,
+   "source": "estimate(band)",
+   "done_layers_n": 436
+  },
+  "duplicate_declared": [],
+  "duplicate_declared_reviewed": [],
+  "duplicate_declared_ok": [],
+  "retry_cap": {
+   "attempt_log": "analysis/04b-attempt-log.json",
+   "cap": 3,
+   "attempts_n": 38,
+   "unstable": [],
+   "in_plan": [],
+   "forced": []
+  },
+  "upstream_probe": {
+   "zNmbMFiinWw4_arcgis_rest_services_Whitehorse_FeatureServer_0": {
+    "http": 200,
+    "count": 1,
+    "err": "",
+    "elapsed_s": 0.2,
+    "meta_token": null,
+    "confirm_service_token": null,
+    "confirm_at": null,
+    "confirm_http": null
+   },
+   "arcgis_rest_services_CDBG_2021_SC_Places_shp_FeatureServer_0": {
+    "http": 200,
+    "count": 6,
+    "err": "",
+    "elapsed_s": 0.2,
+    "meta_token": null,
+    "confirm_service_token": null,
+    "confirm_at": null,
+    "confirm_http": null
+   },
+   "iving_SNAP_benefits_with_older_adults_Daniela__FeatureServer": {
+    "http": 200,
+    "count": 33,
+    "err": "",
+    "elapsed_s": 0.2,
+    "meta_token": null,
+    "confirm_service_token": null,
+    "confirm_at": null,
+    "confirm_http": null
+   },
+   "iKsj5Z5YMN_arcgis_rest_services_Mapreup_WFL1_FeatureServer_0": {
+    "http": 200,
+    "count": 120,
+    "err": "",
+    "elapsed_s": 0.2,
+    "meta_token": null,
+    "confirm_service_token": null,
+    "confirm_at": null,
+    "confirm_http": null
+   },
+   "_rest_services_BP4_R036_GML_July_2025_Alecia_FeatureServer_0": {
+    "http": 200,
+    "count": 372,
+    "err": "",
+    "elapsed_s": 0.2,
+    "meta_token": null,
+    "confirm_service_token": null,
+    "confirm_at": null,
+    "confirm_http": null
+   },
+   "rcgis_rest_services_Centerline_types_primary_FeatureServer_4": {
+    "http": 200,
+    "count": 1424,
+    "err": "",
+    "elapsed_s": 0.1,
+    "meta_token": null,
+    "confirm_service_token": null,
+    "confirm_at": null,
+    "confirm_http": null
+   },
+   "pKe5izqVc_arcgis_rest_services_dissolve_WFL1_FeatureServer_4": {
+    "http": 200,
+    "count": 4997,
+    "err": "",
+    "elapsed_s": 0.1,
+    "meta_token": null,
+    "confirm_service_token": null,
+    "confirm_at": null,
+    "confirm_http": null
+   }
+  }
+ },
+ "checks_total": 18
+}
