@@ -258,15 +258,18 @@ LEDGER_SAMPLE = """# 台账
 | W33-014 | 2026-10-30 | 账本与口径 | rc!=0 一律 failed | 只判 0/非 0 | 假红 | rc=2 → unverified 不报红 | 构造 rc=2 | 未修 | 0 |
 | W33-021 | 2026-10-30 | 切分与体积 | 按行数切必撞 2GB | 不看字节 | 上传失败 | unit_rows + unit_bytes 双上限 | unit_bytes < 1.5e9 | 566b20b | 1 |
 | W33-001 | 2026-10-30 | 并发队列 | 同组只留一个 pending | GitHub 行为 | 白排一轮 | 派前查 pending | gh run list | 无（靠流程规避） | 1 |
+| W33-007 | 2026-10-30 | git提交 | 裸 checkout 被未提交文件拒 | 产物没清干净 | 4 片假红 | checkout -qf + 硬复位 | 脏目录跑完提交步 rc=0 | 未修 | 3 |
 """
 
 
 class FailureLedger(unittest.TestCase):
-    """F16：故障清单 —— 未规避 → WARN；复发 ≥2 → FAIL；豁免写进证据。"""
+    """F16：复发≥2 且未规避 → FAIL；复发≥2 且已规避 → WARN（固定文案 + 验证方式）；
+    未规避且复发=1 → WARN；台账缺失 / 表解析失败 → FAIL；豁免必须带理由。"""
 
     def test_parse_rows_and_recurrence(self):
         rows = P.parse_failure_ledger(LEDGER_SAMPLE)
-        self.assertEqual([r["id"] for r in rows], ["W33-011", "W33-014", "W33-021", "W33-001"])
+        self.assertEqual([r["id"] for r in rows],
+                         ["W33-011", "W33-014", "W33-021", "W33-001", "W33-007"])
         self.assertEqual(rows[0]["recurrence"], 2)
         self.assertTrue(rows[0]["mitigated"])          # 有关联提交
         self.assertFalse(rows[1]["mitigated"])         # 未修
@@ -283,24 +286,43 @@ class FailureLedger(unittest.TestCase):
         rows = P.parse_failure_ledger("| 编号 | 日期 |\n|---|---|\n| xx | y |\n")
         self.assertEqual(rows, [])
 
-    def test_recurrence_ge_2_is_fail(self):
-        it, hits = P.judge_failure_ledger(LEDGER_SAMPLE, categories=["账本与口径"])
-        self.assertEqual(it["status"], "FAIL")
-        self.assertIn("W33-011", it["detail"])
-        self.assertTrue(any(h["id"] == "W33-011" for h in hits))
-
-    def test_unmitigated_is_warn_and_prints_mitigation(self):
-        it, _ = P.judge_failure_ledger(LEDGER_SAMPLE, categories=["账本与口径"],
-                                       waive=["W33-011"])
+    def test_chronic_mitigated_is_warn_not_fail(self):
+        # ★ 2026-10-31 改版：踩过 2 次但已修 → 只 WARN（不再逼人无脑 waive）
+        it, hits = P.judge_failure_ledger(LEDGER_SAMPLE, categories=["账本与口径"],
+                                          waive=["W33-014=rc=2 语义属采集口径变更，本单不碰 pilot 退出码"])
         self.assertEqual(it["status"], "WARN")
-        self.assertIn("W33-014", it["detail"])
-        self.assertIn("unverified", it["detail"])      # 规避动作要打出来
+        self.assertIn("这条踩过 2 次，已修于 35904fb", it["detail"])
+        self.assertIn("未重新引入", it["detail"])
+        self.assertEqual([h["id"] for h in hits if h["recurrence"] >= 2 and h["mitigated"]],
+                         ["W33-011"])
 
-    def test_waive_downgrades_the_fatal_one(self):
-        it, _ = P.judge_failure_ledger(LEDGER_SAMPLE, categories=["账本与口径"],
-                                       waive=["w33-011", "W33-014"])
+    def test_chronic_unmitigated_is_fail(self):
+        # 复发 3 次且关联提交写「未修」→ 真危险（明知踩过还没修）
+        it, _ = P.judge_failure_ledger(LEDGER_SAMPLE, categories=["git提交"])
+        self.assertEqual(it["status"], "FAIL")
+        self.assertIn("W33-007", it["detail"])
+        self.assertIn("未规避", it["detail"])
+
+    def test_waive_with_reason_downgrades_fail(self):
+        it, _ = P.judge_failure_ledger(
+            LEDGER_SAMPLE, categories=["git提交"],
+            waive=["W33-007=checkout 已改 -qf 且本单只改 preflight，不碰 workflow 提交步"])
         self.assertNotEqual(it["status"], "FAIL")
-        self.assertTrue(any(h["waived"] for h in it["ledger_hits"]))
+        hit = [h for h in it["ledger_hits"] if h["id"] == "W33-007"][0]
+        self.assertTrue(hit["waived"])
+        self.assertIn("不碰 workflow", hit["waiver_reason"])
+
+    def test_waive_without_reason_is_refused(self):
+        for bad in ("W33-011", "W33-011=", "W33-011=无", "W33-011=ok", "W33-011 =   "):
+            with self.assertRaises(ValueError):
+                P.judge_failure_ledger(LEDGER_SAMPLE, categories=["账本与口径"], waive=[bad])
+
+    def test_waive_reason_is_recorded_in_item(self):
+        it, _ = P.judge_failure_ledger(
+            LEDGER_SAMPLE, categories=["git提交"],
+            waive=["W33-007=本单只动 preflight_dispatch.py，workflow 提交步未改"])
+        self.assertEqual(it["ledger_waivers"][0]["id"], "W33-007")
+        self.assertIn("workflow 提交步未改", it["ledger_waivers"][0]["reason"])
 
     def test_fixed_single_recurrence_is_pass_with_hits_listed(self):
         it, hits = P.judge_failure_ledger(LEDGER_SAMPLE, categories=["切分与体积"])
@@ -323,9 +345,10 @@ class FailureLedger(unittest.TestCase):
         self.assertIn("故障清单已查", it["detail"])
         self.assertEqual(hits, [])
 
-    def test_missing_ledger_warns(self):
+    def test_missing_ledger_is_fail(self):
+        # 台账缺失 = 没查就派单 → FAIL（不许静默）
         it, _ = P.judge_failure_ledger("", categories=["账本与口径"])
-        self.assertEqual(it["status"], "WARN")
+        self.assertEqual(it["status"], "FAIL")
         self.assertIn("WORKFLOW-FAILURE-LEDGER", it["detail"])
 
     def test_broken_table_is_fail(self):
@@ -339,6 +362,17 @@ class FailureLedger(unittest.TestCase):
         self.assertNotIn("账本与口径", cats)
         cats2 = P.categories_of_paths(["collect/ledger_merge.py"])
         self.assertEqual(cats2, {"账本与口径"})
+
+    def test_human_summary_prints_verify_and_waiver_reason(self):
+        it, hits = P.judge_failure_ledger(
+            LEDGER_SAMPLE, categories=["git提交"],
+            waive=["W33-007=本单只动 preflight_dispatch.py，workflow 提交步未改"])
+        rep = {"stage": "04b", "ref": "main", "ref_sha": "deadbeef", "verdict": "PASS_WITH_WARNINGS",
+               "fail_n": 0, "warn_n": 1, "checks_total": 1, "checks": [it]}
+        txt = P.human_summary(rep)
+        self.assertIn("F16 故障清单比对", txt)
+        self.assertIn("验证方式：脏目录跑完提交步 rc=0", txt)
+        self.assertIn("豁免理由：本单只动 preflight_dispatch.py", txt)
 
 
 class Verdict(unittest.TestCase):
