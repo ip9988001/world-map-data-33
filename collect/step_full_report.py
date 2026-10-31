@@ -220,6 +220,22 @@ def main() -> int:
         L.append("**无片账本信息。**")
     L += [""]
 
+    # ★ max_shards 截断单列一节（W33-036）：砍片必须可见，不能看着像「本来就没采到」
+    trunc = plan.get("plan_truncated") or {}
+    if trunc:
+        L += ["## 二之二、max_shards 截断：本轮注定没跑的片（W33-036）", "",
+              "> 这不是「没采到」，是 **没派**：`max_shards=%s` 把 %d 片截成 %d 片，"
+              "%d 层连 job 都没起。清单同时写在 plan 的 `shards_dropped[]`，账本 "
+              "`shards_incomplete` 也会点名。要全跑请 `max_shards=0`。"
+              % (trunc.get("max_shards"), trunc.get("expected_shards"),
+                 trunc.get("actual_shards"), trunc.get("dropped_layers_n")),
+              ""]
+        L += ["| 被砍分片 | 层数 | 层 id |", "|---|---|---|"]
+        for d in plan.get("shards_dropped") or []:
+            L.append("| %d | %d | %s |" % (d["shard"], len(d["layers"]),
+                                            ", ".join("`%s`" % x for x in d["layers"])))
+        L += [""]
+
     L += ["## 三、差额最大的 10 层", ""]
     if gaps:
         L += ["| 层 | 声明 | 实采 | 差额 | 状态 | 原因 |", "|---|---|---|---|---|---|"]
@@ -276,6 +292,10 @@ def main() -> int:
            "shards_expected": len(expected), "shards_reported": len(shard_info),
            "shards_incomplete": [s["shard"] for s in incomplete],
            "shards_incomplete_detail": incomplete,
+           # ★ W33-036：plan 被 max_shards 截断时，把“本轮注定没跑的片/层”写进账本，
+           #   收口时一眼看到缺口是谁；没截断则为 None（不干扰旧账对比）。
+           "plan_truncated": plan.get("plan_truncated"),
+           "shards_dropped": plan.get("shards_dropped") or [],
            "complete": (not incomplete) and cnt.get("failed", 0) == 0,
            "plan": {k: plan.get(k) for k in ("layers_n", "declared_rows", "shards_n", "size")},
            "records": recs}
@@ -318,6 +338,10 @@ def main() -> int:
     if regs:
         print("::warning::rows 回退 %d 层（无证据 %d 层）→ 见 %s 第七节"
               % (len(regs), res.get("rows_regressions_unexplained", 0), out))
+    if trunc:
+        print("::warning::max_shards=%s 截断：%d 片→%d 片，%d 层本轮注定不跑→见 %s 二之二节"
+              % (trunc.get("max_shards"), trunc.get("expected_shards"),
+                 trunc.get("actual_shards"), trunc.get("dropped_layers_n"), out))
     print("写入 %s 与 %s" % (out, res["run_path"]))
     if res.get("error"):
         # 行数回退且无实证：阶段账本一个字没动。非零退出，让 workflow 看得见。

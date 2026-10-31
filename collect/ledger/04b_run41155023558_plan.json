@@ -1,0 +1,64 @@
+{
+ "schema": "collect-plan/v1",
+ "stage": "04b",
+ "size": 2,
+ "layers_n": 12,
+ "shards_n": 6,
+ "declared_rows": 28290640,
+ "unit_rows": 1000000,
+ "workers": 4,
+ "done_from": "04",
+ "tag": "collect-step04-{layer}",
+ "order": null,
+ "forced_layers": [
+  "cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0",
+  "s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0",
+  "_rgv911_org_server_rest_services_Public_Map_MIL1_MapServer_1",
+  "vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0",
+  "_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0"
+ ],
+ "shards": [
+  {
+   "shard": 0,
+   "layers": [
+    "vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0",
+    "_arcgis1_rest_services_FLEXMOBILE_Address_Points_MapServer_0"
+   ]
+  },
+  {
+   "shard": 1,
+   "layers": [
+    "_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0",
+    "g_rest_services_Basemap_Address_Points_EagleView_MapServer_0"
+   ]
+  },
+  {
+   "shard": 2,
+   "layers": [
+    "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1",
+    "tyil_gov_traditional_rest_services_cookVwrDynmc_MapServer_63"
+   ]
+  },
+  {
+   "shard": 3,
+   "layers": [
+    "yil_gov_traditional_rest_services_addressZipCode_MapServer_0",
+    "is4_ocfl_net_arcgis_rest_services_AGOL_Open_Data_MapServer_0"
+   ]
+  },
+  {
+   "shard": 4,
+   "layers": [
+    "rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5",
+    "cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0"
+   ]
+  },
+  {
+   "shard": 5,
+   "layers": [
+    "s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0",
+    "_rgv911_org_server_rest_services_Public_Map_MIL1_MapServer_1"
+   ]
+  }
+ ]
+}

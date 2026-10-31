@@ -56,6 +56,29 @@ def jload(p):
         return json.load(f)
 
 
+def load_duplicate_partitions(path):
+    """分区重复声明清单（人工批准后落盘）→ (by_layer, sampled_layers, groups)。
+
+    ★ 为什么要有这个文件（2026-10-31 用户批准）：同一 base 层的 `@<分区>` 孪生层各写全量
+      declared 时，分母把同一批行数了两遍，制造整层假缺口。实例：NC1Map@未定位-1/-2
+      Σ declared 12,594,338 = 2× 上游 6,297,169，而 -2 已采 6,648,000 ≥ 全量。
+      改判只能由人点头（写进本文件）后重放，**脚本不许自己猜**。
+
+    文件缺失 → 三个空值：旧账本可以用同一条命令原样重放（--check 才能 IDENTICAL）。
+    """
+    if not path or not os.path.exists(path):
+        return {}, set(), []
+    d = jload(path)
+    by_layer, sampled = {}, set()
+    groups = d.get("groups") or []
+    for g in groups:
+        for lid in (g.get("duplicate_layers") or []):
+            by_layer[lid] = dict(g)
+        for lid in (g.get("duplicate_sampled") or []):
+            sampled.add(lid)
+    return by_layer, sampled, groups
+
+
 def classify(rec, ev):
     """返回 (status, reason, declared_new)。ev 为该层的取证（无则 None）。"""
     rows = rec.get("rows") or 0
@@ -246,6 +269,56 @@ def render_doc(led, audit, evidence, sha_refs):
         A("> 只对 `ok / missing / partial` 且上游可达的层生效；`capped_by_upstream` / `unverified` / `empty` 一律不碰。")
         A("> 当前 `declared_refreshed_at` = %s" % (led.get("declared_refreshed_at") or "未刷新"))
         A("")
+    if led.get("declared_duplicate_partition") or led.get("duplicate_partition_layers"):
+        A("### 3.0.2 分区重复声明：`declared` 不许把同一批行数两遍（2026-10-31 用户批准）")
+        A("")
+        A("判据（与 preflight **D12** 同一条）：同一 base 层的 `@<分区>` 层，若 `Σ declared > 1.5 × "
+          "该 base 的上游 returnCount`，说明每个分区都继承了整层声明 —— 分母把同一批行数了两遍。")
+        A("处置：重复分区的 `declared` 置 null（原值留在逐层 `declared_duplicate_partition`，**不抹数**），")
+        A("`status` 改 `partial`（数据其实在 survivor 那层），survivor 不动。")
+        A("")
+        A("| 重复分区 | duplicate_of | 分区 declared（原值） | upstream returnCount | Σ分区 declared | 已采（survivor） | 证据 |")
+        A("|---|---|---|---|---|---|---|")
+        for r in led["records"]:
+            c = r.get("declared_duplicate_partition")
+            if not c:
+                continue
+            A("| `%s` | `%s` | %s | %s | %s | %s | `%s` |" % (
+                r["layer"], c.get("duplicate_of") or "-",
+                f"{c['declared_before']:,}" if c.get("declared_before") else "-",
+                f"{c['upstream_return_count']:,}" if c.get("upstream_return_count") else "-",
+                f"{c['sum_declared']:,}" if c.get("sum_declared") else "-",
+                f"{c['survivor_rows']:,}" if c.get("survivor_rows") else "-",
+                c.get("evidence") or "-"))
+        A("")
+        A("- 重复声明合计（移出分母、但数字保留）：**%s 行**；`declared` 现在 = %s（不含它）"
+          % (f"{led['declared_duplicate_partition']:,}", f"{led['declared']:,}"))
+        A("")
+        A("**两处「不许想当然」**（都实测过）：")
+        A("")
+        A("1. 分区层的 url 必须回 `collect/layer_plan.csv` 按行序取（`<id>@<state>-<k>`，见 "
+          "`worker_core._rows_from_csv`）。`layer_index()` 按 id 覆盖，只留最后一行 → 会让人误以为两个分区"
+          "指向同一个 url（`@未定位-1` → `services.gis.nc.gov`，`@未定位-2` → `services.nconemap.gov`）。")
+        A("2. 同一 base 的两个分区也可能落在**镜像 host 的同一份数据**上：实测 `Maricopa@AZ-1/-2` = "
+          "2,139,242 / 2,139,742 行（差 500），`hennepin@MN-1/-2` = 481,609 / 480,300（差 1,309）—— "
+          "Σ declared 同样 ≈ 2×，但它们**两个分区都已实采**，把其中一个 declared 置 null 等于抹掉真实已采行。"
+          "所以本次只改 `NC1Map@未定位-1`（重复分区 0 行、survivor 已采 ≥ 全量，改判无损失）；"
+          "Maricopa / hennepin 的结论与实测计数写进 `analysis/04b-duplicate-partitions-2026-10-31.json` 的 "
+          "`reviewed[]`，`rows` 侧的同源重复留给 08 去重时统一处理。")
+        A("")
+        A("**分区重复采样（同源重复行）**：")
+        A("")
+        A("- `rows_with_partition_dup` = **%s**（这些行的内容与 survivor 同源，跨层去重时会被 3 元组吃掉）"
+          % f"{led['rows_with_partition_dup']:,}")
+        A("- `rows_verifiable` = rows − rows_capped − rows_with_partition_dup = **%s**"
+          % f"{led['rows_verifiable']:,}")
+        A("- 铁律：**分区重复由 08（去重）吃掉；08 之前任何对外覆盖率不许包含重复行**。")
+        A("  重跑分区不阻止（缺数据不能靠去重补，重复能靠去重吃掉），但账上必须分开记，")
+        A("  否则覆盖率虚高，且没人知道 08 到底要吃掉多少行。")
+        for x in led.get("duplicate_partition_layers") or []:
+            A("- 重复采样层：`%s` — rows_including_duplicate = %s（duplicate_of `%s`）"
+              % (x["layer"], f"{x['rows_including_duplicate']:,}", x.get("duplicate_of") or "-"))
+        A("")
     A("### 3.1 与旧账的差异（逐条）")
     A("")
     A("| 层 | 旧状态 | 新状态 | 旧声明 | 新声明 | 原因 |")
@@ -340,6 +413,9 @@ def render_doc(led, audit, evidence, sha_refs):
     A("## 四、口径提醒")
     A("")
     A("- 行数合计仍是 **%s**（本次不采一行数据，只改判定与声明）。" % f"{led['rows']:,}")
+    if led.get("rows_with_partition_dup"):
+        A("- 其中**同源重复**（分区重复采样）= **%s**，单列 `rows_with_partition_dup`，不进覆盖率分子。"
+          % f"{led['rows_with_partition_dup']:,}")
     if led.get("capped_layers"):
         A("- 剔除 capped 层后的分母 = **%s**，与分母同口径的实采 = **%s**，缺口 = **%s（%.4f%%）**。"
           % (f"{led['declared']:,}", f"{led['rows_verifiable']:,}", f"{led['gap']:,}", led["gap_pct"] or 0))
@@ -347,8 +423,9 @@ def render_doc(led, audit, evidence, sha_refs):
           "declared_unverifiable %s：两个百分比**不可直接比较**，引用时必须写明是否剔除。"
           % (f"{led['declared_kept_in_denominator']:,}", f"{led['rows']:,}",
              led["gap_pct_kept_in_denominator"], f"{led['declared_unverifiable']:,}"))
-        A("- 未剔除口径的数字怎么来的：`declared_kept_in_denominator = declared + declared_unverifiable`，"
-          "`gap_kept_in_denominator = 它 − rows`（旧口径，分子含 capped 行数）。")
+        A("- 未剔除口径的数字怎么来的：`declared_kept_in_denominator = declared + declared_unverifiable "
+          "+ declared_duplicate_partition`（任何 declared 都不剔，包括分区重复声明），"
+          "`gap_kept_in_denominator = 它 − rows`（旧口径，分子含 capped 行数与重复行）。")
     A("- `docs/STEP04-FULL-2026-10-30.md` 保持 `ledger_rebuild.py` 生成的字节不变（`--check` 依赖它）；")
     A("  本文是它的**修正层**，两者冲突时以本文为准，并注明证据出处。")
     A("- 修正后的账本是 `collect/04b_ledger.json`（main 侧闸门读的就是这个文件）。")
@@ -362,6 +439,8 @@ def render_doc(led, audit, evidence, sha_refs):
     A("  --evidence analysis/04b-upstream-evidence-2026-10-30.json \\")
     A("  --plan collect/ledger/04b_plan.json \\")
     A("  --cancel-plan collect/ledger/04b_round2_plan.json \\")
+    A("  --duplicate-partitions analysis/04b-duplicate-partitions-2026-10-31.json \\")
+    A("  --capped-evidence analysis/04b-token-499-evidence-2026-10-31.json \\")
     A("  --out collect/04b_ledger.json \\")
     A("  --audit analysis/04b-cancel-audit-2026-10-30.json \\")
     A("  --doc docs/STEP04-ADJUDICATED-2026-10-30.md --check")
@@ -634,6 +713,11 @@ def main() -> int:
                          "写前备份 + 追加 revisions[kind=declared_refreshed]" % DECLARED_CONFIRM_PHRASE)
     ap.add_argument("--declared-confirm", default="", help="人工点头口号（防误触发）")
     ap.add_argument("--backup-dir", default="", help="写账本前的备份目录（默认与账本同目录）")
+    # ★ 分区重复声明（2026-10-31 用户批准）：Σ分区 declared > 1.5× 同 base/同 url 的 returnCount
+    #   → 该分区的 declared 移出分母（原值保留在 declared_duplicate_partition），status 改 partial。
+    ap.add_argument("--duplicate-partitions",
+                    default=os.path.join(ROOT, "analysis", "04b-duplicate-partitions-2026-10-31.json"),
+                    help="分区重复声明清单（人工批准落盘的 JSON）；文件不存在 = 不改判")
     a = ap.parse_args()
 
     # ---- 声明刷新两条路径：都不走下面的 04b 判定主流程 ----
@@ -668,17 +752,21 @@ def main() -> int:
     evidence = jload(a.evidence)
     ev_by = {x["layer"]: x for x in evidence["layers"]}
     truth = {r["layer"]: r for r in rebuilt["records"]}
+    dup_by, dup_sampled, dup_groups = load_duplicate_partitions(a.duplicate_partitions)
 
     recs, revisions, partial_recalc = [], [], []
     buckets = {}
     rows_total = declared_total = 0
     rows_capped = unver_total = 0
     capped_layers = []
+    rows_dup = declared_dup = 0
+    dup_layers = []
     for r in rebuilt["records"]:
         rec = dict(r)
         ev = ev_by.get(rec["layer"])
         new_status, reason, new_decl = classify(rec, ev)
         capped = rec["layer"] in capped_set
+        dg = dup_by.get(rec["layer"])
         if capped:
             tev = capped_set.get(rec["layer"]) or {}
             new_status, new_decl = "capped_by_upstream", None
@@ -686,14 +774,27 @@ def main() -> int:
                       "→ 本层已无法再采、也无法复核声明；已采 %s 行即全部可得"
                       % (tev.get("rounds_n") or 1,
                          (tev.get("generated_at") or "-"), f"{rec.get('rows') or 0:,}"))
-        if new_decl is not None and new_decl != rec.get("declared"):
+        elif dg is not None:
+            # ★ 分区重复声明（2026-10-31 用户批准）：同一 base 层、同一上游 url 的孪生分区
+            #   各写全量 declared → Σ declared 把同一批行数了两遍。数据在 survivor 那层里，
+            #   所以本层不是「0 行缺口」：declared 置 null（原值留在 declared_duplicate_partition），
+            #   status 改 partial。declared 移出分母 ≠ 抹数，任何对外口径都能回查原值。
+            new_status, new_decl = str(dg.get("decided_status") or "partial"), None
+            reason = ("分区重复声明：%d 个分区共用同一上游 url，Σ declared = %s = %.2f× 上游 "
+                      "returnCount %s；本层那批行已由 `%s` 采到 %s 行 → declared 移出分母，"
+                      "原值保留在 declared_duplicate_partition（不是缺口，也不是改口径凑数）"
+                      % (len(dg.get("partitions") or []), f"{dg.get('sum_declared') or 0:,}",
+                         float(dg.get("ratio") or 0), f"{dg.get('upstream_return_count') or 0:,}",
+                         dg.get("survivor") or "-", f"{dg.get('survivor_rows') or 0:,}"))
+        if new_decl is not None and new_decl != rec.get("declared") and not capped and dg is None:
             revisions.append({"layer": rec["layer"], "from": rec["status"], "to": new_status,
                               "declared_before": rec.get("declared"), "declared_after": new_decl,
                               "reason": "声明值改用上游当前 returnCount（证据：%s）" % evidence["generated_at"]})
-        elif new_status != rec["status"]:
+        elif new_status != rec["status"] or dg is not None:
             revisions.append({"layer": rec["layer"], "from": rec["status"], "to": new_status,
                               "declared_before": rec.get("declared"),
-                              "declared_after": new_decl if new_decl is not None else rec.get("declared"),
+                              "declared_after": new_decl if new_decl is not None else (
+                                  None if dg is not None else rec.get("declared")),
                               "reason": reason})
         rec["status"] = new_status
         rec["reason"] = reason
@@ -704,9 +805,41 @@ def main() -> int:
             rec["declared_unverifiable"] = rec.get("declared")
             rec["declared"] = None
             rec["gap"] = rec["gap_pct"] = None
+        elif dg is not None:
+            rec["declared_duplicate_partition"] = {
+                "base_layer": dg.get("base_layer"),
+                "partitions": dg.get("partitions") or [],
+                "upstream_url": dg.get("upstream_url"),
+                "upstream_return_count": dg.get("upstream_return_count"),
+                "sum_declared": dg.get("sum_declared"),
+                "declared_before": rec.get("declared"),
+                "duplicate_of": dg.get("survivor"),
+                "survivor_rows": dg.get("survivor_rows"),
+                "evidence": (dg.get("evidence") or {}).get("upstream_probe"),
+                "note": dg.get("note"),
+            }
+            rec["declared"] = None
+            rec["gap"] = rec["gap_pct"] = None
         d, rw = rec.get("declared") or 0, rec.get("rows") or 0
         rec["gap"] = (d - rw) if rec.get("declared") is not None else None
         rec["gap_pct"] = round(100.0 * (d - rw) / d, 4) if d else None
+        if rec["layer"] in dup_sampled:
+            # ★ 同源重复采样（用户明令：不阻止它跑，但账上必须分开）
+            #   本层采到的行与 survivor 是同一批 → 阶段级另列 rows_with_partition_dup，
+            #   绝不进 rows_verifiable（否则覆盖率虚高）。
+            rec["partition_duplicate_sampled"] = True
+            rec["rows_including_duplicate"] = rw
+            if dg is not None:
+                rec["duplicate_source_layer"] = dg.get("survivor")
+            rows_dup += rw
+            dup_layers.append({"layer": rec["layer"],
+                               "rows_including_duplicate": rw,
+                               "duplicate_of": (dg or {}).get("survivor"),
+                               "declared_before": (rec.get("declared_duplicate_partition") or {}).get("declared_before"),
+                               "upstream_return_count": (dg or {}).get("upstream_return_count"),
+                               "status": rec["status"]})
+        if dg is not None:
+            declared_dup += (rec.get("declared_duplicate_partition") or {}).get("declared_before") or 0
         if capped:
             tev = capped_set.get(rec["layer"]) or {}
             rounds = tev.get("rounds") or []
@@ -784,7 +917,8 @@ def main() -> int:
         "buckets": buckets,
         "bucket_meaning": {
             "ok": "实采 ≥ 上游当前 returnCount×(1-1%)",
-            "partial": "实采 < 上游当前 returnCount×(1-1%) 且 >0 → 定向续采",
+            "partial": "实采 < 上游当前 returnCount×(1-1%) 且 >0 → 定向续采；"
+                       "或分区重复声明（数据已在 survivor 层，见 3.0.2）",
             "capped_by_upstream": ("上游改成服务级 token（连 `<api>/0?f=json` 都 499，连探两轮）→ "
                                    "永远采不到更多；已采行数计入 rows，declared 移出分母记 "
                                    "declared_unverifiable"),
@@ -797,17 +931,30 @@ def main() -> int:
         "declared_unverifiable": unver_total,
         "rows": rows_total,
         "rows_capped": rows_capped,
-        "rows_verifiable": rows_total - rows_capped,
-        "gap": declared_total - (rows_total - rows_capped),
-        "gap_pct": (round(100.0 * (declared_total - (rows_total - rows_capped)) / declared_total, 4)
+        # ★ 分区重复采样（2026-10-31 用户定）：这些层的行与 survivor 同源重复，
+        #   单列一栅，**绝不进 rows_verifiable**——否则覆盖率虚高。
+        "rows_with_partition_dup": rows_dup,
+        "declared_duplicate_partition": declared_dup,
+        "duplicate_partition_layers": dup_layers,
+        "rows_verifiable": rows_total - rows_capped - rows_dup,
+        "gap": declared_total - (rows_total - rows_capped - rows_dup),
+        "gap_pct": (round(100.0 * (declared_total - (rows_total - rows_capped - rows_dup)) / declared_total, 4)
                     if declared_total else 0),
-        "declared_kept_in_denominator": declared_total + unver_total,
-        "gap_pct_kept_in_denominator": (round(100.0 * (declared_total + unver_total - rows_total)
-                                             / (declared_total + unver_total), 4)
-                                        if (declared_total + unver_total) else 0),
-        "denominator_note": ("分母只含可复核的 declared（不含 capped_by_upstream 层）；"
-                             "gap = declared − rows_verifiable（rows 去掉 capped 层已采行数），"
-                             "两边同口径才可相除。rows 仍是全部实采（含 capped 层）。"),
+        # ★ 「不剔除」口径 = 任何 declared 都不剔：capped 的 declared_unverifiable + 分区重复的
+        #   declared_duplicate_partition 都加回来。否则改判会连带改变已对外发布过的旧口径数字。
+        "declared_kept_in_denominator": declared_total + unver_total + declared_dup,
+        "gap_pct_kept_in_denominator": (round(100.0 * (declared_total + unver_total + declared_dup - rows_total)
+                                             / (declared_total + unver_total + declared_dup), 4)
+                                        if (declared_total + unver_total + declared_dup) else 0),
+        "denominator_note": ("分母只含可复核的 declared（不含 capped_by_upstream 层，也不含 "
+                             "@分区 重复声明层）；gap = declared − rows_verifiable"
+                             "（rows 去掉 capped 层行数与分区重复采样行数），两边同口径才可相除。"
+                             "rows 仍是全部实采（含 capped 层与重复行）。"),
+        "partition_duplicate_rule": ("同一 base 层、同一上游 url 的 `@<分区>` 层若 Σ declared > 1.5×"
+                                     "returnCount → 重复计数：declared 置 null（原值留在逐层 "
+                                     "declared_duplicate_partition）、status 改 partial；"
+                                     "采到的重复行进 rows_with_partition_dup，"
+                                     "**08（3 元组去重）之前任何对外覆盖率不许包含重复行**。"),
         "complete": buckets.get("missing", 0) == 0 and buckets.get("unverified", 0) == 0,
         "capped_layers": capped_layers,
         "set_reconciliation": recon,
@@ -857,7 +1004,9 @@ def main() -> int:
                       "missing": led["missing"], "unverified": led["unverified"],
                       "empty": led["empty"], "failed": led["failed"], "complete": led["complete"],
                       "declared": led["declared"], "declared_unverifiable": led["declared_unverifiable"],
-                      "rows": led["rows"], "rows_verifiable": led["rows_verifiable"],
+                      "declared_duplicate_partition": led["declared_duplicate_partition"],
+                      "rows": led["rows"], "rows_with_partition_dup": led["rows_with_partition_dup"],
+                      "rows_verifiable": led["rows_verifiable"],
                       "gap": led["gap"], "gap_pct": led["gap_pct"],
                       "gap_pct_kept_in_denominator": led["gap_pct_kept_in_denominator"],
                       "revisions": len(revisions)}, ensure_ascii=False))

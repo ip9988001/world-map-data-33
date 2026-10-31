@@ -1,0 +1,72 @@
+{
+ "schema": "04b-duplicate-partitions/v1",
+ "stage": "04b",
+ "at": "2026-10-31T01:55:00Z",
+ "approved": "用户 2026-10-31 明确批准（派单前核验回执①）：「把它移出分母…这是重复计数，不是改口径凑数」。账本不自动改：必须本文件人工点头后重放（adjudicate_04b.py --duplicate-partitions）。",
+ "rule": "同一 base 层的 `@<分区>` 层：Σ declared > 1.5 × 该 base 的上游 returnCount → `duplicate_declared`（分母把同一批行数两遍）。处置：duplicate_layers 的 declared 置 null（原值留在 declared_duplicate_partition）、status 改 partial（数据在 survivor 里）；survivor 不动。preflight D12 用同一条判据自动点名，只建议不改账。",
+ "groups": [
+  {
+   "base_layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0",
+   "partitions": [
+    "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1",
+    "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2"
+   ],
+   "upstream_urls": [
+    "https://services.gis.nc.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0",
+    "https://services.nconemap.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0"
+   ],
+   "upstream_return_count": 6297169,
+   "upstream_return_count_by_url": {
+    "https://services.gis.nc.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0": 6297169,
+    "https://services.nconemap.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0": 6297169
+   },
+   "sum_declared": 12594338,
+   "ratio": 2.0,
+   "duplicate_layers": [
+    "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1"
+   ],
+   "duplicate_sampled": [
+    "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1"
+   ],
+   "survivor": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2",
+   "survivor_rows": 6648000,
+   "survivor_status_before": "ok",
+   "decided_status": "partial",
+   "note": "两个分区各写全量 declared（Σ=12,594,338 = 2× 上游 6,297,169），而上游两个 host 的 returnCount 完全相等（6,297,169 / 6,297,169，各探两轮）→ 同一份 AddressNC 数据被数了两遍。survivor `-2` 实采 6,648,000 ≥ 全量，duplicate 分区 `-1` 0 行 → 后者声明的 6,297,169 是纯重复计数、且没有任何已采数据会因改判而失去归属，所以改判无损失。",
+   "duplicate_sampling_note": "`-1` 若被重跑（run 41155023558 正在跑它），采到的行与 `-2` 同源重复。不阻止（缺数据不能靠去重补，重复能靠去重吃掉），但必须：①逐层打 partition_duplicate_sampled + rows_including_duplicate；②阶段级 rows 另列 rows_with_partition_dup，不进 rows_verifiable；③08（3 元组去重）之前任何对外覆盖率不许含重复行。",
+   "evidence": {
+    "upstream_probe": "analysis/04b-token-499-evidence-2026-10-31.json",
+    "upstream_probe_detail": "两轮 × 3 端点；`-1`(gis.nc.gov) / `-2`(nconemap.gov) / base 的 returnCountOnly 均 {\"count\":6297169}（round1 01:08:58Z / 01:11:11Z / 01:15:33Z；round2 01:10:36Z / 01:12:50Z / 01:17:12Z），三处都不含 token（service_level_token=false）→ 同一份数据",
+    "partition_url_source": "collect/layer_plan.csv 行序 + worker_core 唯一化规则（第 k 个重复行 → `<id>@<state>-<k>`）；注意 layer_index() 按 id 覆盖，会让人误以为两个分区同一个 url",
+    "survivor_assets": "tag collect-step04-_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2：4 个资产 / checkpoint 3 units / rows 6,648,000"
+   }
+  }
+ ],
+ "reviewed": [
+  {
+   "base_layer": "rest_services_Maricopa_County_Address_Points_FeatureServer_0",
+   "verdict": "mirror_hosts_same_data",
+   "at": "2026-10-31T01:52:00Z",
+   "measured_counts": {
+    "services.arcgis.com (AZ-1)": 2139242,
+    "services6.arcgis.com (AZ-2)": 2139742
+   },
+   "declared": {"AZ-1": 2139288, "AZ-2": 2078539},
+   "decision": "不改判（本次）。两个 host 的上游计数只差 500 行（≈0.02%）→ 极可能镜像同一份县数据；但**两个分区都已实采**（2,139,242 / 2,139,742 行），把其中一个的 declared 置 null 等于抹掉真实已采行、且会让 rows 口径更乱。重复行属 rows 侧问题（3 元组去重），单独立项，不与 NC1Map 混。",
+   "impact": "rows 侧疑似同源重复 ≈2.14M 行（占全账 0.43%）；declared 侧 Σ 4,217,827 对每 host ≈2× "
+  },
+  {
+   "base_layer": "rest_services_hennepin_county_address_points_FeatureServer_0",
+   "verdict": "mirror_hosts_same_data",
+   "at": "2026-10-31T01:52:00Z",
+   "measured_counts": {
+    "services1.arcgis.com (MN-1)": 481609,
+    "services.arcgis.com (MN-2)": 480300
+   },
+   "declared": {"MN-1": 481609, "MN-2": 480300},
+   "decision": "不改判（本次）。与 Maricopa 同类：每个分区的 declared 恰好等于自己 host 的 returnCount（481,609 / 480,300，差 1,309 行）→ 声明拆分本身没错，重复在 rows 侧（两 host 镜像同一份县数据）。留给人定 rows 口径。",
+   "impact": "rows 侧疑似同源重复 ≈480,300 行"
+  }
+ ],
+ "note": "preflight D12 对 reviewed[] 里的组不再 WARN（但判词会点名「已复核 N 组」）；对未复核且 Σ declared > 1.5× 同 base returnCount 的组一律 WARN 并打印改判命令。"
+}

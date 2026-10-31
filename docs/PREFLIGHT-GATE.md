@@ -13,7 +13,7 @@
 - **故障台账唯一真值** = `docs/WORKFLOW-FAILURE-LEDGER.md`（写之前必查、跑后必补；新坑当天补，commit 写 `ledger: +N <类别>`）。
 - `WARN` 不拦派单，但**必须写明接受理由**（例如「本机 403 但 CI 可采」）。
 
-## 一、派单前 checklist（16 项）
+## 一、派单前 checklist（17 项｜D12 分区重复声明于 2026-10-31 加入）
 
 跑 `python3 collect/preflight_dispatch.py --stage <stage> [--force-layers ...]`，逐项勾。
 
@@ -56,6 +56,12 @@
       没有 plan 文件时用行数分档估算（`04b >300k` / `05b 5k~300k` / `07b 1~4999`），并标注 `estimate`。
 - [ ] **D11** 目标层是否已有检查点/单元包 → 有就必须先备份（pilot 会自动备份保留 3 代；
       没有 `.bak` 时给出手工备份命令）→ WARN。
+- [ ] **D12** 分区重复声明 `duplicate_declared`（W33-035）：同一 base 层的 `@<分区>` 层，
+      `Σ declared > 1.5 × 同 base 的上游 returnCount` → 分母把同一批行数了两遍（整层假缺口）。
+      判词里点名 base / 每个分区的 declared / 各 host 实测 returnCount / 倍数，并打印改判命令
+      （`adjudicate_04b.py --duplicate-partitions`）—— **只建议，账本不自动改**。
+      已人复核的组写进清单 `reviewed[]`（判词点名「已复核 N 组」，不 WARN 但也不消失）；
+      拿不到 returnCount 又无清单代理值 → **WARN「未能判定」，不许给 PASS**。
 
 ### F 已知坑
 
@@ -99,6 +105,7 @@
 | D9 目标层撞车 | 从 `--force-layers` 里去掉正在被写的层，或等那个 run 结束 |
 | D10 已采重叠 | 确认是补采：用 `--force-layers` 点名缺口层，不要整片重跑 |
 | D11 检查点未备份 | 先 `gh release upload <tag> <layer>-checkpoint.bak-<RUN_ID>.json`（pilot 会自动做） |
+| D12 分区重复声明（WARN） | 先核 survivor 是否已实采 ≥ 全量：是 → 写清单 `duplicate_layers` 并重放`adjudicate_04b.py --duplicate-partitions`；两分区都已有实采行 → 属 rows 侧重复（08 去重），结论写进清单 `reviewed[]`，不在本阶段改账 |
 | E12 上游 0 行 | 从计划里剔除该层（或标 `empty`），别浪费片位 |
 | E13 403/超时 | 只记录证据，先照派；片端再失败才升级（本机 ≠ CI） |
 | E14 声明不可复核 | 跑后差额分母剔除该层；服务级 token 的层直接剔或配 token |
@@ -151,6 +158,7 @@ PY
 | D9 | 硬判据（能取到目标层时） | 取不到在跑 run 的计划 → WARN，绝不假装无交集 |
 | D10 | 硬判据（有 plan 时）；估算时标注 | 没有 plan 文件 → 分档估算，标 `estimate(band)` |
 | D11 | WARN + 命令 | 只看资产清单（不下载检查点内容），判断有没有 `.bak` |
+| D12 | 硬判据（Σ declared vs returnCount 1.5×）+ **只建议** | 逐 host 实测 returnCount 取最大；离线用清单 `row_count` 代理并标注；已复核组读清单 `reviewed[]` |
 | E12 | 硬判据 | 抽样 ≥5 层（force 优先，再按分档均匀抽） |
 | E13 | **只 WARN** | 本机 ≠ CI，403/超时不算死 |
 | E14 | 硬判据（分类）+ WARN | `Token Required` / 非 JSON → `declared_unverifiable`；服务级 token（`?f=json` 也 499）点名 |

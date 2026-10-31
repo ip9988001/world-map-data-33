@@ -178,5 +178,73 @@ class TestAdjudicate04b(unittest.TestCase):
         self.assertIn("declared_unverifiable", md)
 
 
+    # ---------------------------------------------------------- 分区重复声明
+    def _dup_fixture(self):
+        """`P@X-1`（0 行）+ `P@X-2`（100 行）各写全量 declared 100 → 重复计数。"""
+        json.dump({"schema": "rebuilt/v1", "layers_n": 2, "records": [
+            rec("P@X-1", "failed", 100, 0),
+            rec("P@X-2", "failed", 100, 100),
+        ]}, open(self.rebuilt, "w", encoding="utf-8"), ensure_ascii=False)
+        json.dump({"schema": "04b-upstream-evidence/v1", "generated_at": "2026-10-31T02:00:00Z",
+                   "layers": [ev("P@X-1", "upstream_alive", 100),
+                              ev("P@X-2", "upstream_alive", 100)]},
+                  open(self.evidence, "w", encoding="utf-8"), ensure_ascii=False)
+        spec = os.path.join(self.tmp, "analysis", "04b-duplicate-partitions-2026-10-31.json")
+        json.dump({"schema": "04b-duplicate-partitions/v1", "stage": "04b",
+                   "groups": [{"base_layer": "P", "partitions": ["P@X-1", "P@X-2"],
+                               "upstream_return_count": 100, "sum_declared": 200,
+                               "ratio": 2.0, "duplicate_layers": ["P@X-1"],
+                               "duplicate_sampled": ["P@X-1"],
+                               "survivor": "P@X-2", "survivor_rows": 100,
+                               "decided_status": "partial",
+                               "evidence": {"upstream_probe": "analysis/ev.json"}}]},
+                  open(spec, "w", encoding="utf-8"), ensure_ascii=False)
+        return spec
+
+    def test_duplicate_partition_moves_declared_out_but_keeps_number(self):
+        self._dup_fixture()
+        out = os.path.join(self.tmp, "collect", "04b_ledger.json")
+        doc = os.path.join(self.tmp, "docs", "d.md")
+        r = self._run("--out", out, "--doc", doc)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        d = json.load(open(out, encoding="utf-8"))
+        by = {x["layer"]: x for x in d["records"]}
+        dup = by["P@X-1"]
+        self.assertEqual(dup["status"], "partial")          # 不是 missing：数据在 survivor 里
+        self.assertIsNone(dup["declared"])                   # 移出分母
+        self.assertEqual(dup["declared_duplicate_partition"]["declared_before"], 100)   # 数字不丢
+        self.assertEqual(dup["declared_duplicate_partition"]["sum_declared"], 200)
+        self.assertEqual(dup["declared_duplicate_partition"]["duplicate_of"], "P@X-2")
+        self.assertIsNone(dup["gap"])
+        # 聚合：declared 只剩 survivor 的 100；重复声明的 100 单列，不进分母
+        self.assertEqual(d["declared"], 100)
+        self.assertEqual(d["declared_duplicate_partition"], 100)
+        self.assertEqual(d["missing"], 0)
+        self.assertEqual(d["partial"], 1)
+        self.assertEqual(d["rows_with_partition_dup"], 0)    # 这层 0 行
+        self.assertEqual(d["rows_verifiable"], d["rows"] - d["rows_capped"] - d["rows_with_partition_dup"])
+        md = open(doc, encoding="utf-8").read()
+        self.assertIn("分区重复声明", md)
+        self.assertIn("08", md)                              # 去重口径写在文档里
+
+    def test_duplicate_partition_sampling_is_counted_separately(self):
+        """分区层若真采到行：进 rows_with_partition_dup，不进 rows_verifiable（防覆盖率虚高）。"""
+        self._dup_fixture()
+        json.dump({"schema": "rebuilt/v1", "layers_n": 2, "records": [
+            rec("P@X-1", "failed", 100, 100),     # 重复采样 100 行
+            rec("P@X-2", "failed", 100, 100),
+        ]}, open(self.rebuilt, "w", encoding="utf-8"), ensure_ascii=False)
+        out = os.path.join(self.tmp, "collect", "04b_ledger.json")
+        r = self._run("--out", out)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        d = json.load(open(out, encoding="utf-8"))
+        by = {x["layer"]: x for x in d["records"]}
+        self.assertTrue(by["P@X-1"]["partition_duplicate_sampled"])
+        self.assertEqual(by["P@X-1"]["rows_including_duplicate"], 100)
+        self.assertEqual(d["rows"], 200)
+        self.assertEqual(d["rows_with_partition_dup"], 100)
+        self.assertEqual(d["rows_verifiable"], 100)
+
+
 if __name__ == "__main__":
     unittest.main()

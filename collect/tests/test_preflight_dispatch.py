@@ -163,6 +163,56 @@ class DOverlap(unittest.TestCase):
         self.assertEqual(ok["status"], "PASS")
 
 
+class DuplicateDeclared(unittest.TestCase):
+    """D12 / W33-035：`@<分区>` 的 Σ declared > 1.5× 同 base 上游 returnCount → 点名 duplicate_declared。"""
+
+    URLS = {"B@X-1": "http://h/1", "B@X-2": "http://h/2"}
+
+    def recs(self, d1, d2, r1=None, r2=None):
+        return [{"layer": "B@X-1", "declared": d1, "rows": r1, "status": "missing"},
+                {"layer": "B@X-2", "declared": d2, "rows": r2, "status": "ok"}]
+
+    def test_duplicate_is_named_and_suggests_rejudge(self):
+        it = P.judge_duplicate_declared(self.recs(6_297_169, 6_297_169, 0, 6_648_000),
+                                        url_of=self.URLS, probe=lambda u: {"count": 6_297_169})
+        self.assertEqual(it["status"], "WARN")
+        self.assertIn("duplicate_declared", it["detail"])
+        self.assertIn("--duplicate-partitions", it["detail"])
+        self.assertEqual(it["duplicate_declared"][0]["sum_declared"], 12_594_338)
+        self.assertEqual(it["duplicate_declared"][0]["upstream_count"], 6_297_169)
+
+    def test_already_rejudged_group_passes(self):
+        rs = self.recs(None, 6_297_169, 0, 6_648_000)
+        rs[0]["declared_duplicate_partition"] = {"declared_before": 6_297_169, "duplicate_of": "B@X-2"}
+        it = P.judge_duplicate_declared(rs, url_of=self.URLS, probe=lambda u: {"count": 6_297_169})
+        self.assertEqual(it["status"], "PASS")
+        self.assertIn("declared_duplicate_partition", it["detail"])
+
+    def test_reviewed_group_is_not_flagged_but_named(self):
+        spec = {"reviewed": [{"base_layer": "B", "verdict": "mirror_hosts_same_data",
+                              "decision": "不改判（本次）"}]}
+        it = P.judge_duplicate_declared(self.recs(2_139_288, 2_078_539, 2_139_242, 2_139_742),
+                                        url_of=self.URLS, probe=lambda u: {"count": 2_139_742},
+                                        spec=spec)
+        self.assertEqual(it["status"], "PASS")
+        self.assertIn("已人复核", it["detail"])
+        self.assertEqual(it["duplicate_declared"], [])
+        self.assertEqual(it["duplicate_declared_reviewed"][0]["reviewed"]["verdict"],
+                         "mirror_hosts_same_data")
+
+    def test_no_partition_layers_is_info(self):
+        self.assertEqual(P.judge_duplicate_declared([{"layer": "plain", "declared": 5}],
+                                                     url_of={})["status"], "INFO")
+
+    def test_offline_without_any_count_is_warn_not_pass(self):
+        """无法判定 ≠ 通过：既没实测、清单里也没有同 base 的 row_count → WARN（与 D10 同约定）。"""
+        it = P.judge_duplicate_declared(self.recs(6_297_169, 6_297_169), url_of=self.URLS,
+                                        offline=True)
+        self.assertEqual(it["status"], "WARN")
+        self.assertIn("未能判定", it["detail"])
+        self.assertEqual(len(it["duplicate_declared_unknown"]), 1)
+
+
 class EUpstream(unittest.TestCase):
     def test_classify(self):
         self.assertEqual(P.classify_probe({"http": 200, "count": 5}), "ok")

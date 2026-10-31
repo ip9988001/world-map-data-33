@@ -21,7 +21,7 @@
 - 账本层数（rebuilt）：**272**
 - 计划 − 账本：**0**
 - 账本 − 计划：**0**
-- 声明行合计（修正后）：**482206942**
+- 声明行合计（修正后）：**475909773**
 - 实采行合计（不变）：**497330251**
 
 > 分母口径说明：04b 的候选集由 `steps.json` 的 `select`（row_count>300000 + 标题正则）
@@ -72,9 +72,9 @@
 | 状态 | 层数 | 含义 |
 |---|---|---|
 | ok | 256 | 实采 ≥ 上游当前 returnCount×(1-1%) |
-| partial | 3 | 实采 < 上游当前 returnCount×(1-1%) 且 >0 → 定向续采 |
+| partial | 4 | 实采 < 上游当前 returnCount×(1-1%) 且 >0 → 定向续采；或分区重复声明（数据已在 survivor 层，见 3.0.2） |
 | capped_by_upstream | 1 | 上游改成服务级 token（连 `<api>/0?f=json` 都 499，连探两轮）→ 永远采不到更多；已采行数计入 rows，declared 移出分母记 declared_unverifiable |
-| missing | 6 | 上游有数据、本层 0 行 → 必须重采 |
+| missing | 5 | 上游有数据、本层 0 行 → 必须重采 |
 | unverified | 5 | 上游不可达/无响应，本层无数据 → 无法归因（不许当空层） |
 | empty | 1 | 上游明确 0 行或服务下线（esri 404） |
 | skipped_done | 0 | 计划期已判完成而跳过 |
@@ -94,16 +94,16 @@
 分母口径（本节之后的所有百分比都用这个）：
 
 - `rows` = 497,330,251（全部实采，含 capped 层的 39,875,268）
-- `declared` = 482,206,942（**不含** capped 层）
+- `declared` = 475,909,773（**不含** capped 层）
 - `rows_verifiable` = 457,454,983（与分母同口径的分子 = rows − capped 行数）
-- `gap` = declared − rows_verifiable = **24,751,959 行（5.1331%）**
+- `gap` = declared − rows_verifiable = **18,454,790 行（3.8778%）**
 - capped 层的 declared 另记 `declared_unverifiable` = 97,928,946，**永远不进分母**
 
 ### 3.0.1 分母口径硬规矩（2026-10-31 用户定：声明值不是永久分母）
 
 > **1）声明值来自 `layer_plan.csv` 的计划期快照，上游会缩水/删数据/改口径。**
 > 实测（本账本口径，可复现）：**80 层实采 > 声明，超采合计 3,547,920 行**
-> （rebuilt 口径 81 层 / 3,547,930）；全账 `gap` = 24,751,959 行。拿过期声明当分母，
+> （rebuilt 口径 81 层 / 3,547,930）；全账 `gap` = 18,454,790 行。拿过期声明当分母，
 > 覆盖率系统性失真，而且「按声明 / 按可核实」两个百分比天生不可相减。
 >
 > **2）对外覆盖一律报两个数，禁止只报一个：**
@@ -122,6 +122,32 @@
 > 只对 `ok / missing / partial` 且上游可达的层生效；`capped_by_upstream` / `unverified` / `empty` 一律不碰。
 > 当前 `declared_refreshed_at` = 未刷新
 
+### 3.0.2 分区重复声明：`declared` 不许把同一批行数两遍（2026-10-31 用户批准）
+
+判据（与 preflight **D12** 同一条）：同一 base 层的 `@<分区>` 层，若 `Σ declared > 1.5 × 该 base 的上游 returnCount`，说明每个分区都继承了整层声明 —— 分母把同一批行数了两遍。
+处置：重复分区的 `declared` 置 null（原值留在逐层 `declared_duplicate_partition`，**不抹数**），
+`status` 改 `partial`（数据其实在 survivor 那层），survivor 不动。
+
+| 重复分区 | duplicate_of | 分区 declared（原值） | upstream returnCount | Σ分区 declared | 已采（survivor） | 证据 |
+|---|---|---|---|---|---|---|
+| `_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1` | `_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2` | 6,297,169 | 6,297,169 | 12,594,338 | 6,648,000 | `analysis/04b-token-499-evidence-2026-10-31.json` |
+
+- 重复声明合计（移出分母、但数字保留）：**6,297,169 行**；`declared` 现在 = 475,909,773（不含它）
+
+**两处「不许想当然」**（都实测过）：
+
+1. 分区层的 url 必须回 `collect/layer_plan.csv` 按行序取（`<id>@<state>-<k>`，见 `worker_core._rows_from_csv`）。`layer_index()` 按 id 覆盖，只留最后一行 → 会让人误以为两个分区指向同一个 url（`@未定位-1` → `services.gis.nc.gov`，`@未定位-2` → `services.nconemap.gov`）。
+2. 同一 base 的两个分区也可能落在**镜像 host 的同一份数据**上：实测 `Maricopa@AZ-1/-2` = 2,139,242 / 2,139,742 行（差 500），`hennepin@MN-1/-2` = 481,609 / 480,300（差 1,309）—— Σ declared 同样 ≈ 2×，但它们**两个分区都已实采**，把其中一个 declared 置 null 等于抹掉真实已采行。所以本次只改 `NC1Map@未定位-1`（重复分区 0 行、survivor 已采 ≥ 全量，改判无损失）；Maricopa / hennepin 的结论与实测计数写进 `analysis/04b-duplicate-partitions-2026-10-31.json` 的 `reviewed[]`，`rows` 侧的同源重复留给 08 去重时统一处理。
+
+**分区重复采样（同源重复行）**：
+
+- `rows_with_partition_dup` = **0**（这些行的内容与 survivor 同源，跨层去重时会被 3 元组吃掉）
+- `rows_verifiable` = rows − rows_capped − rows_with_partition_dup = **457,454,983**
+- 铁律：**分区重复由 08（去重）吃掉；08 之前任何对外覆盖率不许包含重复行**。
+  重跑分区不阻止（缺数据不能靠去重补，重复能靠去重吃掉），但账上必须分开记，
+  否则覆盖率虚高，且没人知道 08 到底要吃掉多少行。
+- 重复采样层：`_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1` — rows_including_duplicate = 0（duplicate_of `_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2`）
+
 ### 3.1 与旧账的差异（逐条）
 
 | 层 | 旧状态 | 新状态 | 旧声明 | 新声明 | 原因 |
@@ -129,7 +155,7 @@
 | `s_Points_from_National_Address_Database_view_FeatureServer_0` | partial | capped_by_upstream | 97,928,946 | 97,928,946 | 服务级 token：连 `<api>/0?f=json` 都 499（2 轮 × 3 端点全 499，最后一次 2026-10-31T01:08:58Z）→ 本层已无法再采、也无法复核声明；已采 39,875,268 行即全部可得 |
 | `cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0` | failed | missing | 6,583,495 | 6,585,376 | 声明值改用上游当前 returnCount（证据：2026-10-30T20:08:38Z） |
 | `s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0` | failed | missing | 6,583,495 | 6,585,376 | 声明值改用上游当前 returnCount（证据：2026-10-30T20:08:38Z） |
-| `_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1` | failed | missing | 6,297,169 | 6,297,169 | 上游当前 returnCount=6,297,169，本层 0 行 → 真缺口，必须重采 |
+| `_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1` | failed | partial | 6,297,169 | - | 分区重复声明：2 个分区共用同一上游 url，Σ declared = 12,594,338 = 2.00× 上游 returnCount 6,297,169；本层那批行已由 `_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2` 采到 6,648,000 行 → declared 移出分母，原值保留在 declared_duplicate_partition（不是缺口，也不是改口径凑数） |
 | `_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2` | failed | ok | 6,297,169 | 6,297,169 | 实采 6,648,000 ≥ 上游当前 returnCount 6,297,169×(1-1%) |
 | `conemap_gov_secure_rest_services_NC1Map_Location_MapServer_0` | failed | ok | 4,939,912 | 4,939,912 | 实采 7,816,000 ≥ 上游当前 returnCount 4,939,912×(1-1%) |
 | `vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0` | failed | missing | 3,618,012 | 3,618,012 | 上游当前 returnCount=3,618,012，本层 0 行 → 真缺口，必须重采 |
@@ -178,9 +204,9 @@
 
 ### 3.4 剩余缺口逐层拆解
 
-账本净缺口 = **24,751,959 行（5.1331%）**，由三块构成（加减号都是账本数字，不是估的）：
+账本净缺口 = **18,454,790 行（3.8778%）**，由三块构成（加减号都是账本数字，不是估的）：
 
-- 真缺口（`missing` / `partial` / `unverified`，共 17 层）：**+27,932,877**
+- 真缺口（`missing` / `partial` / `unverified`，共 16 层）：**+21,635,708**
 - `empty` 层的旧声明（上游 0 行，不是缺口）：**+367,002**（1 层；旧声明不该再进分母）
 - 已采超出声明的层（上游后来缩水/声明过期）：**−43,423,188**（81 层）
 
@@ -188,7 +214,6 @@
 |---|---|---|---|---|---|---|
 | `cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0` | missing | 6,585,376 | 0 | 6,585,376 | 100.00% | **上游有数据但没采**（本层 0 行） |
 | `s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0` | missing | 6,585,376 | 0 | 6,585,376 | 100.00% | **上游有数据但没采**（本层 0 行） |
-| `_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1` | missing | 6,297,169 | 0 | 6,297,169 | 100.00% | **上游有数据但没采**（本层 0 行） |
 | `vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0` | missing | 3,618,012 | 0 | 3,618,012 | 100.00% | **上游有数据但没采**（本层 0 行） |
 | `tyil_gov_traditional_rest_services_cookVwrDynmc_MapServer_63` | unverified | 1,381,118 | 0 | 1,381,118 | 100.00% | **上游不可达**（未验证，不许当 0） |
 | `yil_gov_traditional_rest_services_addressZipCode_MapServer_0` | unverified | 1,381,118 | 0 | 1,381,118 | 100.00% | **上游不可达**（未验证，不许当 0） |
@@ -209,9 +234,9 @@
 ## 四、口径提醒
 
 - 行数合计仍是 **497,330,251**（本次不采一行数据，只改判定与声明）。
-- 剔除 capped 层后的分母 = **482,206,942**，与分母同口径的实采 = **457,454,983**，缺口 = **24,751,959（5.1331%）**。
+- 剔除 capped 层后的分母 = **475,909,773**，与分母同口径的实采 = **457,454,983**，缺口 = **18,454,790（3.8778%）**。
 - 与**不剔除**口径（declared 含 capped）= 580,135,888 行 / 497,330,251 行 / 14.2735% 对照时，差值就是 capped 层的declared_unverifiable 97,928,946：两个百分比**不可直接比较**，引用时必须写明是否剔除。
-- 未剔除口径的数字怎么来的：`declared_kept_in_denominator = declared + declared_unverifiable`，`gap_kept_in_denominator = 它 − rows`（旧口径，分子含 capped 行数）。
+- 未剔除口径的数字怎么来的：`declared_kept_in_denominator = declared + declared_unverifiable + declared_duplicate_partition`（任何 declared 都不剔，包括分区重复声明），`gap_kept_in_denominator = 它 − rows`（旧口径，分子含 capped 行数与重复行）。
 - `docs/STEP04-FULL-2026-10-30.md` 保持 `ledger_rebuild.py` 生成的字节不变（`--check` 依赖它）；
   本文是它的**修正层**，两者冲突时以本文为准，并注明证据出处。
 - 修正后的账本是 `collect/04b_ledger.json`（main 侧闸门读的就是这个文件）。
@@ -225,6 +250,8 @@ python3 collect/adjudicate_04b.py \
   --evidence analysis/04b-upstream-evidence-2026-10-30.json \
   --plan collect/ledger/04b_plan.json \
   --cancel-plan collect/ledger/04b_round2_plan.json \
+  --duplicate-partitions analysis/04b-duplicate-partitions-2026-10-31.json \
+  --capped-evidence analysis/04b-token-499-evidence-2026-10-31.json \
   --out collect/04b_ledger.json \
   --audit analysis/04b-cancel-audit-2026-10-30.json \
   --doc docs/STEP04-ADJUDICATED-2026-10-30.md --check

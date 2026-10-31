@@ -6,39 +6,52 @@
  "layers_n": 272,
  "ok": 256,
  "empty": 1,
- "partial": 3,
+ "partial": 4,
  "capped_by_upstream": 1,
  "failed": 0,
- "missing": 6,
+ "missing": 5,
  "unverified": 5,
  "skipped_done": 0,
  "buckets": {
   "capped_by_upstream": 1,
   "ok": 256,
-  "missing": 6,
-  "partial": 3,
+  "missing": 5,
+  "partial": 4,
   "unverified": 5,
   "empty": 1
  },
  "bucket_meaning": {
   "ok": "实采 ≥ 上游当前 returnCount×(1-1%)",
-  "partial": "实采 < 上游当前 returnCount×(1-1%) 且 >0 → 定向续采",
+  "partial": "实采 < 上游当前 returnCount×(1-1%) 且 >0 → 定向续采；或分区重复声明（数据已在 survivor 层，见 3.0.2）",
   "capped_by_upstream": "上游改成服务级 token（连 `<api>/0?f=json` 都 499，连探两轮）→ 永远采不到更多；已采行数计入 rows，declared 移出分母记 declared_unverifiable",
   "missing": "上游有数据、本层 0 行 → 必须重采",
   "unverified": "上游不可达/无响应，本层无数据 → 无法归因（不许当空层）",
   "empty": "上游明确 0 行或服务下线（esri 404）",
   "skipped_done": "计划期已判完成而跳过"
  },
- "declared": 482206942,
+ "declared": 475909773,
  "declared_unverifiable": 97928946,
  "rows": 497330251,
  "rows_capped": 39875268,
+ "rows_with_partition_dup": 0,
+ "declared_duplicate_partition": 6297169,
+ "duplicate_partition_layers": [
+  {
+   "layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1",
+   "rows_including_duplicate": 0,
+   "duplicate_of": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2",
+   "declared_before": 6297169,
+   "upstream_return_count": 6297169,
+   "status": "partial"
+  }
+ ],
  "rows_verifiable": 457454983,
- "gap": 24751959,
- "gap_pct": 5.1331,
+ "gap": 18454790,
+ "gap_pct": 3.8778,
  "declared_kept_in_denominator": 580135888,
  "gap_pct_kept_in_denominator": 14.2735,
- "denominator_note": "分母只含可复核的 declared（不含 capped_by_upstream 层）；gap = declared − rows_verifiable（rows 去掉 capped 层已采行数），两边同口径才可相除。rows 仍是全部实采（含 capped 层）。",
+ "denominator_note": "分母只含可复核的 declared（不含 capped_by_upstream 层，也不含 @分区 重复声明层）；gap = declared − rows_verifiable（rows 去掉 capped 层行数与分区重复采样行数），两边同口径才可相除。rows 仍是全部实采（含 capped 层与重复行）。",
+ "partition_duplicate_rule": "同一 base 层、同一上游 url 的 `@<分区>` 层若 Σ declared > 1.5×returnCount → 重复计数：declared 置 null（原值留在逐层 declared_duplicate_partition）、status 改 partial；采到的重复行进 rows_with_partition_dup，**08（3 元组去重）之前任何对外覆盖率不许包含重复行**。",
  "complete": false,
  "capped_layers": [
   {
@@ -57,7 +70,7 @@
   "账本层数（rebuilt）": 272,
   "计划 − 账本": 0,
   "账本 − 计划": 0,
-  "声明行合计（修正后）": 482206942,
+  "声明行合计（修正后）": 475909773,
   "实采行合计（不变）": 497330251
  },
  "revisions": [
@@ -88,10 +101,10 @@
   {
    "layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1",
    "from": "failed",
-   "to": "missing",
+   "to": "partial",
    "declared_before": 6297169,
-   "declared_after": 6297169,
-   "reason": "上游当前 returnCount=6,297,169，本层 0 行 → 真缺口，必须重采"
+   "declared_after": null,
+   "reason": "分区重复声明：2 个分区共用同一上游 url，Σ declared = 12,594,338 = 2.00× 上游 returnCount 6,297,169；本层那批行已由 `_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2` 采到 6,648,000 行 → declared 移出分母，原值保留在 declared_duplicate_partition（不是缺口，也不是改口径凑数）"
   },
   {
    "layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2",
@@ -541,7 +554,7 @@
   {
    "layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1",
    "tag": null,
-   "declared": 6297169,
+   "declared": null,
    "declared_src": "layer_plan.csv",
    "rows": null,
    "rows_src": null,
@@ -554,11 +567,29 @@
    "last_upload": null,
    "problems": [],
    "warn": [],
-   "status": "missing",
-   "reason": "上游当前 returnCount=6,297,169，本层 0 行 → 真缺口，必须重采",
+   "status": "partial",
+   "reason": "分区重复声明：2 个分区共用同一上游 url，Σ declared = 12,594,338 = 2.00× 上游 returnCount 6,297,169；本层那批行已由 `_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2` 采到 6,648,000 行 → declared 移出分母，原值保留在 declared_duplicate_partition（不是缺口，也不是改口径凑数）",
    "shard": 2,
-   "gap": 6297169,
-   "gap_pct": 100.0,
+   "declared_duplicate_partition": {
+    "base_layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0",
+    "partitions": [
+     "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1",
+     "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2"
+    ],
+    "upstream_url": null,
+    "upstream_return_count": 6297169,
+    "sum_declared": 12594338,
+    "declared_before": 6297169,
+    "duplicate_of": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2",
+    "survivor_rows": 6648000,
+    "evidence": "analysis/04b-token-499-evidence-2026-10-31.json",
+    "note": "两个分区各写全量 declared（Σ=12,594,338 = 2× 上游 6,297,169），而上游两个 host 的 returnCount 完全相等（6,297,169 / 6,297,169，各探两轮）→ 同一份 AddressNC 数据被数了两遍。survivor `-2` 实采 6,648,000 ≥ 全量，duplicate 分区 `-1` 0 行 → 后者声明的 6,297,169 是纯重复计数、且没有任何已采数据会因改判而失去归属，所以改判无损失。"
+   },
+   "gap": null,
+   "gap_pct": null,
+   "partition_duplicate_sampled": true,
+   "rows_including_duplicate": 0,
+   "duplicate_source_layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2",
    "evidence": {
     "verdict": "upstream_alive",
     "upstream_count": 6297169,

@@ -642,6 +642,153 @@ def summarize_ledger(path, scope=""):
             "run_id": d.get("run_id"), "revisions": len(d.get("revisions") or [])}
 
 
+# ---------------------------------------------------------------- D12 分区重复声明
+#
+# W33-035 的自动检查（2026-10-31 用户定）：同一 base 层被拆成 `@<分区>` 两行时，若每个分区都
+# 继承了整层 declared，分母就把同一批行数了两遍 → 整层假缺口（NC1Map@未定位-1 就是这样白挂
+# 6,297,169 行）。判据：**同一 base 层的 `@<分区>` 层，Σ declared > 1.5 × 该 base 的上游
+# returnCount** 就是重复计数。返回 `duplicate_declared` 并**建议**改判；**账本不自动改**
+# （改口径要人点头：`adjudicate_04b.py --duplicate-partitions`）。
+#
+# 两处「不许想当然」：
+#   ① 分区层的 url 必须回原清单按行序取（`partition_url_index()`）—— `layer_index()` 按 id
+#      覆盖，只会留下最后一行，于是两个分区看起来「同一个 url」，其实各自指向不同 host。
+#   ② 同一 base 的多个分区也可能 URL 不同、但上游是**镜像同一份数据**（实测 Maricopa
+#      services.arcgis.com 2,139,242 行 vs services6.arcgis.com 2,139,742 行；hennepin
+#      481,609 vs 480,300）→ Σ declared 同样 ≈ 2×。这类要人看过再定，所以清单里支持
+#      `reviewed: []`（结论 + 理由入库），已复核的组不再 WARN，但**不许悄悄消失**：
+#      判词里会点名「已复核 N 组」。
+PART_SUFFIX_RE = re.compile(r"^(?P<base>.+)@(?P<part>[^@]+?)-(?P<idx>\d+)$")
+PART_DUP_SPEC = os.path.join(ROOT, "analysis", "04b-duplicate-partitions-2026-10-31.json")
+_PART_URL_INDEX = {}
+
+
+def partition_url_index():
+    """`<id>@<state>-<n>` → url。
+
+    复现 `worker_core._rows_from_csv` 的唯一化规则：layer_id 在清单里重复 N 次时，第 k 行
+    被命名为 `<id>@<state>-<k>`（按 CSV 行序）。分区层的 url 必须回原清单取。
+    """
+    global _PART_URL_INDEX
+    if _PART_URL_INDEX:
+        return _PART_URL_INDEX
+    import csv
+    p = os.path.join(ROOT, "collect", "layer_plan.csv")
+    out = {}
+    if os.path.exists(p):
+        with open(p, encoding="utf-8") as f:
+            rows = list(csv.DictReader(f))
+        cnt, seen = {}, {}
+        for r in rows:
+            lid = (r.get("layer_id") or r.get("layer") or r.get("id") or "").strip()
+            cnt[lid] = cnt.get(lid, 0) + 1
+        for r in rows:
+            lid = (r.get("layer_id") or r.get("layer") or r.get("id") or "").strip()
+            if cnt.get(lid, 0) > 1:
+                seen[lid] = seen.get(lid, 0) + 1
+                out["%s@%s-%d" % (lid, r.get("state") or "na", seen[lid])] = \
+                    (r.get("url") or "").strip()
+    _PART_URL_INDEX = out
+    return out
+
+
+def duplicate_spec(path=None):
+    """分区重复声明清单（与 `adjudicate_04b.py --duplicate-partitions` 同一份文件）。"""
+    p = path or PART_DUP_SPEC
+    if not p or not os.path.exists(p):
+        return {"groups": [], "reviewed": []}
+    try:
+        with open(p, encoding="utf-8") as f:
+            d = json.load(f)
+        return {"groups": d.get("groups") or [], "reviewed": d.get("reviewed") or []}
+    except Exception:                                          # noqa: BLE001
+        return {"groups": [], "reviewed": []}
+
+
+def judge_duplicate_declared(records, url_of=None, probe=None, offline=False,
+                             threshold=1.5, limit=6, spec=None):
+    """W33-035 / D12：`@<分区>` 层 Σ declared 是否超过同 base 上游 returnCount 的 1.5 倍。"""
+    url_of = partition_url_index() if url_of is None else url_of
+    groups = {}
+    for r in records or []:
+        lid = r.get("layer") or ""
+        m = PART_SUFFIX_RE.match(lid)
+        if not m:
+            continue
+        groups.setdefault(m.group("base"), []).append(r)
+    multi = {k: v for k, v in groups.items() if len(v) >= 2}
+    if not multi:
+        return item("D12", "D", "分区重复声明 duplicate_declared", "INFO",
+                    "本阶段账本没有 `@<分区>` 多分区层（无重复声明风险）",
+                    duplicate_declared=[])
+    reviewed = {g.get("base_layer"): g for g in (spec or duplicate_spec()).get("reviewed") or []}
+    flagged, ok_rows, reviewed_rows, unknown, probes = [], [], [], [], 0
+    for base, rs in sorted(multi.items()):
+        s = sum((x.get("declared") or 0) for x in rs)
+        counts = {}
+        if not offline and probe is not None and probes < limit:
+            for u in sorted({url_of.get(x.get("layer") or "") or "" for x in rs} - {""})[:4]:
+                probes += 1
+                try:
+                    counts[u] = (probe(u) or {}).get("count")
+                except Exception as e:                          # noqa: BLE001
+                    counts[u] = "err:%s" % str(e)[:40]
+        nums = [c for c in counts.values() if isinstance(c, int) and c > 0]
+        cnt = max(nums) if nums else ((layer_index().get(base) or {}).get("row_count") or None)
+        src = ("upstream returnCount 实测（取各分区最大）" if nums
+               else "清单 row_count（代理，未实测）")
+        ratio = (float(s) / cnt) if cnt else None
+        row = {"base_layer": base,
+               "partitions": [x.get("layer") for x in rs],
+               "declared_by_partition": {x.get("layer"): x.get("declared") for x in rs},
+               "sum_declared": s, "upstream_count": cnt, "upstream_count_by_url": counts,
+               "ratio": round(ratio, 3) if ratio else None, "source": src,
+               "already_rejudged": [x["layer"] for x in rs if x.get("declared_duplicate_partition")]}
+        if base in reviewed:
+            row["reviewed"] = {k: reviewed[base].get(k) for k in ("verdict", "decision", "at", "evidence")}
+            reviewed_rows.append(row)
+        elif ratio is None:
+            # ★ 无法判定 ≠ 通过（与 D10 offline 同一约定）：没有 returnCount 也没有清单代理值，
+            #   就不许给 PASS，否则「没核」会伪装成「核过了」。
+            unknown.append(row)
+        elif ratio > threshold:
+            flagged.append(row)
+        else:
+            ok_rows.append(row)
+    if unknown and not flagged:
+        return item("D12", "D", "分区重复声明 duplicate_declared", "WARN",
+                    "duplicate_declared 未能判定：%d 组 `@<分区>` 拿不到上游 returnCount（offline / 探不通），"
+                    "清单里也没有同 base 的 row_count 可代理 → 不假装通过，派单后按 E12 的实测结果复核"
+                    % len(unknown),
+                    duplicate_declared=[], duplicate_declared_unknown=unknown,
+                    duplicate_declared_ok=ok_rows, duplicate_declared_reviewed=reviewed_rows)
+    if flagged:
+        head = "；".join("`%s` Σ声明 %s = %.2f× 上游 %s"
+                         % (g["base_layer"], f"{g['sum_declared']:,}", g["ratio"],
+                            f"{g['upstream_count']:,}") for g in flagged[:3])
+        return item("D12", "D", "分区重复声明 duplicate_declared", "WARN",
+                    "duplicate_declared：%d 组 `@<分区>` 的 Σ declared > %.1f× 同 base 的上游 returnCount"
+                    "（%s）→ 分母把同一批行数了两遍。**账本不自动改**：先核 survivor 实采，"
+                    "再写清单并重放 `python3 collect/adjudicate_04b.py --duplicate-partitions "
+                    "analysis/04b-duplicate-partitions-<date>.json`（declared 置 null、status 改 partial，"
+                    "原值保留在 declared_duplicate_partition）；两分区都已有实采的组请先人看，"
+                    "结论写进清单 `reviewed[]`" % (len(flagged), threshold, head),
+                    duplicate_declared=flagged, duplicate_declared_ok=ok_rows,
+                    duplicate_declared_reviewed=reviewed_rows)
+    best = max([g["ratio"] or 0 for g in ok_rows] or [0])
+    extra = ""
+    if reviewed_rows:
+        extra = "；%d 组已人复核（不用单个 returnCount 当分母）" % len(reviewed_rows)
+    if any(g["already_rejudged"] for g in ok_rows):
+        extra += "；%d 层已在 declared_duplicate_partition 下挂账（重复计数已移出分母，未丢数）" % \
+                 sum(len(g["already_rejudged"]) for g in ok_rows)
+    return item("D12", "D", "分区重复声明 duplicate_declared", "PASS",
+                "%d 组 `@<分区>` 的 Σ declared 与同 base 上游 returnCount 同量级（最大 %.2f×，阈值 %.1f）%s"
+                % (len(ok_rows), best, threshold, extra),
+                duplicate_declared=[], duplicate_declared_ok=ok_rows,
+                duplicate_declared_reviewed=reviewed_rows)
+
+
 def ledger_paths(stage):
     names = LEDGER_ALIASES.get(stage, (stage,))
     stage_ledger = _find([os.path.join(ROOT, "collect", "%s_ledger.json" % n) for n in names])
@@ -1225,6 +1372,18 @@ def build_report(args) -> dict:
         items.append(judge_ckpt_backup(tag_prefix, force[:10], assets, offline=offline))
     else:
         items.append(judge_ckpt_backup(tag_prefix, [], None, offline=False))
+
+    # ---- D12 分区重复声明（W33-035 的自动检查；只建议、不改账）----
+    d12_recs = []
+    if paths[0] and os.path.exists(paths[0]):
+        try:
+            d12_recs = json.load(open(paths[0], encoding="utf-8")).get("records") or []
+        except Exception:                                      # noqa: BLE001
+            d12_recs = []
+    d12 = judge_duplicate_declared(d12_recs, probe=probe_count,
+                                   offline=offline or not d12_recs)
+    items.append(d12)
+    evidence["duplicate_declared"] = d12.get("duplicate_declared") or []
 
     # ---- E 上游可用性 ----
     # 抽样口径：force 层优先（本次真要跑的），再按分档均匀抽样（避免全挤在最小/最大层）
