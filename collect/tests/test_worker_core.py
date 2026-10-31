@@ -259,5 +259,84 @@ class TestReleaseScanLoud(unittest.TestCase):
             os.environ.pop("WC_OFFLINE", None)
 
 
+class TestLedgerVeto(unittest.TestCase):
+    """W33-040：短采层（`status=failed` 且 `rows>0`）不许被 Release 浅判算成「已完成」。
+
+    2026-10-31 实测（run `41167836540` 收尾）：5 层「片账本 failed、rows 不是 0、checkpoint 已传」→
+    `release_done` 只看「tag + 有 checkpoint」就判完成 → 这 5 层再也不会排进计划，
+    缺口永久钉死；而且看上去「有数据」，比 `failed(0 行)` 难发现得多。
+    """
+
+    LAYERS = ("short", "done_ok", "done_empty", "done_capped", "done_unstable")
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp(prefix="veto-")
+        with open(os.path.join(self.tmp, "batch1.csv"), "w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=["layer", "state", "grade", "declared", "eff"])
+            w.writeheader()
+            w.writerows([dict(layer=x, state="KS", grade="strong", declared="5000", eff="100.0")
+                         for x in self.LAYERS])
+        # batch1.csv 不存 url，url 从 situs_layers.csv 回填（没 url 的行会被整行剔掉）
+        with open(os.path.join(self.tmp, "situs_layers.csv"), "w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=["layer_id", "state", "geom", "rows", "grade", "url"])
+            w.writeheader()
+            w.writerows([dict(layer_id=x, state="KS", geom="Point", rows="5000", grade="strong",
+                              url="http://x/%s" % x) for x in self.LAYERS])
+        self._old = (W.ROOT, W.HERE, W._URL_IDX, W.release_done, os.environ.get("WC_OFFLINE"))
+        W.ROOT, W.HERE, W._URL_IDX = self.tmp, self.tmp, None
+        os.environ["WC_OFFLINE"] = "1"
+        # Release 浅判：五层都有 tag + checkpoint（对旧实现来说这五层全都「已完成」）
+        W.release_done = lambda step="05", use_cache=True: {
+            x: {"tag": "collect-step%s-%s" % (step, x), "assets": ["%s-checkpoint.json" % x],
+                "complete": True, "how": "shallow"} for x in self.LAYERS}
+
+    def tearDown(self):
+        W.ROOT, W.HERE, W._URL_IDX, W.release_done, offline = self._old
+        if offline is None:
+            os.environ.pop("WC_OFFLINE", None)
+        else:
+            os.environ["WC_OFFLINE"] = offline
+
+    def _ledger(self, records):
+        with open(os.path.join(self.tmp, "05b_ledger.json"), "w", encoding="utf-8") as f:
+            json.dump({"schema": "collect-ledger-agg/v1", "stage": "05b", "records": records}, f)
+
+    def test_short_collect_is_not_done(self):
+        """failed + rows>0 且 rows<declared → 不算完成（要重新参赛）"""
+        self._ledger([{"layer": "short", "status": "failed", "rows": 9602, "declared": 17295},
+                      {"layer": "done_ok", "status": "ok", "rows": 5000, "declared": 5000}])
+        done = W.done_layers("05")
+        self.assertNotIn("short", done)
+        self.assertIn("done_ok", done)
+
+    def test_three_legal_ways_to_be_done(self):
+        """合法算完成的三种：ok / empty / 已判 capped（再试没收益）；unstable 同理"""
+        self._ledger([
+            {"layer": "done_ok", "status": "ok", "rows": 5000, "declared": 5000},
+            {"layer": "done_empty", "status": "empty", "rows": 0, "declared": 0},
+            {"layer": "done_capped", "status": "capped_by_upstream", "rows": 39, "declared": 100},
+            {"layer": "done_unstable", "status": "upstream_unstable", "rows": 0, "declared": 100},
+        ])
+        done = W.done_layers("05")
+        for x in ("done_ok", "done_empty", "done_capped", "done_unstable"):
+            self.assertIn(x, done, x)
+
+    def test_vetoed_layer_comes_back_into_plan(self):
+        """否决完必须能在计划里重新看到它（否则修了等于没修）"""
+        self._ledger([{"layer": "short", "status": "failed", "rows": 9602, "declared": 17295}])
+        pol = {"kind": "parcel_situs", "title": "t", "geom_in": [],
+               "select": {"source": "layer_plan", "file": "batch1.csv", "grade": ["strong"],
+                          "eff_min": 0.2, "skip_done": True},
+               "workers": 4, "unit_rows": 100000, "tag": "collect-step05-{layer}"}
+        ids = [r["id"] for r in W.select_layers("05", policy=pol)]
+        self.assertIn("short", ids)
+        self.assertNotIn("done_ok", ids)
+
+    def test_partial_with_enough_rows_is_done(self):
+        """行数其实够了（≥99% 声明）只是收尾报错 → 采完了，别为 1% 再烧一轮"""
+        self._ledger([{"layer": "short", "status": "partial", "rows": 17130, "declared": 17295}])
+        self.assertIn("short", W.done_layers("05"))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

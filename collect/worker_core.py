@@ -233,14 +233,59 @@ def release_done(step="10", use_cache=True):
     return seen
 
 
-def done_layers(step="10"):
-    """已采层全集 = 本机清单（精确）+ Releases（tag）
+#: 阶段账本里这两种状态本身就是「还没采完」 —— 即使 tag + checkpoint 都在，也不许当已完成
+LEDGER_NOT_DONE = ("failed", "partial")
 
-    ★ 优先级：本机逐层数行 > Releases 的 tag 浅判。
+
+def ledger_shadow(step="05"):
+    """读**写同一个 tag 命名空间**的阶段账本（05 → `05_ledger.json` / `05b_ledger.json`），
+    返回 {layer: record}。同层两边都有时以后读的（即 `<b>_ledger.json`）为准。
+
+    ★ 为什么要它（W33-040，2026-10-31 事故）：run `41167836540` 收尾时发现 5 层
+      「片账本里 status=failed、rows 还大于 0（短采），但 checkpoint 已经传上 Release」——
+      `release_done` 只做浅判（tag + 有 checkpoint 文件），于是判它们「已完成」→
+      这 5 层再也不会被排进计划，缺口永久钉死。此坑与 W33-014 同类但**更隐蔽**：
+      它们看上去「有数据」，比 `failed(0 行)` 难发现得多。
+
+    每层只取阶段账本的**结论**（status/rows/declared），不自己重算行数：
+    阶段账本是唯一真值（`ledger_merge` 合并过），Release 只证明「有产物」。
+    """
+    out = {}
+    try:
+        names = sorted(os.listdir(HERE))
+    except OSError:
+        return out
+    pat = re.compile(r"^%sb?_ledger\.json$" % re.escape(str(step)))
+    for fn in names:
+        if not pat.match(fn):
+            continue
+        try:
+            doc = json.load(open(os.path.join(HERE, fn), encoding="utf-8"))
+        except Exception as e:                                   # noqa: BLE001
+            print("⚠️ 阶段账本 %s 读不动，本轮不做「已验证完成」否决：%s" % (fn, str(e)[:80]),
+                  file=sys.stderr)
+            continue
+        for r in (doc.get("records") or []):
+            lid = r.get("layer")
+            if lid:
+                out[lid] = r          # 后读的 `<b>_ledger.json` 覆盖基础阶段
+    return out
+
+
+def done_layers(step="10"):
+    """已采层全集 = 本机清单（精确）+ Releases（tag）**− 阶段账本判「还没采完」的层**
+
+    ★ 优先级：本机逐层数行 > 阶段账本结论 > Releases 的 tag 浅判。
       2026-10-26 那次误跑的产物正好暴露了这一点：4 层在 Releases 里
       有 tag 有 checkpoint，但本机实测缺口还在（partial）。
       若让 tag 浅判覆盖本机结论，这 4 层的缺口就永久钉死、永远不会被补。
       所以：本机明确说 complete=false 的层，一律不因为 tag 存在而跳过。
+
+    ★ 2026-10-31 再补一档（W33-040）：**阶段账本说 failed / partial 且 rows < declared** 的层，
+      即使 Release 上 tag + checkpoint 齐全，也不算已完成 → 继续参赛、继续补。
+      否则短采层（`rows>0` 但不足声明）会永久留在待采队列之外，看起来还「有数据」。
+      已判 `upstream_unstable` / `capped_by_upstream` 的层不吃这条：它们的结论是「再试没收益」，
+      不是「还没采完」。
     """
     audit = parcel_audit_layers()
     done = {k: v for k, v in audit.items() if v.get("complete")}
@@ -250,6 +295,45 @@ def done_layers(step="10"):
         if lid in audit and not audit[lid].get("complete"):
             continue
         done.setdefault(lid, rec)
+    return _veto_by_ledger(step, done)
+
+
+def _veto_by_ledger(step, done):
+    """把「账本说还没采完」的层从已完成集合里拿掉（W33-040）。
+
+    只否决 `how=shallow`（Releases 浅判）来的条目：本机逐层数行是精确证据，不许账本推翻它。
+    """
+    if not done:
+        return done
+    shadow = ledger_shadow(step)
+    if not shadow:
+        return done
+    vetoed = {}
+    for lid in list(done):
+        if str((done[lid] or {}).get("how") or "") != "shallow":
+            continue
+        s = shadow.get(lid) or {}
+        st = str(s.get("status") or "")
+        if st not in LEDGER_NOT_DONE:
+            continue
+        try:
+            rows = int(s.get("rows") or 0)
+        except (TypeError, ValueError):
+            rows = 0
+        try:
+            decl = int(s.get("declared") or 0)
+        except (TypeError, ValueError):
+            decl = 0
+        if decl and rows >= decl * 0.99:      # 行数其实够了，只是收尾报错 → 算采完
+            continue
+        vetoed[lid] = {"status": st, "rows": rows, "declared": decl}
+        done.pop(lid, None)
+    if vetoed:
+        print("⛔ %d 层被阶段账本否决「已完成」（tag+checkpoint 都在，但 status=%s 且 rows<declared）"
+              "→ 重新进待采队列：%s"
+              % (len(vetoed), "/".join(LEDGER_NOT_DONE),
+                 ", ".join(sorted(vetoed)[:5]) + (" …" if len(vetoed) > 5 else "")),
+              file=sys.stderr)
     return done
 
 
