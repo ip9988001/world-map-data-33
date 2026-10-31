@@ -85,6 +85,73 @@ class Backup(unittest.TestCase):
         self.assertNotIn(os.path.basename(made[0]), baks)    # 最老的被清掉
         self.assertEqual(json.load(open(made[-1])), {"ver": 2})
 
+    def _baks(self, d):
+        return sorted((f for f in os.listdir(d) if ".bak-" in f), key=G.bak_sort_key)
+
+    def test_local_backup_keeps_three_generations_across_gap(self):
+        """r3 缺失的 r1/r2/r4 序列：删的必须是数值最小的 r1，不是“随便一个”。
+
+        旧实现按 mtime 排（copy2 继承源 mtime → 全部相等）+ 字符串兜底，
+        在 r10 出现时更错：字符串序 r1 < r10 < r2 < r4，会把 r10 当最老删掉。
+        """
+        d = tempfile.mkdtemp()
+        p = os.path.join(d, "_checkpoint.json")
+        json.dump({"ver": 2}, open(p, "w"))
+        for rid in ("r1", "r2", "r4"):
+            self.assertTrue(G.backup_local(p, rid, keep=3))
+        self.assertEqual(self._baks(d), ["_checkpoint.bak-r1.json",
+                                         "_checkpoint.bak-r2.json",
+                                         "_checkpoint.bak-r4.json"])
+        self.assertTrue(G.backup_local(p, "r10", keep=3))
+        self.assertEqual(self._baks(d), ["_checkpoint.bak-r2.json",
+                                         "_checkpoint.bak-r4.json",
+                                         "_checkpoint.bak-r10.json"])
+
+    def test_local_backup_survives_identical_mtimes(self):
+        """ci-smoke 41167000866 原状：bak 全同 mtime 且创建顺序乱，仍按代删最老的。"""
+        d = tempfile.mkdtemp()
+        p = os.path.join(d, "_checkpoint.json")
+        json.dump({"ver": 2}, open(p, "w"))
+        for rid in ("r4", "r1", "r2"):        # 故意乱序建，且 keep 放宽不让它先删
+            self.assertTrue(G.backup_local(p, rid, keep=9))
+        stamp = time.time() - 3600
+        for f in os.listdir(d):                 # 强制所有代 mtime 相同（copy2 就会这样）
+            if ".bak-" in f:
+                os.utime(os.path.join(d, f), (stamp, stamp))
+        self.assertTrue(G.backup_local(p, "r3", keep=3))
+        self.assertEqual(self._baks(d), ["_checkpoint.bak-r2.json",
+                                         "_checkpoint.bak-r3.json",
+                                         "_checkpoint.bak-r4.json"])
+
+    def test_backup_order_is_generation_not_mtime(self):
+        """mtime 可以骗人（copy2 继承源文件；跨机器也是乱序），代序只认后缀数字。
+
+        故意把 r1 的 mtime 设成最年轻、r4 设成最老：按 mtime 会删 r4（错），按代必删 r1。
+        """
+        d = tempfile.mkdtemp()
+        p = os.path.join(d, "_checkpoint.json")
+        json.dump({"ver": 2}, open(p, "w"))
+        for rid in ("r1", "r2", "r3", "r4"):
+            self.assertTrue(G.backup_local(p, rid, keep=9))
+        base = time.time() - 7200
+        for i, rid in enumerate(("r4", "r3", "r2", "r1")):   # r1 最新、r4 最老
+            os.utime(os.path.join(d, "_checkpoint.bak-%s.json" % rid), (base + i, base + i))
+        self.assertTrue(G.backup_local(p, "r5", keep=3))
+        self.assertEqual(self._baks(d), ["_checkpoint.bak-r3.json",
+                                         "_checkpoint.bak-r4.json",
+                                         "_checkpoint.bak-r5.json"])
+
+    def test_bak_sort_key_is_numeric_not_string(self):
+        self.assertGreater(G.bak_sort_key("x.bak-r10.json"), G.bak_sort_key("x.bak-r2.json"))
+        self.assertGreater(G.bak_sort_key("L-checkpoint.bak-41167000866.json"),
+                           G.bak_sort_key("L-checkpoint.bak-41123309047.json"))
+        self.assertLess(G.bak_sort_key("x.bak-r1.json"), G.bak_sort_key("x.bak-r2.json"))
+
+    def test_backup_assets_to_delete_numeric_not_string(self):
+        idx = assets_of(["%s-checkpoint.bak-%s.json" % (LAYER, r) for r in ("r2", "r4", "r10")])
+        self.assertEqual(G.backup_assets_to_delete(idx, LAYER, "r11", keep=3),
+                         ["%s-checkpoint.bak-r2.json" % LAYER])
+
     def test_backup_missing_file_is_noop(self):
         self.assertEqual(G.backup_local("/nonexistent/_checkpoint.json", "r1"), "")
 

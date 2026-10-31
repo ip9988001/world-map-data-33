@@ -130,6 +130,33 @@ def backup_name(layer: str, run_id) -> str:
     return "%s-checkpoint.bak-%s.json" % (layer, now_ish(run_id))
 
 
+BAK_RE = re.compile(r"\.bak-(.+)\.json$")
+
+
+def bak_sort_key(name: str, path: str | None = None):
+    """备份「代」的排序键 —— 按后缀里的**数字**比，绝不按字符串比。
+
+    事故（2026-10-31，ci-smoke run 41167000866）：`backup_local` 原来按 mtime 挑最老的删，
+    可 `shutil.copy2` 连**源检查点**的 mtime 一起复制 —— 同一层的所有 bak mtime 完全相同，
+    `sorted()` 退化成「保持 os.listdir 顺序」（ext4 htree 与 overlayfs 顺序不同），
+    于是 r1/r2/r3/r4 该删 r1 的那次删掉了 r3。备份本身没丢，但「只留 3 代」变成
+    「随机留 3 代」—— 人会误信旧备份都清了。
+
+    现在：先按后缀数字比（r2 → 2；GITHUB_RUN_ID → 41167000866，r10 > r2），
+    无数字才退到 mtime，最后用文件名兜底保证同一输入永远同一顺序。
+    """
+    base = os.path.basename(name)
+    m = BAK_RE.search(base)
+    nums = tuple(int(x) for x in re.findall(r"\d+", m.group(1) if m else ""))
+    mt = 0.0
+    if path:
+        try:
+            mt = os.path.getmtime(path)
+        except OSError:
+            mt = 0.0
+    return (1 if nums else 0, nums, mt, base)
+
+
 def backup_local(path: str, run_id, keep: int = KEEP_BACKUPS) -> str:
     """本地检查点先复制一份 `_checkpoint.bak-<RUN_ID>.json`（同目录），只留 keep 代。"""
     if not path or not os.path.exists(path):
@@ -139,12 +166,14 @@ def backup_local(path: str, run_id, keep: int = KEEP_BACKUPS) -> str:
     dst = os.path.join(d, "%s.bak-%s.json" % (stem, now_ish(run_id)))
     try:
         shutil.copy2(path, dst)
+        # copy2 会继承**源**的 mtime，备份就分不出先后了（正是上面那起事故）→ 打上此刻的时间
+        os.utime(dst, None)
     except Exception:                                   # noqa: BLE001
         return ""
     olds = sorted([p for p in os.listdir(d)
                    if p.startswith(stem + ".bak-") and p.endswith(".json")
                    and os.path.join(d, p) != dst],
-                  key=lambda p: os.path.getmtime(os.path.join(d, p)))
+                  key=lambda p: bak_sort_key(p, os.path.join(d, p)))
     for p in olds[:max(0, len(olds) - (keep - 1))]:
         try:
             os.remove(os.path.join(d, p))
@@ -157,9 +186,13 @@ def backup_assets_to_delete(assets_idx: dict, layer: str, run_id,
                             keep: int = KEEP_BACKUPS) -> list:
     """该层历史上留了哪些 bak 资产、该删哪几个（只留最近 keep 代，含本次这份）。"""
     prefix = "%s-checkpoint.bak-" % layer
-    names = sorted([n for n in (assets_idx or {}) if n.startswith(prefix) and n.endswith(".json")])
-    if backup_name(layer, run_id) not in names:
-        names.append(backup_name(layer, run_id))
+    names = [n for n in (assets_idx or {}) if n.startswith(prefix) and n.endswith(".json")]
+    mine = backup_name(layer, run_id)
+    if mine not in names:
+        names.append(mine)
+    names = sorted(names, key=bak_sort_key)
+    if mine in names and names[-1] != mine:      # 本次这份算最新，不许被自己删掉
+        names = [n for n in names if n != mine] + [mine]
     return names[:-keep] if len(names) > keep else []
 
 
