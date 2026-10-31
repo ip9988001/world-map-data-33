@@ -1,0 +1,51 @@
+{
+ "schema": "collect-ledger/v1",
+ "stage": "step04b",
+ "step": "04b",
+ "shard": 3,
+ "shards_total": 6,
+ "size": 2,
+ "unit_rows": 1000000,
+ "at": "2026-10-31T01:30:57Z",
+ "forced_n": 0,
+ "layers_planned": 2,
+ "layers_n": 2,
+ "partial_run": false,
+ "ok": 0,
+ "empty": 0,
+ "partial": 0,
+ "failed": 2,
+ "skipped_done": 0,
+ "rows": 2000,
+ "declared": 2097663,
+ "records": [
+  {
+   "layer": "yil_gov_traditional_rest_services_addressZipCode_MapServer_0",
+   "rc": 1,
+   "elapsed_s": 346.1,
+   "at": "2026-10-31T01:30:24Z",
+   "declared": 1381118,
+   "rows": 0,
+   "err": "query_fail:svcerr:{\"code\": 503, \"message\": \"Error handling service request :Wait timeout for the request exceeded.\", \"details\": []}",
+   "diff": 1.0,
+   "parts": 0,
+   "svc": "MapServer",
+   "status": "failed",
+   "reason": "rc=1 err=query_fail:svcerr:{\"code\": 503, \"message\": \"Error handling service request :Wait timeout for the request exceeded.\", \"details\": []}"
+  },
+  {
+   "layer": "is4_ocfl_net_arcgis_rest_services_AGOL_Open_Data_MapServer_0",
+   "rc": 1,
+   "elapsed_s": 33.4,
+   "at": "2026-10-31T01:30:57Z",
+   "declared": 716545,
+   "rows": 2000,
+   "err": "query_fail:Expecting value: line 1 column 1 (char 0)",
+   "diff": 0.9972,
+   "parts": 0,
+   "svc": "MapServer",
+   "status": "failed",
+   "reason": "rc=1 err=query_fail:Expecting value: line 1 column 1 (char 0)"
+  }
+ ]
+}
