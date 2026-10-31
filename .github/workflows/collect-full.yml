@@ -121,7 +121,6 @@ jobs:
           python3 collect/full_plan.py --stage "$STAGE" --size "$SIZE" \
             ${FORCE:+--force-layers "$FORCE"} \
             --out "collect/ledger/${STAGE}_plan.json" | tee /tmp/plan.log
-          N=$(python3 -c "import json;d=json.load(open('collect/ledger/${STAGE}_plan.json'));print(d['shards_n'])")
           MAX="${{ inputs.max_shards }}"
           # ★ max_shards 截断必须喊出来（W33-036，2026-10-31）：旧实现是这两行 shell
           #   `if [ "$MAX" != "0" ] && [ "$N" -gt "$MAX" ]; then N="$MAX"; fi` —— 静默砍尾片，
