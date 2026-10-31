@@ -222,6 +222,28 @@ def build_restored_checkpoint(built: dict, tag: str, layer: str, url: str,
                          "note": "checkpoint 曾被 force 重跑整份覆盖；本文件由单元包实测反推重建"}}
 
 
+def restore_gate(built: dict) -> tuple:
+    """写回 Release 前的硬门禁（2026-10-31 用户要求，**不提供绕过参数**）。
+
+    ① 测量后必须做过资产指纹复检（`--recheck`），且 `ok=true`
+       —— 否则不知道测量期间有没有同名包被别的 run 覆盖，写回去就是把坏证据固化；
+    ② 给了 `--expect-rows` 就必须 `delta == 0`
+       —— 与旧检查点对不上说明口径换了/包不齐，得人看一眼再写。
+    任一条不满足：**只报警、不写回**，证据留在 `--out` 与日志里等人判。
+    """
+    rc = built.get("recheck") or {}
+    if not rc:
+        return False, "没做过资产指纹复检（--recheck）→ 不知道包有没有被覆盖，不许写回"
+    if rc.get("ok") is not True:
+        return False, ("资产指纹复检 ok=false（changed=%s / missing=%s）→ 测量证据失效"
+                       % (list(rc.get("changed") or [])[:5], list(rc.get("missing") or [])[:5]))
+    if "expect_delta" in built and built["expect_delta"] != 0:
+        return False, ("--expect-rows delta=%+d ≠ 0（实测 %s / 期望 %s）→ 与旧证据对不上"
+                       % (built["expect_delta"], built["summary"].get("rows"),
+                          built.get("expect_rows")))
+    return True, "ok"
+
+
 def restore_checkpoint(built: dict, tag: str, repo: str, layer: str, url: str,
                       evidence_path: str, run_id: str = "", log=print) -> dict:
     """用 68 个单元包的实测结果**重建 Release 上的 checkpoint**（把证据放回去）。
@@ -253,7 +275,9 @@ def restore_checkpoint(built: dict, tag: str, repo: str, layer: str, url: str,
             except Exception:                                       # noqa: BLE001
                 overwrote = {"unreadable": True}
             ts = now().replace(":", "").replace("-", "")
-            bak = "%s-checkpoint.bak-%s.json" % (layer, ts)
+            # 备份名固定成 `<layer>-checkpoint.bak-<RUN_ID>-prerestore.json`（2026-10-31 用户要求）：
+            # 写回前必须再备份一次旧检查点，且名字里能看出是哪一轮、是「复原前」那份。
+            bak = "%s-checkpoint.bak-%s-prerestore.json" % (layer, (run_id or ts))
             bak_path = os.path.join(work, bak)
             shutil.copy2(old_path, bak_path)
             r2 = subprocess.run(["gh", "release", "upload", tag, bak_path, "--repo", repo],
@@ -392,6 +416,12 @@ def main() -> int:
         apply_ledger(a.apply_ledger, built, a.layer_in_ledger or a.layer,
                      a.out, a.restore_events)
     if a.restore_checkpoint:
+        ok_gate, why = restore_gate(built)
+        if not ok_gate:
+            print("::error::拒绝写回 Release 检查点：%s" % why, flush=True)
+            built["checkpoint_restore"] = {"refused": True, "reason": why, "at": now()}
+            json.dump(built, open(a.out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+            return 3
         r = restore_checkpoint(built, a.tag, a.repo, a.layer, a.layer_url, a.out, a.run_id)
         built["checkpoint_restore"] = r
         json.dump(built, open(a.out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)

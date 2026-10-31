@@ -13,7 +13,9 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from ledger_rebuild import (judge, scope_layers, extras_not_in_plan,   # noqa: E402
-                            plan_shard_index, annotate_shards)
+                            plan_shard_index, annotate_shards,
+                            layer_fingerprint, input_fingerprint,
+                            evidence_matches, apply_asset_evidence)
 
 
 def rel(tag="collect-step04-L", units=(0,), ckpt=True, size=1000):
@@ -206,6 +208,112 @@ def test_annotate_shards_marks_every_cancelled_layer():
     # 不在 cancelled 片的层不许被贴 cancelled 标
     assert not recs[3].get("shard_cancelled") and recs[3]["shard"] == 0
     assert recs[0]["shard_cancelled"] is True
+
+
+# ---------------------------------------------------------------- 输入指纹（--check 新语义）
+
+def t_fingerprint_ignores_asset_id_and_created_at():
+    """指纹只取「资产名+字节」：重传同内容会换 asset id/上传时间，那不算输入变了。
+
+    2026-10-31 用户定口径：--check = 「同一输入 → 同一输出」，比指纹不比文件字节。
+    """
+    a = rel()
+    b = dict(a, assets=[dict(x, id=999, created_at="2027-01-01T00:00:00Z") for x in a["assets"]])
+    c = ck()
+    fa = layer_fingerprint(a["tag"], a, c, 1000)
+    fb = layer_fingerprint(b["tag"], b, c, 1000)
+    assert fa == fb, (fa, fb)
+    assert input_fingerprint({"L": fa})["digest"] == input_fingerprint({"L": fb})["digest"]
+
+
+def t_fingerprint_changes_when_checkpoint_changes():
+    """checkpoint 内容变了（行数变 / 完成度变）→ 指纹必变，否则事故会被 --check 洗成 IDENTICAL。"""
+    a = rel()
+    f1 = layer_fingerprint(a["tag"], a, ck(seen={0: 1000}), 1000)
+    f2 = layer_fingerprint(a["tag"], a, ck(seen={0: 0}), 1000)
+    assert f1["ckpt_sha256"] != f2["ckpt_sha256"], (f1, f2)
+    assert input_fingerprint({"L": f1})["digest"] != input_fingerprint({"L": f2})["digest"]
+    # 没 checkpoint 与有 checkpoint 也必须区分（证据丢了是重大变化）
+    f3 = layer_fingerprint(a["tag"], a, None, 1000)
+    assert f3["ckpt_sha256"] is None and f3 != f1
+
+
+def t_fingerprint_changes_when_asset_bytes_change():
+    a = rel(size=1000)
+    b = rel(size=1001)
+    assert (layer_fingerprint(a["tag"], a, ck(), 1000)
+            != layer_fingerprint(b["tag"], b, ck(), 1000))
+
+
+def t_fingerprint_ignores_dict_order():
+    """同一输入，字典/列表顺序不同也不能算出不同指纹（否则 --check 随机 DIFFERS）。"""
+    a = rel(units=(0, 1))
+    b = dict(a, assets=list(reversed(a["assets"])))
+    assert (layer_fingerprint(a["tag"], a, ck(), 2000)
+            == layer_fingerprint(b["tag"], b, ck(), 2000))
+
+
+def _ev(tag, rows, packages, recheck_ok=True):
+    return {"schema": "collect-rebuild/v1", "tag": tag, "generated_at": "2026-10-30T23:03:23Z",
+            "packages": packages,
+            "summary": {"packages": len(packages), "packages_ok": len(packages),
+                        "packages_bad": [], "rows": rows, "parts": 12 * len(packages)},
+            "recheck": {"at": "2026-10-30T23:05:36Z", "ok": recheck_ok, "changed": [], "missing": []}}
+
+
+def _pkg(tag, unit, size):
+    return {"name": tag[len("collect-step04-"):] + "-u%05d.tar.gz" % unit, "ok": True,
+            "unit": unit, "rows": 500, "parts": 1, "asset_bytes": size}
+
+
+def t_evidence_adopts_rows_when_checkpoint_evidence_lost():
+    """事故形状：checkpoint 被覆盖成 unit_rows={'0':0} → failed(0)；68 包还在。
+    资产实测指纹（包名+字节）对得上 → 采用实测行数，rows_src=rebuild_from_assets。
+    """
+    r = rel(tag="collect-step04-L", units=(0, 1))
+    broken = ck(unit_rows={0: 0}, seen={0: 0}, uploaded={0: False}, done=[0])
+    rec = judge("L", 1000, r, broken, "")
+    assert rec["status"] == "failed" and rec["rows"] == 0, rec
+    ev = _ev(r["tag"], 1000, [_pkg(r["tag"], 0, 1000), _pkg(r["tag"], 1, 1000)])
+    ok = apply_asset_evidence(rec, r, [("analysis/x-rebuild.json", ev)], 1000)
+    assert ok, rec
+    assert rec["rows"] == 1000 and rec["rows_src"] == "rebuild_from_assets", rec
+    assert rec["status"] == "ok", rec
+    ev_rec = rec["evidence"]
+    assert ev_rec["rebuild"] == "analysis/x-rebuild.json" and ev_rec["kind"] == "release_assets_recount"
+    assert ev_rec["packages"] == 2 and ev_rec["generated_at"] == "2026-10-30T23:03:23Z"
+    assert any("资产实测" in w for w in rec["warn"]), rec["warn"]
+
+
+def t_evidence_refused_when_asset_fingerprint_changed():
+    """包字节对不上（被重传/覆盖）→ 实测证据作废，绝不拿旧行数洗账。"""
+    r = rel(tag="collect-step04-L", units=(0, 1))
+    ev = _ev(r["tag"], 1000, [_pkg(r["tag"], 0, 1000), _pkg(r["tag"], 1, 999)])   # 一个包字节变了
+    assert not evidence_matches(ev, r)
+    rec = judge("L", 1000, r, ck(unit_rows={0: 0}, seen={0: 0}, uploaded={0: False}), "")
+    assert not apply_asset_evidence(rec, r, [("a.json", ev)], 1000), rec
+    assert rec["rows"] == 0 and rec["rows_src"] == "unit_rows_seen", rec
+
+
+def t_evidence_refused_when_recheck_failed_or_packages_bad():
+    r = rel(tag="collect-step04-L", units=(0, 1))
+    good = [_pkg(r["tag"], 0, 1000), _pkg(r["tag"], 1, 1000)]
+    assert not evidence_matches(_ev(r["tag"], 1000, good, recheck_ok=False), r)
+    bad = _ev(r["tag"], 1000, good)
+    bad["summary"]["packages_bad"] = [good[0]["name"]]
+    assert not evidence_matches(bad, r)
+    # 证据里的包数与 Release 上的包数不一致（少了/多了）也不算同一输入
+    assert not evidence_matches(_ev(r["tag"], 500, good[:1]), r)
+
+
+def t_evidence_partial_when_rows_short_of_declared():
+    """实测行数少于声明 → partial（不是 ok）：证据只证明「采到多少」，不证明「采够了」。"""
+    r = rel(tag="collect-step04-L", units=(0, 1))
+    ev = _ev(r["tag"], 400, [_pkg(r["tag"], 0, 1000), _pkg(r["tag"], 1, 1000)])
+    rec = judge("L", 1000, r, ck(unit_rows={0: 0}, seen={0: 0}, uploaded={0: False}), "")
+    assert apply_asset_evidence(rec, r, [("a.json", ev)], 1000), rec
+    assert rec["status"] == "partial" and rec["gap"] == 600, rec
+    assert rec["rows_src"] == "rebuild_from_assets"
 
 
 # ---------------------------------------------------------------- unittest 收口
