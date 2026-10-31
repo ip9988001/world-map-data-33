@@ -218,6 +218,96 @@ class ApprovedVersion(unittest.TestCase):
         self.assertEqual(P.judge_approved_version("aaaaaaa", "")["status"], "FAIL")
 
 
+LEDGER_SAMPLE = """# 台账
+| 编号 | 发现日期 | 类别 | 症状 | 根因 | 影响 | 修法 | 验证方式 | 关联提交 | 复发次数 |
+|---|---|---|---|---|---|---|---|---|---|
+| W33-011 | 2026-10-30 | 账本与口径 | 阶段账本被单 run 冲成 31 层 | 共用一个文件 | 账本错 | 单 run 单独落文件 | test_ledger_merge | 35904fb | 2 |
+| W33-014 | 2026-10-30 | 账本与口径 | rc!=0 一律 failed | 只判 0/非 0 | 假红 | rc=2 → unverified 不报红 | 构造 rc=2 | 未修 | 0 |
+| W33-021 | 2026-10-30 | 切分与体积 | 按行数切必撞 2GB | 不看字节 | 上传失败 | unit_rows + unit_bytes 双上限 | unit_bytes < 1.5e9 | 566b20b | 1 |
+| W33-001 | 2026-10-30 | 并发队列 | 同组只留一个 pending | GitHub 行为 | 白排一轮 | 派前查 pending | gh run list | 无（靠流程规避） | 1 |
+"""
+
+
+class FailureLedger(unittest.TestCase):
+    """F16：故障清单 —— 未规避 → WARN；复发 ≥2 → FAIL；豁免写进证据。"""
+
+    def test_parse_rows_and_recurrence(self):
+        rows = P.parse_failure_ledger(LEDGER_SAMPLE)
+        self.assertEqual([r["id"] for r in rows], ["W33-011", "W33-014", "W33-021", "W33-001"])
+        self.assertEqual(rows[0]["recurrence"], 2)
+        self.assertTrue(rows[0]["mitigated"])          # 有关联提交
+        self.assertFalse(rows[1]["mitigated"])         # 未修
+        self.assertEqual(rows[2]["category"], "切分与体积")
+
+    def test_no_commit_means_unmitigated_even_with_prose(self):
+        rows = P.parse_failure_ledger(LEDGER_SAMPLE)
+        self.assertFalse(rows[3]["mitigated"])        # 关联提交写「无（靠流程规避）」
+        it, _ = P.judge_failure_ledger(LEDGER_SAMPLE, categories=["并发队列"])
+        self.assertEqual(it["status"], "WARN")
+        self.assertIn("W33-001", it["detail"])
+
+    def test_header_and_separator_are_ignored(self):
+        rows = P.parse_failure_ledger("| 编号 | 日期 |\n|---|---|\n| xx | y |\n")
+        self.assertEqual(rows, [])
+
+    def test_recurrence_ge_2_is_fail(self):
+        it, hits = P.judge_failure_ledger(LEDGER_SAMPLE, categories=["账本与口径"])
+        self.assertEqual(it["status"], "FAIL")
+        self.assertIn("W33-011", it["detail"])
+        self.assertTrue(any(h["id"] == "W33-011" for h in hits))
+
+    def test_unmitigated_is_warn_and_prints_mitigation(self):
+        it, _ = P.judge_failure_ledger(LEDGER_SAMPLE, categories=["账本与口径"],
+                                       waive=["W33-011"])
+        self.assertEqual(it["status"], "WARN")
+        self.assertIn("W33-014", it["detail"])
+        self.assertIn("unverified", it["detail"])      # 规避动作要打出来
+
+    def test_waive_downgrades_the_fatal_one(self):
+        it, _ = P.judge_failure_ledger(LEDGER_SAMPLE, categories=["账本与口径"],
+                                       waive=["w33-011", "W33-014"])
+        self.assertNotEqual(it["status"], "FAIL")
+        self.assertTrue(any(h["waived"] for h in it["ledger_hits"]))
+
+    def test_fixed_single_recurrence_is_pass_with_hits_listed(self):
+        it, hits = P.judge_failure_ledger(LEDGER_SAMPLE, categories=["切分与体积"])
+        self.assertEqual(it["status"], "PASS")
+        self.assertEqual([h["id"] for h in hits], ["W33-021"])
+
+    def test_no_category_match_passes(self):
+        it, hits = P.judge_failure_ledger(LEDGER_SAMPLE, categories=["缓存与签名"])
+        self.assertEqual(it["status"], "PASS")
+        self.assertEqual(hits, [])
+
+    def test_unknown_category_warns_instead_of_silently_passing(self):
+        it, _ = P.judge_failure_ledger(LEDGER_SAMPLE, categories=["账本口径"])
+        self.assertEqual(it["status"], "WARN")
+        self.assertIn("类别写错", it["detail"])
+
+    def test_no_category_declared_warns(self):
+        it, hits = P.judge_failure_ledger(LEDGER_SAMPLE)
+        self.assertEqual(it["status"], "WARN")
+        self.assertIn("故障清单已查", it["detail"])
+        self.assertEqual(hits, [])
+
+    def test_missing_ledger_warns(self):
+        it, _ = P.judge_failure_ledger("", categories=["账本与口径"])
+        self.assertEqual(it["status"], "WARN")
+        self.assertIn("WORKFLOW-FAILURE-LEDGER", it["detail"])
+
+    def test_broken_table_is_fail(self):
+        it, _ = P.judge_failure_ledger("no table here", categories=["账本与口径"])
+        self.assertEqual(it["status"], "FAIL")
+
+    def test_categories_derived_from_changed_paths(self):
+        cats = P.categories_of_paths(["collect/pilot.py", "docs/x.md"])
+        self.assertIn("checkpoint与断点", cats)
+        self.assertIn("切分与体积", cats)
+        self.assertNotIn("账本与口径", cats)
+        cats2 = P.categories_of_paths(["collect/ledger_merge.py"])
+        self.assertEqual(cats2, {"账本与口径"})
+
+
 class Verdict(unittest.TestCase):
     def test_verdict_aggregation(self):
         ok = [{"status": "PASS"}, {"status": "INFO"}]
