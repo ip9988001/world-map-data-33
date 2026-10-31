@@ -99,6 +99,29 @@
 - `gap` = declared − rows_verifiable = **24,751,959 行（5.1331%）**
 - capped 层的 declared 另记 `declared_unverifiable` = 97,928,946，**永远不进分母**
 
+### 3.0.1 分母口径硬规矩（2026-10-31 用户定：声明值不是永久分母）
+
+> **1）声明值来自 `layer_plan.csv` 的计划期快照，上游会缩水/删数据/改口径。**
+> 实测（本账本口径，可复现）：**80 层实采 > 声明，超采合计 3,547,920 行**
+> （rebuilt 口径 81 层 / 3,547,930）；全账 `gap` = 24,751,959 行。拿过期声明当分母，
+> 覆盖率系统性失真，而且「按声明 / 按可核实」两个百分比天生不可相减。
+>
+> **2）对外覆盖一律报两个数，禁止只报一个：**
+> - **`按声明分母`** = `rows_verifiable ÷ declared`（declared 剔除 capped 层）
+> - **`按可核实分母`** = `rows_verifiable ÷ (已刷新层用上游 returnCount + 未刷新层用旧声明)`，同时剔除 capped
+> 两个数必须同屏出现并标注 `declared_refreshed_at`（账本顶层；没刷过就写「未刷新」）。
+> 单独抛出任何一个数都算无效报表。
+>
+> **3）刷新是只读 + 人工点头：**
+> ```bash
+> # 只读：逐层打 returnCount，出「旧声明 / 新声明 / 实采 / 关系」差异表；不改账本
+> python3 collect/adjudicate_04b.py --refresh-declared --json-out analysis/04b-declared-refresh-<date>.json
+> # 采纳：写前备份 + 追加 revisions[kind=declared_refreshed]
+> python3 collect/adjudicate_04b.py --apply-declared-refresh <json> --declared-confirm I-APPROVE-DECLARED-REFRESH
+> ```
+> 只对 `ok / missing / partial` 且上游可达的层生效；`capped_by_upstream` / `unverified` / `empty` 一律不碰。
+> 当前 `declared_refreshed_at` = 未刷新
+
 ### 3.1 与旧账的差异（逐条）
 
 | 层 | 旧状态 | 新状态 | 旧声明 | 新声明 | 原因 |
