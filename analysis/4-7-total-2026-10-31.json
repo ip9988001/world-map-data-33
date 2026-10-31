@@ -1,0 +1,205 @@
+{
+ "schema": "collect-4-7-total/v1",
+ "at": "2026-10-31",
+ "source": {
+  "04b": "collect/04b_ledger.json",
+  "05b": "collect/05b_ledger.json",
+  "07b": "collect/07b_ledger.json"
+ },
+ "stages": {
+  "04b": {
+   "layers_n": 272,
+   "ok": 257,
+   "empty": 1,
+   "partial": 4,
+   "failed": 0,
+   "upstream_unstable": 5,
+   "missing": 1,
+   "unverified": 3,
+   "capped_by_upstream": 1,
+   "declared": 475909773,
+   "declared_unverifiable": 97928946,
+   "rows": 500948263,
+   "rows_capped": 39875268,
+   "rows_with_partition_dup": 2620851,
+   "rows_verifiable": 458452144,
+   "gap": 17457629,
+   "gap_pct": 3.6683
+  },
+  "05b": {
+   "layers_n": 2770,
+   "ok": 2722,
+   "empty": 16,
+   "partial": 8,
+   "failed": 0,
+   "upstream_unstable": 19,
+   "missing": 1,
+   "unverified": 4,
+   "capped_by_upstream": 0,
+   "declared": 143068409,
+   "declared_unverifiable": 0,
+   "rows": 141664792,
+   "rows_capped": 0,
+   "rows_with_partition_dup": 0,
+   "rows_verifiable": 141664792,
+   "gap": 1403617,
+   "gap_pct": 0.9811
+  },
+  "07b": {
+   "layers_n": 667,
+   "ok": 661,
+   "empty": 4,
+   "partial": 1,
+   "failed": 0,
+   "upstream_unstable": 0,
+   "missing": 0,
+   "unverified": 1,
+   "capped_by_upstream": 0,
+   "declared": 1054589,
+   "declared_unverifiable": 0,
+   "rows": 1050601,
+   "rows_capped": 0,
+   "rows_with_partition_dup": 0,
+   "rows_verifiable": 1050601,
+   "gap": 3988,
+   "gap_pct": 0.3782
+  }
+ },
+ "totals": {
+  "layers_n": 3709,
+  "declared": 620032771,
+  "rows_raw": 643663656,
+  "rows_verifiable": 601167537,
+  "gap": 18865234,
+  "gap_pct": 3.0426,
+  "coverage_pct": 96.9574
+ },
+ "additivity": {
+  "exact_layer_intersections": {
+   "04b&05b": 0,
+   "04b&07b": 0,
+   "05b&07b": 0
+  },
+  "upstream_url_intersections": {
+   "04b&05b": 0,
+   "04b&07b": 0,
+   "05b&07b": 0
+  },
+  "base_name_collisions_different_hosts": {
+   "04b&05b:_rest_services_Site_Structure_Address_Points_FeatureServer_0": {
+    "04b": [
+     [
+      "_rest_services_Site_Structure_Address_Points_FeatureServer_0@CA-1",
+      "https://services.arcgis.com/jjSk6t82vIntwDbs/arcgis/rest/services/Site_Structure_Address_Points/FeatureServer/0",
+      559467
+     ]
+    ],
+    "05b": [
+     [
+      "_rest_services_Site_Structure_Address_Points_FeatureServer_0@未定位-2",
+      "https://services.arcgis.com/xSPs49inzz3yMpnd/arcgis/rest/services/Site_Structure_Address_Points/FeatureServer/0",
+      27079
+     ],
+     [
+      "_rest_services_Site_Structure_Address_Points_FeatureServer_0@未定位-3",
+      "https://services7.arcgis.com/6Ys1qjTn2qXd9VRQ/arcgis/rest/services/Site_Structure_Address_Points/FeatureServer/0",
+      9727
+     ],
+     [
+      "_rest_services_Site_Structure_Address_Points_FeatureServer_0@未定位-4",
+      "https://services7.arcgis.com/gVohhGAlfFScDJGs/arcgis/rest/services/Site_Structure_Address_Points/FeatureServer/0",
+      87302
+     ]
+    ]
+   },
+   "04b&05b:gis_rest_services_SiteStructureAddressPoints_FeatureServer_0": {
+    "04b": [
+     [
+      "gis_rest_services_SiteStructureAddressPoints_FeatureServer_0@未定位-3",
+      "https://gcgis.guilfordcountync.gov/arcgis/rest/services/SiteStructureAddressPoints/FeatureServer/0",
+      359596
+     ]
+    ],
+    "05b": [
+     [
+      "gis_rest_services_SiteStructureAddressPoints_FeatureServer_0@未定位-1",
+      "https://services2.arcgis.com/bYBANhmQGwSSLC0l/arcgis/rest/services/SiteStructureAddressPoints/FeatureServer/0",
+      170483
+     ],
+     [
+      "gis_rest_services_SiteStructureAddressPoints_FeatureServer_0@未定位-2",
+      "https://services7.arcgis.com/f618fJkt05ivNW8d/arcgis/rest/services/SiteStructureAddressPoints/FeatureServer/0",
+      9068
+     ],
+     [
+      "gis_rest_services_SiteStructureAddressPoints_FeatureServer_0@未定位-4",
+      "https://services2.arcgis.com/Z7YhSKLuj0a3XHN6/arcgis/rest/services/SiteStructureAddressPoints/FeatureServer/0",
+      99774
+     ]
+    ]
+   },
+   "05b&07b:gis_rest_services_Address_Pnts_Parcel_2023_FeatureServer_319": {
+    "05b": [
+     [
+      "gis_rest_services_Address_Pnts_Parcel_2023_FeatureServer_319@未定位-2",
+      "https://services7.arcgis.com/ltP072z9jxx12EAg/arcgis/rest/services/Address_Pnts_Parcel_2023/FeatureServer/319",
+      8954
+     ]
+    ],
+    "07b": [
+     [
+      "gis_rest_services_Address_Pnts_Parcel_2023_FeatureServer_319@未定位-1",
+      "https://services.arcgis.com/EuqJIc8pNJdPwCGj/arcgis/rest/services/Address_Pnts_Parcel_2023/FeatureServer/319",
+      4892
+     ],
+     [
+      "gis_rest_services_Address_Pnts_Parcel_2023_FeatureServer_319@未定位-3",
+      "https://services7.arcgis.com/HhZPEhljyfplj81m/arcgis/rest/services/Address_Pnts_Parcel_2023/FeatureServer/319",
+      3259
+     ]
+    ]
+   },
+   "05b&07b:gis_rest_services_Address_Points_Public_View_FeatureServer_0": {
+    "05b": [
+     [
+      "gis_rest_services_Address_Points_Public_View_FeatureServer_0@TX-5",
+      "https://services1.arcgis.com/JDTjnqpSnOe5tCBg/arcgis/rest/services/Address_Points_Public_View/FeatureServer/0",
+      28890
+     ],
+     [
+      "gis_rest_services_Address_Points_Public_View_FeatureServer_0@未定位-2",
+      "https://services.arcgis.com/SOVgyYCFVBkOrKDZ/arcgis/rest/services/Address_Points_Public_View/FeatureServer/0",
+      115294
+     ],
+     [
+      "gis_rest_services_Address_Points_Public_View_FeatureServer_0@未定位-4",
+      "https://services1.arcgis.com/iOG1OLysrxLAswZi/arcgis/rest/services/Address_Points_Public_View/FeatureServer/0",
+      16892
+     ]
+    ],
+    "07b": [
+     [
+      "gis_rest_services_Address_Points_Public_View_FeatureServer_0@未定位-1",
+      "https://services7.arcgis.com/13QM1i9cdztorAJ0/arcgis/rest/services/Address_Points_Public_View/FeatureServer/0",
+      851
+     ],
+     [
+      "gis_rest_services_Address_Points_Public_View_FeatureServer_0@未定位-3",
+      "https://services3.arcgis.com/YwCuPGYdQw7hiTj1/arcgis/rest/services/Address_Points_Public_View/FeatureServer/0",
+      3602
+     ]
+    ]
+   }
+  },
+  "capped_layer": {
+   "layer": "s_Points_from_National_Address_Database_view_FeatureServer_0",
+   "rows": 39875268,
+   "declared_unverifiable": 97928946,
+   "in_05b": false,
+   "in_07b": false,
+   "url_in_05b": false,
+   "url_in_07b": false
+  },
+  "note": "三层级 exact id 与 upstream url 交集均为 0；base 名撞车 4 组但 host/url 不同，不是同一上游层。rows 可直接相加；可核实口径需剔除 04b capped 39,875,268 与分区重复采样 2,620,851。"
+ }
+}
