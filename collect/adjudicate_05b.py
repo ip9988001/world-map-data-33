@@ -204,8 +204,14 @@ def render_doc(led, cls, run_id=""):
     A("> 本文件由 `collect/adjudicate_05b.py` 从阶段账本 + 尝试账本**直接生成**，不许手改。")
     A("> 复核：`python3 collect/adjudicate_05b.py --check` → 必须 `IDENTICAL`。")
     A("")
-    A("- 阶段账本：`collect/05b_ledger.json`（run `%s`）" % (run_id or (led.get("last_merge") or {}).get("run_id") or "-"))
+    bf = next((r for r in (led.get("revisions") or [])
+               if r.get("kind") == "stage_ledger_backfilled"), None)
+    A("- 阶段账本：`collect/05b_ledger.json`（run `%s`%s）"
+      % (run_id or (led.get("last_merge") or {}).get("run_id") or "-",
+         "，含补账 %s 层" % bf.get("layers") if bf else ""))
     A("- 尝试账本：`analysis/05b-attempt-log.json`；判类证据：`analysis/05b-gap-classification-2026-10-31.json`")
+    if bf:
+        A("- 补账证据：`%s`（cancel 片账本丢失，按 Release 资产补回）" % bf.get("evidence"))
     A("")
     A("## 一、一句话结论")
     A("")
@@ -252,6 +258,22 @@ def render_doc(led, cls, run_id=""):
       "`returnCount`，`declared` 记 0）—— 两者反方向抵消，所以逐类之和不会正好等于阶段 gap。"
       % f'{rec["over_collected_rows"]:,}')
     A("")
+    if bf:
+        bf_recs = [r for r in (led.get("records") or []) if r.get("backfilled_from")]
+        A("## 二之二、补账（W33-013 尾巴：cancel 片账本随 job 丢失）")
+        A("")
+        A("- 来源：Release 资产（`ledger_rebuild.judge` 同一套 05b 判据），证据 `%s`" % bf.get("evidence"))
+        A("- 补回 **%s 层**：`layers_n` **%s → %s**；逐层状态 %s。"
+          % (bf.get("layers"), bf.get("layers_n_before"), bf.get("layers_n_after"),
+             " / ".join("%s %d" % (s, sum(1 for r in bf_recs if r.get("status") == s))
+                        for s in ("ok", "empty", "partial", "failed"))))
+        A("- 只补 checkpoint 可证的层：`failed`（缺资产 / 单元未传 / 残留错误 / tag 不符）一律不补；"
+          "每行带 `backfilled_from=release_assets`、`reason=ledger_row_lost_on_cancel`、"
+          "`packages[]` 与 `evidence`（tag / 资产名 / sha256）。")
+        A("- 口径：declared 与采集器同源（`layer_plan.csv` 唯一化后的 `expect`），"
+          "rows = Σ`unit_rows_seen`；445 层里 1 层达到 checkpoint 计划但当前声明更高 → 记 `partial`"
+          "（不把 13 万行缺口写成 ok）。")
+        A("")
     A("## 三、逐层清单（层 / 原状态 / 类目 / 尝试次数 / 失败类型 / 累计耗时 / 行 / 理由）")
     A("")
     A("| 层 | 原状态 | 类目 | 尝试 | 失败类型 | 累计耗时(分) | rows | 声明 | 理由 |")
@@ -266,7 +288,8 @@ def render_doc(led, cls, run_id=""):
     A("")
     A("## 四、下一步（用户 2026-10-31 决定）")
     A("")
-    A("1. **05b 不再追**：127 万行不值得再烧一轮 CI。要补只能显式点名（`--force-layers` 或下一轮分批）。")
+    A("1. **05b 不再追**：%s 行不值得再烧一轮 CI。要补只能显式点名（`--force-layers` 或下一轮分批）。"
+      % f"{gap:,}")
     A("2. 四类里只有 `partial`（%s 层 / %s 行缺口）值得续跑——checkpoint 在，只补缺口。"
       % ((g.get("partial") or {}).get("layers_n", 0), f'{(g.get("partial") or {}).get("gap", 0):,}'))
     A("3. `upstream_unstable`（%s 层）默认不进待采队列；要再试必须 `--force-unstable-layer` 点名。"

@@ -104,6 +104,10 @@ APPROVED_MAIN = {
 }
 
 PKG_RE = re.compile(r"-u\d{5}\.tar\.gz$")
+# D14：阶段账本行数 vs 计划层数，差超过这个比例就是「账本比计划少」→ FAIL。
+# 事故（W33-013 尾巴）：cancel 片账本随 job 丢失，账本 2,325 / 计划 2,770（少 19.3%），
+# 之前没有任何门禁发现；D14 把这条做成通用检测，不再依赖人记得「这次少了几层」。
+PLAN_LAYERS_TOL = 0.01
 
 
 # ------------------------------------------------------------------ 基础设施
@@ -901,6 +905,60 @@ def ledger_paths(stage):
     return stage_ledger, rebuilt, (runs[-1] if runs else "")
 
 
+def judge_ledger_plan_consistency(stage, ledger_path=None, plan_path=None):
+    """D14：阶段账本 `layers_n` 与 `plan.layers_n` 差 **>1%** → FAIL。
+
+    为什么单独立一项：C6 只把三份账本的现值打印出来，不判它们与计划是否对得上；
+    D10 只看「本次计划 vs Release 已采」，也不看阶段账本少了几层。2026-10-31 的
+    445 层事故里，账本 2,325 / 计划 2,770（少 19.3%）一路无人报警 —— 数据全在，
+    账本说没有，覆盖率被系统性低估。这条检的是**账本自身完整性**，与本次派哪层无关。
+
+    分母取账本里的 `plan.layers_n`（阶段计划），没有才回退 `collect/ledger/<stage>_plan.json`；
+    两者都没有 → WARN（无法比对，不假装通过）。
+    """
+    lp = ledger_path or (ledger_paths(stage) or [""])[0]
+    if not lp or not os.path.exists(lp):
+        return item("D14", "C", "账本 vs 计划层数", "WARN",
+                    "没有阶段账本（%s）：无法判「账本比计划少」，不假装通过" % (lp or "-"))
+    try:
+        led = json.load(open(lp, encoding="utf-8"))
+    except Exception as e:                                     # noqa: BLE001
+        return item("D14", "C", "账本 vs 计划层数", "WARN",
+                    "阶段账本读不了（%s）：%s" % (lp, str(e)[:120]))
+    layers = int(led.get("layers_n") or 0)
+    plan_layers = int((led.get("plan") or {}).get("layers_n") or 0)
+    src = "ledger.plan"
+    pp = plan_path or stage_plan_file(stage)
+    if not plan_layers and pp and os.path.exists(pp):
+        try:
+            plan_layers = int(json.load(open(pp, encoding="utf-8")).get("layers_n") or 0)
+            src = os.path.relpath(pp, ROOT)
+        except Exception:                                      # noqa: BLE001
+            plan_layers = 0
+    if not layers or not plan_layers:
+        return item("D14", "C", "账本 vs 计划层数", "WARN",
+                    "账本 %s 层 / 计划 %s 层（来源 %s）：缺一侧，无法比对"
+                    % (layers or "-", plan_layers or "-", src),
+                    ledger_layers=layers, plan_layers=plan_layers, plan_source=src)
+    diff = layers - plan_layers
+    ratio = abs(diff) / float(plan_layers)
+    detail = ("阶段账本 **%s** 层 / 计划 **%s** 层（来源 `%s`），差 **%+d** 层（%.2f%%）"
+              % (f"{layers:,}", f"{plan_layers:,}", src, diff, ratio * 100))
+    if ratio > PLAN_LAYERS_TOL:
+        hint = ("账本比计划少" if diff < 0 else "账本比计划多")
+        detail += ("。⛔ %s %s 层，超过 %.0f%% 阈值 —— 先补账/查 plan 再派单："
+                   "`python3 collect/backfill_05b_ledger.py --plan <阶段计划>`（05b）或"
+                   "`collect/ledger_rebuild.py --stage %s`；计划本身过期则先重算 plan。"
+                   % (hint, f"{abs(diff):,}", PLAN_LAYERS_TOL * 100, stage))
+        return item("D14", "C", "账本 vs 计划层数", "FAIL", detail,
+                    ledger_layers=layers, plan_layers=plan_layers, diff=diff,
+                    diff_pct=round(ratio * 100, 4), plan_source=src)
+    detail += "。账本行数与计划一致（≤%.0f%% 容差）" % (PLAN_LAYERS_TOL * 100)
+    return item("D14", "C", "账本 vs 计划层数", "PASS", detail,
+                ledger_layers=layers, plan_layers=plan_layers, diff=diff,
+                diff_pct=round(ratio * 100, 4), plan_source=src)
+
+
 def judge_baseline(stage, paths=None):
     """C6：三份账本现值（阶段级 / rebuilt / 最近一次 run）。"""
     stage_path, rebuilt_path, run_path = paths or ledger_paths(stage)
@@ -1432,6 +1490,12 @@ def build_report(args) -> dict:
     bitem = judge_baseline(stage, paths)
     items.append(bitem)
     evidence["stage_ledger_path"] = (bitem.get("ledgers") or {}).get("stage_ledger", {}).get("path", "")
+    d14 = judge_ledger_plan_consistency(stage, paths[0])
+    items.append(d14)
+    evidence["ledger_plan_consistency"] = {
+        "ledger_layers": d14.get("ledger_layers"), "plan_layers": d14.get("plan_layers"),
+        "diff": d14.get("diff"), "diff_pct": d14.get("diff_pct"),
+        "plan_source": d14.get("plan_source"), "tolerance_pct": PLAN_LAYERS_TOL * 100}
     items.append(judge_merge_guard(ref_for_git))
     baseline = {}
     if paths[0] and os.path.exists(paths[0]):

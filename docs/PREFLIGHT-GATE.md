@@ -13,7 +13,7 @@
 - **故障台账唯一真值** = `docs/WORKFLOW-FAILURE-LEDGER.md`（写之前必查、跑后必补；新坑当天补，commit 写 `ledger: +N <类别>`）。
 - `WARN` 不拦派单，但**必须写明接受理由**（例如「本机 403 但 CI 可采」）。
 
-## 一、派单前 checklist（18 项｜D13 重试上限、D12 分区重复声明均于 2026-10-31 加入）
+## 一、派单前 checklist（19 项｜D14 账本 vs 计划层数、D13 重试上限、D12 分区重复声明均于 2026-10-31 加入）
 
 跑 `python3 collect/preflight_dispatch.py --stage <stage> [--force-layers ...]`，逐项勾。
 
@@ -69,6 +69,12 @@
       判据与产物：`collect/attempt_log.py` → `analysis/04b-attempt-log.json`；
       日志不存在 → INFO（不假装通过），日志读不了 → WARN。
       若计划里仍含已到上限的层（旧计划/没跑 full_plan 的剔除）→ 判词里单独标「本次计划里仍有 N 层」。
+- [ ] **D14** **账本 vs 计划层数**（W33-041）：阶段账本 `layers_n` 与 `plan.layers_n`
+      （账本内字段；缺失才回退 `collect/ledger/<stage>_plan.json`）差 **>1%** → **FAIL**。
+      判词给「账本 X 层 / 计划 Y 层（来源）/ 差 ±Z 层（P%）」并打印补账命令。
+      这条检的是**账本自身完整性**，与本次派哪层无关 —— 2026-10-31 的 445 层事故
+      （账本 2,325 / 计划 2,770，少 19.3%）就是靠它才不会再被放过。
+      ≤1% PASS；缺一侧（没账本 / 没计划）→ **WARN，不假装通过**。
 
 ### F 已知坑
 
@@ -114,6 +120,7 @@
 | D11 检查点未备份 | 先 `gh release upload <tag> <layer>-checkpoint.bak-<RUN_ID>.json`（pilot 会自动做） |
 | D12 分区重复声明（WARN） | 先核 survivor 是否已实采 ≥ 全量：是 → 写清单 `duplicate_layers` 并重放`adjudicate_04b.py --duplicate-partitions`；两分区都已有实采行 → 属 rows 侧重复（08 去重），结论写进清单 `reviewed[]`，不在本阶段改账 |
 | D13 重试上限（WARN） | 先看判词里的失败类型：**503/非 JSON/超时且无进展** → 接受 `upstream_unstable`，别再派；确需再试 → `--force-unstable-layer <层>`（或 `full_plan --force-layers`），一次只放回一层 |
+| **D14 账本 vs 计划层数（FAIL）** | 账本比计划少 → 先补账：05b 用 `python3 collect/backfill_05b_ledger.py --plan <阶段计划>`（只读 Release，`--check` 必须 `IDENTICAL`）；其他阶段用 `ledger_rebuild.py --stage <st>`。账本比计划多/计划本身过期 → 先重算 plan（`full_plan.py`），再核 `plan.layers_n` 是不是旧快照。**不许在账本缺行时派单**（下游会拿缺行账本当「上一层合格」） |
 | E12 上游 0 行 | 从计划里剔除该层（或标 `empty`），别浪费片位 |
 | E13 403/超时 | 只记录证据，先照派；片端再失败才升级（本机 ≠ CI） |
 | E14 声明不可复核 | 跑后差额分母剔除该层；服务级 token 的层直接剔或配 token |
@@ -137,6 +144,7 @@ B3 判「`--ref` 的关键文件与 main 一致」，但 main 自己会前进：
 1. **账本 rows 不许变小**：逐层比 `analysis/rows-baseline-<stage>-<ts>.json` → 任何一层变小都是 P0（要 `regression_reason` + 证据路径）。
 2. **片齐全**：`shards_expected == shards_reported`（阶段账本字段 `shards_run_id` 指向本轮）。
 3. **阶段账本 `layers_n` 未变（或变大）**：变小 = 被单 run 冲了，立刻回滚（见 `docs/ROLLBACK-20261031.md`）。
+   同时看 preflight **D14**：`layers_n` 与 `plan.layers_n` 差 >1% 就是账本缺行（W33-041），先补账再谈覆盖率。
 4. **`ledger_rebuild --check` 结论**：DIFFERS 必须逐层解释（资产增长 / 检查点被覆盖 / 上游口径变化），不许一句「有差异」了事。
 
 ```bash
@@ -169,6 +177,7 @@ PY
 | D11 | WARN + 命令 | 只看资产清单（不下载检查点内容），判断有没有 `.bak` |
 | D12 | 硬判据（Σ declared vs returnCount 1.5×）+ **只建议** | 逐 host 实测 returnCount 取最大；离线用清单 `row_count` 代理并标注；已复核组读清单 `reviewed[]` |
 | D13 | 硬判据（连续失败次数 + 无进展）+ **默认剔除** | 只读 `analysis/04b-attempt-log.json`（不联网）；无日志 → INFO、日志坏 → WARN，都不给 PASS；已到上限的层同时核一遍「计划里是不是又排上了」 |
+| D14 | 硬判据（差 >1% → FAIL） | 分母优先取账本 `plan.layers_n`（阶段计划），缺失才回退 `<stage>_plan.json`（注意后者可能被单 run 覆盖，见 W33-012）；缺一侧只 WARN；容差 `PLAN_LAYERS_TOL=0.01` |
 | E12 | 硬判据 | 抽样 ≥5 层（force 优先，再按分档均匀抽） |
 | E13 | **只 WARN** | 本机 ≠ CI，403/超时不算死 |
 | E14 | 硬判据（分类）+ WARN | `Token Required` / 非 JSON → `declared_unverifiable`；服务级 token（`?f=json` 也 499）点名 |

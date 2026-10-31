@@ -1,16 +1,16 @@
 {
  "schema": "collect-gap-classification/v1",
  "stage": "05b",
- "at": "2026-10-31T08:19:39Z",
+ "at": "2026-10-31T03:35:13Z",
  "run_id": "41167836540",
  "rule": "判序即判据：404/HTML → unverified；超时 / 5xx·svcerr → upstream_unstable；其余有行 → partial；0 行且无上游证据 → missing。不猜上游。",
  "counts": {
-  "partial": 7,
+  "partial": 8,
   "upstream_unstable": 19,
   "unverified": 4,
   "missing": 1
  },
- "layers_n": 31,
+ "layers_n": 32,
  "layers": [
   {
    "layer": "ices_GeorginaMap_W84_SiteAddressPoint_Labels_W84_MapServer_0",
@@ -108,6 +108,18 @@
     "other"
    ],
    "attempts_elapsed_min": 0.1
+  },
+  {
+   "layer": "_services_NWS_AddressPoints_Nstreets_centerlines_MapServer_0",
+   "from_status": "partial",
+   "class": "partial",
+   "reason": "有数据（118,916 行），缺口 132,723 行——能补、要补，不是 failed",
+   "rows": 118916,
+   "declared": 251639,
+   "elapsed_s": null,
+   "attempts_n": null,
+   "failure_kinds": [],
+   "attempts_elapsed_min": null
   },
   {
    "layer": "paca_wi_us_arcgis_rest_services_Public_OpenData_MapServer_24",

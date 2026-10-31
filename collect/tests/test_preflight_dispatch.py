@@ -131,6 +131,64 @@ class CLedger(unittest.TestCase):
         self.assertEqual(it["status"], "PASS")
 
 
+class LedgerPlanConsistency(unittest.TestCase):
+    """D14：账本 layers_n 与 plan.layers_n 差 >1% → FAIL（W33-041 的通用检测）。"""
+
+    def _files(self, ledger, plan=None, plan_in_ledger=True):
+        d = tempfile.mkdtemp()
+        lp = os.path.join(d, "05b_ledger.json")
+        body = {"layers_n": ledger}
+        if plan_in_ledger and plan is not None:
+            body["plan"] = {"layers_n": plan}
+        json.dump(body, open(lp, "w"))
+        pp = None
+        if plan is not None and not plan_in_ledger:
+            pp = os.path.join(d, "05b_plan.json")
+            json.dump({"layers_n": plan}, open(pp, "w"))
+        return lp, pp
+
+    def test_equal_is_pass(self):
+        lp, _ = self._files(2770, 2770)
+        it = P.judge_ledger_plan_consistency("05b", lp)
+        self.assertEqual(it["status"], "PASS")
+        self.assertEqual(it["diff"], 0)
+        self.assertIn("2,770", it["detail"])
+
+    def test_lost_445_rows_is_fail_and_names_gap(self):
+        lp, _ = self._files(2325, 2770)
+        it = P.judge_ledger_plan_consistency("05b", lp)
+        self.assertEqual(it["status"], "FAIL")
+        self.assertEqual(it["diff"], -445)
+        self.assertIn("445", it["detail"])
+        self.assertIn("backfill_05b_ledger.py", it["detail"])
+
+    def test_one_percent_boundary_is_pass_but_beyond_is_fail(self):
+        lp, _ = self._files(99, 100)
+        self.assertEqual(P.judge_ledger_plan_consistency("05b", lp)["status"], "PASS")
+        lp, _ = self._files(98, 100)
+        self.assertEqual(P.judge_ledger_plan_consistency("05b", lp)["status"], "FAIL")
+
+    def test_more_than_plan_is_also_fail(self):
+        lp, _ = self._files(120, 100)
+        it = P.judge_ledger_plan_consistency("05b", lp)
+        self.assertEqual(it["status"], "FAIL")
+        self.assertIn("账本比计划多", it["detail"])
+
+    def test_falls_back_to_plan_file_when_ledger_has_no_plan(self):
+        lp, pp = self._files(272, 272, plan_in_ledger=False)
+        it = P.judge_ledger_plan_consistency("04b", lp, pp)
+        self.assertEqual(it["status"], "PASS")
+        self.assertEqual(it["plan_layers"], 272)
+        self.assertIn("05b_plan.json", it["plan_source"])
+
+    def test_missing_side_is_warn_not_pass(self):
+        lp, _ = self._files(100, None)
+        self.assertEqual(P.judge_ledger_plan_consistency(
+            "05b", lp, os.path.join(os.path.dirname(lp), "no_plan.json"))["status"], "WARN")
+        self.assertEqual(P.judge_ledger_plan_consistency(
+            "05b", os.path.join(tempfile.mkdtemp(), "none.json"))["status"], "WARN")
+
+
 class DOverlap(unittest.TestCase):
     def test_force_layer_being_written_is_fail(self):
         it = P.judge_overlap(["L1"], {"411": {"stage": "04b", "layers": ["L1", "L2"]}})
