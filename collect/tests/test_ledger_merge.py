@@ -247,6 +247,7 @@ class RowsRegressionNotSilent(unittest.TestCase):
         self.assertIn("39,875,268", text)
         self.assertIn("5,000,000", text)
         self.assertIn("**缺**", text)
+        self.assertIn("took_run_record_status_better", text)     # 处置分布要说清哪类是真空寸
 
     def test_write_run_and_stage_persists_regressions_and_returns_them(self):
         with tempfile.TemporaryDirectory() as d:

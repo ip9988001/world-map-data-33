@@ -137,7 +137,16 @@ def format_regressions_section(regressions, limit: int = 30) -> list:
     if not regs:
         return []
     unexplained = [e for e in regs if not e.get("evidence")]
-    L = ["检测到 **%d** 层 rows 回退（其中 %d 层没有证据路径）。" % (len(regs), len(unexplained)), "",
+    by_outcome = {}
+    for e in regs:
+        k = str(e.get("merge_outcome") or "?")
+        by_outcome[k] = by_outcome.get(k, 0) + 1
+    L = ["检测到 **%d** 层 rows 回退（其中 %d 层没有证据路径）。" % (len(regs), len(unexplained)),
+         "",
+         "处置分布（只有 `took_run_record_status_better` 是真的把阶段账本 rows 改小了；"
+         "另两类是合并挡住了降级、账本 rows 没变，但本轮确实少采了）："
+         + "；".join("`%s` %d 层" % (k, v) for k, v in sorted(by_outcome.items())),
+         "",
          "| 层 | 旧 rows | 新 rows | 差额 | 状态 旧→新 | 合并处置 | 原因 | 证据 |",
          "|---|---|---|---|---|---|---|---|"]
     for e in regs[:limit]:
