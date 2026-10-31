@@ -490,6 +490,27 @@ class RetryCap(unittest.TestCase):
         self.assertEqual(it["retry_cap_in_plan"], ["L1"])
         self.assertIn("本次计划里仍有", it["detail"])
 
+    def test_layer_that_succeeded_later_is_not_listed(self):
+        """尝试账本只记失败，不知道「后来成功了」——状态的唯一真值是阶段账本。
+
+        实测（2026-10-31 run 41155023558）：`vices_AGOL_…NG911` 有 3 次超时史，
+        但本轮已采成（ok，3,618,012 行 = 上游 returnCount）→ 不许再挂 unstable。
+        """
+        it = P.judge_retry_cap(self._summary(3), {"path": "x", "cap": 3, "attempts_n": 3},
+                               records=[{"layer": "L1", "status": "ok"}])
+        self.assertEqual(it["status"], "PASS")
+        self.assertEqual(it["retry_cap_unstable"], [])
+        self.assertIn("已采成", it["detail"])
+        self.assertEqual(it["cleared_by_success"], ["L1"])
+
+    def test_duplicate_partition_layer_is_not_a_gap(self):
+        """分区重复声明层（declared 已移出分母）重试只是再采一份同源重复 → 不算缺口。"""
+        it = P.judge_retry_cap(self._summary(3), {"path": "x", "cap": 3, "attempts_n": 3},
+                               records=[{"layer": "L1", "status": "partial",
+                                         "declared_duplicate_partition": {"duplicate_of": "P@X-2"}}])
+        self.assertEqual(it["retry_cap_unstable"], [])
+        self.assertEqual(it["cleared_by_success"], ["L1"])
+
 
 if __name__ == "__main__":
     unittest.main()

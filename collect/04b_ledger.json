@@ -4,42 +4,286 @@
  "at": "2026-10-30T20:08:38Z",
  "source_of_truth": "Release 资产 checkpoint（step04b_rebuilt.json）+ 上游 returnCount 实测",
  "layers_n": 272,
- "ok": 256,
+ "ok": 257,
  "empty": 1,
- "partial": 3,
+ "partial": 4,
  "capped_by_upstream": 1,
  "failed": 0,
- "missing": 6,
- "unverified": 5,
+ "missing": 1,
+ "unverified": 3,
+ "upstream_unstable": 5,
  "skipped_done": 0,
  "buckets": {
   "capped_by_upstream": 1,
-  "ok": 256,
-  "missing": 6,
-  "partial": 3,
-  "unverified": 5,
-  "empty": 1
+  "ok": 257,
+  "upstream_unstable": 5,
+  "partial": 4,
+  "unverified": 3,
+  "empty": 1,
+  "missing": 1
  },
  "bucket_meaning": {
   "ok": "实采 ≥ 上游当前 returnCount×(1-1%)",
-  "partial": "实采 < 上游当前 returnCount×(1-1%) 且 >0 → 定向续采",
+  "partial": "实采 < 上游当前 returnCount×(1-1%) 且 >0 → 定向续采；或分区重复声明（数据已在 survivor 层，见 3.0.2）",
   "capped_by_upstream": "上游改成服务级 token（连 `<api>/0?f=json` 都 499，连探两轮）→ 永远采不到更多；已采行数计入 rows，declared 移出分母记 declared_unverifiable",
   "missing": "上游有数据、本层 0 行 → 必须重采",
   "unverified": "上游不可达/无响应，本层无数据 → 无法归因（不许当空层）",
+  "upstream_unstable": "可连通、但连续 N 次（默认 3）尝试都超时/503/返回非 JSON 且**无进展** → 重试收益趋零；默认从待采队列剔除，`--force-unstable-layer` 才放回",
   "empty": "上游明确 0 行或服务下线（esri 404）",
   "skipped_done": "计划期已判完成而跳过"
  },
- "declared": 482206942,
+ "declared": 475909773,
  "declared_unverifiable": 97928946,
- "rows": 497330251,
+ "rows": 500948263,
  "rows_capped": 39875268,
- "rows_verifiable": 457454983,
- "gap": 24751959,
- "gap_pct": 5.1331,
+ "rows_with_partition_dup": 2620851,
+ "declared_duplicate_partition": 6297169,
+ "duplicate_partition_layers": [
+  {
+   "layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1",
+   "rows_including_duplicate": 0,
+   "duplicate_of": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2",
+   "declared_before": 6297169,
+   "upstream_return_count": 6297169,
+   "status": "partial"
+  },
+  {
+   "layer": "rest_services_Maricopa_County_Address_Points_FeatureServer_0@AZ-2",
+   "rows_including_duplicate": 2139242,
+   "duplicate_of": "rest_services_Maricopa_County_Address_Points_FeatureServer_0@AZ-1",
+   "declared_kept": 2078539,
+   "basis": "上游计数 services6.arcgis.com=2,139,742 vs services.arcgis.com=2,139,242（差 500 = 0.02%），两个分区都已实采 → 同一份县数据的镜像 host。重复行取 **survivor 侧已采行数**（2,139,242）作上界估算，不按 declared 算。",
+   "status": "ok",
+   "counted_in_rows_with_partition_dup": true
+  },
+  {
+   "layer": "rest_services_hennepin_county_address_points_FeatureServer_0@MN-2",
+   "rows_including_duplicate": 481609,
+   "duplicate_of": "rest_services_hennepin_county_address_points_FeatureServer_0@MN-1",
+   "declared_kept": 480300,
+   "basis": "上游计数 services1.arcgis.com=481,609 vs services.arcgis.com=480,300（差 1,309 = 0.27%）；每个分区的 declared 恰好等于自己 host 的 returnCount → 声明拆分没错，重复在 rows 侧。重复行取 survivor 侧已采行数 481,609 作上界估算。",
+   "status": "ok",
+   "counted_in_rows_with_partition_dup": true
+  }
+ ],
+ "rows_verifiable": 458452144,
+ "gap": 17457629,
+ "gap_pct": 3.6683,
  "declared_kept_in_denominator": 580135888,
- "gap_pct_kept_in_denominator": 14.2735,
- "denominator_note": "分母只含可复核的 declared（不含 capped_by_upstream 层）；gap = declared − rows_verifiable（rows 去掉 capped 层已采行数），两边同口径才可相除。rows 仍是全部实采（含 capped 层）。",
+ "gap_pct_kept_in_denominator": 13.6498,
+ "denominator_note": "分母只含可复核的 declared（不含 capped_by_upstream 层，也不含 @分区 重复声明层）；gap = declared − rows_verifiable（rows 去掉 capped 层行数与分区重复采样行数），两边同口径才可相除。rows 仍是全部实采（含 capped 层与重复行）。",
+ "partition_duplicate_rule": "同一 base 层、同一上游 url 的 `@<分区>` 层若 Σ declared > 1.5×returnCount → 重复计数：declared 置 null（原值留在逐层 declared_duplicate_partition）、status 改 partial；采到的重复行进 rows_with_partition_dup，**08（3 元组去重）之前任何对外覆盖率不许包含重复行**。",
  "complete": false,
+ "complete_note": "complete = 「没有还能试的缺口」（missing/unverified 均为 0）；upstream_unstable 是「试过 N 次、收益趋零」的终结状态，不再算作可重试缺口，但仍计入 declared 分母与 gap（行确实没采到，不许隐身）",
+ "upstream_unstable_layers": [
+  {
+   "layer": "cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0",
+   "declared": 6585376,
+   "rows": 0,
+   "gap": 6585376,
+   "attempts_n": 3,
+   "kinds": [
+    "other",
+    "other",
+    "other"
+   ],
+   "elapsed_min": 64.6,
+   "first_at": "2026-10-30T17:09:02Z",
+   "last_at": "2026-10-31T01:48:40Z",
+   "no_progress": true,
+   "runs": [
+    "41092912755",
+    "41155023558"
+   ],
+   "forced_back": false,
+   "evidence": "analysis/04b-attempt-log.json"
+  },
+  {
+   "layer": "s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0",
+   "declared": 6585376,
+   "rows": 0,
+   "gap": 6585376,
+   "attempts_n": 3,
+   "kinds": [
+    "other",
+    "other",
+    "other"
+   ],
+   "elapsed_min": 64.6,
+   "first_at": "2026-10-30T17:41:40Z",
+   "last_at": "2026-10-31T01:46:08Z",
+   "no_progress": true,
+   "runs": [
+    "41092912755",
+    "41155023558"
+   ],
+   "forced_back": false,
+   "evidence": "analysis/04b-attempt-log.json"
+  },
+  {
+   "layer": "yil_gov_traditional_rest_services_addressZipCode_MapServer_0",
+   "declared": 1381118,
+   "rows": 0,
+   "gap": 1381118,
+   "attempts_n": 4,
+   "kinds": [
+    "other",
+    "other",
+    "other",
+    "http_503"
+   ],
+   "elapsed_min": 21.9,
+   "first_at": "2026-10-30T16:59:40Z",
+   "last_at": "2026-10-31T01:30:24Z",
+   "no_progress": true,
+   "runs": [
+    "41092912755",
+    "41155023558"
+   ],
+   "forced_back": false,
+   "evidence": "analysis/04b-attempt-log.json"
+  },
+  {
+   "layer": "rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5",
+   "declared": 368312,
+   "rows": 0,
+   "gap": 368312,
+   "attempts_n": 4,
+   "kinds": [
+    "http_4xx",
+    "http_4xx",
+    "http_4xx",
+    "http_4xx"
+   ],
+   "elapsed_min": 7.7,
+   "first_at": "2026-10-30T17:02:09Z",
+   "last_at": "2026-10-31T01:27:09Z",
+   "no_progress": true,
+   "runs": [
+    "41092912755",
+    "41155023558"
+   ],
+   "forced_back": false,
+   "evidence": "analysis/04b-attempt-log.json"
+  },
+  {
+   "layer": "_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0",
+   "declared": 303175,
+   "rows": 0,
+   "gap": 303175,
+   "attempts_n": 4,
+   "kinds": [
+    "timeout",
+    "timeout",
+    "timeout",
+    "timeout"
+   ],
+   "elapsed_min": 285.0,
+   "first_at": "2026-10-30T22:21:16Z",
+   "last_at": "2026-10-31T03:24:47Z",
+   "no_progress": true,
+   "runs": [],
+   "forced_back": false,
+   "evidence": "analysis/04b-attempt-log.json"
+  }
+ ],
+ "retry_cap": {
+  "path": "analysis/04b-attempt-log.json",
+  "cap": 3,
+  "attempts_logged_n": 38,
+  "layers_logged_n": 12,
+  "rule": "同一层连续 3 次尝试失败且无进展（rows/prior_units 逐次不变）→ 判 upstream_unstable；默认从待采队列剔除（full_plan / preflight D13），只有 `--force-unstable-layer <层>` 能放回去",
+  "failed_kinds": [
+   "token",
+   "http_503",
+   "non_json",
+   "timeout",
+   "http_4xx",
+   "dns",
+   "other"
+  ],
+  "kind_zh": {
+   "token": "token(499)",
+   "http_503": "503",
+   "non_json": "非 JSON",
+   "timeout": "超时",
+   "http_4xx": "4xx",
+   "dns": "DNS/TLS",
+   "other": "其它"
+  },
+  "forced_back": [],
+  "applied_n": 5
+ },
+ "gap_by_class": {
+  "capped_by_upstream": {
+   "layers_n": 1,
+   "declared_rows": 97928946,
+   "declared_in_denominator": 0,
+   "rows": 39875268,
+   "gap_rows": 58053678,
+   "layers": [
+    "s_Points_from_National_Address_Database_view_FeatureServer_0"
+   ]
+  },
+  "upstream_unstable": {
+   "layers_n": 5,
+   "declared_rows": 15223357,
+   "declared_in_denominator": 15223357,
+   "rows": 0,
+   "gap_rows": 15223357,
+   "layers": [
+    "cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0",
+    "s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0",
+    "yil_gov_traditional_rest_services_addressZipCode_MapServer_0",
+    "rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5",
+    "_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0"
+   ]
+  },
+  "unverified": {
+   "layers_n": 3,
+   "declared_rows": 2486197,
+   "declared_in_denominator": 2486197,
+   "rows": 0,
+   "gap_rows": 2486197,
+   "layers": [
+    "tyil_gov_traditional_rest_services_cookVwrDynmc_MapServer_63",
+    "is4_ocfl_net_arcgis_rest_services_AGOL_Open_Data_MapServer_0",
+    "g_rest_services_Basemap_Address_Points_EagleView_MapServer_0"
+   ]
+  },
+  "missing": {
+   "layers_n": 1,
+   "declared_rows": 303175,
+   "declared_in_denominator": 303175,
+   "rows": 0,
+   "gap_rows": 303175,
+   "layers": [
+    "_rgv911_org_server_rest_services_Public_Map_MIL1_MapServer_1"
+   ]
+  }
+ },
+ "coverage": {
+  "by_declared": {
+   "denominator": 475909773,
+   "numerator": 458452144,
+   "coverage_pct": 96.3317,
+   "gap": 17457629,
+   "gap_pct": 3.6683
+  },
+  "by_verifiable": {
+   "denominator": 476162973,
+   "numerator": 458452144,
+   "coverage_pct": 96.2805,
+   "gap": 17710829,
+   "gap_pct": 3.7195
+  },
+  "rule": "两个口径必须同屏：按声明分母 = rows_verifiable ÷ declared；按可核实分母 = rows_verifiable ÷（已刷新层用上游 returnCount + 未刷新层用旧声明）。两个百分比不可直接相减",
+  "refresh": {
+   "path": "analysis/04b-declared-refresh-2026-10-31.json",
+   "at": "2026-10-31T01:03:54Z",
+   "layers_refreshed_n": 223
+  }
+ },
  "capped_layers": [
   {
    "layer": "s_Points_from_National_Address_Database_view_FeatureServer_0",
@@ -57,8 +301,8 @@
   "账本层数（rebuilt）": 272,
   "计划 − 账本": 0,
   "账本 − 计划": 0,
-  "声明行合计（修正后）": 482206942,
-  "实采行合计（不变）": 497330251
+  "声明行合计（修正后）": 475909773,
+  "实采行合计（不变）": 500948263
  },
  "revisions": [
   {
@@ -72,7 +316,7 @@
   {
    "layer": "cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0",
    "from": "failed",
-   "to": "missing",
+   "to": "upstream_unstable",
    "declared_before": 6583495,
    "declared_after": 6585376,
    "reason": "声明值改用上游当前 returnCount（证据：2026-10-30T20:08:38Z）"
@@ -80,7 +324,7 @@
   {
    "layer": "s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0",
    "from": "failed",
-   "to": "missing",
+   "to": "upstream_unstable",
    "declared_before": 6583495,
    "declared_after": 6585376,
    "reason": "声明值改用上游当前 returnCount（证据：2026-10-30T20:08:38Z）"
@@ -88,10 +332,10 @@
   {
    "layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1",
    "from": "failed",
-   "to": "missing",
+   "to": "partial",
    "declared_before": 6297169,
-   "declared_after": 6297169,
-   "reason": "上游当前 returnCount=6,297,169，本层 0 行 → 真缺口，必须重采"
+   "declared_after": null,
+   "reason": "分区重复声明：2 个分区共用同一上游 url，Σ declared = 12,594,338 = 2.00× 上游 returnCount 6,297,169；本层那批行已由 `_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2` 采到 6,648,000 行 → declared 移出分母，原值保留在 declared_duplicate_partition（不是缺口，也不是改口径凑数）"
   },
   {
    "layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2",
@@ -108,14 +352,6 @@
    "declared_before": 4939912,
    "declared_after": 4939912,
    "reason": "实采 7,816,000 ≥ 上游当前 returnCount 4,939,912×(1-1%)"
-  },
-  {
-   "layer": "vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0",
-   "from": "failed",
-   "to": "missing",
-   "declared_before": 3618012,
-   "declared_after": 3618012,
-   "reason": "上游当前 returnCount=3,618,012，本层 0 行 → 真缺口，必须重采"
   },
   {
    "layer": "ces_Ky_911_Site_Structure_Address_Points_WGS84WM_MapServer_0",
@@ -144,10 +380,10 @@
   {
    "layer": "yil_gov_traditional_rest_services_addressZipCode_MapServer_0",
    "from": "failed",
-   "to": "unverified",
+   "to": "upstream_unstable",
    "declared_before": 1381118,
    "declared_after": 1381118,
-   "reason": "上游不可达（URLError: <urlopen error timed out>），本层无数据 → 无法判定，不许当 0 数据"
+   "reason": "上游不稳：连续 4 次尝试失败且无进展（其它、其它、其它、503），累计 21.9 分钟 → 重试收益趋零。默认从待采队列剔除；要再试请显式 `--force-unstable-layer yil_gov_traditional_rest_services_addressZipCode_MapServer_0`"
   },
   {
    "layer": "rvices_location_Address_Points_Modifications_FeatureServer_0",
@@ -184,10 +420,10 @@
   {
    "layer": "rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5",
    "from": "failed",
-   "to": "unverified",
+   "to": "upstream_unstable",
    "declared_before": 368312,
    "declared_after": 368312,
-   "reason": "上游不可达（URLError: <urlopen error timed out>），本层无数据 → 无法判定，不许当 0 数据"
+   "reason": "上游不稳：连续 4 次尝试失败且无进展（4xx、4xx、4xx、4xx），累计 7.7 分钟 → 重试收益趋零。默认从待采队列剔除；要再试请显式 `--force-unstable-layer rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5`"
   },
   {
    "layer": "_arcgis1_rest_services_FLEXMOBILE_Address_Points_MapServer_0",
@@ -208,7 +444,7 @@
   {
    "layer": "_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0",
    "from": "failed",
-   "to": "missing",
+   "to": "upstream_unstable",
    "declared_before": 302920,
    "declared_after": 303175,
    "reason": "声明值改用上游当前 returnCount（证据：2026-10-30T20:08:38Z）"
@@ -476,11 +712,53 @@
    "last_upload": null,
    "problems": [],
    "warn": [],
-   "status": "missing",
-   "reason": "上游当前 returnCount=6,585,376，本层 0 行 → 真缺口，必须重采",
+   "status": "upstream_unstable",
+   "reason": "上游不稳：连续 3 次尝试失败且无进展（其它、其它、其它），累计 64.6 分钟 → 重试收益趋零。默认从待采队列剔除；要再试请显式 `--force-unstable-layer cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0`",
    "shard": 7,
    "gap": 6585376,
    "gap_pct": 100.0,
+   "attempts_n": 3,
+   "failure_kinds": [
+    "other",
+    "other",
+    "other"
+   ],
+   "attempts_elapsed_min": 64.6,
+   "attempt_log": [
+    {
+     "at": "2026-10-30T17:09:02Z",
+     "kind": "other",
+     "elapsed_s": 1291.1,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": 3,
+     "shard": 0,
+     "run": "41092912755",
+     "err": ""
+    },
+    {
+     "at": "2026-10-30T17:09:02Z",
+     "kind": "other",
+     "elapsed_s": 1291.1,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": 3,
+     "shard": 5,
+     "run": "",
+     "err": ""
+    },
+    {
+     "at": "2026-10-31T01:48:40Z",
+     "kind": "other",
+     "elapsed_s": 1290.9,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": 3,
+     "shard": 0,
+     "run": "41155023558",
+     "err": ""
+    }
+   ],
    "evidence": {
     "verdict": "upstream_alive",
     "upstream_count": 6585376,
@@ -504,11 +782,53 @@
    "last_upload": null,
    "problems": [],
    "warn": [],
-   "status": "missing",
-   "reason": "上游当前 returnCount=6,585,376，本层 0 行 → 真缺口，必须重采",
+   "status": "upstream_unstable",
+   "reason": "上游不稳：连续 3 次尝试失败且无进展（其它、其它、其它），累计 64.6 分钟 → 重试收益趋零。默认从待采队列剔除；要再试请显式 `--force-unstable-layer s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0`",
    "shard": 9,
    "gap": 6585376,
    "gap_pct": 100.0,
+   "attempts_n": 3,
+   "failure_kinds": [
+    "other",
+    "other",
+    "other"
+   ],
+   "attempts_elapsed_min": 64.6,
+   "attempt_log": [
+    {
+     "at": "2026-10-30T17:41:40Z",
+     "kind": "other",
+     "elapsed_s": 1291.0,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": 3,
+     "shard": 0,
+     "run": "41092912755",
+     "err": ""
+    },
+    {
+     "at": "2026-10-30T17:41:40Z",
+     "kind": "other",
+     "elapsed_s": 1291.0,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": 3,
+     "shard": 5,
+     "run": "",
+     "err": ""
+    },
+    {
+     "at": "2026-10-31T01:46:08Z",
+     "kind": "other",
+     "elapsed_s": 1291.1,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": 3,
+     "shard": 0,
+     "run": "41155023558",
+     "err": ""
+    }
+   ],
    "evidence": {
     "verdict": "upstream_alive",
     "upstream_count": 6585376,
@@ -541,7 +861,7 @@
   {
    "layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1",
    "tag": null,
-   "declared": 6297169,
+   "declared": null,
    "declared_src": "layer_plan.csv",
    "rows": null,
    "rows_src": null,
@@ -554,11 +874,86 @@
    "last_upload": null,
    "problems": [],
    "warn": [],
-   "status": "missing",
-   "reason": "上游当前 returnCount=6,297,169，本层 0 行 → 真缺口，必须重采",
+   "status": "partial",
+   "reason": "分区重复声明：2 个分区共用同一上游 url，Σ declared = 12,594,338 = 2.00× 上游 returnCount 6,297,169；本层那批行已由 `_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2` 采到 6,648,000 行 → declared 移出分母，原值保留在 declared_duplicate_partition（不是缺口，也不是改口径凑数）",
    "shard": 2,
-   "gap": 6297169,
-   "gap_pct": 100.0,
+   "declared_duplicate_partition": {
+    "base_layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0",
+    "partitions": [
+     "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1",
+     "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2"
+    ],
+    "upstream_urls": [
+     "https://services.gis.nc.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0",
+     "https://services.nconemap.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0"
+    ],
+    "upstream_return_count": 6297169,
+    "sum_declared": 12594338,
+    "declared_before": 6297169,
+    "duplicate_of": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2",
+    "survivor_rows": 6648000,
+    "evidence": "analysis/04b-token-499-evidence-2026-10-31.json",
+    "note": "两个分区各写全量 declared（Σ=12,594,338 = 2× 上游 6,297,169），而上游两个 host 的 returnCount 完全相等（6,297,169 / 6,297,169，各探两轮）→ 同一份 AddressNC 数据被数了两遍。survivor `-2` 实采 6,648,000 ≥ 全量，duplicate 分区 `-1` 0 行 → 后者声明的 6,297,169 是纯重复计数、且没有任何已采数据会因改判而失去归属，所以改判无损失。"
+   },
+   "gap": null,
+   "gap_pct": null,
+   "attempts_n": 4,
+   "failure_kinds": [
+    "timeout",
+    "timeout",
+    "timeout",
+    "timeout"
+   ],
+   "attempts_elapsed_min": 285.0,
+   "attempt_log": [
+    {
+     "at": "2026-10-30T22:21:16Z",
+     "kind": "timeout",
+     "elapsed_s": 3300.1,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": -1,
+     "shard": 1,
+     "run": "",
+     "err": ""
+    },
+    {
+     "at": "2026-10-31T01:14:07Z",
+     "kind": "timeout",
+     "elapsed_s": 3300.2,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": -1,
+     "shard": 1,
+     "run": "",
+     "err": ""
+    },
+    {
+     "at": "2026-10-31T01:14:07Z",
+     "kind": "timeout",
+     "elapsed_s": 3300.2,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": -1,
+     "shard": 1,
+     "run": "",
+     "err": ""
+    },
+    {
+     "at": "2026-10-31T03:30:20Z",
+     "kind": "timeout",
+     "elapsed_s": 7200.2,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": -1,
+     "shard": 2,
+     "run": "",
+     "err": ""
+    }
+   ],
+   "partition_duplicate_sampled": true,
+   "rows_including_duplicate": 0,
+   "duplicate_source_layer": "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2",
    "evidence": {
     "verdict": "upstream_alive",
     "upstream_count": 6297169,
@@ -609,6 +1004,36 @@
    "shard": 12,
    "gap": -350831,
    "gap_pct": -5.5712,
+   "attempts_n": 2,
+   "failure_kinds": [
+    "timeout",
+    "timeout"
+   ],
+   "attempts_elapsed_min": 110.0,
+   "attempt_log": [
+    {
+     "at": "2026-10-31T00:18:56Z",
+     "kind": "timeout",
+     "elapsed_s": 3300.1,
+     "rows": 0,
+     "prior_units": 4,
+     "rc": -1,
+     "shard": 0,
+     "run": "",
+     "err": ""
+    },
+    {
+     "at": "2026-10-31T00:18:56Z",
+     "kind": "timeout",
+     "elapsed_s": 3300.1,
+     "rows": 0,
+     "prior_units": 4,
+     "rc": -1,
+     "shard": 0,
+     "run": "",
+     "err": ""
+    }
+   ],
    "evidence": {
     "verdict": "upstream_alive",
     "upstream_count": 6297169,
@@ -724,6 +1149,36 @@
    "shard": 1,
    "gap": -2876088,
    "gap_pct": -58.2214,
+   "attempts_n": 2,
+   "failure_kinds": [
+    "timeout",
+    "timeout"
+   ],
+   "attempts_elapsed_min": 110.0,
+   "attempt_log": [
+    {
+     "at": "2026-10-31T00:18:56Z",
+     "kind": "timeout",
+     "elapsed_s": 3300.1,
+     "rows": 0,
+     "prior_units": 5,
+     "rc": -1,
+     "shard": 0,
+     "run": "",
+     "err": ""
+    },
+    {
+     "at": "2026-10-31T00:18:56Z",
+     "kind": "timeout",
+     "elapsed_s": 3300.1,
+     "rows": 0,
+     "prior_units": 5,
+     "rc": -1,
+     "shard": 0,
+     "run": "",
+     "err": ""
+    }
+   ],
    "evidence": {
     "verdict": "upstream_alive",
     "upstream_count": 4939912,
@@ -1019,25 +1474,67 @@
   },
   {
    "layer": "vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0",
-   "tag": null,
+   "tag": "collect-step04-vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0",
    "declared": 3618012,
    "declared_src": "layer_plan.csv",
-   "rows": null,
-   "rows_src": null,
-   "parts_assets": 0,
-   "parts_ckpt": null,
-   "bytes": 0,
-   "units": null,
-   "units_done": null,
-   "first_upload": null,
-   "last_upload": null,
+   "rows": 3618012,
+   "rows_src": "unit_rows_seen",
+   "parts_assets": 1,
+   "parts_ckpt": 73,
+   "bytes": 174196854,
+   "units": 1,
+   "units_done": 1,
+   "first_upload": "2026-10-31T03:01:45Z",
+   "last_upload": "2026-10-31T03:01:51Z",
    "problems": [],
    "warn": [],
-   "status": "missing",
-   "reason": "上游当前 returnCount=3,618,012，本层 0 行 → 真缺口，必须重采",
+   "status": "ok",
+   "reason": "实采 3,618,012 ≥ 上游当前 returnCount 3,618,012×(1-1%)",
+   "gap": 0,
+   "gap_pct": 0.0,
    "shard": 1,
-   "gap": 3618012,
-   "gap_pct": 100.0,
+   "attempts_n": 3,
+   "failure_kinds": [
+    "timeout",
+    "timeout",
+    "timeout"
+   ],
+   "attempts_elapsed_min": 165.0,
+   "attempt_log": [
+    {
+     "at": "2026-10-30T21:49:25Z",
+     "kind": "timeout",
+     "elapsed_s": 3300.1,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": -1,
+     "shard": 0,
+     "run": "",
+     "err": ""
+    },
+    {
+     "at": "2026-10-31T01:14:07Z",
+     "kind": "timeout",
+     "elapsed_s": 3300.0,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": -1,
+     "shard": 1,
+     "run": "",
+     "err": ""
+    },
+    {
+     "at": "2026-10-31T01:14:07Z",
+     "kind": "timeout",
+     "elapsed_s": 3300.0,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": -1,
+     "shard": 1,
+     "run": "",
+     "err": ""
+    }
+   ],
    "evidence": {
     "verdict": "upstream_alive",
     "upstream_count": 3618012,
@@ -1497,7 +1994,10 @@
    "reason": "",
    "gap": -61203,
    "gap_pct": -2.9445,
-   "shard": 9
+   "shard": 9,
+   "rows_partition_duplicate_est": 2139242,
+   "duplicate_source_layer": "rest_services_Maricopa_County_Address_Points_FeatureServer_0@AZ-1",
+   "rows_partition_duplicate_note": "declared 全部保留、分母不动：置 null 只会让分母变小、rows 不变 → 覆盖率虚高。行侧重复由 08（3 元组去重）吃掉。"
   },
   {
    "layer": "U_arcgis_rest_services_Oregon_Address_Points_FeatureServer_0",
@@ -1726,6 +2226,60 @@
    "shard": 2,
    "gap": 1381118,
    "gap_pct": 100.0,
+   "attempts_n": 4,
+   "failure_kinds": [
+    "http_503",
+    "http_503",
+    "http_503",
+    "http_503"
+   ],
+   "attempts_elapsed_min": 23.0,
+   "attempt_log": [
+    {
+     "at": "2026-10-30T22:21:16Z",
+     "kind": "http_503",
+     "elapsed_s": 342.5,
+     "rows": 2000,
+     "prior_units": 0,
+     "rc": 1,
+     "shard": 1,
+     "run": "",
+     "err": "query_fail:svcerr:{\"code\": 503, \"message\": \"Error handling service request :Wait timeout for the request exceeded.\", \"details\": []}"
+    },
+    {
+     "at": "2026-10-31T01:14:07Z",
+     "kind": "http_503",
+     "elapsed_s": 345.4,
+     "rows": 0,
+     "prior_units": 1,
+     "rc": 1,
+     "shard": 1,
+     "run": "",
+     "err": "query_fail:svcerr:{\"code\": 503, \"message\": \"Error handling service request :Wait timeout for the request exceeded.\", \"details\": []}"
+    },
+    {
+     "at": "2026-10-31T01:14:07Z",
+     "kind": "http_503",
+     "elapsed_s": 345.4,
+     "rows": 0,
+     "prior_units": 1,
+     "rc": 1,
+     "shard": 1,
+     "run": "",
+     "err": "query_fail:svcerr:{\"code\": 503, \"message\": \"Error handling service request :Wait timeout for the request exceeded.\", \"details\": []}"
+    },
+    {
+     "at": "2026-10-31T03:30:20Z",
+     "kind": "http_503",
+     "elapsed_s": 346.5,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": 1,
+     "shard": 0,
+     "run": "41155023558",
+     "err": "query_fail:svcerr:{\"code\": 503, \"message\": \"Error handling service request :Wait timeout for the request exceeded.\", \"details\": []}"
+    }
+   ],
    "evidence": {
     "verdict": "upstream_unreachable",
     "upstream_count": null,
@@ -1749,11 +2303,65 @@
    "last_upload": null,
    "problems": [],
    "warn": [],
-   "status": "unverified",
-   "reason": "上游不可达（URLError: <urlopen error timed out>），本层无数据 → 无法判定，不许当 0 数据",
+   "status": "upstream_unstable",
+   "reason": "上游不稳：连续 4 次尝试失败且无进展（其它、其它、其它、503），累计 21.9 分钟 → 重试收益趋零。默认从待采队列剔除；要再试请显式 `--force-unstable-layer yil_gov_traditional_rest_services_addressZipCode_MapServer_0`",
    "shard": 4,
    "gap": 1381118,
    "gap_pct": 100.0,
+   "attempts_n": 4,
+   "failure_kinds": [
+    "other",
+    "other",
+    "other",
+    "http_503"
+   ],
+   "attempts_elapsed_min": 21.9,
+   "attempt_log": [
+    {
+     "at": "2026-10-30T16:59:40Z",
+     "kind": "other",
+     "elapsed_s": 310.7,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": 1,
+     "shard": 0,
+     "run": "41092912755",
+     "err": ""
+    },
+    {
+     "at": "2026-10-30T16:59:40Z",
+     "kind": "other",
+     "elapsed_s": 310.7,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": 1,
+     "shard": 4,
+     "run": "",
+     "err": ""
+    },
+    {
+     "at": "2026-10-30T19:26:29Z",
+     "kind": "other",
+     "elapsed_s": 343.8,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": 1,
+     "shard": 2,
+     "run": "",
+     "err": ""
+    },
+    {
+     "at": "2026-10-31T01:30:24Z",
+     "kind": "http_503",
+     "elapsed_s": 346.1,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": 1,
+     "shard": 0,
+     "run": "41155023558",
+     "err": "query_fail:svcerr:{\"code\": 503, \"message\": \"Error handling service request :Wait timeout for the request exceeded.\", \"details\": []}"
+    }
+   ],
    "evidence": {
     "verdict": "upstream_unreachable",
     "upstream_count": null,
@@ -3140,11 +3748,11 @@
    "rows_src": null,
    "parts_assets": 1,
    "parts_ckpt": null,
-   "bytes": 183689,
+   "bytes": 367378,
    "units": null,
    "units_done": null,
    "first_upload": "2026-10-30T19:27:00Z",
-   "last_upload": "2026-10-30T19:27:00Z",
+   "last_upload": "2026-10-31T01:30:57Z",
    "problems": [],
    "warn": [],
    "status": "unverified",
@@ -3152,6 +3760,60 @@
    "shard": 4,
    "gap": 716472,
    "gap_pct": 100.0,
+   "attempts_n": 4,
+   "failure_kinds": [
+    "non_json",
+    "non_json",
+    "non_json",
+    "non_json"
+   ],
+   "attempts_elapsed_min": 2.2,
+   "attempt_log": [
+    {
+     "at": "2026-10-30T17:00:14Z",
+     "kind": "non_json",
+     "elapsed_s": 33.2,
+     "rows": 2000,
+     "prior_units": 1,
+     "rc": 1,
+     "shard": 0,
+     "run": "41092912755",
+     "err": "query_fail:Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+     "at": "2026-10-30T17:00:14Z",
+     "kind": "non_json",
+     "elapsed_s": 33.2,
+     "rows": 2000,
+     "prior_units": 1,
+     "rc": 1,
+     "shard": 4,
+     "run": "",
+     "err": "query_fail:Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+     "at": "2026-10-30T19:27:00Z",
+     "kind": "non_json",
+     "elapsed_s": 31.2,
+     "rows": 2000,
+     "prior_units": 0,
+     "rc": 1,
+     "shard": 2,
+     "run": "",
+     "err": "query_fail:Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+     "at": "2026-10-31T01:30:57Z",
+     "kind": "non_json",
+     "elapsed_s": 33.4,
+     "rows": 2000,
+     "prior_units": 0,
+     "rc": 1,
+     "shard": 0,
+     "run": "41155023558",
+     "err": "query_fail:Expecting value: line 1 column 1 (char 0)"
+    }
+   ],
    "evidence": {
     "verdict": "upstream_unreachable",
     "upstream_count": null,
@@ -4461,7 +5123,10 @@
    "reason": "",
    "gap": 0,
    "gap_pct": 0.0,
-   "shard": 7
+   "shard": 7,
+   "rows_partition_duplicate_est": 481609,
+   "duplicate_source_layer": "rest_services_hennepin_county_address_points_FeatureServer_0@MN-1",
+   "rows_partition_duplicate_note": "同上：declared 不动，行侧重复交 08 去重。"
   },
   {
    "layer": "UPy14bDaLg_arcgis_rest_services_HI_Addresses_FeatureServer_0",
@@ -5585,11 +6250,65 @@
    "last_upload": null,
    "problems": [],
    "warn": [],
-   "status": "unverified",
-   "reason": "上游不可达（URLError: <urlopen error timed out>），本层无数据 → 无法判定，不许当 0 数据",
+   "status": "upstream_unstable",
+   "reason": "上游不稳：连续 4 次尝试失败且无进展（4xx、4xx、4xx、4xx），累计 7.7 分钟 → 重试收益趋零。默认从待采队列剔除；要再试请显式 `--force-unstable-layer rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5`",
    "shard": 4,
    "gap": 368312,
    "gap_pct": 100.0,
+   "attempts_n": 4,
+   "failure_kinds": [
+    "http_4xx",
+    "http_4xx",
+    "http_4xx",
+    "http_4xx"
+   ],
+   "attempts_elapsed_min": 7.7,
+   "attempt_log": [
+    {
+     "at": "2026-10-30T17:02:09Z",
+     "kind": "http_4xx",
+     "elapsed_s": 115.5,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": 1,
+     "shard": 0,
+     "run": "41092912755",
+     "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU"
+    },
+    {
+     "at": "2026-10-30T17:02:09Z",
+     "kind": "http_4xx",
+     "elapsed_s": 115.5,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": 1,
+     "shard": 4,
+     "run": "",
+     "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU"
+    },
+    {
+     "at": "2026-10-30T19:28:22Z",
+     "kind": "http_4xx",
+     "elapsed_s": 81.3,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": 1,
+     "shard": 2,
+     "run": "",
+     "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU"
+    },
+    {
+     "at": "2026-10-31T01:27:09Z",
+     "kind": "http_4xx",
+     "elapsed_s": 150.9,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": 1,
+     "shard": 0,
+     "run": "41155023558",
+     "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU"
+    }
+   ],
    "evidence": {
     "verdict": "upstream_unreachable",
     "upstream_count": null,
@@ -6338,6 +7057,24 @@
    "shard": 10,
    "gap": 303175,
    "gap_pct": 100.0,
+   "attempts_n": 1,
+   "failure_kinds": [
+    "timeout"
+   ],
+   "attempts_elapsed_min": 120.0,
+   "attempt_log": [
+    {
+     "at": "2026-10-31T03:46:08Z",
+     "kind": "timeout",
+     "elapsed_s": 7200.1,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": -1,
+     "shard": 5,
+     "run": "",
+     "err": ""
+    }
+   ],
    "evidence": {
     "verdict": "upstream_alive",
     "upstream_count": 303175,
@@ -6361,11 +7098,65 @@
    "last_upload": null,
    "problems": [],
    "warn": [],
-   "status": "missing",
-   "reason": "上游当前 returnCount=303,175，本层 0 行 → 真缺口，必须重采",
+   "status": "upstream_unstable",
+   "reason": "上游不稳：连续 4 次尝试失败且无进展（超时、超时、超时、超时），累计 285.0 分钟 → 重试收益趋零。默认从待采队列剔除；要再试请显式 `--force-unstable-layer _rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0`",
    "shard": 2,
    "gap": 303175,
    "gap_pct": 100.0,
+   "attempts_n": 4,
+   "failure_kinds": [
+    "timeout",
+    "timeout",
+    "timeout",
+    "timeout"
+   ],
+   "attempts_elapsed_min": 285.0,
+   "attempt_log": [
+    {
+     "at": "2026-10-30T22:21:16Z",
+     "kind": "timeout",
+     "elapsed_s": 3300.1,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": -1,
+     "shard": 1,
+     "run": "",
+     "err": ""
+    },
+    {
+     "at": "2026-10-31T01:14:07Z",
+     "kind": "timeout",
+     "elapsed_s": 3300.0,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": -1,
+     "shard": 1,
+     "run": "",
+     "err": ""
+    },
+    {
+     "at": "2026-10-31T01:14:07Z",
+     "kind": "timeout",
+     "elapsed_s": 3300.0,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": -1,
+     "shard": 1,
+     "run": "",
+     "err": ""
+    },
+    {
+     "at": "2026-10-31T03:24:47Z",
+     "kind": "timeout",
+     "elapsed_s": 7200.1,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": -1,
+     "shard": 1,
+     "run": "",
+     "err": ""
+    }
+   ],
    "evidence": {
     "verdict": "upstream_alive",
     "upstream_count": 303175,

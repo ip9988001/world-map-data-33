@@ -824,7 +824,7 @@ def load_attempt_summary(path=None, cap=3):
 
 
 def judge_retry_cap(summary, meta=None, planned=None, force_unstable=(), cap=3,
-                    attempt_log_p=ATTEMPT_LOG):
+                    attempt_log_p=ATTEMPT_LOG, records=None):
     """D13：已到重试上限的层是否还在待采队列里。"""
     meta = dict(meta or {})
     base = {"attempt_log": meta.get("path") or os.path.relpath(attempt_log_p, ROOT),
@@ -844,13 +844,37 @@ def judge_retry_cap(summary, meta=None, planned=None, force_unstable=(), cap=3,
     rows.sort(key=lambda x: (-x["attempts_n"], -x["elapsed_s"], x["layer"]))
     rows_back = [r for r in rows if r["layer"] in force]
     rows = [r for r in rows if r["layer"] not in force]
+    if records is not None:
+        # ★ 按账本状态过滤（2026-10-31 实测）：`vices_AGOL_…NG911` 在尝试账本里有 3 次超时，
+        #   但它本轮已经采成（ok，3,618,012 行 = 上游 returnCount）→ 不许再挂在 unstable 名单里。
+        #   尝试账本只记失败，不知道「后来成功了」；状态的唯一真值是阶段账本。
+        _gap = {"missing", "unverified", "partial", "upstream_unstable", "failed"}
+        _st = {str(r.get("layer")): str(r.get("status") or "") for r in records}
+        # 分区重复声明层（declared 已移出分母）不算「缺口」：重试它只是再采一份同源重复，
+        # 08 会把它去重吃掉 —— 停不停手都不影响覆盖率。
+        _dup = {str(r.get("layer")) for r in records
+                if r.get("declared_duplicate_partition") or r.get("partition_duplicate_sampled")}
+
+        def _is_gap(lid):
+            return _st.get(lid, "unknown") in _gap and lid not in _dup
+
+        _cleared = [r["layer"] for r in rows if not _is_gap(r["layer"])]
+        rows = [r for r in rows if _is_gap(r["layer"])]
+        base["cleared_by_success"] = _cleared
     if not rows:
         return item("D13", "D", "重试上限 upstream_unstable", "PASS",
-                    "没有层连续失败达到 %d 次（已记 %d 层 / %d 条尝试%s）"
+                    "没有层连续失败达到 %d 次（尝试账本记了 %d 层 / %d 条失败；"
+                    "其中 %d 层本轮已采成、不再算 unstable）%s"
                     % (cap, len(summary or {}), meta.get("attempts_n", 0),
+                       len(base.get("cleared_by_success") or []),
                        "；%d 层被显式点名「仍要试」" % len(rows_back) if rows_back else ""),
                     retry_cap_unstable=rows, retry_cap_forced=rows_back, **base)
     in_plan = sorted({x.get("layer") for x in (planned or [])} & {r["layer"] for r in rows})
+    if base.get("cleared_by_success"):
+        detail_extra = ("；另有 %d 层尝试史在日志里但**本轮已采成**（ok/empty），不再算 unstable：%s"
+                        % (len(base["cleared_by_success"]), ", ".join(base["cleared_by_success"][:3])))
+    else:
+        detail_extra = ""
     detail = ("%d 层已到重试上限（连续 %d 次失败且无进展）→ **默认从待采队列剔除**：%s。"
               "要再试必须显式 `--force-unstable-layer <层>`"
               % (len(rows), cap,
@@ -861,6 +885,7 @@ def judge_retry_cap(summary, meta=None, planned=None, force_unstable=(), cap=3,
     if in_plan:
         detail += "。⛔ 本次计划里仍有 %d 层在其中（计划是旧的/没跑 full_plan 的剔除）：%s" % (
             len(in_plan), ", ".join(in_plan[:4]))
+    detail += detail_extra
     return item("D13", "D", "重试上限 upstream_unstable", "WARN", detail,
                 retry_cap_unstable=rows, retry_cap_in_plan=in_plan,
                 retry_cap_forced=rows_back, **base)
@@ -1472,6 +1497,7 @@ def build_report(args) -> dict:
                       if x.strip()]
     planned_ids = [{"layer": x} for x in (planned or [])]
     d13 = judge_retry_cap(att_sum, att_meta, planned=planned_ids, force_unstable=force_unstable,
+                          records=d12_recs,
                           cap=int(getattr(args, "max_attempts", 3) or 3),
                           attempt_log_p=(getattr(args, "attempt_log", "") or ATTEMPT_LOG))
     items.append(d13)

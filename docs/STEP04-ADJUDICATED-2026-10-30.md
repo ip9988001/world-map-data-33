@@ -22,7 +22,7 @@
 - 计划 − 账本：**0**
 - 账本 − 计划：**0**
 - 声明行合计（修正后）：**475909773**
-- 实采行合计（不变）：**497330251**
+- 实采行合计（不变）：**500948263**
 
 > 分母口径说明：04b 的候选集由 `steps.json` 的 `select`（row_count>300000 + 标题正则）
 > 与 policy 的 `geom_in=[point,multipoint,socrata,na]` 共同决定，实测为 **320 层**；
@@ -39,10 +39,10 @@
 | 片 | 层数 | 已完成 | 半截 | 0 行 | 账本缺失 |
 |---|---|---|---|---|---|
 | 0 | 4 | 3 | 1 | 0 | 0 |
-| 1 | 4 | 3 | 0 | 1 | 0 |
+| 1 | 4 | 4 | 0 | 0 | 0 |
 | 3 | 4 | 0 | 0 | 4 | 0 |
 | 6 | 4 | 3 | 0 | 1 | 0 |
-| **合计** | **16** | **9** | **1** | **6** | **0** |
+| **合计** | **16** | **10** | **1** | **5** | **0** |
 
 **结论：取消造成的新增漏账 = 0 层。** 被取消片的 16 层全部能在 272 层账本里找到条目，已完成层的资产都在 Release 上。
 
@@ -55,7 +55,7 @@
 | `UyC7jAmu_arcgis_rest_services_LBRSforLocator_FeatureServer_0` | done | ok | 5,573,001 | 5,573,001 | 取消前已完成（资产在 Release） |
 | `ces_Ky_911_Site_Structure_Address_Points_WGS84WM_MapServer_0` | done | ok | 2,485,645 | 2,489,597 | 取消前已完成（资产在 Release） |
 | `conemap_gov_secure_rest_services_NC1Map_Location_MapServer_0` | done | failed | 4,939,912 | 7,816,000 | 取消前已完成（资产在 Release） |
-| `vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0` | none | failed | 3,618,012 | 0 | 取消时 0 行（未开始 / 上游一行未返回） |
+| `vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0` | done | ok | 3,618,012 | 3,618,012 | 取消前已完成（资产在 Release） |
 | `ervices_us_mn_state_mngeo_loc_addresses_open_FeatureServer_0@未定位-1` | done | ok | 2,220,021 | 2,220,021 | 取消前已完成（资产在 Release） |
 | `rvices_location_Address_Points_Modifications_FeatureServer_0` | done | ok | 1,369,414 | 1,369,487 | 取消前已完成（资产在 Release） |
 | `_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0` | none | failed | 302,920 | 0 | 取消时 0 行（未开始 / 上游一行未返回） |
@@ -71,11 +71,11 @@
 
 | 状态 | 层数 | 含义 |
 |---|---|---|
-| ok | 256 | 实采 ≥ 上游当前 returnCount×(1-1%) |
+| ok | 257 | 实采 ≥ 上游当前 returnCount×(1-1%) |
 | partial | 4 | 实采 < 上游当前 returnCount×(1-1%) 且 >0 → 定向续采；或分区重复声明（数据已在 survivor 层，见 3.0.2） |
 | capped_by_upstream | 1 | 上游改成服务级 token（连 `<api>/0?f=json` 都 499，连探两轮）→ 永远采不到更多；已采行数计入 rows，declared 移出分母记 declared_unverifiable |
-| upstream_unstable | 2 | 可连通、但连续 N 次（默认 3）尝试都超时/503/返回非 JSON 且**无进展** → 重试收益趋零；默认从待采队列剔除，`--force-unstable-layer` 才放回 |
-| missing | 5 | 上游有数据、本层 0 行 → 必须重采 |
+| upstream_unstable | 5 | 可连通、但连续 N 次（默认 3）尝试都超时/503/返回非 JSON 且**无进展** → 重试收益趋零；默认从待采队列剔除，`--force-unstable-layer` 才放回 |
+| missing | 1 | 上游有数据、本层 0 行 → 必须重采 |
 | unverified | 3 | 上游不可达/无响应，本层无数据 → 无法归因（不许当空层） |
 | empty | 1 | 上游明确 0 行或服务下线（esri 404） |
 | skipped_done | 0 | 计划期已判完成而跳过 |
@@ -94,17 +94,17 @@
 
 分母口径（本节之后的所有百分比都用这个）：
 
-- `rows` = 497,330,251（全部实采，含 capped 层的 39,875,268）
+- `rows` = 500,948,263（全部实采，含 capped 层的 39,875,268）
 - `declared` = 475,909,773（**不含** capped 层）
-- `rows_verifiable` = 454,834,132（与分母同口径的分子 = rows − capped 行数）
-- `gap` = declared − rows_verifiable = **21,075,641 行（4.4285%）**
+- `rows_verifiable` = 458,452,144（与分母同口径的分子 = rows − capped 行数）
+- `gap` = declared − rows_verifiable = **17,457,629 行（3.6683%）**
 - capped 层的 declared 另记 `declared_unverifiable` = 97,928,946，**永远不进分母**
 
 ### 3.0.1 分母口径硬规矩（2026-10-31 用户定：声明值不是永久分母）
 
 > **1）声明值来自 `layer_plan.csv` 的计划期快照，上游会缩水/删数据/改口径。**
 > 实测（本账本口径，可复现）：**80 层实采 > 声明，超采合计 3,547,920 行**
-> （rebuilt 口径 81 层 / 3,547,930）；全账 `gap` = 21,075,641 行。拿过期声明当分母，
+> （rebuilt 口径 81 层 / 3,547,930）；全账 `gap` = 17,457,629 行。拿过期声明当分母，
 > 覆盖率系统性失真，而且「按声明 / 按可核实」两个百分比天生不可相减。
 >
 > **2）对外覆盖一律报两个数，禁止只报一个：**
@@ -154,7 +154,7 @@
 **分区重复采样（同源重复行）**：
 
 - `rows_with_partition_dup` = **2,620,851**（这些行的内容与 survivor 同源，跨层去重时会被 3 元组吃掉）
-- `rows_verifiable` = rows − rows_capped − rows_with_partition_dup = **454,834,132**
+- `rows_verifiable` = rows − rows_capped − rows_with_partition_dup = **458,452,144**
 - 铁律：**分区重复由 08（去重）吃掉；08 之前任何对外覆盖率不许包含重复行**。
   重跑分区不阻止（缺数据不能靠去重补，重复能靠去重吃掉），但账上必须分开记，
   否则覆盖率虚高，且没人知道 08 到底要吃掉多少行。
@@ -175,10 +175,13 @@
 
 | 层 | 声明 | 已采 | 尝试次数 | 每次失败类型 | 累计耗时（分钟） | 首次 / 末次 |
 |---|---|---|---|---|---|---|
+| `cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0` | 6,585,376 | 0 | 3 | 其它 → 其它 → 其它 | 64.6 | 2026-10-30T17:09:02Z / 2026-10-31T01:48:40Z |
+| `s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0` | 6,585,376 | 0 | 3 | 其它 → 其它 → 其它 | 64.6 | 2026-10-30T17:41:40Z / 2026-10-31T01:46:08Z |
 | `yil_gov_traditional_rest_services_addressZipCode_MapServer_0` | 1,381,118 | 0 | 4 | 其它 → 其它 → 其它 → 503 | 21.9 | 2026-10-30T16:59:40Z / 2026-10-31T01:30:24Z |
 | `rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5` | 368,312 | 0 | 4 | 4xx → 4xx → 4xx → 4xx | 7.7 | 2026-10-30T17:02:09Z / 2026-10-31T01:27:09Z |
+| `_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0` | 303,175 | 0 | 4 | 超时 → 超时 → 超时 → 超时 | 285.0 | 2026-10-30T22:21:16Z / 2026-10-31T03:24:47Z |
 
-合计：**2 层 / 1,749,430 行缺口 / 29.6 分钟尝试时间**。这些层不是「不想采」，是上游给不出：本表就是「我们尽力了」的凭据（逐次类型 + 耗时，不是估算）。
+合计：**5 层 / 15,223,357 行缺口 / 443.8 分钟尝试时间**。这些层不是「不想采」，是上游给不出：本表就是「我们尽力了」的凭据（逐次类型 + 耗时，不是估算）。
 
 失败类型怎么归的（顺序就是判据，不能换）：先 token(499) → 503 → 非 JSON → 超时 → 4xx → DNS/TLS → other。503 的正文里带 «Wait timeout…»，所以必须排在「超时」之前，否则 503 会被误记成超时。
 
@@ -187,12 +190,11 @@
 | 层 | 旧状态 | 新状态 | 旧声明 | 新声明 | 原因 |
 |---|---|---|---|---|---|
 | `s_Points_from_National_Address_Database_view_FeatureServer_0` | partial | capped_by_upstream | 97,928,946 | 97,928,946 | 服务级 token：连 `<api>/0?f=json` 都 499（2 轮 × 3 端点全 499，最后一次 2026-10-31T01:08:58Z）→ 本层已无法再采、也无法复核声明；已采 39,875,268 行即全部可得 |
-| `cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0` | failed | missing | 6,583,495 | 6,585,376 | 声明值改用上游当前 returnCount（证据：2026-10-30T20:08:38Z） |
-| `s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0` | failed | missing | 6,583,495 | 6,585,376 | 声明值改用上游当前 returnCount（证据：2026-10-30T20:08:38Z） |
+| `cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0` | failed | upstream_unstable | 6,583,495 | 6,585,376 | 声明值改用上游当前 returnCount（证据：2026-10-30T20:08:38Z） |
+| `s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0` | failed | upstream_unstable | 6,583,495 | 6,585,376 | 声明值改用上游当前 returnCount（证据：2026-10-30T20:08:38Z） |
 | `_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1` | failed | partial | 6,297,169 | - | 分区重复声明：2 个分区共用同一上游 url，Σ declared = 12,594,338 = 2.00× 上游 returnCount 6,297,169；本层那批行已由 `_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2` 采到 6,648,000 行 → declared 移出分母，原值保留在 declared_duplicate_partition（不是缺口，也不是改口径凑数） |
 | `_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2` | failed | ok | 6,297,169 | 6,297,169 | 实采 6,648,000 ≥ 上游当前 returnCount 6,297,169×(1-1%) |
 | `conemap_gov_secure_rest_services_NC1Map_Location_MapServer_0` | failed | ok | 4,939,912 | 4,939,912 | 实采 7,816,000 ≥ 上游当前 returnCount 4,939,912×(1-1%) |
-| `vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0` | failed | missing | 3,618,012 | 3,618,012 | 上游当前 returnCount=3,618,012，本层 0 行 → 真缺口，必须重采 |
 | `ces_Ky_911_Site_Structure_Address_Points_WGS84WM_MapServer_0` | ok | partial | 2,485,645 | 2,485,645 | 上游不可达（URLError: <urlopen error timed out>）；实采停在 2,489,597 / 声明 2,485,645 |
 | `fn_arcgis_rest_services_NG911_Address_Points_FeatureServer_0` | partial | ok | 1,928,880 | 1,254,000 | 声明值改用上游当前 returnCount（证据：2026-10-30T20:08:38Z） |
 | `tyil_gov_traditional_rest_services_cookVwrDynmc_MapServer_63` | failed | unverified | 1,381,118 | 1,381,118 | 上游不可达（URLError: <urlopen error timed out>），本层无数据 → 无法判定，不许当 0 数据 |
@@ -204,7 +206,7 @@
 | `rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5` | failed | upstream_unstable | 368,312 | 368,312 | 上游不稳：连续 4 次尝试失败且无进展（4xx、4xx、4xx、4xx），累计 7.7 分钟 → 重试收益趋零。默认从待采队列剔除；要再试请显式 `--force-unstable-layer rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5` |
 | `_arcgis1_rest_services_FLEXMOBILE_Address_Points_MapServer_0` | failed | empty | 367,002 | 367,002 | upstream_service_gone：上游返回 esri 404 / Service not found |
 | `_rgv911_org_server_rest_services_Public_Map_MIL1_MapServer_1` | failed | missing | 302,920 | 303,175 | 声明值改用上游当前 returnCount（证据：2026-10-30T20:08:38Z） |
-| `_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0` | failed | missing | 302,920 | 303,175 | 声明值改用上游当前 returnCount（证据：2026-10-30T20:08:38Z） |
+| `_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0` | failed | upstream_unstable | 302,920 | 303,175 | 声明值改用上游当前 returnCount（证据：2026-10-30T20:08:38Z） |
 
 ### 3.1b 阶段账本的运行级事件（复原 / 合并留痕，只追加不替换）
 
@@ -238,24 +240,23 @@
 
 ### 3.4 剩余缺口逐层拆解
 
-账本净缺口 = **21,075,641 行（4.4285%）**，由三块构成（加减号都是账本数字，不是估的）：
+账本净缺口 = **17,457,629 行（3.6683%）**，由三块构成（加减号都是账本数字，不是估的）：
 
-- 真缺口（`missing` / `partial` / `unverified`，共 16 层）：**+21,635,708**
+- 真缺口（`missing` / `partial` / `unverified`，共 15 层）：**+18,017,696**
 - `empty` 层的旧声明（上游 0 行，不是缺口）：**+367,002**（1 层；旧声明不该再进分母）
 - 已采超出声明的层（上游后来缩水/声明过期）：**−43,423,188**（81 层）
 
 | 层 | 状态 | 声明 | 实采 | 缺口 | 缺口% | 归因 |
 |---|---|---|---|---|---|---|
-| `cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0` | missing | 6,585,376 | 0 | 6,585,376 | 100.00% | **上游有数据但没采**（本层 0 行） |
-| `s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0` | missing | 6,585,376 | 0 | 6,585,376 | 100.00% | **上游有数据但没采**（本层 0 行） |
-| `vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0` | missing | 3,618,012 | 0 | 3,618,012 | 100.00% | **上游有数据但没采**（本层 0 行） |
+| `cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0` | upstream_unstable | 6,585,376 | 0 | 6,585,376 | 100.00% | 上游不稳：连续 3 次尝试失败且无进展（其它、其它、其它），累计 64.6 分钟 → 重试收益趋零。默认从待采队列剔除；要再试请显式 `--force-unstable-layer cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0` |
+| `s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0` | upstream_unstable | 6,585,376 | 0 | 6,585,376 | 100.00% | 上游不稳：连续 3 次尝试失败且无进展（其它、其它、其它），累计 64.6 分钟 → 重试收益趋零。默认从待采队列剔除；要再试请显式 `--force-unstable-layer s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0` |
 | `tyil_gov_traditional_rest_services_cookVwrDynmc_MapServer_63` | unverified | 1,381,118 | 0 | 1,381,118 | 100.00% | **上游不可达**（未验证，不许当 0） |
 | `yil_gov_traditional_rest_services_addressZipCode_MapServer_0` | upstream_unstable | 1,381,118 | 0 | 1,381,118 | 100.00% | 上游不稳：连续 4 次尝试失败且无进展（其它、其它、其它、503），累计 21.9 分钟 → 重试收益趋零。默认从待采队列剔除；要再试请显式 `--force-unstable-layer yil_gov_traditional_rest_services_addressZipCode_MapServer_0` |
 | `is4_ocfl_net_arcgis_rest_services_AGOL_Open_Data_MapServer_0` | unverified | 716,472 | 0 | 716,472 | 100.00% | **上游不可达**（未验证，不许当 0） |
 | `g_rest_services_Basemap_Address_Points_EagleView_MapServer_0` | unverified | 388,607 | 0 | 388,607 | 100.00% | **上游不可达**（未验证，不许当 0） |
 | `rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5` | upstream_unstable | 368,312 | 0 | 368,312 | 100.00% | 上游不稳：连续 4 次尝试失败且无进展（4xx、4xx、4xx、4xx），累计 7.7 分钟 → 重试收益趋零。默认从待采队列剔除；要再试请显式 `--force-unstable-layer rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5` |
 | `_rgv911_org_server_rest_services_Public_Map_MIL1_MapServer_1` | missing | 303,175 | 0 | 303,175 | 100.00% | **上游有数据但没采**（本层 0 行） |
-| `_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0` | missing | 303,175 | 0 | 303,175 | 100.00% | **上游有数据但没采**（本层 0 行） |
+| `_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0` | upstream_unstable | 303,175 | 0 | 303,175 | 100.00% | 上游不稳：连续 4 次尝试失败且无进展（超时、超时、超时、超时），累计 285.0 分钟 → 重试收益趋零。默认从待采队列剔除；要再试请显式 `--force-unstable-layer _rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0` |
 | `t01_rest_services_PlatTracker_PT365_PLAT_MAPPING_MapServer_5` | partial | 315,044 | 310,520 | 4,524 | 1.44% | **上游有数据但没采全**（半截） |
 | `a261a66abddf0b_rest_services_PublicMaps_Location_MapServer_1` | ok | 427,533 | 427,338 | 195 | 0.05% | - |
 | `tawa_ca_arcgis_rest_services_Address_Information_MapServer_0` | ok | 404,911 | 404,751 | 160 | 0.04% | - |
@@ -272,17 +273,17 @@
 | 类别 | 层数 | 声明行 | 其中进分母 | 已采行 | 缺口行 | 怎么办 |
 |---|---|---|---|---|---|---|
 | `capped_by_upstream` | 1 | 97,928,946 | 0 | 39,875,268 | 58,053,678 | 上游要 token，永远采不到；已采多少算多少，declared 移出分母 |
-| `upstream_unstable` | 2 | 1,749,430 | 1,749,430 | 0 | 1,749,430 | 连续 N 次超时/503/非 JSON 且无进展 → 停手，不再吃 CI；显式 `--force-unstable-layer` 才放回 |
+| `upstream_unstable` | 5 | 15,223,357 | 15,223,357 | 0 | 15,223,357 | 连续 N 次超时/503/非 JSON 且无进展 → 停手，不再吃 CI；显式 `--force-unstable-layer` 才放回 |
 | `unverified` | 3 | 2,486,197 | 2,486,197 | 0 | 2,486,197 | 连不上（超时/403/DNS）→ 等网络/换出口，不许当 0 数据 |
-| `missing` | 5 | 17,395,114 | 17,395,114 | 0 | 17,395,114 | 上游有数、本层 0 行 → 真缺口，还能试但本轮没排上 |
-| **合计** | **11** | **119,559,687** | **21,630,741** | **39,875,268** | **79,684,419** | — |
+| `missing` | 1 | 303,175 | 303,175 | 0 | 303,175 | 上游有数、本层 0 行 → 真缺口，还能试但本轮没排上 |
+| **合计** | **10** | **115,941,675** | **18,012,729** | **39,875,268** | **76,066,407** | — |
 
-> 合计里的「缺口行」含 capped 的 58,053,678（那部分声明**不在分母**，别拿它算覆盖率）。进分母的四类缺口 = 21,630,741；账本 `gap` = 21,075,641（§3.6），四类比账本**多 555,100** —— 差额是 4 层 `partial` 已经采到的行（它们既不是「0 行」也不是「已停手」，所以不在四类里，但确实抵掉了部分缺口）。
+> 合计里的「缺口行」含 capped 的 58,053,678（那部分声明**不在分母**，别拿它算覆盖率）。进分母的四类缺口 = 18,012,729；账本 `gap` = 17,457,629（§3.6），四类比账本**多 555,100** —— 差额是 4 层 `partial` 已经采到的行（它们既不是「0 行」也不是「已停手」，所以不在四类里，但确实抵掉了部分缺口）。
 
 - `capped_by_upstream`（1 层）：`s_Points_from_National_Address_Database_view_FeatureServer_0`
-- `upstream_unstable`（2 层）：`yil_gov_traditional_rest_services_addressZipCode_MapServer_0`、`rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5`
+- `upstream_unstable`（5 层）：`cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0`、`s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0`、`yil_gov_traditional_rest_services_addressZipCode_MapServer_0`、`rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5`、`_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0`
 - `unverified`（3 层）：`tyil_gov_traditional_rest_services_cookVwrDynmc_MapServer_63`、`is4_ocfl_net_arcgis_rest_services_AGOL_Open_Data_MapServer_0`、`g_rest_services_Basemap_Address_Points_EagleView_MapServer_0`
-- `missing`（5 层）：`cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0`、`s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0`、`vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0`、`_rgv911_org_server_rest_services_Public_Map_MIL1_MapServer_1`、`_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0`
+- `missing`（1 层）：`_rgv911_org_server_rest_services_Public_Map_MIL1_MapServer_1`
 
 > 口径提醒：「按声明分母」与「按可核实分母」两个覆盖率必须同屏报（见 3.0.1）；四类里的 `capped` 不进分母，其余三类都还在分母里 —— 它们是真缺口，不许隐身。
 
@@ -290,19 +291,19 @@
 
 | 口径 | 分母 | 分子（rows_verifiable） | 覆盖率 | 缺口 | 缺口% |
 |---|---|---|---|---|---|
-| **按声明分母** | 475,909,773 | 454,834,132 | **95.57%** | 21,075,641 | 4.4285% |
-| **按可核实分母** | 476,162,973 | 454,834,132 | **95.52%** | 21,328,841 | 4.4793% |
+| **按声明分母** | 475,909,773 | 458,452,144 | **96.33%** | 17,457,629 | 3.6683% |
+| **按可核实分母** | 476,162,973 | 458,452,144 | **96.28%** | 17,710,829 | 3.7195% |
 
 - 两个数**不可直接相减**：声明值是计划期快照，上游会缩水/删数据/改口径；相差的 253,200 行就是刷新差异。
 - 可核实口径的 `declared_refreshed_at` = **2026-10-31T01:03:54Z**（223 层被上游 returnCount 替换）
-- 分母与分子同口径：分子 = rows − rows_capped − rows_with_partition_dup = 454,834,132
+- 分母与分子同口径：分子 = rows − rows_capped − rows_with_partition_dup = 458,452,144
 
 ## 四、口径提醒
 
-- 行数合计仍是 **497,330,251**（本次不采一行数据，只改判定与声明）。
+- 行数合计仍是 **500,948,263**（本次不采一行数据，只改判定与声明）。
 - 其中**同源重复**（分区重复采样）= **2,620,851**，单列 `rows_with_partition_dup`，不进覆盖率分子。
-- 剔除 capped 层后的分母 = **475,909,773**，与分母同口径的实采 = **454,834,132**，缺口 = **21,075,641（4.4285%）**。
-- 与**不剔除**口径（declared 含 capped）= 580,135,888 行 / 497,330,251 行 / 14.2735% 对照时，差值就是 capped 层的declared_unverifiable 97,928,946：两个百分比**不可直接比较**，引用时必须写明是否剔除。
+- 剔除 capped 层后的分母 = **475,909,773**，与分母同口径的实采 = **458,452,144**，缺口 = **17,457,629（3.6683%）**。
+- 与**不剔除**口径（declared 含 capped）= 580,135,888 行 / 500,948,263 行 / 13.6498% 对照时，差值就是 capped 层的declared_unverifiable 97,928,946：两个百分比**不可直接比较**，引用时必须写明是否剔除。
 - 未剔除口径的数字怎么来的：`declared_kept_in_denominator = declared + declared_unverifiable + declared_duplicate_partition`（任何 declared 都不剔，包括分区重复声明），`gap_kept_in_denominator = 它 − rows`（旧口径，分子含 capped 行数与重复行）。
 - `docs/STEP04-FULL-2026-10-30.md` 保持 `ledger_rebuild.py` 生成的字节不变（`--check` 依赖它）；
   本文是它的**修正层**，两者冲突时以本文为准，并注明证据出处。

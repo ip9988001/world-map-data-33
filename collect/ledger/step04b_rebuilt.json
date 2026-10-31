@@ -3,7 +3,7 @@
  "stage": "04b",
  "source_of_truth": "github release assets（checkpoint + unit 包），非 workflow 账本",
  "tag_prefix": "collect-step04-",
- "generated_at": "2026-10-31T01:15:10Z",
+ "generated_at": "2026-10-31T03:01:51Z",
  "generated_note": "generated_at = 最新资产上传时间（不取 now()），保证同状态重跑字节一致",
  "tolerance": {
   "gap_partial": 0.01
@@ -14,20 +14,20 @@
   "declared_rows": 580806486
  },
  "scan_meta": {
-  "tags_under_prefix": 311,
+  "tags_under_prefix": 312,
   "note": "采集进行中会持续增长，与账本事实无关；--check 已忽略本字段"
  },
  "layers_n": 272,
- "ok": 255,
+ "ok": 256,
  "empty": 0,
  "partial": 3,
- "failed": 14,
+ "failed": 13,
  "declared": 580806486,
- "rows": 497330251,
- "gap": 83476235,
- "gap_pct": 14.3725,
- "assets_total": 646,
- "bytes_total": 38337749642,
+ "rows": 500948263,
+ "gap": 79858223,
+ "gap_pct": 13.7495,
+ "assets_total": 647,
+ "bytes_total": 38512130185,
  "gap_gt_tol": [
   {
    "layer": "s_Points_from_National_Address_Database_view_FeatureServer_0",
@@ -92,11 +92,6 @@
     "unit 4 未上传（unit_uploaded=false）",
     "unit 1 残留错误：query_fail:<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fa"
    ]
-  },
-  {
-   "layer": "vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0",
-   "reason": "无 Release 资产（tag 不存在）—— 该层从未跑成，不猜行数",
-   "problems": []
   },
   {
    "layer": "tyil_gov_traditional_rest_services_cookVwrDynmc_MapServer_63",
@@ -201,7 +196,7 @@
   "schema": "collect-ledger-input-fingerprint/v1",
   "note": "同一输入 → 同一输出：--check 比对本指纹（逐层资产名+字节、checkpoint 内容摘要、声明行数），不比文件字节；输入变了才允许输出变，且会点名变了几层",
   "layers_n": 272,
-  "digest": "2dee28306cf35933ad209dd5a30512fb15dc44e5344dc3388d0a85ae8cf64f69",
+  "digest": "fb2c883257b37ffaa7fce1311bcb6e4c5dd9f8fc5a5e0c2e54d8cc73b17c4abd",
   "layers": {
    "a261a66abddf0b_rest_services_PublicMaps_Location_MapServer_1": {
     "tag": "collect-step04-a261a66abddf0b_rest_services_PublicMaps_Location_MapServer_1",
@@ -848,10 +843,19 @@
     "asset_evidence": null
    },
    "vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0": {
-    "tag": null,
+    "tag": "collect-step04-vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0",
     "declared": 3618012,
-    "assets": [],
-    "ckpt_sha256": null,
+    "assets": [
+     {
+      "name": "vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0-checkpoint.json",
+      "size": 2678
+     },
+     {
+      "name": "vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0-u00000.tar.gz",
+      "size": 174194176
+     }
+    ],
+    "ckpt_sha256": "c53dc1ffd5385f2761ea7ed269628356a08cdbf75c3e3eaffbfe8b54b1092440",
     "asset_evidence": null
    },
    "ervices_us_mn_state_mngeo_loc_addresses_open_FeatureServer_0@未定位-1": {
@@ -1665,6 +1669,10 @@
     "tag": "collect-step04-is4_ocfl_net_arcgis_rest_services_AGOL_Open_Data_MapServer_0",
     "declared": 716472,
     "assets": [
+     {
+      "name": "is4_ocfl_net_arcgis_rest_services_AGOL_Open_Data_MapServer_0-ra8e65b16-u00000.tar.gz",
+      "size": 183689
+     },
      {
       "name": "is4_ocfl_net_arcgis_rest_services_AGOL_Open_Data_MapServer_0-u00000.tar.gz",
       "size": 183689
@@ -6691,22 +6699,24 @@
   },
   {
    "layer": "vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0",
-   "tag": null,
+   "tag": "collect-step04-vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0",
    "declared": 3618012,
    "declared_src": "layer_plan.csv",
-   "rows": null,
-   "rows_src": null,
-   "parts_assets": 0,
-   "parts_ckpt": null,
-   "bytes": 0,
-   "units": null,
-   "units_done": null,
-   "first_upload": null,
-   "last_upload": null,
+   "rows": 3618012,
+   "rows_src": "unit_rows_seen",
+   "parts_assets": 1,
+   "parts_ckpt": 73,
+   "bytes": 174196854,
+   "units": 1,
+   "units_done": 1,
+   "first_upload": "2026-10-31T03:01:45Z",
+   "last_upload": "2026-10-31T03:01:51Z",
    "problems": [],
    "warn": [],
-   "status": "failed",
-   "reason": "无 Release 资产（tag 不存在）—— 该层从未跑成，不猜行数",
+   "status": "ok",
+   "reason": "",
+   "gap": 0,
+   "gap_pct": 0.0,
    "shard": 1
   },
   {
@@ -8764,11 +8774,11 @@
    "rows_src": null,
    "parts_assets": 1,
    "parts_ckpt": null,
-   "bytes": 183689,
+   "bytes": 367378,
    "units": null,
    "units_done": null,
    "first_upload": "2026-10-30T19:27:00Z",
-   "last_upload": "2026-10-30T19:27:00Z",
+   "last_upload": "2026-10-31T01:30:57Z",
    "problems": [],
    "warn": [],
    "status": "failed",

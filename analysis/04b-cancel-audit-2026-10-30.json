@@ -70,12 +70,12 @@
     {
      "layer": "vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0",
      "in_ledger": true,
-     "ledger_status": "failed",
+     "ledger_status": "ok",
      "declared": 3618012,
-     "rows": null,
-     "progress": "none",
-     "note": "取消时 0 行（未开始 / 上游一行未返回）",
-     "asset_rows": null
+     "rows": 3618012,
+     "progress": "done",
+     "note": "取消前已完成（资产在 Release）",
+     "asset_rows": 3618012
     },
     {
      "layer": "ervices_us_mn_state_mngeo_loc_addresses_open_FeatureServer_0@未定位-1",
@@ -192,9 +192,9 @@
  ],
  "totals": {
   "layers": 16,
-  "done": 9,
+  "done": 10,
   "half": 1,
-  "none": 6,
+  "none": 5,
   "missing_in_ledger": 0
  },
  "cancelled_at": "2026-10-30T19:16:05Z（gh run cancel 41092912755；四 job completed_at 19:16:32–19:16:59）",
