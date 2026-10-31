@@ -809,7 +809,8 @@ def main() -> int:
             rec["declared_duplicate_partition"] = {
                 "base_layer": dg.get("base_layer"),
                 "partitions": dg.get("partitions") or [],
-                "upstream_url": dg.get("upstream_url"),
+                "upstream_urls": dg.get("upstream_urls") or (
+                    [dg["upstream_url"]] if dg.get("upstream_url") else []),
                 "upstream_return_count": dg.get("upstream_return_count"),
                 "sum_declared": dg.get("sum_declared"),
                 "declared_before": rec.get("declared"),

@@ -576,7 +576,10 @@
      "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1",
      "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2"
     ],
-    "upstream_url": null,
+    "upstream_urls": [
+     "https://services.gis.nc.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0",
+     "https://services.nconemap.gov/secure/rest/services/AddressNC/NC1Map_Addresses/MapServer/0"
+    ],
     "upstream_return_count": 6297169,
     "sum_declared": 12594338,
     "declared_before": 6297169,
