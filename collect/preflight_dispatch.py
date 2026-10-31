@@ -1344,8 +1344,8 @@ def human_summary(rep: dict) -> str:
     if led and led.get("ledger_hits"):
         lines.append("F16 故障清单比对（%d 条命中）：" % len(led["ledger_hits"]))
         for h in led["ledger_hits"]:
-            state = ("已修于 %s" % (h["fix_sha"] or h["commits"]) if h["mitigated"]
-                     else "**未规避**")
+            state = ("已修于 %s" % h["fix_sha"] if (h["mitigated"] and h["fix_sha"]) else
+                     ("已修（关联提交列：%s）" % h["commits"][:40] if h["mitigated"] else "**未规避**"))
             lines.append("  · %s [%s] 复发×%d %s%s"
                          % (h["id"], h["category"], h["recurrence"], state,
                             "（本次已豁免）" if h["waived"] else ""))
