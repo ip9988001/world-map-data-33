@@ -29,6 +29,11 @@
 - `collect/full_plan.py` 先切片（默认 20 层/片），片数上限 250（GitHub matrix 硬顶 256，留余量）
 - 每片一个 job 调 `collect/full_shard.py`；片内逐层跑 `collect/run_step_04b.py`
 - 每层四态之一：`ok` / `empty` / `partial` / `failed`（外加 `skipped_done`），**全部落账**
+- `capped_by_upstream`（2026-10-31 新增）：上游改成**服务级 token**（连 `<api>/0?f=json` 都 499，
+  `returnCountOnly` / `returnIdsOnly` 同样 499，且连续两轮探测一致）→ 这层**永远采不到更多**。
+  账本记：已采行数照旧计入 `rows`；`declared` 置空、另记 `declared_unverifiable`，**不入缺口分母**；
+  证据必须带 499 原文 + 探测时间 + 层 id（`analysis/04b-token-499-evidence-*.json`）。
+  判据与改判命令见 `collect/adjudicate_04b.py --capped`；preflight E14 只**建议**不改账（改口径要人点头）。
 - 单层 3h 硬超时；失败层必须带原因（rc / err / 差额），**不吞错、不 `|| true`**
 - 实采与声明差 > 0.2% 记 `partial`：不是失败，但收官文档必须写清是「单元没跑完」还是「计划期口径差」
 - 每单元完成即传即删；checkpoint 在 Release 上，重跑只补缺口

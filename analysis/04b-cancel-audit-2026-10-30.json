@@ -35,22 +35,22 @@
     {
      "layer": "UyC7jAmu_arcgis_rest_services_LBRSforLocator_FeatureServer_0",
      "in_ledger": true,
-     "ledger_status": "failed",
+     "ledger_status": "ok",
      "declared": 5573001,
-     "rows": 2773122,
-     "progress": "half",
-     "note": "取消时半截",
-     "asset_rows": 2773122
+     "rows": 5573001,
+     "progress": "done",
+     "note": "取消前已完成（资产在 Release）",
+     "asset_rows": 5573001
     },
     {
      "layer": "ces_Ky_911_Site_Structure_Address_Points_WGS84WM_MapServer_0",
      "in_ledger": true,
-     "ledger_status": "failed",
+     "ledger_status": "ok",
      "declared": 2485645,
-     "rows": 2416763,
-     "progress": "half",
-     "note": "取消时半截",
-     "asset_rows": 2416763
+     "rows": 2489597,
+     "progress": "done",
+     "note": "取消前已完成（资产在 Release）",
+     "asset_rows": 2489597
     }
    ]
   },
@@ -80,22 +80,22 @@
     {
      "layer": "ervices_us_mn_state_mngeo_loc_addresses_open_FeatureServer_0@未定位-1",
      "in_ledger": true,
-     "ledger_status": "failed",
+     "ledger_status": "ok",
      "declared": 2220021,
-     "rows": null,
-     "progress": "none",
-     "note": "取消时 0 行（未开始 / 上游一行未返回）",
-     "asset_rows": null
+     "rows": 2220021,
+     "progress": "done",
+     "note": "取消前已完成（资产在 Release）",
+     "asset_rows": 2220021
     },
     {
      "layer": "rvices_location_Address_Points_Modifications_FeatureServer_0",
      "in_ledger": true,
-     "ledger_status": "failed",
+     "ledger_status": "ok",
      "declared": 1369414,
-     "rows": null,
-     "progress": "none",
-     "note": "取消时 0 行（未开始 / 上游一行未返回）",
-     "asset_rows": null
+     "rows": 1369487,
+     "progress": "done",
+     "note": "取消前已完成（资产在 Release）",
+     "asset_rows": 1369487
     }
    ]
   },
@@ -192,9 +192,9 @@
  ],
  "totals": {
   "layers": 16,
-  "done": 5,
-  "half": 3,
-  "none": 8,
+  "done": 9,
+  "half": 1,
+  "none": 6,
   "missing_in_ledger": 0
  },
  "cancelled_at": "2026-10-30T19:16:05Z（gh run cancel 41092912755；四 job completed_at 19:16:32–19:16:59）",

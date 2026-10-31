@@ -93,6 +93,9 @@ APPROVED_MAIN = {
     "f68c002": "chore/ledger-merge-fix 合入（单 run 不覆盖阶段账本 + 状态优先级合并 + 04b 账本复原）",
     "3f3c9b9": "rows 回退护栏（regressions[]，不许静默取大）合入",
     "f55f6a5": "回退摘要加「处置分布」（分清哪类真把阶段账本 rows 改小；只动说明与单测，不改合并规则）",
+    "a39ba76": "PR #12 合入（force 重跑不覆盖完成度证据 + 按单元合并 + 行数只许涨 + NAD 检查点与 272 层账本复原）",
+    "a4f12f7": "重建产物分审结快照/活态 + --check 改判输入指纹 + 写回前硬门禁",
+    "780e9b4": "PR #13 合入（派单前核验门禁 16 项 + F16 故障清单接线 + 已批准版本白名单）",
 }
 
 PKG_RE = re.compile(r"-u\d{5}\.tar\.gz$")
@@ -782,8 +785,14 @@ def classify_probe(res):
     return "unverifiable"
 
 
-def judge_upstream(samples, results=None, offline=False, min_samples=5):
-    """E12/E13/E14：抽样计数 → 0 行层 / 403 超时层 / 声明不可复核层。"""
+def judge_upstream(samples, results=None, offline=False, min_samples=5, stage="", urls=None):
+    """E12/E13/E14：抽样计数 → 0 行层 / 403 超时层 / 声明不可复核层。
+
+    ★ E14 硬判据（2026-10-31 用户要求）：同一层**连续两次**探测都是服务级 499
+      （HTTP 200 + body code=499 `Token Required`，连 `?f=json` 也一样）
+      → 自动**建议** `capped_by_upstream`，并打印建议命令；
+      **不自动改账本**（改口径必须人点头，账本只认 `adjudicate_04b --capped`）。
+    """
     items = []
     if offline:
         return [item("E12", "E", "上游抽样", "WARN", "offline：跳过上游计数探测"),
@@ -820,10 +829,29 @@ def judge_upstream(samples, results=None, offline=False, min_samples=5):
         if service_token:
             extra = ("；其中 %d 层是**服务级** token（连 `?f=json` 都 499）→ CI 也采不到，"
                      "要么配 token，要么从计划里剔掉" % len(service_token))
+        # ★ 连续两轮都是服务级 499 → 建议 capped_by_upstream（只建议，不改账本）
+        capped = [k for k in service_token if (res.get(k) or {}).get("confirm_service_token") is True]
+        capped_cmds = []
+        if capped:
+            date = datetime.now(timezone.utc).strftime("%Y%m%d")
+            ev = "analysis/%s-token-499-evidence-%s.json" % (stage or "04b", date)
+            extra += ("；其中 **%d 层连续两轮都是服务级 499** → 建议改判 `capped_by_upstream`"
+                      "（已采行数照旧计 `rows`，declared 移出分母记 `declared_unverifiable`）；"
+                      "**账本不会自动改**，下面单独打印确认后的命令" % len(capped))
+            for k in capped:
+                u = (urls or {}).get(k, "<layer api url>")
+                capped_cmds.append({
+                    "layer": k,
+                    "probe_cmd": ("python3 collect/probe_service_token.py --target '%s=%s' "
+                                  "--stage %s --out %s --append" % (k, u, stage or "04b", ev)),
+                    "adjudicate_cmd": ("python3 collect/adjudicate_04b.py --capped %s "
+                                       "--capped-evidence %s" % (k, ev)),
+                })
         items.append(item("E14", "E", "声明可复核率", "WARN",
                           "%d 层声明不可复核（Token Required / 非 JSON 响应），标记 declared_unverifiable，"
                           "不计入分母：%s%s" % (len(unver), ", ".join(unver[:4]), extra),
-                          layers=unver, service_token=service_token))
+                          layers=unver, service_token=service_token, capped_candidates=capped,
+                          capped_commands=capped_cmds))
     else:
         items.append(item("E14", "E", "声明可复核率", "PASS",
                           "%d 层声明都可复核（用于跑后差额分母）" % len(res)))
@@ -1146,15 +1174,27 @@ def build_report(args) -> dict:
         tok = [k for k, v in results.items() if classify_probe(v) in ("token", "unverifiable")]
         for k in tok:
             results[k]["meta_token"] = bool(probe_meta(urls[k]).get("token"))
+        # ★ E14 硬判据（2026-10-31）：服务级 token 要**连续两轮**都成立才算数。
+        #   一次 499 可能是临时风控/单次配额；只有两轮都 499 才能建议改判 capped_by_upstream。
+        for k in [x for x in tok if results[x].get("meta_token")]:
+            time.sleep(2)
+            again, meta2 = probe_count(urls[k]), probe_meta(urls[k])
+            results[k]["confirm_at"] = now()
+            results[k]["confirm_service_token"] = bool(
+                meta2.get("token") and again.get("count") is None)
+            results[k]["confirm_http"] = again.get("http")
+            results[k]["confirm_raw"] = str(again.get("body") or "")[:160]
     if not samples and not offline:
         items += [item("E12", "E", "上游抽样", "WARN",
                        "没有可抽样层（--force-layers 为空且清单里没有分档候选）：上游可用性未核"),
                   item("E13", "E", "上游 403/超时", "WARN", "未抽样"),
                   item("E14", "E", "声明可复核率", "WARN", "未抽样，declared_unverifiable 未标注")]
     else:
-        items += judge_upstream(samples, results, offline=offline or not samples)
+        items += judge_upstream(samples, results, offline=offline or not samples,
+                                stage=stage, urls=urls)
     evidence["upstream_probe"] = {k: {kk: v.get(kk) for kk in ("http", "count", "err", "elapsed_s",
-                                                               "meta_token")}
+                                                               "meta_token", "confirm_service_token",
+                                                               "confirm_at", "confirm_http")}
                                   for k, v in results.items()}
 
     fails = [i for i in items if i["status"] == "FAIL"]
@@ -1217,6 +1257,14 @@ def human_summary(rep: dict) -> str:
     for i in rep["checks"]:
         lines.append("%s %-4s %-24s %s" % (mark.get(i["status"], "?"), i["id"],
                                            i["title"][:24], i["detail"][:150]))
+        for c in (i.get("capped_commands") or []):
+            lines += ["",
+                      "   ⚠️  `%s` 连续两轮服务级 499 → 建议改判 `capped_by_upstream`"
+                      "（已采行数计 rows，declared 进 declared_unverifiable）；"
+                      "**账本不会自动改**，确认后手工执行：" % c["layer"],
+                      "     %s" % c["probe_cmd"],
+                      "     %s" % c["adjudicate_cmd"],
+                      ""]
     lines.append("-" * 78)
     if rep["fail_n"]:
         lines.append("❌ 门禁未通过：修完上面标 ❌ 的项再派单（处置见 docs/PREFLIGHT-GATE.md）")

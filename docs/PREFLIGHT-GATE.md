@@ -183,3 +183,37 @@ PY
 —— 连 `<api>/0?f=json` 都返回 `{"error":{"code":499,"message":"Token Required"}}`，
 不是我们这边的 egress 问题。也就是说这层现在**没法再采**（68 个单元包是能拿到的全部），
 门禁按规矩把它标成 `declared_unverifiable` / 服务级 token 点名，而不是当成「本机不可达」放行。
+
+## 六、案例（都是真事，用来校准「门禁该不该开口」）
+
+### 案例 1 · D9 真好用：同层 force 直接堵死（2026-10-31）
+
+背景：run `41126178216` 正在写 22 层（2 片）。当时想「顺手 force 重跑 NAD view 那 2 层」，
+preflight 一跑就 FAIL：
+
+```
+❌ D9  目标层撞车   这 2 层正在被 #41126178216 写（计划层交集 2）→ 现在 force 会两个 job 同 tag 并发
+                    upload --clobber，谁后传谁赢，检查点会被打成「1 unit / 0 行」
+```
+
+**这就是它存在的意义**：D9 不是「防手滑」，是把 2026-10-30 22:23Z 那次事故的形状
+（同一 tag 双写 → checkpoint 被覆盖 → 账本从 partial(39.9M) 掉成 failed(0)）在**派单前**
+挡下来。所以 D9 一旦报交集，处置只有两条：从 `--force-layers` 里去掉正在被写的层，
+或者等那个 run 结束。**没有「先跑着看看」这个选项。**
+
+实测值：`--force-layers <NAD view 层>` → `FAIL`（交集 2）→ 去掉后 PASS。
+
+### 案例 2 · E14 只建议、不改账：「服务级 499」不该靠人记得（2026-10-31）
+
+同一层上游改成**服务级 token**：`<api>/0?f=json`、`returnCountOnly`、`returnIdsOnly`
+三个端点全返回 **HTTP 200** + body `{"error":{"code":499,"message":"Token Required","messageCode":"GWM_0003"}}`。
+HTTP 200 是关键 —— 只看状态码的检查会心满意足地说「服务正常」。
+
+E14 现在的硬判据（连续两轮都服务级 499）：
+
+- 打印建议命令（`probe_service_token.py` 出两轮证据 → `adjudicate_04b.py --capped`），
+- **但不自动改账本** —— 改口径要人点头，账本只认 `--capped` 这一次显式动作；
+- 已采行数照旧计入 `rows`，`declared` 移出分母记 `declared_unverifiable`。
+
+落点：`collect/probe_service_token.py`（探测+证据）、`collect/adjudicate_04b.py --capped`（改判）、
+`collect/04b_ledger.json` 的 `capped_by_upstream` 状态与 `capped_layers[]`。

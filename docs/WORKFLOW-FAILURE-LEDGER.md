@@ -50,11 +50,12 @@
 | W33-025 | 2026-10-30 | 采集器逻辑 | 按属性州过滤判县：肯塔基层被标成 `IN` → 旧实现把 **490 万行整层假判成 UNLOCATED** | 用「层属性里的州」当判县依据，而数据横跨州界 | 数据：整层被误判丢弃（490 万行）；账本：unlocated 数虚高 | 全国县索引 + 用清单州做命名/统计，判县只看坐标落在哪个多边形；属性州只用来记 `anomaly`，不参与过滤 | 重算该层 `unlocated` 占比下降且行数守恒；`docs/COUNTY-ASSIGN` 复现 | 09d8472 | 0 |
 | W33-026 | 2026-10-30 | 采集器逻辑 | `collect-oid-range.yml` 的 `layer_timeout` 那行少个空格 → YAML 把整行当标量 → `422` 且 `workflow_dispatch` 入口直接消失 | YAML 键值少空格 | 时间：派单 422，排查一圈 | 加空格；改 workflow 后必须 `yaml.safe_load` 自检 | `python3 -c "import yaml;yaml.safe_load(open('.github/workflows/x.yml'))"`；`gh workflow view` 有 dispatch | 5591172 | 0 |
 | W33-027 | 2026-10-30 | 上游不可达 | 本机 3 轮超时判「上游无数据」，而 CI 同一层采到 **137 万行** | 把「本机不可达」当「上游 0 行」 | 账本：真数据被标 `empty`（白采风险） | 不可达只标 `unverified`，不许 `empty`；`empty` 必须有 `returnCountOnly=0` 或 esri 404；本机 ≠ CI 写进判据 | 重测 3 轮（间隔 31.6/31.1 分钟）后 `unverified` 层的判定有证据 | 7c7a242；be11ebd；86adc5c | 1 |
-| W33-028 | 2026-10-31 | 上游不可达 | NAD-view 层 `/0?f=json`、`returnCountOnly`、`returnIdsOnly` **全部 499 `Token Required`** → 该层已无法再采 | 上游把该服务切成**服务级 token**（连元数据都要 token，且 tier 不足） | 数据：该层永久停采（39,875,268 行是现有上限）；账本：标 `unverified` 而不是 `empty` | 该层标 `unverified(declared_unverifiable)` 并在清单里点名；除非拿到 token，否则不再派 | 三个端点复测仍 499 即确认；preflight E13/E14 报「服务级 token」 | 证据见 `analysis/`（2026-10-31 探测） | 0 |
+| W33-028 | 2026-10-31 | 上游不可达 | NAD-view 层 `/0?f=json`、`returnCountOnly`、`returnIdsOnly` **全部 499 `Token Required`** → 该层已无法再采 | 上游把该服务切成**服务级 token**（连元数据都要 token，且 tier 不足） | 数据：该层永久停采（39,875,268 行是现有上限）；账本：见 W33-033（改判 `capped_by_upstream`，不再挂 unverified） | 该层标 `capped_by_upstream`：已采 39,875,268 行计 `rows`，declared 移出分母记 `declared_unverifiable`；除非拿到 token，否则不再派 | 三个端点复测仍 499 即确认；preflight E13/E14 报「服务级 token」 | 证据见 `analysis/`（2026-10-31 探测） | 0 |
 | W33-029 | 2026-10-31 | 缓存与签名 | `ledger_rebuild` 早先按 tag 名缓存 checkpoint → Release 重发同名文件后**静默复用旧内容** | 缓存键只有文件名 | 账本：用旧检查点算出「完成度」，与资产不符 | 内容寻址缓存 `tag@created_at`（Release 重发 → `created_at` 变 → 自然失效），无需 `--refresh` | 重发 checkpoint 后重跑 `ledger_rebuild`，行数跟着变（不再用旧缓存） | 见 `collect/ledger_rebuild.py` 头注释 | 0 |
 | W33-030 | 2026-10-30 | 测试与CI | 单测把 `step_full_report.py`/`ledger_merge.py` **复制到临时目录**运行，新增依赖没一起 copy → `ModuleNotFoundError` 假红 | 测试用「复制脚本」而不是「按模块导入」 | 假红：CI 红但代码没问题（也掩盖真错） | 复制清单随依赖更新（`ckpt_guard.py`/`ledger_merge.py` 都要 copy）；新增模块时同 PR 改测试 | `test_full_report_tolerance` 与全量 unittest 本地全绿且 CI 绿 | 见 `test_full_report_tolerance.py` | 1 |
 | W33-031 | 2026-10-24 | 测试与CI | `python3 -m py_compile scripts/*.py` 在目录为空时 glob 不展开 → `No such file or directory`，**CI 连续 4 次假红** | shell glob 空展开把字面量当路径 | 假红：4 次 | 改 `compileall.compile_dir()`，目录不存在/为空就跳过并报明确信息 | CI 在空目录分支上不再假红 | ci-smoke.yml 内注释（2026-10-24 事故） | 0 |
 | W33-032 | 2026-10-30 | 采集器逻辑 | 2,327 个已采层里 **1,127 层（48.4%）没有时间字段** → 「增量同步」对它们无效 | 源数据没有 `last_edited_date` 之类字段 | 对外承诺风险：不能承诺「全量可增量」 | 逐层记能力（`LAYER-TIMESTAMP-PROBE`），只有 928 层可增量；对外按层说清 | 重跑探测脚本，分层能力表与账本一致 | 3141bab | 0 |
+| W33-033 | 2026-10-31 | 上游不可达 | 上游把服务切成**服务级 token** 后，整层永久不可采，而账本里它会**伪装成「0 行 / 我们没采」**：三端点全返回 **HTTP 200** + `{"error":{"code":499,"message":"Token Required","messageCode":"GWM_0003"}}` | 只看 HTTP 状态码 → 200 当「服务正常」；账本把「采不到」记成 `missing`/`partial`，等于把上游变更算成我们的欠账 | 账本：97,928,946 行虚假缺口稀释分母（gap% 14.2735% → 5.1331%）；时间：每轮派单都重采一遍、永远 0 行 | ①新状态 `capped_by_upstream`：已采行数照旧计 `rows`，`declared` 移出分母记 `declared_unverifiable`；②判据=**连续两轮** 3 端点全 499（`collect/probe_service_token.py`）；③preflight **E14** 两轮确认后只**建议**改判并打印命令，**不自动改账本** | `adjudicate_04b.py --capped --capped-evidence …` 重放 `--check` = `IDENTICAL`；账本 `capped_by_upstream=1`、`capped_layers[]` 带证据路径；单测 `test_adjudicate_04b`/`test_probe_service_token`/`test_preflight_dispatch` | 见 `docs/STEP04-ADJUDICATED-2026-10-30.md` §3.0；证据 `analysis/04b-token-499-evidence-2026-10-31.json` | 1 |
 
 ## 2. 用法（照抄即可）
 
@@ -68,7 +69,7 @@ python3 collect/preflight_dispatch.py --stage 04b --ledger-waive W33-011
 #    故障清单已查：W33-011,W33-013（或「无」）
 
 # ③ 新坑当天补：加一行 + 证据路径 + 修法 + 验证方式，然后
-git commit -m "ledger: +1 账本与口径   # 例：W33-033 ..."
+git commit -m "ledger: +1 账本与口径   # 例：W33-034 ..."
 ```
 
 ## 3. 证据路径索引（本文引用到的仓内文件）
@@ -82,4 +83,5 @@ git commit -m "ledger: +1 账本与口径   # 例：W33-033 ..."
 - `analysis/nad-view-rebuild-2026-10-31.json`（68 包 / 816 part / 39,875,268 行）
 - `analysis/04b-ledger-restore-events.json`（阶段账本复原事件，只追加）
 - `analysis/04b-upstream-evidence-2026-10-30.json`（上游 returnCount 取证）
+- `analysis/04b-token-499-evidence-2026-10-31.json`（服务级 token：2 轮 × 3 端点全 499，含 499 原文）
 - `collect/tests/test_ledger_merge.py` / `test_ckpt_guard.py` / `test_chain_policy.py`（对应修法的回归）

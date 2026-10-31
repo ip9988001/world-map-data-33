@@ -191,6 +191,39 @@ class EUpstream(unittest.TestCase):
         items = P.judge_upstream([], {}, offline=True)
         self.assertTrue(all(i["status"] == "WARN" for i in items))
 
+    def test_e14_suggests_capped_only_after_two_confirmed_rounds(self):
+        """硬判据（2026-10-31）：连续两轮服务级 499 → 建议 capped_by_upstream + 打印命令；
+        只有一轮 → 不建建议（一次 499 可能只是临时风控）。且**不得自动改账**。"""
+        base = {"http": 200, "count": None, "err": "", "meta_token": True}
+        res = {"twice": dict(base, confirm_service_token=True),
+               "once": dict(base, confirm_service_token=False),
+               "noconfirm": dict(base)}
+        items = P.judge_upstream(list(res), res, min_samples=1, stage="04b",
+                                 urls={k: "https://x/%s/0" % k for k in res})
+        e14 = {i["id"]: i for i in items}["E14"]
+        self.assertEqual(e14["service_token"], ["twice", "once", "noconfirm"])
+        self.assertEqual(e14["capped_candidates"], ["twice"])
+        cmds = e14["capped_commands"]
+        self.assertEqual(len(cmds), 1)
+        self.assertIn("probe_service_token.py --target 'twice=https://x/twice/0'", cmds[0]["probe_cmd"])
+        self.assertIn("adjudicate_04b.py --capped twice", cmds[0]["adjudicate_cmd"])
+        self.assertIn("--capped-evidence analysis/04b-token-499-evidence-", cmds[0]["adjudicate_cmd"])
+        # 两轮未确认的层不得进 capped 候选
+        self.assertNotIn("once", e14["capped_candidates"])
+
+    def test_human_summary_prints_capped_commands(self):
+        """命令必须真的打到 stdout（否则“打印建议命令”等于没打）。"""
+        rep = {"stage": "04b", "ref": "main", "ref_sha": "a" * 40, "verdict": "PASS_WITH_WARNINGS",
+               "fail_n": 0, "warn_n": 1, "checks_total": 1,
+               "checks": [P.item("E14", "E", "声明可复核率", "WARN", "1 层不可复核",
+                                  capped_candidates=["L"],
+                                  capped_commands=[{"layer": "L", "probe_cmd": "PROBE",
+                                                    "adjudicate_cmd": "ADJ"}])]}
+        txt = P.human_summary(rep)
+        self.assertIn("PROBE", txt)
+        self.assertIn("ADJ", txt)
+        self.assertIn("不会自动改", txt)
+
 
 class ApprovedVersion(unittest.TestCase):
     """B3b：已批准版本白名单 —— main 前进了不能静默通过，也不能被当成「版本不一致」误判。"""

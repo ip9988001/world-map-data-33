@@ -102,6 +102,81 @@ class TestAdjudicate04b(unittest.TestCase):
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertIn("IDENTICAL", r.stdout)
 
+    # ---------------------------------------------------------- capped_by_upstream
+    def test_capped_moves_declared_out_of_denominator(self):
+        """服务级 token 的层：declared 移出分母（declared_unverifiable），rows 照旧计入。
+
+        用户定口径（2026-10-31）：gap 必须两只脚站同一条船 —— 分母拿走它的声明，
+        分子也要拿走它的已采行数（rows_verifiable），否则算出负缺口，看着像「超采」。
+        """
+        tok = os.path.join(self.tmp, "analysis", "token.json")
+        json.dump({"schema": "upstream-token-evidence/v1", "stage": "04b",
+                   "generated_at": "2026-10-31T00:46:18Z",
+                   "layers": [{"layer": "half_layer", "layer_url": "https://x/half_layer",
+                               "verdict": "service_level_token", "all_rounds_token": True,
+                               "rounds_n": 2,
+                               "rounds": [{"round": 1, "at": "2026-10-31T00:45:17Z",
+                                           "probes": {}},
+                                          {"round": 2, "at": "2026-10-31T00:46:18Z",
+                                           "probes": {}}]}]},
+                  open(tok, "w", encoding="utf-8"), ensure_ascii=False)
+        out = os.path.join(self.tmp, "collect", "04b_ledger.json")
+        r = self._run("--out", out, "--capped-evidence", tok)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        d = json.load(open(out, encoding="utf-8"))
+        by = {x["layer"]: x for x in d["records"]}
+        capped = by["half_layer"]
+        self.assertEqual(capped["status"], "capped_by_upstream")
+        self.assertIsNone(capped["declared"])
+        self.assertEqual(capped["declared_unverifiable"], 100)
+        self.assertEqual(capped["rows"], 40)                 # 已采行数不吃掉
+        self.assertIsNone(capped["gap"])
+        self.assertEqual(capped["evidence"]["token_error_code"], 499)
+        self.assertEqual(capped["evidence"]["rounds_n"], 2)
+        # 聚合：分母不含 capped，分子也扣除它的行数
+        self.assertEqual(d["capped_by_upstream"], 1)
+        self.assertEqual(d["declared_unverifiable"], 100)
+        self.assertEqual(d["rows_capped"], 40)
+        self.assertEqual(d["rows_verifiable"], d["rows"] - 40)
+        self.assertEqual(d["gap"], d["declared"] - d["rows_verifiable"])
+        self.assertEqual(d["declared_kept_in_denominator"], d["declared"] + 100)
+        self.assertEqual(len(d["capped_layers"]), 1)
+
+    def test_capped_requires_evidence_two_rounds(self):
+        """只有一轮、或 all_rounds_token≠true 的证据不得改判（宁可不动账）。"""
+        tok = os.path.join(self.tmp, "analysis", "token_bad.json")
+        json.dump({"schema": "upstream-token-evidence/v1", "stage": "04b",
+                   "generated_at": "2026-10-31T00:00:00Z",
+                   "layers": [{"layer": "half_layer", "verdict": "service_level_token",
+                               "all_rounds_token": False, "rounds_n": 1, "rounds": []},
+                              {"layer": "unreach", "verdict": "inconclusive",
+                               "all_rounds_token": False, "rounds_n": 2, "rounds": []}]},
+                  open(tok, "w", encoding="utf-8"), ensure_ascii=False)
+        out = os.path.join(self.tmp, "collect", "04b_ledger.json")
+        r = self._run("--out", out, "--capped-evidence", tok)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        d = json.load(open(out, encoding="utf-8"))
+        self.assertEqual(d["capped_by_upstream"], 0)
+        self.assertEqual(d["declared_unverifiable"], 0)
+        self.assertFalse(d["capped_layers"])
+
+    def test_capped_is_idempotent(self):
+        tok = os.path.join(self.tmp, "analysis", "token.json")
+        json.dump({"schema": "upstream-token-evidence/v1", "stage": "04b",
+                   "generated_at": "2026-10-31T00:46:18Z",
+                   "layers": [{"layer": "half_layer", "verdict": "service_level_token",
+                               "all_rounds_token": True, "rounds_n": 2, "rounds": []}]},
+                  open(tok, "w", encoding="utf-8"), ensure_ascii=False)
+        out = os.path.join(self.tmp, "collect", "04b_ledger.json")
+        doc = os.path.join(self.tmp, "docs", "d.md")
+        args = ("--out", out, "--doc", doc, "--capped-evidence", tok)
+        self.assertEqual(self._run(*args).returncode, 0)
+        r = self._run(*args, "--check")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        md = open(doc, encoding="utf-8").read()
+        self.assertIn("capped_by_upstream", md)
+        self.assertIn("declared_unverifiable", md)
+
 
 if __name__ == "__main__":
     unittest.main()
