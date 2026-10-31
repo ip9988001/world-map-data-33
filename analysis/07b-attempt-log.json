@@ -1,0 +1,102 @@
+{
+ "schema": "collect-attempt-log/v1",
+ "stage": "07b",
+ "cap": 3,
+ "at": "2026-10-31T09:09:14Z",
+ "sources": [
+  "collect/ledger/07b_run41184978867.json",
+  "collect/ledger/07b_shard00.json",
+  "collect/ledger/07b_shard01.json",
+  "collect/ledger/07b_shard02.json"
+ ],
+ "append": true,
+ "kept_from_prev_n": 0,
+ "attempts_n": 2,
+ "layers_n": 2,
+ "unstable_n": 0,
+ "kind_rule": "失败类型先判 token(499) → 503 → 非 JSON → 超时 → 4xx → DNS/TLS → other；503 的正文里带 «Wait timeout…»，所以必须排在「超时」之前，否则会被误记成超时。",
+ "cap_rule": "同一层连续 3 次尝试失败且**没有进展**（每次尝试的 rows/prior_units 全一样）→ 判 upstream_unstable：默认从待采队列剔除，只有 `--force-unstable-layer <层>` 能放回去",
+ "unstable": [],
+ "attempts": [
+  {
+   "layer": "138c05_rest_services_MiddlesexCounty_Base_Layers_MapServer_0",
+   "at": "2026-10-31T08:54:00Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 8.7,
+   "rows": 2131,
+   "prior_units": 0,
+   "run": "41184978867",
+   "shard": 0,
+   "source": "07b_run41184978867.json",
+   "err": ""
+  },
+  {
+   "layer": "rcgis_rest_services_Addressing_Addressing_public_MapServer_0",
+   "at": "2026-10-31T09:09:14Z",
+   "at_src": "record",
+   "kind": "http_4xx",
+   "rc": 1,
+   "elapsed_s": 5.3,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "41184978867",
+   "shard": 0,
+   "source": "07b_run41184978867.json",
+   "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU"
+  }
+ ],
+ "layers": {
+  "138c05_rest_services_MiddlesexCounty_Base_Layers_MapServer_0": {
+   "layer": "138c05_rest_services_MiddlesexCounty_Base_Layers_MapServer_0",
+   "attempts_n": 1,
+   "kinds": [
+    "other"
+   ],
+   "kinds_n": {
+    "other": 1
+   },
+   "first_at": "2026-10-31T08:54:00Z",
+   "last_at": "2026-10-31T08:54:00Z",
+   "last_kind": "other",
+   "rows_at_last": 2131,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 8.7,
+   "elapsed_min": 0.1,
+   "unstable": false,
+   "runs": [
+    "41184978867"
+   ],
+   "shards": [
+    0
+   ]
+  },
+  "rcgis_rest_services_Addressing_Addressing_public_MapServer_0": {
+   "layer": "rcgis_rest_services_Addressing_Addressing_public_MapServer_0",
+   "attempts_n": 1,
+   "kinds": [
+    "http_4xx"
+   ],
+   "kinds_n": {
+    "http_4xx": 1
+   },
+   "first_at": "2026-10-31T09:09:14Z",
+   "last_at": "2026-10-31T09:09:14Z",
+   "last_kind": "http_4xx",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 5.3,
+   "elapsed_min": 0.1,
+   "unstable": false,
+   "runs": [
+    "41184978867"
+   ],
+   "shards": [
+    0
+   ]
+  }
+ }
+}
