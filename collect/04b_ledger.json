@@ -10,15 +10,16 @@
  "capped_by_upstream": 1,
  "failed": 0,
  "missing": 5,
- "unverified": 5,
- "upstream_unstable": 0,
+ "unverified": 3,
+ "upstream_unstable": 2,
  "skipped_done": 0,
  "buckets": {
   "capped_by_upstream": 1,
   "ok": 256,
   "missing": 5,
   "partial": 4,
-  "unverified": 5,
+  "unverified": 3,
+  "upstream_unstable": 2,
   "empty": 1
  },
  "bucket_meaning": {
@@ -74,11 +75,56 @@
  "partition_duplicate_rule": "同一 base 层、同一上游 url 的 `@<分区>` 层若 Σ declared > 1.5×returnCount → 重复计数：declared 置 null（原值留在逐层 declared_duplicate_partition）、status 改 partial；采到的重复行进 rows_with_partition_dup，**08（3 元组去重）之前任何对外覆盖率不许包含重复行**。",
  "complete": false,
  "complete_note": "complete = 「没有还能试的缺口」（missing/unverified 均为 0）；upstream_unstable 是「试过 N 次、收益趋零」的终结状态，不再算作可重试缺口，但仍计入 declared 分母与 gap（行确实没采到，不许隐身）",
- "upstream_unstable_layers": [],
+ "upstream_unstable_layers": [
+  {
+   "layer": "yil_gov_traditional_rest_services_addressZipCode_MapServer_0",
+   "declared": 1381118,
+   "rows": 0,
+   "gap": 1381118,
+   "attempts_n": 4,
+   "kinds": [
+    "other",
+    "other",
+    "other",
+    "http_503"
+   ],
+   "elapsed_min": 21.9,
+   "first_at": "2026-10-30T16:59:40Z",
+   "last_at": "2026-10-31T01:30:24Z",
+   "no_progress": true,
+   "runs": [
+    "41092912755"
+   ],
+   "forced_back": false,
+   "evidence": "analysis/04b-attempt-log.json"
+  },
+  {
+   "layer": "rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5",
+   "declared": 368312,
+   "rows": 0,
+   "gap": 368312,
+   "attempts_n": 4,
+   "kinds": [
+    "http_4xx",
+    "http_4xx",
+    "http_4xx",
+    "http_4xx"
+   ],
+   "elapsed_min": 7.7,
+   "first_at": "2026-10-30T17:02:09Z",
+   "last_at": "2026-10-31T01:27:09Z",
+   "no_progress": true,
+   "runs": [
+    "41092912755"
+   ],
+   "forced_back": false,
+   "evidence": "analysis/04b-attempt-log.json"
+  }
+ ],
  "retry_cap": {
   "path": "analysis/04b-attempt-log.json",
   "cap": 3,
-  "attempts_logged_n": 13,
+  "attempts_logged_n": 25,
   "layers_logged_n": 11,
   "rule": "同一层连续 3 次尝试失败且无进展（rows/prior_units 逐次不变）→ 判 upstream_unstable；默认从待采队列剔除（full_plan / preflight D13），只有 `--force-unstable-layer <层>` 能放回去",
   "failed_kinds": [
@@ -100,7 +146,7 @@
    "other": "其它"
   },
   "forced_back": [],
-  "applied_n": 0
+  "applied_n": 2
  },
  "gap_by_class": {
   "capped_by_upstream": {
@@ -114,25 +160,26 @@
    ]
   },
   "upstream_unstable": {
-   "layers_n": 0,
-   "declared_rows": 0,
-   "declared_in_denominator": 0,
+   "layers_n": 2,
+   "declared_rows": 1749430,
+   "declared_in_denominator": 1749430,
    "rows": 0,
-   "gap_rows": 0,
-   "layers": []
+   "gap_rows": 1749430,
+   "layers": [
+    "yil_gov_traditional_rest_services_addressZipCode_MapServer_0",
+    "rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5"
+   ]
   },
   "unverified": {
-   "layers_n": 5,
-   "declared_rows": 4235627,
-   "declared_in_denominator": 4235627,
+   "layers_n": 3,
+   "declared_rows": 2486197,
+   "declared_in_denominator": 2486197,
    "rows": 0,
-   "gap_rows": 4235627,
+   "gap_rows": 2486197,
    "layers": [
     "tyil_gov_traditional_rest_services_cookVwrDynmc_MapServer_63",
-    "yil_gov_traditional_rest_services_addressZipCode_MapServer_0",
     "is4_ocfl_net_arcgis_rest_services_AGOL_Open_Data_MapServer_0",
-    "g_rest_services_Basemap_Address_Points_EagleView_MapServer_0",
-    "rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5"
+    "g_rest_services_Basemap_Address_Points_EagleView_MapServer_0"
    ]
   },
   "missing": {
@@ -276,10 +323,10 @@
   {
    "layer": "yil_gov_traditional_rest_services_addressZipCode_MapServer_0",
    "from": "failed",
-   "to": "unverified",
+   "to": "upstream_unstable",
    "declared_before": 1381118,
    "declared_after": 1381118,
-   "reason": "上游不可达（URLError: <urlopen error timed out>），本层无数据 → 无法判定，不许当 0 数据"
+   "reason": "上游不稳：连续 4 次尝试失败且无进展（其它、其它、其它、503），累计 21.9 分钟 → 重试收益趋零。默认从待采队列剔除；要再试请显式 `--force-unstable-layer yil_gov_traditional_rest_services_addressZipCode_MapServer_0`"
   },
   {
    "layer": "rvices_location_Address_Points_Modifications_FeatureServer_0",
@@ -316,10 +363,10 @@
   {
    "layer": "rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5",
    "from": "failed",
-   "to": "unverified",
+   "to": "upstream_unstable",
    "declared_before": 368312,
    "declared_after": 368312,
-   "reason": "上游不可达（URLError: <urlopen error timed out>），本层无数据 → 无法判定，不许当 0 数据"
+   "reason": "上游不稳：连续 4 次尝试失败且无进展（4xx、4xx、4xx、4xx），累计 7.7 分钟 → 重试收益趋零。默认从待采队列剔除；要再试请显式 `--force-unstable-layer rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5`"
   },
   {
    "layer": "_arcgis1_rest_services_FLEXMOBILE_Address_Points_MapServer_0",
@@ -613,11 +660,12 @@
    "shard": 7,
    "gap": 6585376,
    "gap_pct": 100.0,
-   "attempts_n": 1,
+   "attempts_n": 2,
    "failure_kinds": [
+    "other",
     "other"
    ],
-   "attempts_elapsed_min": 21.5,
+   "attempts_elapsed_min": 43.0,
    "attempt_log": [
     {
      "at": "2026-10-30T17:09:02Z",
@@ -628,6 +676,17 @@
      "rc": 3,
      "shard": 0,
      "run": "41092912755",
+     "err": ""
+    },
+    {
+     "at": "2026-10-31T01:48:40Z",
+     "kind": "other",
+     "elapsed_s": 1290.9,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": 3,
+     "shard": 4,
+     "run": "",
      "err": ""
     }
    ],
@@ -745,12 +804,24 @@
    },
    "gap": null,
    "gap_pct": null,
-   "attempts_n": 1,
+   "attempts_n": 2,
    "failure_kinds": [
+    "timeout",
     "timeout"
    ],
-   "attempts_elapsed_min": 55.0,
+   "attempts_elapsed_min": 110.0,
    "attempt_log": [
+    {
+     "at": "2026-10-30T22:21:16Z",
+     "kind": "timeout",
+     "elapsed_s": 3300.1,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": -1,
+     "shard": 1,
+     "run": "",
+     "err": ""
+    },
     {
      "at": "2026-10-31T01:14:07Z",
      "kind": "timeout",
@@ -1281,12 +1352,24 @@
    "shard": 1,
    "gap": 3618012,
    "gap_pct": 100.0,
-   "attempts_n": 1,
+   "attempts_n": 2,
    "failure_kinds": [
+    "timeout",
     "timeout"
    ],
-   "attempts_elapsed_min": 55.0,
+   "attempts_elapsed_min": 110.0,
    "attempt_log": [
+    {
+     "at": "2026-10-30T21:49:25Z",
+     "kind": "timeout",
+     "elapsed_s": 3300.1,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": -1,
+     "shard": 0,
+     "run": "",
+     "err": ""
+    },
     {
      "at": "2026-10-31T01:14:07Z",
      "kind": "timeout",
@@ -1990,12 +2073,24 @@
    "shard": 2,
    "gap": 1381118,
    "gap_pct": 100.0,
-   "attempts_n": 1,
+   "attempts_n": 2,
    "failure_kinds": [
+    "http_503",
     "http_503"
    ],
-   "attempts_elapsed_min": 5.8,
+   "attempts_elapsed_min": 11.5,
    "attempt_log": [
+    {
+     "at": "2026-10-30T22:21:16Z",
+     "kind": "http_503",
+     "elapsed_s": 342.5,
+     "rows": 2000,
+     "prior_units": 0,
+     "rc": 1,
+     "shard": 1,
+     "run": "",
+     "err": "query_fail:svcerr:{\"code\": 503, \"message\": \"Error handling service request :Wait timeout for the request exceeded.\", \"details\": []}"
+    },
     {
      "at": "2026-10-31T01:14:07Z",
      "kind": "http_503",
@@ -2031,17 +2126,19 @@
    "last_upload": null,
    "problems": [],
    "warn": [],
-   "status": "unverified",
-   "reason": "上游不可达（URLError: <urlopen error timed out>），本层无数据 → 无法判定，不许当 0 数据",
+   "status": "upstream_unstable",
+   "reason": "上游不稳：连续 4 次尝试失败且无进展（其它、其它、其它、503），累计 21.9 分钟 → 重试收益趋零。默认从待采队列剔除；要再试请显式 `--force-unstable-layer yil_gov_traditional_rest_services_addressZipCode_MapServer_0`",
    "shard": 4,
    "gap": 1381118,
    "gap_pct": 100.0,
-   "attempts_n": 2,
+   "attempts_n": 4,
    "failure_kinds": [
+    "other",
+    "other",
     "other",
     "http_503"
    ],
-   "attempts_elapsed_min": 10.9,
+   "attempts_elapsed_min": 21.9,
    "attempt_log": [
     {
      "at": "2026-10-30T16:59:40Z",
@@ -2052,6 +2149,28 @@
      "rc": 1,
      "shard": 0,
      "run": "41092912755",
+     "err": ""
+    },
+    {
+     "at": "2026-10-30T16:59:40Z",
+     "kind": "other",
+     "elapsed_s": 310.7,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": 1,
+     "shard": 4,
+     "run": "",
+     "err": ""
+    },
+    {
+     "at": "2026-10-30T19:26:29Z",
+     "kind": "other",
+     "elapsed_s": 343.8,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": 1,
+     "shard": 2,
+     "run": "",
      "err": ""
     },
     {
@@ -3464,12 +3583,14 @@
    "shard": 4,
    "gap": 716472,
    "gap_pct": 100.0,
-   "attempts_n": 2,
+   "attempts_n": 4,
    "failure_kinds": [
+    "non_json",
+    "non_json",
     "non_json",
     "non_json"
    ],
-   "attempts_elapsed_min": 1.1,
+   "attempts_elapsed_min": 2.2,
    "attempt_log": [
     {
      "at": "2026-10-30T17:00:14Z",
@@ -3480,6 +3601,28 @@
      "rc": 1,
      "shard": 0,
      "run": "41092912755",
+     "err": "query_fail:Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+     "at": "2026-10-30T17:00:14Z",
+     "kind": "non_json",
+     "elapsed_s": 33.2,
+     "rows": 2000,
+     "prior_units": 1,
+     "rc": 1,
+     "shard": 4,
+     "run": "",
+     "err": "query_fail:Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+     "at": "2026-10-30T19:27:00Z",
+     "kind": "non_json",
+     "elapsed_s": 31.2,
+     "rows": 2000,
+     "prior_units": 0,
+     "rc": 1,
+     "shard": 2,
+     "run": "",
      "err": "query_fail:Expecting value: line 1 column 1 (char 0)"
     },
     {
@@ -5930,16 +6073,19 @@
    "last_upload": null,
    "problems": [],
    "warn": [],
-   "status": "unverified",
-   "reason": "上游不可达（URLError: <urlopen error timed out>），本层无数据 → 无法判定，不许当 0 数据",
+   "status": "upstream_unstable",
+   "reason": "上游不稳：连续 4 次尝试失败且无进展（4xx、4xx、4xx、4xx），累计 7.7 分钟 → 重试收益趋零。默认从待采队列剔除；要再试请显式 `--force-unstable-layer rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5`",
    "shard": 4,
    "gap": 368312,
    "gap_pct": 100.0,
-   "attempts_n": 1,
+   "attempts_n": 4,
    "failure_kinds": [
+    "http_4xx",
+    "http_4xx",
+    "http_4xx",
     "http_4xx"
    ],
-   "attempts_elapsed_min": 1.9,
+   "attempts_elapsed_min": 7.7,
    "attempt_log": [
     {
      "at": "2026-10-30T17:02:09Z",
@@ -5950,6 +6096,39 @@
      "rc": 1,
      "shard": 0,
      "run": "41092912755",
+     "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU"
+    },
+    {
+     "at": "2026-10-30T17:02:09Z",
+     "kind": "http_4xx",
+     "elapsed_s": 115.5,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": 1,
+     "shard": 4,
+     "run": "",
+     "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU"
+    },
+    {
+     "at": "2026-10-30T19:28:22Z",
+     "kind": "http_4xx",
+     "elapsed_s": 81.3,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": 1,
+     "shard": 2,
+     "run": "",
+     "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU"
+    },
+    {
+     "at": "2026-10-31T01:27:09Z",
+     "kind": "http_4xx",
+     "elapsed_s": 150.9,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": 1,
+     "shard": 4,
+     "run": "",
      "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU"
     }
    ],
@@ -6729,12 +6908,24 @@
    "shard": 2,
    "gap": 303175,
    "gap_pct": 100.0,
-   "attempts_n": 1,
+   "attempts_n": 2,
    "failure_kinds": [
+    "timeout",
     "timeout"
    ],
-   "attempts_elapsed_min": 55.0,
+   "attempts_elapsed_min": 110.0,
    "attempt_log": [
+    {
+     "at": "2026-10-30T22:21:16Z",
+     "kind": "timeout",
+     "elapsed_s": 3300.1,
+     "rows": 0,
+     "prior_units": 0,
+     "rc": -1,
+     "shard": 1,
+     "run": "",
+     "err": ""
+    },
     {
      "at": "2026-10-31T01:14:07Z",
      "kind": "timeout",

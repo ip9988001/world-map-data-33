@@ -162,19 +162,83 @@ def ledger_files(base_dir, stage="04b") -> list:
     return [f for f in files if os.path.exists(f)]
 
 
+def _git(args, cwd):
+    import subprocess
+    try:
+        r = subprocess.run(["git"] + args, cwd=cwd, capture_output=True, text=True, timeout=120)
+    except Exception:                                       # noqa: BLE001
+        return 1, ""
+    return r.returncode, (r.stdout or "")
+
+
+def attempts_from_git(base_dir=None, stage="04b", cwd=None, limit=200) -> list:
+    """从 **git 历史**里回掳旧尝试：片账本每轮被覆盖，历史尝试只能去 commit 里找。
+
+    为什么必须做（2026-10-31）：`04b_shard03.json` 只在工作区存在一份 —— 每轮 run 都把上一轮
+    的失败记录冲掉。不翻历史，连续失败次数永远从 0 开始数，「连续 3 次」的规矩就永远不触发。
+
+    怎么去重：**按 blob sha**。同一份片账本被后续 commit 原样再提交一次不会重复计数；
+    不同 run 的账本 blob 不同 → 即使失败耗时一模一样（eg. 都是 3300.1s 的 55 分钟超时）也算两次。
+    当前工作区文件对应的那个 blob 会被跳过（那份已经由 `attempts_from_ledger` 读过了）。
+    """
+    cwd = cwd or ROOT
+    base = os.path.abspath(base_dir or os.path.join(cwd, "collect", "ledger"))
+    cur_blobs = set()
+    out, seen = [], set()
+    for f in ledger_files(base, stage):
+        rc, sha = _git(["hash-object", f], cwd)
+        if rc == 0 and sha.strip():
+            cur_blobs.add(sha.strip())
+    for f in ledger_files(base, stage):
+        try:
+            rp = os.path.relpath(f, cwd)
+        except ValueError:                                  # Windows 跨盘符等
+            continue
+        rc, log = _git(["log", "--format=%H", "-n", str(limit), "--", rp], cwd)
+        if rc != 0 or not log.strip():
+            continue
+        for commit in log.split()[:limit]:
+            rc2, blob = _git(["rev-parse", "%s:%s" % (commit, rp)], cwd)
+            blob = blob.strip()
+            if rc2 != 0 or not blob or blob in seen or blob in cur_blobs:
+                continue
+            seen.add(blob)
+            rc3, content = _git(["show", "%s:%s" % (commit, rp)], cwd)
+            if rc3 != 0 or not content.strip():
+                continue
+            try:
+                d = json.loads(content)
+            except Exception:                               # noqa: BLE001
+                continue
+            shard = d.get("shard")
+            top_at = str(d.get("at") or "")
+            for r in d.get("records") or []:
+                if str(r.get("status") or "") != "failed":
+                    continue
+                a = attempt_of(r, at=top_at, run=str(d.get("run_id") or ""),
+                               shard=shard if isinstance(shard, int) else None,
+                               source="git:%s@%s" % (rp, commit[:7]))
+                a["from_git"] = True
+                out.append(a)
+    return out
+
+
 def dedupe(attempts) -> list:
     """同一次尝试在 run 快照与片账本里各出现一次 → 合并成一条。
 
     去重键不含时间戳：片账本的 failed 记录常常没有 `at`，回退成「账本生成时间」，
     两次读同一份记录会得到不同 at；但 elapsed_s / rc / prior_units 是同一次尝试的指纹。
     反例要照顾：同一层在不同时间用同样耗时失败（33.4s 的两轮）是**两次**尝试，不是一次 ——
-    所以只要记录自带 `at`，就把它算进键里。
+    所以只要记录自带 `at`，就把它算进键里。`from_git` 的条目按 source（path@commit）区分：
+    历史回掳的条目与工作区条目永不合并，否则「第 3 次失败」会被合回第 1 次。
     """
     seen, out = set(), []
     for a in sorted(attempts, key=lambda x: (x["layer"], x["at"], x["kind"],
-                                             -1 if x["elapsed_s"] is None else x["elapsed_s"])):
+                                             -1 if x["elapsed_s"] is None else x["elapsed_s"],
+                                             x.get("source") or "")):
         key = (a["layer"], a["kind"], a["elapsed_s"], a["rc"], a["prior_units"],
-               a["at"] if a.get("at_src") == "record" else "")
+               a["at"] if a.get("at_src") == "record" else "",
+               a.get("source") if a.get("from_git") else "")
         if key in seen:
             continue
         seen.add(key)
@@ -182,7 +246,7 @@ def dedupe(attempts) -> list:
     return out
 
 
-def collect_attempts(base_dir=None, stage="04b") -> tuple:
+def collect_attempts(base_dir=None, stage="04b", git_history=True, git_cwd=None) -> tuple:
     """返回 (attempts, sources)。sources 是这次读了哪些账本（写进产物，便于复核）。"""
     files = ledger_files(base_dir, stage)
     attempts = []
@@ -191,7 +255,13 @@ def collect_attempts(base_dir=None, stage="04b") -> tuple:
             attempts += attempts_from_ledger(f, stage=stage)
         except Exception:                                  # noqa: BLE001
             continue
-    return dedupe(attempts), [os.path.relpath(f, ROOT) for f in files]
+    src = [os.path.relpath(f, ROOT) for f in files]
+    if git_history:
+        hist = attempts_from_git(base_dir, stage, cwd=git_cwd)
+        if hist:
+            attempts += hist
+            src.append("git-history(%d 条旧尝试)" % len(hist))
+    return dedupe(attempts), src
 
 
 def _progress(a) -> tuple:
@@ -261,8 +331,11 @@ def partition_queue(layer_ids, summary, force=(), cap=RETRY_CAP) -> tuple:
     return keep, excluded, forced_back
 
 
-def build(base_dir=None, stage="04b", cap=RETRY_CAP, prev_attempts=None) -> dict:
-    attempts, sources = collect_attempts(base_dir, stage)
+def build(base_dir=None, stage="04b", cap=RETRY_CAP, prev_attempts=None,
+          git_history=True, git_cwd=None) -> dict:
+    """产物构建。git_cwd 只给测试用（默认在仓库根跑 git）。"""
+    attempts, sources = collect_attempts(base_dir, stage, git_history=git_history,
+                                         git_cwd=git_cwd)
     # ★ 追加而不是重建（2026-10-31）：片账本每轮被新 run 覆盖，历史尝试会跟着消失 ——
     #   如果每次都「从现存账本重建」，连续失败次数永远涨不到 3，重试上限就是纸面的。
     #   所以：旧日志里的尝试一律保留，新读到的只是并进来（靠指纹去重，不会重复计数）。
@@ -301,6 +374,8 @@ def main() -> int:
     ap.add_argument("--rebuild", action="store_true",
                     help="丢掉旧日志、只从现存账本重建（默认追加：历史尝试不因片账本被覆盖而消失）")
     ap.add_argument("--unstable-only", action="store_true", help="只打印到上限的层（给脚本用）")
+    ap.add_argument("--no-git-history", action="store_true",
+                    help="不从 git 历史回掳旧尝试（默认回掳：片账本每轮被覆盖，不回掳就数不到 3 次）")
     ap.add_argument("--json", action="store_true", help="打印完整 JSON")
     a = ap.parse_args()
 
@@ -310,7 +385,8 @@ def main() -> int:
             prev = jload(a.out).get("attempts") or []
         except Exception:                                  # noqa: BLE001
             prev = []
-    log = build(a.base_dir or None, a.stage, a.cap, prev_attempts=prev)
+    log = build(a.base_dir or None, a.stage, a.cap, prev_attempts=prev,
+                git_history=not a.no_git_history)
     if a.unstable_only:
         print(json.dumps({"cap": log["cap"], "unstable_n": log["unstable_n"],
                           "unstable": log["unstable"]}, ensure_ascii=False, indent=1))

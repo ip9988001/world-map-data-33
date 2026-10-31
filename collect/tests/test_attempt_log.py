@@ -186,6 +186,64 @@ class AppendMode(unittest.TestCase):
         b = json.dumps(A.build(base, "04b", 3), ensure_ascii=False, indent=1)
         self.assertEqual(a, b)
 
+class GitHistory(unittest.TestCase):
+    """片账本每轮被覆盖 → 旧尝试只能从 git 历史回掳（2026-10-31）。
+
+    不翻历史的话，「连续 3 次失败」永远从 0 开始数，规矩就永远不触发。
+    去重按 blob sha：同一份账本被后续 commit 原样再提交一次不重复计数；
+    不同 run 的账本 blob 不同 → 即使失败耗时一模一样（都是 3300.1s 的 55 分钟超时）也算两次。
+    """
+
+    def setUp(self):
+        import subprocess
+        self.tmp = tempfile.mkdtemp()
+        self.led = os.path.join(self.tmp, "collect", "ledger")
+        os.makedirs(self.led, exist_ok=True)
+        self.subprocess = subprocess
+        for cmd in (["git", "init", "-q"], ["git", "config", "user.email", "t@t"],
+                    ["git", "config", "user.name", "t"]):
+            subprocess.run(cmd, cwd=self.tmp, check=True, capture_output=True)
+
+    def tearDown(self):
+        import shutil
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _commit(self, records, at, msg="run"):
+        ledger(os.path.join(self.led, "04b_shard03.json"), records, at=at)
+        self.subprocess.run(["git", "add", "-A"], cwd=self.tmp, check=True, capture_output=True)
+        self.subprocess.run(["git", "commit", "-q", "--allow-empty", "-m", msg], cwd=self.tmp,
+                            check=True, capture_output=True)
+
+    def test_overwritten_shard_ledger_history_is_recovered(self):
+        r = lambda: rec("L", reason="job 内单层超时 55 分钟", rc=-1, elapsed_s=3300.1, at="")
+        self._commit([r()], "2026-10-30T17:00:00Z")
+        self._commit([r()], "2026-10-30T20:00:00Z")
+        self._commit([r()], "2026-10-31T01:30:00Z")       # 工作区只剩最后一份
+        live = A.attempts_from_ledger(os.path.join(self.led, "04b_shard03.json"))
+        self.assertEqual(len(live), 1)
+        hist = A.attempts_from_git(self.led, "04b", cwd=self.tmp)
+        self.assertEqual(len(hist), 2)                    # 前两份 blob（当前那份跳过）
+        log = A.build(self.led, "04b", 3, git_cwd=self.tmp)
+        self.assertEqual(log["attempts_n"], 3)
+        self.assertEqual(log["layers"]["L"]["attempts_n"], 3)
+        self.assertTrue(log["layers"]["L"]["unstable"])   # 3 次同样耗时、无进展 → 到上限
+
+    def test_identical_recommit_does_not_double_count(self):
+        r = lambda: rec("L", err="Expecting value", elapsed_s=33.4, at="")
+        self._commit([r()], "2026-10-31T01:00:00Z")
+        self._commit([r()], "2026-10-31T01:00:00Z", msg="touch other file")   # 内容没变
+        hist = A.attempts_from_git(self.led, "04b", cwd=self.tmp)
+        # 同一 blob 只算一次；当前工作区那一份也在 cur_blobs 里被跳过
+        self.assertEqual(len(hist), 0)
+
+    def test_no_git_history_flag(self):
+        r = lambda: rec("L", err="Expecting value", elapsed_s=33.4, at="")
+        self._commit([r()], "2026-10-30T20:00:00Z")
+        self._commit([r()], "2026-10-31T01:00:00Z")
+        on = A.build(self.led, "04b", 3, git_history=True, git_cwd=self.tmp)
+        off = A.build(self.led, "04b", 3, git_history=False, git_cwd=self.tmp)
+        self.assertGreater(on["attempts_n"], off["attempts_n"])
+
 
 if __name__ == "__main__":
     unittest.main()
