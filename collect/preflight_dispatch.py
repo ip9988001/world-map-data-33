@@ -92,6 +92,7 @@ APPROVED_MAIN = {
     "d5b5db2": "4-7 停车线 + FREEZE/ROLLBACK 口径（本门禁的基线）",
     "f68c002": "chore/ledger-merge-fix 合入（单 run 不覆盖阶段账本 + 状态优先级合并 + 04b 账本复原）",
     "3f3c9b9": "rows 回退护栏（regressions[]，不许静默取大）合入",
+    "f55f6a5": "回退摘要加「处置分布」（分清哪类真把阶段账本 rows 改小；只动说明与单测，不改合并规则）",
 }
 
 PKG_RE = re.compile(r"-u\d{5}\.tar\.gz$")
