@@ -1,0 +1,459 @@
+{
+ "schema": "collect-gap-classification/v1",
+ "stage": "05b",
+ "at": "2026-10-31T08:19:39Z",
+ "run_id": "41167836540",
+ "rule": "判序即判据：404/HTML → unverified；超时 / 5xx·svcerr → upstream_unstable；其余有行 → partial；0 行且无上游证据 → missing。不猜上游。",
+ "counts": {
+  "partial": 7,
+  "upstream_unstable": 19,
+  "unverified": 4,
+  "missing": 1
+ },
+ "layers_n": 31,
+ "layers": [
+  {
+   "layer": "ices_GeorginaMap_W84_SiteAddressPoint_Labels_W84_MapServer_0",
+   "from_status": "failed",
+   "class": "partial",
+   "reason": "有数据（20,570 行），缺口 2,676 行——能补、要补，不是 failed",
+   "rows": 20570,
+   "declared": 23246,
+   "elapsed_s": 15.2,
+   "attempts_n": 1,
+   "failure_kinds": [
+    "other"
+   ],
+   "attempts_elapsed_min": 0.3
+  },
+  {
+   "layer": "st_services_GeorginaMap_W84_SiteAddressPoint_W84_MapServer_0",
+   "from_status": "failed",
+   "class": "partial",
+   "reason": "有数据（20,567 行），缺口 2,674 行——能补、要补，不是 failed",
+   "rows": 20567,
+   "declared": 23241,
+   "elapsed_s": 14.6,
+   "attempts_n": 1,
+   "failure_kinds": [
+    "other"
+   ],
+   "attempts_elapsed_min": 0.2
+  },
+  {
+   "layer": "84Po4FBDs_arcgis_rest_services_Address_Point_FeatureServer_0",
+   "from_status": "partial",
+   "class": "partial",
+   "reason": "已采 26,616 行 ≥ 声明 14,616 行（超采 12,000 行），只是状态没收敛——不用再采",
+   "rows": 26616,
+   "declared": 14616,
+   "elapsed_s": 12.4,
+   "attempts_n": null,
+   "failure_kinds": [],
+   "attempts_elapsed_min": null
+  },
+  {
+   "layer": "ellington_ca_server_rest_services_Parcels_Public_MapServer_1",
+   "from_status": "failed",
+   "class": "partial",
+   "reason": "有数据（17,270 行），缺口 25 行——能补、要补，不是 failed",
+   "rows": 17270,
+   "declared": 17295,
+   "elapsed_s": 12.1,
+   "attempts_n": 2,
+   "failure_kinds": [
+    "other",
+    "other"
+   ],
+   "attempts_elapsed_min": 0.4
+  },
+  {
+   "layer": "nDataMaps_OpenDataMAP_InfraZonePropBound_Layers_MapServer_33",
+   "from_status": "failed",
+   "class": "partial",
+   "reason": "有数据（9,602 行），缺口 259 行——能补、要补，不是 failed",
+   "rows": 9602,
+   "declared": 9861,
+   "elapsed_s": 11.8,
+   "attempts_n": 1,
+   "failure_kinds": [
+    "other"
+   ],
+   "attempts_elapsed_min": 0.2
+  },
+  {
+   "layer": "wi_us_arcgis_rest_services_RichlandCo_GIS_Public_MapServer_6",
+   "from_status": "failed",
+   "class": "partial",
+   "reason": "有数据（9,101 行），缺口 523 行——能补、要补，不是 failed",
+   "rows": 9101,
+   "declared": 9624,
+   "elapsed_s": 11.5,
+   "attempts_n": 1,
+   "failure_kinds": [
+    "other"
+   ],
+   "attempts_elapsed_min": 0.2
+  },
+  {
+   "layer": "us_arcgis_rest_services_Addressing_AddressPoints_MapServer_0",
+   "from_status": "failed",
+   "class": "partial",
+   "reason": "有数据（6,616 行），缺口 7,854 行——能补、要补，不是 failed",
+   "rows": 6616,
+   "declared": 14470,
+   "elapsed_s": 7.9,
+   "attempts_n": 1,
+   "failure_kinds": [
+    "other"
+   ],
+   "attempts_elapsed_min": 0.1
+  },
+  {
+   "layer": "paca_wi_us_arcgis_rest_services_Public_OpenData_MapServer_24",
+   "from_status": "failed",
+   "class": "upstream_unstable",
+   "reason": "单层超时：连得上但给不出数据，再试一轮仍是同一个超时",
+   "rows": null,
+   "declared": null,
+   "elapsed_s": 10800.1,
+   "attempts_n": 2,
+   "failure_kinds": [
+    "timeout",
+    "timeout"
+   ],
+   "attempts_elapsed_min": 240.0
+  },
+  {
+   "layer": "tamonica_gov_server_rest_services_Address_Points_MapServer_0",
+   "from_status": "failed",
+   "class": "upstream_unstable",
+   "reason": "单层超时：连得上但给不出数据，再试一轮仍是同一个超时",
+   "rows": null,
+   "declared": null,
+   "elapsed_s": 10800.1,
+   "attempts_n": 2,
+   "failure_kinds": [
+    "timeout",
+    "timeout"
+   ],
+   "attempts_elapsed_min": 240.0
+  },
+  {
+   "layer": "untywi_gov_vilasgis_rest_services_V4_SiteAddress_MapServer_0",
+   "from_status": "failed",
+   "class": "upstream_unstable",
+   "reason": "单层超时：连得上但给不出数据，再试一轮仍是同一个超时",
+   "rows": null,
+   "declared": null,
+   "elapsed_s": 10800.1,
+   "attempts_n": 2,
+   "failure_kinds": [
+    "timeout",
+    "timeout"
+   ],
+   "attempts_elapsed_min": 240.0
+  },
+  {
+   "layer": "almbeach_com_arcgis_rest_services_BaseData_Situs_MapServer_0",
+   "from_status": "failed",
+   "class": "upstream_unstable",
+   "reason": "单层超时：连得上但给不出数据，再试一轮仍是同一个超时",
+   "rows": null,
+   "declared": null,
+   "elapsed_s": 3600.1,
+   "attempts_n": 1,
+   "failure_kinds": [
+    "timeout"
+   ],
+   "attempts_elapsed_min": 60.0
+  },
+  {
+   "layer": "county_com_arcgis_rest_services_features_Address_MapServer_0",
+   "from_status": "failed",
+   "class": "upstream_unstable",
+   "reason": "单层超时：连得上但给不出数据，再试一轮仍是同一个超时",
+   "rows": null,
+   "declared": null,
+   "elapsed_s": 3600.1,
+   "attempts_n": 1,
+   "failure_kinds": [
+    "timeout"
+   ],
+   "attempts_elapsed_min": 60.0
+  },
+  {
+   "layer": "_services_NG911_ReadOnly_NG911_Addressing_Layers_MapServer_0",
+   "from_status": "failed",
+   "class": "upstream_unstable",
+   "reason": "单层超时：连得上但给不出数据，再试一轮仍是同一个超时",
+   "rows": null,
+   "declared": null,
+   "elapsed_s": 3600.0,
+   "attempts_n": 1,
+   "failure_kinds": [
+    "timeout"
+   ],
+   "attempts_elapsed_min": 60.0
+  },
+  {
+   "layer": "buncombecounty_org_arcgis_rest_services_opendata_MapServer_2",
+   "from_status": "failed",
+   "class": "upstream_unstable",
+   "reason": "单层超时：连得上但给不出数据，再试一轮仍是同一个超时",
+   "rows": null,
+   "declared": null,
+   "elapsed_s": 3600.0,
+   "attempts_n": 1,
+   "failure_kinds": [
+    "timeout"
+   ],
+   "attempts_elapsed_min": 60.0
+  },
+  {
+   "layer": "ca_gov_server_rest_services_Address_Range_Labels_MapServer_0",
+   "from_status": "failed",
+   "class": "upstream_unstable",
+   "reason": "单层超时：连得上但给不出数据，再试一轮仍是同一个超时",
+   "rows": null,
+   "declared": null,
+   "elapsed_s": 3600.0,
+   "attempts_n": 1,
+   "failure_kinds": [
+    "timeout"
+   ],
+   "attempts_elapsed_min": 60.0
+  },
+  {
+   "layer": "ervices_DataPortal_DataPortal_BuildingsAddresses_MapServer_0",
+   "from_status": "failed",
+   "class": "upstream_unstable",
+   "reason": "单层超时：连得上但给不出数据，再试一轮仍是同一个超时",
+   "rows": null,
+   "declared": null,
+   "elapsed_s": 3600.0,
+   "attempts_n": 1,
+   "failure_kinds": [
+    "timeout"
+   ],
+   "attempts_elapsed_min": 60.0
+  },
+  {
+   "layer": "g_arcgis_rest_services_Search_SMSA_ParcelAddress_MapServer_0",
+   "from_status": "failed",
+   "class": "upstream_unstable",
+   "reason": "单层超时：连得上但给不出数据，再试一轮仍是同一个超时",
+   "rows": null,
+   "declared": null,
+   "elapsed_s": 3600.0,
+   "attempts_n": 1,
+   "failure_kinds": [
+    "timeout"
+   ],
+   "attempts_elapsed_min": 60.0
+  },
+  {
+   "layer": "vices_Join_Features_to_Address_Points_2_view_FeatureServer_0",
+   "from_status": "failed",
+   "class": "upstream_unstable",
+   "reason": "上游 5xx/svcerr：服务端报错，重试收益趋零",
+   "rows": 1600,
+   "declared": 100314,
+   "elapsed_s": 312.3,
+   "attempts_n": 1,
+   "failure_kinds": [
+    "other"
+   ],
+   "attempts_elapsed_min": 5.2
+  },
+  {
+   "layer": "58c926eb68_rest_services_Public_SiteAddr_ZipCode_MapServer_0",
+   "from_status": "failed",
+   "class": "upstream_unstable",
+   "reason": "上游 5xx/svcerr：服务端报错，重试收益趋零",
+   "rows": 49859,
+   "declared": 109397,
+   "elapsed_s": 146.3,
+   "attempts_n": 1,
+   "failure_kinds": [
+    "other"
+   ],
+   "attempts_elapsed_min": 2.4
+  },
+  {
+   "layer": "ov_gis_rest_services_Map_Reference_Address_Label_MapServer_0",
+   "from_status": "failed",
+   "class": "upstream_unstable",
+   "reason": "上游 5xx/svcerr：服务端报错，重试收益趋零",
+   "rows": 0,
+   "declared": 207155,
+   "elapsed_s": 27.4,
+   "attempts_n": 1,
+   "failure_kinds": [
+    "other"
+   ],
+   "attempts_elapsed_min": 0.5
+  },
+  {
+   "layer": "vt_nz_arcgis_rest_services_CorporateData_Address_MapServer_0",
+   "from_status": "failed",
+   "class": "upstream_unstable",
+   "reason": "上游 5xx/svcerr：服务端报错，重试收益趋零",
+   "rows": 0,
+   "declared": 209057,
+   "elapsed_s": 16.9,
+   "attempts_n": 1,
+   "failure_kinds": [
+    "other"
+   ],
+   "attempts_elapsed_min": 0.3
+  },
+  {
+   "layer": "v_gis_rest_services_Map_Reference_Street_Address_MapServer_0",
+   "from_status": "failed",
+   "class": "upstream_unstable",
+   "reason": "上游 5xx/svcerr：服务端报错，重试收益趋零",
+   "rows": 0,
+   "declared": 207155,
+   "elapsed_s": 16.5,
+   "attempts_n": 1,
+   "failure_kinds": [
+    "other"
+   ],
+   "attempts_elapsed_min": 0.3
+  },
+  {
+   "layer": "_gov_uk_arcweb_rest_services_Addresses_Addresses_MapServer_0",
+   "from_status": "failed",
+   "class": "upstream_unstable",
+   "reason": "上游 5xx/svcerr：服务端报错，重试收益趋零",
+   "rows": 0,
+   "declared": 49374,
+   "elapsed_s": 3.4,
+   "attempts_n": 2,
+   "failure_kinds": [
+    "other",
+    "other"
+   ],
+   "attempts_elapsed_min": 0.1
+  },
+  {
+   "layer": "om_arcgis_rest_services_Cadastral_Address_Points_MapServer_0",
+   "from_status": "failed",
+   "class": "upstream_unstable",
+   "reason": "上游 5xx/svcerr：服务端报错，重试收益趋零",
+   "rows": 0,
+   "declared": 50423,
+   "elapsed_s": 2.4,
+   "attempts_n": 2,
+   "failure_kinds": [
+    "other",
+    "other"
+   ],
+   "attempts_elapsed_min": 0.1
+  },
+  {
+   "layer": "gis_net_arcgis_rest_services_BASE_Address_Points_MapServer_0",
+   "from_status": "failed",
+   "class": "upstream_unstable",
+   "reason": "上游 5xx/svcerr：服务端报错，重试收益趋零",
+   "rows": 0,
+   "declared": 50576,
+   "elapsed_s": 2.3,
+   "attempts_n": 2,
+   "failure_kinds": [
+    "other",
+    "other"
+   ],
+   "attempts_elapsed_min": 0.1
+  },
+  {
+   "layer": "Pvc_arcgis_rest_services_Address_Points_View_FeatureServer_2",
+   "from_status": "failed",
+   "class": "upstream_unstable",
+   "reason": "上游 5xx/svcerr：服务端报错，重试收益趋零",
+   "rows": 0,
+   "declared": 10564,
+   "elapsed_s": 2.2,
+   "attempts_n": 2,
+   "failure_kinds": [
+    "other",
+    "other"
+   ],
+   "attempts_elapsed_min": 0.1
+  },
+  {
+   "layer": "ntygov_com_server_rest_services_Addresses_Public_MapServer_0",
+   "from_status": "failed",
+   "class": "unverified",
+   "reason": "端点 404/HTML 页：服务没了或路径变了，无法核实（W33-027）",
+   "rows": 0,
+   "declared": 93291,
+   "elapsed_s": 34.9,
+   "attempts_n": 1,
+   "failure_kinds": [
+    "http_4xx"
+   ],
+   "attempts_elapsed_min": 0.6
+  },
+  {
+   "layer": "_ca_arcgis_adaptor_rest_services_LCGIS_VertiGIS_MapServer_25",
+   "from_status": "failed",
+   "class": "unverified",
+   "reason": "端点 404/HTML 页：服务没了或路径变了，无法核实（W33-027）",
+   "rows": 88,
+   "declared": 56888,
+   "elapsed_s": 21.1,
+   "attempts_n": 2,
+   "failure_kinds": [
+    "http_4xx",
+    "http_4xx"
+   ],
+   "attempts_elapsed_min": 0.7
+  },
+  {
+   "layer": "_gov_arcgis_rest_services_Land_Records_Open_Data_MapServer_1",
+   "from_status": "failed",
+   "class": "unverified",
+   "reason": "端点 404/HTML 页：服务没了或路径变了，无法核实（W33-027）",
+   "rows": 0,
+   "declared": 40675,
+   "elapsed_s": 19.1,
+   "attempts_n": 1,
+   "failure_kinds": [
+    "http_4xx"
+   ],
+   "attempts_elapsed_min": 0.3
+  },
+  {
+   "layer": "erva_gov_arcgis_rest_services_Winchester_Address_MapServer_0",
+   "from_status": "failed",
+   "class": "unverified",
+   "reason": "端点 404/HTML 页：服务没了或路径变了，无法核实（W33-027）",
+   "rows": 0,
+   "declared": 16730,
+   "elapsed_s": 2.7,
+   "attempts_n": 2,
+   "failure_kinds": [
+    "http_4xx",
+    "http_4xx"
+   ],
+   "attempts_elapsed_min": 0.1
+  },
+  {
+   "layer": "nc_gov_server_rest_services_CityWorks_Basemap_CW_MapServer_0",
+   "from_status": "failed",
+   "class": "missing",
+   "reason": "0 行且无上游明确拒绝的证据（err=?）——还值得再试一次",
+   "rows": 0,
+   "declared": 125648,
+   "elapsed_s": 358.6,
+   "attempts_n": 2,
+   "failure_kinds": [
+    "other",
+    "other"
+   ],
+   "attempts_elapsed_min": 12.0
+  }
+ ]
+}
