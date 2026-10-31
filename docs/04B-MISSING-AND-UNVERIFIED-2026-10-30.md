@@ -138,3 +138,45 @@ HTTP 200  {"error":{"code":499,"message":"Token Required","messageCode":"GWM_000
 ⇒ 所以「complete 不成立」是**当下判词**，不是终局：缺口正在被定向 run 填。
 等 `41121952357` 跑完（job 上限 20:17 + 350 min）再按 ① 复验一次 `ledger_rebuild --check`，
 IDENTICAL 才叫「账本对资产说真话」。
+
+## 六、两份重建文件的分工（2026-10-31 定，别再用混）
+
+`collect/ledger/` 下现在有**两份**看起来同源的重建产物，职责完全不同：
+
+| 文件 | 角色 | 会不会变 | 用途 |
+|---|---|---|---|
+| `step04b_rebuilt_20261030-committed.json` | **审结快照**（`frozen_at` / `frozen_sha` / `frozen_from_commit` 写在文件头） | **永久不动**，任何重算都不许改它 | 历史对账的参照：2026-10-30T20:18:28Z（`3223b4e`）那一刻的审结版本 = 272 层 / 490,821,547 行 / ok250·partial4·failed18 |
+| `step04b_rebuilt.json` | **活态重建**（`ledger_rebuild` 从 Release 资产算出来的当前真值） | **会变**，资产变了它就变 | 回答「现在资产到底有多少行」；workflow/复核都用这一份 |
+
+为什么分成两份：活态文件如果被当成「历史真值」冻住，后面每一层新进展都进不了账（账本会永远停在
+490.8M，正是 2026-10-30 那次的形态）；反过来，如果活态文件被当成对账基准，那「重算」就等于
+「改历史」，两次事故的对账就再也做不成了。**审结对账看快照，现场判断看活态。**
+
+### `--check` 的语义已改（2026-10-31 用户定）
+
+旧语义：重算后**跟历史文件比字节**（`IDENTICAL` 才叫对）。这会逼人把活态文件冻死 —— 资产一有进展就
+永远 `DIFFERS`，只能靠「别重算」来维持绿色，等于把「账本在说真话」换成「账本没动」。
+
+新语义：**同一输入 → 同一输出**。产物里带 `input_fingerprint`（`collect-ledger-input-fingerprint/v1`）：
+
+- 逐层取**资产名 + 字节**（Release 侧）、**checkpoint 内容摘要**（`ckpt_sha256`）、**声明行数**；
+- **不含** asset id / 上传时间 / `now()` / `scan_meta` —— 重传同内容会换 id，那是「资产重发」，不是输入变了；
+- `--check` 重算指纹并与产物里的指纹比对：一致 → `IDENTICAL（输入指纹一致 digest=…）`，不一致 → `DIFFERS`
+  并**点名变了几层、哪几层**；
+- 所以「账本对资产说真话」的判据变成：**指纹一致的 `IDENTICAL`**，而不是字节没变。
+
+```
+python3 collect/ledger_rebuild.py --stage 04b --check     # 只比输入指纹，不写盘
+```
+
+### checkpoint 证据被覆盖时：`--asset-evidence`
+
+checkpoint 被 force 重跑整份覆盖（2026-10-30 22:23Z 的 NAD view 事故）后，`judge()` 只能判
+`failed(0)` —— 数据在、证据没了。这时 `--asset-evidence analysis/nad-view-rebuild-2026-10-31.json`
+（`collect/rebuild_layer_rows.py` 的逐包数行产物）会把 rows 补回来，条件是**指纹对得上**：
+证据里每个包的 `name + asset_bytes` 与当前 Release 逐个相等、`packages_bad` 为空、`recheck.ok=true`。
+任一条不满足就**不采用**（宁可 failed，也不拿旧实测洗账）。采用后该层：
+
+- `rows_src = rebuild_from_assets`
+- `evidence = {rebuild: <证据 JSON 路径>, kind: release_assets_recount, packages, parts, generated_at}`
+- 声明值仍拿不到（上游 499 Token Required）⇒ 状态是 `partial`，缺口照旧单列，**不因补回 39.8M 就变 ok**。

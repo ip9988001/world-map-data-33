@@ -22,21 +22,29 @@
     done_units 不齐 / tag 不符）→ **failed，不猜**
   · declared==0 且无资产 → empty（上游空层，不是失败）
 
-幂等：输出内容只由 GitHub 现状决定（时间戳取「最新资产上传时间」，不取 now()），
-      同一状态下重复跑字节一致；`--check` 只比对不写盘，差异时退出码 1。
+幂等：输出内容只由 GitHub 现状决定（时间戳取「最新资产上传时间」，不取 now()）。
+      **2026-10-31 用户定口径**：本文件是**活态**产物（随资产变化），审结那一刻的
+      版本另存 `collect/ledger/step04b_rebuilt_20261030-committed.json`（永久不动）。
+      所以 `--check` 的语义是「同一输入 → 同一输出」：重算后比对产物里的
+      `input_fingerprint`（逐层资产名+字节 / checkpoint 内容摘要 / 声明行数），
+      **不比文件字节、不比历史文件**；指纹变了就点名变了几层、哪几层。
       单元 checkpoint 按 `tag@created_at` 内容寻址缓存，重跑不重复下载。
 
 用法：
   python3 collect/ledger_rebuild.py --stage 04b \
       --plan collect/ledger/04b_plan.json \
       --out collect/ledger/step04b_rebuilt.json
-  python3 collect/ledger_rebuild.py --stage 04b --check     # 只验证幂等
+  python3 collect/ledger_rebuild.py --stage 04b --check     # 只比输入指纹，不写盘
+  # checkpoint 证据被覆盖过（如 NAD view 2026-10-30 22:23Z 事故）：
+  python3 collect/ledger_rebuild.py --stage 04b --asset-evidence \
+      analysis/nad-view-rebuild-2026-10-31.json
 """
 from __future__ import annotations
 
 import argparse
 import csv
 import glob
+import hashlib
 import json
 import os
 import re
@@ -73,6 +81,116 @@ def gh(args: list, binary=False, timeout=180):
 
 def repo_default() -> str:
     return os.environ.get("GITHUB_REPOSITORY") or "ip9988001/world-map-data-33"
+
+
+# ---------------------------------------------------------------- 输入指纹
+#
+# 2026-10-31 用户决定：`step04b_rebuilt.json` 是**活态**产物（随资产变化），
+# 审结那一刻的版本另存 `step04b_rebuilt_20261030-committed.json`（永久不动）。
+# 所以 `--check` 的语义改成「同一输入 → 同一输出」：比对本指纹，**不比文件字节**。
+# 指纹只取输入侧（Release 资产名+字节、checkpoint 内容摘要、声明行数），
+# 故意不含 asset id / created_at / now() / scan_meta —— 重传同内容会换 id，
+# 那是「资产重发」不是「输入变了」，混进去只会制造假 DIFFERS。
+
+FP_SCHEMA = "collect-ledger-input-fingerprint/v1"
+
+
+def _canon(obj) -> bytes:
+    return json.dumps(obj, ensure_ascii=False, sort_keys=True,
+                      separators=(",", ":")).encode("utf-8")
+
+
+def _sha(obj) -> str:
+    return hashlib.sha256(_canon(obj)).hexdigest()
+
+
+def layer_fingerprint(tag, rel, ck, declared, evidence=None) -> dict:
+    """一层的**输入**指纹：资产清单（名+字节）+ checkpoint 内容摘要 + 声明行数。
+
+    资产清单里只有 unit 包与 checkpoint 两类（`name`+`size`）；checkpoint 另算内容摘要，
+    因为行数判定完全由它举证 —— 它被覆盖一次，输出就该变一次。
+    """
+    assets = sorted([{"name": a["name"], "size": a.get("size")}
+                     for a in (rel or {}).get("assets") or []], key=lambda a: a["name"])
+    return {"tag": tag, "declared": declared, "assets": assets,
+            "ckpt_sha256": _sha(ck) if ck is not None else None,
+            "asset_evidence": evidence}
+
+
+def input_fingerprint(layers: dict) -> dict:
+    return {"schema": FP_SCHEMA,
+            "note": ("同一输入 → 同一输出：--check 比对本指纹（逐层资产名+字节、checkpoint "
+                     "内容摘要、声明行数），不比文件字节；输入变了才允许输出变，且会点名变了几层"),
+            "layers_n": len(layers), "digest": _sha(layers), "layers": layers}
+
+
+# ---------------------------------------------------------------- 资产实测证据
+#
+# 事故形状：checkpoint 被 force 重跑整份覆盖 → 完成度证据没了，但 68 个 unit 包
+# 一个字节没少。这时唯一不依赖 checkpoint、也不依赖上游 returnCount 的口径是
+# `collect/rebuild_layer_rows.py` 的「逐包下载 → 解包 → part 流式数行」。
+# 它很贵（4.6 GB / 十几分钟），所以结果落在 `analysis/*.json` 里复用，
+# **但只在指纹对得上时复用**：包名与字节逐个对上 + 复检 ok，才算同一批资产。
+
+def load_asset_evidence(paths: list) -> dict:
+    idx = {}
+    for p in paths:
+        try:
+            d = json.load(open(p, encoding="utf-8"))
+        except Exception:                                       # noqa: BLE001
+            continue
+        if d.get("tag") and d.get("summary"):
+            idx.setdefault(d["tag"], []).append((os.path.relpath(p, ROOT), d))
+    return idx
+
+
+def evidence_matches(ev: dict, rel: dict) -> bool:
+    """证据里的资产指纹 vs 现在 Release 上的资产：包名+字节逐一对上才算同一输入。"""
+    s = ev.get("summary") or {}
+    if [x for x in (s.get("packages_bad") or []) if x]:
+        return False
+    rc = ev.get("recheck") or {}
+    if rc and rc.get("ok") is False:
+        return False
+    pk = [p for p in (ev.get("packages") or []) if p.get("ok")]
+    if not pk:
+        return False
+    live = {a["name"]: a.get("size") for a in (rel or {}).get("assets") or []}
+    if any(live.get(p["name"]) != p.get("asset_bytes") for p in pk):
+        return False
+    return len(pk) == len([n for n in live if UNIT_RE.search(n)])
+
+
+def apply_asset_evidence(rec: dict, rel: dict, evs: list, declared) -> bool:
+    """checkpoint 证据丢了 → 用资产实测把 rows 补回来。返回是否采用。"""
+    if not evs or not rel:
+        return False
+    for path, ev in evs:
+        if not evidence_matches(ev, rel):
+            continue
+        s = ev.get("summary") or {}
+        rows = int(s.get("rows") or 0)
+        if rows <= 0:
+            continue
+        lost = rec.get("reason") or "; ".join(rec.get("problems") or []) or rec.get("status")
+        rec.update(rows=rows, rows_src="rebuild_from_assets",
+                   units=s.get("packages"), units_done=s.get("packages"),
+                   parts_ckpt=s.get("parts"),
+                   evidence={"rebuild": path, "kind": "release_assets_recount",
+                             "packages": s.get("packages"), "parts": s.get("parts"),
+                             "generated_at": ev.get("generated_at"),
+                             "why": "checkpoint 完成度证据丢失：%s" % str(lost)[:160]})
+        gap = (declared or 0) - rows
+        rec.update(gap=gap, gap_pct=round(100.0 * gap / declared, 4) if declared else 0.0)
+        rec["status"] = "ok" if (not declared or gap <= GAP_TOL * declared) else "partial"
+        rec["reason"] = ("checkpoint 完成度证据丢失（%s）→ 从资产逐包数行重建 %s 行（证据 %s）"
+                         % (str(lost)[:120], f"{rows:,}", path))
+        if rec["status"] == "partial":
+            rec["reason"] += "；缺口 %.4f%%（声明 %s）" % (rec["gap_pct"], f"{declared:,}")
+        rec.setdefault("warn", []).append(
+            "rows 来自资产实测（%s），不是 checkpoint —— checkpoint 里没有完成度证据" % path)
+        return True
+    return False
 
 
 # ---------------------------------------------------------------- declared 侧
@@ -397,7 +515,8 @@ def annotate_shards(recs: list, shard_of: dict, sjobs: dict):
 
 
 def rebuild(stage: str, plan_path: str, cache: str, repo: str, refresh: bool,
-            jobs: int, max_pages: int, generated_at: str = "", run_id: str = "") -> dict:
+            jobs: int, max_pages: int, generated_at: str = "", run_id: str = "",
+            evidence_paths: list | None = None) -> dict:
     prefix, tag, title = STAGE_TAG[stage]
     ids = plan_ids(plan_path)
     dec = declared_index()
@@ -420,11 +539,34 @@ def rebuild(stage: str, plan_path: str, cache: str, repo: str, refresh: bool,
                     ck = fetch_checkpoint(repo, rel["tag"], a, cache, refresh)
                 except Exception as e:                       # noqa: BLE001
                     err = str(e)[:200]
-        return judge(layer, declared, rel, ck, err)
+        return {"rec": judge(layer, declared, rel, ck, err), "rel": rel, "ck": ck}
 
     with ThreadPoolExecutor(max_workers=max(1, jobs)) as ex:
-        recs = list(ex.map(work, scope))
+        outs = list(ex.map(work, scope))
+    recs = [o["rec"] for o in outs]
+
+    # checkpoint 证据丢失的层：尝试用资产实测（analysis/*rebuild*.json）补 rows
+    evidx = load_asset_evidence(evidence_paths or [])
+    ev_applied = []
+    for o in outs:
+        r = o["rec"]
+        if r["status"] == "failed" and not r.get("rows"):
+            if apply_asset_evidence(r, o["rel"], evidx.get((o["rel"] or {}).get("tag") or ""),
+                                    r.get("declared")):
+                ev_applied.append(r["layer"])
+    if ev_applied:
+        print("[rebuild] 资产实测补回 %d 层：%s" % (len(ev_applied), ", ".join(sorted(ev_applied))),
+              flush=True)
+
     recs.sort(key=lambda r: (-(r.get("declared") or 0), r["layer"]))
+
+    # 输入指纹（逐层）：--check 的判据就是它
+    fps = {}
+    for o in outs:
+        r = o["rec"]
+        fps[r["layer"]] = layer_fingerprint((o["rel"] or {}).get("tag"), o["rel"], o["ck"],
+                                            r.get("declared"),
+                                            (r.get("evidence") or {}).get("rebuild"))
 
     cnt = {}
     for r in recs:
@@ -494,6 +636,8 @@ def rebuild(stage: str, plan_path: str, cache: str, repo: str, refresh: bool,
         "run": run_block,
         "cancelled_shards": canc_block,
         "extras_not_in_plan": {"n": len(extras), "tags": extras},
+        "asset_evidence_applied": sorted(ev_applied),
+        "input_fingerprint": input_fingerprint(fps),
         "records": recs,
     }
     return agg
@@ -701,27 +845,54 @@ def main() -> int:
     ap.add_argument("--run-id", default="",
                     help="采采的 workflow run id，可用逗号分隔多轮（cancelled 片 → 续跑轮），"
                          "取「片 → 结论」标到逐层账上")
-    ap.add_argument("--check", action="store_true", help="只比对现有输出是否一致，不写盘")
+    ap.add_argument("--check", action="store_true",
+                    help="同一输入 → 同一输出：只重算输入指纹并与现有产物比对（不写盘，不比文件字节）")
+    ap.add_argument("--asset-evidence", action="append", default=[],
+                    help="资产实测证据 JSON（rebuild_layer_rows 产物）；checkpoint 证据丢失时用来补 rows。"
+                         "不给则自动取 analysis/*rebuild*.json")
     a = ap.parse_args()
 
     stage = a.stage
     plan = a.plan or os.path.join(HERE, "ledger", "%s_plan.json" % stage)
     out = a.out or os.path.join(HERE, "ledger", "step%sb_rebuilt.json" % stage[:2])
+    ev_paths = a.asset_evidence or sorted(glob.glob(os.path.join(ROOT, "analysis", "*rebuild*.json")))
     agg = rebuild(stage, plan, a.cache, a.repo or repo_default(), a.refresh,
-                  a.jobs, a.max_pages, a.generated_at, a.run_id)
+                  a.jobs, a.max_pages, a.generated_at, a.run_id, ev_paths)
     doc = a.doc or os.path.join(ROOT, "docs", "%s-FULL-%s.md"
                                 % (STAGE_TAG[stage][1], (agg["generated_at"] or utcnow())[:10]))
     body = json.dumps(agg, ensure_ascii=False, indent=1, sort_keys=False)
     md = render_doc(agg)
 
     if a.check:
-        def norm(txt: str) -> str:
-            d = json.loads(txt)
-            d.pop("scan_meta", None)          # 采集进行中会变，与账本事实无关
-            return json.dumps(d, ensure_ascii=False, sort_keys=True)
-        same = (os.path.exists(out) and norm(open(out, encoding="utf-8").read()) == norm(body)
-                and os.path.exists(doc) and open(doc, encoding="utf-8").read() == md)
-        print("IDENTICAL" if same else "DIFFERS（%s / %s）" % (out, doc))
+        # ★ 2026-10-31 用户决定：--check = 「同一输入 → 同一输出」。
+        #   比的是**输入指纹**（Release 资产名+字节 / checkpoint 内容摘要 / 声明行数），
+        #   不是拿历史文件比字节：活态产物本来就会随资产变化，字节相等不是正确性判据。
+        stored, why = None, ""
+        try:
+            stored = json.load(open(out, encoding="utf-8"))
+        except Exception as e:                                  # noqa: BLE001
+            why = "现有产物读不出：%s" % str(e)[:160]
+        old = (stored or {}).get("input_fingerprint")
+        new = agg["input_fingerprint"]
+        if old is None:
+            # 旧产物没有指纹（2026-10-31 之前的格式）：只能退化成摘要比对，并说明
+            keys = ("layers_n", "ok", "empty", "partial", "failed", "declared", "rows")
+            same = bool(stored) and all(stored.get(k) == agg.get(k) for k in keys)
+            print("IDENTICAL" if same else "DIFFERS（%s；现有产物无 input_fingerprint，只能比摘要）"
+                  % (out if stored else why))
+            return 0 if same else 1
+        changed = sorted(L for L in set(old.get("layers") or {}) | set(new["layers"])
+                         if (old.get("layers") or {}).get(L) != new["layers"].get(L))
+        same = old.get("digest") == new["digest"] and not changed
+        if same:
+            print("IDENTICAL（输入指纹一致 digest=%s，%d 层）" % (new["digest"][:16], new["layers_n"]))
+        else:
+            print("DIFFERS（输入指纹变了：%d 层；digest %s → %s）"
+                  % (len(changed), str(old.get("digest"))[:16], new["digest"][:16]))
+            for L in changed[:20]:
+                print("  · %s" % L)
+            if len(changed) > 20:
+                print("  … 另有 %d 层" % (len(changed) - 20))
         return 0 if same else 1
 
     os.makedirs(os.path.dirname(out), exist_ok=True)
