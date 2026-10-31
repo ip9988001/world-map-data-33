@@ -338,7 +338,28 @@ jobs:
           #   重试 6 次只是重复同一个错误 → 账本一行没落地。
           #   现在改成：产物先搬 /tmp → checkout -qf 硬对齐 origin/main → 搬回来 → 提交 → 推送。
           rm -rf /tmp/push && mkdir -p /tmp/push/ledger /tmp/push/docs /tmp/push/analysis
-          cp -f "collect/${STAGE}_ledger.json" /tmp/push/ 2>/dev/null || true
+          # ★ 2026-10-31 事故（W33-038）：run 41155023558 的 merge 明明 stage_written=false
+          #   （单 run 20 层 < 阶段账本 272 层的一半，阶段账本一个字没动），但这一步**无条件**把
+          #   checkout 里的旧 collect/<stage>_ledger.json 搬回来，把 main 上刚更新的账本盖回旧版本
+          #   （upstream_unstable 整段消失、missing/unverified 计数回退）。
+          #   现在只在「本 run 真的合并进了阶段账本」（last_merge.run_id == 本 run）时才搬它。
+          KEEP_STAGE=0
+          if python3 - "$STAGE" <<'PY'
+          import json, os, sys
+          p = "collect/%s_ledger.json" % sys.argv[1]
+          try:
+              d = json.load(open(p, encoding="utf-8"))
+          except Exception:
+              raise SystemExit(1)
+          rid = str((d.get("last_merge") or {}).get("run_id") or "")
+          raise SystemExit(0 if rid and rid == os.environ.get("GITHUB_RUN_ID", "") else 1)
+          PY
+          then KEEP_STAGE=1; fi
+          if [ "$KEEP_STAGE" = "1" ]; then
+            cp -f "collect/${STAGE}_ledger.json" /tmp/push/
+          else
+            echo "::notice::本 run 没写阶段账本（stage_written=false）→ 不搬 collect/${STAGE}_ledger.json，避免用旧 checkout 覆盖 main"
+          fi
           cp -f collect/ledger/*.json /tmp/push/ledger/ 2>/dev/null || true
           cp -f docs/*FULL-*.md /tmp/push/docs/ 2>/dev/null || true
           cp -f analysis/*-attempt-log.json /tmp/push/analysis/ 2>/dev/null || true
@@ -346,11 +367,14 @@ jobs:
             git fetch -q origin main || true
             git checkout -qf -B main origin/main
             mkdir -p collect/ledger docs analysis
-            cp -f /tmp/push/${STAGE}_ledger.json collect/ 2>/dev/null || true
+            if [ "$KEEP_STAGE" = "1" ] && [ -f "/tmp/push/${STAGE}_ledger.json" ]; then
+              cp -f "/tmp/push/${STAGE}_ledger.json" collect/
+            fi
             cp -f /tmp/push/ledger/*.json collect/ledger/ 2>/dev/null || true
             cp -f /tmp/push/docs/*FULL-*.md docs/ 2>/dev/null || true
             cp -f /tmp/push/analysis/*-attempt-log.json analysis/ 2>/dev/null || true
-            git add -f "collect/${STAGE}_ledger.json" collect/ledger docs analysis/*-attempt-log.json 2>/dev/null || true
+            if [ "$KEEP_STAGE" = "1" ]; then git add -f "collect/${STAGE}_ledger.json" 2>/dev/null || true; fi
+            git add -f collect/ledger docs analysis/*-attempt-log.json 2>/dev/null || true
             if git diff --cached --quiet; then echo "无变化（账本已在 main）"; exit 0; fi
             git -c user.name=collect-bot -c user.email=bot@users.noreply.github.com \
                 commit -q -m "collect: ${STAGE} 全量收官账本 + 文档"
