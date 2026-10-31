@@ -17,7 +17,7 @@
 
 ## 0. 本仓 workflow 骨架速查（写之前先看这一段）
 
-- **采集唯一入口 `collect-full.yml`**：`workflow_dispatch`，输入 `stage(04b/05b/07b/10b)` `size` `workers` `unit_rows` `max_shards` `chain` `authorize_heavy` `force_layers` `layer_timeout` `rebuild_ledger` `plan_run_id`；并发组 **`collect-full-<stage>`**（`cancel-in-progress: false` → 同组只留 1 个 pending）；`plan` job 第一步就是 preflight 门禁；分片 job 上限 350 分钟、`max-parallel: 8`。
+- **采集唯一入口 `collect-full.yml`**：`workflow_dispatch`，输入 `stage(04b/05b/07b/10b)` `size` `workers` `unit_rows` `max_shards`（0=全起；非 0 由 `collect/plan_truncate.py` 截断，**必打 ::warning:: + 被砍分片/层清单** → plan `shards_dropped[]` / `plan_truncated{}`）`chain` `authorize_heavy` `force_layers` `layer_timeout` `rebuild_ledger` `plan_run_id`；并发组 **`collect-full-<stage>`**（`cancel-in-progress: false` → 同组只留 1 个 pending）；`plan` job 第一步就是 preflight 门禁；分片 job 上限 350 分钟、`max-parallel: 8`。
 - **产物落点**：`collect/ledger/<stage>_plan.json`（计划）、`collect/ledger/<stage>_shardNN.json`（每片账本，每层增量写）、`collect/ledger/<stage>_run<RUN_ID>.json`（单 run）、`collect/<stage>_ledger.json`（阶段账本，只做按层合并）、`collect/ledger/step04b_rebuilt.json`（资产真值快照）、`docs/STEP0N-FULL-*-shards.md`（分片口径收官文档）、`docs/STEP04-ADJUDICATED-*.md`（判定修正层）。artifact `plan-<stage>` / `led-<stage>-<n>` / `final-<stage>` **只兜底，主路径走 git 提交**。
 - **数据真值在 Release**：tag `collect-step0N-<layer>` 下 `<layer>-checkpoint.json` + `<layer>-uNNNNN.tar.gz`；账本口径一律「资产反推」优先。
 - **自检 `ci-smoke.yml`**：push 到 `collect/**` `scripts/**` 触发，五道闸（`compileall` / `supervisor.py --entry-check` 25 条 / `check_docs.py` / `unittest discover` / 选层干跑）。
