@@ -305,7 +305,18 @@
   "raw_street": 34152,
   "top_num_pct": 32.66,
   "raw_num_pct": 37.35,
-  "full_num_pct": 29.97
+  "full_num_pct": 29.97,
+  "identity": {
+   "keyable": 254837,
+   "outside_state": 115176,
+   "unlocated": 16,
+   "no_coord": 3,
+   "missing_fields": 98,
+   "sum": 370130,
+   "rows": 370130,
+   "ok": true
+  },
+  "dedup_rate_pct": 0
  },
  "reduce": {
   "schema": "08-reduce/v1",
