@@ -316,7 +316,7 @@
    "rows": 370130,
    "ok": true
   },
-  "dedup_rate_pct": 0
+  "dedup_rate_pct": 47.56
  },
  "reduce": {
   "schema": "08-reduce/v1",
