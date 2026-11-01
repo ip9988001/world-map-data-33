@@ -1,0 +1,506 @@
+{
+ "schema": "08-r1/v1",
+ "at": "2026-11-01",
+ "state": "IA",
+ "scope": "layer_plan.csv 里 state=IA 的全部层（9 层 / 15.7 MiB / 370,130 行）；不跨州",
+ "timing_s": {
+  "extract": 87,
+  "reduce": 12,
+  "public": 7,
+  "adjudicate": 2,
+  "total": 108
+ },
+ "download_mib": 15.7,
+ "layers": [
+  {
+   "layer": "_arcgis_rest_services_Planning_GretnaLaVistaAPTP_MapServer_0",
+   "tag": "collect-step05-_arcgis_rest_services_Planning_GretnaLaVistaAPTP_MapServer_0",
+   "stage": "05b",
+   "status": "ok",
+   "pip_state": {
+    "NE": 13631
+   },
+   "plan_rows": 13631,
+   "assets": 1,
+   "bytes": 1153820,
+   "dataset_fingerprint": "",
+   "fingerprint_sample": 0,
+   "nad_ratio": 0.0,
+   "src_group": "LOCAL_GIS",
+   "rows": 13631,
+   "keyable": 0,
+   "unkeyed": 0,
+   "no_coord": 0,
+   "located": 13631,
+   "unlocated": 0,
+   "outside_state": 13631,
+   "bad_json": 0,
+   "nad": 0,
+   "top_num": 13631,
+   "raw_num": 0,
+   "full_num": 0,
+   "top_street": 13631,
+   "raw_street": 0
+  },
+  {
+   "layer": "_rest_services_La_Vista_Address_Points___BSA_FeatureServer_0",
+   "tag": "collect-step05-_rest_services_La_Vista_Address_Points___BSA_FeatureServer_0",
+   "stage": "05b",
+   "status": "ok",
+   "pip_state": {
+    "NE": 12851
+   },
+   "plan_rows": 12851,
+   "assets": 1,
+   "bytes": 1157438,
+   "dataset_fingerprint": "",
+   "fingerprint_sample": 0,
+   "nad_ratio": 0.0,
+   "src_group": "LOCAL_GIS",
+   "rows": 12851,
+   "keyable": 0,
+   "unkeyed": 0,
+   "no_coord": 0,
+   "located": 12851,
+   "unlocated": 0,
+   "outside_state": 12851,
+   "bad_json": 0,
+   "nad": 0,
+   "top_num": 12851,
+   "raw_num": 0,
+   "full_num": 0,
+   "top_street": 12851,
+   "raw_street": 0
+  },
+  {
+   "layer": "gis_rest_services_Address_Point_Update_WFL1_FeatureServer_14",
+   "tag": "collect-step05-gis_rest_services_Address_Point_Update_WFL1_FeatureServer_14",
+   "stage": "05b",
+   "status": "ok",
+   "pip_state": {
+    "IA": 17076
+   },
+   "plan_rows": 17076,
+   "assets": 1,
+   "bytes": 1301559,
+   "dataset_fingerprint": "8ffcf841e56c72ed",
+   "fingerprint_sample": 500,
+   "nad_ratio": 0.0,
+   "src_group": "LOCAL_GIS",
+   "rows": 17076,
+   "keyable": 17076,
+   "unkeyed": 0,
+   "no_coord": 0,
+   "located": 17076,
+   "unlocated": 0,
+   "outside_state": 0,
+   "bad_json": 0,
+   "nad": 0,
+   "top_num": 0,
+   "raw_num": 17076,
+   "full_num": 0,
+   "top_street": 0,
+   "raw_street": 17076
+  },
+  {
+   "layer": "ices_Iowa_County_Address_Points_October_2024_FeatureServer_0",
+   "tag": "collect-step05-ices_Iowa_County_Address_Points_October_2024_FeatureServer_0",
+   "stage": "05b",
+   "status": "ok",
+   "pip_state": {
+    "WI": 15876
+   },
+   "plan_rows": 15911,
+   "assets": 1,
+   "bytes": 1194811,
+   "dataset_fingerprint": "",
+   "fingerprint_sample": 0,
+   "nad_ratio": 0.0,
+   "src_group": "LOCAL_GIS",
+   "rows": 15911,
+   "keyable": 0,
+   "unkeyed": 35,
+   "no_coord": 2,
+   "located": 15876,
+   "unlocated": 8,
+   "outside_state": 15876,
+   "bad_json": 0,
+   "nad": 0,
+   "top_num": 15908,
+   "raw_num": 0,
+   "full_num": 0,
+   "top_street": 15911,
+   "raw_street": 0
+  },
+  {
+   "layer": "is_rest_services_Address_Point_Updater_WFL1_FeatureServer_14",
+   "tag": "collect-step05-is_rest_services_Address_Point_Updater_WFL1_FeatureServer_14",
+   "stage": "05b",
+   "status": "ok",
+   "pip_state": {
+    "IA": 17076
+   },
+   "plan_rows": 17076,
+   "assets": 1,
+   "bytes": 1301875,
+   "dataset_fingerprint": "8ffcf841e56c72ed",
+   "fingerprint_sample": 500,
+   "nad_ratio": 0.0,
+   "src_group": "LOCAL_GIS",
+   "rows": 17076,
+   "keyable": 17076,
+   "unkeyed": 0,
+   "no_coord": 0,
+   "located": 17076,
+   "unlocated": 0,
+   "outside_state": 0,
+   "bad_json": 0,
+   "nad": 0,
+   "top_num": 0,
+   "raw_num": 17076,
+   "full_num": 0,
+   "top_street": 0,
+   "raw_street": 17076
+  },
+  {
+   "layer": "is_rest_services_SchoolAttendanceAreaAddress_FeatureServer_0",
+   "tag": "collect-step05-is_rest_services_SchoolAttendanceAreaAddress_FeatureServer_0",
+   "stage": "05b",
+   "status": "ok",
+   "pip_state": {
+    "IA": 110934
+   },
+   "plan_rows": 110944,
+   "assets": 2,
+   "bytes": 2781518,
+   "dataset_fingerprint": "52eed872d722df5a",
+   "fingerprint_sample": 500,
+   "nad_ratio": 0.0,
+   "src_group": "LOCAL_GIS",
+   "rows": 110944,
+   "keyable": 110934,
+   "unkeyed": 10,
+   "no_coord": 0,
+   "located": 110934,
+   "unlocated": 3,
+   "outside_state": 0,
+   "bad_json": 0,
+   "nad": 0,
+   "top_num": 0,
+   "raw_num": 0,
+   "full_num": 110937,
+   "top_street": 0,
+   "raw_street": 0
+  },
+  {
+   "layer": "n9vNc_arcgis_rest_services_RealEstateAddress_FeatureServer_0",
+   "tag": "collect-step05-n9vNc_arcgis_rest_services_RealEstateAddress_FeatureServer_0",
+   "stage": "05b",
+   "status": "ok",
+   "pip_state": {
+    "IA": 104091
+   },
+   "plan_rows": 104108,
+   "assets": 2,
+   "bytes": 3631418,
+   "dataset_fingerprint": "66f6dfc59e7aae90",
+   "fingerprint_sample": 500,
+   "nad_ratio": 0.0,
+   "src_group": "LOCAL_GIS",
+   "rows": 104108,
+   "keyable": 104091,
+   "unkeyed": 17,
+   "no_coord": 1,
+   "located": 104091,
+   "unlocated": 3,
+   "outside_state": 0,
+   "bad_json": 0,
+   "nad": 0,
+   "top_num": 0,
+   "raw_num": 104095,
+   "full_num": 0,
+   "top_street": 0,
+   "raw_street": 0
+  },
+  {
+   "layer": "rvices_2022_Lightbox_Address_Points_Option_A_FeatureServer_0",
+   "tag": "collect-step05-rvices_2022_Lightbox_Address_Points_Option_A_FeatureServer_0",
+   "stage": "05b",
+   "status": "ok",
+   "pip_state": {
+    "IA": 2221,
+    "IN": 1875,
+    "NE": 30575
+   },
+   "plan_rows": 34698,
+   "assets": 1,
+   "bytes": 1806404,
+   "dataset_fingerprint": "bcfca6c77bfc2247",
+   "fingerprint_sample": 500,
+   "nad_ratio": 0.0,
+   "src_group": "LOCAL_GIS",
+   "rows": 34698,
+   "keyable": 2221,
+   "unkeyed": 27,
+   "no_coord": 0,
+   "located": 34671,
+   "unlocated": 1,
+   "outside_state": 32450,
+   "bad_json": 0,
+   "nad": 0,
+   "top_num": 34672,
+   "raw_num": 0,
+   "full_num": 0,
+   "top_street": 34692,
+   "raw_street": 0
+  },
+  {
+   "layer": "rvices_2022_Lightbox_Address_Points_Option_B_FeatureServer_0",
+   "tag": "collect-step05-rvices_2022_Lightbox_Address_Points_Option_B_FeatureServer_0",
+   "stage": "05b",
+   "status": "ok",
+   "pip_state": {
+    "IA": 3439,
+    "IN": 1875,
+    "NE": 38493
+   },
+   "plan_rows": 43835,
+   "assets": 1,
+   "bytes": 2180528,
+   "dataset_fingerprint": "b4419548da54af11",
+   "fingerprint_sample": 500,
+   "nad_ratio": 0.0,
+   "src_group": "LOCAL_GIS",
+   "rows": 43835,
+   "keyable": 3439,
+   "unkeyed": 28,
+   "no_coord": 0,
+   "located": 43807,
+   "unlocated": 1,
+   "outside_state": 40368,
+   "bad_json": 0,
+   "nad": 0,
+   "top_num": 43808,
+   "raw_num": 0,
+   "full_num": 0,
+   "top_street": 43829,
+   "raw_street": 0
+  }
+ ],
+ "totals": {
+  "rows": 370130,
+  "keyable": 254837,
+  "unkeyed": 117,
+  "no_coord": 3,
+  "located": 370013,
+  "unlocated": 16,
+  "outside_state": 115176,
+  "bad_json": 0,
+  "bytes": 16509371,
+  "assets": 11,
+  "top_num": 120870,
+  "raw_num": 138247,
+  "full_num": 110937,
+  "top_street": 120914,
+  "raw_street": 34152,
+  "top_num_pct": 32.66,
+  "raw_num_pct": 37.35,
+  "full_num_pct": 29.97
+ },
+ "reduce": {
+  "schema": "08-reduce/v1",
+  "at": "2026-11-01T08:48:48Z",
+  "rows_in": 254837,
+  "keys_out": 133634,
+  "dup_members_total": 121203,
+  "conservation": {
+   "rows_in == keys_out + dup_members": true
+  },
+  "dir_inferred_keys": 896,
+  "dir_ambiguous_keys": 137,
+  "duplicate_dataset_votes_dropped": 19900,
+  "tier": {
+   "B": 123592,
+   "U": 10042
+  },
+  "src_group_votes": {
+   "LOCAL_GIS": 133634
+  },
+  "aggregates": {
+   "streets": 6074,
+   "zips": 59,
+   "cities": 45
+  },
+  "counties": 8
+ },
+ "public": {
+  "schema": "08-public/v1",
+  "at": "2026-11-01T08:48:55Z",
+  "product_rows": 133634,
+  "public_rows": {
+   "streets": 4936,
+   "zips": 57,
+   "cities": 43
+  },
+  "min_count": 3,
+  "leak_scan": {
+   "forbidden_field": {
+    "n": 0,
+    "sample": []
+   },
+   "non_decade_number": {
+    "n": 0,
+    "sample": []
+   },
+   "unit_token": {
+    "n": 0,
+    "sample": []
+   },
+   "leading_door_number": {
+    "n": 0,
+    "sample": []
+   },
+   "small_sample": {
+    "n": 0,
+    "sample": []
+   }
+  },
+  "leak_total": 0,
+  "schema_has_no_door_field": true
+ },
+ "adjudicate_checks": {
+  "A1_spill_recount": {
+   "extract_says": 254837,
+   "recount": 254837,
+   "ok": true
+  },
+  "A2_spill_vs_reduce": {
+   "spill": 254837,
+   "reduce_rows_in": 254837,
+   "ok": true
+  },
+  "A3_conservation": {
+   "rows_in": 254837,
+   "keys_out": 133634,
+   "dup_members_total": 121203,
+   "ok": true
+  },
+  "A4_ledger_recount": {
+   "ledger_rows": 133634,
+   "distinct_keys": 133634,
+   "reduce_keys_out": 133634,
+   "dup_sum_plus_rows": 254837,
+   "rows_in": 254837,
+   "ok": true
+  },
+  "A5_public_leak": {
+   "leak_total": 0,
+   "scan": {
+    "forbidden_field": {
+     "n": 0,
+     "sample": []
+    },
+    "non_decade_number": {
+     "n": 0,
+     "sample": []
+    },
+    "unit_token": {
+     "n": 0,
+     "sample": []
+    },
+    "leading_door_number": {
+     "n": 0,
+     "sample": []
+    },
+    "small_sample": {
+     "n": 0,
+     "sample": []
+    }
+   },
+   "ok": true
+  },
+  "A6_plan_reconcile": {
+   "plan_rows_sum": 370130,
+   "read_rows": 370130,
+   "read_vs_plan_ok": true,
+   "identity_ok": true,
+   "detail": {
+    "read_rows": 370130,
+    "outside_state": 115176,
+    "unkeyed": 117,
+    "no_coord": 3,
+    "keyable_in_state": 254837
+   },
+   "plan_state_mismatch_layers": [
+    {
+     "layer": "_arcgis_rest_services_Planning_GretnaLaVistaAPTP_MapServer_0",
+     "plan_state": "IA",
+     "pip_state": {
+      "NE": 13631
+     },
+     "outside_state": 13631,
+     "rows": 13631,
+     "ratio": 1.0
+    },
+    {
+     "layer": "_rest_services_La_Vista_Address_Points___BSA_FeatureServer_0",
+     "plan_state": "IA",
+     "pip_state": {
+      "NE": 12851
+     },
+     "outside_state": 12851,
+     "rows": 12851,
+     "ratio": 1.0
+    },
+    {
+     "layer": "ices_Iowa_County_Address_Points_October_2024_FeatureServer_0",
+     "plan_state": "IA",
+     "pip_state": {
+      "WI": 15876
+     },
+     "outside_state": 15876,
+     "rows": 15911,
+     "ratio": 0.998
+    },
+    {
+     "layer": "rvices_2022_Lightbox_Address_Points_Option_A_FeatureServer_0",
+     "plan_state": "IA",
+     "pip_state": {
+      "IA": 2221,
+      "IN": 1875,
+      "NE": 30575
+     },
+     "outside_state": 32450,
+     "rows": 34698,
+     "ratio": 0.935
+    },
+    {
+     "layer": "rvices_2022_Lightbox_Address_Points_Option_B_FeatureServer_0",
+     "plan_state": "IA",
+     "pip_state": {
+      "IA": 3439,
+      "IN": 1875,
+      "NE": 38493
+     },
+     "outside_state": 40368,
+     "rows": 43835,
+     "ratio": 0.921
+    }
+   ]
+  }
+ },
+ "verdict": "IDENTICAL",
+ "findings": [
+  "3 层计划州写错：2 层实际在内布拉斯加（Gretna/La Vista）、1 层在威斯康星（Iowa County, WI）；115,176 行（31.1%）因「不跨州」被排除",
+  "add_num 顶层命中仅 32.7%，raw 回退救回 37.4%，整串地址抠出 30.0% —— 没有 raw 回退会有 249k 行不可键",
+  "gretna/la_vista/两套 Lightbox 都是跨州混合层（IA+NE+IN）",
+  "Address_Point_Update 与 Address_Point_Updater 同一 dataset_fingerprint（8ffcf841e56c72ed），19,900 票被折叠",
+  "SchoolAttendance 与 RealEstateAddress 覆盖同一批 Cedar Rapids 地址，去重合并 12.1 万行"
+ ],
+ "bucket_conservation": {
+  "spill_rows": 254837,
+  "buckets_with_rows": 7,
+  "per_bucket_min": 2,
+  "per_bucket_max": 215041
+ }
+}
