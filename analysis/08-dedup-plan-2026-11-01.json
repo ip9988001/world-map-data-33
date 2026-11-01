@@ -1,0 +1,706 @@
+{
+ "schema": "08-dedup-plan/v1",
+ "at": "2026-11-01",
+ "status": "draft — 只出方案，未派 run、未下载全量、未改采集逻辑",
+ "inputs": {
+  "scope": "world-map-data-33 的 04b/05b/07b 三阶段 Release 资产（点类地址层）",
+  "stages": {
+   "04b": {
+    "layers": 272,
+    "releases": 272,
+    "payload_assets": 648,
+    "compressed_bytes": 38511710219,
+    "compressed_gib": 35.87,
+    "rows_raw": 500948263,
+    "rows_verifiable": 458452144,
+    "tags_without_assets": 9
+   },
+   "05b": {
+    "layers": 2770,
+    "releases": 2770,
+    "payload_assets": 3241,
+    "compressed_bytes": 13007379836,
+    "compressed_gib": 12.11,
+    "rows_raw": 141664792,
+    "rows_verifiable": 141664792,
+    "tags_without_assets": 37
+   },
+   "07b": {
+    "layers": 667,
+    "releases": 667,
+    "payload_assets": 663,
+    "compressed_bytes": 90410410,
+    "compressed_gib": 0.08,
+    "rows_raw": 1050601,
+    "rows_verifiable": 1050601,
+    "tags_without_assets": 4
+   }
+  },
+  "totals": {
+   "releases": 3709,
+   "payload_assets": 4552,
+   "compressed_bytes": 51609500465,
+   "compressed_gib": 48.07,
+   "compressed_gb": 51.61,
+   "rows_raw": 643663656,
+   "rows_verifiable": 601167537,
+   "bytes_per_row_compressed": 80.2
+  },
+  "not_in_scope": {
+   "world-map-data-test (二仓)": {
+    "releases": 17,
+    "assets": 557,
+    "bytes": 2182410418,
+    "why": "二仓 gold 多数州有真实内容（IA/CO/AL 等），但 NH 的 12 个县资产全是 57 B 空档；且它是「NAD 脊柱」口径，不是并集台账"
+   },
+   "World-US-Map-Data (一仓)": {
+    "releases": 52,
+    "assets": 12780,
+    "bytes": 41254217383,
+    "breakdown": {
+     "OVERTURE": 19455303541,
+     "NAD": 13140810387,
+     "OA": 5351571474,
+     "TIGER": 3284701304,
+     "manifests": 17022847
+    },
+    "why": "一仓是源侧原始数据；08 默认只读三仓点层 Release。要不要把一仓 NAD 当脊柱见 decisions D2"
+   }
+  }
+ },
+ "exclusions": {
+  "per_stage": {
+   "04b": {
+    "ok": {
+     "layers": 257,
+     "rows": 456903391
+    },
+    "capped_by_upstream": {
+     "layers": 1,
+     "rows": 39875268
+    },
+    "partial": {
+     "layers": 4,
+     "rows": 4169604
+    },
+    "upstream_unstable": {
+     "layers": 5,
+     "rows": 0
+    },
+    "unverified": {
+     "layers": 3,
+     "rows": 0
+    },
+    "empty": {
+     "layers": 1,
+     "rows": 0
+    },
+    "missing": {
+     "layers": 1,
+     "rows": 0
+    }
+   },
+   "05b": {
+    "ok": {
+     "layers": 2722,
+     "rows": 141383987
+    },
+    "capped_by_upstream": {
+     "layers": 0,
+     "rows": 0
+    },
+    "partial": {
+     "layers": 8,
+     "rows": 229258
+    },
+    "upstream_unstable": {
+     "layers": 19,
+     "rows": 51459
+    },
+    "unverified": {
+     "layers": 4,
+     "rows": 88
+    },
+    "empty": {
+     "layers": 16,
+     "rows": 0
+    },
+    "missing": {
+     "layers": 1,
+     "rows": 0
+    }
+   },
+   "07b": {
+    "ok": {
+     "layers": 661,
+     "rows": 1048470
+    },
+    "capped_by_upstream": {
+     "layers": 0,
+     "rows": 0
+    },
+    "partial": {
+     "layers": 1,
+     "rows": 2131
+    },
+    "upstream_unstable": {
+     "layers": 0,
+     "rows": 0
+    },
+    "unverified": {
+     "layers": 1,
+     "rows": 0
+    },
+    "empty": {
+     "layers": 4,
+     "rows": 0
+    },
+    "missing": {
+     "layers": 0,
+     "rows": 0
+    }
+   }
+  },
+  "rules": {
+   "empty_missing": {
+    "layers": 23,
+    "rows": 0,
+    "action": "skip：无资产，扫不进来"
+   },
+   "unverified": {
+    "layers": 8,
+    "rows": 88,
+    "action": "skip 并记 unmerged_unverified（404/HTML 页，无有效行）"
+   },
+   "upstream_unstable": {
+    "layers": 24,
+    "rows": 51459,
+    "action": "读入但不投独立源票，标 unmerged_unstable"
+   },
+   "capped_by_upstream": {
+    "layers": 1,
+    "rows": 39875268,
+    "action": "读入并照常去重，但标 declared_unverifiable，不进覆盖率分母"
+   },
+   "partial": {
+    "layers": 13,
+    "rows": 4400993,
+    "action": "读入，标 partial"
+   },
+   "partition_duplicate": {
+    "layers": 3,
+    "rows_with_partition_dup": 2620851,
+    "action": "读入；去重会自然折叠，但同源重复不得计独立票，标 same_upstream_dup"
+   },
+   "non_us": {
+    "layers": 2,
+    "rows": 48500000,
+    "action": "按 bbox 判非美国 → unmerged_outside_us（OSM EU 32.7M + OSM NA 15.8M）",
+    "note": "行数是层账本 rows，真正非美的占比待实测"
+   },
+   "unreadable_no_assets": {
+    "layers": 1,
+    "rows": 9046,
+    "layer": "_cog_server_rest_services_test_Address_Point_FeatureServer_0",
+    "status": "ok",
+    "parts": 0,
+    "action": "跳过并在 adjudicate_08 单列；账本 rows 来自上游计数，不等于下载得到的行"
+   }
+  },
+  "in_scope_rows_for_dedup": 643612109,
+  "note": "可进去重 = 643,663,656 − 51,459(unstable) − 88(unverified) = 643,612,109；再经「键不全」过滤后才是入表行，过滤率待实测",
+  "in_scope_rows_for_dedup_readable": 643603063
+ },
+ "measurements": {
+  "compression": {
+   "method": "对 4 个真实包抽样（实拉 179.3 MB，超 100 MB 预算 79.3 MB：gh release download -p \"*.tar.gz\" 把某层 3 个 unit 全下了），解 tar → 解内层 ndjson.gz → 逐行量字节",
+   "samples": {
+    "x1": {
+     "rows": 25627,
+     "inner_gz": 1681889,
+     "raw_ndjson": 15804939,
+     "raw_share": 0.429,
+     "ratio": 9.4,
+     "bpr_raw": 616.7,
+     "bpr_gz": 65.6,
+     "keyable_top": 0.999,
+     "keyable_after_raw": 0.999
+    },
+    "x2": {
+     "rows": 95382,
+     "inner_gz": 17073756,
+     "raw_ndjson": 208409491,
+     "raw_share": 0.841,
+     "ratio": 12.21,
+     "bpr_raw": 2185.0,
+     "bpr_gz": 179.0,
+     "keyable_top": 0.0,
+     "keyable_after_raw": 1.0
+    },
+    "x3": {
+     "rows": 2337758,
+     "inner_gz": 150102121,
+     "raw_ndjson": 3590980832,
+     "raw_share": 0.777,
+     "ratio": 23.92,
+     "bpr_raw": 1536.1,
+     "bpr_gz": 64.2,
+     "keyable_top": 0.0,
+     "keyable_after_raw": 1.0
+    },
+    "x7": {
+     "rows": 13,
+     "inner_gz": 2900,
+     "raw_ndjson": 26134,
+     "raw_share": 0.818,
+     "ratio": 9.01,
+     "bpr_raw": 2010.3,
+     "bpr_gz": 223.1,
+     "keyable_top": 1.0,
+     "keyable_after_raw": 1.0
+    }
+   },
+   "decompressed_total_estimate": {
+    "low_gb": 464,
+    "mid_gb": 774,
+    "high_gb": 1233,
+    "basis": "实测每条 9.0 / 9.4 / 12.2 / 23.9×；中位取 15×"
+   }
+  },
+  "field_map_gap": {
+   "finding": "内层记录只有 15 键（add_num/pre_dir/st_name/st_suf/post_dir/unit/city/zip/esn/lat/lon/addr_key/src_layer/src_title/raw），但 raw 保留全部上游属性",
+   "measured": {
+    "x2_DamageAssessment_add_num_hit": 0.0,
+    "x3_WI_NG911_add_num_hit": 0.0,
+    "recovered_from_raw": 1.0,
+    "how": "raw.Add_Number / STREET_NUMBER / HOUSE_NBR / FULL_STREET_ADDRESS",
+    "x3_unit_dirty_rate": 0.488
+   },
+   "conclusion": "08 必须带 raw 回退字段表（NENA: Add_Number/St_Name/St_PosTyp/St_PreDir/Post_Code/Inc_Muni），否则整层 0% 可键"
+  },
+  "ref_impl_bugs": [
+   "二仓 street_key(name, type)：type 是独立字段时会被名字里的后缀词劫持 —— 名字 \"BRIDLE CREEK\" + type \"BLVD\" → CREEK|BRIDLE（实测）",
+   "PUNCT=[^A-Z0-9 ] 直接删非 ASCII：CAÑON → CA ON（实测）",
+   "序数不归一：3RD ≠ THIRD（实测）",
+   "方向词整体丢弃：E MAIN 与 W MAIN 同键（实测）"
+  ],
+  "overture_is_nad": {
+   "source": "world-map-data-test gold-US-IA-v1/MANIFEST.json（99 县，离线读）",
+   "ovt_rows": 1585884,
+   "ovt_upstream_NAD": 1585872,
+   "ratio": 0.999992,
+   "conclusion": "Overture 在 IA 就是 NAD 的镜像 → 独立源计数必须与 NAD 合并为一组"
+  },
+  "ia_dedup_anchor": {
+   "nad_input": 1586226,
+   "nad_dedup": 73161,
+   "nad_dedup_pct": 4.61,
+   "output_rows": 1489711,
+   "out_over_nad": 0.939,
+   "tiers": {
+    "S": 1074848,
+    "A": 383707,
+    "B": 31156
+   },
+   "oa_absorbed": 1304153,
+   "ovt_absorbed": 1456211
+  },
+  "mirror_groups": {
+   "identical_row_count_groups": 215,
+   "layers": 475,
+   "rows_involved": 83871711,
+   "upper_bound_dup_rows": 44398171,
+   "pct_of_all_rows": 6.9,
+   "method": "三阶段 3,709 层里 rows 完全相同且 ≥5,000 的分组（同一数据集被多个 ArcGIS 服务重发）",
+   "examples": [
+    "5,573,001 ×2 LBRSforLocator / Statewide_LBRS",
+    "3,881,020 ×2 VA_Address_Points Feature/MapServer",
+    "3,618,012 ×2 AGOL_AddressPts_for_NG911"
+   ]
+  },
+  "parse_throughput": {
+   "rows_per_s": 51077,
+   "mb_per_s": 75.0,
+   "measured_on": "x3 前 10 个 part（500,000 行 / 734 MiB / 9.8 s）"
+  },
+  "county_pip_throughput": {
+   "rows_per_s": 4646,
+   "source": "docs/COUNTY-ASSIGN-2026-10-30.md:476（248,721,878 行实测均值）"
+  },
+  "user_anchor_not_found": {
+   "claim": "判县阶段 21,265 行/秒",
+   "finding": "仓内 grep 0 命中；docs/COUNTY-ASSIGN-2026-10-30.md 的实测是 4,646 行/秒·进程。本方案用 4,646 做保守值，21,265 只当乐观上界"
+  }
+ },
+ "key": {
+  "form": "state|county_fips|number|street_key|unit_key",
+  "street_key_form": "TYPE|CORE|DIR",
+  "why_scope_in_key": "二仓 scope 是单县作用域，州/县隐含；三仓是跨州并集，MAIN ST 这类名字跨州/跨县必然撞车，必须显式带 state+county_fips",
+  "why_not_zip_or_city": "沿用二仓口径：zip/city 只进代表行打分（zip5/unit/city/UUID 长度），不进键。理由：①zip 会切断跨 zip 的同一条街 ②zip/city 覆盖率不稳（抽样里同一层 0%~100% 都有）③city 有 postal_city 与 municipal_city 两套口径",
+  "cross_zip_handling": "同键合并；zip5 取代表行（非空 > 多数派）；成员 zip 不一致记 zip_conflict 并保留 zip_alt",
+  "unit_rules": {
+   "empty": "\"\" —— 无单元单独成组，绝不与任何有单元的合并",
+   "APT 5 / #5 / UNIT 5 / STE 5": "全部 → 5（等价，实测通过）",
+   "kept_verbatim": "unit_raw 保留原串，产品版可还原",
+   "guard": "unit 值不像单元（长度>6 / 含非字母数字 / 落在 {L,R,LEFT,RIGHT,Y,N}）→ 视为无单元。实测 WI_NG911 层 48.8% 的 unit 值是 L/R/Left/Right"
+  },
+  "normalization": "NFKD 折叠 + 去重音 + Ø/ß/Æ 映射 → 大写 → 非 [A-Z0-9] 变空格 → 折叠空白",
+  "ordinal": "^(\\d+)(ST|ND|RD|TH)$ → \\1；FIRST..TWELFTH → 1..12",
+  "type_rule": "独立 type 字段优先；缺失才取名字最后一个在 SUFFIX 表里的词；未知 type 原样保留不猜（如 COUNTY HIGHWAY TT 的 TT）",
+  "number_rule": "数字部分 + 可选单字母后缀（123A 保留 A）；123-45 保留连字符；不截断",
+  "sample_table_ref": "docs/08-DEDUP-PLAN-DRAFT.md 第二节 20 条对照（构造 15 + 真实 5）"
+ },
+ "sharding": {
+  "dimension": "两段式：stage1 按资产清单分片（每片只读自己的包，全量只读一次）→ 片内按 h(county_fips)%64 分桶落盘；stage2 按桶分片（每桶读 20 份 spill 的同一桶）",
+  "guarantee": "同一键必落同一片：键里的 county_fips 每行只算一次，桶号 = h(county_fips)%64，与「哪片读到这行」无关；stage2 结束用「Σ各桶键数 == 全局键数」复核",
+  "rejected": [
+   "按 state 分片且每片读全部资产：52 × 51.6 GB = 2.7 TB egress + 约 15 TB 解压",
+   "按 county 直接分片（3,089 片）：片数远超并发上限，排队与锁开销压不住",
+   "单遍外排（sort 后合并）：分片后同键不保证同片，片内外排只能合并片内，跨片同键仍漏"
+  ],
+  "structure": "stage1 流式读 + 64 个常开 gzip writer 逐行直写（内存 ≈100 MB/片）；stage2 单县 dict 去重（最大县 ~3.2M 键，≤480 MB）",
+  "stage1": {
+   "jobs": 20,
+   "rows_per_job": 32180605,
+   "compressed_gb_per_job": 2.58,
+   "peak_mem_mb": 1500
+  },
+  "stage2": {
+   "jobs": 64,
+   "rows_per_job": 10056439,
+   "peak_mem_mb": 480
+  },
+  "peak_memory": "stage1 ≈100 MB 写缓冲 + 县索引 0.6 GB ⇒ ≤1.5 GB；stage2 单县 ≤480 MB。若把 64 桶都缓存等扫完再写，32.2M 行 × 150 B ≈ 4.8 GB —— 所以必须逐行直写",
+  "options": {
+   "coarse_12": {
+    "shards": 12,
+    "core_h_per_shard": 3.73,
+    "wall_h": 4.47,
+    "rerun_cost_h": 4.47,
+    "note": "一片 3.7 h·机时，加 20% 开销 4.4 h，距 5 h 只剩 0.6 h 余量"
+   },
+   "fine_40": {
+    "shards": 40,
+    "core_h_per_shard": 1.12,
+    "wall_h": 2.68,
+    "rerun_cost_h": 1.34,
+    "note": "按 20 并发 → 2 波，墙钟 = 2 × 1.34 h"
+   },
+   "recommend_20": {
+    "shards": 20,
+    "wall_h": 2.68,
+    "rerun_cost_h": 2.68,
+    "note": "正好一波占满 20 并发：单片 2.23 h·机时 + 开销 ≈ 2.7 h，余量 2.3 h"
+   }
+  }
+ },
+ "egress": {
+  "release_download_gb": 51.61,
+  "spill_upload_gb": 19,
+  "spill_download_gb": 19,
+  "total_gb": 89.6,
+  "measured_stream_mb_per_s": 3.4,
+  "measured_source": "docs/EGRESS-LIMIT-2026-10-30.md 三（1.8 GB / 8m57s，0 次 5xx）",
+  "serial_download_h": 4.22,
+  "per_job_download_gb": 2.58,
+  "per_job_download_min": 12.6,
+  "concurrent_unknown": "3.4 MB/s 是单流实测；20 路并发下的总吞吐未实测（阶段 0 冒烟要测）",
+  "projection_cannot_reduce": {
+   "verdict": "不能",
+   "why": [
+    "资产是 tar.gz 套 ndjson.gz，gzip 无随机访问，取任何字段都要下整包",
+    "raw 占解压后字节 43%–84%，但它在压缩包里，不能只取部分",
+    "要减下载量只能重采时不写 raw —— 那是改采集逻辑，08 不做，且会丢掉字段回退能力"
+   ]
+  },
+  "optional_tiger_gb": 3.06,
+  "note": "一仓 TIGER addrfeat 只有做 S/A/B 分级才需要（decisions D3）"
+ },
+ "time": {
+  "model_us_per_row": {
+   "gzip+json": 19.6,
+   "extract+normalize": 6.7,
+   "county_pip": 215.2,
+   "dedup+score": 8.3,
+   "total": 249.8
+  },
+  "rows_per_s_effective": 4003,
+  "total_core_hours": 44.7,
+  "with_overhead_h": 53.6,
+  "parallel_20_wall_h": 2.7,
+  "breakdown_h": {
+   "county_pip": 38.5,
+   "parse": 3.5,
+   "normalize": 1.2,
+   "dedup": 1.5
+  },
+  "anchors": {
+   "county_pip": "4,646 行/秒·进程（实测）",
+   "parse": "51,077 行/秒·核（本次实测）",
+   "user_21265": "仓内无出处，只当乐观上界"
+  },
+  "wall_with_stage2_h": 3.2,
+  "verification_rounds": 3
+ },
+ "products": {
+  "main_ledger_fields": [
+   "dedup_key",
+   "state",
+   "state_fips",
+   "county_fips",
+   "county_name",
+   "number",
+   "number_suffix",
+   "pre_dir",
+   "street_core",
+   "street_type",
+   "post_dir",
+   "unit",
+   "unit_raw",
+   "street_full",
+   "zip5",
+   "zip4",
+   "city_postal",
+   "city_municipal",
+   "lat",
+   "lon",
+   "geo_precision",
+   "src_kinds",
+   "src_layers_n",
+   "src_layers",
+   "independent_sources_n",
+   "src_group_votes",
+   "tier",
+   "tiger_verify",
+   "dup_members",
+   "zip_conflict",
+   "dir_conflict",
+   "first_seen",
+   "last_seen",
+   "flags",
+   "rep_reason"
+  ],
+  "field_counts": {
+   "total": 35,
+   "audit_only": 8
+  },
+  "independent_source_groups": {
+   "NAD(+Overture)": {
+    "members": "一仓 NAD-US-*；三仓 NAD 直供/镜像层；二仓 Overture 桶",
+    "evidence": "IA MANIFEST ovt_upstream.NAD=1,585,872/1,585,884；层判定用字段指纹 raw 含 UUID+AddrClass+Placement+Addr_Type",
+    "layers": 3,
+    "rows": 116852987,
+    "rows_breakdown": {
+     "s_Points_from_National_Address_Database_view": 39875268,
+     "USA_NAD_Addresses": 75937418,
+     "SAMS_NAD_2025_Address_List": 1040301
+    },
+    "caveat": "分组层数是字面匹配粗分；R1 必须产出逐层 src_kind 确认清单（字段指纹+人工抽查），台账只认该清单"
+   },
+   "TIGER": {
+    "members": "一仓 TIGER addrfeat 号段",
+    "role": "只做校验与分级，不投点票",
+    "gb": 3.06
+   },
+   "NG911": {
+    "members": "州级 NG911/E911 项目层",
+    "layers": 286,
+    "rows": 53545344
+   },
+   "LOCAL_GIS": {
+    "members": "州/县/市自建 GIS 地址点（NC1Map、MassGIS、NYS SAM、VA 等）",
+    "layers": "≈2,900（余量，需 08 首轮 src_kind 分类器逐层判定）"
+   },
+   "PARCEL_SITUS": {
+    "members": "宗地/assessor situs 地址",
+    "layers": 232,
+    "rows": 21636572
+   },
+   "OSM": {
+    "members": "OpenStreetMap 导入层",
+    "layers": 2,
+    "rows": 48500000,
+    "note": "默认排除（非美国）"
+   }
+  },
+  "public_product": {
+   "rule": "无门牌：只出 zip5 页 / city 页 / street 页（号段 + 统计）",
+   "keep": [
+    "state",
+    "county_fips",
+    "city_postal",
+    "zip5",
+    "street_full",
+    "number_min",
+    "number_max",
+    "number_span_n",
+    "address_count",
+    "unit_count",
+    "lat_centroid(4位)",
+    "lon_centroid(4位)",
+    "tier",
+    "first_seen",
+    "last_seen"
+   ],
+   "drop": [
+    "number",
+    "number_suffix",
+    "unit",
+    "unit_raw",
+    "lat",
+    "lon",
+    "dup_members",
+    "src_layers",
+    "src_group_votes",
+    "tiger_verify"
+   ],
+   "mask": "count < 3 的 street 页不出（防反推）；号段按 10 取整"
+  },
+  "product_product": {
+   "rule": "完整门牌，不公开",
+   "keep": "主表全部 35 字段（含 unit、精确坐标、src_layers、dup_members）",
+   "license_note": "NAD/Overture/OA 各有许可，出产品前按 src_kinds 挂许可标记"
+  },
+  "output_format": {
+   "ledger": "parquet+zstd，按 state=/county= 分区",
+   "agg": "ndjson.gz，按 zip5 / city / street 三份",
+   "ledger_size_gb": "25–45（ndjson.gz 口径）；parquet ≈ 0.35–0.5× → 10–22",
+   "anchor": "二仓 gold gz 实测 124 B/行（47 字段，IA 1,489,711 行 / 184 MB）",
+   "extra_reduce": "按 zip/city/street 聚合要 stage3 一遍 reduce —— 只跑聚合行（百万级），不是 600M 行"
+  },
+  "expected_rows": {
+   "range": "2.5–3.5 亿（待实测）",
+   "lower_bound": 125000000,
+   "upper_bound": 601167537,
+   "drivers": [
+    "同层镜像 44.4M 行上界",
+    "NAD 内部 4.61% 自撞",
+    "跨源重合率未知（决定最终行数的大头）"
+   ]
+  }
+ },
+ "risks": [
+  {
+   "risk": "内存爆",
+   "detect": "stage1 单桶水位打点 / stage2 单县行数日志",
+   "mitigation": "桶数 64 可调；单县 > 5M 行时该县再按县内 hash 二次分片"
+  },
+  {
+   "risk": "job 超 6h",
+   "detect": "每 50 万行打一次心跳时间戳",
+   "mitigation": "20 片 × 2.23 h·机时，余量 2.3 h；按 asset 级 checkpoint 续跑"
+  },
+  {
+   "risk": "下载 5xx",
+   "detect": "HTTP 状态计数进 reports",
+   "mitigation": "指数退避重试 5 次；单包失败只丢该 unit，记 failed_units 交 adjudicate 兜底"
+  },
+  {
+   "risk": "hash 碰撞",
+   "detect": "键用完整字符串做 dict 键，不做哈希截断",
+   "mitigation": "h(county)%64 只影响分布，不影响正确性"
+  },
+  {
+   "risk": "跨片同键",
+   "detect": "stage2 结束做「Σ各桶键数 == 全局键数」守恒校验",
+   "mitigation": "桶 = h(county_fips)%64 已保证；校验失败即中止"
+  },
+  {
+   "risk": "分区重复层",
+   "detect": "同 upstream url 的层对 + 行数相同",
+   "mitigation": "标 same_upstream_dup，独立源投票只算一票"
+  },
+  {
+   "risk": "capped 层",
+   "detect": "ledger status=capped_by_upstream",
+   "mitigation": "读入但标 declared_unverifiable，不进覆盖率，grade 降级"
+  },
+  {
+   "risk": "编码/脏行",
+   "detect": "json 解析失败数 / 非 UTF-8 数 / 非美坐标数",
+   "mitigation": "逐行 try；脏行前 1,000 条落 rejects 样本"
+  },
+  {
+   "risk": "unit 空值歧义",
+   "detect": "unit 非空率 + unit 值分布（L/R/Y/N 这类）",
+   "mitigation": "像不像单元的判据 + 无单元单独成组"
+  },
+  {
+   "risk": "字段映射漏",
+   "detect": "逐层 add_num/st_name 命中率",
+   "mitigation": "raw 回退字段表；仍 0% 的层标 unkeyed 并单列清单"
+  },
+  {
+   "risk": "非美国数据",
+   "detect": "bbox + PIP 落不进任何县",
+   "mitigation": "unmerged_outside_us，不进美国台账"
+  }
+ ],
+ "decisions": [
+  {
+   "id": "D1",
+   "question": "去重键要不要含方向词？",
+   "options": [
+    "A 按二仓口径丢掉（E/W MAIN 合并）",
+    "B 含方向，缺失方向时允许合并并标 dir_conflict"
+   ],
+   "impact": "方向词在抽样里占 5.7%–26.5% 的行；A 会误合并 E/W 同名街的相同门牌",
+   "recommend": "B"
+  },
+  {
+   "id": "D2",
+   "question": "台账口径是并集还是 NAD 脊柱？",
+   "options": [
+    "A 并集：3,709 层全进，预计 2.5–3.5 亿行",
+    "B 脊柱：只留 NAD 背书（≈1.25 亿行，与二仓 gold 同口径）"
+   ],
+   "impact": "决定对外能讲「全美独立地址数」还是「NAD 覆盖数」",
+   "recommend": "A（本单要的就是独立地址台账）"
+  },
+  {
+   "id": "D3",
+   "question": "08 是否做 TIGER 号段校验（S/A/B 分级）？",
+   "options": [
+    "A 不做：只有 independent_sources_n",
+    "B 做：+3.06 GiB egress、+约 5 h·机时"
+   ],
+   "impact": "没有 B 就没有 S 级，公开页的「号段可信度」讲不出口",
+   "recommend": "B，但分两轮：R2 不挂，R3 全量再挂"
+  }
+ ],
+ "pending_measurements": [
+  "全量 3,709 层的 add_num/st_name 命中率（决定 unkeyed 行数）",
+  "OSM 48.5M 行里真正非美的比例",
+  "跨源重合率（决定最终台账行数）",
+  "20 路并发下的总下载吞吐（3.4 MB/s 是单流实测）",
+  "去重后行数 → 决定 parquet 体积与 stage3 聚合规模"
+ ],
+ "scripts": {
+  "new": [
+   "collect/lib/addrkey.py",
+   "collect/lib/fieldmap3.py",
+   "collect/dedup_extract.py",
+   "collect/dedup_reduce.py",
+   "collect/dedup_public.py",
+   "collect/adjudicate_08.py",
+   ".github/workflows/dedup-08.yml",
+   "collect/tests/test_addrkey.py",
+   "collect/tests/test_dedup_reduce.py"
+  ],
+  "reuse": [
+   "collect/county_assign.py（Index / stream_asset / PIP，不改）",
+   "collect/ledger_rebuild.py（账本口径）",
+   "collect/preflight_dispatch.py（新增 D15 输入冻结校验）"
+  ],
+  "modify": [
+   "docs/PREFLIGHT-GATE.md（19 → 20 项）",
+   "docs/WORKFLOW-FAILURE-LEDGER.md（W33-042 输入集漂移）",
+   "collect/ledger/08_plan.json（新）"
+  ],
+  "upstream_access": {
+   "needed": false,
+   "why": "只读 Release 资产 + 本地 analysis/tiger_county/*.json.gz（3,089 县）",
+   "red_flag": "无。唯一「本该访问上游」的场景是补 add_num 字段映射 —— 因为 raw 留了全部上游属性，改离线回退表即可，不需要上游"
+  }
+ }
+}
