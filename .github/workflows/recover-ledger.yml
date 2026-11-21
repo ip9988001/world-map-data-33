@@ -49,8 +49,8 @@ jobs:
           rm -rf /tmp/a0 /tmp/a1 /tmp/a2
           fetch() {  # $1=目标目录 $2=artifact id
             mkdir -p "$1"
-            gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$2/zip" > "/tmp/$1.zip"
-            unzip -o -q "/tmp/$1.zip" -d "$1"
+            gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$2/zip" > "$1.zip"
+            unzip -o -q "$1.zip" -d "$1"
           }
           fetch /tmp/a0 14703419307
           fetch /tmp/a1 14707403055
