@@ -101,6 +101,7 @@ APPROVED_MAIN = {
                 " + 故障清单 W33-033",
     "688c313": "备份代序按数字比（W33-039）：bak_sort_key 取代 mtime/字符串序，只留 3 代不再随机挑一代"
                  "+5 条单测，不改变采集/合并规则",
+    "dedf5f7": "PR #24 合入（collect-full 四处 push 改用 admin 身份 GH_TOKEN_PUSH；规则集 27788133 与判据口径均未动）",
 }
 
 PKG_RE = re.compile(r"-u\d{5}\.tar\.gz$")
