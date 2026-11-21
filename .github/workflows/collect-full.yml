@@ -33,6 +33,9 @@ on:
       #   为什么需要：cancelled 片里的层会留下「单元标完成、产物没上传」或「计划期口径差」
       #   的半截状态，done_layers（只看 tag+checkpoint）看不见 → 不定点重跑就永久缺口。
       force_layers: { description: "强制重跑的层 id（逗号分隔，cancelled 片续跑用）", default: "" }
+      # ★ F16 故障清单（2026-11-22 muse-000143）：本次派单涉及的类别，逗号分隔；留空则由 preflight 按
+      #   「--ref 相对 main 的改动文件」自行推导（那样常推导不出 → F16 只能 WARN）。
+      ledger_category: { description: "F16 故障清单：本次派单涉及类别（逗号分隔，如 账本与口径,checkpoint与断点）", default: "" }
       # ★ 单层墙钟上限（分钟）。默认 60：4 层/片 × 60 < 350 分钟上限，挂死一层不拖垮整片。
       #   大层（如 NAD 9,790 万行）分轮续跑：一轮 60 分钟只推进一部分，checkpoint 接着跑。
       layer_timeout: { description: "单层墙钟上限（分钟，0=默认 60）", default: "0" }
@@ -86,6 +89,7 @@ jobs:
           python3 collect/preflight_dispatch.py \
             --stage "${{ inputs.stage }}" \
             --force-layers "${{ inputs.force_layers }}" \
+            --ledger-category "${{ inputs.ledger_category }}" \
             --size "${{ inputs.size }}" \
             --max-shards "${{ inputs.max_shards }}" \
             --ref "${{ github.ref_name }}" $ARG | tee /tmp/preflight.log
