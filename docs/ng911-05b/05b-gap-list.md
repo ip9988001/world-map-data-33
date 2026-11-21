@@ -12,10 +12,10 @@
 
 | 来源文件 | declared_rows | layers_n | sha256 | 生成时间 |
 |---|---|---|---|---|
-| `collect/ledger/05b_plan.json` | 32337294 | 585 | `d5ff5467b7c1127b` | 2026-11-21T05:11:00Z |
-| `collect/ledger/step05b_plan.json` | 32303033 | 583 | `361fc29e4c828c3c` | 2026-11-21T07:19:04Z |
+| `collect/ledger/05b_plan.json` | None | None | `` | None |
+| `collect/ledger/step05b_plan.json` | 32303033 | 583 | `361fc29e4c828c3c` | 2026-11-21T07:51:54Z |
 
-两者相差 34261 行（口径不同：run 计划 585 层 vs 探针计划 583 层 —— skip_done 刷掉 2 层）。**不猜哪份对，也不许把任一数当逐层 declared 用。**
+两者相差 None 行（口径不同：run 计划 585 层 vs 探针计划 583 层 —— skip_done 刷掉 2 层）。**不猜哪份对，也不许把任一数当逐层 declared 用。**
 
 ## 六类汇总
 

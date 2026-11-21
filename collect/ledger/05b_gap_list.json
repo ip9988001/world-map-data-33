@@ -1,6 +1,6 @@
 {
  "schema": "05b-gap-list/v2",
- "at": "2026-11-21T07:41:13Z",
+ "at": "2026-11-21T07:52:05Z",
  "declared_source": "unavailable",
  "denominator": "expect_live",
  "why_denominator": "plan-05b artifact(14692340122) 无 expect_by_layer → 逐层 declared 不可得，按口径改用 expect_live；不用总量/筛查产物倒推",
@@ -16,7 +16,7 @@
  "total_declared": null,
  "total_expect_live": 27508679,
  "total_rows": 229697,
- "total_gap_rows": 1280025,
+ "total_gap_rows": 27424770,
  "verdict_counts": {
   "ok": 1,
   "partial": 6,
@@ -37,7 +37,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "roY6O3ncx_arcgis_rest_services_MS4_addresses_FeatureServer_0",
@@ -50,7 +51,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "d_Septic_System_Pilot_Project_Addresses_View_FeatureServer_0",
@@ -63,7 +65,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arcgis_rest_services_Hartford_911_Addresses__FeatureServer_0",
@@ -76,7 +79,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "g5mTyuNWO5xx6_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -89,7 +93,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "esses_In_Refuse_Recycle_Routes_WFL1_July2019_FeatureServer_0",
@@ -102,7 +107,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "67TISFO3iTjgFX_arcgis_rest_services_address2_FeatureServer_0",
@@ -115,7 +121,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "cgis_rest_services_Administrative_Addressing_FeatureServer_0",
@@ -128,7 +135,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "bK6DOd0VbR_arcgis_rest_services_SB_Addresses_FeatureServer_0",
@@ -141,7 +149,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "TjgFX_arcgis_rest_services_addresses_120222a_FeatureServer_0",
@@ -154,7 +163,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "unty__GA_Online_911_Addresses_and_Roads_WFL1_FeatureServer_1",
@@ -167,7 +177,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "e3_arcgis_rest_services_SiteAddresses_public_FeatureServer_0",
@@ -180,7 +191,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "CRVuK_arcgis_rest_services_Map_View_Address_FeatureServer_42",
@@ -193,7 +205,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "HKRPMgv82EjLQ_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -206,7 +219,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "cgis_rest_services_SiteAddresses_public_2020_FeatureServer_1",
@@ -219,7 +233,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "dlWlBxzX_arcgis_rest_services_Newton_Address_FeatureServer_0",
@@ -232,7 +247,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "Iod9kh71mtnDG_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -245,7 +261,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "387Pb3S_arcgis_rest_services_LiveAdds_202504_FeatureServer_0",
@@ -258,7 +275,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "st_services_Curb_Transition_Magic_Number2027_FeatureServer_0",
@@ -271,7 +289,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_in_Incident_Address_and_Type_for_Date_Range_FeatureServer_0",
@@ -284,7 +303,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "wVADPEG6iD24f_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -297,7 +317,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ces_Stillwater_County_Addressing_Layers_2026_FeatureServer_0",
@@ -310,7 +331,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "yHixJV_arcgis_rest_services_Master_Addresses_FeatureServer_0",
@@ -323,7 +345,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "teAddresses_8548b2fdfac0464392b3fd7620a632d7_FeatureServer_0",
@@ -336,7 +359,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ater_Meter_Replacement_Addresses_Zone_1_view_FeatureServer_1",
@@ -349,7 +373,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "st_services_Lincoln_City_Addresses_View_Only_FeatureServer_0",
@@ -362,7 +387,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "sdIpPb_arcgis_rest_services_Addresses_Splits_FeatureServer_0",
@@ -375,7 +401,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "SQHJsl5r_arcgis_rest_services_Address_Labels_FeatureServer_0",
@@ -388,7 +415,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "NuFrQ7kB_arcgis_rest_services_Master_Address_FeatureServer_0",
@@ -401,7 +429,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "7Y8pE5CiojuXeU_arcgis_rest_services_NewSitus_FeatureServer_0",
@@ -414,7 +443,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "M5KB8_arcgis_rest_services_E911_PairwiseClip_FeatureServer_0",
@@ -427,7 +457,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_rest_services_E911_Houses_Washington_County_FeatureServer_0",
@@ -440,7 +471,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "kttgSmcq6CPonms_arcgis_rest_services_Address_FeatureServer_0",
@@ -453,7 +485,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ieS2ld_arcgis_rest_services_Searcy_NG911_gdb_FeatureServer_2",
@@ -466,7 +499,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_Mountlake_Terrace_Washington_Addresses_view_FeatureServer_0",
@@ -479,7 +513,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rest_services_Site_Addresses_06012022_public_FeatureServer_2",
@@ -492,7 +527,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "CY2_arcgis_rest_services_Dispatcher_Map_WFL1_FeatureServer_0",
@@ -505,7 +541,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rest_services_Pella_Address_Data_Public_View_FeatureServer_2",
@@ -518,7 +555,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_ArcGIS_rest_services_AddressesE911Macon2022_FeatureServer_0",
@@ -531,7 +569,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "Z_arcgis_rest_services_CityofDemingAddresses_FeatureServer_0",
@@ -544,7 +583,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "l0FeW1NE_arcgis_rest_services_AddressesWInfo_FeatureServer_0",
@@ -557,7 +597,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "0hS_arcgis_rest_services_Address_Road_Update_FeatureServer_0",
@@ -570,7 +611,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "Q24dH_arcgis_rest_services_Addresses__Site__FeatureServer_13",
@@ -583,7 +625,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rest_services_Master_Address_Management_WFL1_FeatureServer_0",
@@ -596,7 +639,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ms_arcgis_rest_services_Address_Data_Public_FeatureServer_10",
@@ -609,7 +653,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "cgis_rest_services_Address_Data_Public_view_FeatureServer_10",
@@ -622,7 +667,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ses_public_3336c922d00a441e8f588e16c3dc2577_FeatureServer_10",
@@ -635,7 +681,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "gg5s_arcgis_rest_services_Building_Addresses_FeatureServer_0",
@@ -648,7 +695,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "8nlIDAHxNx4_arcgis_rest_services_911_Address_FeatureServer_0",
@@ -661,7 +709,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "is_rest_services_Address_Points_Council_Area_FeatureServer_0",
@@ -677,7 +726,8 @@
    "class": "unverified",
    "evidence": "retry1: http=200 no_count: {\"error\":{\"code\":400,\"message\":\"Invalid URL\",\"details\":[\"Invalid URL\"]}}",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": false
   },
   {
    "layer": "s_rest_services_Richland_County_ND_Addresses_FeatureServer_1",
@@ -690,7 +740,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "HRU_arcgis_rest_services_VFAC_Addresses_WFL1_FeatureServer_0",
@@ -703,7 +754,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "sses_public_e65dd46e9c084cddaedcb94aeea0ed6b_FeatureServer_0",
@@ -716,7 +768,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "DQNT3m6mbJlqZ_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -729,7 +782,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_services_Address_and_Street_Annotation_view_FeatureServer_0",
@@ -742,7 +796,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "s_rest_services_City_of_Dinuba_Addresses_gdb_FeatureServer_1",
@@ -755,7 +810,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_arcgis_rest_services_Site_Address_Occupants_FeatureServer_0",
@@ -768,7 +824,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "1uhbqnOZPx6qT_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -781,7 +838,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "es_City_Buildings_and_Address_Locations_WFL1_FeatureServer_4",
@@ -794,7 +852,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "resses___Archuleta_County_201411251147175537_FeatureServer_0",
@@ -807,7 +866,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "Zk1fY2MHCTEXz_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -820,7 +880,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "R_arcgis_rest_services_Tornado_Addresses_NLR_FeatureServer_0",
@@ -833,7 +894,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "vlQFEpKtV_arcgis_rest_services_DOUGLASCOUNTY_FeatureServer_0",
@@ -846,7 +908,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "wu_arcgis_rest_services_CoStafford_Addresses_FeatureServer_0",
@@ -859,7 +922,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "PSO5BR5eOIggwRH_arcgis_rest_services_Address_FeatureServer_0",
@@ -872,7 +936,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "s_rest_services_Addressing_Addressing_public_FeatureServer_0@MN-3",
@@ -885,7 +950,8 @@
    "verdict": "short",
    "expect_source": "retry-alive",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "mn_gov_arcgis_rest_services_Basemaps_LINKBasemap_MapServer_4",
@@ -899,7 +965,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>",
+   "has_denominator": false
   },
   {
    "layer": "rcgis_rest_services_OsageCoKS_NG911Addresses_FeatureServer_0",
@@ -912,7 +979,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "Pc_arcgis_rest_services_EL_RENO_911ADDRESSES_FeatureServer_0",
@@ -925,7 +993,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "gUZUh16VF_arcgis_rest_services_SC_Addressing_FeatureServer_0",
@@ -938,7 +1007,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "VF_arcgis_rest_services_SC_Addressing_2025_7_FeatureServer_0",
@@ -951,7 +1021,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "sses_public_6332b4b81c614cb4894d5de569a96465_FeatureServer_0",
@@ -964,7 +1035,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "cyjLcCCpGk8Ri_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -977,7 +1049,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "BY6OUzMBTZcz_arcgis_rest_services_Addresses_FeatureServer_15",
@@ -990,7 +1063,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "Sample_NCTECH_Volusia_Situs_Addresss_VRWorld_FeatureServer_0",
@@ -1003,7 +1077,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "hAmRP1z50gTbO_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -1016,7 +1091,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "oXVtxM_arcgis_rest_services_CountyAddresses_FeatureServer_23",
@@ -1029,7 +1105,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_arcgis_rest_services_Address_Pnts_ElSegundo_FeatureServer_2",
@@ -1042,7 +1119,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "QpZPT9qY_arcgis_rest_services_TOD_ADDRESS_IN_FeatureServer_0",
@@ -1055,7 +1133,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "st_services_Winneshiek_County_Address_Points_FeatureServer_1",
@@ -1068,7 +1147,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "jyn_arcgis_rest_services_Full_Street_Address_FeatureServer_0",
@@ -1081,7 +1161,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "s___Pulse_of_OC_Updated_Draft___Site_Address_FeatureServer_0",
@@ -1094,7 +1175,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_server_rest_services_Aspen_AspenEditEnabled_FeatureServer_0",
@@ -1107,7 +1189,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "QSIEviNS_arcgis_rest_services_Addresses_2025_FeatureServer_3",
@@ -1120,7 +1203,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_rest_services_NG24DataModelUpdate_WFL1_view_FeatureServer_0",
@@ -1136,7 +1220,8 @@
    "class": "unverified",
    "evidence": "retry1: http=200 no_count: {\"error\":{\"code\":499,\"message\":\"Token Required\",\"messageCode\":\"GWM_0003\",\"details\":[\"Token Required\"]}}",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": false
   },
   {
    "layer": "wi_us_arcgis_rest_services_RichlandCo_GIS_Public_MapServer_6",
@@ -1149,7 +1234,8 @@
    "verdict": "partial",
    "expect_source": "plan-probe",
    "attribution": "short",
-   "class": "partial"
+   "class": "partial",
+   "has_denominator": true
   },
   {
    "layer": "p_arcgis_rest_services_Addresses_Public_View_FeatureServer_0",
@@ -1162,7 +1248,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "KcOCt7Lxga2AytI_arcgis_rest_services_Address_FeatureServer_0",
@@ -1175,7 +1262,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "tkincounty_com_arcgis_rest_services_Full_Address_MapServer_1",
@@ -1188,7 +1276,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "nDataMaps_OpenDataMAP_InfraZonePropBound_Layers_MapServer_33",
@@ -1202,7 +1291,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>",
+   "has_denominator": false
   },
   {
    "layer": "Qwt3_arcgis_rest_services_Address_Layer_view_FeatureServer_0",
@@ -1215,7 +1305,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "FjYDrl_arcgis_rest_services_Address_12102021_FeatureServer_0",
@@ -1228,7 +1319,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "kFjYDrl_arcgis_rest_services_Address11292023_FeatureServer_0",
@@ -1241,7 +1333,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rWTl_arcgis_rest_services_Harrison_Addresses_FeatureServer_0",
@@ -1254,7 +1347,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "4soU_arcgis_rest_services_Site_Addresses_gdb_FeatureServer_0",
@@ -1267,7 +1361,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "t_services_Perry_County_Address_Geocode_v1_1_FeatureServer_0",
@@ -1280,7 +1375,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "Pvc_arcgis_rest_services_Address_Points_View_FeatureServer_2",
@@ -1295,7 +1391,8 @@
    "attribution": "short",
    "class": "missing",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": true
   },
   {
    "layer": "1mtnDG_arcgis_rest_services_Worth__ADDRESSES_FeatureServer_0",
@@ -1308,7 +1405,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "t_services_Public_20Notification_20Addresses_FeatureServer_0",
@@ -1321,7 +1419,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "lqccxOHLu_arcgis_rest_services_SiteAddresses_FeatureServer_0",
@@ -1334,7 +1433,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "kFjYDrl_arcgis_rest_services_Address02202025_FeatureServer_0",
@@ -1347,7 +1447,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "unty_com_arcgis_rest_services_Hosted_Address_FeatureServer_0",
@@ -1360,7 +1461,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "Us_arcgis_rest_services_OC_Site_Address_2023_FeatureServer_0",
@@ -1373,7 +1475,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ILCm3hbWNTZLH_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -1386,7 +1489,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "kFjYDrl_arcgis_rest_services_Address06192026_FeatureServer_0",
@@ -1399,7 +1503,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "Kw_arcgis_rest_services_Situs_Address_Public_FeatureServer_0",
@@ -1412,7 +1517,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arcgis_rest_services_BTV_e911_Address_Layers_FeatureServer_0",
@@ -1425,7 +1531,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arcgis_rest_services_PAunderservedstructures_FeatureServer_0",
@@ -1438,7 +1545,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ountyny_gov_server_rest_services_EMO_E911_Viewer_MapServer_5",
@@ -1452,7 +1560,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>",
+   "has_denominator": false
   },
   {
    "layer": "DdwE7LMrYrEMJ_arcgis_rest_services_Addresses_FeatureServer_1",
@@ -1465,7 +1574,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "JE9B_arcgis_rest_services_Newberg_Addresses__FeatureServer_0",
@@ -1478,7 +1588,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ver_rest_services_ParcelViewer_Parcel_Map_Labels_MapServer_0",
@@ -1492,7 +1603,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>",
+   "has_denominator": false
   },
   {
    "layer": "wlO_arcgis_rest_services_Master_Address_List_FeatureServer_0",
@@ -1505,7 +1617,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "XhtlWzOFCTkO_arcgis_rest_services_AddressPts_FeatureServer_0",
@@ -1518,7 +1631,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "services_BRIC_WRC_Situs_Address_LookUp_Table_FeatureServer_0",
@@ -1531,7 +1645,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "gis_rest_services_Municipal_Address_Points_FeatureServer_214",
@@ -1547,7 +1662,8 @@
    "class": "unverified",
    "evidence": "retry1: http=200 no_count: {\"error\":{\"code\":400,\"message\":\"Invalid URL\",\"details\":[\"Invalid URL\"]}}",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": false
   },
   {
    "layer": "5n_arcgis_rest_services_City_Limit_Addresses_FeatureServer_0",
@@ -1560,7 +1676,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "st_services_Arlington_Addresses_current_view_FeatureServer_0",
@@ -1573,7 +1690,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "drG_arcgis_rest_services_Arlington_Addresses_FeatureServer_0",
@@ -1586,7 +1704,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "l_Assessor_parcel_Map_June_06_09_2023_WFL1_FeatureServer_219",
@@ -1599,7 +1718,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "e8LteOjzU_arcgis_rest_services_MGO_AddressPt_FeatureServer_0",
@@ -1612,7 +1732,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "aAg05xQLgo7_arcgis_rest_services_SiteAddress_FeatureServer_0",
@@ -1625,7 +1746,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "dlWlBxzX_arcgis_rest_services_Searcy_Address_FeatureServer_0",
@@ -1638,7 +1760,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "teAddresses_176dcf6d135741fcbc3bf17da5aa7aff_FeatureServer_0",
@@ -1651,7 +1774,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "cgis_rest_services_Site_Addresses_View_Layer_FeatureServer_0",
@@ -1664,7 +1788,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "teAddresses_1a8d5e9d05674ad599c70df5dfdd4265_FeatureServer_0",
@@ -1677,7 +1802,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "m_jOKMO9vKmc98J4JC_arcgis_rest_services_E911_FeatureServer_0",
@@ -1690,7 +1816,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "BYQ9pcCt_arcgis_rest_services_e911_pt_txdist_FeatureServer_0",
@@ -1703,7 +1830,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rcgis_rest_services_VT_Data___E911_Landmarks_FeatureServer_0",
@@ -1716,7 +1844,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "dlWlBxzX_arcgis_rest_services_Marion_Address_FeatureServer_1",
@@ -1729,7 +1858,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "st_services_VacantResidentialProperties_WFL1_FeatureServer_0",
@@ -1742,7 +1872,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "is_rest_services_Grady_Site_Addresses_Public_FeatureServer_0",
@@ -1755,7 +1886,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "MJrpz61FbvL5t_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -1768,7 +1900,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "almbeach_com_arcgis_rest_services_BaseData_Situs_MapServer_0",
@@ -1781,7 +1914,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "gis_rest_services_AddressList_Update20250311_FeatureServer_0",
@@ -1794,7 +1928,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "us_server_rest_services_NG911_Address_Points_FeatureServer_3",
@@ -1810,7 +1945,8 @@
    "class": "pending",
    "evidence": "retry2: http=None URLError: <urlopen error timed out>",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": false
   },
   {
    "layer": "_mn_us_server_rest_services_NG911_Address_Points_MapServer_3",
@@ -1826,7 +1962,8 @@
    "class": "pending",
    "evidence": "retry2: http=None URLError: <urlopen error timed out>",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": false
   },
   {
    "layer": "aR3VIVeAhJdr_arcgis_rest_services_AddressBPs_FeatureServer_0",
@@ -1839,7 +1976,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "kh71mtnDG_arcgis_rest_services_E911addresses_FeatureServer_0",
@@ -1852,7 +1990,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ELbQdlhsJLcCM_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -1865,7 +2004,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "t_server_rest_services_Public_Roseburg_Addresses_MapServer_0",
@@ -1879,7 +2019,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>",
+   "has_denominator": false
   },
   {
    "layer": "rcgis_rest_services_Johns_Creek_GA_Addresses_FeatureServer_1",
@@ -1892,7 +2033,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "Ia_arcgis_rest_services_County_911_Addresses_FeatureServer_0",
@@ -1905,7 +2047,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "hP2NPfFE_arcgis_rest_services_Site_Addresses_FeatureServer_0",
@@ -1918,7 +2061,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "m7axC2dD_arcgis_rest_services_WascoAddresses_FeatureServer_5",
@@ -1931,7 +2075,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ca_gov_server_rest_services_Address_Range_Labels_MapServer_0",
@@ -1944,7 +2089,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arcgis_rest_services_Short_Term_Rentals_WFL1_FeatureServer_1",
@@ -1957,7 +2103,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "8SWPG8KZ6r_arcgis_rest_services_911Addresses_FeatureServer_0",
@@ -1970,7 +2117,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_arcgis_rest_services_911_Addresses_Website2_FeatureServer_0",
@@ -1983,7 +2131,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "sses_public_35d07adabaff4ddba616f6f365b8954e_FeatureServer_0",
@@ -1996,7 +2145,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ervices_Lee_County_E911_Addresses_and_Roads_FeatureServer_20",
@@ -2009,7 +2159,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rcgis_rest_services_Newberg_Addresses_2_view_FeatureServer_0",
@@ -2022,7 +2173,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rent_Site_Addresses_and_Entrance_Points_view_FeatureServer_0",
@@ -2035,7 +2187,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "KPa_arcgis_rest_services_overture_address_sd_FeatureServer_0",
@@ -2048,7 +2201,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "C2HwTkBAlth_arcgis_rest_services_Address_gdb_FeatureServer_0",
@@ -2061,7 +2215,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "us_arcgis_rest_services_Addressing_AddressPoints_MapServer_0",
@@ -2074,7 +2229,8 @@
    "verdict": "partial",
    "expect_source": "plan-probe",
    "attribution": "short",
-   "class": "partial"
+   "class": "partial",
+   "has_denominator": true
   },
   {
    "layer": "kTU5o6Z_arcgis_rest_services_Addressing_AGOL_FeatureServer_0",
@@ -2087,7 +2243,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "X_arcgis_rest_services_County_P_Address_View_FeatureServer_0",
@@ -2100,7 +2257,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "jld0x0gpn_arcgis_rest_services_E911Addresses_FeatureServer_0",
@@ -2113,7 +2271,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "6Z_arcgis_rest_services_N911_Addresses__View_FeatureServer_0",
@@ -2126,7 +2285,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "8hGN_arcgis_rest_services_Polk_Addresses_GAC_FeatureServer_0",
@@ -2139,7 +2299,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "s_rest_services_Addressing_Addressing_public_FeatureServer_0@MN-1",
@@ -2152,7 +2313,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "cgis_rest_services_AtascaderoAddresses082025_FeatureServer_0",
@@ -2165,7 +2327,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "4OueTcnj_arcgis_rest_services_just_addresses_FeatureServer_0",
@@ -2178,7 +2341,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "aAg05xQLgo7_arcgis_rest_services_WGS_Address_FeatureServer_0",
@@ -2191,7 +2355,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "gis_rest_services_GRANT_Address_ClerksOffice_FeatureServer_0",
@@ -2204,7 +2369,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rest_services_Addresses_Clark_County_WI_2019_FeatureServer_0",
@@ -2217,7 +2383,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "0_arcgis_rest_services_Duncanville_Addresses_FeatureServer_0",
@@ -2230,7 +2397,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "0_arcgis_rest_services_2022_Sep_01_Addresses_FeatureServer_0",
@@ -2243,7 +2411,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "gis_rest_services_SANGIS_AddressAPN_07312024_FeatureServer_0",
@@ -2256,7 +2425,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "erva_gov_arcgis_rest_services_Winchester_Address_MapServer_0",
@@ -2272,7 +2442,8 @@
    "class": "pending",
    "evidence": "retry2: http=None URLError: <urlopen error timed out>",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": false
   },
   {
    "layer": "So_arcgis_rest_services_SiteAddresses_public_FeatureServer_0",
@@ -2285,7 +2456,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ces_911_Address_Street_Review_WFL1_view_only_FeatureServer_0",
@@ -2298,7 +2470,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "gis_rest_services_Hosted_Master_Address_File_FeatureServer_0",
@@ -2314,7 +2487,8 @@
    "class": "unverified",
    "evidence": "retry1: http=200 no_count: {\"error\":{\"code\":500,\"message\":null,\"details\":[]}}",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": false
   },
   {
    "layer": "ces_Pueblo_County_Addresses_Evacuation_Times_FeatureServer_0",
@@ -2327,7 +2501,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "TymXTmwPsPzPHRU_arcgis_rest_services_Address_FeatureServer_0",
@@ -2340,7 +2515,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "is_rest_services_Master_Address_Database_MAD_FeatureServer_0",
@@ -2353,7 +2529,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ellington_ca_server_rest_services_Parcels_Public_MapServer_1",
@@ -2368,7 +2545,8 @@
    "attribution": "transient",
    "class": "pending",
    "evidence": "retry2: http=None URLError: <urlopen error timed out>",
-   "rows_note": "本轮 parts=0，rows 来自此前修订的已采数据（未清零）"
+   "rows_note": "本轮 parts=0，rows 来自此前修订的已采数据（未清零）",
+   "has_denominator": false
   },
   {
    "layer": "cjlmqkA8ypi4T_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -2381,7 +2559,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ysZUz_arcgis_rest_services_Carroll_Addresses_FeatureServer_0",
@@ -2394,7 +2573,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "is_rest_services_Bureau_County_911_Addresses_FeatureServer_0",
@@ -2407,7 +2587,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "is_rest_services_Cottage_Grove_Address_Point_FeatureServer_0",
@@ -2420,7 +2601,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "WuVPEmGK_arcgis_rest_services_Addresses_View_FeatureServer_0",
@@ -2433,7 +2615,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "1N7Y1EilGjehZ_arcgis_rest_services_ADDRESSES_FeatureServer_0",
@@ -2446,7 +2629,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "meepNh_arcgis_rest_services_Master_Addresses_FeatureServer_0",
@@ -2459,7 +2643,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "pNK5CvU_arcgis_rest_services_HempV_Addresses_FeatureServer_0",
@@ -2472,7 +2657,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "cgis_rest_services_Skokie_Base_Address_View_FeatureServer_33",
@@ -2485,7 +2671,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "YdlWlBxzX_arcgis_rest_services_Boone_Address_FeatureServer_0",
@@ -2498,7 +2685,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "kIrNAR_arcgis_rest_services_E911_Share_Files_FeatureServer_0",
@@ -2511,7 +2699,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "wY8_arcgis_rest_services_Address_Ranges_WFL1_FeatureServer_0",
@@ -2524,7 +2713,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_rest_services_Oxford_911_Address_View_Layer_FeatureServer_1",
@@ -2537,7 +2727,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "m_x7Yxpfpio5GuQWF2_arcgis_rest_services_E911_FeatureServer_0",
@@ -2550,7 +2741,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rcgis_rest_services_Mailing_Address_Map_WFL1_FeatureServer_1",
@@ -2563,7 +2755,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "gis_rest_services_Mailing_Address_Map___WFL1_FeatureServer_1",
@@ -2576,7 +2769,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "gis_rest_services_Mailing_Address_Map_2_WFL1_FeatureServer_1",
@@ -2589,7 +2783,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_arcgis_rest_services_WyomingCountyAddresses_FeatureServer_0",
@@ -2602,7 +2797,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "gis_rest_services_Limestone_County_Addresses_FeatureServer_0",
@@ -2615,7 +2811,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "xkcSkFAjt_arcgis_rest_services_911_Addresses_FeatureServer_0",
@@ -2628,7 +2825,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "RnMdg5KWv_arcgis_rest_services_911_Addresses_FeatureServer_0",
@@ -2641,7 +2839,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "tBHQoYlrmJI_arcgis_rest_services_address_pts_FeatureServer_1",
@@ -2654,7 +2853,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "X4bb8_arcgis_rest_services_Fulton_NG911_WFL1_FeatureServer_0",
@@ -2667,7 +2867,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "is_rest_services_Gloucester_County_Addresses_FeatureServer_0",
@@ -2680,7 +2881,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "dHIlQ88_arcgis_rest_services_LCaddresspts_GW_FeatureServer_0",
@@ -2693,7 +2895,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "dHIlQ88_arcgis_rest_services_LCaddresspts_SB_FeatureServer_0",
@@ -2706,7 +2909,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rcgis_rest_services_Facility_Sites_E911_Clip_FeatureServer_0",
@@ -2719,7 +2923,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "sez_arcgis_rest_services_Tyler_Property_Data_FeatureServer_1",
@@ -2732,7 +2937,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "uTYf_arcgis_rest_services_Bell_AddressPoints_FeatureServer_0",
@@ -2745,7 +2951,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_arcgis_rest_services_Wyoming_SAMB_Addresses_FeatureServer_0",
@@ -2758,7 +2965,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rcgis_rest_services_Sioux_Falls_SD_Addresses_FeatureServer_1",
@@ -2771,7 +2979,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "st_services_WinonaCounty_DBO_CountyAddresses_FeatureServer_0",
@@ -2784,7 +2993,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arcgis_rest_services_Winona_County_Addresses_FeatureServer_0",
@@ -2797,7 +3007,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ZPiRSTUFu_arcgis_rest_services_Situs_Address_FeatureServer_0",
@@ -2810,7 +3021,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "l9_arcgis_rest_services_svcBndryAddress_view_FeatureServer_1",
@@ -2823,7 +3035,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "cgis_rest_services_AddressesWithElectionData_FeatureServer_0",
@@ -2836,7 +3049,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "Zm_arcgis_rest_services_Aurora_Address_view_FeatureServer_15",
@@ -2849,7 +3063,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rcgis_rest_services_TLWaddressInternetAccess_FeatureServer_0",
@@ -2862,7 +3077,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arcgis_rest_services_Master_Address_List_New_FeatureServer_0",
@@ -2875,7 +3091,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "j53q3aOgCSYTp_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -2888,7 +3105,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_rest_services_Delta_County_Address_01232025_FeatureServer_0",
@@ -2901,7 +3119,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arcgis_rest_services_Jasper_County_Addresses_FeatureServer_0",
@@ -2914,7 +3133,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "WTywHfayX67L_arcgis_rest_services_NG911_Data_FeatureServer_0",
@@ -2927,7 +3147,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_rest_services_GIS_ENV_GIS_Work_Background_Layer_MapServer_0",
@@ -2941,7 +3162,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None URLError: <urlopen error [Errno 111] Connection refused>"
+   "evidence": "retry2: http=None URLError: <urlopen error [Errno 111] Connection refused>",
+   "has_denominator": false
   },
   {
    "layer": "c_gov_arcgis_rest_services_Addresses_E911Address_MapServer_1",
@@ -2955,7 +3177,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "unverified",
-   "evidence": "retry2: http=403 HTTPError: HTTP Error 403: Forbidden"
+   "evidence": "retry2: http=403 HTTPError: HTTP Error 403: Forbidden",
+   "has_denominator": false
   },
   {
    "layer": "h_arcgis_rest_services_AddressesJuly26B_WFL1_FeatureServer_2",
@@ -2968,7 +3191,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arcgis_rest_services_AddressQC_fieldmap_WFL1_FeatureServer_0",
@@ -2981,7 +3205,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ow3ofS_arcgis_rest_services_NM_911_Addresses_FeatureServer_0",
@@ -2994,7 +3219,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "eSvF_arcgis_rest_services_OpenData_Addresses_FeatureServer_0",
@@ -3007,7 +3233,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "yjVw1fpWcwy7h_arcgis_rest_services_ADDRESSES_FeatureServer_0",
@@ -3020,7 +3247,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ycSVzMEzm7ey_arcgis_rest_services_Addressing_FeatureServer_0",
@@ -3033,7 +3261,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "field_College_Block_Lot_and_Address_Map_WFL1_FeatureServer_0",
@@ -3046,7 +3275,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "KckAl7VOw_arcgis_rest_services_Address_Lists_FeatureServer_0",
@@ -3059,7 +3289,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "g_arcgis_rest_services_BarryCounty_Addresses_FeatureServer_0",
@@ -3072,7 +3303,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "st_services_GeorginaMap_W84_SiteAddressPoint_W84_MapServer_0",
@@ -3085,7 +3317,8 @@
    "verdict": "partial",
    "expect_source": "retry-alive",
    "attribution": "short",
-   "class": "partial"
+   "class": "partial",
+   "has_denominator": true
   },
   {
    "layer": "ices_GeorginaMap_W84_SiteAddressPoint_Labels_W84_MapServer_0",
@@ -3098,7 +3331,8 @@
    "verdict": "partial",
    "expect_source": "retry-alive",
    "attribution": "short",
-   "class": "partial"
+   "class": "partial",
+   "has_denominator": true
   },
   {
    "layer": "DL6ILvlkPNTg8_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -3111,7 +3345,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "h_arcgis_rest_services_Addresses_for_Clariti_FeatureServer_0",
@@ -3124,7 +3359,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "isapp_dunwoodyga_gov_arcgis_rest_services_Parcel_MapServer_1",
@@ -3137,7 +3373,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "gis_rest_services_BransonAddressSearch_WFL1_FeatureServer_54",
@@ -3150,7 +3387,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "0ipEAOFhn_arcgis_rest_services_Address_Tiles_FeatureServer_0",
@@ -3163,7 +3401,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "7IM34hqT9y9ew_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -3176,7 +3415,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "RmLNAomixG_arcgis_rest_services_RP_Addr_2022_FeatureServer_0",
@@ -3189,7 +3429,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "yYd7fCfTTiVp8_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -3202,7 +3443,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "Yd7fCfTTiVp8_arcgis_rest_services_Addresses2_FeatureServer_0",
@@ -3215,7 +3457,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arcgis_rest_services_BarryCountyMO_Addresses_FeatureServer_0",
@@ -3228,7 +3471,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "TlITuys_arcgis_rest_services_WyboSiteAddress_FeatureServer_0",
@@ -3241,7 +3485,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rest_services_Addresses_With_Voting_Precinct_FeatureServer_0",
@@ -3254,7 +3499,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "m_Iwwqwcdc5CWG2jt9_arcgis_rest_services_ADDR_FeatureServer_0",
@@ -3267,7 +3513,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "s_rest_services_Fayette_County_911_Addresses_FeatureServer_1",
@@ -3280,7 +3527,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ices_Assessor_Data_Webster_Parish_Address_Points_MapServer_0",
@@ -3296,7 +3544,8 @@
    "class": "unverified",
    "evidence": "retry1: http=200 no_count: {\"error\":{\"code\":400,\"messageCode\":\"CONT_0001\",\"message\":\"Item does not exist or is inaccessible.\",\"details\":[]}}",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": false
   },
   {
    "layer": "rcgis_rest_services_GC_Address_Points_Public_FeatureServer_8",
@@ -3309,7 +3558,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "sKPeG_arcgis_rest_services_Address_ViewLayer_FeatureServer_0",
@@ -3322,7 +3572,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "Gr3P_arcgis_rest_services_ETJ_addresses_WFL1_FeatureServer_1",
@@ -3335,7 +3586,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "l_org_arcgis_rest_services_Weston_Basemap_cache_MapServer_20",
@@ -3348,7 +3600,8 @@
    "verdict": "ok",
    "expect_source": "plan-probe",
    "attribution": "ok",
-   "class": "ok"
+   "class": "ok",
+   "has_denominator": true
   },
   {
    "layer": "_arcgis_rest_services_Shawano_Addresses_2026_FeatureServer_0",
@@ -3361,7 +3614,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "st_services_City_of_Pittsburg_Address_Public_FeatureServer_0",
@@ -3374,7 +3628,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "DDRnnsbCKWWP_arcgis_rest_services_Addresses2_FeatureServer_0",
@@ -3388,7 +3643,8 @@
    "expect_source": "unknown",
    "attribution": "upstream_dead",
    "class": "unverified",
-   "evidence": "retry1: http=200 no_count: {\"error\":{\"code\":400,\"message\":\"Invalid URL\",\"details\":[\"Invalid URL\"]}}"
+   "evidence": "retry1: http=200 no_count: {\"error\":{\"code\":400,\"message\":\"Invalid URL\",\"details\":[\"Invalid URL\"]}}",
+   "has_denominator": false
   },
   {
    "layer": "WQTB2G8AH9RQYE_arcgis_rest_services_address_FeatureServer_16",
@@ -3401,7 +3657,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ttesville_org_cvgisweb_rest_services_OpenData_1_MapServer_76",
@@ -3414,7 +3671,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "J9QAHCiGx_arcgis_rest_services_SiteAddresses_FeatureServer_0",
@@ -3427,7 +3685,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "iGx_arcgis_rest_services_Addresses_Only_view_FeatureServer_0",
@@ -3440,7 +3699,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_rest_services_NM_911_Addresses_Large_Scale_FeatureServer_32",
@@ -3453,7 +3713,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_rest_services_NM_911_Addresses_Small_Scale_FeatureServer_33",
@@ -3466,7 +3727,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "OLvsmwpY1RmFG_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -3479,7 +3741,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "es_Service_Location_Moving_ToCURB_ASof712025_FeatureServer_0",
@@ -3492,7 +3755,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_services_Lincoln_LUCA_Addresses_Counts_WFL1_FeatureServer_0",
@@ -3505,7 +3769,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arcgis_rest_services_Hinesville_GA_Addresses_FeatureServer_0",
@@ -3518,7 +3783,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "j_arcgis_rest_services_BARRON_ADDRESSES_2025_FeatureServer_0",
@@ -3531,7 +3797,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arcgis_rest_services_Wellington_FL_Addresses_FeatureServer_0",
@@ -3544,7 +3811,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "vices_Campbell_County__VA_Broadband_Map_WFL1_FeatureServer_0",
@@ -3557,7 +3825,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ices_City_of_Cuyahoga_Falls_Addressing_WFL1_FeatureServer_11",
@@ -3570,7 +3839,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_arcgis_rest_services_TehamaCounty_NG911_gdb_FeatureServer_8",
@@ -3583,7 +3853,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rest_services_Hurricane_Ian_Damage_Addresses_FeatureServer_0",
@@ -3596,7 +3867,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "est_services_Street_Sweeping_Pilot_Addresses_FeatureServer_0",
@@ -3609,7 +3881,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rcgis_rest_services_Bedford_County_Addresses_FeatureServer_0",
@@ -3622,7 +3895,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_arcgis_rest_services_Logan_County_Addresses_FeatureServer_0",
@@ -3635,7 +3909,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "paca_wi_us_arcgis_rest_services_Public_OpenData_MapServer_24",
@@ -3648,7 +3923,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "8lct5k3LSbyO_arcgis_rest_services_AddressULM_FeatureServer_1",
@@ -3661,7 +3937,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "TOM4lipn_arcgis_rest_services_Addresses_2023_FeatureServer_0",
@@ -3674,7 +3951,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "4x6y8cTIstSBE_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -3687,7 +3965,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "xLBcrikqFM0vkoy_arcgis_rest_services_Address_FeatureServer_0",
@@ -3700,7 +3979,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "Mk18pL_arcgis_rest_services_Coffee_Addresses_FeatureServer_0",
@@ -3713,7 +3993,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "s_rest_services_DynamicMaps_Address_Explorer_Map_MapServer_1",
@@ -3729,7 +4010,8 @@
    "class": "pending",
    "evidence": "retry2: http=None URLError: <urlopen error timed out>",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": false
   },
   {
    "layer": "DgvxltnFwP_arcgis_rest_services_NG911_Layers_FeatureServer_1",
@@ -3742,7 +4024,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "is_rest_services_Lead_Service_Line_Addresses_FeatureServer_0",
@@ -3755,7 +4038,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_arcgis_rest_services_EnerGov_Test_Map1_WFL1_FeatureServer_3",
@@ -3768,7 +4052,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "s_rest_services_Rural_Addresses__Label_Only__FeatureServer_0",
@@ -3781,7 +4066,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rcgis_rest_services_Buildings_and_Addresses_FeatureServer_17",
@@ -3794,7 +4080,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "aLg_arcgis_rest_services_Address_Hemet031325_FeatureServer_0",
@@ -3807,7 +4094,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ez8fHeIiDRbgb_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -3820,7 +4108,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arcgis_rest_services_FranklinCountyAddresses_FeatureServer_0",
@@ -3833,7 +4122,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "Uiqh7X11gGV2d_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -3846,7 +4136,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "VDElDOMEad_arcgis_rest_services_WayneAddress_FeatureServer_0",
@@ -3859,7 +4150,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rest_services_Cherokee_Address_Analysis_WFL1_FeatureServer_0",
@@ -3872,7 +4164,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "BpZX2wFbS_arcgis_rest_services_911addressing_FeatureServer_0",
@@ -3885,7 +4178,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "JRr_arcgis_rest_services_MAT_NG911_Addresses_FeatureServer_0",
@@ -3898,7 +4192,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_org_gisarcweb_rest_services_Base_Base_Addresses_MapServer_0",
@@ -3914,7 +4209,8 @@
    "class": "pending",
    "evidence": "retry2: http=None URLError: <urlopen error timed out>",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": false
   },
   {
    "layer": "j7VSF_arcgis_rest_services_TemeculaAddresses_FeatureServer_0",
@@ -3927,7 +4223,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_arcgis_rest_services_zoningAddressingSearch_FeatureServer_0",
@@ -3940,7 +4237,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "st_services_Vector_Tile_Site_Address_Labels_FeatureServer_57",
@@ -3953,7 +4251,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "cgis_rest_services_Riley_County_KS_Addresses_FeatureServer_0",
@@ -3966,7 +4265,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "yvfv_arcgis_rest_services_Mercer_SiteAddress_FeatureServer_0",
@@ -3979,7 +4279,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "S1a_arcgis_rest_services_Address_Mailing_Map_FeatureServer_1",
@@ -3992,7 +4293,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "1_arcgis_rest_services_Longview_TX_Addresses_FeatureServer_0",
@@ -4005,7 +4307,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "cgis_rest_services_Franklin_Co_911_Addresses_FeatureServer_0",
@@ -4018,7 +4321,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "cgis_rest_services_FranklinCoVA_911Addresses_FeatureServer_0",
@@ -4031,7 +4335,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "WCoI_arcgis_rest_services_20260601_Addresses_FeatureServer_0",
@@ -4044,7 +4349,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rcgis_rest_services_Essex_Address_Pts_9_9_25_FeatureServer_0",
@@ -4057,7 +4363,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "cgis_rest_services_Sarpy_County_NE_Addresses_FeatureServer_1",
@@ -4070,7 +4377,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "kOGGtW27pGICf_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -4083,7 +4391,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "cgis_rest_services_Master_Addresses_for_Grid_FeatureServer_0",
@@ -4096,7 +4405,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "pMfHt82xFG_arcgis_rest_services_RouteAddress_FeatureServer_0",
@@ -4109,7 +4419,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "1p_arcgis_rest_services_ADDRESS_20230403_CoB_FeatureServer_0",
@@ -4122,7 +4433,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "maps_rest_services_OPENDATA_RegionalBaseOpenData_MapServer_2",
@@ -4135,7 +4447,8 @@
    "verdict": "short",
    "expect_source": "retry-alive",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_arcgis_rest_services_Civic_Rec_QC_Addresses_FeatureServer_0",
@@ -4148,7 +4461,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arcgis_rest_services_OpenNewmarket_Addresses_FeatureServer_0",
@@ -4161,7 +4475,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "s_rest_services_OPENNewmarket_Address_3_view_FeatureServer_0",
@@ -4174,7 +4489,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arcgis_rest_services_Alexandria_VA_Addresses_FeatureServer_0",
@@ -4187,7 +4503,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "fMdTkPeHLCobS_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -4200,7 +4517,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_map_claycountymn_gov_arcgis_rest_services_NG911_MapServer_0",
@@ -4214,7 +4532,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>",
+   "has_denominator": false
   },
   {
    "layer": "fpl_arcgis_rest_services_ArcGISHub_OpenData_FeatureServer_13",
@@ -4230,7 +4549,8 @@
    "class": "unverified",
    "evidence": "retry1: http=200 no_count: {\"error\":{\"code\":400,\"message\":\"Invalid URL\",\"details\":[\"Invalid URL\"]}}",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": false
   },
   {
    "layer": "PlhvQwvs_arcgis_rest_services_E911_Addrs_Pts_FeatureServer_0",
@@ -4243,7 +4563,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rcgis_rest_services_CTSI_AddressChecker_WFL1_FeatureServer_0",
@@ -4256,7 +4577,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "s_rest_services_CTSI_Address_Check_2023_WFL1_FeatureServer_0",
@@ -4269,7 +4591,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rOyyLV2jNLiBS_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -4282,7 +4605,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ofS_arcgis_rest_services_Taos_E911_Addresses_FeatureServer_0",
@@ -4295,7 +4619,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "gT_arcgis_rest_services_USU_Addressing_view_FeatureServer_26",
@@ -4308,7 +4633,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "s_Meade_Co_KY_Addresses_Roads_Lot_Lines_WFL1_FeatureServer_0",
@@ -4321,7 +4647,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ervices_Meade_Co_KY_Addresses_and_Roads_WFL1_FeatureServer_1",
@@ -4334,7 +4661,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "CSVXisSNlAAjd_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -4347,7 +4675,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "zUpjDtspiBG0j_arcgis_rest_services_E911_Copy_FeatureServer_0",
@@ -4360,7 +4689,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_arcgis_rest_services_Flagstaff_AZ_Addresses_FeatureServer_0",
@@ -4373,7 +4703,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "QYTTiP6CrfEsw_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -4386,7 +4717,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "is_rest_services_Madison_County_KY_Addresses_FeatureServer_1",
@@ -4399,7 +4731,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rest_services_CarthageWardsandaddresses_WFL1_FeatureServer_1",
@@ -4412,7 +4745,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "Ypus4pYH0S_arcgis_rest_services_Site_Address_FeatureServer_4",
@@ -4425,7 +4759,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rcgis_rest_services_Daly_City_Addresses_AGOL_FeatureServer_2",
@@ -4438,7 +4773,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "TiP6CrfEsw_arcgis_rest_services_Ward_Address_FeatureServer_0",
@@ -4451,7 +4787,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "d_Waste__Days_of_Service_Per_Address_092424_FeatureServer_52",
@@ -4464,7 +4801,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arcgis_rest_services_MGO_Master_Address_View_FeatureServer_0",
@@ -4477,7 +4815,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rcgis_rest_services_Res_Address_Demographics_FeatureServer_1",
@@ -4490,7 +4829,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "y_us_arcgis_rest_services_Addresses_WC_2022_FeatureServer_54",
@@ -4504,7 +4844,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None no count"
+   "evidence": "retry2: http=None no count",
+   "has_denominator": false
   },
   {
    "layer": "p_arcgis_rest_services_LAFO_ADDRESS_12_17_13_FeatureServer_0",
@@ -4517,7 +4858,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "m_nEIrIdcFpdK28ibf_arcgis_rest_services_E911_FeatureServer_1",
@@ -4530,7 +4872,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "u6oHu4Z_arcgis_rest_services_SITUS_PUB_CBB_2_FeatureServer_0",
@@ -4543,7 +4886,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "IzAwdHlO_arcgis_rest_services_Address_hosted_FeatureServer_0",
@@ -4556,7 +4900,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "1_arcgis_rest_services_Bismarck_ND_Addresses_FeatureServer_0",
@@ -4569,7 +4914,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "q_arcgis_rest_services_Site_Addresses_Public_FeatureServer_0",
@@ -4582,7 +4928,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "is_rest_services_Public_View_Site_Addresses__FeatureServer_0",
@@ -4595,7 +4942,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_gov_arcgis_rest_services_Land_Records_Open_Data_MapServer_1",
@@ -4611,7 +4959,8 @@
    "class": "pending",
    "evidence": "retry2: http=None no count",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": false
   },
   {
    "layer": "OU_arcgis_rest_services_Addresses_SIO_Hosted_FeatureServer_0",
@@ -4624,7 +4973,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "t_services_SummitCntyCO_Addresses_Pictometry_FeatureServer_0",
@@ -4637,7 +4987,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "gis_com_kcsgis_rest_services_Etowah_AL31_VAM_MS_MapServer_10",
@@ -4651,7 +5002,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None no count"
+   "evidence": "retry2: http=None no count",
+   "has_denominator": false
   },
   {
    "layer": "s_rest_services_Master_Address_List_Aug_2026_FeatureServer_0",
@@ -4664,7 +5016,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ervices_DataPortal_DataPortal_BuildingsAddresses_MapServer_0",
@@ -4678,7 +5031,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "unverified",
-   "evidence": "retry2: http=403 HTTPError: HTTP Error 403: Forbidden"
+   "evidence": "retry2: http=403 HTTPError: HTTP Error 403: Forbidden",
+   "has_denominator": false
   },
   {
    "layer": "est_services_NormanResidentialTrashAddresses_FeatureServer_0",
@@ -4691,7 +5045,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "3kMP_arcgis_rest_services_E911AddressforSOMA_FeatureServer_0",
@@ -4704,7 +5059,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "s_rest_services_Raleigh_Co_EOC_Address_Sites_FeatureServer_0",
@@ -4717,7 +5073,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "s_rest_services_CityAddresses2022bu_CHE_view_FeatureServer_0",
@@ -4730,7 +5087,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "4Ui_arcgis_rest_services_CityAddresses2022bu_FeatureServer_0",
@@ -4743,7 +5101,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "unty_oh_gov_arcgisdev_rest_services_WMAS_Address_MapServer_0",
@@ -4756,7 +5115,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "27IJC_arcgis_rest_services_Address_Locations_FeatureServer_0",
@@ -4769,7 +5129,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_arcgis_rest_services_Addresses_NOT_ELIGIBLE_FeatureServer_0",
@@ -4782,7 +5143,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rcgis_rest_services_Unincorporated_Addresses_FeatureServer_0",
@@ -4795,7 +5157,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "wFbS_arcgis_rest_services_Chemungaddress_pts_FeatureServer_0",
@@ -4808,7 +5171,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "2kwz79KUqUvxC_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -4821,7 +5185,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "71LO_arcgis_rest_services_Addresses_CivQuest_FeatureServer_0",
@@ -4834,7 +5199,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "qTGWY_arcgis_rest_services_JoCo_Site_Address_FeatureServer_1",
@@ -4847,7 +5213,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "county_com_arcgis_rest_services_features_Address_MapServer_0",
@@ -4860,7 +5227,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "gis_rest_services_CountyAddress2023_CHE_View_FeatureServer_7",
@@ -4873,7 +5241,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "I64Ui_arcgis_rest_services_CountyAddress2023_FeatureServer_7",
@@ -4886,7 +5255,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ges_arcgis_rest_services_AddressAndRoads2022_FeatureServer_0",
@@ -4900,7 +5270,8 @@
    "expect_source": "unknown",
    "attribution": "upstream_dead",
    "class": "unverified",
-   "evidence": "retry1: http=200 no_count: {\"error\":{\"code\":400,\"message\":\"Invalid URL\",\"details\":[\"Invalid URL\"]}}"
+   "evidence": "retry1: http=200 no_count: {\"error\":{\"code\":400,\"message\":\"Invalid URL\",\"details\":[\"Invalid URL\"]}}",
+   "has_denominator": false
   },
   {
    "layer": "st_services_Schools_ChathamSchools_AddressPoints_MapServer_0",
@@ -4915,7 +5286,8 @@
    "attribution": "short",
    "class": "missing",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": true
   },
   {
    "layer": "e_Rollout__Days_of_Service_Per_Address__WFL1_FeatureServer_1",
@@ -4928,7 +5300,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_arcgis_rest_services_BG911_Address_20250501_FeatureServer_0",
@@ -4941,7 +5314,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "Bq9hgug_arcgis_rest_services_BG911_Addresses_FeatureServer_0",
@@ -4954,7 +5328,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "Ilt_arcgis_rest_services_Clinton_Address_Pts_FeatureServer_0",
@@ -4967,7 +5342,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "untywi_gov_vilasgis_rest_services_V4_SiteAddress_MapServer_0",
@@ -4981,7 +5357,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None no count"
+   "evidence": "retry2: http=None no count",
+   "has_denominator": false
   },
   {
    "layer": "Geezhu2j_arcgis_rest_services_E911_Addresses_FeatureServer_0",
@@ -4994,7 +5371,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "KpsCnqD7H_arcgis_rest_services_SiteAddresses_FeatureServer_0",
@@ -5007,7 +5385,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "cgis_rest_services_NRSA_Address_Locator_WFL1_FeatureServer_8",
@@ -5020,7 +5399,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "aNxg1PvwI_arcgis_rest_services_All_Addresses_FeatureServer_0",
@@ -5033,7 +5413,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "eajjke_arcgis_rest_services_Addresses_Rogers_FeatureServer_0",
@@ -5046,7 +5427,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "EjnCT_arcgis_rest_services_Leander_Addresses_FeatureServer_0",
@@ -5059,7 +5441,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_gov_uk_arcweb_rest_services_Addresses_Addresses_MapServer_0",
@@ -5074,7 +5457,8 @@
    "attribution": "short",
    "class": "missing",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": true
   },
   {
    "layer": "sses_public_e7c532395de343e38e58a8463128cfb7_FeatureServer_0",
@@ -5087,7 +5471,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "teAddresses_ecd2ff39fbb34f39a2ec415fd784331b_FeatureServer_0",
@@ -5100,7 +5485,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "teAddresses_b786541565b5475593a786a08ba6b3e2_FeatureServer_0",
@@ -5113,7 +5499,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "sses_public_a000778ae1664a348de916831f1a0ac0_FeatureServer_0",
@@ -5126,7 +5513,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "sses_public_0af1fc8b92f7415dbfdf37c6fa956c77_FeatureServer_0",
@@ -5139,7 +5527,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "teAddresses_1809c74f027741ce815587367a5cfd68_FeatureServer_0",
@@ -5152,7 +5541,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "teAddresses_33e99042997a472fa1a25a8b6f4465cf_FeatureServer_0",
@@ -5165,7 +5555,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "teAddresses_25f96256e2164540bc18abbff8a9d5c2_FeatureServer_0",
@@ -5178,7 +5569,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "sses_public_33e99042997a472fa1a25a8b6f4465cf_FeatureServer_0",
@@ -5191,7 +5583,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "vN_arcgis_rest_services_SiteAddresses_public_FeatureServer_0",
@@ -5204,7 +5597,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "sses_public_3ac05ddeab6d46389b7b3c0616abc861_FeatureServer_0",
@@ -5217,7 +5611,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "d1DIvN_arcgis_rest_services_SiteAddresses__1_FeatureServer_1",
@@ -5230,7 +5625,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "sses_public_a2522c3dfde94f6da7500df892abf9aa_FeatureServer_0",
@@ -5243,7 +5639,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "sses_public_fa4be22034f14c15a3a589dd7009ca64_FeatureServer_0",
@@ -5256,7 +5653,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "0JE2L2xUd_arcgis_rest_services_SiteAddresses_FeatureServer_0",
@@ -5269,7 +5667,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "com_arcgis_rest_services_CommunityAddressing_FeatureServer_0",
@@ -5282,7 +5681,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "st_services_A4_Landscape_addressverification_FeatureServer_1",
@@ -5295,7 +5695,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "om_arcgis_rest_services_Cadastral_Address_Points_MapServer_0",
@@ -5310,7 +5711,8 @@
    "attribution": "short",
    "class": "missing",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": true
   },
   {
    "layer": "gis_net_arcgis_rest_services_BASE_Address_Points_MapServer_0",
@@ -5325,7 +5727,8 @@
    "attribution": "short",
    "class": "missing",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": true
   },
   {
    "layer": "BvD2F_arcgis_rest_services_COG_StreetAddress_FeatureServer_1",
@@ -5338,7 +5741,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "exxB_arcgis_rest_services_911_Address_Labels_FeatureServer_6",
@@ -5351,7 +5755,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "est_services_AddressPtsAndUnitNumbersWebsite_FeatureServer_0",
@@ -5364,7 +5769,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_qnjIrwR8z5Izc0ij_arcgis_rest_services_ng911_FeatureServer_0",
@@ -5377,7 +5783,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "eeeoWYqSyV5I_arcgis_rest_services_E911_gdb__FeatureServer_11",
@@ -5390,7 +5797,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rcgis_rest_services_Deerfield_Case_Addresses_FeatureServer_0",
@@ -5403,7 +5811,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_cfmdyB05xBau1dNQ_arcgis_rest_services_Situs_FeatureServer_0",
@@ -5416,7 +5825,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rXp_arcgis_rest_services_LPG_Address_Records_FeatureServer_0",
@@ -5429,7 +5839,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_ca_arcgis_adaptor_rest_services_LCGIS_VertiGIS_MapServer_25",
@@ -5443,7 +5854,8 @@
    "expect_source": "plan-probe",
    "attribution": "short",
    "class": "partial",
-   "rows_note": "本轮 parts=0，rows 来自此前修订的已采数据（未清零）"
+   "rows_note": "本轮 parts=0，rows 来自此前修订的已采数据（未清零）",
+   "has_denominator": true
   },
   {
    "layer": "tamonica_gov_server_rest_services_Address_Points_MapServer_0",
@@ -5456,7 +5868,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "d1_arcgis_rest_services_Visalia_CA_Addresses_FeatureServer_0",
@@ -5469,7 +5882,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "1Vphzvgd_arcgis_rest_services_City_Addresses_FeatureServer_0",
@@ -5482,7 +5896,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rcgis_rest_services_MC_Address_Pts_PMG_View1_FeatureServer_0",
@@ -5495,7 +5910,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rvices_Deerfield_Case_Addresses_FeatureLayer_FeatureServer_0",
@@ -5508,7 +5924,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "i4lYRFOsss0F5_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -5521,7 +5938,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arcgis_rest_services_Tompkins_County_Address_FeatureServer_0",
@@ -5534,7 +5952,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "vF0A_arcgis_rest_services_AddressSearchLayer_FeatureServer_0",
@@ -5547,7 +5966,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "AAWNInLrxvF0A_arcgis_rest_services_TCAddress_FeatureServer_0",
@@ -5560,7 +5980,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "s_rest_services_Marathon_County_WI_Addresses_FeatureServer_0",
@@ -5573,7 +5994,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "WNInLrxvF0A_arcgis_rest_services_Address_gdb_FeatureServer_0",
@@ -5586,7 +6008,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "InLrxvF0A_arcgis_rest_services_AddressR2_gdb_FeatureServer_0",
@@ -5599,7 +6022,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "C2lEIpJ2TRrs5_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -5612,7 +6036,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "dresses_in_City_Limits___ESD9___Web_Map_WFL1_FeatureServer_1",
@@ -5625,7 +6050,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "5jlmVkpxP_arcgis_rest_services_Online911Data_FeatureServer_0",
@@ -5638,7 +6064,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "gis_rest_services_Queen_Creek_Addresses__All_FeatureServer_0",
@@ -5651,7 +6078,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "AQdtmx0tv46_arcgis_rest_services_Address_Nye_FeatureServer_6",
@@ -5664,7 +6092,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "cgis_rest_services_Cedar_Rapids_IA_Addresses_FeatureServer_0",
@@ -5677,7 +6106,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "AQncZQEtBv_arcgis_rest_services_Address_Clip_FeatureServer_0",
@@ -5690,7 +6120,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "Tpwo5_arcgis_rest_services_FullAddress032026_FeatureServer_0",
@@ -5703,7 +6134,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_rest_services_Randall_County_Addresses_WFL1_FeatureServer_1",
@@ -5716,7 +6148,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "eDUBgTeCT3_arcgis_rest_services_LC_Addresses_FeatureServer_0",
@@ -5729,7 +6162,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "zOpn2_arcgis_rest_services_Streets_Buidlings_FeatureServer_0",
@@ -5742,7 +6176,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arverLink_Address_Lookup_20250623_PublicView_FeatureServer_0",
@@ -5755,7 +6190,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "0gE_arcgis_rest_services_CenCom_Address_View_FeatureServer_0",
@@ -5768,7 +6204,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "is_rest_services_Building_Permit_Addresssing_FeatureServer_0",
@@ -5781,7 +6218,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "f_arcgis_rest_services_Killeen_AddressPoints_FeatureServer_0",
@@ -5794,7 +6232,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "i_rest_services_Cadastral_Site_Address_Point_FeatureServer_0",
@@ -5808,7 +6247,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None no count"
+   "evidence": "retry2: http=None no count",
+   "has_denominator": false
   },
   {
    "layer": "t3XQ_arcgis_rest_services_AddressPt_20230629_FeatureServer_0",
@@ -5821,7 +6261,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arcgis_rest_services_AddressPt_20240705_WFL1_FeatureServer_0",
@@ -5834,7 +6275,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rcgis_rest_services_AddressPts_20230817_WFL1_FeatureServer_0",
@@ -5847,7 +6289,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "U5257_arcgis_rest_services_Yonkers_Addresses_FeatureServer_0",
@@ -5860,7 +6303,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_arcgis_rest_services_CharlesCountyAddresses_FeatureServer_0",
@@ -5873,7 +6317,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "3P_arcgis_rest_services_SiteAddresses_public_FeatureServer_0@TX-2",
@@ -5886,7 +6331,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_pa_us_arcgis_rest_services_Hosted_Addresses_FeatureServer_0",
@@ -5899,7 +6345,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "CXd1_arcgis_rest_services_Fargo_ND_Addresses_FeatureServer_0",
@@ -5912,7 +6359,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "araca_gov_maps_rest_services_LAYERS_RegionalBase_MapServer_2",
@@ -5925,7 +6373,8 @@
    "verdict": "short",
    "expect_source": "retry-alive",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ntaclaraca_gov_maps_rest_services_LAYERS_BaseMap_MapServer_2",
@@ -5938,7 +6387,8 @@
    "verdict": "short",
    "expect_source": "retry-alive",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "C0yIuqCBxq_arcgis_rest_services_Address_2024_FeatureServer_0",
@@ -5951,7 +6401,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "Cz_arcgis_rest_services_HC_MD_Addresses_10mi_FeatureServer_0",
@@ -5964,7 +6415,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ld_oh_us_arcgis_rest_services_OpenData_Addresses_MapServer_0",
@@ -5978,7 +6430,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None no count"
+   "evidence": "retry2: http=None no count",
+   "has_denominator": false
   },
   {
    "layer": "_arcgis_rest_services_Addresses_USA_combined_FeatureServer_0",
@@ -5991,7 +6444,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arcgis_rest_services_modified_JaCo_addresses_FeatureServer_0",
@@ -6004,7 +6458,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "wLs3iGyK80EW_arcgis_rest_services_911Address_FeatureServer_0",
@@ -6017,7 +6472,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "C_arcgis_rest_services_Active_Addresses_2025_FeatureServer_0",
@@ -6030,7 +6486,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "jSxUKayj_arcgis_rest_services_911_Addresses_FeatureServer_58",
@@ -6043,7 +6500,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "5V8PH7DzSE6AU_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -6056,7 +6514,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "zxvnVEjzQ6xuSXS_arcgis_rest_services_Address_FeatureServer_0",
@@ -6069,7 +6528,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "Spu5VOlu_arcgis_rest_services_Site_Addresses_FeatureServer_0",
@@ -6082,7 +6542,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "I64Ui_arcgis_rest_services_WLAddressAndRoads_FeatureServer_0",
@@ -6095,7 +6556,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "t_services_Katy_ISD_Harris_County_Addresses_FeatureServer_68",
@@ -6108,7 +6570,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ov_public_rest_services_public_Council_Wards_FeatureServer_1",
@@ -6122,7 +6585,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None no count"
+   "evidence": "retry2: http=None no count",
+   "has_denominator": false
   },
   {
    "layer": "g_arcgis_rest_services_Search_SMSA_ParcelAddress_MapServer_0",
@@ -6136,7 +6600,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>",
+   "has_denominator": false
   },
   {
    "layer": "_rest_services_EmergencyManagement_Addresses_FeatureServer_0",
@@ -6149,7 +6614,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "mxCAS_arcgis_rest_services_ClermontAddresses_FeatureServer_0",
@@ -6162,7 +6628,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "iJkq4oXsPh_arcgis_rest_services_Addresses_SR_FeatureServer_0",
@@ -6175,7 +6642,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "is_rest_services_AddressValidationTest2_WFL1_FeatureServer_0",
@@ -6188,7 +6656,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_arcgis_rest_services_BILLING_ACCT_LOCATIONS_FeatureServer_0",
@@ -6201,7 +6670,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "k6RO1_arcgis_rest_services_HudsonCty_AddrPts_FeatureServer_0",
@@ -6214,7 +6684,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arcgis_rest_services_Hudson_County_Addresses_FeatureServer_0",
@@ -6227,7 +6698,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "u0_arcgis_rest_services_Address_OfflineCopy_FeatureServer_21",
@@ -6240,7 +6712,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ntygov_com_server_rest_services_Addresses_Public_MapServer_0",
@@ -6256,7 +6729,8 @@
    "class": "pending",
    "evidence": "retry2: http=None URLError: <urlopen error timed out>",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": false
   },
   {
    "layer": "is_rest_services_Forsyth_County_GA_Addresses_FeatureServer_0",
@@ -6269,7 +6743,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "is_rest_services_NM911_Address_202301_SC_Web_FeatureServer_0",
@@ -6282,7 +6757,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "gis_rest_services_Address_For_WebApp_Locator_FeatureServer_0",
@@ -6295,7 +6771,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_rest_services_NM911_Address_202401_SC_Web_a_FeatureServer_0",
@@ -6308,7 +6785,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "nQPdJ0azuLyn_arcgis_rest_services_AddressPts_FeatureServer_0",
@@ -6321,7 +6799,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "st_services_Springfield_address_density_WFL1_FeatureServer_2",
@@ -6334,7 +6813,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "VWAC8iN_arcgis_rest_services_road_centerline_FeatureServer_0",
@@ -6347,7 +6827,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "F_arcgis_rest_services_NM911_Address_10_2024_FeatureServer_0",
@@ -6360,7 +6841,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "F_arcgis_rest_services_NM911_Address_02_2025_FeatureServer_0",
@@ -6373,7 +6855,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arcgis_rest_services_NM911_Address_202506_SC_FeatureServer_0",
@@ -6386,7 +6869,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "wbCJ2GMP_arcgis_rest_services_E911calls_2020_FeatureServer_0",
@@ -6399,7 +6883,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "s_rest_services_NM911_Address_01_2026_SC_Web_FeatureServer_0",
@@ -6412,7 +6897,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "r_arcgis_rest_services_Coryell_address_5Mile_FeatureServer_0",
@@ -6425,7 +6911,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "vices_Join_Features_to_Address_Points_2_view_FeatureServer_0",
@@ -6439,7 +6926,8 @@
    "expect_source": "plan-probe",
    "attribution": "short",
    "class": "partial",
-   "rows_note": "本轮 parts=0，rows 来自此前修订的已采数据（未清零）"
+   "rows_note": "本轮 parts=0，rows 来自此前修订的已采数据（未清零）",
+   "has_denominator": true
   },
   {
    "layer": "rb80Pvlu_arcgis_rest_services_Address_Points_FeatureServer_0",
@@ -6455,7 +6943,8 @@
    "class": "unverified",
    "evidence": "retry1: http=200 no_count: {\"error\":{\"code\":400,\"message\":\"Invalid URL\",\"details\":[\"Invalid URL\"]}}",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": false
   },
   {
    "layer": "tg2A1_arcgis_rest_services_vw_dist_addresses_FeatureServer_0",
@@ -6468,7 +6957,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "cgis_rest_services_Delaware_County_E911_Data_FeatureServer_0",
@@ -6481,7 +6971,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "GEllMqef1LMjj_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -6494,7 +6985,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "vices_Yuma_911_Data_Roads_and_Addresses_WFL1_FeatureServer_0",
@@ -6507,7 +6999,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_services_NG911_ReadOnly_NG911_Addressing_Layers_MapServer_0",
@@ -6521,7 +7014,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>",
+   "has_denominator": false
   },
   {
    "layer": "V5FXPLX_arcgis_rest_services_Addresses_Units_FeatureServer_0",
@@ -6534,7 +7028,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "McTk2tV5FXPLX_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -6547,7 +7042,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "s_rest_services_ElectionsPollingPlaceAddress_FeatureServer_0",
@@ -6560,7 +7056,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "LmXo7Hn9vNc_arcgis_rest_services_E911Address_FeatureServer_0",
@@ -6573,7 +7070,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "GOi6N4Rq5cqFv_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -6586,7 +7084,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rvices_Situs_for_ConsolidatedPrecincts_AGOL_FeatureServer_51",
@@ -6599,7 +7098,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "4427d57d2827830_rest_services_Base_Addresses_FeatureServer_0",
@@ -6612,7 +7112,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "CRg_arcgis_rest_services_SBCnty_Address_Grid_FeatureServer_0",
@@ -6625,7 +7126,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "aVKdPC5e_arcgis_rest_services_Address_Public_FeatureServer_0",
@@ -6638,7 +7140,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "is_rest_services_Addresses_CitizenServe_View_FeatureServer_0",
@@ -6651,7 +7154,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "tUCmxaVKdPC5e_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -6664,7 +7168,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "JdBHI0_arcgis_rest_services_Addresses_SC_USE_FeatureServer_0",
@@ -6677,7 +7182,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "t_services_NG911_Map__Lake_County__Ohio_WFL1_FeatureServer_0",
@@ -6690,7 +7196,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rvices_WCAddresses20251003_gdb_view_Geocivix_FeatureServer_0",
@@ -6703,7 +7210,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "is_rest_services_Addresses_2015_Boston_BARI__FeatureServer_0",
@@ -6716,7 +7224,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ervices_64a951f0_b017_11e6_b4e3_22000b8406af_FeatureServer_0",
@@ -6729,7 +7238,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "est_services_Collier_Addresses_Within_3_Mile_FeatureServer_0",
@@ -6742,7 +7252,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "nc_gov_server_rest_services_CityWorks_Basemap_CW_MapServer_0",
@@ -6758,7 +7269,8 @@
    "class": "pending",
    "evidence": "retry2: http=None URLError: <urlopen error timed out>",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": false
   },
   {
    "layer": "8JRPoNeQjgcLi_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -6771,7 +7283,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "wbHlfF_arcgis_rest_services_Addresses_Hosted_FeatureServer_0",
@@ -6784,7 +7297,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "cgis_rest_services_Infrastructure_Transportation_MapServer_0",
@@ -6798,7 +7312,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>",
+   "has_denominator": false
   },
   {
    "layer": "_services_Infrastructure_Transportation_Sheriffs_MapServer_0",
@@ -6812,7 +7327,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>",
+   "has_denominator": false
   },
   {
    "layer": "ABcyiF_arcgis_rest_services_Address_pt_views_FeatureServer_0",
@@ -6825,7 +7341,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_arcgis_rest_services_city_address_march2025_FeatureServer_0",
@@ -6838,7 +7355,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_rest_services_HenricoCountyGIS_05082023_gdb_FeatureServer_0",
@@ -6851,7 +7369,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "cgis_rest_services_Indianapolis_IN_Addresses_FeatureServer_0",
@@ -6864,7 +7383,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ervices_Zanna_E911_Sites_Outside_8min_Buffer_FeatureServer_2",
@@ -6877,7 +7397,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "LmYGD_arcgis_rest_services_DC_Addresses_WFL1_FeatureServer_0",
@@ -6890,7 +7411,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rcgis_rest_services_HostedServices_Addresses_FeatureServer_0",
@@ -6904,7 +7426,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>",
+   "has_denominator": false
   },
   {
    "layer": "is_rest_services_Barry_County_E911_Map_WFL1_FeatureServer_29",
@@ -6917,7 +7440,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rvices_stratmap19_addresspoints_48027_vector_FeatureServer_0",
@@ -6930,7 +7454,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rvices_MapServices_TLC_OverlayAddressSearch_D_WM_MapServer_0",
@@ -6944,7 +7469,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "unverified",
-   "evidence": "retry2: http=403 HTTPError: HTTP Error 403: Forbidden"
+   "evidence": "retry2: http=403 HTTPError: HTTP Error 403: Forbidden",
+   "has_denominator": false
   },
   {
    "layer": "C7QlRK1kZ_arcgis_rest_services_EAS_Addresses_FeatureServer_0",
@@ -6957,7 +7483,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "countyfl_gov_accelasupp_rest_services_AccelaXAPO_MapServer_0",
@@ -6971,7 +7498,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "unverified",
-   "evidence": "retry2: http=403 HTTPError: HTTP Error 403: Forbidden"
+   "evidence": "retry2: http=403 HTTPError: HTTP Error 403: Forbidden",
+   "has_denominator": false
   },
   {
    "layer": "leoncountyfl_gov_accela_rest_services_AccelaXAPO_MapServer_0",
@@ -6985,7 +7513,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "unverified",
-   "evidence": "retry2: http=403 HTTPError: HTTP Error 403: Forbidden"
+   "evidence": "retry2: http=403 HTTPError: HTTP Error 403: Forbidden",
+   "has_denominator": false
   },
   {
    "layer": "ountyfl_gov_accela_rest_services_AccelaXAPO_Test_MapServer_0",
@@ -6999,7 +7528,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "unverified",
-   "evidence": "retry2: http=403 HTTPError: HTTP Error 403: Forbidden"
+   "evidence": "retry2: http=403 HTTPError: HTTP Error 403: Forbidden",
+   "has_denominator": false
   },
   {
    "layer": "st_services_Vector_COT_UtilityERM_Addresses_D_WM_MapServer_0",
@@ -7013,7 +7543,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>",
+   "has_denominator": false
   },
   {
    "layer": "LxyiJoNiVHKwq_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -7026,7 +7557,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arcgis_rest_services_Addresses_Arcade_Labels_FeatureServer_0",
@@ -7039,7 +7571,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "QGwSSLC0l_arcgis_rest_services_t07_Addresses_FeatureServer_0",
@@ -7052,7 +7585,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "j7_arcgis_rest_services_Addresses_GeneralUse_FeatureServer_0",
@@ -7065,7 +7599,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "s_rest_services_Solano_County_Addresses_WFL1_FeatureServer_0",
@@ -7078,7 +7613,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_rest_services_Site_Addresses_FLOCK_10302024_FeatureServer_0",
@@ -7091,7 +7627,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_services_Rutherford_Site_Addresses_11012024_FeatureServer_0",
@@ -7104,7 +7641,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "gis_rest_services_NENA_Addresses_WGS_Service_FeatureServer_0",
@@ -7117,7 +7655,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rest_services_E911_Addresses_Hamilton_County_FeatureServer_0",
@@ -7130,7 +7669,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rcgis_rest_services_Addressing_RoadsAndAddresses_MapServer_0",
@@ -7144,7 +7684,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>",
+   "has_denominator": false
   },
   {
    "layer": "W83eUIFui_arcgis_rest_services_Address_Sites_FeatureServer_0",
@@ -7157,7 +7698,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "couver_us_arcgis_rest_services_common_BasemapPUB_MapServer_0",
@@ -7171,7 +7713,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>",
+   "has_denominator": false
   },
   {
    "layer": "cGIS_rest_services_Baldwin911Addresses__view_FeatureServer_2",
@@ -7184,7 +7727,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "buncombecounty_org_arcgis_rest_services_opendata_MapServer_2",
@@ -7198,7 +7742,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None no count"
+   "evidence": "retry2: http=None no count",
+   "has_denominator": false
   },
   {
    "layer": "SE6sXfoLq_arcgis_rest_services_Address_ProdA_FeatureServer_0",
@@ -7211,7 +7756,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ervices_AddressPts_DamageAssessment_REA_VIEW_FeatureServer_0",
@@ -7224,7 +7770,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_rest_services_Address__GCS_WGS_1984__Public_FeatureServer_0",
@@ -7237,7 +7784,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "vices_BaseLayers_BaseLayers_for_BackdropPurposes_MapServer_1",
@@ -7251,7 +7799,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>",
+   "has_denominator": false
   },
   {
    "layer": "rvices_BaseLayers_Addresses_for_BackdropPurposes_MapServer_0",
@@ -7265,7 +7814,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None URLError: <urlopen error [Errno -3] Temporary failure in name resolution>"
+   "evidence": "retry2: http=None URLError: <urlopen error [Errno -3] Temporary failure in name resolution>",
+   "has_denominator": false
   },
   {
    "layer": "v_gis_rest_services_Map_Reference_Street_Address_MapServer_0",
@@ -7280,7 +7830,8 @@
    "attribution": "short",
    "class": "missing",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": true
   },
   {
    "layer": "ov_gis_rest_services_Map_Reference_Address_Label_MapServer_0",
@@ -7295,7 +7846,8 @@
    "attribution": "short",
    "class": "missing",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": true
   },
   {
    "layer": "i_arcgis_rest_services_Ada_County_Addresses_FeatureServer_13",
@@ -7308,7 +7860,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "services_Zanna_E911_Sites_Within_8min_Buffer_FeatureServer_1",
@@ -7321,7 +7874,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "services_CountyServices_Municipal_Addressing_FeatureServer_2",
@@ -7334,7 +7888,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "vt_nz_arcgis_rest_services_CorporateData_Address_MapServer_0",
@@ -7349,7 +7904,8 @@
    "attribution": "short",
    "class": "missing",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": true
   },
   {
    "layer": "M5ymMLbxIyWTjn2_arcgis_rest_services_Address_FeatureServer_0",
@@ -7362,7 +7918,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "is_rest_services_Chester_County_PA_Addresses_FeatureServer_0",
@@ -7375,7 +7932,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rcgis_rest_services_Address_Pts_Living_Units_FeatureServer_0",
@@ -7388,7 +7946,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_Zs2aNLFN00jrS4gG_arcgis_rest_services_data2_FeatureServer_0",
@@ -7401,7 +7960,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "ZHFr6zdgNZuVG0_arcgis_rest_services_Address2_FeatureServer_3",
@@ -7414,7 +7974,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arcgis_rest_services_Jeffco_Address_Map_WFL1_FeatureServer_1",
@@ -7427,7 +7988,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "MCHD_Environmental_Health_Public_Service_Map_FeatureServer_0",
@@ -7440,7 +8002,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_arcgis_rest_services_AMI_Deployment_Address_FeatureServer_0",
@@ -7453,7 +8016,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "27_Great_Mississippi_Flood_in_Arkansas_WFL1_FeatureServer_14",
@@ -7466,7 +8030,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_services_Lower_MS_Sediment_Bottleneck_WFL1_FeatureServer_14",
@@ -7479,7 +8044,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_Mississippi_Flood_in_Arkansas__Final__WFL1_FeatureServer_14",
@@ -7492,7 +8058,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_rest_services_Atlanta_Streets_and_Addresses_FeatureServer_0",
@@ -7506,7 +8073,8 @@
    "expect_source": "unknown",
    "attribution": "upstream_dead",
    "class": "unverified",
-   "evidence": "retry1: http=200 no_count: {\"error\":{\"code\":400,\"message\":\"Invalid URL\",\"details\":[\"Invalid URL\"]}}"
+   "evidence": "retry1: http=200 no_count: {\"error\":{\"code\":400,\"message\":\"Invalid URL\",\"details\":[\"Invalid URL\"]}}",
+   "has_denominator": false
   },
   {
    "layer": "unty_org_arcgis_rest_services_OpenData_Property_MapServer_12",
@@ -7522,7 +8090,8 @@
    "class": "unverified",
    "evidence": "retry2: http=403 HTTPError: HTTP Error 403: Forbidden",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": false
   },
   {
    "layer": "_services_NWS_AddressPoints_Nstreets_centerlines_MapServer_0",
@@ -7536,7 +8105,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None no count"
+   "evidence": "retry2: http=None no count",
+   "has_denominator": false
   },
   {
    "layer": "xLqeJd2jOX_arcgis_rest_services_VC_Addresses_FeatureServer_0",
@@ -7549,7 +8119,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "oN_arcgis_rest_services_WASD_Addresses_3_23_FeatureServer_52",
@@ -7562,7 +8133,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "0yIuqCBxq_arcgis_rest_services_CNO_Addresses_FeatureServer_0",
@@ -7575,7 +8147,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "arcgis_rest_services_Nightly_OpenData_Update_FeatureServer_3",
@@ -7588,7 +8161,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "server_rest_services_Intermap_Situs_address_WMAS_MapServer_0",
@@ -7602,7 +8176,8 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None no count"
+   "evidence": "retry2: http=None no count",
+   "has_denominator": false
   },
   {
    "layer": "is_rest_services_Address_1424300337393713068_FeatureServer_0",
@@ -7615,7 +8190,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "rcgis_rest_services_Richfield_Comm_Addresses_FeatureServer_0",
@@ -7628,7 +8204,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "g_arcgis_rest_services_Open_Data_Open_Data_1_FeatureServer_2",
@@ -7644,7 +8221,8 @@
    "class": "unverified",
    "evidence": "retry1: http=502 HTTP 502: <!doctype html><html lang=\"en\"><meta charset=\"UTF-8\"><meta content=\"nofollow,noarchive,noindex\" name=\"robots\"><title>502 | Bad Gat",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": false
   },
   {
    "layer": "w_arcgis_rest_services_Addresses_not_in_Town_FeatureServer_5",
@@ -7657,7 +8235,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "_services_Address_Points_AddressPoint_Native_FeatureServer_0@未定位-2",
@@ -7672,7 +8251,8 @@
    "attribution": "short",
    "class": "missing",
    "rows_reported_by_ledger": 0,
-   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
+   "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows",
+   "has_denominator": true
   },
   {
    "layer": "_rest_services_Arapahoe_County_Addresses_gdb_FeatureServer_0",
@@ -7685,7 +8265,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "hedVoters_Statewide_withSiteTypeDescription_FeatureServer_32",
@@ -7698,7 +8279,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   },
   {
    "layer": "jvohPcWJU5ij6_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -7711,7 +8293,8 @@
    "verdict": "short",
    "expect_source": "plan-probe",
    "attribution": "missing",
-   "class": "missing"
+   "class": "missing",
+   "has_denominator": true
   }
  ],
  "criteria": {
@@ -7790,10 +8373,10 @@
   "why_two_numbers": "两个 declared 总量来自不同计划文件，口径不同（run 计划 585 层 vs 探针计划 583 层），**不合并、不抵消、不当 declared 用**",
   "run_plan_artifact": {
    "file": "collect/ledger/05b_plan.json",
-   "declared_rows": 32337294,
-   "layers_n": 585,
-   "sha256": "d5ff5467b7c1127bc4d5eb98f74194c0b71f486b5783a8064a618e60b5ea0c07",
-   "mtime": "2026-11-21T05:11:00Z",
+   "declared_rows": null,
+   "layers_n": null,
+   "sha256": "",
+   "mtime": null,
    "origin": "run 44865991911 的 plan-05b artifact（id 14692340122）落库副本"
   },
   "probe_plan": {
@@ -7801,10 +8384,12 @@
    "declared_rows": 32303033,
    "layers_n": 583,
    "sha256": "361fc29e4c828c3c59aef88051aa72bb37bb46b2699c8537af8f1864e4a8a0b5",
-   "mtime": "2026-11-21T07:19:04Z",
+   "mtime": "2026-11-21T07:51:54Z",
    "origin": "collect/full_plan.py 计划期产物（探针阶段所用）"
   },
-  "delta_rows": 34261,
+  "delta_rows": null,
   "usage_ban": "declared 逐层不可得（artifact 无 expect_by_layer），任何 declared 总量**不得**当作逐层验收分母"
- }
+ },
+ "no_denominator_n": 53,
+ "no_denominator_note": "has_denominator=false 共 53 层 = unverified 18 + pending 35 + no_expect 0（差 0 层）"
 }

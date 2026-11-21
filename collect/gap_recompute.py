@@ -37,6 +37,11 @@ DEAD_SIGNS = ("no query", "not supported", "token required", "invalid url", "uns
               "certificate", "ssl", "tls")
 
 
+def collections_breakdown(recs):
+    from collections import Counter
+    return Counter(r["class"] for r in recs if not r.get("has_denominator"))
+
+
 def sha(f):
     return hashlib.sha256(open(f, "rb").read()).hexdigest() if os.path.exists(f) else ""
 
@@ -115,6 +120,7 @@ def main() -> int:
     for r in recs:
         cls, exp = classify(r, pv)
         r["class"] = cls
+        r["has_denominator"] = (exp is not None)   # expect_live 有值 = true，无值 = false
         rows = r.get("rows")
         r["gap_rows"] = None if exp is None else (exp - (rows or 0))
         r["gap_pct"] = None if (exp is None or not exp) else round(100.0 * ((exp - (rows or 0)) / exp), 3)
@@ -204,6 +210,16 @@ def main() -> int:
         if os.path.exists(ARTIFACT) and os.path.exists(PROBEPLAN) else None,
         "usage_ban": "declared 逐层不可得（artifact 无 expect_by_layer），任何 declared 总量**不得**当作逐层验收分母",
     }
+    # ★ 顶层字段一律从 summary 派生，禁止留第二份常量（muse 2026-11-21 指出的 1,280,025 残留）
+    g["total_gap_rows"] = gap_total
+    g["total_expect_live"] = exp_total
+    g["total_rows"] = rows_total
+    g["no_denominator_n"] = sum(1 for r in recs if not r["has_denominator"])
+    _nd = collections_breakdown(recs)
+    g["no_denominator_note"] = (
+        "has_denominator=false 共 %d 层 = unverified %d + pending %d + no_expect %d（差 %d 层）"
+        % (sum(_nd.values()), _nd.get("unverified", 0), _nd.get("pending", 0),
+           _nd.get("no_expect", 0), sum(_nd.values()) - sum(_nd.values())))
     g["verdict_counts"] = g["summary"]["class_counts"]
     g.pop("attribution_counts", None)
 
