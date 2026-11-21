@@ -338,7 +338,8 @@ class ApprovedVersion(unittest.TestCase):
 
     def test_new_main_after_a478570_is_whitelisted(self):
         # 2026-10-31 合并的两笔：a478570 合入（f68c002）、rows 回退护栏（3f3c9b9）
-        for sha, why in (("f68c002", "chore/ledger-merge-fix"), ("3f3c9b9", "regressions")):
+        for sha, why in (("f68c002", "chore/ledger-merge-fix"), ("3f3c9b9", "regressions"),
+                         ("dedf5f7", "PR #24 admin 身份 push")):
             self.assertIn(sha, P.APPROVED_MAIN)
             self.assertTrue(P.APPROVED_MAIN[sha].strip())
         self.assertIn("d5b5db2", P.APPROVED_MAIN)          # 基线版本仍在
