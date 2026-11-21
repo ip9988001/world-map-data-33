@@ -535,3 +535,5 @@ jobs:
             collect/ledger/step${{ inputs.stage }}_rebuilt.json
             docs/STEP*-FULL-*.md
           retention-days: 90
+
+# gate-selftest probe line (never merged)
