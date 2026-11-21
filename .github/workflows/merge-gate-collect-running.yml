@@ -1,0 +1,88 @@
+name: merge-gate-collect-running
+# 「collect-full 在跑就不许合」合并门禁（muse-000146 Phase 1a 第 3 片 · 第 8 项）
+#
+# 三处口径（二号 2026-11-22 仲裁，改口径必须重新批示；实现在 collect/check_collect_running.py）：
+#   (a) 查哪条 run：**只**查三仓 ip9988001/world-map-data-33 的 collect-full.yml
+#       （GET /repos/{owner}/{repo}/actions/workflows/collect-full.yml/runs?per_page=100，
+#        等价 `gh run list --workflow collect-full.yml --limit 100`）。
+#       未完成集合 = {in_progress, queued, waiting, requested, pending}，任一命中 = 在跑。
+#       不查一仓/二仓（它们没有 collect-full，查了只会假阻塞）。
+#       查询原样输出（run id + status + head_sha + createdAt）写进 check 摘要留痕。
+#   (b) 判定窗口：只判**查询瞬间的快照**，不设历史窗口；触发点 = PR 的
+#       opened / synchronize / reopened，取最近一次结果为准；结果时效 30 分钟，
+#       超时即 stale → 按「未通过」处理（fail-closed，无 docs 例外）。
+#       需要人工复核/重跑：`gh workflow run merge-gate-collect-running.yml -f pr=<N>`
+#   (c) 是否阻塞 docs：按 PR **实际 diff 路径**分流（不认标题/描述）——
+#       命中 collect/** · .github/workflows/** · schema/** · scripts/** · config/** → 阻塞；
+#       **仅** docs/** · *.md · *.txt → 不阻塞（结论绿，但摘要仍写「查到 N 条在跑 run，仅 docs
+#       故不阻塞」+ run id）；既不在阻塞前缀又不属 docs-only → 按阻塞处理（fail-closed）。
+#   (d) API 异常（非 200 / 超时 / 限流）→ fail-closed 阻塞；唯一例外 = docs-only 仍放行，
+#       但摘要必须写明「API 失败，未验证采集态」。
+#
+# 设计约束（派单硬要求）：
+#   · 本 workflow **不触发任何采集**，也不下载任何制品/缓存（无 upload/download-artifact、无 cache）。
+#   · 权限最小化：contents: read / pull-requests: read / actions: read。
+#   · 单次运行 <60s（1 次 runs 查询 + 1 次 PR files 分页）。
+#   · 判定逻辑从 **base 分支** 取（checkout base sha），不跑 PR 自带的脚本版本 ——
+#     否则一个 PR 改掉 check_collect_running.py 就能给自己放行。
+#     首次引入本 workflow 的 PR 在 base 上没有脚本 → 走 bootstrap 分支：打印显式告警并放行，
+#     合并后对后续 PR 一律按 base 版本判定（该例外随合并自动失效）。
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: "PR 号（人工复核 / 重跑用）"
+        required: true
+
+permissions:
+  contents: read
+  pull-requests: read
+  actions: read
+
+concurrency:
+  group: merge-gate-collect-running-${{ github.event.pull_request.number || inputs.pr }}
+  cancel-in-progress: true
+
+jobs:
+  collect-running-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      # 取 base 分支的判定逻辑：PR 不能自带「让自己过关」的脚本版本。
+      # pull_request 事件下 base.sha = PR 的目标提交；dispatch 下退回 main 的当前提交。
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha || 'main' }}
+          fetch-depth: 1
+
+      - name: 取 PR 实际改动文件清单（判据 (c) 只认这个）
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number || inputs.pr }}
+        run: |
+          set -euo pipefail
+          gh api "repos/$REPO/pulls/$PR/files" --paginate --jq '.[].filename' | sort -u > /tmp/changed
+          echo "== PR #$PR 改动文件（$(wc -l < /tmp/changed) 个）=="
+          sed 's/^/  /' /tmp/changed
+
+      - name: 判定（collect-full 在跑 → 阻塞；仅 docs → 放行）
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ ! -f collect/check_collect_running.py ]; then
+            {
+              echo "## ⚠️ merge-gate-collect-running：bootstrap 分支"
+              echo ""
+              echo "base 提交（\`${{ github.event.pull_request.base.sha || 'main' }}\`）上还没有"
+              echo "\`collect/check_collect_running.py\` —— 本 PR 大概是**首个引入**这道门禁的 PR。"
+              echo "本次跳过判定并放行；合并之后，所有 PR 一律按 base 上的脚本版本判定。"
+              echo "（例外只对「base 上还没有脚本」成立，随合并自动失效。）"
+            } | tee -a "${GITHUB_STEP_SUMMARY:-/dev/stdout}"
+            exit 0
+          fi
+          python3 collect/check_collect_running.py --changed-files /tmp/changed
