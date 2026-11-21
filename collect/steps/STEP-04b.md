@@ -71,6 +71,26 @@
 单层失败只影响该层（`fail-fast: false`），记 failed 继续；本阶段 failed ≠ 0 就**不自动接续**下一阶段，
 停在原地等人看账本。同一 host 反复 5xx 降到 1 并发；额度接近上限时主动停并在简报写明。
 
+## 计划期探针的失败分类（muse-000146 第 3–6 项，2026-11-22）
+
+plan json 里的探针证据是**全量**的（`probe_failed` 与 `probe_failed_n` 同源，展示层才截断并写「显示前 50 / 共 N」）。
+失败按 `collect/lib/fetch.py` 的分类计数（`probe_failed_by_kind`），**400 与 404/500 分开算，禁止合并**：
+
+| kind | 含义 | 可修？ | 处置 |
+|---|---|---|---|
+| `bad_request_paging` | 400 且 body 是分页/参数语义（分页越界、Pagination is not supported、resultOffset 非法） | **可修**（改分页策略/参数） | 进 dead 前先复探；可与 404/500 分开定向修 |
+| `bad_request_400` | 400 但与分页无关 | 可修 | 同上 |
+| `not_found_404` | 端点没了（esri "Service not found" / HTML 页） | 不可修 | 判 empty / unverified，不再复探 |
+| `server_5xx` | 上游服务端坏 | 不可修（重试收益趋零） | 复探 3 次全败才 dead |
+| `rate_limited_429` | 限流 | 等一等 | 退避后回到待采 |
+| `svcerr` | HTTP 200 但 body 带 `{"error":…}` | 视 message | 落 `reason` |
+| `timeout` | 超时/连接异常 | 视情况 | 复探 |
+
+探针每条结果都落 `{layer_id, count, count_path, body_keys_sig, parse_ok, reason}`（解析固化在
+`full_plan.parse_count_body`，可单测）；`parse_ok=false` 必须带 `reason`，**不许静默 None**。
+dead 项必须带 `dead_since`（UTC）与 `probe_attempts`（逐次 `{at, attempt, status, code, elapsed_ms}`）；
+复探成功的层回到待采队列，不留在 dead。
+
 ## 命令（照抄）
 ```bash
 python3 collect/full_plan.py --stage 04b --size 20 --out collect/ledger/04b_plan.json

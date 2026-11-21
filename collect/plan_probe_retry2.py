@@ -7,7 +7,7 @@
   unverified = 服务已死：404/500/no Query/not supported/TLS 失败/token required（含其他 4xx，429 除外）
   pending    = 暂时性：超时/429/连接重置/撞墙钟
 
-探针仍是 collect/full_plan.py:_count_one（一字未改）。URL 直接取 retry1 记录里的 url 字段（既有注册表来的，不重拼）。
+探针仍走 collect/full_plan.py:_count_one（2026-11-22 起内部改为 probe_layer：复探 + 失败分类 + 解析固化；返回语义不变 = int|None）。URL 直接取 retry1 记录里的 url 字段（既有注册表来的，不重拼）。
 每批跑完立刻落盘（覆盖写入 05b_plan_probe_retry.json 的 retry2 段）；撞墙钟的层标 pending 并 note「撞墙钟」。
 挂死线程是 daemon，落盘后 os._exit 直接退出 —— 不留 ThreadPoolExecutor.__exit__ 等挂起任务的坑。
 
