@@ -24,6 +24,18 @@
   落在**既有账本目录** `collect/ledger/`，命名沿用既有风格：`county_ckpt_<ST>.json`
   （与 `county_plan.json` / `county_shard<NN>.json` 同级同风格，不自造新目录）。
 
+县内对象级续跑（muse-000146 第 11 项后补，本模块 v2 追加）：
+  县是**最小调度单位**，但一个县也可能几十万行、上游翻页中途被打断。所以记录里再追加四个字段：
+    last_objectid     已落盘到的最后一个上游对象 id（续跑从它之后接着拉，不从 0 重来）
+    raw_fetched       本县已落盘行数
+    declared_upstream 上游声明的本县行数
+    sha256            本县已落盘分片（.part）的 sha256，用于续写前校验「接的是自己那份」
+    updated_at        每次写盘刷成 UTC（上面 doc 级的同名头字段是整州时间戳）
+  分片文件路径：`collect/ledger/county_part_<ST>/<fips>.part`（
+  `part_path()`），县完成后自动删掉；断点县留着续写。
+  口径：**raw_fetched == declared_upstream 才算该县完成**（与上面的 `rows >= expect_rows` 一致，
+  前者是后者的具名版本）；已完成的县不会因为文件存在而重抓——跳过逻辑仍在 `pending_counties()`。
+
 三条边界（违反即视为数据污染）：
   1. **同一州同一轮口径内才生效**：checkpoint 文件头带 `fingerprint` = 源文件指纹
      （几何缓存 / 计划 / 上游资产清单的 path+size+mtime_ns）。指纹不符 → `status` 全部作废、
@@ -67,6 +79,16 @@ def now_iso() -> str:
 def ckpt_path(state: str, ledger_dir: str | None = None) -> str:
     """账本目录里的单州 checkpoint 文件名（沿用既有 ledger 命名风格）。"""
     return os.path.join(ledger_dir or DEFAULT_LEDGER, "county_ckpt_%s.json" % (state or "").upper())
+
+
+def part_path(state: str, fips: str, ledger_dir: str | None = None) -> str:
+    """单县分片文件路径：`<ledger>/county_part_<ST>/<fips>.part`。
+
+    县内中断时这份文件里是已落盘的部分行，续跑从 `last_objectid` 之后接着 append；
+    县完成后由 `run_counties_take_done()` 删掉（不留半成品混淆下游）。
+    """
+    return os.path.join(ledger_dir or DEFAULT_LEDGER,
+                        "county_part_%s" % (state or "").upper(), "%s.part" % fips)
 
 
 def source_fingerprint(paths) -> str:
@@ -137,14 +159,95 @@ def begin(doc: dict, fips: str, state: str, source: str = "") -> dict:
     return e
 
 
-def done(doc: dict, fips: str, rows: int, expect_rows: int | None = None) -> dict:
-    """置 done（行数对账不过 → failed，边界 3）。"""
+def done(doc: dict, fips: str, rows: int, expect_rows: int | None = None,
+         *, raw_fetched: int | None = None, declared_upstream: int | None = None,
+         sha256: str = "", last_objectid=None) -> dict:
+    """置 done（行数对账不过 → failed，边界 3）。
+
+    `raw_fetched` / `declared_upstream` 是本县对象级续跑口径的具名别名：
+      raw_fetched == declared_upstream 才算完成；缺一就记 failed(incomplete_upstream)。
+    两者都没给时退回旧口径（rows vs expect_rows），向后兼容。
+    """
     e = doc.setdefault("counties", {}).setdefault(fips, {})
-    rows = int(rows or 0)
-    if expect_rows is not None and rows < int(expect_rows):
-        return fail(doc, fips, "rows_mismatch: %d < %d" % (rows, int(expect_rows)), rows=rows)
-    e.update({"status": "done", "rows": rows, "finished_at": now_iso(), "fail_reason": ""})
+    got = int(raw_fetched if raw_fetched is not None else (rows or 0))
+    want = declared_upstream if declared_upstream is not None else expect_rows
+    e.update({"raw_fetched": got, "declared_upstream": (None if want is None else int(want)),
+              "sha256": str(sha256 or e.get("sha256") or ""),
+              "updated_at": now_iso()})
+    if last_objectid is not None:
+        e["last_objectid"] = last_objectid
+    if want is not None and got < int(want):
+        return fail(doc, fips, "rows_mismatch: %d < %d" % (got, int(want)), rows=got)
+    e.update({"status": "done", "rows": got, "finished_at": now_iso(), "fail_reason": ""})
     return e
+
+
+def progress(doc: dict, fips: str, *, last_objectid=None, raw_fetched: int | None = None,
+             declared_upstream: int | None = None, sha256: str = "", source: str = "") -> dict:
+    """县内对象级断点：只改记录，不落盘（调用方自己 save）。
+
+    典型用法（上游翻页循环里）：
+        county_ckpt.progress(doc, fips, last_objectid=oid, raw_fetched=n,
+                             declared_upstream=declared, sha256=part_sha256(part_path(...)))
+        county_ckpt.save(doc, ledger_dir)          # 每 N 页落一次盘
+    续跑时用 `resume_point(doc, fips)["last_objectid"] + 1` 作为起点。
+    """
+    e = doc.setdefault("counties", {}).setdefault(fips, {})
+    e.setdefault("county_fips", fips)
+    if e.get("status") != "done":
+        e["status"] = "running"
+    if last_objectid is not None:
+        e["last_objectid"] = last_objectid
+    if raw_fetched is not None:
+        e["raw_fetched"] = int(raw_fetched)
+    if declared_upstream is not None:
+        e["declared_upstream"] = int(declared_upstream)
+    if sha256:
+        e["sha256"] = str(sha256)
+    if source:
+        e["source"] = str(source)
+    e["updated_at"] = now_iso()
+    return e
+
+
+def resume_point(doc: dict, fips: str) -> dict:
+    """取该县的续跑点（无记录 → 全空/0 起点）。
+
+    返回 {fips, status, last_objectid, raw_fetched, declared_upstream, sha256, updated_at}。
+    调用方拿 `last_objectid` 作上游游标起点、拿 `sha256` 校验 `.part` 是否还是自己那份。
+    """
+    e = (doc.get("counties") or {}).get(fips) or {}
+    return {"fips": fips,
+            "status": e.get("status") or "pending",
+            "last_objectid": e.get("last_objectid"),
+            "raw_fetched": int(e.get("raw_fetched") or e.get("rows") or 0),
+            "declared_upstream": e.get("declared_upstream"),
+            "sha256": e.get("sha256") or "",
+            "updated_at": e.get("updated_at") or ""}
+
+
+def resume_of(state: str, fips: str, ledger_dir: str | None = None) -> dict:
+    """从磁盘读该州 checkpoint 再取续跑点（供 work 函数在无 doc 引用时用）。"""
+    return resume_point(load(state, ledger_dir), fips)
+
+
+def part_sha256(path: str) -> str:
+    """分片文件的 sha256（不存在 → 空串）。"""
+    try:
+        with open(path, "rb") as fh:
+            return hashlib.sha256(fh.read()).hexdigest()
+    except OSError:
+        return ""
+
+
+def drop_part(state: str, fips: str, ledger_dir: str | None = None) -> bool:
+    """县完成后删掉分片（不存在 → False）。"""
+    p = part_path(state, fips, ledger_dir)
+    try:
+        os.remove(p)
+        return True
+    except OSError:
+        return False
 
 
 def fail(doc: dict, fips: str, reason: str, rows: int | None = None) -> dict:
@@ -191,22 +294,56 @@ def summary(doc: dict, counties: list[str]) -> dict:
     return agg
 
 
-def run_counties(state: str, counties: list[str], work, *, ledger_dir: str | None = None,
+def _absorb_progress(doc: dict, state: str, ledger_dir: str | None = None) -> dict:
+    """把 work 自己写进盘里的县内进度吸进内存 doc，防止被本轮覆盖掉。
+
+    为什么必须有这一步：`work` 里常见的写法是自己 `load/progress/save` 三件套刷断点
+    （子进程更只能走盘）。`run_counties` 手里的 doc 是进 county 之前读的旧快照，
+    直接 `fail()`/`done()` 再 save 就会把 work 刚写的 `last_objectid` 抹掉 ——
+    于是中断一次之后断点全丢，下次还是从头拉。这里只认「盘上更新」的进度字段，
+    状态机仍由 run_counties 决定。
+    """
+    disk = load(state, ledger_dir)
+    for fips, rec in (disk.get("counties") or {}).items():
+        if not isinstance(rec, dict):
+            continue
+        cur = doc.setdefault("counties", {}).setdefault(fips, {})
+        if (rec.get("updated_at") or "") < (cur.get("updated_at") or ""):
+            continue                      # 盘上更旧：不用它覆盖
+        for k in ("last_objectid", "raw_fetched", "declared_upstream", "sha256",
+                  "updated_at", "rows", "fail_reason"):
+            if k in rec and rec[k] not in (None, ""):
+                cur[k] = rec[k]
+    return doc
+
+
+def run_counties(state: str, counties: list[str], work=None, *, ledger_dir: str | None = None,
                  counties_only: list[str] | None = None, force: list[str] | None = None,
                  fingerprint: str = "", source: str = "", expect_rows: dict | None = None,
+                 work_with_resume=None, drop_part_on_done: bool = True,
                  log=None) -> dict:
     """**唯一调度入口**：按 checkpoint 决定跑哪些县，逐县调用 `work(fips)`。
 
     `work(fips) -> dict|int|None`：
-      · dict：可含 `rows` / `source` / `expect_rows` / `error`
+      · dict：可含 `rows` / `raw_fetched` / `declared_upstream` / `sha256` /
+              `last_objectid` / `source` / `expect_rows` / `error`
       · int ：视为 rows
       · None：视为 rows=0
       抛异常 → 该县记 failed（fail_reason=异常摘要），**不影响其他县**，异常不外抛
         （单县失败正是本模块要接住的东西；要整轮失败请调用方自己看 summary()["failed"]）。
 
-    返回 summary(doc, counties) + `ran`（本轮实际跑了的县）+ `skipped`（按 checkpoint 跳过的县）。
+    `work_with_resume(fips, resume) -> 同上`（可选，县内对象级续跑专用）：
+      `resume` = `resume_point(doc, fips)`，含 `last_objectid` / `raw_fetched` /
+      `declared_upstream` / `sha256`。给了它就不用 `work`。**两者都不给→ ValueError**。
+
+    `drop_part_on_done=True`：该县跑成 done 后删掉 `county_part_<ST>/<fips>.part`。
+
+    返回 summary(doc, counties) + `ran`（本轮实际跑的县）+ `skipped`（按 checkpoint 跳过的县）
+      + `resumed`（其中带着非空 last_objectid 续跑的县）。
     """
     say = log or (lambda m: None)
+    if work is None and work_with_resume is None:
+        raise ValueError("run_counties 需要 work 或 work_with_resume 其中一个")
     doc = load(state, ledger_dir)
     doc, why = invalidate_if_stale(doc, fingerprint)
     if why:
@@ -215,26 +352,40 @@ def run_counties(state: str, counties: list[str], work, *, ledger_dir: str | Non
     skipped = [c for c in (counties or []) if c not in set(todo)]
     say("checkpoint: 待跑 %d 县 / 跳过 %d 县（state=%s）"
         % (len(todo), len(skipped), (state or "").upper()))
+    resumed: list[str] = []
     for fips in todo:
         begin(doc, fips, state, source=source)
         save(doc, ledger_dir)                      # 先落 running：进程被杀也留痕
+        rp = resume_point(doc, fips)
+        if rp.get("last_objectid") is not None:
+            resumed.append(fips)
+            say("  ↺ %s 续跑：last_objectid=%r raw_fetched=%s%s"
+                % (fips, rp["last_objectid"], rp["raw_fetched"],
+                   "" if rp.get("declared_upstream") is None
+                   else " declared_upstream=%s" % rp["declared_upstream"]))
         try:
-            res = work(fips)
+            res = work_with_resume(fips, rp) if work_with_resume is not None else work(fips)
         except Exception as e:                     # noqa: BLE001
+            _absorb_progress(doc, state, ledger_dir)   # work 可能已刷过断点，别覆盖
             fail(doc, fips, "%s: %s" % (type(e).__name__, str(e)[:200]))
             save(doc, ledger_dir)
             say("  ❌ %s 失败：%s" % (fips, (doc["counties"][fips] or {}).get("fail_reason")))
             continue
         if isinstance(res, dict):
-            rows = res.get("rows")
+            rows = res.get("rows", res.get("raw_fetched"))
             if res.get("error"):
                 fail(doc, fips, res["error"], rows=rows)
                 continue_done = False
             else:
+                _absorb_progress(doc, state, ledger_dir)
                 exp = res.get("expect_rows")
                 if exp is None and expect_rows:
                     exp = expect_rows.get(fips)
-                done(doc, fips, int(rows or 0), exp)
+                done(doc, fips, int(rows or 0), exp,
+                     raw_fetched=res.get("raw_fetched"),
+                     declared_upstream=res.get("declared_upstream"),
+                     sha256=res.get("sha256") or "",
+                     last_objectid=res.get("last_objectid"))
                 continue_done = True
             if not continue_done:
                 save(doc, ledger_dir)
@@ -244,9 +395,11 @@ def run_counties(state: str, counties: list[str], work, *, ledger_dir: str | Non
                 doc["counties"][fips]["source"] = res["source"]
         else:
             done(doc, fips, int(res or 0), (expect_rows or {}).get(fips))
+        if drop_part_on_done and (doc["counties"][fips] or {}).get("status") == "done":
+            drop_part(state, fips, ledger_dir)
         save(doc, ledger_dir)
     s = summary(doc, counties)
-    s["ran"], s["skipped"] = todo, skipped
+    s["ran"], s["skipped"], s["resumed"] = todo, skipped, resumed
     return s
 
 
