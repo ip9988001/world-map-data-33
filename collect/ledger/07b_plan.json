@@ -1,16 +1,18 @@
 {
  "schema": "collect-plan/v1",
  "stage": "07b",
- "size": 200,
+ "size": 6,
  "layers_n": 158,
- "shards_n": 1,
+ "shards_n": 27,
  "declared_rows": 244719,
  "unit_rows": 100000,
  "workers": 4,
  "done_from": "07",
  "tag": "collect-step07-{layer}",
  "order": "rows_asc",
- "forced_layers": [],
+ "forced_layers": [
+  "138c05_rest_services_MiddlesexCounty_Base_Layers_MapServer_0"
+ ],
  "shards": [
   {
    "shard": 0,
@@ -20,157 +22,287 @@
     "_Property_Profile___No_Site_Address___1_2026_FeatureServer_0",
     "_rest_services_E911_Origin_Point_NAD27_V2501_FeatureServer_0",
     "Npbr2SGIhQvrH_arcgis_rest_services_Addresses_FeatureServer_0",
-    "WodG9Kll_arcgis_rest_services_Address_Points_FeatureServer_0",
+    "WodG9Kll_arcgis_rest_services_Address_Points_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 1,
+   "layers": [
     "_arcgis_rest_services_Site_Address_Locations_FeatureServer_0",
     "6GqBWodG9Kll_arcgis_rest_services_Addresses__FeatureServer_0",
     "OMMISSIONER_PCT_PUBLIC_WORKS_ADDRESSES_point_FeatureServer_0",
     "_rest_services_2025_Waste_Disposal_Addresses_FeatureServer_0",
     "ZHUggYYSp_arcgis_rest_services_Address_types_FeatureServer_0",
-    "HFr6zdgNZuVG0_arcgis_rest_services_NG911_CFS_FeatureServer_0",
+    "HFr6zdgNZuVG0_arcgis_rest_services_NG911_CFS_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 2,
+   "layers": [
     "_arcgis_rest_services_Vulnerable_e911_sites__FeatureServer_0",
     "YG1DOsR_arcgis_rest_services_HS_Plan_D_WFL1_FeatureServer_14",
     "_rest_services_CatoctinSpeedDating_Addresses_FeatureServer_1",
     "_arcgis_rest_services_Address_Location_Point_FeatureServer_0",
     "Ep4y_arcgis_rest_services_CAW_Address_Points_FeatureServer_0",
-    "_arcgis_rest_services_SU_Address_Layer_DRAFT_FeatureServer_0",
+    "_arcgis_rest_services_SU_Address_Layer_DRAFT_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 3,
+   "layers": [
     "D4lF0F_arcgis_rest_services_PCBAddressBlocks_FeatureServer_0",
     "VDPqdJ5_arcgis_rest_services_UC_Address_Grid_FeatureServer_0",
     "_rest_services_Jay_Cooke_Trailhead_Addresses_FeatureServer_0",
     "RealEstate_ACParcels_Outcome25address_points_FeatureServer_0",
     "XdLKOfIXex_arcgis_rest_services_KHSD_Address_FeatureServer_0",
-    "_arcgis_rest_services_Mission_Site_Addresses_FeatureServer_0",
+    "_arcgis_rest_services_Mission_Site_Addresses_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 4,
+   "layers": [
     "_rest_services_ATW_Address_Points_2_5_Higher_FeatureServer_0",
     "WXituM_arcgis_rest_services_Town_Owned_Situs_FeatureServer_0",
     "123_4848a2717d344d119d250f258af86bea_results_FeatureServer_0",
     "V_arcgis_rest_services_Crisis_Site_Addresses_FeatureServer_0",
     "Property_Profile___No_Site_Address___10_2025_FeatureServer_0",
-    "_arcgis_rest_services_1920_Address_Points_JG_FeatureServer_0",
+    "_arcgis_rest_services_1920_Address_Points_JG_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 5,
+   "layers": [
     "CcMPHO_arcgis_rest_services_CERT_Team_Public_FeatureServer_0",
     "1oVm_arcgis_rest_services_WCD_Site_Addresses_FeatureServer_0",
     "Thf3DKUv_arcgis_rest_services_Address_Points_FeatureServer_0",
     "7ueLg_arcgis_rest_services_0_Sites_Addresses_FeatureServer_0",
     "IOcEYxoF_arcgis_rest_services_lead_addresses_FeatureServer_0",
-    "ckkXVBh_arcgis_rest_services_ParkOPS_Address_FeatureServer_0",
+    "ckkXVBh_arcgis_rest_services_ParkOPS_Address_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 6,
+   "layers": [
     "_arcgis_rest_services_1940_Address_Points_JG_FeatureServer_0",
     "_rest_services_NG911_PSAPs_GDH_Weekly_Report_FeatureServer_0",
     "Iuq_arcgis_rest_services_Address_Points_DSSD_FeatureServer_0",
     "O_arcgis_rest_services_NG9111PSAPPointValues_FeatureServer_0",
     "_arcgis_rest_services_Remote_Address_Points_FeatureServer_10",
-    "P2WNA_arcgis_rest_services_Potomac_Addresses_FeatureServer_0",
+    "P2WNA_arcgis_rest_services_Potomac_Addresses_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 7,
+   "layers": [
     "NA_arcgis_rest_services_Cottonwood_Addresses_FeatureServer_0",
     "P2WNA_arcgis_rest_services_Peroria_Addresses_FeatureServer_0",
     "9_arcgis_rest_services_NG911_Web_layers_WFL1_FeatureServer_0",
     "3YBzBoefRGq66_arcgis_rest_services_Addresses_FeatureServer_0",
     "Wzi_arcgis_rest_services_NCRPO_MCD_Addresses_FeatureServer_0",
-    "00ea7p7i0U_arcgis_rest_services_E911CallDATA_FeatureServer_1",
+    "00ea7p7i0U_arcgis_rest_services_E911CallDATA_FeatureServer_1"
+   ]
+  },
+  {
+   "shard": 8,
+   "layers": [
     "On_arcgis_rest_services_CW_Points_w_Address_FeatureServer_12",
     "JSry_arcgis_rest_services_Route_3_Addressing_FeatureServer_0",
     "PPO6ob_arcgis_rest_services_StudyAreaAddress_FeatureServer_0",
     "NqI_arcgis_rest_services_ng911_primary_psaps_FeatureServer_0",
     "X_arcgis_rest_services_Alpena_Address_Points_FeatureServer_0",
-    "J_arcgis_rest_services_LACDBG_Address_Points_FeatureServer_0",
+    "J_arcgis_rest_services_LACDBG_Address_Points_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 9,
+   "layers": [
     "_rest_services_Grayton_Parcels_and_Addresses_FeatureServer_0",
     "_rest_services_Vacation_Rental_Address_Layer_FeatureServer_0",
     "_gov_server_rest_services_Address_Points_602_FeatureServer_1",
     "I88qiQGw_arcgis_rest_services_Address_Points_FeatureServer_0",
     "xt6cnCY2_arcgis_rest_services_Site_Addresses_FeatureServer_2",
-    "ZN_arcgis_rest_services_Town_Preference_WFL1_FeatureServer_0",
+    "ZN_arcgis_rest_services_Town_Preference_WFL1_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 10,
+   "layers": [
     "EXz_arcgis_rest_services_Evac_Address_Points_FeatureServer_0",
     "CKH_arcgis_rest_services_MCRC_Address_Points_FeatureServer_0",
     "SFO3iTjgFX_arcgis_rest_services_Address_Join_FeatureServer_0",
     "Aa0SJxRv_arcgis_rest_services_NG911_Template_FeatureServer_0",
     "OMrvu25KcUX35_arcgis_rest_services_Addresses_FeatureServer_0",
-    "_Find_Locations_in_Address_Points_filt_radon_FeatureServer_0",
+    "_Find_Locations_in_Address_Points_filt_radon_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 11,
+   "layers": [
     "ajG76dg_arcgis_rest_services_HPOAddresses__1_FeatureServer_0",
     "_rest_services_SC_Address_Grid_Intersections_FeatureServer_0",
     "_arcgis_rest_services_IQA_grantees_Addresses_FeatureServer_0",
     "CIe16u6G_arcgis_rest_services_Address_Points_FeatureServer_0",
     "0ij_arcgis_rest_services_FWP_Lands_Addresses_FeatureServer_0",
-    "WofKfQhH_arcgis_rest_services_Address_Points_FeatureServer_0",
+    "WofKfQhH_arcgis_rest_services_Address_Points_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 12,
+   "layers": [
     "_arcgis_rest_services_Westside_AddressPoints_FeatureServer_0",
     "_GIS_Participant_Addresses_2019_deidentified_FeatureServer_0",
     "Dta5_arcgis_rest_services_MaineE911Addresses_FeatureServer_0",
     "_rest_services_DPZ_Curbs_2006_points_address_FeatureServer_0",
     "Km_arcgis_rest_services_SmartGovSubAddresses_FeatureServer_0",
-    "Hpm8mHFz_arcgis_rest_services_Addresses_view_FeatureServer_0",
+    "Hpm8mHFz_arcgis_rest_services_Addresses_view_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 13,
+   "layers": [
     "YH0_arcgis_rest_services_Site_Address_Points_FeatureServer_0",
     "2YfaSvieL_arcgis_rest_services_Yurok_Address_FeatureServer_0",
     "Hyco_Boat_Docks_with_Parcel_and_Address_Data_FeatureServer_0",
     "QGbyiuCh_arcgis_rest_services_Address_Points_FeatureServer_0",
     "3oxsPnVw4fnW9_arcgis_rest_services_Addresses_FeatureServer_1",
-    "RTu_arcgis_rest_services_Sample_Addresses_bd_FeatureServer_0",
+    "RTu_arcgis_rest_services_Sample_Addresses_bd_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 14,
+   "layers": [
     "37YZHYH0_arcgis_rest_services_Address_Points_FeatureServer_0",
     "rcgis_rest_services_New_911_Address_Requests_FeatureServer_0",
     "CDFVQ_arcgis_rest_services_Address_Points_C2_FeatureServer_0",
     "QE7iy_arcgis_rest_services_Addresses_Mar2024_FeatureServer_0",
     "_arcgis_rest_services_AddresspointsDuplicate_FeatureServer_0",
-    "5IxwbSz_arcgis_rest_services_AddressesOnline_FeatureServer_0",
+    "5IxwbSz_arcgis_rest_services_AddressesOnline_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 15,
+   "layers": [
     "4JC_arcgis_rest_services_Rutland_County_E911_FeatureServer_0",
     "YDMVmmxMeM_arcgis_rest_services_Crash_Points_FeatureServer_0",
     "FwVI_arcgis_rest_services_9_1_1_Site_Address_FeatureServer_1",
     "GtVEXzaX_arcgis_rest_services_Address_Point2_FeatureServer_0",
     "Dl4j6iT0i_arcgis_rest_services_AddressPoints_FeatureServer_0",
-    "ASGpv7gPaTEUL_arcgis_rest_services_Addresses_FeatureServer_1",
+    "ASGpv7gPaTEUL_arcgis_rest_services_Addresses_FeatureServer_1"
+   ]
+  },
+  {
+   "shard": 16,
+   "layers": [
     "HgyUvYRWd_arcgis_rest_services_AddressPoints_FeatureServer_0",
     "_arcgis_rest_services_Cesar_Chavez_Addresses_FeatureServer_0",
     "W9xjDnZ35_arcgis_rest_services_911_Addresses_FeatureServer_0",
     "GAlRIIIg_arcgis_rest_services_Address_Points_FeatureServer_0",
     "DlIH33l3_arcgis_rest_services_Address_Points_FeatureServer_0",
-    "DCrBlhlg_arcgis_rest_services_EnochAddresses_FeatureServer_0",
+    "DCrBlhlg_arcgis_rest_services_EnochAddresses_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 17,
+   "layers": [
     "ocEBv1Ip_arcgis_rest_services_Address___View_FeatureServer_0",
     "138c05_rest_services_MiddlesexCounty_Base_Layers_MapServer_0",
     "XcE_arcgis_rest_services_911Address_20141030_FeatureServer_0",
     "Blhlg_arcgis_rest_services_UtahAddressPoints_FeatureServer_0",
     "Blhlg_arcgis_rest_services_RHUEnochAddresses_FeatureServer_0",
-    "UaBfRSxc_arcgis_rest_services_Address_Points_FeatureServer_0",
+    "UaBfRSxc_arcgis_rest_services_Address_Points_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 18,
+   "layers": [
     "GTj4xmYDtu_arcgis_rest_services_911addresses_FeatureServer_0",
     "YDtu_arcgis_rest_services_PHYSICAL_ADDRESSES_FeatureServer_0",
     "_rest_services_E911Roads_flowlines_intersect_FeatureServer_0",
     "6FlIW_arcgis_rest_services_NP_Address_Points_FeatureServer_0",
     "_rest_services_COAHOMA_COUNTY_ADDRESS_POINTS_FeatureServer_0",
-    "Fx_arcgis_rest_services_Anna_ETJ_Addresses_FeatureServer_157",
+    "Fx_arcgis_rest_services_Anna_ETJ_Addresses_FeatureServer_157"
+   ]
+  },
+  {
+   "shard": 19,
+   "layers": [
     "aiian_Gardens_CA_Master_Address_Table__View_FeatureServer_10",
     "Klwi2PRa_arcgis_rest_services_Address_Points_FeatureServer_0",
     "4C5C_arcgis_rest_services_address_points_apb_FeatureServer_0",
     "U4FaQtqrjGWfU_arcgis_rest_services_Addresses_FeatureServer_0",
     "HoWNZ_arcgis_rest_services_Village_Addresses_FeatureServer_0",
-    "_services_Parcel_and_Address_Data_Civic_Plus_FeatureServer_1",
+    "_services_Parcel_and_Address_Data_Civic_Plus_FeatureServer_1"
+   ]
+  },
+  {
+   "shard": 20,
+   "layers": [
     "YeF6EBJ1_arcgis_rest_services_Addresses_View_FeatureServer_0",
     "SpUPMP3Z_arcgis_rest_services_Address_Points_FeatureServer_0",
     "J7UaClOw_arcgis_rest_services_Address_Points_FeatureServer_0",
     "4XSFR9wSzw_arcgis_rest_services_ADDRESS_DATA_FeatureServer_0",
     "F_arcgis_rest_services_AddressPoints01312025_FeatureServer_0",
-    "CjdNui_arcgis_rest_services_addresses_030317_FeatureServer_0",
+    "CjdNui_arcgis_rest_services_addresses_030317_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 21,
+   "layers": [
     "HtVstUaG_arcgis_rest_services_Address_Points_FeatureServer_0",
     "akSFUjJ_arcgis_rest_services_Address_Points_FeatureServer_15",
     "_arcgis_rest_services_Sheridan_Addresses_gdb_FeatureServer_0",
     "_rest_services_Practice_Topographic_Basins_Sewer_MapServer_2",
     "_rest_services_Site_Structure_Address_Points_FeatureServer_0@WA-5",
-    "WsOS_arcgis_rest_services_wlv_address_points_FeatureServer_0",
+    "WsOS_arcgis_rest_services_wlv_address_points_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 22,
+   "layers": [
     "DiwEHErgACQrcA3_arcgis_rest_services_Address_FeatureServer_0",
     "8Ri_arcgis_rest_services_Secondary_Addresses_FeatureServer_0",
     "N_arcgis_rest_services_Master_Address_Points_FeatureServer_0",
     "rcgis_rest_services_Addressing_Addressing_public_MapServer_0",
     "3ECP25Sn_arcgis_rest_services_Address_Points_FeatureServer_0",
-    "Xa_arcgis_rest_services_SiteAddresses_public_FeatureServer_0",
+    "Xa_arcgis_rest_services_SiteAddresses_public_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 23,
+   "layers": [
     "_arcgis_rest_services_Juno_Address_Points_DC_FeatureServer_0",
     "_arcgis_rest_services_E911_Addresses_4_2024_FeatureServer_23",
     "4aPlhvQwvs_arcgis_rest_services_TEST_Service_FeatureServer_0",
     "0DY_arcgis_rest_services_Snohomish_Addresses_FeatureServer_0",
     "X5q_arcgis_rest_services_DD_Addresses_Public_FeatureServer_0",
-    "TpEhyQB_arcgis_rest_services_Addresses_91024_FeatureServer_0",
+    "TpEhyQB_arcgis_rest_services_Addresses_91024_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 24,
+   "layers": [
     "Find_Locations_in_Address_Points_herndon_va2_FeatureServer_0@MD-1",
     "9JX5q_arcgis_rest_services_Site_Addresses_CM_FeatureServer_0",
     "NT3_arcgis_rest_services_E911_JUNE_ADDRESSES_FeatureServer_0",
     "Site_Structure_Address_Points__External_View_FeatureServer_3",
     "0DY_arcgis_rest_services_EnerGov_AddrParcels_FeatureServer_0",
-    "Ll1tVX_arcgis_rest_services_RPZ_Address_Pt_2_FeatureServer_0",
+    "Ll1tVX_arcgis_rest_services_RPZ_Address_Pt_2_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 25,
+   "layers": [
     "61POPssw_arcgis_rest_services_Address_Points_FeatureServer_0",
     "QvjiKhzBVQV7V_arcgis_rest_services_SITUS_PTS_FeatureServer_0",
     "HNk0Cmg2csuv9p_arcgis_rest_services_Energov3_FeatureServer_0",
     "WYow3ofS_arcgis_rest_services_Address___Town_FeatureServer_4",
     "_arcgis_rest_services_Richland_AddressPt2022_FeatureServer_0",
-    "_arcgis_rest_services_LevellandAddressPoints_FeatureServer_0",
+    "_arcgis_rest_services_LevellandAddressPoints_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 26,
+   "layers": [
     "_arcgis_rest_services_Energov_Address_Points_FeatureServer_0",
     "S9sE3M9RybT_arcgis_rest_services_Address_Pts_FeatureServer_0"
    ]
@@ -182,6 +314,478 @@
   "max_attempts": 3,
   "attempt_log": "analysis/04b-attempt-log.json"
  },
- "shards_dropped": [],
- "plan_truncated": null
+ "shards_dropped": [
+  {
+   "shard": 1,
+   "layers": [
+    "_arcgis_rest_services_Site_Address_Locations_FeatureServer_0",
+    "6GqBWodG9Kll_arcgis_rest_services_Addresses__FeatureServer_0",
+    "OMMISSIONER_PCT_PUBLIC_WORKS_ADDRESSES_point_FeatureServer_0",
+    "_rest_services_2025_Waste_Disposal_Addresses_FeatureServer_0",
+    "ZHUggYYSp_arcgis_rest_services_Address_types_FeatureServer_0",
+    "HFr6zdgNZuVG0_arcgis_rest_services_NG911_CFS_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 2,
+   "layers": [
+    "_arcgis_rest_services_Vulnerable_e911_sites__FeatureServer_0",
+    "YG1DOsR_arcgis_rest_services_HS_Plan_D_WFL1_FeatureServer_14",
+    "_rest_services_CatoctinSpeedDating_Addresses_FeatureServer_1",
+    "_arcgis_rest_services_Address_Location_Point_FeatureServer_0",
+    "Ep4y_arcgis_rest_services_CAW_Address_Points_FeatureServer_0",
+    "_arcgis_rest_services_SU_Address_Layer_DRAFT_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 3,
+   "layers": [
+    "D4lF0F_arcgis_rest_services_PCBAddressBlocks_FeatureServer_0",
+    "VDPqdJ5_arcgis_rest_services_UC_Address_Grid_FeatureServer_0",
+    "_rest_services_Jay_Cooke_Trailhead_Addresses_FeatureServer_0",
+    "RealEstate_ACParcels_Outcome25address_points_FeatureServer_0",
+    "XdLKOfIXex_arcgis_rest_services_KHSD_Address_FeatureServer_0",
+    "_arcgis_rest_services_Mission_Site_Addresses_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 4,
+   "layers": [
+    "_rest_services_ATW_Address_Points_2_5_Higher_FeatureServer_0",
+    "WXituM_arcgis_rest_services_Town_Owned_Situs_FeatureServer_0",
+    "123_4848a2717d344d119d250f258af86bea_results_FeatureServer_0",
+    "V_arcgis_rest_services_Crisis_Site_Addresses_FeatureServer_0",
+    "Property_Profile___No_Site_Address___10_2025_FeatureServer_0",
+    "_arcgis_rest_services_1920_Address_Points_JG_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 5,
+   "layers": [
+    "CcMPHO_arcgis_rest_services_CERT_Team_Public_FeatureServer_0",
+    "1oVm_arcgis_rest_services_WCD_Site_Addresses_FeatureServer_0",
+    "Thf3DKUv_arcgis_rest_services_Address_Points_FeatureServer_0",
+    "7ueLg_arcgis_rest_services_0_Sites_Addresses_FeatureServer_0",
+    "IOcEYxoF_arcgis_rest_services_lead_addresses_FeatureServer_0",
+    "ckkXVBh_arcgis_rest_services_ParkOPS_Address_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 6,
+   "layers": [
+    "_arcgis_rest_services_1940_Address_Points_JG_FeatureServer_0",
+    "_rest_services_NG911_PSAPs_GDH_Weekly_Report_FeatureServer_0",
+    "Iuq_arcgis_rest_services_Address_Points_DSSD_FeatureServer_0",
+    "O_arcgis_rest_services_NG9111PSAPPointValues_FeatureServer_0",
+    "_arcgis_rest_services_Remote_Address_Points_FeatureServer_10",
+    "P2WNA_arcgis_rest_services_Potomac_Addresses_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 7,
+   "layers": [
+    "NA_arcgis_rest_services_Cottonwood_Addresses_FeatureServer_0",
+    "P2WNA_arcgis_rest_services_Peroria_Addresses_FeatureServer_0",
+    "9_arcgis_rest_services_NG911_Web_layers_WFL1_FeatureServer_0",
+    "3YBzBoefRGq66_arcgis_rest_services_Addresses_FeatureServer_0",
+    "Wzi_arcgis_rest_services_NCRPO_MCD_Addresses_FeatureServer_0",
+    "00ea7p7i0U_arcgis_rest_services_E911CallDATA_FeatureServer_1"
+   ]
+  },
+  {
+   "shard": 8,
+   "layers": [
+    "On_arcgis_rest_services_CW_Points_w_Address_FeatureServer_12",
+    "JSry_arcgis_rest_services_Route_3_Addressing_FeatureServer_0",
+    "PPO6ob_arcgis_rest_services_StudyAreaAddress_FeatureServer_0",
+    "NqI_arcgis_rest_services_ng911_primary_psaps_FeatureServer_0",
+    "X_arcgis_rest_services_Alpena_Address_Points_FeatureServer_0",
+    "J_arcgis_rest_services_LACDBG_Address_Points_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 9,
+   "layers": [
+    "_rest_services_Grayton_Parcels_and_Addresses_FeatureServer_0",
+    "_rest_services_Vacation_Rental_Address_Layer_FeatureServer_0",
+    "_gov_server_rest_services_Address_Points_602_FeatureServer_1",
+    "I88qiQGw_arcgis_rest_services_Address_Points_FeatureServer_0",
+    "xt6cnCY2_arcgis_rest_services_Site_Addresses_FeatureServer_2",
+    "ZN_arcgis_rest_services_Town_Preference_WFL1_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 10,
+   "layers": [
+    "EXz_arcgis_rest_services_Evac_Address_Points_FeatureServer_0",
+    "CKH_arcgis_rest_services_MCRC_Address_Points_FeatureServer_0",
+    "SFO3iTjgFX_arcgis_rest_services_Address_Join_FeatureServer_0",
+    "Aa0SJxRv_arcgis_rest_services_NG911_Template_FeatureServer_0",
+    "OMrvu25KcUX35_arcgis_rest_services_Addresses_FeatureServer_0",
+    "_Find_Locations_in_Address_Points_filt_radon_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 11,
+   "layers": [
+    "ajG76dg_arcgis_rest_services_HPOAddresses__1_FeatureServer_0",
+    "_rest_services_SC_Address_Grid_Intersections_FeatureServer_0",
+    "_arcgis_rest_services_IQA_grantees_Addresses_FeatureServer_0",
+    "CIe16u6G_arcgis_rest_services_Address_Points_FeatureServer_0",
+    "0ij_arcgis_rest_services_FWP_Lands_Addresses_FeatureServer_0",
+    "WofKfQhH_arcgis_rest_services_Address_Points_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 12,
+   "layers": [
+    "_arcgis_rest_services_Westside_AddressPoints_FeatureServer_0",
+    "_GIS_Participant_Addresses_2019_deidentified_FeatureServer_0",
+    "Dta5_arcgis_rest_services_MaineE911Addresses_FeatureServer_0",
+    "_rest_services_DPZ_Curbs_2006_points_address_FeatureServer_0",
+    "Km_arcgis_rest_services_SmartGovSubAddresses_FeatureServer_0",
+    "Hpm8mHFz_arcgis_rest_services_Addresses_view_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 13,
+   "layers": [
+    "YH0_arcgis_rest_services_Site_Address_Points_FeatureServer_0",
+    "2YfaSvieL_arcgis_rest_services_Yurok_Address_FeatureServer_0",
+    "Hyco_Boat_Docks_with_Parcel_and_Address_Data_FeatureServer_0",
+    "QGbyiuCh_arcgis_rest_services_Address_Points_FeatureServer_0",
+    "3oxsPnVw4fnW9_arcgis_rest_services_Addresses_FeatureServer_1",
+    "RTu_arcgis_rest_services_Sample_Addresses_bd_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 14,
+   "layers": [
+    "37YZHYH0_arcgis_rest_services_Address_Points_FeatureServer_0",
+    "rcgis_rest_services_New_911_Address_Requests_FeatureServer_0",
+    "CDFVQ_arcgis_rest_services_Address_Points_C2_FeatureServer_0",
+    "QE7iy_arcgis_rest_services_Addresses_Mar2024_FeatureServer_0",
+    "_arcgis_rest_services_AddresspointsDuplicate_FeatureServer_0",
+    "5IxwbSz_arcgis_rest_services_AddressesOnline_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 15,
+   "layers": [
+    "4JC_arcgis_rest_services_Rutland_County_E911_FeatureServer_0",
+    "YDMVmmxMeM_arcgis_rest_services_Crash_Points_FeatureServer_0",
+    "FwVI_arcgis_rest_services_9_1_1_Site_Address_FeatureServer_1",
+    "GtVEXzaX_arcgis_rest_services_Address_Point2_FeatureServer_0",
+    "Dl4j6iT0i_arcgis_rest_services_AddressPoints_FeatureServer_0",
+    "ASGpv7gPaTEUL_arcgis_rest_services_Addresses_FeatureServer_1"
+   ]
+  },
+  {
+   "shard": 16,
+   "layers": [
+    "HgyUvYRWd_arcgis_rest_services_AddressPoints_FeatureServer_0",
+    "_arcgis_rest_services_Cesar_Chavez_Addresses_FeatureServer_0",
+    "W9xjDnZ35_arcgis_rest_services_911_Addresses_FeatureServer_0",
+    "GAlRIIIg_arcgis_rest_services_Address_Points_FeatureServer_0",
+    "DlIH33l3_arcgis_rest_services_Address_Points_FeatureServer_0",
+    "DCrBlhlg_arcgis_rest_services_EnochAddresses_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 17,
+   "layers": [
+    "ocEBv1Ip_arcgis_rest_services_Address___View_FeatureServer_0",
+    "138c05_rest_services_MiddlesexCounty_Base_Layers_MapServer_0",
+    "XcE_arcgis_rest_services_911Address_20141030_FeatureServer_0",
+    "Blhlg_arcgis_rest_services_UtahAddressPoints_FeatureServer_0",
+    "Blhlg_arcgis_rest_services_RHUEnochAddresses_FeatureServer_0",
+    "UaBfRSxc_arcgis_rest_services_Address_Points_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 18,
+   "layers": [
+    "GTj4xmYDtu_arcgis_rest_services_911addresses_FeatureServer_0",
+    "YDtu_arcgis_rest_services_PHYSICAL_ADDRESSES_FeatureServer_0",
+    "_rest_services_E911Roads_flowlines_intersect_FeatureServer_0",
+    "6FlIW_arcgis_rest_services_NP_Address_Points_FeatureServer_0",
+    "_rest_services_COAHOMA_COUNTY_ADDRESS_POINTS_FeatureServer_0",
+    "Fx_arcgis_rest_services_Anna_ETJ_Addresses_FeatureServer_157"
+   ]
+  },
+  {
+   "shard": 19,
+   "layers": [
+    "aiian_Gardens_CA_Master_Address_Table__View_FeatureServer_10",
+    "Klwi2PRa_arcgis_rest_services_Address_Points_FeatureServer_0",
+    "4C5C_arcgis_rest_services_address_points_apb_FeatureServer_0",
+    "U4FaQtqrjGWfU_arcgis_rest_services_Addresses_FeatureServer_0",
+    "HoWNZ_arcgis_rest_services_Village_Addresses_FeatureServer_0",
+    "_services_Parcel_and_Address_Data_Civic_Plus_FeatureServer_1"
+   ]
+  },
+  {
+   "shard": 20,
+   "layers": [
+    "YeF6EBJ1_arcgis_rest_services_Addresses_View_FeatureServer_0",
+    "SpUPMP3Z_arcgis_rest_services_Address_Points_FeatureServer_0",
+    "J7UaClOw_arcgis_rest_services_Address_Points_FeatureServer_0",
+    "4XSFR9wSzw_arcgis_rest_services_ADDRESS_DATA_FeatureServer_0",
+    "F_arcgis_rest_services_AddressPoints01312025_FeatureServer_0",
+    "CjdNui_arcgis_rest_services_addresses_030317_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 21,
+   "layers": [
+    "HtVstUaG_arcgis_rest_services_Address_Points_FeatureServer_0",
+    "akSFUjJ_arcgis_rest_services_Address_Points_FeatureServer_15",
+    "_arcgis_rest_services_Sheridan_Addresses_gdb_FeatureServer_0",
+    "_rest_services_Practice_Topographic_Basins_Sewer_MapServer_2",
+    "_rest_services_Site_Structure_Address_Points_FeatureServer_0@WA-5",
+    "WsOS_arcgis_rest_services_wlv_address_points_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 22,
+   "layers": [
+    "DiwEHErgACQrcA3_arcgis_rest_services_Address_FeatureServer_0",
+    "8Ri_arcgis_rest_services_Secondary_Addresses_FeatureServer_0",
+    "N_arcgis_rest_services_Master_Address_Points_FeatureServer_0",
+    "rcgis_rest_services_Addressing_Addressing_public_MapServer_0",
+    "3ECP25Sn_arcgis_rest_services_Address_Points_FeatureServer_0",
+    "Xa_arcgis_rest_services_SiteAddresses_public_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 23,
+   "layers": [
+    "_arcgis_rest_services_Juno_Address_Points_DC_FeatureServer_0",
+    "_arcgis_rest_services_E911_Addresses_4_2024_FeatureServer_23",
+    "4aPlhvQwvs_arcgis_rest_services_TEST_Service_FeatureServer_0",
+    "0DY_arcgis_rest_services_Snohomish_Addresses_FeatureServer_0",
+    "X5q_arcgis_rest_services_DD_Addresses_Public_FeatureServer_0",
+    "TpEhyQB_arcgis_rest_services_Addresses_91024_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 24,
+   "layers": [
+    "Find_Locations_in_Address_Points_herndon_va2_FeatureServer_0@MD-1",
+    "9JX5q_arcgis_rest_services_Site_Addresses_CM_FeatureServer_0",
+    "NT3_arcgis_rest_services_E911_JUNE_ADDRESSES_FeatureServer_0",
+    "Site_Structure_Address_Points__External_View_FeatureServer_3",
+    "0DY_arcgis_rest_services_EnerGov_AddrParcels_FeatureServer_0",
+    "Ll1tVX_arcgis_rest_services_RPZ_Address_Pt_2_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 25,
+   "layers": [
+    "61POPssw_arcgis_rest_services_Address_Points_FeatureServer_0",
+    "QvjiKhzBVQV7V_arcgis_rest_services_SITUS_PTS_FeatureServer_0",
+    "HNk0Cmg2csuv9p_arcgis_rest_services_Energov3_FeatureServer_0",
+    "WYow3ofS_arcgis_rest_services_Address___Town_FeatureServer_4",
+    "_arcgis_rest_services_Richland_AddressPt2022_FeatureServer_0",
+    "_arcgis_rest_services_LevellandAddressPoints_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 26,
+   "layers": [
+    "_arcgis_rest_services_Energov_Address_Points_FeatureServer_0",
+    "S9sE3M9RybT_arcgis_rest_services_Address_Pts_FeatureServer_0"
+   ]
+  }
+ ],
+ "plan_truncated": {
+  "max_shards": 1,
+  "expected_shards": 27,
+  "actual_shards": 1,
+  "dropped_shards": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26
+  ],
+  "dropped_layers": [
+   "_arcgis_rest_services_Site_Address_Locations_FeatureServer_0",
+   "6GqBWodG9Kll_arcgis_rest_services_Addresses__FeatureServer_0",
+   "OMMISSIONER_PCT_PUBLIC_WORKS_ADDRESSES_point_FeatureServer_0",
+   "_rest_services_2025_Waste_Disposal_Addresses_FeatureServer_0",
+   "ZHUggYYSp_arcgis_rest_services_Address_types_FeatureServer_0",
+   "HFr6zdgNZuVG0_arcgis_rest_services_NG911_CFS_FeatureServer_0",
+   "_arcgis_rest_services_Vulnerable_e911_sites__FeatureServer_0",
+   "YG1DOsR_arcgis_rest_services_HS_Plan_D_WFL1_FeatureServer_14",
+   "_rest_services_CatoctinSpeedDating_Addresses_FeatureServer_1",
+   "_arcgis_rest_services_Address_Location_Point_FeatureServer_0",
+   "Ep4y_arcgis_rest_services_CAW_Address_Points_FeatureServer_0",
+   "_arcgis_rest_services_SU_Address_Layer_DRAFT_FeatureServer_0",
+   "D4lF0F_arcgis_rest_services_PCBAddressBlocks_FeatureServer_0",
+   "VDPqdJ5_arcgis_rest_services_UC_Address_Grid_FeatureServer_0",
+   "_rest_services_Jay_Cooke_Trailhead_Addresses_FeatureServer_0",
+   "RealEstate_ACParcels_Outcome25address_points_FeatureServer_0",
+   "XdLKOfIXex_arcgis_rest_services_KHSD_Address_FeatureServer_0",
+   "_arcgis_rest_services_Mission_Site_Addresses_FeatureServer_0",
+   "_rest_services_ATW_Address_Points_2_5_Higher_FeatureServer_0",
+   "WXituM_arcgis_rest_services_Town_Owned_Situs_FeatureServer_0",
+   "123_4848a2717d344d119d250f258af86bea_results_FeatureServer_0",
+   "V_arcgis_rest_services_Crisis_Site_Addresses_FeatureServer_0",
+   "Property_Profile___No_Site_Address___10_2025_FeatureServer_0",
+   "_arcgis_rest_services_1920_Address_Points_JG_FeatureServer_0",
+   "CcMPHO_arcgis_rest_services_CERT_Team_Public_FeatureServer_0",
+   "1oVm_arcgis_rest_services_WCD_Site_Addresses_FeatureServer_0",
+   "Thf3DKUv_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "7ueLg_arcgis_rest_services_0_Sites_Addresses_FeatureServer_0",
+   "IOcEYxoF_arcgis_rest_services_lead_addresses_FeatureServer_0",
+   "ckkXVBh_arcgis_rest_services_ParkOPS_Address_FeatureServer_0",
+   "_arcgis_rest_services_1940_Address_Points_JG_FeatureServer_0",
+   "_rest_services_NG911_PSAPs_GDH_Weekly_Report_FeatureServer_0",
+   "Iuq_arcgis_rest_services_Address_Points_DSSD_FeatureServer_0",
+   "O_arcgis_rest_services_NG9111PSAPPointValues_FeatureServer_0",
+   "_arcgis_rest_services_Remote_Address_Points_FeatureServer_10",
+   "P2WNA_arcgis_rest_services_Potomac_Addresses_FeatureServer_0",
+   "NA_arcgis_rest_services_Cottonwood_Addresses_FeatureServer_0",
+   "P2WNA_arcgis_rest_services_Peroria_Addresses_FeatureServer_0",
+   "9_arcgis_rest_services_NG911_Web_layers_WFL1_FeatureServer_0",
+   "3YBzBoefRGq66_arcgis_rest_services_Addresses_FeatureServer_0",
+   "Wzi_arcgis_rest_services_NCRPO_MCD_Addresses_FeatureServer_0",
+   "00ea7p7i0U_arcgis_rest_services_E911CallDATA_FeatureServer_1",
+   "On_arcgis_rest_services_CW_Points_w_Address_FeatureServer_12",
+   "JSry_arcgis_rest_services_Route_3_Addressing_FeatureServer_0",
+   "PPO6ob_arcgis_rest_services_StudyAreaAddress_FeatureServer_0",
+   "NqI_arcgis_rest_services_ng911_primary_psaps_FeatureServer_0",
+   "X_arcgis_rest_services_Alpena_Address_Points_FeatureServer_0",
+   "J_arcgis_rest_services_LACDBG_Address_Points_FeatureServer_0",
+   "_rest_services_Grayton_Parcels_and_Addresses_FeatureServer_0",
+   "_rest_services_Vacation_Rental_Address_Layer_FeatureServer_0",
+   "_gov_server_rest_services_Address_Points_602_FeatureServer_1",
+   "I88qiQGw_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "xt6cnCY2_arcgis_rest_services_Site_Addresses_FeatureServer_2",
+   "ZN_arcgis_rest_services_Town_Preference_WFL1_FeatureServer_0",
+   "EXz_arcgis_rest_services_Evac_Address_Points_FeatureServer_0",
+   "CKH_arcgis_rest_services_MCRC_Address_Points_FeatureServer_0",
+   "SFO3iTjgFX_arcgis_rest_services_Address_Join_FeatureServer_0",
+   "Aa0SJxRv_arcgis_rest_services_NG911_Template_FeatureServer_0",
+   "OMrvu25KcUX35_arcgis_rest_services_Addresses_FeatureServer_0",
+   "_Find_Locations_in_Address_Points_filt_radon_FeatureServer_0",
+   "ajG76dg_arcgis_rest_services_HPOAddresses__1_FeatureServer_0",
+   "_rest_services_SC_Address_Grid_Intersections_FeatureServer_0",
+   "_arcgis_rest_services_IQA_grantees_Addresses_FeatureServer_0",
+   "CIe16u6G_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "0ij_arcgis_rest_services_FWP_Lands_Addresses_FeatureServer_0",
+   "WofKfQhH_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "_arcgis_rest_services_Westside_AddressPoints_FeatureServer_0",
+   "_GIS_Participant_Addresses_2019_deidentified_FeatureServer_0",
+   "Dta5_arcgis_rest_services_MaineE911Addresses_FeatureServer_0",
+   "_rest_services_DPZ_Curbs_2006_points_address_FeatureServer_0",
+   "Km_arcgis_rest_services_SmartGovSubAddresses_FeatureServer_0",
+   "Hpm8mHFz_arcgis_rest_services_Addresses_view_FeatureServer_0",
+   "YH0_arcgis_rest_services_Site_Address_Points_FeatureServer_0",
+   "2YfaSvieL_arcgis_rest_services_Yurok_Address_FeatureServer_0",
+   "Hyco_Boat_Docks_with_Parcel_and_Address_Data_FeatureServer_0",
+   "QGbyiuCh_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "3oxsPnVw4fnW9_arcgis_rest_services_Addresses_FeatureServer_1",
+   "RTu_arcgis_rest_services_Sample_Addresses_bd_FeatureServer_0",
+   "37YZHYH0_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "rcgis_rest_services_New_911_Address_Requests_FeatureServer_0",
+   "CDFVQ_arcgis_rest_services_Address_Points_C2_FeatureServer_0",
+   "QE7iy_arcgis_rest_services_Addresses_Mar2024_FeatureServer_0",
+   "_arcgis_rest_services_AddresspointsDuplicate_FeatureServer_0",
+   "5IxwbSz_arcgis_rest_services_AddressesOnline_FeatureServer_0",
+   "4JC_arcgis_rest_services_Rutland_County_E911_FeatureServer_0",
+   "YDMVmmxMeM_arcgis_rest_services_Crash_Points_FeatureServer_0",
+   "FwVI_arcgis_rest_services_9_1_1_Site_Address_FeatureServer_1",
+   "GtVEXzaX_arcgis_rest_services_Address_Point2_FeatureServer_0",
+   "Dl4j6iT0i_arcgis_rest_services_AddressPoints_FeatureServer_0",
+   "ASGpv7gPaTEUL_arcgis_rest_services_Addresses_FeatureServer_1",
+   "HgyUvYRWd_arcgis_rest_services_AddressPoints_FeatureServer_0",
+   "_arcgis_rest_services_Cesar_Chavez_Addresses_FeatureServer_0",
+   "W9xjDnZ35_arcgis_rest_services_911_Addresses_FeatureServer_0",
+   "GAlRIIIg_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "DlIH33l3_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "DCrBlhlg_arcgis_rest_services_EnochAddresses_FeatureServer_0",
+   "ocEBv1Ip_arcgis_rest_services_Address___View_FeatureServer_0",
+   "138c05_rest_services_MiddlesexCounty_Base_Layers_MapServer_0",
+   "XcE_arcgis_rest_services_911Address_20141030_FeatureServer_0",
+   "Blhlg_arcgis_rest_services_UtahAddressPoints_FeatureServer_0",
+   "Blhlg_arcgis_rest_services_RHUEnochAddresses_FeatureServer_0",
+   "UaBfRSxc_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "GTj4xmYDtu_arcgis_rest_services_911addresses_FeatureServer_0",
+   "YDtu_arcgis_rest_services_PHYSICAL_ADDRESSES_FeatureServer_0",
+   "_rest_services_E911Roads_flowlines_intersect_FeatureServer_0",
+   "6FlIW_arcgis_rest_services_NP_Address_Points_FeatureServer_0",
+   "_rest_services_COAHOMA_COUNTY_ADDRESS_POINTS_FeatureServer_0",
+   "Fx_arcgis_rest_services_Anna_ETJ_Addresses_FeatureServer_157",
+   "aiian_Gardens_CA_Master_Address_Table__View_FeatureServer_10",
+   "Klwi2PRa_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "4C5C_arcgis_rest_services_address_points_apb_FeatureServer_0",
+   "U4FaQtqrjGWfU_arcgis_rest_services_Addresses_FeatureServer_0",
+   "HoWNZ_arcgis_rest_services_Village_Addresses_FeatureServer_0",
+   "_services_Parcel_and_Address_Data_Civic_Plus_FeatureServer_1",
+   "YeF6EBJ1_arcgis_rest_services_Addresses_View_FeatureServer_0",
+   "SpUPMP3Z_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "J7UaClOw_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "4XSFR9wSzw_arcgis_rest_services_ADDRESS_DATA_FeatureServer_0",
+   "F_arcgis_rest_services_AddressPoints01312025_FeatureServer_0",
+   "CjdNui_arcgis_rest_services_addresses_030317_FeatureServer_0",
+   "HtVstUaG_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "akSFUjJ_arcgis_rest_services_Address_Points_FeatureServer_15",
+   "_arcgis_rest_services_Sheridan_Addresses_gdb_FeatureServer_0",
+   "_rest_services_Practice_Topographic_Basins_Sewer_MapServer_2",
+   "_rest_services_Site_Structure_Address_Points_FeatureServer_0@WA-5",
+   "WsOS_arcgis_rest_services_wlv_address_points_FeatureServer_0",
+   "DiwEHErgACQrcA3_arcgis_rest_services_Address_FeatureServer_0",
+   "8Ri_arcgis_rest_services_Secondary_Addresses_FeatureServer_0",
+   "N_arcgis_rest_services_Master_Address_Points_FeatureServer_0",
+   "rcgis_rest_services_Addressing_Addressing_public_MapServer_0",
+   "3ECP25Sn_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "Xa_arcgis_rest_services_SiteAddresses_public_FeatureServer_0",
+   "_arcgis_rest_services_Juno_Address_Points_DC_FeatureServer_0",
+   "_arcgis_rest_services_E911_Addresses_4_2024_FeatureServer_23",
+   "4aPlhvQwvs_arcgis_rest_services_TEST_Service_FeatureServer_0",
+   "0DY_arcgis_rest_services_Snohomish_Addresses_FeatureServer_0",
+   "X5q_arcgis_rest_services_DD_Addresses_Public_FeatureServer_0",
+   "TpEhyQB_arcgis_rest_services_Addresses_91024_FeatureServer_0",
+   "Find_Locations_in_Address_Points_herndon_va2_FeatureServer_0@MD-1",
+   "9JX5q_arcgis_rest_services_Site_Addresses_CM_FeatureServer_0",
+   "NT3_arcgis_rest_services_E911_JUNE_ADDRESSES_FeatureServer_0",
+   "Site_Structure_Address_Points__External_View_FeatureServer_3",
+   "0DY_arcgis_rest_services_EnerGov_AddrParcels_FeatureServer_0",
+   "Ll1tVX_arcgis_rest_services_RPZ_Address_Pt_2_FeatureServer_0",
+   "61POPssw_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "QvjiKhzBVQV7V_arcgis_rest_services_SITUS_PTS_FeatureServer_0",
+   "HNk0Cmg2csuv9p_arcgis_rest_services_Energov3_FeatureServer_0",
+   "WYow3ofS_arcgis_rest_services_Address___Town_FeatureServer_4",
+   "_arcgis_rest_services_Richland_AddressPt2022_FeatureServer_0",
+   "_arcgis_rest_services_LevellandAddressPoints_FeatureServer_0",
+   "_arcgis_rest_services_Energov_Address_Points_FeatureServer_0",
+   "S9sE3M9RybT_arcgis_rest_services_Address_Pts_FeatureServer_0"
+  ],
+  "dropped_layers_n": 152,
+  "at": "2026-11-21T04:22:15Z",
+  "note": "max_shards 截断：被砍的片**本轮注定不跑**（不是「没采到」）。列入 shards_dropped[]，收口文档单列一节，账本 shards_incomplete 里同样会点名。"
+ }
 }
