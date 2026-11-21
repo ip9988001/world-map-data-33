@@ -1379,12 +1379,19 @@
    "parts": 0,
    "svc": "MapServer",
    "status": "unverified",
-   "reason": "rc=1 err=batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch2:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch3:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch4:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<",
+   "reason": "上游已死：5 批全 http404（HTML 错误页）+ 2026-11-21 TLS 握手超时（gis.co.grant.mn.us）；从 07b 候选全集剔除（1,103→1,102）",
    "status_before_adjudication": "failed",
    "gap_class": "unverified",
    "gap_reason": "端点 404/HTML 页：服务没了或路径变了，无法核实（W33-027）",
    "adjudicated_at": "2026-10-31T09:13:49Z",
-   "adjudicated_by": "adjudicate_07b.py"
+   "adjudicated_by": "adjudicate_07b.py",
+   "excluded_from_universe": {
+    "at": "2026-11-21T04:20:00Z",
+    "by": "muse 2026-11-21 拍板",
+    "reason": "上游已死（404×5 + TLS 超时）",
+    "from": 1103,
+    "to": 1102
+   }
   },
   {
    "layer": "O3qhR0j8kvKI_arcgis_rest_services_911Address_FeatureServer_0",
@@ -11637,7 +11644,7 @@
   }
  },
  "plan": {
-  "layers_n": 1103,
+  "layers_n": 1102,
   "declared_rows": 1671856,
   "shards_n": 6,
   "size": 200,
@@ -11648,6 +11655,13 @@
    "layers_n": 158,
    "what": "2026-11-20 run 44822536108 的待采计划（collect/ledger/07b_plan.json）被误当阶段计划"
   },
-  "note": "本轮只新增本块；layers_n / buckets / records 一字未动"
+  "note": "rcgis 剔除后全集 1,102（原 1,103）；账本保留该条 unverified 记录作为剔除依据，不计入候选全集分母",
+  "excluded": [
+   {
+    "layer": "rcgis_rest_services_Addressing_Addressing_public_MapServer_0",
+    "why": "上游已死：404×5 + TLS 超时"
+   }
+  ],
+  "excluded_n": 1
  }
 }
