@@ -212,6 +212,18 @@ merge job 136736522892：04:52:37Z 起 / **04:52:54Z success**，只做判定**�
 | D3 | rows vs expect 门禁（派发前 + 收尾后） | `collect/full_plan.py:45-88,182-193`；`collect/preflight_dispatch.py:966`（D15） | **计划阶段**：`probe_live_counts()` 用 `returnCountOnly` 探上游实时行数（8 线程，失败记 `probe_failed`），写进 plan 的 `expect_by_layer` / `expect_live` / `expect_live_total`，`expect_source=returnCountOnly@plan`（`PLAN_PROBE_COUNT=0` 可关）。**收尾后**：preflight 新增 **D15** 判 `status=ok/skipped_done` 的行 vs **双分母**（账本 `declared` + 计划 `expect_live`），任一被击穿即 **FAIL**；partial/short 只列出不 FAIL。preflight `main()` 有 FAIL 即 `exit 1` → 派发脚本不会硬派。 |
 | D4 | GAP_TOL 默认 0.5%、可配置 | `collect/pilot.py:38`、`collect/preflight_dispatch.py:114` | `GAP_TOL = float(os.environ.get("PILOT_GAP_TOL") or "0.005")`；门禁侧 `PREFLIGHT_ROWS_GAP_TOL`（默认 0.005）。两处同源、同默认值。选 0.5% 的理由：上游日常漂移 ±0.x%，卡 0.1% 会把正常层打成 short；138c05 缺 7.27%，0.5% 照样抓。 |
 
+**D15 在真账本上的实测（本机，2026-11-21T05:10:51Z，只读不派单）：**
+
+```
+preflight  05b   ref=main(b1582f5b5)   →  FAIL   (FAIL 1 / WARN 6，共 20 项)
+❌ D15  收尾对账 rows vs expect   ⛔ 1 层标 ok 但 rows < expect×(1-0.5%)（收工没采完）：
+   arcgis_rest_services_LAWRENCEGIS_NG911Ad 39504/39751[declared]缺0.62%
+exit=1   →  派发脚本拿不到 exit 0，不会硬派
+```
+
+旧 plan（`10e87f5`，没有 `expect_live`）走 `declared` 单分母；新 plan 起会自动带上 live 分母。
+出产物：`analysis/preflight-05b-20261121T051051Z.json`。
+
 新增单测：
 
 - `collect/tests/test_paging_assert.py`（6 条）：`gap_short` 触发/不触发边界（0.78% 触发、0.35% 不触发）、
@@ -227,5 +239,8 @@ merge job 136736522892：04:52:37Z 起 / **04:52:54Z success**，只做判定**�
 - 逐层筛查表：`docs/ng911-05b/05b-done-layers.md`（2,719 行）+ `collect/_recon/20261121/05b-done-layers.json`
 - 逐子层：`docs/ng911-05b/138c05-sublayer-table.md`；成因：`docs/ng911-05b/138c05-cause.md`；585 vs 579：`docs/ng911-05b/585-vs-579.md`
 - 代码：`collect/pilot.py` / `collect/full_plan.py` / `collect/preflight_dispatch.py` + 两个测试文件
+- **commit（已 push main）**：`eb0cfbf`（full `eb0cfbf0f7a0f24e365c02993e3856d483e0cc55`），
+  分支 `fix/05b-paging-assert-20261121` 同内容 `f281879`
+- **单测**：`python3 -m unittest discover -s collect/tests -q` → **Ran 449 tests … OK**（0 fail / 0 error）
 
 **05b 未重启。**（本轮只读日志/账本/Releases + 改代码 + 单测，未派任何 run）
