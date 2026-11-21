@@ -1,0 +1,10 @@
+# 判据文件门禁（2026-11-21 muse-000139 定）
+# 只锁“判据 / 流水线定义”四件，其余路径不要求 review —— docs/、ledger/ 照旧可 self-merge。
+# 机制：CODEOWNERS 负责“按文件粒度”，规则集 main-guard-judgment-files 负责“强制 review”。
+/.github/workflows/collect-full.yml   @ip9988001
+/collect/preflight_dispatch.py        @ip9988001
+/collect/pilot.py                     @ip9988001
+/collect/full_plan.py                 @ip9988001
+
+# 默认：其它一切路径无 code owner = 不触发 code-owner review 要求
+* -
