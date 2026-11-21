@@ -22,7 +22,7 @@ jobs:
         with:
           name: items
           path: survey/ng911/items.json
-          retention-days: 14
+          retention-days: 3
 
   probe:
     needs: harvest
@@ -47,7 +47,7 @@ jobs:
         with:
           name: shard-${{ matrix.shard }}
           path: survey/ng911/shard_${{ matrix.shard }}.json
-          retention-days: 14
+          retention-days: 3
 
   portals:
     runs-on: ubuntu-latest
@@ -67,7 +67,7 @@ jobs:
         with:
           name: portal-${{ matrix.st }}
           path: survey/ng911/portal_${{ matrix.st }}.json
-          retention-days: 14
+          retention-days: 3
 
   merge:
     needs: [probe, portals]
@@ -103,3 +103,4 @@ jobs:
           path: |
             survey/ng911/inventory.csv
             survey/ng911/清单.md
+          retention-days: 3

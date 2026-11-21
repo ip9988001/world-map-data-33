@@ -61,7 +61,7 @@ jobs:
         with:
           name: ap-${{ matrix.shard }}
           path: collect/ledger/addrprobe_*.csv
-          retention-days: 30
+          retention-days: 3
           if-no-files-found: warn
 
   merge:
@@ -107,4 +107,4 @@ jobs:
           path: |
             collect/address_layers.csv
             docs/ADDRESS-LAYERS-PROBE-2026-10-30.md
-          retention-days: 30
+          retention-days: 3

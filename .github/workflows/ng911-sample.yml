@@ -20,7 +20,7 @@ jobs:
         with:
           name: samp-${{ matrix.shard }}
           path: survey/ng911/samp_${{ matrix.shard }}.json
-          retention-days: 14
+          retention-days: 3
   merge2:
     needs: sample
     runs-on: ubuntu-latest
