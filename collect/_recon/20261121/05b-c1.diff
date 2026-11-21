@@ -1,0 +1,598 @@
+diff --git a/collect/ledger/ckpt_invalidated.json b/collect/ledger/ckpt_invalidated.json
+new file mode 100644
+index 0000000..7c8e205
+--- /dev/null
++++ b/collect/ledger/ckpt_invalidated.json
+@@ -0,0 +1,16 @@
++{
++ "schema": "ckpt-invalidated/v1",
++ "at": "2026-11-21T05:30:00Z",
++ "why": "W33-043：done_units 把「跑到末尾」当「采齐」，138c05 因此 2131/2300 却跳过",
++ "entries": [
++  {
++   "plan_hash": "14acda7e100ba989",
++   "layer": "138c05_rest_services_MiddlesexCounty_Base_Layers_MapServer_0",
++   "rows": 2131,
++   "expect": 2300,
++   "gap_pct": 7.3478,
++   "ckpt": "collect-step07-138c05_rest_services_MiddlesexCounty_Base_Layers_MapServer_0@2026-10-31T08_54_00Z.json",
++   "action": "void_done_units_and_reverify"
++  }
++ ]
++}
+\ No newline at end of file
+diff --git a/collect/pilot.py b/collect/pilot.py
+index 96ae2e3..978d7e8 100644
+--- a/collect/pilot.py
++++ b/collect/pilot.py
+@@ -33,9 +33,11 @@ TARGET_BYTES = 2_000_000
+ 
+ # ★ 收尾对账容差（2026-11-21 W33-042）：rows 比 expect 少超过这个比例 → 该层必须补翻，
+ #   补不回就记 short（partial/failed），**绝不静默收工**。集中在常量里，各处引用同一值。
+-#   默认 0.5%（用户口径）：上游本身会有 ±0.x% 的日常漂移，卡太紧会把正常层打成 short；
+-#   138c05 缺 7.27%，在 0.5% 下照样被抓。env 覆盖：PILOT_GAP_TOL=0.002 等。
+-GAP_TOL = float(os.environ.get("PILOT_GAP_TOL") or "0.005")
++#   默认 0.1%（用户口径 2026-11-21 W33-043）：GAP_TOL 同时是「done 置位门槛」，
++#   宽了就会把 2,131/2,300（缺 7.35%）这种整单元缺口放过去；0.1% 只容忍真实漂移。
++#   preflight 的 ROWS_GAP_TOL 取同一默认值（两处必须一致，见 preflight_dispatch.py）。
++#   env 覆盖：PILOT_GAP_TOL=0.002 等。
++GAP_TOL = float(os.environ.get("PILOT_GAP_TOL") or "0.001")
+ 
+ # 主键候选（MapServer 的 objectIdField 常为 null，只能按非空率挑）
+ OID_CANDIDATES = ("OBJECTID", "OBJECTID_1", "OBJECTID_12", "OBJECTID_2", "FID", "OID")
+@@ -283,6 +285,34 @@ def _purge(files):
+     return units.purge(files)
+ 
+ 
++# ★ W33-043：人工「需重验」名单（例：138c05 的 14acda7e100ba989 —— 2131/2300 却标 done）。
++#   名单只作废 done_units，不动 unit_rows（行数是证据，留着才能算缺口）。
++INVALIDATED_CKPT = os.path.join(ROOT, "collect", "ledger", "ckpt_invalidated.json")
++
++
++def _invalidated_hashes():
++    try:
++        d = json.load(open(INVALIDATED_CKPT, encoding="utf-8"))
++        return {str(e.get("plan_hash")) for e in (d.get("entries") or []) if e.get("plan_hash")}
++    except Exception:                                   # noqa: BLE001
++        return set()
++
++
++def void_invalidated_ckpt(ck, log=None):
++    """检查点签名在「需重验」名单里 → 作废 done 标记（续跑会重翻，不许沿用旧结论）。"""
++    if not ck:
++        return ck
++    hs = _invalidated_hashes()
++    if str(ck.get("plan_hash")) in hs and ck.get("done_units"):
++        n = len(ck.get("done_units") or [])
++        ck["done_units"] = []
++        ck["needs_reverify"] = True
++        if log:
++            log("  ⚠ 检查点签名 %s 在「需重验」名单（%s）→ 作废 %d 个 done 标记，本轮重翻"
++                % (ck.get("plan_hash"), os.path.basename(INVALIDATED_CKPT), n))
++    return ck
++
++
+ def _record_unit(ck, idx, rows, files):
+     out = units.record_unit(ck, idx, rows, files)
+     # 真实落盘字节记账（估算可能偏；超 1.5 GB 的单元进明账，不打断采集）
+@@ -890,30 +920,87 @@ def ids_truncated(n_ids, count, tol=None):
+     return bool(count) and n_ids < count * tol
+ 
+ 
+-def resume_todo(units, ck):
++def resume_todo(units, ck, count=0, tol=None, log=None):
+     """续跑该跑哪些单元：返回 (已真完成, 必须重采)。
+ 
+-    ★ done_units 只代表「这单元跑到了末尾」，**不代表产物进了 Release**。
+-      2026-10-30 实测：NAD 全国层 64 单元全标完成，6 个 -uNNNNN.tar.gz 根本没上传
+-      （unit_uploaded=false）。新 runner 上本地文件已不在，补传不可能成功 ——
+-      若继续按 done_units 跳过，这 6 个单元的行就永久缺口（账本还会显示 ok？不，
+-      账本从资产反推会显示 failed，但永远补不上）。所以：产物没上传的单元一律重采。
++    ★ 2026-11-21 W33-043（138c05 真因）：done_units 只代表「这单元跑到了末尾」，
++      **不代表这个单元真的采齐了**。138c05 的检查点（签名 14acda7e100ba989）把
++      「2,131 / 2,300（缺 7.35%）」的单元标成 done，续跑据此跳过 → 3.4 秒收工、
++      缺口永久留在盘上，日志还打了一行「❌ 数据不齐」却无人拦。
++
++    现在 done 必须同时满足三条才保留：
++      ① 产物已上传（unit_uploaded != false）；
++      ② 该单元有 expect（unit_expect）且 rows_seen ≥ expect×(1-tol)；
++      ③ 老检查点没有 unit_expect 时（无法逐单元校验）→ **层总量兜底**：
++         done 单元的 rows 之和 ≥ count×(1-tol) 才保留；count 拿不到 = 无法证明 = 重验。
++    不满足的一律从 done 里剔除（作废标记），调用方会重翻该单元。
++
++    ★ 2026-10-30 事故（保留）：NAD 全国层 64 单元全标完成，6 个 -uNNNNN.tar.gz 根本没上传
++      （unit_uploaded=false）。新 runner 上本地文件已不在，补传不可能成功 —— 产物没上传的单元一律重采。
+     """
+-    done = {int(x) for x in (ck.get("done_units") or [])}
++    tol = GAP_TOL if tol is None else tol
++    n_units = len(units or [])
++    # 重切片后 plan 变短 → 旧 done_units 里越界的下标一律丢掉，别让它们混进计数
++    cand = {int(x) for x in (ck.get("done_units") or [])}
++    cand = {i for i in cand if 0 <= i < n_units}
+     up = {}
+     for k, v in (ck.get("unit_uploaded") or {}).items():
+         try:
+             up[int(k)] = bool(v)
+         except (TypeError, ValueError):
+             continue
+-    n_units = len(units or [])
+-    # 重切片后 plan 变短 → 旧 done_units 里越界的下标一律丢掉，别让它们混进计数
+-    done = {i for i in done if 0 <= i < n_units}
+     # 老 checkpoint 可能整段没有 unit_uploaded 字段：**不据此判定「没传」**
+-    # （否则一次续跑会把几十个已完成单元全部重采）；真缺产物的由账本按资产反查抓到，
+-    # 再用 full_shard --force-layers 定点重跑 —— 两条路各管一段，不互相假装。
+-    redone = {i for i in done if up.get(i) is False}
+-    return sorted(done - redone), sorted(redone)
++    # （否则一次续跑会把几十个已完成单元全部重采）；真缺产物的由账本按资产反查抓到。
++    no_up = {i for i in cand if up.get(i) is False}
++    seen = ck.get("unit_rows_seen") or {}
++    rows_ck = ck.get("unit_rows") or {}
++    exp_ck = ck.get("unit_expect") or {}
++
++    def _rows(i):
++        for src in (seen, rows_ck):
++            if str(i) in src:
++                try:
++                    return int(src[str(i)] or 0)
++                except (TypeError, ValueError):
++                    return 0
++        return None
++
++    keep, voided, legacy = set(), {}, []
++    for i in sorted(cand - no_up):
++        e, r = exp_ck.get(str(i)), _rows(i)
++        if e:
++            if r is not None and r >= int(e) * (1.0 - tol):
++                keep.add(i)
++            else:
++                voided[i] = "rows %s < expect %s×(1-%.1f%%)" % (
++                    "?" if r is None else f"{r:,}", f"{int(e):,}", tol * 100)
++        elif r is None:
++            voided[i] = "检查点无行计数（未知即重验）"
++        else:
++            legacy.append(i)
++    if legacy:
++        tot = sum(_rows(i) or 0 for i in legacy)
++        if count and tot >= count * (1.0 - tol):
++            keep |= set(legacy)
++        else:
++            why = ("老检查点无 unit_expect，单元合计 %s < count %s×(1-%.1f%%)"
++                   % (f"{tot:,}", f"{int(count or 0):,}", tol * 100)) if count else \
++                  "老检查点无 unit_expect 且 count 未知 → 无法证明采齐"
++            for i in legacy:
++                voided[i] = why
++    if log and (voided or no_up):
++        for i in sorted(voided)[:6]:
++            log("  ⚠ 作废 done 标记 u%d：%s → 本轮重翻" % (i, voided[i]))
++        if len(voided) > 6:
++            log("  ⚠ …另有 %d 个单元 done 标记被作废" % (len(voided) - 6))
++    redone = sorted(voided) + sorted(no_up)
++    # ★ W33-043：作废必须是**真删标记**，不能只是本轮不调度 —— 否则检查点下次还声称 done。
++    #   留痕到 unit_done_voided（原因 + 行数），下次续跑照样会被同一条判据再挡一次。
++    if redone:
++        ck["done_units"] = [i for i in (ck.get("done_units") or []) if int(i) not in set(redone)]
++        for i in redone:
++            ck.setdefault("unit_done_voided", {})[str(i)] = voided.get(i) or "产物未上传"
++    return sorted(keep), redone
+ 
+ 
+ def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock, ck):
+@@ -1212,8 +1299,9 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range
+             % (str(legacy_ck.get("plan_hash"))[:12], str(plan_hash)[:12], UNIT_NS))
+     done = set()
+     if ck:
++        ck = void_invalidated_ckpt(ck, log)      # ★ W33-043：人工名单优先于「done 即跳过」
+         done = set(ck.get("done_units") or [])
+-        log("  ⟲ 续跑：检查点签名 %s，已完成单元 %d/%d（%s 行）"
++        log("  ⟲ 续跑：检查点签名 %s，标称已完成单元 %d/%d（%s 行）"
+             % (plan_hash, len(done), len(units), sum((ck.get("unit_rows") or {}).values())))
+         # 已完成但没传上去的，先补传（本地文件还在的话）
+         for k, fs in (ck.get("unit_files") or {}).items():
+@@ -1225,11 +1313,12 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range
+                     ck.setdefault("unit_package", {})[str(k)] = pkg
+                     _purge(paths)
+                     _save_ckpt(ck)
+-        # 补传不成的（新 runner 上文件本来就不在）→ 重采，不拿 done_units 当挡箭牌
+-        done, redone = resume_todo(units, ck)
++        # ★ W33-043：done 必须过 rows ≥ expect×(1-GAP_TOL) 校验；不齐/未知/没传 → 一律重翻
++        done, redone = resume_todo(units, ck, count, log=log)
+         if redone:
+-            log("  ⚠ 检查点里 %d 个单元标了完成但产物没上传，本轮重采：%s"
++            log("  ⚠ 检查点里 %d 个单元作废（rows 不齐 / 产物未上传）→ 本轮重翻：%s"
+                 % (len(redone), ",".join(str(i) for i in redone[:8])))
++        log("  ⟲ done 校验后：真完成 %d/%d 单元" % (len(done), len(units)))
+     else:
+         ck = {"ver": CKPT_VER, "url": CUR.get("url"), "plan_hash": plan_hash,
+               "unit_rows": {}, "unit_files": {}, "unit_uploaded": {},
+@@ -1262,7 +1351,8 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range
+             rows, files, err, expect = _unit_range(api, oid_field, defexpr, lo, hi, i, ps,
+                                                    limit, log, prog, lock, ck)
+         # ① 无错 ② 行数对得上（--limit 试采不判）③ 上传成功 —— 三条同时成立才算完成
+-        if not err and not limit and expect > 0 and rows < expect * 0.999:
++        # ★ W33-043：门槛与 GAP_TOL 同源（以前写死 0.999，且 short_ack 会把它清掉）
++        if not err and not limit and expect > 0 and rows < expect * (1.0 - GAP_TOL):
+             err = "short:%d/%d" % (rows, expect)
+         ok, pkg = False, ""
+         if files:                      # 数据先落地：哪怕这个单元还不算完成，拿到的行也是真的
+@@ -1275,6 +1365,9 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range
+             if pkg:
+                 ck.setdefault("unit_package", {})[str(i)] = pkg  # ★ 按真实资产名去重（带代际前缀）
+             ck.setdefault("unit_rows_seen", {})[str(i)] = rows   # 采到的行如实记账（不管是否算完成）
++            if expect:
++                # ★ W33-043：把本单元 expect 落进检查点，续跑才能逐单元校验 done（老检查点没有 = 重验）
++                ck.setdefault("unit_expect", {})[str(i)] = int(expect)
+             if err.startswith("short:"):
+                 # 上游真实缺失：同一单元连续两次 short 且行数一致 → 认可，不再无限重试
+                 st = ck.setdefault("unit_short_tries", {}).setdefault(str(i), {"n": 0, "rows": -1})
+@@ -1283,9 +1376,14 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range
+                 else:
+                     st["rows"], st["n"] = rows, 1
+                 if st["n"] >= 2:
++                    # ★ W33-043：只记「上游反复就这么多」，**绝不据此标 done**。
++                    #   以前这里 err="" → 单元被算完成 → 续跑永远跳过它（138c05 就是这样漏的）。
+                     ck.setdefault("unit_short_ack", {})[str(i)] = rows
+-                    err = ""
+-            done_ok = (not err) and (ok or not files)
++                    log("  ⚠ u%d 连续 %d 次 short（%d 行 < expect %d）→ 仍不标 done，续跑会重翻"
++                        % (i, st["n"], rows, expect))
++            # ★ W33-043：done 的最后一道门槛 —— 行数不够无论上传成功与否都不算完成
++            rows_ok = bool(limit or not expect or rows >= expect * (1.0 - GAP_TOL))
++            done_ok = (not err) and (ok or not files) and rows_ok
+             if done_ok:
+                 _record_unit(ck, i, rows, files)
+                 ck.setdefault("unit_errors", {}).pop(str(i), None)
+diff --git a/collect/preflight_dispatch.py b/collect/preflight_dispatch.py
+index ab40674..876920c 100644
+--- a/collect/preflight_dispatch.py
++++ b/collect/preflight_dispatch.py
+@@ -109,9 +109,10 @@ PKG_RE = re.compile(r"-u\d{5}\.tar\.gz$")
+ # 之前没有任何门禁发现；D14 把这条做成通用检测，不再依赖人记得「这次少了几层」。
+ PLAN_LAYERS_TOL = 0.01
+ 
+-# D15（2026-11-21 W33-042）：账本里 status=ok 的层，rows 必须 ≥ declared×(1-GAP_TOL)。
+-# 138c05 事故：收尾「本页不满就 break」把 2,131/2,298（缺 7.27%）当完成，账本只记告警。
+-ROWS_GAP_TOL = float(os.environ.get("PREFLIGHT_ROWS_GAP_TOL") or "0.005")
++# D15（2026-11-21 W33-042/043）：账本里 status=ok 的层，rows 必须 ≥ expect×(1-GAP_TOL)。
++# 138c05 事故：检查点把 2,131/2,300（缺 7.35%）的单元标完成 → 续跑 3.4s 跳过，账本只记告警。
++# ★ 默认值与 pilot.GAP_TOL 必须同值（0.001）：一处判 done、一处判账本，口径不同就会互相打架。
++ROWS_GAP_TOL = float(os.environ.get("PREFLIGHT_ROWS_GAP_TOL") or "0.001")
+ 
+ 
+ # ------------------------------------------------------------------ 基础设施
+diff --git a/collect/tests/test_c1_done_gate.py b/collect/tests/test_c1_done_gate.py
+new file mode 100644
+index 0000000..f696788
+--- /dev/null
++++ b/collect/tests/test_c1_done_gate.py
+@@ -0,0 +1,180 @@
++#!/usr/bin/env python3
++# -*- coding: utf-8 -*-
++"""C1-b stub：复刻 138c05 的检查点状态（签名 14acda7e100ba989，2131/2300 却被标 done）
++
++要证明的是**「旧的 done 标记被推翻并重翻」**，不是「断言会打印」：
++
++  ① `resume_todo` 直接判：done=[0] + unit_rows={0:2131} + 无 unit_expect + count=2300
++     → keep=[] / redone=[0]（作废）；
++  ② 端到端 `collect_arcgis_v2` 带着这份旧检查点续跑：
++     - 日志出现「作废 … done 标记」「本轮重翻」（签名在 ckpt_invalidated.json 名单里 → 名单先挡，
++       名单没覆盖的由 resume_todo 行数判据兜）；
++     - 真的重翻了（服务端收到 query，不是 3.4 秒跳过）；
++     - rows 补到 2300（≥ expect×(1-GAP_TOL)），done 重新置位并写入 unit_expect；
++  ③ 补不回来的形态（上游只给 2131 行）：err = `short:2131/2300`，**done 仍为空**（→ partial/failed）。
++
++零网络：patch `pilot.get_json`（底层请求）、`pilot._load_ckpt`（给旧检查点）、`pilot._upload`。
++"""
++from __future__ import annotations
++
++import json
++import os
++import shutil
++import sys
++import tempfile
++import unittest
++import urllib.parse
++
++HERE = os.path.dirname(os.path.abspath(__file__))
++sys.path.insert(0, os.path.dirname(HERE))
++
++import pilot  # noqa: E402
++
++# 138c05 的真实检查点签名（collect/ledger/.ckpt_cache/collect-step07-138c05_...@2026-10-31T08_54_00Z.json）
++CKPT_SIG_138C05 = "14acda7e100ba989"
++COUNT_138C05 = 2300          # 上游实时 count
++ROWS_STALE = 2131            # 旧检查点里被标 done 的行数
++
++
++class Svc:
++    """最小 ArcGIS stub：支持 count / returnIds / keyset(FID) / resultOffset / objectIds。
++
++    cap=None  → 全量可翻（2300 行都能拿到）
++    cap=2131  → 上游只给 2131 行（模拟「补翻也补不回来」）
++    """
++
++    def __init__(self, n=COUNT_138C05, cap=None, page=2000):
++        self.n, self.cap, self.page = n, cap, page
++        self.queries = 0
++
++    def rows_visible(self):
++        return self.n if self.cap is None else min(self.n, self.cap)
++
++    def __call__(self, url, timeout=180, tries=3):
++        q = dict(urllib.parse.parse_qsl(urllib.parse.urlparse(url).query))
++        self.queries += 1
++        vis = self.rows_visible()
++        if q.get("outStatistics"):
++            return {"features": [{"attributes": {"mn": 1, "mx": vis}}]}
++        if q.get("returnCountOnly") == "true":
++            return {"count": self.n}
++        if q.get("returnIdsOnly") == "true":
++            return {"objectIdFieldName": "FID", "objectIds": list(range(1, vis + 1))}
++        if "objectIds" in q:
++            ids = [int(x) for x in q["objectIds"].split(",") if x]
++            return {"features": [{"attributes": {"FID": i}} for i in ids]}
++        if "resultRecordCount" not in q and "where" not in q:
++            return {"fields": [{"name": "FID"}], "maxRecordCount": self.page,
++                    "objectIdField": "FID", "definitionExpression": None}
++        ps = int(q.get("resultRecordCount") or self.page)
++        lo, hi, after = 1, vis, None
++        import re
++        w = q.get("where", "1=1")
++        m = re.search(r"FID>=(\d+)", w)
++        if m:
++            lo = int(m.group(1))
++        m = re.search(r"FID<=(\d+)", w)
++        if m:
++            hi = min(int(m.group(1)), vis)
++        m = re.search(r"FID>(?!=)(\d+)", w)
++        if m:
++            after = int(m.group(1))
++        if "resultOffset" in q:
++            start = lo + int(q["resultOffset"])
++        else:
++            start = max(lo, after + 1) if after is not None else lo
++        end = min(hi, start + ps - 1)
++        if start > hi:
++            return {"features": [], "exceededTransferLimit": False}
++        return {"features": [{"attributes": {"FID": i}} for i in range(start, end + 1)],
++                "exceededTransferLimit": end < hi}
++
++
++def legacy_ckpt():
++    """复刻 14acda7e100ba989 的状态：单元 1/1 标 done，实际只有 2,131 / 2,300 行。"""
++    return {"ver": pilot.CKPT_VER,
++            "url": "http://stub.local/FeatureServer/0",
++            "plan_hash": CKPT_SIG_138C05,
++            "unit_rows": {"0": ROWS_STALE},
++            "unit_rows_seen": {"0": ROWS_STALE},
++            "unit_files": {}, "unit_package": {},
++            "unit_uploaded": {"0": True},          # 产物上传过 → 旧逻辑「产物在 = 完成」
++            "done_units": [0],
++            "tag": "collect-step07-138c05"}
++
++
++class DoneGateTest(unittest.TestCase):
++    def setUp(self):
++        self.tmp = tempfile.mkdtemp(prefix="c1stub-")
++        self._orig = (pilot.OUTBASE, dict(pilot.CUR), pilot.get_json, pilot._upload,
++                      pilot._load_ckpt, pilot._save_ckpt, pilot._publish_ckpt,
++                      pilot.UNIT_ROWS, pilot.PROG_DIR, pilot.STRATEGY)
++        pilot.OUTBASE = self.tmp
++        pilot.PROG_DIR = os.path.join(self.tmp, "progress")
++        pilot.UNIT_ROWS = 5000                  # 2,300 行 → 单单元（对齐 138c05 的 1/1）
++        pilot.CUR.update({"id": "c138", "title": "c138",
++                          "url": "http://stub.local/FeatureServer/0", "svc": "FeatureServer"})
++        self.saved = {}
++        self.logs = []
++        pilot._upload = lambda files, log=None, tag=None: True
++        pilot._publish_ckpt = lambda snap, log=None: None
++        pilot._save_ckpt = lambda ck: self.saved.update({"ck": json.loads(json.dumps(ck))})
++        pilot._load_ckpt = lambda plan_hash: legacy_ckpt()
++
++    def tearDown(self):
++        (pilot.OUTBASE, cur, gj, up, lc, sc, pc, pilot.UNIT_ROWS,
++         pilot.PROG_DIR, pilot.STRATEGY) = self._orig
++        pilot.get_json, pilot._upload = gj, up
++        pilot._load_ckpt, pilot._save_ckpt, pilot._publish_ckpt = lc, sc, pc
++        pilot.CUR.clear()
++        pilot.CUR.update(cur)
++        shutil.rmtree(self.tmp, ignore_errors=True)
++
++    def test_resume_todo_voids_stale_done(self):
++        """① 纯判定层：done 被作废，返回的 redone 含该单元"""
++        keep, redone = pilot.resume_todo([(None, None)], legacy_ckpt(), COUNT_138C05,
++                                        log=self.logs.append)
++        self.assertEqual(keep, [])
++        self.assertEqual(redone, [0])
++        self.assertTrue(any("作废 done 标记 u0" in m for m in self.logs), self.logs)
++        print("STUB| " + [m for m in self.logs if "作废 done 标记 u0" in m][0])
++
++    def test_end_to_end_refetch_reaches_expect(self):
++        """② 端到端：作废 → 真重翻 → rows 补到 2,300，done 重新置位"""
++        svc = Svc()
++        pilot.get_json = svc
++        rows, count, err, parts = pilot.collect_arcgis_v2(
++            pilot.CUR["url"], 0, self.logs.append, 1, False)
++        self.assertEqual(count, COUNT_138C05)
++        self.assertEqual(rows, COUNT_138C05)                  # ★ 补到 expect 以上
++        self.assertEqual(err, "")
++        self.assertGreater(svc.queries, 1)                    # ★ 真重翻了，不是跳过
++        # 作废走两条路：签名在「需重验」名单（14acda7e100ba989 就在名单里）→ 先被名单挡掉；
++        # 名单没覆盖时由 resume_todo 的行数判据兜住（test ① 单独证明）。
++        self.assertTrue(any(("在「需重验」名单" in m) or ("作废 done 标记 u0" in m) for m in self.logs),
++                        self.logs)
++        self.assertTrue(any("本轮重翻" in m or "重翻" in m for m in self.logs), self.logs)
++        ck = self.saved.get("ck") or {}
++        self.assertEqual(ck.get("done_units"), [0])           # ★ 采齐后才重新置位
++        self.assertEqual(str((ck.get("unit_expect") or {}).get("0")), str(COUNT_138C05))
++        self.assertEqual(str((ck.get("unit_rows_seen") or {}).get("0")), str(COUNT_138C05))
++        for m in self.logs:
++            if "作废" in m or "重翻" in m or m.startswith("done rows="):
++                print("STUB| " + m)
++
++    def test_end_to_end_unfixable_stays_partial(self):
++        """③ 补不回来：上游只给 2,131 → err=short，done 仍为空（→ partial/failed）"""
++        svc = Svc(cap=ROWS_STALE)
++        pilot.get_json = svc
++        rows, count, err, _ = pilot.collect_arcgis_v2(
++            pilot.CUR["url"], 0, self.logs.append, 1, False)
++        self.assertEqual(rows, ROWS_STALE)
++        self.assertTrue(err.startswith("short:%d/%d" % (ROWS_STALE, COUNT_138C05)), err)
++        ck = self.saved.get("ck") or {}
++        self.assertNotIn(0, ck.get("done_units") or [])        # ★ 不标 done
++        self.assertIn("0", ck.get("unit_errors") or {})
++        print("STUB| err=%s done_units=%s" % (err, ck.get("done_units")))
++
++
++if __name__ == "__main__":
++    unittest.main(verbosity=2)
+diff --git a/collect/tests/test_paging_assert.py b/collect/tests/test_paging_assert.py
+index 867bc0e..d53d4f7 100644
+--- a/collect/tests/test_paging_assert.py
++++ b/collect/tests/test_paging_assert.py
+@@ -3,7 +3,7 @@
+ """W33-042 收尾对账断言的单测（stub 造 rows<expect）。
+ 
+ 要证明三件事：
+-  ① `gap_short` 在 rows 明显少于 expect 时**真的会触发**（默认容差 GAP_TOL=0.005）；
++  ① `gap_short` 在 rows 明显少于 expect 时**真的会触发**（默认容差 GAP_TOL=0.001）；
+   ② `_top_up_offset` 会用 resultOffset 把缺的行补回来（138c05 形态：2,000 + 131 → 再补 169）；
+   ③ 补不回来时 `_unit_range` 的收尾分支**会返回 `short:rows/expect`**（= 该层记 partial/failed，不静默收工）。
+ 
+@@ -52,14 +52,14 @@ class FakeService:
+ class GapShortTest(unittest.TestCase):
+     def test_gap_short_triggers(self):
+         self.assertTrue(pilot.gap_short(2131, 2298))      # 138c05 实测形态：缺 7.27%
+-        self.assertTrue(pilot.gap_short(2280, 2298))      # 缺 0.78% > 0.5% 容差 → 触发
+-        self.assertFalse(pilot.gap_short(2290, 2298))     # 缺 0.35% < 0.5% → 上游漂移，不触发
+-        self.assertFalse(pilot.gap_short(2297, 2298))     # 缺 0.04% → 不触发
++        self.assertTrue(pilot.gap_short(2280, 2298))      # 缺 0.78% > 0.1% 容差 → 触发
++        self.assertTrue(pilot.gap_short(2290, 2298))      # 缺 0.35% > 0.1% → 触发
++        self.assertFalse(pilot.gap_short(2297, 2298))     # 缺 0.04% < 0.1% → 不触发
+         self.assertFalse(pilot.gap_short(2298, 2298))     # 完全对齐 → 不触发
+         self.assertFalse(pilot.gap_short(0, 0))           # 空层不判
+ 
+     def test_gap_tol_default(self):
+-        self.assertAlmostEqual(pilot.GAP_TOL, 0.005, places=6)
++        self.assertAlmostEqual(pilot.GAP_TOL, 0.001, places=6)
+ 
+ 
+ class TopUpTest(unittest.TestCase):
+diff --git a/collect/tests/test_pilot_baseline.py b/collect/tests/test_pilot_baseline.py
+index a4ef4ac..ca8ff17 100644
+--- a/collect/tests/test_pilot_baseline.py
++++ b/collect/tests/test_pilot_baseline.py
+@@ -214,13 +214,18 @@ class TestBaseline(Base):
+         self.assertTrue(any("short" in v for v in (ck.get("unit_errors") or {}).values()))
+ 
+     def test_short_ack_after_two_runs(self):
+-        """同一单元连续两次 short 且行数一致 → 认可上游就这么多，转完成并留 ack"""
++        """同一单元连续两次 short 且行数一致 → 只记 ack，**绝不标 done**（W33-043）
++
++        旧行为：两次 short 后 err 被清空 → 单元算完成 → 续跑永久跳过（138c05 就这样丢了 7.35%）。
++        新行为：ack 仍记（留证据），但 done_units 不置位、unit_errors 保留 short。
++        """
+         s = FakeServer(mode="short")
+         self.run_collect(s)
+         self.run_collect(s, fresh=False)
+         ck = json.load(open(os.path.join(self.tmp, "t", "_checkpoint.json")))
+         self.assertTrue(ck.get("unit_short_ack"))
+-        self.assertTrue(ck.get("done_units"))
++        self.assertNotIn(0, ck.get("done_units") or [])       # ★ done 不置位
++        self.assertIn("0", ck.get("unit_errors") or {})       # ★ short 仍挂着
+ 
+     def test_limit_not_judged_short(self):
+         """--limit 试采不该被判 short"""
+diff --git a/collect/tests/test_pilot_unit_bytes.py b/collect/tests/test_pilot_unit_bytes.py
+index f717682..8c6b70f 100644
+--- a/collect/tests/test_pilot_unit_bytes.py
++++ b/collect/tests/test_pilot_unit_bytes.py
+@@ -185,21 +185,42 @@ class ResumeTodo(unittest.TestCase):
+     def test_done_but_not_uploaded_must_rerun(self):
+         units = [(0, 10), (11, 20), (21, 30)]
+         ck = {"done_units": [0, 1, 2],
+-              "unit_uploaded": {"0": True, "1": False, "2": True}}
++              "unit_uploaded": {"0": True, "1": False, "2": True},
++              # W33-043：done 还要过 rows ≥ expect×(1-GAP_TOL)，这里行数齐全
++              "unit_rows_seen": {"0": 11, "1": 11, "2": 10},
++              "unit_expect": {"0": 11, "1": 11, "2": 10}}
+         done, redone = pilot.resume_todo(units, ck)
+         self.assertEqual(done, [0, 2])
+         self.assertEqual(redone, [1], "产物没上传的单元必须重采，不许拿 done_units 当挡箭牌")
+ 
+     def test_all_uploaded_keeps_done(self):
+         units = [(0, 10), (11, 20)]
+-        ck = {"done_units": [0, 1], "unit_uploaded": {"0": True, "1": True}}
++        ck = {"done_units": [0, 1], "unit_uploaded": {"0": True, "1": True},
++              "unit_rows_seen": {"0": 11, "1": 10}, "unit_expect": {"0": 11, "1": 10}}
+         self.assertEqual(pilot.resume_todo(units, ck), ([0, 1], []))
+ 
++    def test_rows_short_of_expect_voids_done(self):
++        """★ W33-043 核心：行数不齐 → 作废 done（138c05 形态 2,131/2,300）"""
++        units = [(None, None)]
++        ck = {"done_units": [0], "unit_uploaded": {"0": True},
++              "unit_rows_seen": {"0": 2131}, "unit_expect": {"0": 2300}}
++        keep, redone = pilot.resume_todo(units, ck, 2300)
++        self.assertEqual((keep, redone), ([], [0]))
++        self.assertEqual(ck.get("done_units"), [])            # ★ 真删标记，不只是本轮不调度
++        self.assertIn("0", ck.get("unit_done_voided") or {})
++
+     def test_missing_uploaded_key_is_kept_but_ledger_is_the_authority(self):
+         """老 checkpoint 整段没有 unit_uploaded：不据此判「没传」（否则几十个已完成单元全重采）。
+-        真缺产物的由账本按资产反查抓到，再 --force-layers 定点重跑。"""
++        真缺产物的由账本按资产反查抓到，再 --force-layers 定点重跑。
++        但行数必须过得去（W33-043）：行计数在且 ≥ count×(1-tol) 才保留。"""
++        units = [(0, 10)]
++        ck = {"done_units": [0], "unit_rows_seen": {"0": 11}}
++        self.assertEqual(pilot.resume_todo(units, ck, 11), ([0], []))
++
++    def test_old_ckpt_without_rows_is_reverified(self):
++        """★ W33-043：老检查点没有行计数 → 未知即重验，不许默认信它"""
+         units = [(0, 10)]
+-        self.assertEqual(pilot.resume_todo(units, {"done_units": [0]}), ([0], []))
++        self.assertEqual(pilot.resume_todo(units, {"done_units": [0]}, 11), ([], [0]))
+ 
+ class PlanSig(unittest.TestCase):
+     """检查点签名必须**只**由切分决定，且对历史 checkpoint 向后兼容。
+@@ -235,7 +256,8 @@ class PlanSig(unittest.TestCase):
+     def test_stale_unit_index_beyond_plan_is_dropped(self):
+         """重切片后 plan 变短，旧 done_units 里多出的下标不能把 todo 弄成空。"""
+         units = [(0, 10)]
+-        ck = {"done_units": [0, 5], "unit_uploaded": {"0": True, "5": False}}
++        ck = {"done_units": [0, 5], "unit_uploaded": {"0": True, "5": False},
++              "unit_rows_seen": {"0": 11}, "unit_expect": {"0": 11}}
+         self.assertEqual(pilot.resume_todo(units, ck), ([0], []))
+ 
+ 
+diff --git a/collect/tests/test_preflight_rows_gate.py b/collect/tests/test_preflight_rows_gate.py
+index 063a2f8..3d0dd8f 100644
+--- a/collect/tests/test_preflight_rows_gate.py
++++ b/collect/tests/test_preflight_rows_gate.py
+@@ -6,8 +6,8 @@
+   ① status=ok 但 rows 少于 declared×(1-0.5%) → FAIL（138c05 形态会被抓）；
+   ② status=partial 且 rows 不足 → 只列出，不 FAIL（诚实标注放行）；
+   ③ 计划里有 `expect_live`（returnCountOnly）时作为**第二分母**：
+-     rows=2,290 / live 2,300 → 缺 0.43%（<0.5%）通过；
+-     rows=2,285 / declared 2,270（过期快照）→ 对 live 缺 0.65% → FAIL（证明 live 分母真的参与判定）；
++     rows=2,299 / live 2,300 → 缺 0.04%（<0.1%）通过；
++     rows=2,296 / declared 2,270（过期快照）→ 对 live 缺 0.17% → FAIL（证明 live 分母真的参与判定）；
+   ④ 没有账本 → WARN，不假装通过。
+ """
+ from __future__ import annotations
+@@ -72,13 +72,13 @@ class RowsGateTest(unittest.TestCase):
+         self.assertEqual(len(it["short_other_status"]), 1)
+ 
+     def test_live_denominator_participates(self):
+-        # 对 declared 2298 通过（2290/2298=99.65%），对 live 2300 也通过（99.57%）
+-        lp, pp = self._paths([{"layer": "l1", "status": "ok", "rows": 2290,
++        # 对 declared 2298 通过（2299/2298），对 live 2300 也通过（99.96% ≥ 99.9%）
++        lp, pp = self._paths([{"layer": "l1", "status": "ok", "rows": 2299,
+                                "declared": 2298}], live={"l1": 2300})
+         self.assertEqual(pf.judge_rows_vs_expect("05b", lp, pp)["status"], "PASS")
+-        # 2285：对过期快照 declared=2270 通过（100.66%），对 live=2300 缺 0.65% > 0.5% → FAIL
++        # 2296：对过期快照 declared=2270 通过（101.1%），对 live=2300 缺 0.17% > 0.1% → FAIL
+         # （快照比实时小 = 02:00 抓的 row_count 落后上游，正是 138c05 的 2,298/2,300 形态）
+-        lp2, pp2 = self._paths([{"layer": "l1", "status": "ok", "rows": 2285,
++        lp2, pp2 = self._paths([{"layer": "l1", "status": "ok", "rows": 2296,
+                                  "declared": 2270}], live={"l1": 2300})
+         it = pf.judge_rows_vs_expect("05b", lp2, pp2)
+         self.assertEqual(it["status"], "FAIL")
