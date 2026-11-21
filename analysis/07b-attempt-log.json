@@ -2,22 +2,86 @@
  "schema": "collect-attempt-log/v1",
  "stage": "07b",
  "cap": 3,
- "at": "2026-11-20T21:51:27Z",
+ "at": "2026-11-21T04:19:37Z",
  "sources": [
   "collect/ledger/07b_run41184978867.json",
   "collect/ledger/07b_run44822536108.json",
+  "collect/ledger/07b_run44865629100.json",
+  "collect/ledger/07b_runrebuilt-20261121.json",
   "collect/ledger/07b_shard00.json",
   "collect/ledger/07b_shard01.json",
-  "collect/ledger/07b_shard02.json"
+  "collect/ledger/07b_shard02.json",
+  "git-history(2 条旧尝试)"
  ],
  "append": true,
  "kept_from_prev_n": 0,
- "attempts_n": 4,
- "layers_n": 2,
- "unstable_n": 0,
+ "attempts_n": 11,
+ "layers_n": 6,
+ "unstable_n": 2,
  "kind_rule": "失败类型先判 token(499) → 503 → 非 JSON → 超时 → 4xx → DNS/TLS → other；503 的正文里带 «Wait timeout…»，所以必须排在「超时」之前，否则会被误记成超时。",
  "cap_rule": "同一层连续 3 次尝试失败且**没有进展**（每次尝试的 rows/prior_units 全一样）→ 判 upstream_unstable：默认从待采队列剔除，只有 `--force-unstable-layer <层>` 能放回去",
- "unstable": [],
+ "unstable": [
+  {
+   "layer": "rcgis_rest_services_Addressing_Addressing_public_MapServer_0",
+   "attempts_n": 4,
+   "kinds": [
+    "http_4xx",
+    "http_4xx",
+    "http_4xx",
+    "other"
+   ],
+   "kinds_n": {
+    "http_4xx": 3,
+    "other": 1
+   },
+   "first_at": "2026-10-31T09:09:14Z",
+   "last_at": "2026-11-21T04:19:37Z",
+   "last_kind": "other",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 12.9,
+   "elapsed_min": 0.2,
+   "unstable": true,
+   "runs": [
+    "41184978867",
+    "44822536108",
+    "rebuilt-20261121"
+   ],
+   "shards": [
+    0,
+    4
+   ]
+  },
+  {
+   "layer": "138c05_rest_services_MiddlesexCounty_Base_Layers_MapServer_0",
+   "attempts_n": 3,
+   "kinds": [
+    "other",
+    "other",
+    "other"
+   ],
+   "kinds_n": {
+    "other": 3
+   },
+   "first_at": "2026-10-31T08:54:00Z",
+   "last_at": "2026-11-20T21:49:34Z",
+   "last_kind": "other",
+   "rows_at_last": 2131,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 16.9,
+   "elapsed_min": 0.3,
+   "unstable": true,
+   "runs": [
+    "41184978867",
+    "44822536108"
+   ],
+   "shards": [
+    0
+   ]
+  }
+ ],
  "attempts": [
   {
    "layer": "138c05_rest_services_MiddlesexCounty_Base_Layers_MapServer_0",
@@ -48,6 +112,49 @@
    "err": ""
   },
   {
+   "layer": "138c05_rest_services_MiddlesexCounty_Base_Layers_MapServer_0",
+   "at": "2026-11-20T21:49:34Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 4.1,
+   "rows": 2131,
+   "prior_units": 0,
+   "run": "",
+   "shard": 0,
+   "source": "git:collect/ledger/07b_shard00.json@937e178",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "ckkXVBh_arcgis_rest_services_ParkOPS_Address_FeatureServer_0",
+   "at": "2026-11-21T04:19:37Z",
+   "at_src": "ledger",
+   "kind": "other",
+   "rc": null,
+   "elapsed_s": null,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "rebuilt-20261121",
+   "shard": 1,
+   "source": "07b_runrebuilt-20261121.json",
+   "err": ""
+  },
+  {
+   "layer": "ocEBv1Ip_arcgis_rest_services_Address___View_FeatureServer_0",
+   "at": "2026-11-21T04:19:37Z",
+   "at_src": "ledger",
+   "kind": "other",
+   "rc": null,
+   "elapsed_s": null,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "rebuilt-20261121",
+   "shard": 3,
+   "source": "07b_runrebuilt-20261121.json",
+   "err": ""
+  },
+  {
    "layer": "rcgis_rest_services_Addressing_Addressing_public_MapServer_0",
    "at": "2026-10-31T09:09:14Z",
    "at_src": "record",
@@ -74,18 +181,76 @@
    "shard": 0,
    "source": "07b_run44822536108.json",
    "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU"
+  },
+  {
+   "layer": "rcgis_rest_services_Addressing_Addressing_public_MapServer_0",
+   "at": "2026-11-20T21:51:27Z",
+   "at_src": "record",
+   "kind": "http_4xx",
+   "rc": 1,
+   "elapsed_s": 3.8,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 0,
+   "source": "git:collect/ledger/07b_shard00.json@937e178",
+   "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU",
+   "from_git": true
+  },
+  {
+   "layer": "rcgis_rest_services_Addressing_Addressing_public_MapServer_0",
+   "at": "2026-11-21T04:19:37Z",
+   "at_src": "ledger",
+   "kind": "other",
+   "rc": null,
+   "elapsed_s": null,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "rebuilt-20261121",
+   "shard": 4,
+   "source": "07b_runrebuilt-20261121.json",
+   "err": ""
+  },
+  {
+   "layer": "rcgis_rest_services_New_911_Address_Requests_FeatureServer_0",
+   "at": "2026-11-21T04:19:37Z",
+   "at_src": "ledger",
+   "kind": "other",
+   "rc": null,
+   "elapsed_s": null,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "rebuilt-20261121",
+   "shard": 2,
+   "source": "07b_runrebuilt-20261121.json",
+   "err": ""
+  },
+  {
+   "layer": "xt6cnCY2_arcgis_rest_services_Site_Addresses_FeatureServer_2",
+   "at": "2026-11-21T04:19:37Z",
+   "at_src": "ledger",
+   "kind": "other",
+   "rc": null,
+   "elapsed_s": null,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "rebuilt-20261121",
+   "shard": 2,
+   "source": "07b_runrebuilt-20261121.json",
+   "err": ""
   }
  ],
  "layers": {
   "138c05_rest_services_MiddlesexCounty_Base_Layers_MapServer_0": {
    "layer": "138c05_rest_services_MiddlesexCounty_Base_Layers_MapServer_0",
-   "attempts_n": 2,
+   "attempts_n": 3,
    "kinds": [
+    "other",
     "other",
     "other"
    ],
    "kinds_n": {
-    "other": 2
+    "other": 3
    },
    "first_at": "2026-10-31T08:54:00Z",
    "last_at": "2026-11-20T21:49:34Z",
@@ -93,9 +258,9 @@
    "rows_at_last": 2131,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 12.8,
-   "elapsed_min": 0.2,
-   "unstable": false,
+   "elapsed_s": 16.9,
+   "elapsed_min": 0.3,
+   "unstable": true,
    "runs": [
     "41184978867",
     "44822536108"
@@ -104,31 +269,136 @@
     0
    ]
   },
-  "rcgis_rest_services_Addressing_Addressing_public_MapServer_0": {
-   "layer": "rcgis_rest_services_Addressing_Addressing_public_MapServer_0",
-   "attempts_n": 2,
+  "ckkXVBh_arcgis_rest_services_ParkOPS_Address_FeatureServer_0": {
+   "layer": "ckkXVBh_arcgis_rest_services_ParkOPS_Address_FeatureServer_0",
+   "attempts_n": 1,
    "kinds": [
-    "http_4xx",
-    "http_4xx"
+    "other"
    ],
    "kinds_n": {
-    "http_4xx": 2
+    "other": 1
    },
-   "first_at": "2026-10-31T09:09:14Z",
-   "last_at": "2026-11-20T21:51:27Z",
-   "last_kind": "http_4xx",
+   "first_at": "2026-11-21T04:19:37Z",
+   "last_at": "2026-11-21T04:19:37Z",
+   "last_kind": "other",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 9.1,
-   "elapsed_min": 0.2,
+   "elapsed_s": 0,
+   "elapsed_min": 0.0,
    "unstable": false,
    "runs": [
-    "41184978867",
-    "44822536108"
+    "rebuilt-20261121"
    ],
    "shards": [
-    0
+    1
+   ]
+  },
+  "ocEBv1Ip_arcgis_rest_services_Address___View_FeatureServer_0": {
+   "layer": "ocEBv1Ip_arcgis_rest_services_Address___View_FeatureServer_0",
+   "attempts_n": 1,
+   "kinds": [
+    "other"
+   ],
+   "kinds_n": {
+    "other": 1
+   },
+   "first_at": "2026-11-21T04:19:37Z",
+   "last_at": "2026-11-21T04:19:37Z",
+   "last_kind": "other",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 0,
+   "elapsed_min": 0.0,
+   "unstable": false,
+   "runs": [
+    "rebuilt-20261121"
+   ],
+   "shards": [
+    3
+   ]
+  },
+  "rcgis_rest_services_Addressing_Addressing_public_MapServer_0": {
+   "layer": "rcgis_rest_services_Addressing_Addressing_public_MapServer_0",
+   "attempts_n": 4,
+   "kinds": [
+    "http_4xx",
+    "http_4xx",
+    "http_4xx",
+    "other"
+   ],
+   "kinds_n": {
+    "http_4xx": 3,
+    "other": 1
+   },
+   "first_at": "2026-10-31T09:09:14Z",
+   "last_at": "2026-11-21T04:19:37Z",
+   "last_kind": "other",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 12.9,
+   "elapsed_min": 0.2,
+   "unstable": true,
+   "runs": [
+    "41184978867",
+    "44822536108",
+    "rebuilt-20261121"
+   ],
+   "shards": [
+    0,
+    4
+   ]
+  },
+  "rcgis_rest_services_New_911_Address_Requests_FeatureServer_0": {
+   "layer": "rcgis_rest_services_New_911_Address_Requests_FeatureServer_0",
+   "attempts_n": 1,
+   "kinds": [
+    "other"
+   ],
+   "kinds_n": {
+    "other": 1
+   },
+   "first_at": "2026-11-21T04:19:37Z",
+   "last_at": "2026-11-21T04:19:37Z",
+   "last_kind": "other",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 0,
+   "elapsed_min": 0.0,
+   "unstable": false,
+   "runs": [
+    "rebuilt-20261121"
+   ],
+   "shards": [
+    2
+   ]
+  },
+  "xt6cnCY2_arcgis_rest_services_Site_Addresses_FeatureServer_2": {
+   "layer": "xt6cnCY2_arcgis_rest_services_Site_Addresses_FeatureServer_2",
+   "attempts_n": 1,
+   "kinds": [
+    "other"
+   ],
+   "kinds_n": {
+    "other": 1
+   },
+   "first_at": "2026-11-21T04:19:37Z",
+   "last_at": "2026-11-21T04:19:37Z",
+   "last_kind": "other",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 0,
+   "elapsed_min": 0.0,
+   "unstable": false,
+   "runs": [
+    "rebuilt-20261121"
+   ],
+   "shards": [
+    2
    ]
   }
  }
