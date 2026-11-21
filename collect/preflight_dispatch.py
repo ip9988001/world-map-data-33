@@ -964,7 +964,7 @@ def judge_ledger_plan_consistency(stage, ledger_path=None, plan_path=None):
                 diff_pct=round(ratio * 100, 4), plan_source=src)
 
 
-def judge_rows_vs_expect(stage, ledger_path=None, plan_path=None):
+def judge_rows_vs_expect(stage, ledger_path=None, plan_path=None, exempt_layers=None):
     """D15：收尾对账 —— 「status=ok 但 rows 明显少于 expect」的层必须被抓住。
 
     口径（与 pilot.GAP_TOL 同源，可 env 覆盖 PREFLIGHT_ROWS_GAP_TOL，默认 0.5%）：
@@ -973,6 +973,18 @@ def judge_rows_vs_expect(stage, ledger_path=None, plan_path=None):
       · expect 双分母：账本 `declared`（采前 count）+ 计划 `expect_live`（计划阶段 returnCountOnly）。
         上游行数会变，单一分母不可信；任一被击穿即 FAIL。
       · 两个分母都没有（declared≤0 且无 live）→ 不参与（无法对账，不假装通过）。
+
+    ★ 本轮计划内层豁免（2026-11-21 W33-046 / muse-000134 ④）：
+      `exempt_layers` = **本次派单的 `--force-layers` 名单**（唯一权威来源）。
+      为什么是 force 而不是 plan 文件：collect-full.yml 里 preflight 是第 78 步、plan 是第 106 步，
+      preflight 跑时本轮 plan 还没生成；仓里的 `collect/ledger/<stage>_plan.json` 是**上一轮遗留**，
+      拿它的 order 当白名单等于用旧名单放行（挖洞），所以坚决不用。
+      · 该层在 force 名单里 → 不因 D15 报警（本轮就要重采它，短是预期），但仍然**如实写明**：
+        detail 里写「本轮计划内豁免 N 层：层名 rows/expect 缺x%」，并落 JSON 独立字段 `exempt_in_plan`；
+      · 该层不在名单里 → 照原样 FAIL；
+      · fail-closed：force 名单空/解析为空 → 一个人也不豁免（保持现状）。
+      · 只影响「报警与否」：GAP_TOL、ok/skipped_done 判据、partial/short 只列不判，全部不变。
+        且「在 force 里」**不等于**记绿：本轮没采到就照六类标 partial/unverified（那是收尾账本的事）。
     """
     lp = ledger_path or (ledger_paths(stage) or [""])[0]
     if not lp or not os.path.exists(lp):
@@ -994,7 +1006,8 @@ def judge_rows_vs_expect(stage, ledger_path=None, plan_path=None):
         except Exception:                                      # noqa: BLE001
             live = {}
     tol = ROWS_GAP_TOL
-    bad, noted = [], []
+    exempt_ids = {str(x).strip() for x in (exempt_layers or []) if str(x).strip()}
+    bad, noted, exempt = [], [], []
     for r in (led.get("records") or []):
         try:
             d = int(r.get("declared") or 0)
@@ -1016,26 +1029,43 @@ def judge_rows_vs_expect(stage, ledger_path=None, plan_path=None):
         row = {"layer": r.get("layer"), "status": r.get("status"), "rows": rw,
                "declared": d or None, "expect_live": int(lv) if lv else None,
                "denominator": src, "gap_pct": round(100.0 * (1.0 - float(rw) / dv), 4)}
-        if str(r.get("status") or "").lower() in ("ok", "skipped_done"):
-            bad.append(row)
-        else:
+        if str(r.get("status") or "").lower() not in ("ok", "skipped_done"):
             noted.append(row)
+        elif str(r.get("layer")) in exempt_ids:
+            exempt.append(dict(row, exempt="in_force_layers"))
+        else:
+            bad.append(row)
     if bad:
+        why = ""
+        if exempt:
+            why = "；另 %d 层本轮计划内（force 名单）已豁免：%s" % (
+                len(exempt), ", ".join("%s %d/%s 缺%.2f%%" % (
+                    x["layer"][:36], x["rows"],
+                    x["expect_live"] if x["denominator"] == "live" else x["declared"],
+                    x["gap_pct"]) for x in exempt[:3]))
         return item("D15", "C", "收尾对账 rows vs expect", "FAIL",
-                    "⛔ %d 层标 ok 但 rows < expect×(1-%.1f%%)（收工没采完）：%s"
+                    "⛔ %d 层标 ok 但 rows < expect×(1-%.1f%%)（收工没采完，且不在本轮 force 名单里）：%s%s"
                     % (len(bad), tol * 100,
                        "; ".join("%s %d/%s[%s]缺%.2f%%"
                                  % (b["layer"][:40], b["rows"],
                                     b["expect_live"] if b["denominator"] == "live" else b["declared"],
-                                    b["denominator"], b["gap_pct"]) for b in bad[:3])),
+                                    b["denominator"], b["gap_pct"]) for b in bad[:3]), why),
                     short_ok_status=bad, short_other_status=noted,
+                    exempt_in_plan=exempt, exempt_source="force_layers",
                     tolerance_pct=round(tol * 100, 3), plan_source=plan_src)
     detail = "账本 %d 层：无「status=ok 但 rows 不足」的层（容差 %.1f%%，%d 层有 live 分母）" % (
         len(led.get("records") or []), tol * 100, len(live))
+    if exempt:
+        detail += "；本轮计划内豁免 %d 层（本轮就要重采，短是预期）：%s" % (
+            len(exempt), "; ".join("%s %d/%s 缺%.2f%%" % (
+                x["layer"][:40], x["rows"],
+                x["expect_live"] if x["denominator"] == "live" else x["declared"],
+                x["gap_pct"]) for x in exempt))
     if noted:
         detail += "；另有 %d 层已诚实标注 partial/short（不判 FAIL）" % len(noted)
     return item("D15", "C", "收尾对账 rows vs expect", "PASS", detail,
                 short_ok_status=[], short_other_status=noted[:20],
+                exempt_in_plan=exempt, exempt_source="force_layers",
                 tolerance_pct=round(tol * 100, 3), plan_source=plan_src)
 
 
@@ -1576,13 +1606,19 @@ def build_report(args) -> dict:
         "ledger_layers": d14.get("ledger_layers"), "plan_layers": d14.get("plan_layers"),
         "diff": d14.get("diff"), "diff_pct": d14.get("diff_pct"),
         "plan_source": d14.get("plan_source"), "tolerance_pct": PLAN_LAYERS_TOL * 100}
-    d15 = judge_rows_vs_expect(stage, paths[0], stage_plan_file(stage))
+    # ★ D15 豁免的权威来源 = 本次派单的 --force-layers（preflight 早于 plan，旧 plan 文件不许当白名单）
+    d15 = judge_rows_vs_expect(stage, paths[0], stage_plan_file(stage), exempt_layers=force)
     items.append(d15)
     evidence["rows_vs_expect"] = {
         "tolerance_pct": d15.get("tolerance_pct"),
         "plan_source": d15.get("plan_source"),
         "short_ok_status": (d15.get("short_ok_status") or [])[:20],
-        "short_other_status_n": len(d15.get("short_other_status") or [])}
+        "short_other_status_n": len(d15.get("short_other_status") or []),
+        # ★ 本轮计划内层豁免（W33-046）：豁免了哪几层、rows/分母/缺口、依据（force_layers）
+        "exempt_source": d15.get("exempt_source"),
+        "exempt_in_plan_n": len(d15.get("exempt_in_plan") or []),
+        "exempt_in_plan": d15.get("exempt_in_plan") or []}
+    evidence["force_layers_n"] = len(force)
     items.append(judge_merge_guard(ref_for_git))
     baseline = {}
     if paths[0] and os.path.exists(paths[0]):
