@@ -17902,7 +17902,7 @@
   }
  },
  "plan": {
-  "layers_n": 1103,
+  "layers_n": 1102,
   "declared_rows": 1671856,
   "shards_n": 6,
   "size": 200,
@@ -17913,6 +17913,13 @@
    "layers_n": 158,
    "what": "2026-11-20 run 44822536108 的待采计划（collect/ledger/07b_plan.json）被误当阶段计划"
   },
-  "note": "本轮只新增本块；layers_n / buckets / records 一字未动"
+  "note": "rcgis 剔除后全集 1,102（原 1,103）；账本保留该条 unverified 记录作为剔除依据，不计入候选全集分母",
+  "excluded": [
+   {
+    "layer": "rcgis_rest_services_Addressing_Addressing_public_MapServer_0",
+    "why": "上游已死：404×5 + TLS 超时"
+   }
+  ],
+  "excluded_n": 1
  }
 }
