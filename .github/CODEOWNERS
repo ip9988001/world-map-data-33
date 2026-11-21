@@ -5,6 +5,3 @@
 /collect/preflight_dispatch.py        @ip9988001
 /collect/pilot.py                     @ip9988001
 /collect/full_plan.py                 @ip9988001
-
-# 默认：其它一切路径无 code owner = 不触发 code-owner review 要求
-* -
