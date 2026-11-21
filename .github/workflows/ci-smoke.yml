@@ -31,6 +31,12 @@ jobs:
       - name: 结构自检 25 条
         run: python3 collect/supervisor.py --entry-check
 
+      # 依赖禁令（muse-000146 Phase 1a 第 4 片 · 第 10 项）：shapely / rtree 永不用作运行时依赖。
+      # 判据：*.py 出现 import shapely/rtree，或依赖清单把两包列为依赖 → rc=1。定案见
+      # docs/DEPENDENCY-VERDICT-20261122.md（注释里写「禁止 shapely」不算违规）。
+      - name: 禁依赖检查（shapely / rtree）
+        run: python3 collect/check_forbidden_deps.py
+
       # 公开仓出口门禁（muse-000146 Phase 1a 第 3 片 · 第 9 项）：
       # 三仓是 public，Artifact / Cache 任何人可下载 → 含行级（ndjson/jsonl/parquet、
       # collect/out、staging、raw/）的出口一律 rc=1。判据实现在 check_public_exports.py。
