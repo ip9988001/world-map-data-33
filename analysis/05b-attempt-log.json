@@ -2,108 +2,147 @@
  "schema": "collect-attempt-log/v1",
  "stage": "05b",
  "cap": 3,
- "at": "2026-11-21T14:17:59Z",
+ "at": "2026-11-21T22:11:41Z",
  "sources": [
-  "../../../../../tmp/rec/ledger/05b_run44884914552.json",
-  "../../../../../tmp/rec/ledger/05b_shard00.json",
-  "../../../../../tmp/rec/ledger/05b_shard01.json",
-  "../../../../../tmp/rec/ledger/05b_shard02.json"
+  "collect/ledger/05b_run41167836540.json",
+  "collect/ledger/05b_run44865991911.json",
+  "collect/ledger/05b_run44884914552.json",
+  "collect/ledger/05b_run44931175026.json",
+  "collect/ledger/05b_shard00.json",
+  "collect/ledger/05b_shard01.json",
+  "collect/ledger/05b_shard02.json",
+  "collect/ledger/05b_shard03.json",
+  "collect/ledger/05b_shard04.json",
+  "collect/ledger/05b_shard05.json",
+  "collect/ledger/05b_shard06.json",
+  "collect/ledger/05b_shard07.json",
+  "collect/ledger/05b_shard08.json",
+  "collect/ledger/05b_shard09.json",
+  "collect/ledger/05b_shard10.json",
+  "collect/ledger/05b_shard11.json",
+  "collect/ledger/05b_shard12.json",
+  "collect/ledger/05b_shard13.json",
+  "collect/ledger/05b_shard14.json",
+  "collect/ledger/05b_shard15.json",
+  "collect/ledger/05b_shard16.json",
+  "collect/ledger/05b_shard17.json",
+  "collect/ledger/05b_shard18.json",
+  "collect/ledger/05b_shard19.json",
+  "collect/ledger/05b_shard20.json",
+  "git-history(84 条旧尝试)"
  ],
  "append": true,
- "kept_from_prev_n": 45,
- "attempts_n": 74,
+ "kept_from_prev_n": 0,
+ "attempts_n": 164,
  "layers_n": 34,
- "unstable_n": 8,
+ "unstable_n": 20,
  "kind_rule": "失败类型先判 token(499) → 503 → 非 JSON → 超时 → 4xx → DNS/TLS → other；503 的正文里带 «Wait timeout…»，所以必须排在「超时」之前，否则会被误记成超时。",
  "cap_rule": "同一层连续 3 次尝试失败且**没有进展**（每次尝试的 rows/prior_units 全一样）→ 判 upstream_unstable：默认从待采队列剔除，只有 `--force-unstable-layer <层>` 能放回去",
  "unstable": [
   {
    "layer": "om_arcgis_rest_services_Cadastral_Address_Points_MapServer_0",
-   "attempts_n": 4,
+   "attempts_n": 8,
    "kinds": [
+    "other",
+    "other",
+    "other",
+    "other",
     "other",
     "other",
     "other",
     "other"
    ],
    "kinds_n": {
-    "other": 4
+    "other": 8
    },
    "first_at": "2026-10-31T01:03:47Z",
-   "last_at": "2026-11-21T08:32:50Z",
+   "last_at": "2026-11-21T17:43:49Z",
    "last_kind": "other",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 37.6,
-   "elapsed_min": 0.6,
+   "elapsed_s": 102.9,
+   "elapsed_min": 1.7,
    "unstable": true,
    "runs": [
     "41167836540",
     "44865991911",
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
     0,
+    2,
     9
    ]
   },
   {
    "layer": "gis_net_arcgis_rest_services_BASE_Address_Points_MapServer_0",
-   "attempts_n": 4,
+   "attempts_n": 8,
    "kinds": [
+    "other",
+    "other",
+    "other",
+    "other",
     "other",
     "other",
     "other",
     "other"
    ],
    "kinds_n": {
-    "other": 4
+    "other": 8
    },
    "first_at": "2026-10-31T01:05:22Z",
-   "last_at": "2026-11-21T08:32:53Z",
+   "last_at": "2026-11-21T17:44:18Z",
    "last_kind": "other",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 17.3,
-   "elapsed_min": 0.3,
+   "elapsed_s": 62.0,
+   "elapsed_min": 1.0,
    "unstable": true,
    "runs": [
     "41167836540",
     "44865991911",
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
     0,
+    2,
     9
    ]
   },
   {
    "layer": "Pvc_arcgis_rest_services_Address_Points_View_FeatureServer_2",
-   "attempts_n": 4,
+   "attempts_n": 8,
    "kinds": [
+    "other",
+    "other",
+    "other",
+    "other",
     "other",
     "other",
     "other",
     "other"
    ],
    "kinds_n": {
-    "other": 4
+    "other": 8
    },
    "first_at": "2026-10-30T20:44:41Z",
-   "last_at": "2026-11-21T08:44:19Z",
+   "last_at": "2026-11-21T17:47:17Z",
    "last_kind": "other",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 10.5,
-   "elapsed_min": 0.2,
+   "elapsed_s": 21.5,
+   "elapsed_min": 0.4,
    "unstable": true,
    "runs": [
     "41167836540",
     "44865991911",
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
     0,
@@ -111,111 +150,66 @@
    ]
   },
   {
-   "layer": "tamonica_gov_server_rest_services_Address_Points_MapServer_0",
-   "attempts_n": 3,
-   "kinds": [
-    "timeout",
-    "timeout",
-    "timeout"
-   ],
-   "kinds_n": {
-    "timeout": 3
-   },
-   "first_at": "2026-10-31T02:28:12Z",
-   "last_at": "2026-11-21T14:17:59Z",
-   "last_kind": "timeout",
-   "rows_at_last": 0,
-   "prior_units_at_last": 0,
-   "no_progress": true,
-   "elapsed_s": 18000.2,
-   "elapsed_min": 300.0,
-   "unstable": true,
-   "runs": [],
-   "shards": [
-    2,
-    10,
-    17
-   ]
-  },
-  {
-   "layer": "untywi_gov_vilasgis_rest_services_V4_SiteAddress_MapServer_0",
-   "attempts_n": 3,
-   "kinds": [
-    "timeout",
-    "timeout",
-    "timeout"
-   ],
-   "kinds_n": {
-    "timeout": 3
-   },
-   "first_at": "2026-10-31T02:46:12Z",
-   "last_at": "2026-11-21T12:49:30Z",
-   "last_kind": "timeout",
-   "rows_at_last": 0,
-   "prior_units_at_last": 0,
-   "no_progress": true,
-   "elapsed_s": 18000.2,
-   "elapsed_min": 300.0,
-   "unstable": true,
-   "runs": [],
-   "shards": [
-    1,
-    9,
-    17
-   ]
-  },
-  {
    "layer": "nc_gov_server_rest_services_CityWorks_Basemap_CW_MapServer_0",
-   "attempts_n": 3,
+   "attempts_n": 6,
    "kinds": [
+    "other",
+    "other",
+    "other",
     "other",
     "other",
     "other"
    ],
    "kinds_n": {
-    "other": 3
+    "other": 6
    },
    "first_at": "2026-10-30T22:39:17Z",
-   "last_at": "2026-11-21T12:05:22Z",
+   "last_at": "2026-11-21T21:04:51Z",
    "last_kind": "other",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 1078.1,
-   "elapsed_min": 18.0,
+   "elapsed_s": 2157.8,
+   "elapsed_min": 36.0,
    "unstable": true,
    "runs": [
     "41167836540",
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
     0,
+    2,
     12
    ]
   },
   {
    "layer": "erva_gov_arcgis_rest_services_Winchester_Address_MapServer_0",
-   "attempts_n": 3,
+   "attempts_n": 6,
    "kinds": [
+    "http_4xx",
+    "http_4xx",
+    "http_4xx",
     "http_4xx",
     "http_4xx",
     "http_4xx"
    ],
    "kinds_n": {
-    "http_4xx": 3
+    "http_4xx": 6
    },
    "first_at": "2026-10-30T20:42:03Z",
-   "last_at": "2026-11-21T10:38:12Z",
+   "last_at": "2026-11-21T19:38:27Z",
    "last_kind": "http_4xx",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 14.7,
-   "elapsed_min": 0.2,
+   "elapsed_s": 35.1,
+   "elapsed_min": 0.6,
    "unstable": true,
    "runs": [
     "41167836540",
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
     0,
@@ -224,31 +218,460 @@
   },
   {
    "layer": "_gov_uk_arcweb_rest_services_Addresses_Addresses_MapServer_0",
-   "attempts_n": 3,
+   "attempts_n": 6,
    "kinds": [
+    "other",
+    "other",
+    "other",
     "other",
     "other",
     "other"
    ],
    "kinds_n": {
-    "other": 3
+    "other": 6
    },
    "first_at": "2026-10-31T00:42:24Z",
-   "last_at": "2026-11-21T12:48:59Z",
+   "last_at": "2026-11-21T21:51:00Z",
    "last_kind": "other",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 11.7,
-   "elapsed_min": 0.2,
+   "elapsed_s": 23.7,
+   "elapsed_min": 0.4,
    "unstable": true,
    "runs": [
     "41167836540",
+    "44884914552",
+    "44931175026"
+   ],
+   "shards": [
+    0,
+    1,
+    9
+   ]
+  },
+  {
+   "layer": "untywi_gov_vilasgis_rest_services_V4_SiteAddress_MapServer_0",
+   "attempts_n": 5,
+   "kinds": [
+    "timeout",
+    "timeout",
+    "timeout",
+    "timeout",
+    "timeout"
+   ],
+   "kinds_n": {
+    "timeout": 5
+   },
+   "first_at": "2026-10-31T02:46:12Z",
+   "last_at": "2026-11-21T16:58:46Z",
+   "last_kind": "timeout",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 25200.4,
+   "elapsed_min": 420.0,
+   "unstable": true,
+   "runs": [
+    "44884914552"
+   ],
+   "shards": [
+    1,
+    9,
+    17
+   ]
+  },
+  {
+   "layer": "tamonica_gov_server_rest_services_Address_Points_MapServer_0",
+   "attempts_n": 5,
+   "kinds": [
+    "timeout",
+    "timeout",
+    "timeout",
+    "timeout",
+    "timeout"
+   ],
+   "kinds_n": {
+    "timeout": 5
+   },
+   "first_at": "2026-10-31T02:28:12Z",
+   "last_at": "2026-11-21T16:58:46Z",
+   "last_kind": "timeout",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 25200.2,
+   "elapsed_min": 420.0,
+   "unstable": true,
+   "runs": [
+    "44884914552"
+   ],
+   "shards": [
+    2,
+    10,
+    17
+   ]
+  },
+  {
+   "layer": "ntygov_com_server_rest_services_Addresses_Public_MapServer_0",
+   "attempts_n": 5,
+   "kinds": [
+    "http_4xx",
+    "http_4xx",
+    "http_4xx",
+    "http_4xx",
+    "http_4xx"
+   ],
+   "kinds_n": {
+    "http_4xx": 5
+   },
+   "first_at": "2026-10-31T04:58:13Z",
+   "last_at": "2026-11-21T19:49:13Z",
+   "last_kind": "http_4xx",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 197.1,
+   "elapsed_min": 3.3,
+   "unstable": true,
+   "runs": [
+    "41167836540",
+    "44884914552",
+    "44931175026"
+   ],
+   "shards": [
+    0,
+    2
+   ]
+  },
+  {
+   "layer": "ov_gis_rest_services_Map_Reference_Address_Label_MapServer_0",
+   "attempts_n": 5,
+   "kinds": [
+    "other",
+    "other",
+    "other",
+    "other",
+    "other"
+   ],
+   "kinds_n": {
+    "other": 5
+   },
+   "first_at": "2026-10-31T07:26:25Z",
+   "last_at": "2026-11-21T22:07:54Z",
+   "last_kind": "other",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 123.1,
+   "elapsed_min": 2.1,
+   "unstable": true,
+   "runs": [
+    "41167836540",
+    "44884914552",
+    "44931175026"
+   ],
+   "shards": [
+    0,
+    2
+   ]
+  },
+  {
+   "layer": "v_gis_rest_services_Map_Reference_Street_Address_MapServer_0",
+   "attempts_n": 5,
+   "kinds": [
+    "other",
+    "other",
+    "other",
+    "other",
+    "other"
+   ],
+   "kinds_n": {
+    "other": 5
+   },
+   "first_at": "2026-10-31T07:25:57Z",
+   "last_at": "2026-11-21T22:07:30Z",
+   "last_kind": "other",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 112.4,
+   "elapsed_min": 1.9,
+   "unstable": true,
+   "runs": [
+    "41167836540",
+    "44884914552",
+    "44931175026"
+   ],
+   "shards": [
+    0,
+    2
+   ]
+  },
+  {
+   "layer": "_gov_arcgis_rest_services_Land_Records_Open_Data_MapServer_1",
+   "attempts_n": 5,
+   "kinds": [
+    "http_4xx",
+    "http_4xx",
+    "http_4xx",
+    "http_4xx",
+    "http_4xx"
+   ],
+   "kinds_n": {
+    "http_4xx": 5
+   },
+   "first_at": "2026-10-31T04:49:40Z",
+   "last_at": "2026-11-21T18:49:26Z",
+   "last_kind": "http_4xx",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 59.2,
+   "elapsed_min": 1.0,
+   "unstable": true,
+   "runs": [
+    "41167836540",
+    "44884914552",
+    "44931175026"
+   ],
+   "shards": [
+    0,
+    1
+   ]
+  },
+  {
+   "layer": "vt_nz_arcgis_rest_services_CorporateData_Address_MapServer_0",
+   "attempts_n": 5,
+   "kinds": [
+    "other",
+    "other",
+    "other",
+    "other",
+    "other"
+   ],
+   "kinds_n": {
+    "other": 5
+   },
+   "first_at": "2026-10-31T07:26:42Z",
+   "last_at": "2026-11-21T22:08:29Z",
+   "last_kind": "other",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 55.3,
+   "elapsed_min": 0.9,
+   "unstable": true,
+   "runs": [
+    "41167836540",
+    "44884914552",
+    "44931175026"
+   ],
+   "shards": [
+    0,
+    2
+   ]
+  },
+  {
+   "layer": "paca_wi_us_arcgis_rest_services_Public_OpenData_MapServer_24",
+   "attempts_n": 4,
+   "kinds": [
+    "timeout",
+    "timeout",
+    "timeout",
+    "timeout"
+   ],
+   "kinds_n": {
+    "timeout": 4
+   },
+   "first_at": "2026-10-31T01:14:35Z",
+   "last_at": "2026-11-21T16:58:46Z",
+   "last_kind": "timeout",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 21600.1,
+   "elapsed_min": 360.0,
+   "unstable": true,
+   "runs": [
+    "44884914552"
+   ],
+   "shards": [
+    1,
+    6,
+    13
+   ]
+  },
+  {
+   "layer": "_services_NG911_ReadOnly_NG911_Addressing_Layers_MapServer_0",
+   "attempts_n": 4,
+   "kinds": [
+    "timeout",
+    "timeout",
+    "timeout",
+    "timeout"
+   ],
+   "kinds_n": {
+    "timeout": 4
+   },
+   "first_at": "2026-10-31T07:45:53Z",
+   "last_at": "2026-11-21T22:11:41Z",
+   "last_kind": "timeout",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 14400.1,
+   "elapsed_min": 240.0,
+   "unstable": true,
+   "runs": [
+    "44884914552"
+   ],
+   "shards": [
+    2,
+    19
+   ]
+  },
+  {
+   "layer": "ervices_DataPortal_DataPortal_BuildingsAddresses_MapServer_0",
+   "attempts_n": 4,
+   "kinds": [
+    "timeout",
+    "timeout",
+    "timeout",
+    "timeout"
+   ],
+   "kinds_n": {
+    "timeout": 4
+   },
+   "first_at": "2026-10-31T07:19:48Z",
+   "last_at": "2026-11-21T21:51:34Z",
+   "last_kind": "timeout",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 14400.1,
+   "elapsed_min": 240.0,
+   "unstable": true,
+   "runs": [
+    "44884914552"
+   ],
+   "shards": [
+    1,
+    16
+   ]
+  },
+  {
+   "layer": "g_arcgis_rest_services_Search_SMSA_ParcelAddress_MapServer_0",
+   "attempts_n": 4,
+   "kinds": [
+    "timeout",
+    "timeout",
+    "timeout",
+    "timeout"
+   ],
+   "kinds_n": {
+    "timeout": 4
+   },
+   "first_at": "2026-10-31T08:19:24Z",
+   "last_at": "2026-11-21T22:11:41Z",
+   "last_kind": "timeout",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 14400.1,
+   "elapsed_min": 240.0,
+   "unstable": true,
+   "runs": [
+    "44884914552"
+   ],
+   "shards": [
+    2,
+    17
+   ]
+  },
+  {
+   "layer": "arcgis_rest_services_LAWRENCEGIS_NG911Addressing_MapServer_0",
+   "attempts_n": 4,
+   "kinds": [
+    "other",
+    "other",
+    "other",
+    "other"
+   ],
+   "kinds_n": {
+    "other": 4
+   },
+   "first_at": "2026-11-21T08:34:19Z",
+   "last_at": "2026-11-21T17:43:41Z",
+   "last_kind": "other",
+   "rows_at_last": 39503,
+   "prior_units_at_last": 1,
+   "no_progress": true,
+   "elapsed_s": 377.3,
+   "elapsed_min": 6.3,
+   "unstable": true,
+   "runs": [
+    "44884914552",
+    "44931175026"
+   ],
+   "shards": [
+    0
+   ]
+  },
+  {
+   "layer": "county_com_arcgis_rest_services_features_Address_MapServer_0",
+   "attempts_n": 3,
+   "kinds": [
+    "timeout",
+    "timeout",
+    "timeout"
+   ],
+   "kinds_n": {
+    "timeout": 3
+   },
+   "first_at": "2026-10-31T07:19:48Z",
+   "last_at": "2026-11-21T16:58:46Z",
+   "last_kind": "timeout",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 10800.3,
+   "elapsed_min": 180.0,
+   "unstable": true,
+   "runs": [
+    "44884914552"
+   ],
+   "shards": [
+    1,
+    16
+   ]
+  },
+  {
+   "layer": "ca_gov_server_rest_services_Address_Range_Labels_MapServer_0",
+   "attempts_n": 3,
+   "kinds": [
+    "timeout",
+    "timeout",
+    "timeout"
+   ],
+   "kinds_n": {
+    "timeout": 3
+   },
+   "first_at": "2026-10-31T07:16:48Z",
+   "last_at": "2026-11-21T16:58:46Z",
+   "last_kind": "timeout",
+   "rows_at_last": 0,
+   "prior_units_at_last": 0,
+   "no_progress": true,
+   "elapsed_s": 10800.0,
+   "elapsed_min": 180.0,
+   "unstable": true,
+   "runs": [
     "44884914552"
    ],
    "shards": [
     0,
-    9
+    6
    ]
   }
  ],
@@ -313,6 +736,21 @@
   },
   {
    "layer": "Pvc_arcgis_rest_services_Address_Points_View_FeatureServer_2",
+   "at": "2026-11-21T04:33:50Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 2.6,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 0,
+   "source": "git:collect/ledger/05b_shard00.json@36db704",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Cannot perform query. Invalid query parameters.\", \"details\": [\"Unable to perform query. Please check your parameters",
+   "from_git": true
+  },
+  {
+   "layer": "Pvc_arcgis_rest_services_Address_Points_View_FeatureServer_2",
    "at": "2026-11-21T08:44:19Z",
    "at_src": "record",
    "kind": "other",
@@ -323,6 +761,50 @@
    "run": "44884914552",
    "shard": 0,
    "source": "05b_run44884914552.json",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Cannot perform query. Invalid query parameters.\", \"details\": [\"Unable to perform query. Please check your parameters"
+  },
+  {
+   "layer": "Pvc_arcgis_rest_services_Address_Points_View_FeatureServer_2",
+   "at": "2026-11-21T08:44:19Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 2.9,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Cannot perform query. Invalid query parameters.\", \"details\": [\"Unable to perform query. Please check your parameters",
+   "from_git": true
+  },
+  {
+   "layer": "Pvc_arcgis_rest_services_Address_Points_View_FeatureServer_2",
+   "at": "2026-11-21T08:44:19Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 2.9,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 0,
+   "source": "git:collect/ledger/05b_shard00.json@1cc4aef",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Cannot perform query. Invalid query parameters.\", \"details\": [\"Unable to perform query. Please check your parameters",
+   "from_git": true
+  },
+  {
+   "layer": "Pvc_arcgis_rest_services_Address_Points_View_FeatureServer_2",
+   "at": "2026-11-21T17:47:17Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 2.6,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44931175026",
+   "shard": 0,
+   "source": "05b_run44931175026.json",
    "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Cannot perform query. Invalid query parameters.\", \"details\": [\"Unable to perform query. Please check your parameters"
   },
   {
@@ -370,6 +852,21 @@
   },
   {
    "layer": "_ca_arcgis_adaptor_rest_services_LCGIS_VertiGIS_MapServer_25",
+   "at": "2026-11-21T04:29:50Z",
+   "at_src": "record",
+   "kind": "http_4xx",
+   "rc": 1,
+   "elapsed_s": 15.3,
+   "rows": 88,
+   "prior_units": 0,
+   "run": "",
+   "shard": 2,
+   "source": "git:collect/ledger/05b_shard02.json@12a6aa3",
+   "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU",
+   "from_git": true
+  },
+  {
+   "layer": "_ca_arcgis_adaptor_rest_services_LCGIS_VertiGIS_MapServer_25",
    "at": "2026-11-21T08:33:48Z",
    "at_src": "record",
    "kind": "http_4xx",
@@ -380,6 +877,50 @@
    "run": "44884914552",
    "shard": 0,
    "source": "05b_run44884914552.json",
+   "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU"
+  },
+  {
+   "layer": "_ca_arcgis_adaptor_rest_services_LCGIS_VertiGIS_MapServer_25",
+   "at": "2026-11-21T08:33:48Z",
+   "at_src": "record",
+   "kind": "http_4xx",
+   "rc": 1,
+   "elapsed_s": 33.5,
+   "rows": 88,
+   "prior_units": 2,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU",
+   "from_git": true
+  },
+  {
+   "layer": "_ca_arcgis_adaptor_rest_services_LCGIS_VertiGIS_MapServer_25",
+   "at": "2026-11-21T08:33:48Z",
+   "at_src": "record",
+   "kind": "http_4xx",
+   "rc": 1,
+   "elapsed_s": 33.5,
+   "rows": 88,
+   "prior_units": 2,
+   "run": "",
+   "shard": 2,
+   "source": "git:collect/ledger/05b_shard02.json@1cc4aef",
+   "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU",
+   "from_git": true
+  },
+  {
+   "layer": "_ca_arcgis_adaptor_rest_services_LCGIS_VertiGIS_MapServer_25",
+   "at": "2026-11-21T17:45:04Z",
+   "at_src": "record",
+   "kind": "http_4xx",
+   "rc": 1,
+   "elapsed_s": 25.2,
+   "rows": 88,
+   "prior_units": 2,
+   "run": "44931175026",
+   "shard": 0,
+   "source": "05b_run44931175026.json",
    "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU"
   },
   {
@@ -408,6 +949,50 @@
    "run": "44884914552",
    "shard": 0,
    "source": "05b_run44884914552.json",
+   "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU"
+  },
+  {
+   "layer": "_gov_arcgis_rest_services_Land_Records_Open_Data_MapServer_1",
+   "at": "2026-11-21T09:45:15Z",
+   "at_src": "record",
+   "kind": "http_4xx",
+   "rc": 1,
+   "elapsed_s": 11.2,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU",
+   "from_git": true
+  },
+  {
+   "layer": "_gov_arcgis_rest_services_Land_Records_Open_Data_MapServer_1",
+   "at": "2026-11-21T09:45:15Z",
+   "at_src": "record",
+   "kind": "http_4xx",
+   "rc": 1,
+   "elapsed_s": 11.2,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 1,
+   "source": "git:collect/ledger/05b_shard01.json@1cc4aef",
+   "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU",
+   "from_git": true
+  },
+  {
+   "layer": "_gov_arcgis_rest_services_Land_Records_Open_Data_MapServer_1",
+   "at": "2026-11-21T18:49:26Z",
+   "at_src": "record",
+   "kind": "http_4xx",
+   "rc": 1,
+   "elapsed_s": 6.5,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44931175026",
+   "shard": 0,
+   "source": "05b_run44931175026.json",
    "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU"
   },
   {
@@ -454,6 +1039,50 @@
    "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}"
   },
   {
+   "layer": "_gov_uk_arcweb_rest_services_Addresses_Addresses_MapServer_0",
+   "at": "2026-11-21T12:48:59Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 4.3,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}",
+   "from_git": true
+  },
+  {
+   "layer": "_gov_uk_arcweb_rest_services_Addresses_Addresses_MapServer_0",
+   "at": "2026-11-21T12:48:59Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 4.3,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 1,
+   "source": "git:collect/ledger/05b_shard01.json@1cc4aef",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}",
+   "from_git": true
+  },
+  {
+   "layer": "_gov_uk_arcweb_rest_services_Addresses_Addresses_MapServer_0",
+   "at": "2026-11-21T21:51:00Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 3.4,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44931175026",
+   "shard": 0,
+   "source": "05b_run44931175026.json",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}"
+  },
+  {
    "layer": "_services_NG911_ReadOnly_NG911_Addressing_Layers_MapServer_0",
    "at": "2026-10-31T07:45:53Z",
    "at_src": "ledger",
@@ -465,6 +1094,50 @@
    "run": "",
    "shard": 19,
    "source": "05b_shard19.json",
+   "err": ""
+  },
+  {
+   "layer": "_services_NG911_ReadOnly_NG911_Addressing_Layers_MapServer_0",
+   "at": "2026-11-21T14:17:59Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3600.0,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 2,
+   "source": "git:collect/ledger/05b_shard02.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "_services_NG911_ReadOnly_NG911_Addressing_Layers_MapServer_0",
+   "at": "2026-11-21T16:58:46Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3600.0,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "_services_NG911_ReadOnly_NG911_Addressing_Layers_MapServer_0",
+   "at": "2026-11-21T22:11:41Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3600.1,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 2,
+   "source": "05b_shard02.json",
    "err": ""
   },
   {
@@ -496,6 +1169,50 @@
    "err": ""
   },
   {
+   "layer": "arcgis_rest_services_LAWRENCEGIS_NG911Addressing_MapServer_0",
+   "at": "2026-11-21T08:34:19Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 124.7,
+   "rows": 39503,
+   "prior_units": 1,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "arcgis_rest_services_LAWRENCEGIS_NG911Addressing_MapServer_0",
+   "at": "2026-11-21T08:34:19Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 124.7,
+   "rows": 39503,
+   "prior_units": 1,
+   "run": "",
+   "shard": 0,
+   "source": "git:collect/ledger/05b_shard00.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "arcgis_rest_services_LAWRENCEGIS_NG911Addressing_MapServer_0",
+   "at": "2026-11-21T17:43:41Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 3.2,
+   "rows": 39503,
+   "prior_units": 1,
+   "run": "44931175026",
+   "shard": 0,
+   "source": "05b_run44931175026.json",
+   "err": ""
+  },
+  {
    "layer": "buncombecounty_org_arcgis_rest_services_opendata_MapServer_2",
    "at": "2026-10-31T07:45:53Z",
    "at_src": "ledger",
@@ -524,6 +1241,50 @@
    "err": "query_fail:svcerr:{\"code\": 500, \"message\": \"Error performing query operation\", \"details\": []};query_fail:svcerr:{\"code\": 500, \"message\": \"Error performing query"
   },
   {
+   "layer": "buncombecounty_org_arcgis_rest_services_opendata_MapServer_2",
+   "at": "2026-11-21T13:08:33Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 2284.5,
+   "rows": 2112000,
+   "prior_units": 1,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "query_fail:svcerr:{\"code\": 500, \"message\": \"Error performing query operation\", \"details\": []};query_fail:svcerr:{\"code\": 500, \"message\": \"Error performing query",
+   "from_git": true
+  },
+  {
+   "layer": "buncombecounty_org_arcgis_rest_services_opendata_MapServer_2",
+   "at": "2026-11-21T13:08:33Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 2284.5,
+   "rows": 2112000,
+   "prior_units": 1,
+   "run": "",
+   "shard": 2,
+   "source": "git:collect/ledger/05b_shard02.json@1cc4aef",
+   "err": "query_fail:svcerr:{\"code\": 500, \"message\": \"Error performing query operation\", \"details\": []};query_fail:svcerr:{\"code\": 500, \"message\": \"Error performing query",
+   "from_git": true
+  },
+  {
+   "layer": "buncombecounty_org_arcgis_rest_services_opendata_MapServer_2",
+   "at": "2026-11-21T22:11:41Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3600.0,
+   "rows": 0,
+   "prior_units": 3,
+   "run": "",
+   "shard": 2,
+   "source": "05b_shard02.json",
+   "err": ""
+  },
+  {
    "layer": "ca_gov_server_rest_services_Address_Range_Labels_MapServer_0",
    "at": "2026-10-31T07:16:48Z",
    "at_src": "ledger",
@@ -538,6 +1299,36 @@
    "err": ""
   },
   {
+   "layer": "ca_gov_server_rest_services_Address_Range_Labels_MapServer_0",
+   "at": "2026-11-21T10:40:58Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3600.0,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 0,
+   "source": "git:collect/ledger/05b_shard00.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "ca_gov_server_rest_services_Address_Range_Labels_MapServer_0",
+   "at": "2026-11-21T16:58:46Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3600.0,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
    "layer": "county_com_arcgis_rest_services_features_Address_MapServer_0",
    "at": "2026-10-31T07:19:48Z",
    "at_src": "ledger",
@@ -550,6 +1341,36 @@
    "shard": 16,
    "source": "05b_shard16.json",
    "err": ""
+  },
+  {
+   "layer": "county_com_arcgis_rest_services_features_Address_MapServer_0",
+   "at": "2026-11-21T12:49:30Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3600.1,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 1,
+   "source": "git:collect/ledger/05b_shard01.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "county_com_arcgis_rest_services_features_Address_MapServer_0",
+   "at": "2026-11-21T16:58:46Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3600.1,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "",
+   "from_git": true
   },
   {
    "layer": "ellington_ca_server_rest_services_Parcels_Public_MapServer_1",
@@ -624,6 +1445,50 @@
    "err": "batch0:http404: <div style=\"border: 3px solid #4991C5; font:1.5em; font-family:tahoma,calibri,arial; font-weight:bold; color:#1;batch1:http404: <div style=\"bord"
   },
   {
+   "layer": "erva_gov_arcgis_rest_services_Winchester_Address_MapServer_0",
+   "at": "2026-11-21T10:38:12Z",
+   "at_src": "record",
+   "kind": "http_4xx",
+   "rc": 1,
+   "elapsed_s": 8.9,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "batch0:http404: <div style=\"border: 3px solid #4991C5; font:1.5em; font-family:tahoma,calibri,arial; font-weight:bold; color:#1;batch1:http404: <div style=\"bord",
+   "from_git": true
+  },
+  {
+   "layer": "erva_gov_arcgis_rest_services_Winchester_Address_MapServer_0",
+   "at": "2026-11-21T10:38:12Z",
+   "at_src": "record",
+   "kind": "http_4xx",
+   "rc": 1,
+   "elapsed_s": 8.9,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 0,
+   "source": "git:collect/ledger/05b_shard00.json@1cc4aef",
+   "err": "batch0:http404: <div style=\"border: 3px solid #4991C5; font:1.5em; font-family:tahoma,calibri,arial; font-weight:bold; color:#1;batch1:http404: <div style=\"bord",
+   "from_git": true
+  },
+  {
+   "layer": "erva_gov_arcgis_rest_services_Winchester_Address_MapServer_0",
+   "at": "2026-11-21T19:38:27Z",
+   "at_src": "record",
+   "kind": "http_4xx",
+   "rc": 1,
+   "elapsed_s": 2.6,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44931175026",
+   "shard": 0,
+   "source": "05b_run44931175026.json",
+   "err": "batch0:http404: <div style=\"border: 3px solid #4991C5; font:1.5em; font-family:tahoma,calibri,arial; font-weight:bold; color:#1;batch1:http404: <div style=\"bord"
+  },
+  {
    "layer": "ervices_DataPortal_DataPortal_BuildingsAddresses_MapServer_0",
    "at": "2026-10-31T07:19:48Z",
    "at_src": "ledger",
@@ -638,6 +1503,50 @@
    "err": ""
   },
   {
+   "layer": "ervices_DataPortal_DataPortal_BuildingsAddresses_MapServer_0",
+   "at": "2026-11-21T12:49:30Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3600.0,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 1,
+   "source": "git:collect/ledger/05b_shard01.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "ervices_DataPortal_DataPortal_BuildingsAddresses_MapServer_0",
+   "at": "2026-11-21T16:58:46Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3600.0,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "ervices_DataPortal_DataPortal_BuildingsAddresses_MapServer_0",
+   "at": "2026-11-21T21:51:34Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3600.1,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 1,
+   "source": "05b_shard01.json",
+   "err": ""
+  },
+  {
    "layer": "g_arcgis_rest_services_Search_SMSA_ParcelAddress_MapServer_0",
    "at": "2026-10-31T08:19:24Z",
    "at_src": "ledger",
@@ -649,6 +1558,50 @@
    "run": "",
    "shard": 17,
    "source": "05b_shard17.json",
+   "err": ""
+  },
+  {
+   "layer": "g_arcgis_rest_services_Search_SMSA_ParcelAddress_MapServer_0",
+   "at": "2026-11-21T14:17:59Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3600.0,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 2,
+   "source": "git:collect/ledger/05b_shard02.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "g_arcgis_rest_services_Search_SMSA_ParcelAddress_MapServer_0",
+   "at": "2026-11-21T16:58:46Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3600.0,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "g_arcgis_rest_services_Search_SMSA_ParcelAddress_MapServer_0",
+   "at": "2026-11-21T22:11:41Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3600.1,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 2,
+   "source": "05b_shard02.json",
    "err": ""
   },
   {
@@ -696,6 +1649,21 @@
   },
   {
    "layer": "gis_net_arcgis_rest_services_BASE_Address_Points_MapServer_0",
+   "at": "2026-11-21T04:27:59Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 9.1,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 2,
+   "source": "git:collect/ledger/05b_shard02.json@12a6aa3",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}",
+   "from_git": true
+  },
+  {
+   "layer": "gis_net_arcgis_rest_services_BASE_Address_Points_MapServer_0",
    "at": "2026-11-21T08:32:53Z",
    "at_src": "record",
    "kind": "other",
@@ -706,6 +1674,50 @@
    "run": "44884914552",
    "shard": 0,
    "source": "05b_run44884914552.json",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}"
+  },
+  {
+   "layer": "gis_net_arcgis_rest_services_BASE_Address_Points_MapServer_0",
+   "at": "2026-11-21T08:32:53Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 3.3,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}",
+   "from_git": true
+  },
+  {
+   "layer": "gis_net_arcgis_rest_services_BASE_Address_Points_MapServer_0",
+   "at": "2026-11-21T08:32:53Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 3.3,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 2,
+   "source": "git:collect/ledger/05b_shard02.json@1cc4aef",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}",
+   "from_git": true
+  },
+  {
+   "layer": "gis_net_arcgis_rest_services_BASE_Address_Points_MapServer_0",
+   "at": "2026-11-21T17:44:18Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 29.0,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44931175026",
+   "shard": 0,
+   "source": "05b_run44931175026.json",
    "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}"
   },
   {
@@ -754,6 +1766,21 @@
   },
   {
    "layer": "ices_GeorginaMap_W84_SiteAddressPoint_Labels_W84_MapServer_0",
+   "at": "2026-11-21T04:30:35Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 3.0,
+   "rows": 20570,
+   "prior_units": 0,
+   "run": "",
+   "shard": 1,
+   "source": "git:collect/ledger/05b_shard01.json@6d00fb0",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "ices_GeorginaMap_W84_SiteAddressPoint_Labels_W84_MapServer_0",
    "at": "2026-11-21T08:33:59Z",
    "at_src": "record",
    "kind": "other",
@@ -764,6 +1791,50 @@
    "run": "44884914552",
    "shard": 0,
    "source": "05b_run44884914552.json",
+   "err": ""
+  },
+  {
+   "layer": "ices_GeorginaMap_W84_SiteAddressPoint_Labels_W84_MapServer_0",
+   "at": "2026-11-21T08:33:59Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 17.1,
+   "rows": 20570,
+   "prior_units": 1,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "ices_GeorginaMap_W84_SiteAddressPoint_Labels_W84_MapServer_0",
+   "at": "2026-11-21T08:33:59Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 17.1,
+   "rows": 20570,
+   "prior_units": 1,
+   "run": "",
+   "shard": 1,
+   "source": "git:collect/ledger/05b_shard01.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "ices_GeorginaMap_W84_SiteAddressPoint_Labels_W84_MapServer_0",
+   "at": "2026-11-21T17:45:04Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 2.8,
+   "rows": 20570,
+   "prior_units": 1,
+   "run": "44931175026",
+   "shard": 0,
+   "source": "05b_run44931175026.json",
    "err": ""
   },
   {
@@ -797,6 +1868,21 @@
   },
   {
    "layer": "nDataMaps_OpenDataMAP_InfraZonePropBound_Layers_MapServer_33",
+   "at": "2026-11-21T04:33:30Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 2.1,
+   "rows": 9602,
+   "prior_units": 0,
+   "run": "",
+   "shard": 0,
+   "source": "git:collect/ledger/05b_shard00.json@36db704",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "nDataMaps_OpenDataMAP_InfraZonePropBound_Layers_MapServer_33",
    "at": "2026-11-21T08:43:57Z",
    "at_src": "record",
    "kind": "other",
@@ -807,6 +1893,50 @@
    "run": "44884914552",
    "shard": 0,
    "source": "05b_run44884914552.json",
+   "err": ""
+  },
+  {
+   "layer": "nDataMaps_OpenDataMAP_InfraZonePropBound_Layers_MapServer_33",
+   "at": "2026-11-21T08:43:57Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 18.8,
+   "rows": 9602,
+   "prior_units": 1,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "nDataMaps_OpenDataMAP_InfraZonePropBound_Layers_MapServer_33",
+   "at": "2026-11-21T08:43:57Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 18.8,
+   "rows": 9602,
+   "prior_units": 1,
+   "run": "",
+   "shard": 0,
+   "source": "git:collect/ledger/05b_shard00.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "nDataMaps_OpenDataMAP_InfraZonePropBound_Layers_MapServer_33",
+   "at": "2026-11-21T17:47:02Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 2.7,
+   "rows": 9602,
+   "prior_units": 1,
+   "run": "44931175026",
+   "shard": 0,
+   "source": "05b_run44931175026.json",
    "err": ""
   },
   {
@@ -853,6 +1983,50 @@
    "err": ""
   },
   {
+   "layer": "nc_gov_server_rest_services_CityWorks_Basemap_CW_MapServer_0",
+   "at": "2026-11-21T12:05:22Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 360.2,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "nc_gov_server_rest_services_CityWorks_Basemap_CW_MapServer_0",
+   "at": "2026-11-21T12:05:22Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 360.2,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 2,
+   "source": "git:collect/ledger/05b_shard02.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "nc_gov_server_rest_services_CityWorks_Basemap_CW_MapServer_0",
+   "at": "2026-11-21T21:04:51Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 359.3,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44931175026",
+   "shard": 0,
+   "source": "05b_run44931175026.json",
+   "err": ""
+  },
+  {
    "layer": "ntygov_com_server_rest_services_Addresses_Public_MapServer_0",
    "at": "2026-10-31T04:58:13Z",
    "at_src": "record",
@@ -878,6 +2052,50 @@
    "run": "44884914552",
    "shard": 0,
    "source": "05b_run44884914552.json",
+   "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU"
+  },
+  {
+   "layer": "ntygov_com_server_rest_services_Addresses_Public_MapServer_0",
+   "at": "2026-11-21T10:47:07Z",
+   "at_src": "record",
+   "kind": "http_4xx",
+   "rc": 1,
+   "elapsed_s": 36.8,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU",
+   "from_git": true
+  },
+  {
+   "layer": "ntygov_com_server_rest_services_Addresses_Public_MapServer_0",
+   "at": "2026-11-21T10:47:07Z",
+   "at_src": "record",
+   "kind": "http_4xx",
+   "rc": 1,
+   "elapsed_s": 36.8,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 2,
+   "source": "git:collect/ledger/05b_shard02.json@1cc4aef",
+   "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU",
+   "from_git": true
+  },
+  {
+   "layer": "ntygov_com_server_rest_services_Addresses_Public_MapServer_0",
+   "at": "2026-11-21T19:49:13Z",
+   "at_src": "record",
+   "kind": "http_4xx",
+   "rc": 1,
+   "elapsed_s": 51.8,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44931175026",
+   "shard": 0,
+   "source": "05b_run44931175026.json",
    "err": "batch0:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch1:http404:<!DOCTYPE html PU"
   },
   {
@@ -925,6 +2143,21 @@
   },
   {
    "layer": "om_arcgis_rest_services_Cadastral_Address_Points_MapServer_0",
+   "at": "2026-11-21T04:27:50Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 2.3,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 2,
+   "source": "git:collect/ledger/05b_shard02.json@12a6aa3",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}",
+   "from_git": true
+  },
+  {
+   "layer": "om_arcgis_rest_services_Cadastral_Address_Points_MapServer_0",
    "at": "2026-11-21T08:32:50Z",
    "at_src": "record",
    "kind": "other",
@@ -935,6 +2168,50 @@
    "run": "44884914552",
    "shard": 0,
    "source": "05b_run44884914552.json",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}"
+  },
+  {
+   "layer": "om_arcgis_rest_services_Cadastral_Address_Points_MapServer_0",
+   "at": "2026-11-21T08:32:50Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 30.1,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}",
+   "from_git": true
+  },
+  {
+   "layer": "om_arcgis_rest_services_Cadastral_Address_Points_MapServer_0",
+   "at": "2026-11-21T08:32:50Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 30.1,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 2,
+   "source": "git:collect/ledger/05b_shard02.json@1cc4aef",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}",
+   "from_git": true
+  },
+  {
+   "layer": "om_arcgis_rest_services_Cadastral_Address_Points_MapServer_0",
+   "at": "2026-11-21T17:43:49Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 2.8,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44931175026",
+   "shard": 0,
+   "source": "05b_run44931175026.json",
    "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}"
   },
   {
@@ -966,6 +2243,50 @@
    "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}"
   },
   {
+   "layer": "ov_gis_rest_services_Map_Reference_Address_Label_MapServer_0",
+   "at": "2026-11-21T13:14:21Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 23.7,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}",
+   "from_git": true
+  },
+  {
+   "layer": "ov_gis_rest_services_Map_Reference_Address_Label_MapServer_0",
+   "at": "2026-11-21T13:14:21Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 23.7,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 2,
+   "source": "git:collect/ledger/05b_shard02.json@1cc4aef",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}",
+   "from_git": true
+  },
+  {
+   "layer": "ov_gis_rest_services_Map_Reference_Address_Label_MapServer_0",
+   "at": "2026-11-21T22:07:54Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 24.6,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44931175026",
+   "shard": 0,
+   "source": "05b_run44931175026.json",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}"
+  },
+  {
    "layer": "paca_wi_us_arcgis_rest_services_Public_OpenData_MapServer_24",
    "at": "2026-10-31T01:14:35Z",
    "at_src": "ledger",
@@ -993,6 +2314,36 @@
    "shard": 13,
    "source": "05b_shard13.json",
    "err": ""
+  },
+  {
+   "layer": "paca_wi_us_arcgis_rest_services_Public_OpenData_MapServer_24",
+   "at": "2026-11-21T12:49:30Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3600.0,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 1,
+   "source": "git:collect/ledger/05b_shard01.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "paca_wi_us_arcgis_rest_services_Public_OpenData_MapServer_24",
+   "at": "2026-11-21T16:58:46Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3600.0,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "",
+   "from_git": true
   },
   {
    "layer": "s_InternalANDPublicMaps_Churches_and_Cemeteries_MapServer_10",
@@ -1040,6 +2391,21 @@
   },
   {
    "layer": "st_services_GeorginaMap_W84_SiteAddressPoint_W84_MapServer_0",
+   "at": "2026-11-21T04:30:32Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 2.7,
+   "rows": 20567,
+   "prior_units": 0,
+   "run": "",
+   "shard": 1,
+   "source": "git:collect/ledger/05b_shard01.json@6d00fb0",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "st_services_GeorginaMap_W84_SiteAddressPoint_W84_MapServer_0",
    "at": "2026-11-21T08:33:42Z",
    "at_src": "record",
    "kind": "other",
@@ -1050,6 +2416,50 @@
    "run": "44884914552",
    "shard": 0,
    "source": "05b_run44884914552.json",
+   "err": ""
+  },
+  {
+   "layer": "st_services_GeorginaMap_W84_SiteAddressPoint_W84_MapServer_0",
+   "at": "2026-11-21T08:33:42Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 15.7,
+   "rows": 20567,
+   "prior_units": 1,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "st_services_GeorginaMap_W84_SiteAddressPoint_W84_MapServer_0",
+   "at": "2026-11-21T08:33:42Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 15.7,
+   "rows": 20567,
+   "prior_units": 1,
+   "run": "",
+   "shard": 1,
+   "source": "git:collect/ledger/05b_shard01.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "st_services_GeorginaMap_W84_SiteAddressPoint_W84_MapServer_0",
+   "at": "2026-11-21T17:45:02Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 2.6,
+   "rows": 20567,
+   "prior_units": 1,
+   "run": "44931175026",
+   "shard": 0,
+   "source": "05b_run44931175026.json",
    "err": ""
   },
   {
@@ -1096,6 +2506,36 @@
    "err": ""
   },
   {
+   "layer": "tamonica_gov_server_rest_services_Address_Points_MapServer_0",
+   "at": "2026-11-21T14:17:59Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3600.0,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 2,
+   "source": "git:collect/ledger/05b_shard02.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "tamonica_gov_server_rest_services_Address_Points_MapServer_0",
+   "at": "2026-11-21T16:58:46Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3600.0,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
    "layer": "unty_org_arcgis_rest_services_OpenData_Property_MapServer_12",
    "at": "2026-11-21T13:17:28Z",
    "at_src": "record",
@@ -1107,6 +2547,50 @@
    "run": "44884914552",
    "shard": 0,
    "source": "05b_run44884914552.json",
+   "err": "batch250:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch251:http404:<!DOCTYPE htm"
+  },
+  {
+   "layer": "unty_org_arcgis_rest_services_OpenData_Property_MapServer_12",
+   "at": "2026-11-21T13:17:28Z",
+   "at_src": "record",
+   "kind": "http_4xx",
+   "rc": 1,
+   "elapsed_s": 16.3,
+   "rows": 71,
+   "prior_units": 0,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "batch250:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch251:http404:<!DOCTYPE htm",
+   "from_git": true
+  },
+  {
+   "layer": "unty_org_arcgis_rest_services_OpenData_Property_MapServer_12",
+   "at": "2026-11-21T13:17:28Z",
+   "at_src": "record",
+   "kind": "http_4xx",
+   "rc": 1,
+   "elapsed_s": 16.3,
+   "rows": 71,
+   "prior_units": 0,
+   "run": "",
+   "shard": 2,
+   "source": "git:collect/ledger/05b_shard02.json@1cc4aef",
+   "err": "batch250:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch251:http404:<!DOCTYPE htm",
+   "from_git": true
+  },
+  {
+   "layer": "unty_org_arcgis_rest_services_OpenData_Property_MapServer_12",
+   "at": "2026-11-21T22:10:27Z",
+   "at_src": "record",
+   "kind": "http_4xx",
+   "rc": 1,
+   "elapsed_s": 10.2,
+   "rows": 71,
+   "prior_units": 1,
+   "run": "",
+   "shard": 2,
+   "source": "05b_shard02.json",
    "err": "batch250:http404:<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n<;batch251:http404:<!DOCTYPE htm"
   },
   {
@@ -1153,6 +2637,36 @@
    "err": ""
   },
   {
+   "layer": "untywi_gov_vilasgis_rest_services_V4_SiteAddress_MapServer_0",
+   "at": "2026-11-21T12:49:30Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3600.1,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 1,
+   "source": "git:collect/ledger/05b_shard01.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "untywi_gov_vilasgis_rest_services_V4_SiteAddress_MapServer_0",
+   "at": "2026-11-21T16:58:46Z",
+   "at_src": "ledger",
+   "kind": "timeout",
+   "rc": -1,
+   "elapsed_s": 3600.1,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
    "layer": "us_arcgis_rest_services_Addressing_AddressPoints_MapServer_0",
    "at": "2026-10-31T07:16:01Z",
    "at_src": "record",
@@ -1178,6 +2692,50 @@
    "run": "44884914552",
    "shard": 0,
    "source": "05b_run44884914552.json",
+   "err": ""
+  },
+  {
+   "layer": "us_arcgis_rest_services_Addressing_AddressPoints_MapServer_0",
+   "at": "2026-11-21T10:36:44Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 9.5,
+   "rows": 6616,
+   "prior_units": 1,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "us_arcgis_rest_services_Addressing_AddressPoints_MapServer_0",
+   "at": "2026-11-21T10:36:44Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 9.5,
+   "rows": 6616,
+   "prior_units": 1,
+   "run": "",
+   "shard": 0,
+   "source": "git:collect/ledger/05b_shard00.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "us_arcgis_rest_services_Addressing_AddressPoints_MapServer_0",
+   "at": "2026-11-21T19:37:45Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 3.5,
+   "rows": 6616,
+   "prior_units": 1,
+   "run": "44931175026",
+   "shard": 0,
+   "source": "05b_run44931175026.json",
    "err": ""
   },
   {
@@ -1209,6 +2767,50 @@
    "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}"
   },
   {
+   "layer": "v_gis_rest_services_Map_Reference_Street_Address_MapServer_0",
+   "at": "2026-11-21T13:13:58Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 23.0,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}",
+   "from_git": true
+  },
+  {
+   "layer": "v_gis_rest_services_Map_Reference_Street_Address_MapServer_0",
+   "at": "2026-11-21T13:13:58Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 23.0,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 2,
+   "source": "git:collect/ledger/05b_shard02.json@1cc4aef",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}",
+   "from_git": true
+  },
+  {
+   "layer": "v_gis_rest_services_Map_Reference_Street_Address_MapServer_0",
+   "at": "2026-11-21T22:07:30Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 26.9,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44931175026",
+   "shard": 0,
+   "source": "05b_run44931175026.json",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}"
+  },
+  {
    "layer": "vices_Join_Features_to_Address_Points_2_view_FeatureServer_0",
    "at": "2026-10-31T05:29:41Z",
    "at_src": "record",
@@ -1237,6 +2839,50 @@
    "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Cannot perform query. Invalid query parameters.\", \"details\": [\"Unable to perform query. Please check your parameters"
   },
   {
+   "layer": "vices_Join_Features_to_Address_Points_2_view_FeatureServer_0",
+   "at": "2026-11-21T10:51:40Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 224.8,
+   "rows": 1400,
+   "prior_units": 1,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Cannot perform query. Invalid query parameters.\", \"details\": [\"Unable to perform query. Please check your parameters",
+   "from_git": true
+  },
+  {
+   "layer": "vices_Join_Features_to_Address_Points_2_view_FeatureServer_0",
+   "at": "2026-11-21T10:51:40Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 224.8,
+   "rows": 1400,
+   "prior_units": 1,
+   "run": "",
+   "shard": 2,
+   "source": "git:collect/ledger/05b_shard02.json@1cc4aef",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Cannot perform query. Invalid query parameters.\", \"details\": [\"Unable to perform query. Please check your parameters",
+   "from_git": true
+  },
+  {
+   "layer": "vices_Join_Features_to_Address_Points_2_view_FeatureServer_0",
+   "at": "2026-11-21T19:57:50Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 477.7,
+   "rows": 2400,
+   "prior_units": 2,
+   "run": "44931175026",
+   "shard": 0,
+   "source": "05b_run44931175026.json",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Cannot perform query. Invalid query parameters.\", \"details\": [\"Unable to perform query. Please check your parameters"
+  },
+  {
    "layer": "vt_nz_arcgis_rest_services_CorporateData_Address_MapServer_0",
    "at": "2026-10-31T07:26:42Z",
    "at_src": "record",
@@ -1262,6 +2908,50 @@
    "run": "44884914552",
    "shard": 0,
    "source": "05b_run44884914552.json",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}"
+  },
+  {
+   "layer": "vt_nz_arcgis_rest_services_CorporateData_Address_MapServer_0",
+   "at": "2026-11-21T13:14:42Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 9.9,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}",
+   "from_git": true
+  },
+  {
+   "layer": "vt_nz_arcgis_rest_services_CorporateData_Address_MapServer_0",
+   "at": "2026-11-21T13:14:42Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 9.9,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "",
+   "shard": 2,
+   "source": "git:collect/ledger/05b_shard02.json@1cc4aef",
+   "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}",
+   "from_git": true
+  },
+  {
+   "layer": "vt_nz_arcgis_rest_services_CorporateData_Address_MapServer_0",
+   "at": "2026-11-21T22:08:29Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 8.7,
+   "rows": 0,
+   "prior_units": 0,
+   "run": "44931175026",
+   "shard": 0,
+   "source": "05b_run44931175026.json",
    "err": "query_fail:svcerr:{\"code\": 400, \"message\": \"Invalid or missing input parameters.\", \"details\": []}"
   },
   {
@@ -1295,6 +2985,21 @@
   },
   {
    "layer": "wi_us_arcgis_rest_services_RichlandCo_GIS_Public_MapServer_6",
+   "at": "2026-11-21T04:33:12Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 2.8,
+   "rows": 9101,
+   "prior_units": 0,
+   "run": "",
+   "shard": 0,
+   "source": "git:collect/ledger/05b_shard00.json@36db704",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "wi_us_arcgis_rest_services_RichlandCo_GIS_Public_MapServer_6",
    "at": "2026-11-21T08:43:29Z",
    "at_src": "record",
    "kind": "other",
@@ -1305,6 +3010,50 @@
    "run": "44884914552",
    "shard": 0,
    "source": "05b_run44884914552.json",
+   "err": ""
+  },
+  {
+   "layer": "wi_us_arcgis_rest_services_RichlandCo_GIS_Public_MapServer_6",
+   "at": "2026-11-21T08:43:29Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 13.4,
+   "rows": 9101,
+   "prior_units": 1,
+   "run": "44884914552",
+   "shard": null,
+   "source": "git:collect/ledger/05b_run44884914552.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "wi_us_arcgis_rest_services_RichlandCo_GIS_Public_MapServer_6",
+   "at": "2026-11-21T08:43:29Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 13.4,
+   "rows": 9101,
+   "prior_units": 1,
+   "run": "",
+   "shard": 0,
+   "source": "git:collect/ledger/05b_shard00.json@1cc4aef",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "wi_us_arcgis_rest_services_RichlandCo_GIS_Public_MapServer_6",
+   "at": "2026-11-21T17:46:51Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 3.4,
+   "rows": 9101,
+   "prior_units": 1,
+   "run": "44931175026",
+   "shard": 0,
+   "source": "05b_run44931175026.json",
    "err": ""
   }
  ],
@@ -1334,29 +3083,34 @@
   },
   "Pvc_arcgis_rest_services_Address_Points_View_FeatureServer_2": {
    "layer": "Pvc_arcgis_rest_services_Address_Points_View_FeatureServer_2",
-   "attempts_n": 4,
+   "attempts_n": 8,
    "kinds": [
+    "other",
+    "other",
+    "other",
+    "other",
     "other",
     "other",
     "other",
     "other"
    ],
    "kinds_n": {
-    "other": 4
+    "other": 8
    },
    "first_at": "2026-10-30T20:44:41Z",
-   "last_at": "2026-11-21T08:44:19Z",
+   "last_at": "2026-11-21T17:47:17Z",
    "last_kind": "other",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 10.5,
-   "elapsed_min": 0.2,
+   "elapsed_s": 21.5,
+   "elapsed_min": 0.4,
    "unstable": true,
    "runs": [
     "41167836540",
     "44865991911",
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
     0,
@@ -1365,111 +3119,133 @@
   },
   "_ca_arcgis_adaptor_rest_services_LCGIS_VertiGIS_MapServer_25": {
    "layer": "_ca_arcgis_adaptor_rest_services_LCGIS_VertiGIS_MapServer_25",
-   "attempts_n": 4,
+   "attempts_n": 8,
    "kinds": [
+    "http_4xx",
+    "http_4xx",
+    "http_4xx",
+    "http_4xx",
     "http_4xx",
     "http_4xx",
     "http_4xx",
     "http_4xx"
    ],
    "kinds_n": {
-    "http_4xx": 4
+    "http_4xx": 8
    },
    "first_at": "2026-10-31T02:45:54Z",
-   "last_at": "2026-11-21T08:33:48Z",
+   "last_at": "2026-11-21T17:45:04Z",
    "last_kind": "http_4xx",
    "rows_at_last": 88,
    "prior_units_at_last": 2,
    "no_progress": false,
-   "elapsed_s": 88.2,
-   "elapsed_min": 1.5,
+   "elapsed_s": 195.7,
+   "elapsed_min": 3.3,
    "unstable": false,
    "runs": [
     "41167836540",
     "44865991911",
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
     0,
+    2,
     9
    ]
   },
   "_gov_arcgis_rest_services_Land_Records_Open_Data_MapServer_1": {
    "layer": "_gov_arcgis_rest_services_Land_Records_Open_Data_MapServer_1",
-   "attempts_n": 2,
+   "attempts_n": 5,
    "kinds": [
+    "http_4xx",
+    "http_4xx",
+    "http_4xx",
     "http_4xx",
     "http_4xx"
    ],
    "kinds_n": {
-    "http_4xx": 2
+    "http_4xx": 5
    },
    "first_at": "2026-10-31T04:49:40Z",
-   "last_at": "2026-11-21T09:45:15Z",
+   "last_at": "2026-11-21T18:49:26Z",
    "last_kind": "http_4xx",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 30.3,
-   "elapsed_min": 0.5,
-   "unstable": false,
+   "elapsed_s": 59.2,
+   "elapsed_min": 1.0,
+   "unstable": true,
    "runs": [
     "41167836540",
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
-    0
+    0,
+    1
    ]
   },
   "_gov_uk_arcweb_rest_services_Addresses_Addresses_MapServer_0": {
    "layer": "_gov_uk_arcweb_rest_services_Addresses_Addresses_MapServer_0",
-   "attempts_n": 3,
+   "attempts_n": 6,
    "kinds": [
+    "other",
+    "other",
+    "other",
     "other",
     "other",
     "other"
    ],
    "kinds_n": {
-    "other": 3
+    "other": 6
    },
    "first_at": "2026-10-31T00:42:24Z",
-   "last_at": "2026-11-21T12:48:59Z",
+   "last_at": "2026-11-21T21:51:00Z",
    "last_kind": "other",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 11.7,
-   "elapsed_min": 0.2,
+   "elapsed_s": 23.7,
+   "elapsed_min": 0.4,
    "unstable": true,
    "runs": [
     "41167836540",
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
     0,
+    1,
     9
    ]
   },
   "_services_NG911_ReadOnly_NG911_Addressing_Layers_MapServer_0": {
    "layer": "_services_NG911_ReadOnly_NG911_Addressing_Layers_MapServer_0",
-   "attempts_n": 1,
+   "attempts_n": 4,
    "kinds": [
+    "timeout",
+    "timeout",
+    "timeout",
     "timeout"
    ],
    "kinds_n": {
-    "timeout": 1
+    "timeout": 4
    },
    "first_at": "2026-10-31T07:45:53Z",
-   "last_at": "2026-10-31T07:45:53Z",
+   "last_at": "2026-11-21T22:11:41Z",
    "last_kind": "timeout",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 3600.0,
-   "elapsed_min": 60.0,
-   "unstable": false,
-   "runs": [],
+   "elapsed_s": 14400.1,
+   "elapsed_min": 240.0,
+   "unstable": true,
+   "runs": [
+    "44884914552"
+   ],
    "shards": [
+    2,
     19
    ]
   },
@@ -1498,24 +3274,28 @@
   },
   "arcgis_rest_services_LAWRENCEGIS_NG911Addressing_MapServer_0": {
    "layer": "arcgis_rest_services_LAWRENCEGIS_NG911Addressing_MapServer_0",
-   "attempts_n": 1,
+   "attempts_n": 4,
    "kinds": [
+    "other",
+    "other",
+    "other",
     "other"
    ],
    "kinds_n": {
-    "other": 1
+    "other": 4
    },
    "first_at": "2026-11-21T08:34:19Z",
-   "last_at": "2026-11-21T08:34:19Z",
+   "last_at": "2026-11-21T17:43:41Z",
    "last_kind": "other",
    "rows_at_last": 39503,
    "prior_units_at_last": 1,
    "no_progress": true,
-   "elapsed_s": 124.7,
-   "elapsed_min": 2.1,
-   "unstable": false,
+   "elapsed_s": 377.3,
+   "elapsed_min": 6.3,
+   "unstable": true,
    "runs": [
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
     0
@@ -1523,75 +3303,89 @@
   },
   "buncombecounty_org_arcgis_rest_services_opendata_MapServer_2": {
    "layer": "buncombecounty_org_arcgis_rest_services_opendata_MapServer_2",
-   "attempts_n": 2,
+   "attempts_n": 5,
    "kinds": [
     "timeout",
-    "other"
+    "other",
+    "other",
+    "other",
+    "timeout"
    ],
    "kinds_n": {
-    "timeout": 1,
-    "other": 1
+    "timeout": 2,
+    "other": 3
    },
    "first_at": "2026-10-31T07:45:53Z",
-   "last_at": "2026-11-21T13:08:33Z",
-   "last_kind": "other",
-   "rows_at_last": 2112000,
-   "prior_units_at_last": 1,
+   "last_at": "2026-11-21T22:11:41Z",
+   "last_kind": "timeout",
+   "rows_at_last": 0,
+   "prior_units_at_last": 3,
    "no_progress": false,
-   "elapsed_s": 5884.5,
-   "elapsed_min": 98.1,
+   "elapsed_s": 14053.5,
+   "elapsed_min": 234.2,
    "unstable": false,
    "runs": [
     "44884914552"
    ],
    "shards": [
     0,
+    2,
     19
    ]
   },
   "ca_gov_server_rest_services_Address_Range_Labels_MapServer_0": {
    "layer": "ca_gov_server_rest_services_Address_Range_Labels_MapServer_0",
-   "attempts_n": 1,
+   "attempts_n": 3,
    "kinds": [
+    "timeout",
+    "timeout",
     "timeout"
    ],
    "kinds_n": {
-    "timeout": 1
+    "timeout": 3
    },
    "first_at": "2026-10-31T07:16:48Z",
-   "last_at": "2026-10-31T07:16:48Z",
+   "last_at": "2026-11-21T16:58:46Z",
    "last_kind": "timeout",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 3600.0,
-   "elapsed_min": 60.0,
-   "unstable": false,
-   "runs": [],
+   "elapsed_s": 10800.0,
+   "elapsed_min": 180.0,
+   "unstable": true,
+   "runs": [
+    "44884914552"
+   ],
    "shards": [
+    0,
     6
    ]
   },
   "county_com_arcgis_rest_services_features_Address_MapServer_0": {
    "layer": "county_com_arcgis_rest_services_features_Address_MapServer_0",
-   "attempts_n": 1,
+   "attempts_n": 3,
    "kinds": [
+    "timeout",
+    "timeout",
     "timeout"
    ],
    "kinds_n": {
-    "timeout": 1
+    "timeout": 3
    },
    "first_at": "2026-10-31T07:19:48Z",
-   "last_at": "2026-10-31T07:19:48Z",
+   "last_at": "2026-11-21T16:58:46Z",
    "last_kind": "timeout",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 3600.1,
-   "elapsed_min": 60.0,
-   "unstable": false,
-   "runs": [],
+   "elapsed_s": 10800.3,
+   "elapsed_min": 180.0,
+   "unstable": true,
+   "runs": [
+    "44884914552"
+   ],
    "shards": [
+    1,
     16
    ]
   },
@@ -1624,27 +3418,31 @@
   },
   "erva_gov_arcgis_rest_services_Winchester_Address_MapServer_0": {
    "layer": "erva_gov_arcgis_rest_services_Winchester_Address_MapServer_0",
-   "attempts_n": 3,
+   "attempts_n": 6,
    "kinds": [
+    "http_4xx",
+    "http_4xx",
+    "http_4xx",
     "http_4xx",
     "http_4xx",
     "http_4xx"
    ],
    "kinds_n": {
-    "http_4xx": 3
+    "http_4xx": 6
    },
    "first_at": "2026-10-30T20:42:03Z",
-   "last_at": "2026-11-21T10:38:12Z",
+   "last_at": "2026-11-21T19:38:27Z",
    "last_kind": "http_4xx",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 14.7,
-   "elapsed_min": 0.2,
+   "elapsed_s": 35.1,
+   "elapsed_min": 0.6,
    "unstable": true,
    "runs": [
     "41167836540",
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
     0,
@@ -1653,78 +3451,96 @@
   },
   "ervices_DataPortal_DataPortal_BuildingsAddresses_MapServer_0": {
    "layer": "ervices_DataPortal_DataPortal_BuildingsAddresses_MapServer_0",
-   "attempts_n": 1,
+   "attempts_n": 4,
    "kinds": [
+    "timeout",
+    "timeout",
+    "timeout",
     "timeout"
    ],
    "kinds_n": {
-    "timeout": 1
+    "timeout": 4
    },
    "first_at": "2026-10-31T07:19:48Z",
-   "last_at": "2026-10-31T07:19:48Z",
+   "last_at": "2026-11-21T21:51:34Z",
    "last_kind": "timeout",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 3600.0,
-   "elapsed_min": 60.0,
-   "unstable": false,
-   "runs": [],
+   "elapsed_s": 14400.1,
+   "elapsed_min": 240.0,
+   "unstable": true,
+   "runs": [
+    "44884914552"
+   ],
    "shards": [
+    1,
     16
    ]
   },
   "g_arcgis_rest_services_Search_SMSA_ParcelAddress_MapServer_0": {
    "layer": "g_arcgis_rest_services_Search_SMSA_ParcelAddress_MapServer_0",
-   "attempts_n": 1,
+   "attempts_n": 4,
    "kinds": [
+    "timeout",
+    "timeout",
+    "timeout",
     "timeout"
    ],
    "kinds_n": {
-    "timeout": 1
+    "timeout": 4
    },
    "first_at": "2026-10-31T08:19:24Z",
-   "last_at": "2026-10-31T08:19:24Z",
+   "last_at": "2026-11-21T22:11:41Z",
    "last_kind": "timeout",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 3600.0,
-   "elapsed_min": 60.0,
-   "unstable": false,
-   "runs": [],
+   "elapsed_s": 14400.1,
+   "elapsed_min": 240.0,
+   "unstable": true,
+   "runs": [
+    "44884914552"
+   ],
    "shards": [
+    2,
     17
    ]
   },
   "gis_net_arcgis_rest_services_BASE_Address_Points_MapServer_0": {
    "layer": "gis_net_arcgis_rest_services_BASE_Address_Points_MapServer_0",
-   "attempts_n": 4,
+   "attempts_n": 8,
    "kinds": [
+    "other",
+    "other",
+    "other",
+    "other",
     "other",
     "other",
     "other",
     "other"
    ],
    "kinds_n": {
-    "other": 4
+    "other": 8
    },
    "first_at": "2026-10-31T01:05:22Z",
-   "last_at": "2026-11-21T08:32:53Z",
+   "last_at": "2026-11-21T17:44:18Z",
    "last_kind": "other",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 17.3,
-   "elapsed_min": 0.3,
+   "elapsed_s": 62.0,
+   "elapsed_min": 1.0,
    "unstable": true,
    "runs": [
     "41167836540",
     "44865991911",
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
     0,
+    2,
     9
    ]
   },
@@ -1753,56 +3569,67 @@
   },
   "ices_GeorginaMap_W84_SiteAddressPoint_Labels_W84_MapServer_0": {
    "layer": "ices_GeorginaMap_W84_SiteAddressPoint_Labels_W84_MapServer_0",
-   "attempts_n": 3,
+   "attempts_n": 7,
    "kinds": [
+    "other",
+    "other",
+    "other",
+    "other",
     "other",
     "other",
     "other"
    ],
    "kinds_n": {
-    "other": 3
+    "other": 7
    },
    "first_at": "2026-10-30T21:29:12Z",
-   "last_at": "2026-11-21T08:33:59Z",
+   "last_at": "2026-11-21T17:45:04Z",
    "last_kind": "other",
    "rows_at_last": 20570,
    "prior_units_at_last": 1,
    "no_progress": false,
-   "elapsed_s": 35.3,
-   "elapsed_min": 0.6,
+   "elapsed_s": 75.3,
+   "elapsed_min": 1.3,
    "unstable": false,
    "runs": [
     "44865991911",
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
     0,
+    1,
     5
    ]
   },
   "nDataMaps_OpenDataMAP_InfraZonePropBound_Layers_MapServer_33": {
    "layer": "nDataMaps_OpenDataMAP_InfraZonePropBound_Layers_MapServer_33",
-   "attempts_n": 3,
+   "attempts_n": 7,
    "kinds": [
+    "other",
+    "other",
+    "other",
+    "other",
     "other",
     "other",
     "other"
    ],
    "kinds_n": {
-    "other": 3
+    "other": 7
    },
    "first_at": "2026-10-30T20:35:03Z",
-   "last_at": "2026-11-21T08:43:57Z",
+   "last_at": "2026-11-21T17:47:02Z",
    "last_kind": "other",
    "rows_at_last": 9602,
    "prior_units_at_last": 1,
    "no_progress": false,
-   "elapsed_s": 32.7,
-   "elapsed_min": 0.5,
+   "elapsed_s": 75.1,
+   "elapsed_min": 1.3,
    "unstable": false,
    "runs": [
     "44865991911",
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
     0,
@@ -1811,139 +3638,165 @@
   },
   "nc_gov_server_rest_services_CityWorks_Basemap_CW_MapServer_0": {
    "layer": "nc_gov_server_rest_services_CityWorks_Basemap_CW_MapServer_0",
-   "attempts_n": 3,
+   "attempts_n": 6,
    "kinds": [
+    "other",
+    "other",
+    "other",
     "other",
     "other",
     "other"
    ],
    "kinds_n": {
-    "other": 3
+    "other": 6
    },
    "first_at": "2026-10-30T22:39:17Z",
-   "last_at": "2026-11-21T12:05:22Z",
+   "last_at": "2026-11-21T21:04:51Z",
    "last_kind": "other",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 1078.1,
-   "elapsed_min": 18.0,
+   "elapsed_s": 2157.8,
+   "elapsed_min": 36.0,
    "unstable": true,
    "runs": [
     "41167836540",
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
     0,
+    2,
     12
    ]
   },
   "ntygov_com_server_rest_services_Addresses_Public_MapServer_0": {
    "layer": "ntygov_com_server_rest_services_Addresses_Public_MapServer_0",
-   "attempts_n": 2,
+   "attempts_n": 5,
    "kinds": [
+    "http_4xx",
+    "http_4xx",
+    "http_4xx",
     "http_4xx",
     "http_4xx"
    ],
    "kinds_n": {
-    "http_4xx": 2
+    "http_4xx": 5
    },
    "first_at": "2026-10-31T04:58:13Z",
-   "last_at": "2026-11-21T10:47:07Z",
+   "last_at": "2026-11-21T19:49:13Z",
    "last_kind": "http_4xx",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 71.7,
-   "elapsed_min": 1.2,
-   "unstable": false,
+   "elapsed_s": 197.1,
+   "elapsed_min": 3.3,
+   "unstable": true,
    "runs": [
     "41167836540",
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
-    0
+    0,
+    2
    ]
   },
   "om_arcgis_rest_services_Cadastral_Address_Points_MapServer_0": {
    "layer": "om_arcgis_rest_services_Cadastral_Address_Points_MapServer_0",
-   "attempts_n": 4,
+   "attempts_n": 8,
    "kinds": [
+    "other",
+    "other",
+    "other",
+    "other",
     "other",
     "other",
     "other",
     "other"
    ],
    "kinds_n": {
-    "other": 4
+    "other": 8
    },
    "first_at": "2026-10-31T01:03:47Z",
-   "last_at": "2026-11-21T08:32:50Z",
+   "last_at": "2026-11-21T17:43:49Z",
    "last_kind": "other",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 37.6,
-   "elapsed_min": 0.6,
+   "elapsed_s": 102.9,
+   "elapsed_min": 1.7,
    "unstable": true,
    "runs": [
     "41167836540",
     "44865991911",
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
     0,
+    2,
     9
    ]
   },
   "ov_gis_rest_services_Map_Reference_Address_Label_MapServer_0": {
    "layer": "ov_gis_rest_services_Map_Reference_Address_Label_MapServer_0",
-   "attempts_n": 2,
+   "attempts_n": 5,
    "kinds": [
+    "other",
+    "other",
+    "other",
     "other",
     "other"
    ],
    "kinds_n": {
-    "other": 2
+    "other": 5
    },
    "first_at": "2026-10-31T07:26:25Z",
-   "last_at": "2026-11-21T13:14:21Z",
+   "last_at": "2026-11-21T22:07:54Z",
    "last_kind": "other",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 51.1,
-   "elapsed_min": 0.9,
-   "unstable": false,
+   "elapsed_s": 123.1,
+   "elapsed_min": 2.1,
+   "unstable": true,
    "runs": [
     "41167836540",
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
-    0
+    0,
+    2
    ]
   },
   "paca_wi_us_arcgis_rest_services_Public_OpenData_MapServer_24": {
    "layer": "paca_wi_us_arcgis_rest_services_Public_OpenData_MapServer_24",
-   "attempts_n": 2,
+   "attempts_n": 4,
    "kinds": [
+    "timeout",
+    "timeout",
     "timeout",
     "timeout"
    ],
    "kinds_n": {
-    "timeout": 2
+    "timeout": 4
    },
    "first_at": "2026-10-31T01:14:35Z",
-   "last_at": "2026-10-31T06:18:00Z",
+   "last_at": "2026-11-21T16:58:46Z",
    "last_kind": "timeout",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 14400.1,
-   "elapsed_min": 240.0,
-   "unstable": false,
-   "runs": [],
+   "elapsed_s": 21600.1,
+   "elapsed_min": 360.0,
+   "unstable": true,
+   "runs": [
+    "44884914552"
+   ],
    "shards": [
+    1,
     6,
     13
    ]
@@ -1973,54 +3826,64 @@
   },
   "st_services_GeorginaMap_W84_SiteAddressPoint_W84_MapServer_0": {
    "layer": "st_services_GeorginaMap_W84_SiteAddressPoint_W84_MapServer_0",
-   "attempts_n": 3,
+   "attempts_n": 7,
    "kinds": [
+    "other",
+    "other",
+    "other",
+    "other",
     "other",
     "other",
     "other"
    ],
    "kinds_n": {
-    "other": 3
+    "other": 7
    },
    "first_at": "2026-10-30T21:28:57Z",
-   "last_at": "2026-11-21T08:33:42Z",
+   "last_at": "2026-11-21T17:45:02Z",
    "last_kind": "other",
    "rows_at_last": 20567,
    "prior_units_at_last": 1,
    "no_progress": false,
-   "elapsed_s": 33.0,
-   "elapsed_min": 0.6,
+   "elapsed_s": 69.7,
+   "elapsed_min": 1.2,
    "unstable": false,
    "runs": [
     "44865991911",
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
     0,
+    1,
     5
    ]
   },
   "tamonica_gov_server_rest_services_Address_Points_MapServer_0": {
    "layer": "tamonica_gov_server_rest_services_Address_Points_MapServer_0",
-   "attempts_n": 3,
+   "attempts_n": 5,
    "kinds": [
+    "timeout",
+    "timeout",
     "timeout",
     "timeout",
     "timeout"
    ],
    "kinds_n": {
-    "timeout": 3
+    "timeout": 5
    },
    "first_at": "2026-10-31T02:28:12Z",
-   "last_at": "2026-11-21T14:17:59Z",
+   "last_at": "2026-11-21T16:58:46Z",
    "last_kind": "timeout",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 18000.2,
-   "elapsed_min": 300.0,
+   "elapsed_s": 25200.2,
+   "elapsed_min": 420.0,
    "unstable": true,
-   "runs": [],
+   "runs": [
+    "44884914552"
+   ],
    "shards": [
     2,
     10,
@@ -2029,50 +3892,58 @@
   },
   "unty_org_arcgis_rest_services_OpenData_Property_MapServer_12": {
    "layer": "unty_org_arcgis_rest_services_OpenData_Property_MapServer_12",
-   "attempts_n": 1,
+   "attempts_n": 4,
    "kinds": [
+    "http_4xx",
+    "http_4xx",
+    "http_4xx",
     "http_4xx"
    ],
    "kinds_n": {
-    "http_4xx": 1
+    "http_4xx": 4
    },
    "first_at": "2026-11-21T13:17:28Z",
-   "last_at": "2026-11-21T13:17:28Z",
+   "last_at": "2026-11-21T22:10:27Z",
    "last_kind": "http_4xx",
    "rows_at_last": 71,
-   "prior_units_at_last": 0,
-   "no_progress": true,
-   "elapsed_s": 16.3,
-   "elapsed_min": 0.3,
+   "prior_units_at_last": 1,
+   "no_progress": false,
+   "elapsed_s": 59.1,
+   "elapsed_min": 1.0,
    "unstable": false,
    "runs": [
     "44884914552"
    ],
    "shards": [
-    0
+    0,
+    2
    ]
   },
   "untywi_gov_vilasgis_rest_services_V4_SiteAddress_MapServer_0": {
    "layer": "untywi_gov_vilasgis_rest_services_V4_SiteAddress_MapServer_0",
-   "attempts_n": 3,
+   "attempts_n": 5,
    "kinds": [
+    "timeout",
+    "timeout",
     "timeout",
     "timeout",
     "timeout"
    ],
    "kinds_n": {
-    "timeout": 3
+    "timeout": 5
    },
    "first_at": "2026-10-31T02:46:12Z",
-   "last_at": "2026-11-21T12:49:30Z",
+   "last_at": "2026-11-21T16:58:46Z",
    "last_kind": "timeout",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 18000.2,
-   "elapsed_min": 300.0,
+   "elapsed_s": 25200.4,
+   "elapsed_min": 420.0,
    "unstable": true,
-   "runs": [],
+   "runs": [
+    "44884914552"
+   ],
    "shards": [
     1,
     9,
@@ -2081,26 +3952,30 @@
   },
   "us_arcgis_rest_services_Addressing_AddressPoints_MapServer_0": {
    "layer": "us_arcgis_rest_services_Addressing_AddressPoints_MapServer_0",
-   "attempts_n": 2,
+   "attempts_n": 5,
    "kinds": [
+    "other",
+    "other",
+    "other",
     "other",
     "other"
    ],
    "kinds_n": {
-    "other": 2
+    "other": 5
    },
    "first_at": "2026-10-31T07:16:01Z",
-   "last_at": "2026-11-21T10:36:44Z",
+   "last_at": "2026-11-21T19:37:45Z",
    "last_kind": "other",
    "rows_at_last": 6616,
    "prior_units_at_last": 1,
    "no_progress": false,
-   "elapsed_s": 17.4,
-   "elapsed_min": 0.3,
+   "elapsed_s": 39.9,
+   "elapsed_min": 0.7,
    "unstable": false,
    "runs": [
     "41167836540",
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
     0
@@ -2108,108 +3983,128 @@
   },
   "v_gis_rest_services_Map_Reference_Street_Address_MapServer_0": {
    "layer": "v_gis_rest_services_Map_Reference_Street_Address_MapServer_0",
-   "attempts_n": 2,
+   "attempts_n": 5,
    "kinds": [
+    "other",
+    "other",
+    "other",
     "other",
     "other"
    ],
    "kinds_n": {
-    "other": 2
+    "other": 5
    },
    "first_at": "2026-10-31T07:25:57Z",
-   "last_at": "2026-11-21T13:13:58Z",
+   "last_at": "2026-11-21T22:07:30Z",
    "last_kind": "other",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 39.5,
-   "elapsed_min": 0.7,
-   "unstable": false,
+   "elapsed_s": 112.4,
+   "elapsed_min": 1.9,
+   "unstable": true,
    "runs": [
     "41167836540",
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
-    0
+    0,
+    2
    ]
   },
   "vices_Join_Features_to_Address_Points_2_view_FeatureServer_0": {
    "layer": "vices_Join_Features_to_Address_Points_2_view_FeatureServer_0",
-   "attempts_n": 2,
+   "attempts_n": 5,
    "kinds": [
+    "other",
+    "other",
+    "other",
     "other",
     "other"
    ],
    "kinds_n": {
-    "other": 2
+    "other": 5
    },
    "first_at": "2026-10-31T05:29:41Z",
-   "last_at": "2026-11-21T10:51:40Z",
+   "last_at": "2026-11-21T19:57:50Z",
    "last_kind": "other",
-   "rows_at_last": 1400,
-   "prior_units_at_last": 1,
+   "rows_at_last": 2400,
+   "prior_units_at_last": 2,
    "no_progress": false,
-   "elapsed_s": 537.1,
-   "elapsed_min": 9.0,
+   "elapsed_s": 1464.4,
+   "elapsed_min": 24.4,
    "unstable": false,
    "runs": [
     "41167836540",
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
-    0
+    0,
+    2
    ]
   },
   "vt_nz_arcgis_rest_services_CorporateData_Address_MapServer_0": {
    "layer": "vt_nz_arcgis_rest_services_CorporateData_Address_MapServer_0",
-   "attempts_n": 2,
+   "attempts_n": 5,
    "kinds": [
+    "other",
+    "other",
+    "other",
     "other",
     "other"
    ],
    "kinds_n": {
-    "other": 2
+    "other": 5
    },
    "first_at": "2026-10-31T07:26:42Z",
-   "last_at": "2026-11-21T13:14:42Z",
+   "last_at": "2026-11-21T22:08:29Z",
    "last_kind": "other",
    "rows_at_last": 0,
    "prior_units_at_last": 0,
    "no_progress": true,
-   "elapsed_s": 26.8,
-   "elapsed_min": 0.4,
-   "unstable": false,
+   "elapsed_s": 55.3,
+   "elapsed_min": 0.9,
+   "unstable": true,
    "runs": [
     "41167836540",
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
-    0
+    0,
+    2
    ]
   },
   "wi_us_arcgis_rest_services_RichlandCo_GIS_Public_MapServer_6": {
    "layer": "wi_us_arcgis_rest_services_RichlandCo_GIS_Public_MapServer_6",
-   "attempts_n": 3,
+   "attempts_n": 7,
    "kinds": [
+    "other",
+    "other",
+    "other",
+    "other",
     "other",
     "other",
     "other"
    ],
    "kinds_n": {
-    "other": 3
+    "other": 7
    },
    "first_at": "2026-10-30T20:31:39Z",
-   "last_at": "2026-11-21T08:43:29Z",
+   "last_at": "2026-11-21T17:46:51Z",
    "last_kind": "other",
    "rows_at_last": 9101,
    "prior_units_at_last": 1,
    "no_progress": false,
-   "elapsed_s": 27.7,
-   "elapsed_min": 0.5,
+   "elapsed_s": 60.7,
+   "elapsed_min": 1.0,
    "unstable": false,
    "runs": [
     "44865991911",
-    "44884914552"
+    "44884914552",
+    "44931175026"
    ],
    "shards": [
     0,
