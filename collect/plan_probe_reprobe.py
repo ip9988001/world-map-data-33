@@ -131,8 +131,11 @@ def main() -> int:
     ap.add_argument("--timeout", type=int, default=60)
     ap.add_argument("--retries", type=int, default=3)
     ap.add_argument("--limit", type=int, default=0)
+    # --resume：OUT_F 已存在时，其中已带 verdict 的 records 视为「已完成集」，从目标层跳过；
+    #           产物仍写同一份 OUT_F（追加，旧 records 原样保留，不冲掉）。判据/口径不变。
+    ap.add_argument("--resume", action="store_true")
     a = ap.parse_args()
-    assert a.workers <= 4, "并发上限 4"
+    assert a.workers <= 12, "并发上限 12（muse-000129：只提吞吐，判据不动）"
 
     plan = json.load(open(PLAN_F, encoding="utf-8"))
     order = []
@@ -144,6 +147,16 @@ def main() -> int:
     if a.limit:
         targets = targets[:a.limit]
 
+    done_prev = []
+    if a.resume and os.path.exists(OUT_F):
+        try:
+            prev = json.load(open(OUT_F, encoding="utf-8"))
+            done_prev = [r for r in (prev.get("records") or []) if r.get("verdict")]
+        except Exception as e:  # noqa: BLE001
+            print("⚠ --resume 读旧产物失败（%s）→ 当作全新跑" % str(e)[:120], file=sys.stderr)
+    prev_names = {r["layer"] for r in done_prev}
+    skipped = [t for t in targets if t in prev_names]
+    targets = [t for t in targets if t not in prev_names]
     rows = [W._norm_plan_row(r) for r in W._rows_from_csv(os.path.join(HERE, "layer_plan.csv"))]
     idx = {r["id"]: r["url"] for r in rows if r.get("url")}
     uidx = W._url_index()
@@ -166,12 +179,17 @@ def main() -> int:
            "verdict_defs": {"alive": "returnCountOnly 拿到 count",
                             "unverified": "服务已死：404/400/500/502/503/no Query/not supported/TLS/token required",
                             "pending": "暂时性：超时/429/连接重置"},
-           "records": []}
+           "records": list(done_prev)}
+    if done_prev:                          # ★ --resume：保留已分类的旧 records
+        doc["resume"] = {"enabled": True, "skipped_already_done": len(skipped),
+                         "new_targets_n": len(targets), "workers": a.workers}
     dump(OUT_F, doc)
     print("★ 目标 %d 层，workers=%d timeout=%ds retries=%d backoff=%s"
           % (len(targets), a.workers, a.timeout, a.retries, list(BACKOFF)), flush=True)
+    if done_prev:
+        print("★ resume：跳过已分类 %d 层，本轮新跑 %d 层" % (len(skipped), len(targets)), flush=True)
 
-    done, t0 = [], time.time()
+    done, t0 = list(done_prev), time.time()
     with ThreadPoolExecutor(max_workers=a.workers) as ex:
         futs = {}
         for lid in targets:

@@ -1,7 +1,7 @@
 {
  "schema": "collect-plan-probe-reprobe/v1",
  "stage": "05b",
- "at": "2026-11-21T07:16:42Z",
+ "at": "2026-11-21T07:46:52Z",
  "source_plan": "collect/ledger/05b_plan_probe.json",
  "probe_fn": "collect/full_plan.py:_count_one (unchanged)",
  "url_source": "worker_core._rows_from_csv+_norm_plan_row(layer_plan.csv) / _url_index()",
@@ -12,9 +12,9 @@
   4,
   8
  ],
- "workers": 4,
+ "workers": 12,
  "read_only": true,
- "targets_n": 60,
+ "targets_n": 58,
  "verdict_defs": {
   "alive": "returnCountOnly 拿到 count",
   "unverified": "服务已死：404/400/500/502/503/no Query/not supported/TLS/token required",
@@ -42,6 +42,254 @@
    "expect_live": null,
    "verdict": "unverified",
    "url_source": "layer_plan.csv"
+  },
+  {
+   "layer": "gis_rest_services_Municipal_Address_Points_FeatureServer_214",
+   "url": "https://services8.arcgis.com/bh8h7P0uc7OxuDbS/arcgis/rest/services/Municipal_Address_Points/FeatureServer/214",
+   "http_code": 200,
+   "err": "http200 without count | {\"error\":{\"code\":400,\"message\":\"Invalid URL\",\"details\":[\"Invalid URL\"]}}",
+   "tries": 4,
+   "elapsed_ms": 16854,
+   "expect_live": null,
+   "verdict": "unverified",
+   "url_source": "layer_plan.csv"
+  },
+  {
+   "layer": "gis_rest_services_Hosted_Master_Address_File_FeatureServer_0",
+   "url": "https://gis.cityofdanville.org/arcgis/rest/services/Hosted/Master_Address_File/FeatureServer/0",
+   "http_code": 200,
+   "err": "http200 without count | {\"error\":{\"code\":500,\"message\":null,\"details\":[]}}",
+   "tries": 4,
+   "elapsed_ms": 17641,
+   "expect_live": null,
+   "verdict": "unverified",
+   "url_source": "layer_plan.csv"
+  },
+  {
+   "layer": "_rest_services_GIS_ENV_GIS_Work_Background_Layer_MapServer_0",
+   "url": "https://maps.adaok.com:6443/arcgis/rest/services/GIS_ENV/GIS_Work_Background_Layer/MapServer/0",
+   "http_code": null,
+   "err": "URLError: <urlopen error [Errno 111] Connection refused>",
+   "tries": 4,
+   "elapsed_ms": 19246,
+   "expect_live": null,
+   "verdict": "pending",
+   "url_source": "layer_plan.csv"
+  },
+  {
+   "layer": "c_gov_arcgis_rest_services_Addresses_E911Address_MapServer_1",
+   "url": "https://gis.personcountync.gov/arcgis/rest/services/Addresses/E911Address/MapServer/1",
+   "http_code": 403,
+   "err": "HTTPError: HTTP Error 403: Forbidden | <!DOCTYPE html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]>    <html class",
+   "tries": 4,
+   "elapsed_ms": 18524,
+   "expect_live": null,
+   "verdict": "unverified",
+   "url_source": "layer_plan.csv"
+  },
+  {
+   "layer": "st_services_GeorginaMap_W84_SiteAddressPoint_W84_MapServer_0",
+   "url": "https://maps.georgina.ca/arcgis/rest/services/GeorginaMap_W84/SiteAddressPoint_W84/MapServer/0",
+   "http_code": 200,
+   "err": "",
+   "tries": 1,
+   "elapsed_ms": 1074,
+   "expect_live": 23241,
+   "verdict": "alive",
+   "url_source": "layer_plan.csv"
+  },
+  {
+   "layer": "ices_GeorginaMap_W84_SiteAddressPoint_Labels_W84_MapServer_0",
+   "url": "https://maps.georgina.ca/arcgis/rest/services/GeorginaMap_W84/SiteAddressPoint_Labels_W84/MapServer/0",
+   "http_code": 200,
+   "err": "",
+   "tries": 1,
+   "elapsed_ms": 1108,
+   "expect_live": 23246,
+   "verdict": "alive",
+   "url_source": "layer_plan.csv"
+  },
+  {
+   "layer": "DDRnnsbCKWWP_arcgis_rest_services_Addresses2_FeatureServer_0",
+   "url": "https://services2.arcgis.com/5nOJDDRnnsbCKWWP/arcgis/rest/services/Addresses2/FeatureServer/0",
+   "http_code": 200,
+   "err": "http200 without count | {\"error\":{\"code\":400,\"message\":\"Invalid URL\",\"details\":[\"Invalid URL\"]}}",
+   "tries": 4,
+   "elapsed_ms": 15441,
+   "expect_live": null,
+   "verdict": "unverified",
+   "url_source": "layer_plan.csv"
+  },
+  {
+   "layer": "ices_Assessor_Data_Webster_Parish_Address_Points_MapServer_0",
+   "url": "https://utility.arcgis.com/usrsvcs/servers/a27c01dcb20141e7b2a6ca7a943be00a/rest/services/Assessor_Data/Webster_Parish_Address_Points/MapServer/0",
+   "http_code": 200,
+   "err": "http200 without count | {\"error\":{\"code\":400,\"messageCode\":\"CONT_0001\",\"message\":\"Item does not exist or is inaccessible.\",\"details\":[]}}",
+   "tries": 4,
+   "elapsed_ms": 15663,
+   "expect_live": null,
+   "verdict": "unverified",
+   "url_source": "layer_plan.csv"
+  },
+  {
+   "layer": "erva_gov_arcgis_rest_services_Winchester_Address_MapServer_0",
+   "url": "https://gis.winchesterva.gov/arcgis/rest/services/Winchester/Address/MapServer/0",
+   "http_code": null,
+   "err": "URLError: <urlopen error timed out>",
+   "tries": 4,
+   "elapsed_ms": 258729,
+   "expect_live": null,
+   "verdict": "pending",
+   "url_source": "layer_plan.csv"
+  },
+  {
+   "layer": "ver_rest_services_ParcelViewer_Parcel_Map_Labels_MapServer_0",
+   "url": "https://mapping.bangormaine.gov/server/rest/services/ParcelViewer/Parcel_Map_Labels/MapServer/0",
+   "http_code": null,
+   "err": "URLError: <urlopen error timed out>",
+   "tries": 4,
+   "elapsed_ms": 258774,
+   "expect_live": null,
+   "verdict": "pending",
+   "url_source": "layer_plan.csv"
+  },
+  {
+   "layer": "s_rest_services_Addressing_Addressing_public_FeatureServer_0@MN-3",
+   "url": "https://gis.popecountymn.gov/arcgis/rest/services/Addressing/Addressing_public/FeatureServer/0",
+   "http_code": null,
+   "err": "URLError: <urlopen error timed out>",
+   "tries": 4,
+   "elapsed_ms": 258780,
+   "expect_live": null,
+   "verdict": "pending",
+   "url_source": "layer_plan.csv"
+  },
+  {
+   "layer": "mn_gov_arcgis_rest_services_Basemaps_LINKBasemap_MapServer_4",
+   "url": "https://gis.popecountymn.gov/arcgis/rest/services/Basemaps/LINKBasemap/MapServer/4",
+   "http_code": null,
+   "err": "URLError: <urlopen error timed out>",
+   "tries": 4,
+   "elapsed_ms": 258784,
+   "expect_live": null,
+   "verdict": "pending",
+   "url_source": "layer_plan.csv"
+  },
+  {
+   "layer": "nDataMaps_OpenDataMAP_InfraZonePropBound_Layers_MapServer_33",
+   "url": "https://gisweb.tecumseh.ca/arcgis/rest/services/OpenDataMaps/OpenDataMAP_InfraZonePropBound_Layers/MapServer/33",
+   "http_code": null,
+   "err": "URLError: <urlopen error timed out>",
+   "tries": 4,
+   "elapsed_ms": 258924,
+   "expect_live": null,
+   "verdict": "pending",
+   "url_source": "layer_plan.csv"
+  },
+  {
+   "layer": "ellington_ca_server_rest_services_Parcels_Public_MapServer_1",
+   "url": "https://gis.centrewellington.ca/server/rest/services/Parcels_Public/MapServer/1",
+   "http_code": null,
+   "err": "URLError: <urlopen error timed out>",
+   "tries": 4,
+   "elapsed_ms": 259127,
+   "expect_live": null,
+   "verdict": "pending",
+   "url_source": "layer_plan.csv"
+  },
+  {
+   "layer": "t_server_rest_services_Public_Roseburg_Addresses_MapServer_0",
+   "url": "https://gis.roseburgcity.net/server/rest/services/Public/Roseburg_Addresses/MapServer/0",
+   "http_code": null,
+   "err": "URLError: <urlopen error timed out>",
+   "tries": 4,
+   "elapsed_ms": 259210,
+   "expect_live": null,
+   "verdict": "pending",
+   "url_source": "layer_plan.csv"
+  },
+  {
+   "layer": "us_server_rest_services_NG911_Address_Points_FeatureServer_3",
+   "url": "https://gis.co.le-sueur.mn.us/server/rest/services/NG911_Address_Points/FeatureServer/3",
+   "http_code": null,
+   "err": "URLError: <urlopen error timed out>",
+   "tries": 4,
+   "elapsed_ms": 259521,
+   "expect_live": null,
+   "verdict": "pending",
+   "url_source": "layer_plan.csv"
+  },
+  {
+   "layer": "_mn_us_server_rest_services_NG911_Address_Points_MapServer_3",
+   "url": "https://gis.co.le-sueur.mn.us/server/rest/services/NG911_Address_Points/MapServer/3",
+   "http_code": null,
+   "err": "URLError: <urlopen error timed out>",
+   "tries": 4,
+   "elapsed_ms": 260196,
+   "expect_live": null,
+   "verdict": "pending",
+   "url_source": "layer_plan.csv"
+  },
+  {
+   "layer": "ountyny_gov_server_rest_services_EMO_E911_Viewer_MapServer_5",
+   "url": "https://gis.chemungcountyny.gov/server/rest/services/EMO/E911_Viewer/MapServer/5",
+   "http_code": null,
+   "err": "URLError: <urlopen error timed out>",
+   "tries": 4,
+   "elapsed_ms": 260849,
+   "expect_live": null,
+   "verdict": "pending",
+   "url_source": "layer_plan.csv"
+  },
+  {
+   "layer": "fpl_arcgis_rest_services_ArcGISHub_OpenData_FeatureServer_13",
+   "url": "https://services2.arcgis.com/L4ywDaHbEfVZyfpl/arcgis/rest/services/ArcGISHub_OpenData/FeatureServer/13",
+   "http_code": 200,
+   "err": "http200 without count | {\"error\":{\"code\":400,\"message\":\"Invalid URL\",\"details\":[\"Invalid URL\"]}}",
+   "tries": 4,
+   "elapsed_ms": 15354,
+   "expect_live": null,
+   "verdict": "unverified",
+   "url_source": "layer_plan.csv"
+  },
+  {
+   "layer": "ges_arcgis_rest_services_AddressAndRoads2022_FeatureServer_0",
+   "url": "https://services.arcgis.com/AWzSDaKZ41uuVges/arcgis/rest/services/AddressAndRoads2022/FeatureServer/0",
+   "http_code": 200,
+   "err": "http200 without count | {\"error\":{\"code\":400,\"message\":\"Invalid URL\",\"details\":[\"Invalid URL\"]}}",
+   "tries": 4,
+   "elapsed_ms": 15553,
+   "expect_live": null,
+   "verdict": "unverified",
+   "url_source": "layer_plan.csv"
+  },
+  {
+   "layer": "maps_rest_services_OPENDATA_RegionalBaseOpenData_MapServer_2",
+   "url": "https://map.santaclaraca.gov/maps/rest/services/OPENDATA/RegionalBaseOpenData/MapServer/2",
+   "http_code": 403,
+   "err": "HTTPError: HTTP Error 403: Forbidden | error code: 1010 ",
+   "tries": 4,
+   "elapsed_ms": 18468,
+   "expect_live": null,
+   "verdict": "unverified",
+   "url_source": "layer_plan.csv"
+  },
+  {
+   "layer": "ervices_DataPortal_DataPortal_BuildingsAddresses_MapServer_0",
+   "url": "https://bloomington.in.gov/arcgis-server/rest/services/DataPortal/DataPortal_BuildingsAddresses/MapServer/0",
+   "http_code": 403,
+   "err": "HTTPError: HTTP Error 403: Forbidden | <!DOCTYPE html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]>    <html class",
+   "tries": 4,
+   "elapsed_ms": 18437,
+   "expect_live": null,
+   "verdict": "unverified",
+   "url_source": "layer_plan.csv"
   }
- ]
+ ],
+ "resume": {
+  "enabled": true,
+  "skipped_already_done": 2,
+  "new_targets_n": 58,
+  "workers": 12
+ }
 }
