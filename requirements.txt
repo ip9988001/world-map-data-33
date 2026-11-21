@@ -1,2 +1,6 @@
+# 禁 shapely / rtree：与「空间判县」口径冲突（我们不引入几何库做判县，县归属走 county_index/基准表）
+# 依据：muse-000146 Phase 1a 第 10 项；裁决原文见 docs/DEPENDENCY-VERDICT-20261122.md
+# 可执行校验：collect/check_forbidden_deps.py（ci-smoke.yml 第 38 行，扫 import 与依赖清单两类）
+# 注意：本段是「禁止」注释，check_forbidden_deps.py 会放过整行注释；真加回依赖行则 rc=1。
 pyproj>=3.6
 pyshp>=2.3
