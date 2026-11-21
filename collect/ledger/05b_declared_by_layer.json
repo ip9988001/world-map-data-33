@@ -4105,5 +4105,28 @@
    "denominator": "expect_live",
    "source": "expect_live@plan-probe"
   }
- ]
+ ],
+ "provenance": {
+  "why": "两个 declared 总量并存，**口径不同（run 计划 vs 探针计划），不合并、不抵消、不当 declared 用**。不猜哪份对。",
+  "run_plan_artifact": {
+   "file": "collect/ledger/05b_plan.json",
+   "declared_rows": 32337294,
+   "layers_n": 585,
+   "sha256": "d5ff5467b7c1127bc4d5eb98f74194c0b71f486b5783a8064a618e60b5ea0c07",
+   "mtime": "2026-11-21T05:11:00Z",
+   "origin": "run 44865991911 的 plan-05b artifact（id 14692340122）落库副本"
+  },
+  "probe_plan": {
+   "file": "collect/ledger/step05b_plan.json",
+   "declared_rows": 32303033,
+   "layers_n": 583,
+   "sha256": "361fc29e4c828c3c59aef88051aa72bb37bb46b2699c8537af8f1864e4a8a0b5",
+   "mtime": "2026-11-21T07:19:04Z",
+   "origin": "collect/full_plan.py 计划期产物（探针阶段所用）"
+  },
+  "delta_rows": 34261,
+  "delta_pct": 0.106,
+  "delta_reason": "585 层 vs 583 层：skip_done 刷掉 2 层（_cog_server_rest_services_test_Address_Point_FeatureServer_0 已 ok、_com_geoserver_rest_services_Public_GIS_Data_FeatureServer_0 判 empty）",
+  "usage_ban": "逐层 declared 不可得（artifact 无 expect_by_layer），两个总量都**不得**作为逐层验收分母或缺口分母"
+ }
 }
