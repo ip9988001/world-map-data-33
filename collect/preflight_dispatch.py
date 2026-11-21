@@ -115,6 +115,14 @@ PLAN_LAYERS_TOL = 0.01
 # ★ 默认值与 pilot.GAP_TOL 必须同值（0.001）：一处判 done、一处判账本，口径不同就会互相打架。
 ROWS_GAP_TOL = float(os.environ.get("PREFLIGHT_ROWS_GAP_TOL") or "0.001")
 
+# D15 历史缺口声明（2026-11-22 W33-047）：账本里「status=ok 却低于 expect」的层，
+# 若是**历史遗留**（不是本轮引入、本轮也不重采），可以声明为已知缺口 → 降 WARN，不阻断派单。
+# 声明必须落盘在**阶段账本旁边**（`collect/<stage>_d15_ack.json`），必须写 reason/acked_by/acked_at：
+#   一份可评审、可追溯的数据声明，而不是代码里的开关/env；文件缺失或解析失败 = 一个也不认（fail-closed）。
+# ★ 为什么不做「force 名单非空 → 自动全部降 WARN」：那样只要随便点一层 force，
+#   就能把任意大小的已采短层静默掉（现有单测 test_out_of_force_layer_still_fails 就是锁这条）。
+D15_ACK_AGGRAVATION_PP = float(os.environ.get("PREFLIGHT_D15_ACK_AGGRAVATION_PP") or "1.0")
+
 
 # ------------------------------------------------------------------ 基础设施
 def now() -> str:
@@ -912,7 +920,7 @@ def ledger_paths(stage):
 
 
 def judge_ledger_plan_consistency(stage, ledger_path=None, plan_path=None):
-    """D14：阶段账本 `layers_n` 与 `plan.layers_n` 差 **>1%** → FAIL。
+    """D14：阶段账本 `layers_n` 与 `plan.layers_n` 差 **>1%** → 判据分方向（W33-047）。
 
     为什么单独立一项：C6 只把三份账本的现值打印出来，不判它们与计划是否对得上；
     D10 只看「本次计划 vs Release 已采」，也不看阶段账本少了几层。2026-10-31 的
@@ -921,6 +929,13 @@ def judge_ledger_plan_consistency(stage, ledger_path=None, plan_path=None):
 
     分母取账本里的 `plan.layers_n`（阶段计划），没有才回退 `collect/ledger/<stage>_plan.json`；
     两者都没有 → WARN（无法比对，不假装通过）。
+
+    ★ 方向（2026-11-22 W33-047）：
+      · 账本 **少**于计划且 >1%  → **FAIL**（漏采，2,325/2,770 那类事故，一字未改）；
+      · 账本 **多**于计划且 >1%  → **WARN**（历次并集累积：补采层 / `@未定位-N` 变体 /
+        旧计划快照；层数多不构成覆盖率风险，但也不静默）；
+      · 两侧相近（≤1%）          → PASS。
+      判定字段 `direction` = ledger_short / ledger_long / balanced，供流水与人工复核。
     """
     lp = ledger_path or (ledger_paths(stage) or [""])[0]
     if not lp or not os.path.exists(lp):
@@ -948,24 +963,75 @@ def judge_ledger_plan_consistency(stage, ledger_path=None, plan_path=None):
                     ledger_layers=layers, plan_layers=plan_layers, plan_source=src)
     diff = layers - plan_layers
     ratio = abs(diff) / float(plan_layers)
+    base = {"ledger_layers": layers, "plan_layers": plan_layers, "diff": diff,
+            "diff_pct": round(ratio * 100, 4), "plan_source": src}
     detail = ("阶段账本 **%s** 层 / 计划 **%s** 层（来源 `%s`），差 **%+d** 层（%.2f%%）"
               % (f"{layers:,}", f"{plan_layers:,}", src, diff, ratio * 100))
-    if ratio > PLAN_LAYERS_TOL:
-        hint = ("账本比计划少" if diff < 0 else "账本比计划多")
-        detail += ("。⛔ %s %s 层，超过 %.0f%% 阈值 —— 先补账/查 plan 再派单："
+    # ★ 方向修正（2026-11-22 W33-047，force-only 补采永远过不去）：
+    #   只有「账本 < 计划」才是**漏采**信号。原实现取 abs()，把「账本比计划多」也判 FAIL。
+    #   可「多」是**累积**的正常形态：阶段账本记的是历次采集的并集（force 补采的层、
+    #   `@未定位-N` 唯一化出来的变体、计划快照过期后的旧批次），层数是多的，覆盖率没被低估。
+    #   后果实测：05b 账本 3,304 层 / 计划 2,770 层 → 恒 FAIL，于是「只补采 4 层」这类派单
+    #   在门禁上根本不可能发生（run 44958617978 / 44959175837 两次都死在这里）。
+    #   反向（diff < 0）一字未改：账本比计划少超过 1% 照旧 FAIL。
+    if diff < 0 and ratio > PLAN_LAYERS_TOL:
+        detail += ("。⛔ 账本比计划少 %s 层，超过 %.0f%% 阈值 —— 先补账/查 plan 再派单："
                    "`python3 collect/backfill_05b_ledger.py --plan <阶段计划>`（05b）或"
                    "`collect/ledger_rebuild.py --stage %s`；计划本身过期则先重算 plan。"
-                   % (hint, f"{abs(diff):,}", PLAN_LAYERS_TOL * 100, stage))
+                   % (f"{abs(diff):,}", PLAN_LAYERS_TOL * 100, stage))
         return item("D14", "C", "账本 vs 计划层数", "FAIL", detail,
-                    ledger_layers=layers, plan_layers=plan_layers, diff=diff,
-                    diff_pct=round(ratio * 100, 4), plan_source=src)
-    detail += "。账本行数与计划一致（≤%.0f%% 容差）" % (PLAN_LAYERS_TOL * 100)
+                    direction="ledger_short", **base)
+    if diff > 0 and ratio > PLAN_LAYERS_TOL:
+        detail += ("。⚠️ 账本比计划**多** %s 层（%.2f%%，阈值 %.0f%%）—— 累积形态，不是漏采："
+                   "阶段账本记的是历次采集并集（补采层 / `@未定位-N` 变体 / 旧计划快照），"
+                   "**不阻断派单**。若计划本身已过期，顺手重算 plan 让两侧对得上即可。"
+                   % (f"{diff:,}", ratio * 100, PLAN_LAYERS_TOL * 100))
+        return item("D14", "C", "账本 vs 计划层数", "WARN", detail,
+                    direction="ledger_long", **base)
+    detail += "。账本层数与计划一致（≤%.0f%% 容差）" % (PLAN_LAYERS_TOL * 100)
     return item("D14", "C", "账本 vs 计划层数", "PASS", detail,
-                ledger_layers=layers, plan_layers=plan_layers, diff=diff,
-                diff_pct=round(ratio * 100, 4), plan_source=src)
+                direction="balanced", **base)
 
 
-def judge_rows_vs_expect(stage, ledger_path=None, plan_path=None, exempt_layers=None):
+def load_d15_ack(stage, ledger_path=None, ack_path=None):
+    """读「历史缺口声明」（可选）：`collect/<stage>_d15_ack.json`，紧贴它所描述的账本。
+
+    结构：{"schema": "d15-ack/v1", "stage": "05b",
+           "acked": [{"layer": ..., "reason": ..., "acked_by": ..., "acked_at": ...,
+                      "expires_at": "2026-12-31", "rows": 39504, "expect": 39751,
+                      "gap_pct": 0.6214}]}
+    返回 ({layer: ack}, 路径)。缺文件 / 解析失败 / 缺 reason / 缺 expires_at / 已过期
+    → 该条不生效（fail-closed）。
+    """
+    p = ack_path
+    if not p:
+        base = os.path.dirname(ledger_path) if ledger_path else os.path.join(ROOT, "collect")
+        p = os.path.join(base, "%s_d15_ack.json" % stage)
+    if not p or not os.path.exists(p):
+        return {}, p
+    try:
+        d = json.load(open(p, encoding="utf-8"))
+    except Exception:                                          # noqa: BLE001
+        return {}, p
+    out = {}
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    for a in (d.get("acked") or []):
+        if not isinstance(a, dict):
+            continue
+        lid = str(a.get("layer") or "").strip()
+        if not lid or not str(a.get("reason") or "").strip():
+            continue
+        # ★ 过期即失效：声明必须带 expires_at（YYYY-MM-DD）；过期/缺失 → 不认（fail-closed）。
+        #   防「声明一次、永久免检」：补采轮次把它修完后应删条目，到期未删则重新 FAIL。
+        exp = str(a.get("expires_at") or "").strip()
+        if not exp or exp < today:
+            continue
+        out[lid] = a
+    return out, p
+
+
+def judge_rows_vs_expect(stage, ledger_path=None, plan_path=None, exempt_layers=None,
+                         ack_path=None):
     """D15：收尾对账 —— 「status=ok 但 rows 明显少于 expect」的层必须被抓住。
 
     口径（与 pilot.GAP_TOL 同源，可 env 覆盖 PREFLIGHT_ROWS_GAP_TOL，默认 0.5%）：
@@ -986,6 +1052,16 @@ def judge_rows_vs_expect(stage, ledger_path=None, plan_path=None, exempt_layers=
       · fail-closed：force 名单空/解析为空 → 一个人也不豁免（保持现状）。
       · 只影响「报警与否」：GAP_TOL、ok/skipped_done 判据、partial/short 只列不判，全部不变。
         且「在 force 里」**不等于**记绿：本轮没采到就照六类标 partial/unverified（那是收尾账本的事）。
+
+    ★ 历史 vs 本轮（2026-11-22 W33-047）：
+      仅靠 force 名单分不清「本轮」与「历史」（force 名单只说明本轮要重采哪几层）。
+      历史缺口必须用**显式声明**降级：阶段账本旁的 `collect/<stage>_d15_ack.json` 里按层登记
+      `reason / acked_by / acked_at / gap_pct` 的，才降 **WARN** 并逐层留痕
+      （`historical_short_ok_status`）。没声明的照旧 **FAIL**，一段代码也不放宽。
+      · 声明不是「永久免死牌」：当前缺口比声明时记录的 `gap_pct` 再扩大 >1pp（容差可 env 调）
+        → 仍然 FAIL（`ack_worsened`），防止「缺口被声明洗白后持续变大」。
+      · 声明文件缺失 / 解析失败 / 缺 reason → 一个也不认（fail-closed）。
+      · 名单内（force）层仍走原豁免分支，不因本改动多赦一人。
     """
     lp = ledger_path or (ledger_paths(stage) or [""])[0]
     if not lp or not os.path.exists(lp):
@@ -1008,7 +1084,10 @@ def judge_rows_vs_expect(stage, ledger_path=None, plan_path=None, exempt_layers=
             live = {}
     tol = ROWS_GAP_TOL
     exempt_ids = {str(x).strip() for x in (exempt_layers or []) if str(x).strip()}
-    bad, noted, exempt = [], [], []
+    # ★ 本轮派单范围（2026-11-22 W33-047）：force 名单 = 本轮要重采的层（唯一权威来源）。
+    #   名单外的 ok-but-short **不自动降级** —— 它可能是历史遗留（需要显式声明），
+    #   也可能是刚引入的真漏采；两者靠「声明文件」区分，不靠猜。
+    bad, noted, exempt, hist = [], [], [], []
     for r in (led.get("records") or []):
         try:
             d = int(r.get("declared") or 0)
@@ -1036,6 +1115,21 @@ def judge_rows_vs_expect(stage, ledger_path=None, plan_path=None, exempt_layers=
             exempt.append(dict(row, exempt="in_force_layers"))
         else:
             bad.append(row)
+    # ★ 历史缺口声明：只降「已显式声明」的层；未声明 / 缺口变大 → 留在 bad（照旧 FAIL）
+    acked, ack_file = load_d15_ack(stage, lp, ack_path)
+    still_bad = []
+    for b in bad:
+        a = acked.get(str(b["layer"]))
+        if not a:
+            still_bad.append(b)
+            continue
+        a_gap = float(a.get("gap_pct") or 0.0)
+        if b["gap_pct"] > a_gap + D15_ACK_AGGRAVATION_PP:
+            still_bad.append(dict(b, ack_gap_pct=a_gap, ack_worsened=True))
+            continue
+        hist.append(dict(b, ack_reason=a.get("reason"), acked_by=a.get("acked_by"),
+                         acked_at=a.get("acked_at"), ack_gap_pct=a_gap))
+    bad = still_bad
     if bad:
         why = ""
         if exempt:
@@ -1053,6 +1147,7 @@ def judge_rows_vs_expect(stage, ledger_path=None, plan_path=None, exempt_layers=
                                     b["denominator"], b["gap_pct"]) for b in bad[:3]), why),
                     short_ok_status=bad, short_other_status=noted,
                     exempt_in_plan=exempt, exempt_source="force_layers",
+                    historical_short_ok_status=hist, d15_ack_path=ack_file,
                     tolerance_pct=round(tol * 100, 3), plan_source=plan_src)
     detail = "账本 %d 层：无「status=ok 但 rows 不足」的层（容差 %.1f%%，%d 层有 live 分母）" % (
         len(led.get("records") or []), tol * 100, len(live))
@@ -1064,9 +1159,26 @@ def judge_rows_vs_expect(stage, ledger_path=None, plan_path=None, exempt_layers=
                 x["gap_pct"]) for x in exempt))
     if noted:
         detail += "；另有 %d 层已诚实标注 partial/short（不判 FAIL）" % len(noted)
+    if hist:
+        return item("D15", "C", "收尾对账 rows vs expect", "WARN",
+                    ("⚠️ %d 层**已声明**的历史缺口（不由本次派单修复）：%s"
+                     "；声明来源 `%s`。若本轮就该修它们，把它们写进 --force-layers；"
+                     "没声明的层仍判 FAIL。")
+                    % (len(hist),
+                       "; ".join("%s %d/%s[%s]缺%.2f%%（%s）"
+                                 % (h["layer"][:40], h["rows"],
+                                    h["expect_live"] if h["denominator"] == "live" else h["declared"],
+                                    h["denominator"], h["gap_pct"],
+                                    (h.get("ack_reason") or "")[:40]) for h in hist[:5]),
+                       os.path.relpath(ack_file, ROOT) if ack_file else "-"),
+                    short_ok_status=[], short_other_status=noted[:20],
+                    exempt_in_plan=exempt, exempt_source="force_layers",
+                    historical_short_ok_status=hist, d15_ack_path=ack_file,
+                    tolerance_pct=round(tol * 100, 3), plan_source=plan_src)
     return item("D15", "C", "收尾对账 rows vs expect", "PASS", detail,
                 short_ok_status=[], short_other_status=noted[:20],
                 exempt_in_plan=exempt, exempt_source="force_layers",
+                historical_short_ok_status=[], d15_ack_path=ack_file,
                 tolerance_pct=round(tol * 100, 3), plan_source=plan_src)
 
 

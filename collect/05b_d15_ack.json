@@ -1,0 +1,46 @@
+{
+ "schema": "d15-ack/v1",
+ "stage": "05b",
+ "note": "D15 历史缺口声明（W33-047）。只声明「本轮不修、但确实存在」的已采短层，降 WARN 不阻断派单；未登记的层照旧 FAIL。每条必须带 reason / acked_by / acked_at / expires_at，过期即失效（fail-closed）。修完这些层（专用 force 轮）后请删掉对应条目 —— 留着会被下一轮当成「已修」的假象。",
+ "evidence": {
+  "source_ledger": "collect/05b_ledger.json",
+  "records_at": ["2026-10-30T21:29:40Z", "2026-10-30T21:58:54Z", "2026-10-30T22:01:05Z"],
+  "why_historical": "三条记录都落在 2026-10-30 那批（早于 run 44931175026 与本轮），status=ok 但 rows 短 0.12%~0.62%；status=ok 会被 done_layers 判 skipped_done，因此任何普通轮次都不会重采它们，只能靠 --force-layers 点名修。",
+  "why_not_autofix": "collect/full_plan.py 的注释写死「本轮采哪些层只允许 force_layers 一个来源」，门禁不许自己扩大派单范围 —— 自动把它们塞进 force 等于绕过唯一权威入口。"
+ },
+ "acked": [
+  {
+   "layer": "arcgis_rest_services_LAWRENCEGIS_NG911Addressing_MapServer_0",
+   "rows": 39504,
+   "expect": 39751,
+   "gap_pct": 0.6214,
+   "reason": "2026-10-30 批遗留：上游收尾时少了 247 行（0.62%），与 cancel 无关，未随任何 run 修复",
+   "acked_by": "muse",
+   "acked_at": "2026-11-22",
+   "expires_at": "2026-12-31",
+   "fix_plan": "专用 force 轮（可与 05b 其余缺口合并）"
+  },
+  {
+   "layer": "cgis_rest_services_911_Addresses_Public_View_FeatureServer_2",
+   "rows": 81437,
+   "expect": 81772,
+   "gap_pct": 0.4097,
+   "reason": "2026-10-30 批遗留：缺 335 行（0.41%），同上",
+   "acked_by": "muse",
+   "acked_at": "2026-11-22",
+   "expires_at": "2026-12-31",
+   "fix_plan": "同上"
+  },
+  {
+   "layer": "qKAFwdGU_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "rows": 181529,
+   "expect": 181750,
+   "gap_pct": 0.1216,
+   "reason": "2026-10-30 批遗留：缺 221 行（0.12%），同上",
+   "acked_by": "muse",
+   "acked_at": "2026-11-22",
+   "expires_at": "2026-12-31",
+   "fix_plan": "同上"
+  }
+ ]
+}

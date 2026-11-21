@@ -168,11 +168,17 @@ class LedgerPlanConsistency(unittest.TestCase):
         lp, _ = self._files(98, 100)
         self.assertEqual(P.judge_ledger_plan_consistency("05b", lp)["status"], "FAIL")
 
-    def test_more_than_plan_is_also_fail(self):
+    def test_more_than_plan_is_warn_not_fail(self):
+        # ★ 2026-11-22 W33-047 方向修正：账本**多**于计划 = 历次并集累积（补采层 / @未定位-N 变体 /
+        #   旧计划快照），层数多不构成漏采风险 → WARN（原为 FAIL，把 force 补采恒钉死）。
+        #   反方向（账本比计划少）仍是 FAIL，见 test_one_percent_boundary_*/test_short_still_fails。
         lp, _ = self._files(120, 100)
         it = P.judge_ledger_plan_consistency("05b", lp)
-        self.assertEqual(it["status"], "FAIL")
-        self.assertIn("账本比计划多", it["detail"])
+        self.assertEqual(it["status"], "WARN")
+        self.assertEqual(it["direction"], "ledger_long")
+        self.assertEqual(it["diff"], 20)
+        self.assertIn("账本比计划**多**", it["detail"])
+        self.assertIn("不是漏采", it["detail"])
 
     def test_falls_back_to_plan_file_when_ledger_has_no_plan(self):
         lp, pp = self._files(272, 272, plan_in_ledger=False)
