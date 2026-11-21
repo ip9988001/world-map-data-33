@@ -1,7 +1,7 @@
 {
  "schema": "collect-ledger-agg/v1",
  "stage": "05b",
- "at": "2026-11-21T16:58:46Z",
+ "at": "2026-11-21T17:01:49Z",
  "layers_n": 586,
  "ok": 438,
  "empty": 15,
