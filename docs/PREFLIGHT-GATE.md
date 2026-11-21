@@ -69,12 +69,18 @@
       判据与产物：`collect/attempt_log.py` → `analysis/04b-attempt-log.json`；
       日志不存在 → INFO（不假装通过），日志读不了 → WARN。
       若计划里仍含已到上限的层（旧计划/没跑 full_plan 的剔除）→ 判词里单独标「本次计划里仍有 N 层」。
-- [ ] **D14** **账本 vs 计划层数**（W33-041）：阶段账本 `layers_n` 与 `plan.layers_n`
-      （账本内字段；缺失才回退 `collect/ledger/<stage>_plan.json`）差 **>1%** → **FAIL**。
-      判词给「账本 X 层 / 计划 Y 层（来源）/ 差 ±Z 层（P%）」并打印补账命令。
-      这条检的是**账本自身完整性**，与本次派哪层无关 —— 2026-10-31 的 445 层事故
-      （账本 2,325 / 计划 2,770，少 19.3%）就是靠它才不会再被放过。
-      ≤1% PASS；缺一侧（没账本 / 没计划）→ **WARN，不假装通过**。
+- [ ] **D14** **账本 vs 计划层数**（W33-041 / W33-047 改口径）：阶段账本 `layers_n` 与
+      `plan.layers_n`（账本内字段；缺失才回退 `collect/ledger/<stage>_plan.json`）。
+      **按方向分判**：
+      · 账本 **少**于计划 >1% → **FAIL**（漏采；2026-10-31 的 445 层事故
+        —— 账本 2,325 / 计划 2,770 少 19.3% —— 靠这条才不会放过）；
+      · 账本 **多**于计划 >1% → **WARN**（跨轮累积：补采层 / `@未定位-N` 变体 / 旧计划快照，
+        层数多是**并集**的常态，不构成覆盖率风险；不阻断派单，但每次都会打印出来）；
+      · ≤1% → PASS；缺一侧（没账本 / 没计划）→ **WARN，不假装通过**。
+      判词给「账本 X 层 / 计划 Y 层（来源）/ 差 ±Z 层（P%）」+ `direction`
+      （`ledger_short` / `ledger_long` / `balanced`）。
+      为什么要分方向：force-only 补采时账本天然远大于计划，abs() 对称判定会让
+      「补采」这一类派单**永远过不去**（run 44958617978 / 44959175837 两次都死在这里）。
 
 ### F 已知坑
 
@@ -120,7 +126,8 @@
 | D11 检查点未备份 | 先 `gh release upload <tag> <layer>-checkpoint.bak-<RUN_ID>.json`（pilot 会自动做） |
 | D12 分区重复声明（WARN） | 先核 survivor 是否已实采 ≥ 全量：是 → 写清单 `duplicate_layers` 并重放`adjudicate_04b.py --duplicate-partitions`；两分区都已有实采行 → 属 rows 侧重复（08 去重），结论写进清单 `reviewed[]`，不在本阶段改账 |
 | D13 重试上限（WARN） | 先看判词里的失败类型：**503/非 JSON/超时且无进展** → 接受 `upstream_unstable`，别再派；确需再试 → `--force-unstable-layer <层>`（或 `full_plan --force-layers`），一次只放回一层 |
-| **D14 账本 vs 计划层数（FAIL）** | 账本比计划少 → 先补账：05b 用 `python3 collect/backfill_05b_ledger.py --plan <阶段计划>`（只读 Release，`--check` 必须 `IDENTICAL`）；其他阶段用 `ledger_rebuild.py --stage <st>`。账本比计划多/计划本身过期 → 先重算 plan（`full_plan.py`），再核 `plan.layers_n` 是不是旧快照。**不许在账本缺行时派单**（下游会拿缺行账本当「上一层合格」） |
+| **D14 账本 vs 计划层数（FAIL）** | 只在**账本比计划少**时阻断 → 先补账：05b 用 `python3 collect/backfill_05b_ledger.py --plan <阶段计划>`（只读 Release，`--check` 必须 `IDENTICAL`）；其他阶段用 `ledger_rebuild.py --stage <st>`。**不许在账本缺行时派单**（下游会拿缺行账本当「上一层合格」）。账本比计划**多**（WARN）→ 不阻断；想消掉告警就重算 plan 让两侧对齐（计划过期属正常现象，不必回滚账本） |
+| **D15 已采短层（FAIL）** | 见下条「历史 vs 本轮」：**未声明**的 ok-but-short 一律 FAIL（先补采或 `--force-layers` 点名）；**已声明**在 `collect/<stage>_d15_ack.json` 的历史缺口降 WARN，不阻断，但每轮都会把层名 + 缺口打印出来，且缺口比声明时扩大 >1pp 会重新 FAIL |
 | E12 上游 0 行 | 从计划里剔除该层（或标 `empty`），别浪费片位 |
 | E13 403/超时 | 只记录证据，先照派；片端再失败才升级（本机 ≠ CI） |
 | E14 声明不可复核 | 跑后差额分母剔除该层；服务级 token 的层直接剔或配 token |
@@ -177,7 +184,8 @@ PY
 | D11 | WARN + 命令 | 只看资产清单（不下载检查点内容），判断有没有 `.bak` |
 | D12 | 硬判据（Σ declared vs returnCount 1.5×）+ **只建议** | 逐 host 实测 returnCount 取最大；离线用清单 `row_count` 代理并标注；已复核组读清单 `reviewed[]` |
 | D13 | 硬判据（连续失败次数 + 无进展）+ **默认剔除** | 只读 `analysis/04b-attempt-log.json`（不联网）；无日志 → INFO、日志坏 → WARN，都不给 PASS；已到上限的层同时核一遍「计划里是不是又排上了」 |
-| D14 | 硬判据（差 >1% → FAIL） | 分母优先取账本 `plan.layers_n`（阶段计划），缺失才回退 `<stage>_plan.json`（注意后者可能被单 run 覆盖，见 W33-012）；缺一侧只 WARN；容差 `PLAN_LAYERS_TOL=0.01` |
+| D14 | 硬判据（**只**对「账本少 >1%」→ FAIL；账本多 → WARN） | 分母优先取账本 `plan.layers_n`（阶段计划），缺失才回退 `<stage>_plan.json`（注意后者可能被单 run 覆盖，见 W33-012）；缺一侧只 WARN；容差 `PLAN_LAYERS_TOL=0.01`；方向见字段 `direction` |
+| D15 | 硬判据（ok/skipped_done 且 rows < expect×(1−0.1%) → FAIL） | 分母双取（账本 `declared` + 计划 `expect_live`），任一被击穿即命中；`--force-layers` 名单内豁免并**列明**；违反者若在 `collect/<stage>_d15_ack.json` 里**已声明**（带 reason/acked_by/acked_at/expires_at）→ 降 WARN 并逐层留痕（`historical_short_ok_status`），缺口较声明扩大 >1pp 仍 FAIL；声明缺失/缺字段/过期 → 一个也不认 |
 | E12 | 硬判据 | 抽样 ≥5 层（force 优先，再按分档均匀抽） |
 | E13 | **只 WARN** | 本机 ≠ CI，403/超时不算死 |
 | E14 | 硬判据（分类）+ WARN | `Token Required` / 非 JSON → `declared_unverifiable`；服务级 token（`?f=json` 也 499）点名 |
