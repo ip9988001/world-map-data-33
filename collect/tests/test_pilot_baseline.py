@@ -214,13 +214,18 @@ class TestBaseline(Base):
         self.assertTrue(any("short" in v for v in (ck.get("unit_errors") or {}).values()))
 
     def test_short_ack_after_two_runs(self):
-        """同一单元连续两次 short 且行数一致 → 认可上游就这么多，转完成并留 ack"""
+        """同一单元连续两次 short 且行数一致 → 只记 ack，**绝不标 done**（W33-043）
+
+        旧行为：两次 short 后 err 被清空 → 单元算完成 → 续跑永久跳过（138c05 就这样丢了 7.35%）。
+        新行为：ack 仍记（留证据），但 done_units 不置位、unit_errors 保留 short。
+        """
         s = FakeServer(mode="short")
         self.run_collect(s)
         self.run_collect(s, fresh=False)
         ck = json.load(open(os.path.join(self.tmp, "t", "_checkpoint.json")))
         self.assertTrue(ck.get("unit_short_ack"))
-        self.assertTrue(ck.get("done_units"))
+        self.assertNotIn(0, ck.get("done_units") or [])       # ★ done 不置位
+        self.assertIn("0", ck.get("unit_errors") or {})       # ★ short 仍挂着
 
     def test_limit_not_judged_short(self):
         """--limit 试采不该被判 short"""

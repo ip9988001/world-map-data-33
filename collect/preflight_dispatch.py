@@ -109,9 +109,10 @@ PKG_RE = re.compile(r"-u\d{5}\.tar\.gz$")
 # 之前没有任何门禁发现；D14 把这条做成通用检测，不再依赖人记得「这次少了几层」。
 PLAN_LAYERS_TOL = 0.01
 
-# D15（2026-11-21 W33-042）：账本里 status=ok 的层，rows 必须 ≥ declared×(1-GAP_TOL)。
-# 138c05 事故：收尾「本页不满就 break」把 2,131/2,298（缺 7.27%）当完成，账本只记告警。
-ROWS_GAP_TOL = float(os.environ.get("PREFLIGHT_ROWS_GAP_TOL") or "0.005")
+# D15（2026-11-21 W33-042/043）：账本里 status=ok 的层，rows 必须 ≥ expect×(1-GAP_TOL)。
+# 138c05 事故：检查点把 2,131/2,300（缺 7.35%）的单元标完成 → 续跑 3.4s 跳过，账本只记告警。
+# ★ 默认值与 pilot.GAP_TOL 必须同值（0.001）：一处判 done、一处判账本，口径不同就会互相打架。
+ROWS_GAP_TOL = float(os.environ.get("PREFLIGHT_ROWS_GAP_TOL") or "0.001")
 
 
 # ------------------------------------------------------------------ 基础设施

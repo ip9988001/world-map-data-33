@@ -185,21 +185,42 @@ class ResumeTodo(unittest.TestCase):
     def test_done_but_not_uploaded_must_rerun(self):
         units = [(0, 10), (11, 20), (21, 30)]
         ck = {"done_units": [0, 1, 2],
-              "unit_uploaded": {"0": True, "1": False, "2": True}}
+              "unit_uploaded": {"0": True, "1": False, "2": True},
+              # W33-043：done 还要过 rows ≥ expect×(1-GAP_TOL)，这里行数齐全
+              "unit_rows_seen": {"0": 11, "1": 11, "2": 10},
+              "unit_expect": {"0": 11, "1": 11, "2": 10}}
         done, redone = pilot.resume_todo(units, ck)
         self.assertEqual(done, [0, 2])
         self.assertEqual(redone, [1], "产物没上传的单元必须重采，不许拿 done_units 当挡箭牌")
 
     def test_all_uploaded_keeps_done(self):
         units = [(0, 10), (11, 20)]
-        ck = {"done_units": [0, 1], "unit_uploaded": {"0": True, "1": True}}
+        ck = {"done_units": [0, 1], "unit_uploaded": {"0": True, "1": True},
+              "unit_rows_seen": {"0": 11, "1": 10}, "unit_expect": {"0": 11, "1": 10}}
         self.assertEqual(pilot.resume_todo(units, ck), ([0, 1], []))
+
+    def test_rows_short_of_expect_voids_done(self):
+        """★ W33-043 核心：行数不齐 → 作废 done（138c05 形态 2,131/2,300）"""
+        units = [(None, None)]
+        ck = {"done_units": [0], "unit_uploaded": {"0": True},
+              "unit_rows_seen": {"0": 2131}, "unit_expect": {"0": 2300}}
+        keep, redone = pilot.resume_todo(units, ck, 2300)
+        self.assertEqual((keep, redone), ([], [0]))
+        self.assertEqual(ck.get("done_units"), [])            # ★ 真删标记，不只是本轮不调度
+        self.assertIn("0", ck.get("unit_done_voided") or {})
 
     def test_missing_uploaded_key_is_kept_but_ledger_is_the_authority(self):
         """老 checkpoint 整段没有 unit_uploaded：不据此判「没传」（否则几十个已完成单元全重采）。
-        真缺产物的由账本按资产反查抓到，再 --force-layers 定点重跑。"""
+        真缺产物的由账本按资产反查抓到，再 --force-layers 定点重跑。
+        但行数必须过得去（W33-043）：行计数在且 ≥ count×(1-tol) 才保留。"""
         units = [(0, 10)]
-        self.assertEqual(pilot.resume_todo(units, {"done_units": [0]}), ([0], []))
+        ck = {"done_units": [0], "unit_rows_seen": {"0": 11}}
+        self.assertEqual(pilot.resume_todo(units, ck, 11), ([0], []))
+
+    def test_old_ckpt_without_rows_is_reverified(self):
+        """★ W33-043：老检查点没有行计数 → 未知即重验，不许默认信它"""
+        units = [(0, 10)]
+        self.assertEqual(pilot.resume_todo(units, {"done_units": [0]}, 11), ([], [0]))
 
 class PlanSig(unittest.TestCase):
     """检查点签名必须**只**由切分决定，且对历史 checkpoint 向后兼容。
@@ -235,7 +256,8 @@ class PlanSig(unittest.TestCase):
     def test_stale_unit_index_beyond_plan_is_dropped(self):
         """重切片后 plan 变短，旧 done_units 里多出的下标不能把 todo 弄成空。"""
         units = [(0, 10)]
-        ck = {"done_units": [0, 5], "unit_uploaded": {"0": True, "5": False}}
+        ck = {"done_units": [0, 5], "unit_uploaded": {"0": True, "5": False},
+              "unit_rows_seen": {"0": 11}, "unit_expect": {"0": 11}}
         self.assertEqual(pilot.resume_todo(units, ck), ([0], []))
 
 

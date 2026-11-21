@@ -1,0 +1,16 @@
+{
+ "schema": "ckpt-invalidated/v1",
+ "at": "2026-11-21T05:30:00Z",
+ "why": "W33-043：done_units 把「跑到末尾」当「采齐」，138c05 因此 2131/2300 却跳过",
+ "entries": [
+  {
+   "plan_hash": "14acda7e100ba989",
+   "layer": "138c05_rest_services_MiddlesexCounty_Base_Layers_MapServer_0",
+   "rows": 2131,
+   "expect": 2300,
+   "gap_pct": 7.3478,
+   "ckpt": "collect-step07-138c05_rest_services_MiddlesexCounty_Base_Layers_MapServer_0@2026-10-31T08_54_00Z.json",
+   "action": "void_done_units_and_reverify"
+  }
+ ]
+}
