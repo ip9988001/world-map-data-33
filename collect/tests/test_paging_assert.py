@@ -3,7 +3,7 @@
 """W33-042 收尾对账断言的单测（stub 造 rows<expect）。
 
 要证明三件事：
-  ① `gap_short` 在 rows 明显少于 expect 时**真的会触发**（默认容差 GAP_TOL=0.005）；
+  ① `gap_short` 在 rows 明显少于 expect 时**真的会触发**（默认容差 GAP_TOL=0.001）；
   ② `_top_up_offset` 会用 resultOffset 把缺的行补回来（138c05 形态：2,000 + 131 → 再补 169）；
   ③ 补不回来时 `_unit_range` 的收尾分支**会返回 `short:rows/expect`**（= 该层记 partial/failed，不静默收工）。
 
@@ -52,14 +52,14 @@ class FakeService:
 class GapShortTest(unittest.TestCase):
     def test_gap_short_triggers(self):
         self.assertTrue(pilot.gap_short(2131, 2298))      # 138c05 实测形态：缺 7.27%
-        self.assertTrue(pilot.gap_short(2280, 2298))      # 缺 0.78% > 0.5% 容差 → 触发
-        self.assertFalse(pilot.gap_short(2290, 2298))     # 缺 0.35% < 0.5% → 上游漂移，不触发
-        self.assertFalse(pilot.gap_short(2297, 2298))     # 缺 0.04% → 不触发
+        self.assertTrue(pilot.gap_short(2280, 2298))      # 缺 0.78% > 0.1% 容差 → 触发
+        self.assertTrue(pilot.gap_short(2290, 2298))      # 缺 0.35% > 0.1% → 触发
+        self.assertFalse(pilot.gap_short(2297, 2298))     # 缺 0.04% < 0.1% → 不触发
         self.assertFalse(pilot.gap_short(2298, 2298))     # 完全对齐 → 不触发
         self.assertFalse(pilot.gap_short(0, 0))           # 空层不判
 
     def test_gap_tol_default(self):
-        self.assertAlmostEqual(pilot.GAP_TOL, 0.005, places=6)
+        self.assertAlmostEqual(pilot.GAP_TOL, 0.001, places=6)
 
 
 class TopUpTest(unittest.TestCase):

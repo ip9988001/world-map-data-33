@@ -33,9 +33,11 @@ TARGET_BYTES = 2_000_000
 
 # ★ 收尾对账容差（2026-11-21 W33-042）：rows 比 expect 少超过这个比例 → 该层必须补翻，
 #   补不回就记 short（partial/failed），**绝不静默收工**。集中在常量里，各处引用同一值。
-#   默认 0.5%（用户口径）：上游本身会有 ±0.x% 的日常漂移，卡太紧会把正常层打成 short；
-#   138c05 缺 7.27%，在 0.5% 下照样被抓。env 覆盖：PILOT_GAP_TOL=0.002 等。
-GAP_TOL = float(os.environ.get("PILOT_GAP_TOL") or "0.005")
+#   默认 0.1%（用户口径 2026-11-21 W33-043）：GAP_TOL 同时是「done 置位门槛」，
+#   宽了就会把 2,131/2,300（缺 7.35%）这种整单元缺口放过去；0.1% 只容忍真实漂移。
+#   preflight 的 ROWS_GAP_TOL 取同一默认值（两处必须一致，见 preflight_dispatch.py）。
+#   env 覆盖：PILOT_GAP_TOL=0.002 等。
+GAP_TOL = float(os.environ.get("PILOT_GAP_TOL") or "0.001")
 
 # 主键候选（MapServer 的 objectIdField 常为 null，只能按非空率挑）
 OID_CANDIDATES = ("OBJECTID", "OBJECTID_1", "OBJECTID_12", "OBJECTID_2", "FID", "OID")
@@ -281,6 +283,34 @@ def _write_progress(prog):
 
 def _purge(files):
     return units.purge(files)
+
+
+# ★ W33-043：人工「需重验」名单（例：138c05 的 14acda7e100ba989 —— 2131/2300 却标 done）。
+#   名单只作废 done_units，不动 unit_rows（行数是证据，留着才能算缺口）。
+INVALIDATED_CKPT = os.path.join(ROOT, "collect", "ledger", "ckpt_invalidated.json")
+
+
+def _invalidated_hashes():
+    try:
+        d = json.load(open(INVALIDATED_CKPT, encoding="utf-8"))
+        return {str(e.get("plan_hash")) for e in (d.get("entries") or []) if e.get("plan_hash")}
+    except Exception:                                   # noqa: BLE001
+        return set()
+
+
+def void_invalidated_ckpt(ck, log=None):
+    """检查点签名在「需重验」名单里 → 作废 done 标记（续跑会重翻，不许沿用旧结论）。"""
+    if not ck:
+        return ck
+    hs = _invalidated_hashes()
+    if str(ck.get("plan_hash")) in hs and ck.get("done_units"):
+        n = len(ck.get("done_units") or [])
+        ck["done_units"] = []
+        ck["needs_reverify"] = True
+        if log:
+            log("  ⚠ 检查点签名 %s 在「需重验」名单（%s）→ 作废 %d 个 done 标记，本轮重翻"
+                % (ck.get("plan_hash"), os.path.basename(INVALIDATED_CKPT), n))
+    return ck
 
 
 def _record_unit(ck, idx, rows, files):
@@ -890,30 +920,87 @@ def ids_truncated(n_ids, count, tol=None):
     return bool(count) and n_ids < count * tol
 
 
-def resume_todo(units, ck):
+def resume_todo(units, ck, count=0, tol=None, log=None):
     """续跑该跑哪些单元：返回 (已真完成, 必须重采)。
 
-    ★ done_units 只代表「这单元跑到了末尾」，**不代表产物进了 Release**。
-      2026-10-30 实测：NAD 全国层 64 单元全标完成，6 个 -uNNNNN.tar.gz 根本没上传
-      （unit_uploaded=false）。新 runner 上本地文件已不在，补传不可能成功 ——
-      若继续按 done_units 跳过，这 6 个单元的行就永久缺口（账本还会显示 ok？不，
-      账本从资产反推会显示 failed，但永远补不上）。所以：产物没上传的单元一律重采。
+    ★ 2026-11-21 W33-043（138c05 真因）：done_units 只代表「这单元跑到了末尾」，
+      **不代表这个单元真的采齐了**。138c05 的检查点（签名 14acda7e100ba989）把
+      「2,131 / 2,300（缺 7.35%）」的单元标成 done，续跑据此跳过 → 3.4 秒收工、
+      缺口永久留在盘上，日志还打了一行「❌ 数据不齐」却无人拦。
+
+    现在 done 必须同时满足三条才保留：
+      ① 产物已上传（unit_uploaded != false）；
+      ② 该单元有 expect（unit_expect）且 rows_seen ≥ expect×(1-tol)；
+      ③ 老检查点没有 unit_expect 时（无法逐单元校验）→ **层总量兜底**：
+         done 单元的 rows 之和 ≥ count×(1-tol) 才保留；count 拿不到 = 无法证明 = 重验。
+    不满足的一律从 done 里剔除（作废标记），调用方会重翻该单元。
+
+    ★ 2026-10-30 事故（保留）：NAD 全国层 64 单元全标完成，6 个 -uNNNNN.tar.gz 根本没上传
+      （unit_uploaded=false）。新 runner 上本地文件已不在，补传不可能成功 —— 产物没上传的单元一律重采。
     """
-    done = {int(x) for x in (ck.get("done_units") or [])}
+    tol = GAP_TOL if tol is None else tol
+    n_units = len(units or [])
+    # 重切片后 plan 变短 → 旧 done_units 里越界的下标一律丢掉，别让它们混进计数
+    cand = {int(x) for x in (ck.get("done_units") or [])}
+    cand = {i for i in cand if 0 <= i < n_units}
     up = {}
     for k, v in (ck.get("unit_uploaded") or {}).items():
         try:
             up[int(k)] = bool(v)
         except (TypeError, ValueError):
             continue
-    n_units = len(units or [])
-    # 重切片后 plan 变短 → 旧 done_units 里越界的下标一律丢掉，别让它们混进计数
-    done = {i for i in done if 0 <= i < n_units}
     # 老 checkpoint 可能整段没有 unit_uploaded 字段：**不据此判定「没传」**
-    # （否则一次续跑会把几十个已完成单元全部重采）；真缺产物的由账本按资产反查抓到，
-    # 再用 full_shard --force-layers 定点重跑 —— 两条路各管一段，不互相假装。
-    redone = {i for i in done if up.get(i) is False}
-    return sorted(done - redone), sorted(redone)
+    # （否则一次续跑会把几十个已完成单元全部重采）；真缺产物的由账本按资产反查抓到。
+    no_up = {i for i in cand if up.get(i) is False}
+    seen = ck.get("unit_rows_seen") or {}
+    rows_ck = ck.get("unit_rows") or {}
+    exp_ck = ck.get("unit_expect") or {}
+
+    def _rows(i):
+        for src in (seen, rows_ck):
+            if str(i) in src:
+                try:
+                    return int(src[str(i)] or 0)
+                except (TypeError, ValueError):
+                    return 0
+        return None
+
+    keep, voided, legacy = set(), {}, []
+    for i in sorted(cand - no_up):
+        e, r = exp_ck.get(str(i)), _rows(i)
+        if e:
+            if r is not None and r >= int(e) * (1.0 - tol):
+                keep.add(i)
+            else:
+                voided[i] = "rows %s < expect %s×(1-%.1f%%)" % (
+                    "?" if r is None else f"{r:,}", f"{int(e):,}", tol * 100)
+        elif r is None:
+            voided[i] = "检查点无行计数（未知即重验）"
+        else:
+            legacy.append(i)
+    if legacy:
+        tot = sum(_rows(i) or 0 for i in legacy)
+        if count and tot >= count * (1.0 - tol):
+            keep |= set(legacy)
+        else:
+            why = ("老检查点无 unit_expect，单元合计 %s < count %s×(1-%.1f%%)"
+                   % (f"{tot:,}", f"{int(count or 0):,}", tol * 100)) if count else \
+                  "老检查点无 unit_expect 且 count 未知 → 无法证明采齐"
+            for i in legacy:
+                voided[i] = why
+    if log and (voided or no_up):
+        for i in sorted(voided)[:6]:
+            log("  ⚠ 作废 done 标记 u%d：%s → 本轮重翻" % (i, voided[i]))
+        if len(voided) > 6:
+            log("  ⚠ …另有 %d 个单元 done 标记被作废" % (len(voided) - 6))
+    redone = sorted(voided) + sorted(no_up)
+    # ★ W33-043：作废必须是**真删标记**，不能只是本轮不调度 —— 否则检查点下次还声称 done。
+    #   留痕到 unit_done_voided（原因 + 行数），下次续跑照样会被同一条判据再挡一次。
+    if redone:
+        ck["done_units"] = [i for i in (ck.get("done_units") or []) if int(i) not in set(redone)]
+        for i in redone:
+            ck.setdefault("unit_done_voided", {})[str(i)] = voided.get(i) or "产物未上传"
+    return sorted(keep), redone
 
 
 def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock, ck):
@@ -1212,8 +1299,9 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range
             % (str(legacy_ck.get("plan_hash"))[:12], str(plan_hash)[:12], UNIT_NS))
     done = set()
     if ck:
+        ck = void_invalidated_ckpt(ck, log)      # ★ W33-043：人工名单优先于「done 即跳过」
         done = set(ck.get("done_units") or [])
-        log("  ⟲ 续跑：检查点签名 %s，已完成单元 %d/%d（%s 行）"
+        log("  ⟲ 续跑：检查点签名 %s，标称已完成单元 %d/%d（%s 行）"
             % (plan_hash, len(done), len(units), sum((ck.get("unit_rows") or {}).values())))
         # 已完成但没传上去的，先补传（本地文件还在的话）
         for k, fs in (ck.get("unit_files") or {}).items():
@@ -1225,11 +1313,12 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range
                     ck.setdefault("unit_package", {})[str(k)] = pkg
                     _purge(paths)
                     _save_ckpt(ck)
-        # 补传不成的（新 runner 上文件本来就不在）→ 重采，不拿 done_units 当挡箭牌
-        done, redone = resume_todo(units, ck)
+        # ★ W33-043：done 必须过 rows ≥ expect×(1-GAP_TOL) 校验；不齐/未知/没传 → 一律重翻
+        done, redone = resume_todo(units, ck, count, log=log)
         if redone:
-            log("  ⚠ 检查点里 %d 个单元标了完成但产物没上传，本轮重采：%s"
+            log("  ⚠ 检查点里 %d 个单元作废（rows 不齐 / 产物未上传）→ 本轮重翻：%s"
                 % (len(redone), ",".join(str(i) for i in redone[:8])))
+        log("  ⟲ done 校验后：真完成 %d/%d 单元" % (len(done), len(units)))
     else:
         ck = {"ver": CKPT_VER, "url": CUR.get("url"), "plan_hash": plan_hash,
               "unit_rows": {}, "unit_files": {}, "unit_uploaded": {},
@@ -1262,7 +1351,8 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range
             rows, files, err, expect = _unit_range(api, oid_field, defexpr, lo, hi, i, ps,
                                                    limit, log, prog, lock, ck)
         # ① 无错 ② 行数对得上（--limit 试采不判）③ 上传成功 —— 三条同时成立才算完成
-        if not err and not limit and expect > 0 and rows < expect * 0.999:
+        # ★ W33-043：门槛与 GAP_TOL 同源（以前写死 0.999，且 short_ack 会把它清掉）
+        if not err and not limit and expect > 0 and rows < expect * (1.0 - GAP_TOL):
             err = "short:%d/%d" % (rows, expect)
         ok, pkg = False, ""
         if files:                      # 数据先落地：哪怕这个单元还不算完成，拿到的行也是真的
@@ -1275,6 +1365,9 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range
             if pkg:
                 ck.setdefault("unit_package", {})[str(i)] = pkg  # ★ 按真实资产名去重（带代际前缀）
             ck.setdefault("unit_rows_seen", {})[str(i)] = rows   # 采到的行如实记账（不管是否算完成）
+            if expect:
+                # ★ W33-043：把本单元 expect 落进检查点，续跑才能逐单元校验 done（老检查点没有 = 重验）
+                ck.setdefault("unit_expect", {})[str(i)] = int(expect)
             if err.startswith("short:"):
                 # 上游真实缺失：同一单元连续两次 short 且行数一致 → 认可，不再无限重试
                 st = ck.setdefault("unit_short_tries", {}).setdefault(str(i), {"n": 0, "rows": -1})
@@ -1283,9 +1376,14 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range
                 else:
                     st["rows"], st["n"] = rows, 1
                 if st["n"] >= 2:
+                    # ★ W33-043：只记「上游反复就这么多」，**绝不据此标 done**。
+                    #   以前这里 err="" → 单元被算完成 → 续跑永远跳过它（138c05 就是这样漏的）。
                     ck.setdefault("unit_short_ack", {})[str(i)] = rows
-                    err = ""
-            done_ok = (not err) and (ok or not files)
+                    log("  ⚠ u%d 连续 %d 次 short（%d 行 < expect %d）→ 仍不标 done，续跑会重翻"
+                        % (i, st["n"], rows, expect))
+            # ★ W33-043：done 的最后一道门槛 —— 行数不够无论上传成功与否都不算完成
+            rows_ok = bool(limit or not expect or rows >= expect * (1.0 - GAP_TOL))
+            done_ok = (not err) and (ok or not files) and rows_ok
             if done_ok:
                 _record_unit(ck, i, rows, files)
                 ck.setdefault("unit_errors", {}).pop(str(i), None)

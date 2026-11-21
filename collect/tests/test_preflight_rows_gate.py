@@ -6,8 +6,8 @@
   ① status=ok 但 rows 少于 declared×(1-0.5%) → FAIL（138c05 形态会被抓）；
   ② status=partial 且 rows 不足 → 只列出，不 FAIL（诚实标注放行）；
   ③ 计划里有 `expect_live`（returnCountOnly）时作为**第二分母**：
-     rows=2,290 / live 2,300 → 缺 0.43%（<0.5%）通过；
-     rows=2,285 / declared 2,270（过期快照）→ 对 live 缺 0.65% → FAIL（证明 live 分母真的参与判定）；
+     rows=2,299 / live 2,300 → 缺 0.04%（<0.1%）通过；
+     rows=2,296 / declared 2,270（过期快照）→ 对 live 缺 0.17% → FAIL（证明 live 分母真的参与判定）；
   ④ 没有账本 → WARN，不假装通过。
 """
 from __future__ import annotations
@@ -72,13 +72,13 @@ class RowsGateTest(unittest.TestCase):
         self.assertEqual(len(it["short_other_status"]), 1)
 
     def test_live_denominator_participates(self):
-        # 对 declared 2298 通过（2290/2298=99.65%），对 live 2300 也通过（99.57%）
-        lp, pp = self._paths([{"layer": "l1", "status": "ok", "rows": 2290,
+        # 对 declared 2298 通过（2299/2298），对 live 2300 也通过（99.96% ≥ 99.9%）
+        lp, pp = self._paths([{"layer": "l1", "status": "ok", "rows": 2299,
                                "declared": 2298}], live={"l1": 2300})
         self.assertEqual(pf.judge_rows_vs_expect("05b", lp, pp)["status"], "PASS")
-        # 2285：对过期快照 declared=2270 通过（100.66%），对 live=2300 缺 0.65% > 0.5% → FAIL
+        # 2296：对过期快照 declared=2270 通过（101.1%），对 live=2300 缺 0.17% > 0.1% → FAIL
         # （快照比实时小 = 02:00 抓的 row_count 落后上游，正是 138c05 的 2,298/2,300 形态）
-        lp2, pp2 = self._paths([{"layer": "l1", "status": "ok", "rows": 2285,
+        lp2, pp2 = self._paths([{"layer": "l1", "status": "ok", "rows": 2296,
                                  "declared": 2270}], live={"l1": 2300})
         it = pf.judge_rows_vs_expect("05b", lp2, pp2)
         self.assertEqual(it["status"], "FAIL")
