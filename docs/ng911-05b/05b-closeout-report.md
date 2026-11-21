@@ -103,15 +103,18 @@ EOF
 
 - 本报告**只是口径快照**，不改写、不替换 gap list v2。
 - 派单依据仍是 `collect/ledger/05b_gap_list.json` + `docs/ng911-05b/05b-gap-list.md`（583 层）。
-- 自证（本轮 PR 内对这两条路径零改动；输出为空即无改动）：
+- 自证（**本报告这一笔提交**对这两条路径零改动；输出为空 + sha256 不变）：
 
 ```bash
-git log --oneline origin/main...HEAD -- collect/ledger/05b_gap_list.json docs/ng911-05b/05b-gap-list.md
-git status --porcelain -- collect/ledger/05b_gap_list.json docs/ng911-05b/05b-gap-list.md
+git diff --stat d5a42af b5bc3c6 -- collect/ledger/05b_gap_list.json docs/ng911-05b/05b-gap-list.md
+git show d5a42af:collect/ledger/05b_gap_list.json | sha256sum
+git show b5bc3c6:collect/ledger/05b_gap_list.json | sha256sum
 ```
 
-> 实测（2026-11-21）：两条命令输出均为空；gap list 最后一次改动仍停在
-> `334ee91 recon(05b·段A)`，`M`/`D`/`??` 一条没有。
+> 实测（2026-11-21）：`diff --stat` 输出为空；gap list json sha256 `8f7cd22e8bd7bf46…`、
+> gap-list.md sha256 `8a8e814883c9e7c0…`，提交前后**同值**。
+> 另：`collect/ledger/05b_gap_list.json` / `05b-gap-list.md` 上一次内容改动仍是
+> `334ee91 recon(05b·段A)`；本次收尾报告只新增 `docs/ng911-05b/05b-closeout-report.md`。
 
 > 现行 gap list v2 文件内容：`at 2026-11-21T07:52:05Z`、`layers_n 583`、
 > `class_counts {ok:1, partial:6, missing:523, unverified:18, pending:35, no_expect:0}`——
