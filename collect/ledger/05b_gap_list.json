@@ -1,6 +1,6 @@
 {
  "schema": "05b-gap-list/v2",
- "at": "2026-11-21T07:31:24Z",
+ "at": "2026-11-21T07:41:13Z",
  "declared_source": "unavailable",
  "denominator": "expect_live",
  "why_denominator": "plan-05b artifact(14692340122) 无 expect_by_layer → 逐层 declared 不可得，按口径改用 expect_live；不用总量/筛查产物倒推",
@@ -21,8 +21,8 @@
   "ok": 1,
   "partial": 6,
   "missing": 523,
-  "unverified": 13,
-  "pending": 40,
+  "unverified": 18,
+  "pending": 35,
   "no_expect": 0
  },
  "records": [
@@ -4504,7 +4504,7 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None no count"
   },
   {
    "layer": "p_arcgis_rest_services_LAFO_ADDRESS_12_17_13_FeatureServer_0",
@@ -5808,7 +5808,7 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry1: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None no count"
   },
   {
    "layer": "t3XQ_arcgis_rest_services_AddressPt_20230629_FeatureServer_0",
@@ -6136,7 +6136,7 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry1: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
   },
   {
    "layer": "_rest_services_EmergencyManagement_Addresses_FeatureServer_0",
@@ -6254,7 +6254,7 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry1: http=None URLError: <urlopen error timed out>",
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>",
    "rows_reported_by_ledger": 0,
    "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
   },
@@ -6521,7 +6521,7 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry1: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
   },
   {
    "layer": "V5FXPLX_arcgis_rest_services_Addresses_Units_FeatureServer_0",
@@ -6756,7 +6756,7 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry1: http=None URLError: <urlopen error timed out>",
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>",
    "rows_reported_by_ledger": 0,
    "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
   },
@@ -6798,7 +6798,7 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry1: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
   },
   {
    "layer": "_services_Infrastructure_Transportation_Sheriffs_MapServer_0",
@@ -6812,7 +6812,7 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry1: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
   },
   {
    "layer": "ABcyiF_arcgis_rest_services_Address_pt_views_FeatureServer_0",
@@ -6904,7 +6904,7 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry1: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
   },
   {
    "layer": "is_rest_services_Barry_County_E911_Map_WFL1_FeatureServer_29",
@@ -6943,8 +6943,8 @@
    "verdict": "pending",
    "expect_source": "unknown",
    "attribution": "transient",
-   "class": "pending",
-   "evidence": "retry1: http=403 HTTP 403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>\n<H1>Access Denied</H1>\n \nYou don't have permission to access \"http&#58;&#4"
+   "class": "unverified",
+   "evidence": "retry2: http=403 HTTPError: HTTP Error 403: Forbidden"
   },
   {
    "layer": "C7QlRK1kZ_arcgis_rest_services_EAS_Addresses_FeatureServer_0",
@@ -6970,8 +6970,8 @@
    "verdict": "pending",
    "expect_source": "unknown",
    "attribution": "transient",
-   "class": "pending",
-   "evidence": "retry1: http=403 HTTP 403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>\n<H1>Access Denied</H1>\n \nYou don't have permission to access \"http&#58;&#4"
+   "class": "unverified",
+   "evidence": "retry2: http=403 HTTPError: HTTP Error 403: Forbidden"
   },
   {
    "layer": "leoncountyfl_gov_accela_rest_services_AccelaXAPO_MapServer_0",
@@ -6984,8 +6984,8 @@
    "verdict": "pending",
    "expect_source": "unknown",
    "attribution": "transient",
-   "class": "pending",
-   "evidence": "retry1: http=403 HTTP 403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>\n<H1>Access Denied</H1>\n \nYou don't have permission to access \"http&#58;&#4"
+   "class": "unverified",
+   "evidence": "retry2: http=403 HTTPError: HTTP Error 403: Forbidden"
   },
   {
    "layer": "ountyfl_gov_accela_rest_services_AccelaXAPO_Test_MapServer_0",
@@ -6998,8 +6998,8 @@
    "verdict": "pending",
    "expect_source": "unknown",
    "attribution": "transient",
-   "class": "pending",
-   "evidence": "retry1: http=403 HTTP 403: <HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>\n<H1>Access Denied</H1>\n \nYou don't have permission to access \"http&#58;&#4"
+   "class": "unverified",
+   "evidence": "retry2: http=403 HTTPError: HTTP Error 403: Forbidden"
   },
   {
    "layer": "st_services_Vector_COT_UtilityERM_Addresses_D_WM_MapServer_0",
@@ -7013,7 +7013,7 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry1: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
   },
   {
    "layer": "LxyiJoNiVHKwq_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -7144,7 +7144,7 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry1: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
   },
   {
    "layer": "W83eUIFui_arcgis_rest_services_Address_Sites_FeatureServer_0",
@@ -7171,7 +7171,7 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry1: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
   },
   {
    "layer": "cGIS_rest_services_Baldwin911Addresses__view_FeatureServer_2",
@@ -7198,7 +7198,7 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry1: http=None wall_cap: 未在 240s 内完成"
+   "evidence": "retry2: http=None no count"
   },
   {
    "layer": "SE6sXfoLq_arcgis_rest_services_Address_ProdA_FeatureServer_0",
@@ -7251,7 +7251,7 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry1: http=None URLError: <urlopen error [Errno -3] Temporary failure in name resolution>"
+   "evidence": "retry2: http=None URLError: <urlopen error timed out>"
   },
   {
    "layer": "rvices_BaseLayers_Addresses_for_BackdropPurposes_MapServer_0",
@@ -7265,7 +7265,7 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry1: http=None URLError: <urlopen error [Errno -5] No address associated with hostname>"
+   "evidence": "retry2: http=None URLError: <urlopen error [Errno -3] Temporary failure in name resolution>"
   },
   {
    "layer": "v_gis_rest_services_Map_Reference_Street_Address_MapServer_0",
@@ -7519,8 +7519,8 @@
    "verdict": "pending",
    "expect_source": "unknown",
    "attribution": "transient",
-   "class": "pending",
-   "evidence": "retry1: http=403 HTTP 403: <!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset",
+   "class": "unverified",
+   "evidence": "retry2: http=403 HTTPError: HTTP Error 403: Forbidden",
    "rows_reported_by_ledger": 0,
    "rows_fix": "账本 parts=0（未采），原报 0 改记 null —— 不用 0 冒充 rows"
   },
@@ -7536,7 +7536,7 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry1: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None no count"
   },
   {
    "layer": "xLqeJd2jOX_arcgis_rest_services_VC_Addresses_FeatureServer_0",
@@ -7602,7 +7602,7 @@
    "expect_source": "unknown",
    "attribution": "transient",
    "class": "pending",
-   "evidence": "retry1: http=None URLError: <urlopen error timed out>"
+   "evidence": "retry2: http=None no count"
   },
   {
    "layer": "is_rest_services_Address_1424300337393713068_FeatureServer_0",
@@ -7733,8 +7733,8 @@
    "ok": 1,
    "partial": 6,
    "missing": 523,
-   "unverified": 13,
-   "pending": 40,
+   "unverified": 18,
+   "pending": 35,
    "no_expect": 0
   },
   "class_counts_sum": 583,
@@ -7761,13 +7761,13 @@
     "expect_live": 0,
     "rows": 0,
     "gap": 0,
-    "rows_null": 13
+    "rows_null": 18
    },
    "pending": {
     "expect_live": 0,
     "rows": 145788,
     "gap": 0,
-    "rows_null": 37
+    "rows_null": 32
    },
    "no_expect": {
     "expect_live": 0,

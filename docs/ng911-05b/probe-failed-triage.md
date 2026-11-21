@@ -76,3 +76,30 @@
 - **alive**：7 层
 - **unverified**：11 层
 - **pending**：42 层
+
+---
+
+## retry2（长超时补探，2026-11-21）
+
+- 轮次：retry2（上一轮 retry1 为 25s×2/12 并发，偏短）
+- 参数：timeout **60s** × 重试 **3** 次，退避 2s/4s/8s，并发 **4**，分两批 21+21；单批墙钟上限 680s/590s（≤12min）
+- 覆盖：**42/42** 个 pending（批1 21 / 批2 21）
+- 结果：**alive 0 / unverified 7 / pending 35**（其中 10 层撞墙钟未跑完，按 pending 留档）
+- 探针仍是 `collect/full_plan.py:_count_one`（未改）；URL 取 retry1 记录的既有 url 字段
+
+### 本轮新转 unverified 的层（7）
+
+| 层名 | 依据（http / err 一行） |
+|---|---|
+| `c_gov_arcgis_rest_services_Addresses_E911Address_MapServer_1` | http=403 · HTTPError: HTTP Error 403: Forbidden |
+| `ervices_DataPortal_DataPortal_BuildingsAddresses_MapServer_0` | http=403 · HTTPError: HTTP Error 403: Forbidden |
+| `countyfl_gov_accelasupp_rest_services_AccelaXAPO_MapServer_0` | http=403 · HTTPError: HTTP Error 403: Forbidden |
+| `leoncountyfl_gov_accela_rest_services_AccelaXAPO_MapServer_0` | http=403 · HTTPError: HTTP Error 403: Forbidden |
+| `ountyfl_gov_accela_rest_services_AccelaXAPO_Test_MapServer_0` | http=403 · HTTPError: HTTP Error 403: Forbidden |
+| `rvices_MapServices_TLC_OverlayAddressSearch_D_WM_MapServer_0` | http=403 · HTTPError: HTTP Error 403: Forbidden |
+| `unty_org_arcgis_rest_services_OpenData_Property_MapServer_12` | http=403 · HTTPError: HTTP Error 403: Forbidden |
+
+### 结论
+
+- 42 个 pending 在 60s×3 下**没有一个变活**（alive 0）→ retry1 的 pending 不是「给时间就能活」，是真挂（连不上 / 首字节都等不到）。
+- 其中 7 层拿到明确服务端拒绝（403/404/500/token required 之类）→ 改判 unverified；其余 35 层仍是超时/连接类 → 留 pending，且已到重试上限，下轮不该再自动重打。
