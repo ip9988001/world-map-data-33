@@ -15,6 +15,9 @@ import json
 import os
 import sys
 import time
+import urllib.parse
+import urllib.request
+from concurrent.futures import ThreadPoolExecutor
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -37,6 +40,45 @@ def _retry(fn, what, tries=3):
             print("⚠ %s 第 %d/%d 次失败：%s" % (what, i + 1, tries, str(e)[:160]), file=sys.stderr)
             time.sleep(2 * (i + 1))
     raise last
+
+
+def _count_one(url, tries=2, timeout=25):
+    """单层 returnCountOnly（服务端 count(*)，走索引，通常 <1s）。失败返回 None。"""
+    u = (url or "").rstrip("/")
+    if not u:
+        return None
+    ep = u + "/query?" + urllib.parse.urlencode(
+        {"where": "1=1", "returnCountOnly": "true", "f": "json"})
+    for i in range(tries):
+        try:
+            with urllib.request.urlopen(ep, timeout=timeout) as r:
+                d = json.loads(r.read().decode("utf-8", "replace"))
+            c = d.get("count")
+            return int(c) if c is not None else None
+        except Exception:                                    # noqa: BLE001
+            time.sleep(1 + i)
+    return None
+
+
+def probe_live_counts(layers, workers=8):
+    """D3（2026-11-21 W33-042）：计划阶段用 returnCountOnly 存「上游实时 expect」。
+
+    为什么计划阶段就要探：plan 里的 `expect` 来自 row_count 快照（batch.py 抓的，可能过期）。
+    138c05 快照 2,298 / 实时 2,300 —— 拿过期快照当验收分母会错判。
+    探测方式：每层 1 次 `.../query?where=1=1&returnCountOnly=true`，8 线程并发；
+    失败不阻断计划（记 None 并在 plan 里留 probe_failed 名单，让 preflight 看得见）。
+    返回 (expect_live: dict, failed: list)。
+    """
+    ids = [r["id"] for r in layers]
+    urls = [(r.get("url") or "") for r in layers]
+    out, failed = {}, []
+    with ThreadPoolExecutor(max_workers=max(1, workers)) as ex:
+        for lid, c in zip(ids, ex.map(_count_one, urls)):
+            if c is None:
+                failed.append(lid)
+            else:
+                out[lid] = c
+    return out, failed
 
 
 def main() -> int:
@@ -135,9 +177,20 @@ def main() -> int:
     shards = [{"shard": i // a.size, "layers": ids[i:i + a.size]}
               for i in range(0, len(ids), a.size)]
     rows_by_id = {r["id"]: (r.get("expect") or 0) for r in layers}
+    # ★ D3：计划阶段探上游实时行数（returnCountOnly），写成 expect_live 供收尾对账用双分母。
+    expect_live, probe_failed = ({}, [])
+    if os.environ.get("PLAN_PROBE_COUNT", "1") not in ("0", "false", "no"):
+        expect_live, probe_failed = probe_live_counts(layers)
+        print("★ 计划阶段 returnCountOnly 探到 %d/%d 层实时行数（%d 层失败，回退快照值）"
+              % (len(expect_live), len(ids), len(probe_failed)))
     plan = {"schema": "collect-plan/v1", "stage": a.stage, "size": a.size,
             "layers_n": len(ids), "shards_n": len(shards),
             "declared_rows": sum(rows_by_id.values()),
+            "expect_source": "returnCountOnly@plan" if expect_live else "row_count_snapshot",
+            "expect_by_layer": rows_by_id,
+            "expect_live": expect_live,
+            "expect_live_total": sum(expect_live.values()),
+            "probe_failed": probe_failed[:50], "probe_failed_n": len(probe_failed),
             "unit_rows": pol.get("unit_rows"), "workers": pol.get("workers"),
             "done_from": str(pol.get("done_from") or a.stage),
             "tag": pol.get("tag"), "order": sel.get("order"),

@@ -109,6 +109,10 @@ PKG_RE = re.compile(r"-u\d{5}\.tar\.gz$")
 # 之前没有任何门禁发现；D14 把这条做成通用检测，不再依赖人记得「这次少了几层」。
 PLAN_LAYERS_TOL = 0.01
 
+# D15（2026-11-21 W33-042）：账本里 status=ok 的层，rows 必须 ≥ declared×(1-GAP_TOL)。
+# 138c05 事故：收尾「本页不满就 break」把 2,131/2,298（缺 7.27%）当完成，账本只记告警。
+ROWS_GAP_TOL = float(os.environ.get("PREFLIGHT_ROWS_GAP_TOL") or "0.005")
+
 
 # ------------------------------------------------------------------ 基础设施
 def now() -> str:
@@ -959,6 +963,81 @@ def judge_ledger_plan_consistency(stage, ledger_path=None, plan_path=None):
                 diff_pct=round(ratio * 100, 4), plan_source=src)
 
 
+def judge_rows_vs_expect(stage, ledger_path=None, plan_path=None):
+    """D15：收尾对账 —— 「status=ok 但 rows 明显少于 expect」的层必须被抓住。
+
+    口径（与 pilot.GAP_TOL 同源，可 env 覆盖 PREFLIGHT_ROWS_GAP_TOL，默认 0.5%）：
+      · status=ok / skipped_done → rows ≥ expect×(1-tol)，违反 = **FAIL**
+      · status=partial / short   → 只列出，不 FAIL（已诚实标注）
+      · expect 双分母：账本 `declared`（采前 count）+ 计划 `expect_live`（计划阶段 returnCountOnly）。
+        上游行数会变，单一分母不可信；任一被击穿即 FAIL。
+      · 两个分母都没有（declared≤0 且无 live）→ 不参与（无法对账，不假装通过）。
+    """
+    lp = ledger_path or (ledger_paths(stage) or [""])[0]
+    if not lp or not os.path.exists(lp):
+        return item("D15", "C", "收尾对账 rows vs expect", "WARN",
+                    "没有阶段账本（%s）：无法判「收工但没采完」" % (lp or "-"))
+    try:
+        led = json.load(open(lp, encoding="utf-8"))
+    except Exception as e:                                     # noqa: BLE001
+        return item("D15", "C", "收尾对账 rows vs expect", "WARN",
+                    "阶段账本读不了（%s）：%s" % (lp, str(e)[:120]))
+    live, plan_src = {}, "-"
+    pp = plan_path or stage_plan_file(stage)
+    if pp and os.path.exists(pp):
+        try:
+            pl = json.load(open(pp, encoding="utf-8"))
+            live = pl.get("expect_live") or {}
+            plan_src = "%s(expect_source=%s)" % (os.path.relpath(pp, ROOT),
+                                                 pl.get("expect_source") or "-")
+        except Exception:                                      # noqa: BLE001
+            live = {}
+    tol = ROWS_GAP_TOL
+    bad, noted = [], []
+    for r in (led.get("records") or []):
+        try:
+            d = int(r.get("declared") or 0)
+            rw = int(r.get("rows") or 0)
+        except Exception:                                      # noqa: BLE001
+            continue
+        dens = []
+        if d > 0:
+            dens.append(("declared", d))
+        lv = live.get(r.get("layer"))
+        if lv:
+            dens.append(("live", int(lv)))
+        if not dens:
+            continue
+        hit = [(src, dv) for src, dv in dens if rw < dv * (1.0 - tol)]
+        if not hit:
+            continue
+        src, dv = hit[0]
+        row = {"layer": r.get("layer"), "status": r.get("status"), "rows": rw,
+               "declared": d or None, "expect_live": int(lv) if lv else None,
+               "denominator": src, "gap_pct": round(100.0 * (1.0 - float(rw) / dv), 4)}
+        if str(r.get("status") or "").lower() in ("ok", "skipped_done"):
+            bad.append(row)
+        else:
+            noted.append(row)
+    if bad:
+        return item("D15", "C", "收尾对账 rows vs expect", "FAIL",
+                    "⛔ %d 层标 ok 但 rows < expect×(1-%.1f%%)（收工没采完）：%s"
+                    % (len(bad), tol * 100,
+                       "; ".join("%s %d/%s[%s]缺%.2f%%"
+                                 % (b["layer"][:40], b["rows"],
+                                    b["expect_live"] if b["denominator"] == "live" else b["declared"],
+                                    b["denominator"], b["gap_pct"]) for b in bad[:3])),
+                    short_ok_status=bad, short_other_status=noted,
+                    tolerance_pct=round(tol * 100, 3), plan_source=plan_src)
+    detail = "账本 %d 层：无「status=ok 但 rows 不足」的层（容差 %.1f%%，%d 层有 live 分母）" % (
+        len(led.get("records") or []), tol * 100, len(live))
+    if noted:
+        detail += "；另有 %d 层已诚实标注 partial/short（不判 FAIL）" % len(noted)
+    return item("D15", "C", "收尾对账 rows vs expect", "PASS", detail,
+                short_ok_status=[], short_other_status=noted[:20],
+                tolerance_pct=round(tol * 100, 3), plan_source=plan_src)
+
+
 def judge_baseline(stage, paths=None):
     """C6：三份账本现值（阶段级 / rebuilt / 最近一次 run）。"""
     stage_path, rebuilt_path, run_path = paths or ledger_paths(stage)
@@ -1496,6 +1575,13 @@ def build_report(args) -> dict:
         "ledger_layers": d14.get("ledger_layers"), "plan_layers": d14.get("plan_layers"),
         "diff": d14.get("diff"), "diff_pct": d14.get("diff_pct"),
         "plan_source": d14.get("plan_source"), "tolerance_pct": PLAN_LAYERS_TOL * 100}
+    d15 = judge_rows_vs_expect(stage, paths[0], stage_plan_file(stage))
+    items.append(d15)
+    evidence["rows_vs_expect"] = {
+        "tolerance_pct": d15.get("tolerance_pct"),
+        "plan_source": d15.get("plan_source"),
+        "short_ok_status": (d15.get("short_ok_status") or [])[:20],
+        "short_other_status_n": len(d15.get("short_other_status") or [])}
     items.append(judge_merge_guard(ref_for_git))
     baseline = {}
     if paths[0] and os.path.exists(paths[0]):

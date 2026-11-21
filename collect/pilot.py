@@ -31,10 +31,82 @@ OUTBASE = os.path.join(ROOT, "collect", "out")
 CHUNK = 50000          # 每个 part 最多多少行
 TARGET_BYTES = 2_000_000
 
+# ★ 收尾对账容差（2026-11-21 W33-042）：rows 比 expect 少超过这个比例 → 该层必须补翻，
+#   补不回就记 short（partial/failed），**绝不静默收工**。集中在常量里，各处引用同一值。
+#   默认 0.5%（用户口径）：上游本身会有 ±0.x% 的日常漂移，卡太紧会把正常层打成 short；
+#   138c05 缺 7.27%，在 0.5% 下照样被抓。env 覆盖：PILOT_GAP_TOL=0.002 等。
+GAP_TOL = float(os.environ.get("PILOT_GAP_TOL") or "0.005")
+
+# 主键候选（MapServer 的 objectIdField 常为 null，只能按非空率挑）
+OID_CANDIDATES = ("OBJECTID", "OBJECTID_1", "OBJECTID_12", "OBJECTID_2", "FID", "OID")
+
+
+def gap_short(rows: int, expect: int, tol: float | None = None) -> bool:
+    """rows 是否明显少于 expect（唯一判据入口，单测直接打这里）。"""
+    if not expect or expect <= 0:
+        return False
+    t = GAP_TOL if tol is None else tol
+    return rows < expect * (1.0 - t)
+
+
+def pick_oid_field(meta: dict, api: str) -> str:
+    """★ 2026-11-21 W33-042：主键探测从「按字段名优先级取第一个」改成「取非空率最高」。
+
+    事故（138c05）：MapServer 的 objectIdField 为 null，兜底按名字拿到 OBJECTID，
+    而该列有 169 行是 null（真实主键 OBJECTID_1）→ keyset 的 `OBJECTID>n` 永远取不到那 169 行。
+    现在抽样 50 行比非空率，谁有值用谁。
+    """
+    declared = meta.get("objectIdField") or meta.get("objectIdFieldName")
+    fns = [f.get("name") for f in (meta.get("fields") or [])]
+    cands = [c for c in OID_CANDIDATES if c in fns]
+    if declared:
+        cands = [declared] + [c for c in cands if c != declared]
+    if not cands:
+        return declared or "OBJECTID"
+    if len(cands) == 1:
+        return cands[0]
+    try:
+        d = _q(api, {"where": "1=1", "outFields": ",".join(cands),
+                     "returnGeometry": "false", "resultRecordCount": 50, "f": "json"}, timeout=60)
+        feats = d.get("features") or []
+    except Exception:                                        # noqa: BLE001
+        feats = []
+    if not feats:
+        return cands[0]
+    best = max(cands, key=lambda k: sum(
+        1 for f in feats if (f.get("attributes") or {}).get(k) is not None))
+    return best
+
 
 
 
 # ---------------- 字段归一化 ----------------
+def _top_up_offset(api, base, ps, start_offset, expect, oid_field, idx, log, sink):
+    """★ 2026-11-21 W33-042 收尾补翻：用 resultOffset 从 start_offset 继续翻，直到：
+      ①累计已够 expect；②翻空（返回 0 行）；③服务说本页不满且没有更多。
+
+    为什么不能只靠 keyset：138c05 的 OBJECTID 有 169 行为 null，`OBJECTID>n` 谓词永远匹配不到它们，
+    只有 offset 能取到。返回 (gained_rows, err_or_empty)。
+    """
+    got, off, guard = 0, int(start_offset or 0), 0
+    while guard < 500:
+        guard += 1
+        q = dict(base, resultOffset=off, resultRecordCount=ps, orderByFields=oid_field)
+        r = _q(api, q)
+        if "__error__" in r:
+            return got, "backfill_fail:" + str(r["__error__"])[:120]
+        feats = r.get("features") or []
+        if not feats:
+            break
+        sink(feats)
+        got += len(feats)
+        off += len(feats)
+        if not r.get("exceededTransferLimit") and len(feats) < ps:
+            break
+        time.sleep(0.1)
+    return got, ""
+
+
 def page_size_for(api):
     """自适应页大小：字段多就少给点，避免响应过大"""
     meta = get_json(api + "?f=json", timeout=25)
@@ -56,13 +128,7 @@ def collect_arcgis(url, limit=0, log=print):
         api += "/0"
     ps, maxrc, meta = page_size_for(api)
     GEOM_TYPE = str(meta.get("geometryType") or "")      # 老路径同样认面层，不许两套行为
-    oid_field = meta.get("objectIdField") or meta.get("objectIdFieldName")
-    if not oid_field:
-        # ★ 2026-10-23 san_juan：MapServer 的 objectIdField 为 null，实际主键叫 FID。
-        #   原来直接兜底 "OBJECTID" → orderByFields=OBJECTID 报 400 → 只拿到第一页 2000 行。
-        fns = [f.get("name") for f in (meta.get("fields") or [])]
-        oid_field = next((k for k in ("OBJECTID", "OBJECTID_1", "FID", "OID", "OBJECTID_12")
-                          if k in fns), "OBJECTID")
+    oid_field = pick_oid_field(meta, api)          # ★ W33-042：取非空率最高的候选主键
     count = int((meta.get("definitionExpression") and 0) or 0)
     cnt = get_json(api + "/query?where=1%3D1&returnCountOnly=true&f=json", timeout=60)
     count = int(cnt.get("count") or 0)
@@ -890,6 +956,24 @@ def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock
         part_no += 1
         buf = []
 
+    def _absorb(feats):
+        """把一页 features 收进 buf（主循环与补翻共用同一套 OID 跟踪）。"""
+        nonlocal rows, last
+        for ft in feats:
+            at = ft.get("attributes") or {}
+            buf.append(make_rec(ft))
+            rows += 1
+            oid = at.get(oid_field)
+            if oid is None:
+                for k in (oid_field, "OBJECTID_1", "OBJECTID", "FID", "OID"):
+                    if k in at and at[k] is not None:
+                        oid = at[k]
+                        break
+            if oid is not None:
+                last = oid
+        if len(buf) >= CHUNK:
+            flush()
+
     while True:
         if mode == "keyset":
             w = w0 if last is None else "%s AND %s>%s" % (w0, oid_field, last)
@@ -938,6 +1022,25 @@ def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock
         if not r.get("exceededTransferLimit") and len(feats) < ps:
             break
         time.sleep(0.1)
+    flush()
+    # ★ 2026-11-21 W33-042 收尾硬断言：
+    #   138c05 就是「第 2 页只回 131 行（< ps）→ 直接 break → 告警但收工」，2,131/2,298 静默缺口 7.27%。
+    #   现在 rows 明显少于 expect 就先补翻（offset 续翻 → 仍不足则缩 page_size 再翻），补不回记 short。
+    if not limit and gap_short(rows, expect):   # --limit 试采不补翻（只取前 N 行是预期行为）
+        log("  u%d 收尾对账 short：%d/%d（缺 %.2f%%）→ 补翻"
+            % (idx, rows, expect, 100.0 * (1.0 - float(rows) / expect)))
+        for ps2 in (ps, max(200, ps // 4)):
+            if not gap_short(rows, expect):
+                break
+            gained, berr = _top_up_offset(api, base, ps2, rows, expect, oid_field, idx, log,
+                                          sink=lambda feats: _absorb(feats))
+            rows += gained
+            flush()
+            log("  u%d 补翻(ps=%d)：+%d → %d/%d %s" % (idx, ps2, gained, rows, expect, berr or ""))
+        if gap_short(rows, expect):
+            log("  u%d ❌ 补翻后仍 short：%d/%d（缺 %.2f%%）"
+                % (idx, rows, expect, 100.0 * (1.0 - float(rows) / expect)))
+            return rows, files, "short:%d/%d" % (rows, expect), expect
     flush()
     return rows, files, "", expect
 
@@ -991,11 +1094,7 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range
     GEOM_TYPE = str(meta.get("geometryType") or "")
     if POLY_CENTROID and geom_is_poly():
         log("  面层（%s）→ 质心开：rings 就地算 representative_point，落 _lat/_lon" % GEOM_TYPE)
-    oid_field = meta.get("objectIdField") or meta.get("objectIdFieldName")
-    if not oid_field:
-        fns = [f.get("name") for f in (meta.get("fields") or [])]
-        oid_field = next((k for k in ("OBJECTID", "OBJECTID_1", "FID", "OID", "OBJECTID_12")
-                          if k in fns), "OBJECTID")
+    oid_field = pick_oid_field(meta, api)          # ★ W33-042：取非空率最高的候选主键
     defexpr = meta.get("definitionExpression") or ""
     w_all = "(%s)" % defexpr if defexpr else "1=1"
     cnt = get_json(api + "/query?where=1%3D1&returnCountOnly=true&f=json", timeout=60)
@@ -1359,6 +1458,9 @@ def main():
     os.makedirs(os.path.join(ROOT, "collect", "reports"), exist_ok=True)
     with open(os.path.join(ROOT, "collect", "reports", CUR["id"] + ".json"), "w", encoding="utf-8") as f:
         json.dump(man, f, ensure_ascii=False, indent=1)
+    # ★ W33-042：收尾对账（旧路径也要判，不许两套行为）。rows 明显不足 → short，不静默 ok。
+    if not err and not a.limit and gap_short(rows, count):
+        err = "short:%d/%d" % (rows, count)
     log("done rows=%d count=%d diff=%s err=%s %.1fs" % (rows, count, diff, err or "-", elapsed))
     if count == 0 and not err:
         log("empty layer（count=0），按空层处理，不算失败")
