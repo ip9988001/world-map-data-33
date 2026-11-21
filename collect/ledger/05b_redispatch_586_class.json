@@ -1,0 +1,58 @@
+{
+ "schema": "05b-redispatch/v1",
+ "built_at": "2026-11-21T08:28:00Z",
+ "base_main_sha": "680073ecbdbf515f1222aa6c61dabdf6d05b2c6b",
+ "base_main_note": "PR #17 (D15 豁免) 已合",
+ "rule": "N+3 = gap_list 全部层(实数 N) + D15 三层(账本 status=ok 但 rows<declared*(1-0.001)，不在 gap_list 内)",
+ "N": 583,
+ "d15_n": 3,
+ "total": 586,
+ "gap_list_source": {
+  "path": "collect/ledger/05b_gap_list.json",
+  "schema": "05b-gap-list/v2",
+  "at": "2026-11-21T07:52:05Z",
+  "records": 583,
+  "sha256": "8f7cd22e8bd7bf4685ffafe692b7fb9c79ae5dcb03bfc301412dfc571de3113b"
+ },
+ "gap_classes": {
+  "ok": 1,
+  "partial": 6,
+  "missing": 523,
+  "unverified": 18,
+  "pending": 35,
+  "no_expect": 0
+ },
+ "d15_layers": [
+  {
+   "layer": "arcgis_rest_services_LAWRENCEGIS_NG911Addressing_MapServer_0",
+   "rows": 39504,
+   "declared": 39751,
+   "gap_pct": -0.621
+  },
+  {
+   "layer": "cgis_rest_services_911_Addresses_Public_View_FeatureServer_2",
+   "rows": 81437,
+   "declared": 81772,
+   "gap_pct": -0.41
+  },
+  {
+   "layer": "qKAFwdGU_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "rows": 181529,
+   "declared": 181750,
+   "gap_pct": -0.122
+  }
+ ],
+ "reprobe_final": {
+  "source": "collect/ledger/05b_plan_probe_reprobe.json",
+  "n": 60,
+  "verdicts": {
+   "unverified": 21,
+   "pending": 37,
+   "alive": 2
+  },
+  "alive_layers": [
+   "st_services_GeorginaMap_W84_SiteAddressPoint_W84_MapServer_0",
+   "ices_GeorginaMap_W84_SiteAddressPoint_Labels_W84_MapServer_0"
+  ]
+ }
+}
