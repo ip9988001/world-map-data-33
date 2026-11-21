@@ -206,10 +206,21 @@ def page_size_for(api):
 | 5 | `us_arcgis_rest_services_Addressing_AddressPoints_MapServer_0` | 仅 585 | 同上 |
 | 6 | `wi_us_arcgis_rest_services_RichlandCo_GIS_Public_MapServer_6` | 仅 585 | 同上 |
 
-**差异成因**：两版之间 05b 的选层口径（`layer_plan_clean.csv` + `skip_done` + 上游 unstable 剔除）没变，
-差异来自**计划期重算**：本轮 `full_plan.py` 重扫 Releases 时这 6 层尚未满足「已采」判据（tag/checkpoint 不齐），
-而 11-20 那次量测把它们算作已采（口径差 → 少 6 层）。**以 `10e87f5` 的 585 为准**，579 作废（它是量测快照，不是计划）。
-declared 增量 332,071 行即这 6 层之和。
+**差异成因（已逐层核实）**：这 6 层**都有 `collect-step05-*` tag（已采过）**，但在 `collect/05b_ledger.json` 里全部是
+`status=partial` 且 `rows < declared`：
+
+| 层 | 账本 status | rows | declared |
+|---|---|---|---|
+| `_services_NWS_AddressPoints_Nstreets_centerlines_MapServer_0` | partial | 118,916 | 251,639 |
+| `ices_GeorginaMap_W84_SiteAddressPoint_Labels_W84_MapServer_0` | partial | 20,570 | 23,246 |
+| `nDataMaps_OpenDataMAP_InfraZonePropBound_Layers_MapServer_33` | partial | 9,602 | 9,861 |
+| `st_services_GeorginaMap_W84_SiteAddressPoint_W84_MapServer_0` | partial | 20,567 | 23,241 |
+| `us_arcgis_rest_services_Addressing_AddressPoints_MapServer_0` | partial | 6,616 | 14,470 |
+| `wi_us_arcgis_rest_services_RichlandCo_GIS_Public_MapServer_6` | partial | 9,101 | 9,624 |
+
+按 W33-040（`worker_core._veto_by_ledger`），「tag+checkpoint 齐全但账本判 partial 且 rows<declared」的层**必须重新参赛** →
+585 里这 6 层是**被账本否决拉回来的**，不是新发现的层。11-20 的 579 量测没把这 6 层否决回来（读账本时否决未生效/口径不同），
+**以 `10e87f5` 的 585 为准，579 作废（它是量测快照，不是计划）**。declared 增量 332,071 行即这 6 层之和。
 
 ## 五、05b 当前状态（只读）
 
