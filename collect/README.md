@@ -28,6 +28,15 @@
 - **schema**：state / layer_id / src_* / add_num / pre_dir / st_name / st_suf / post_dir / unit / city / zip / lat / lon / esn + **`raw`（原始整条 JSON）**。
 - **三道校验**：行数对账（差 >1% 标 `partial`）、空层标 `empty` 不报错、重复层标 `dup_of` 不阻断。
 
+## 账本口径（覆盖率 / hollow）
+
+- **覆盖率一律按「有效覆盖」算** = `有行且非 hollow 的层数 ÷ 计划层数`。
+  按 tag 数算的「形式覆盖率」只作参考，**不得用于验收**（tag + Release 齐全但资产为空 = 形式有、实质无）。
+- **hollow（空洞层）**：形式存在（tag + Release 都在）、实质为空 —— 资产只有 checkpoint（几百字节）、
+  `rows=0`、而 `declared>0`。标 `hollow=true` 并同时保留在缺口清单里，**缺口数字不因标 hollow 而变小**。
+  已认定：`rcgis_rest_services_Addressing_Addressing_public_MapServer_0`
+  （资产 652B / rows=0 / declared=3,821，第 4 个上游死层；首个为 04b 的 3 层）。
+
 ## 跑法
 
 ```bash
