@@ -1,0 +1,29 @@
+{
+ "schema": "05b-probe-failed-reconcile/v1",
+ "at": "2026-11-21",
+ "count_n": 60,
+ "list_n": 50,
+ "truth_n": 60,
+ "case": "②",
+ "reason": "写文件 bug：collect/full_plan.py:193 落盘时把列表切片成 probe_failed[:50]，但计数用的是完整长度 len(probe_failed)；后 10 条被静默丢弃。非去重、非子分区合并、非空值过滤。",
+ "evidence": {
+  "bug_site": "collect/full_plan.py:193  \"probe_failed\": probe_failed[:50], \"probe_failed_n\": len(probe_failed)",
+  "count_origin": "collect/full_plan.py:63-79 probe_live_counts(): ex.map 保序，每层失败 append 一次 → len=60",
+  "list_origin": "同文件 :193 的 [:50] 切片，保留 plan 顺序前 50 条",
+  "cross_check": "同一份 plan 内 expect_by_layer(583) - expect_live(523) = 60；按 shards 拼接的 plan 顺序取失败层，前 50 条与 probe_failed 列表逐条顺序完全相等 → 差额即第 51-60 位",
+  "no_dedup": "plan 583 个 id 全唯一（set 长度 583），probe_failed 50 条也全唯一，无重复条目",
+  "subregion_note": "@MN-3 / @未定位-2 这类唯一化后缀各只出现 1 次，未参与计数放大"
+ },
+ "dropped_10": [
+  "couver_us_arcgis_rest_services_common_BasemapPUB_MapServer_0",
+  "buncombecounty_org_arcgis_rest_services_opendata_MapServer_2",
+  "vices_BaseLayers_BaseLayers_for_BackdropPurposes_MapServer_1",
+  "rvices_BaseLayers_Addresses_for_BackdropPurposes_MapServer_0",
+  "_rest_services_Atlanta_Streets_and_Addresses_FeatureServer_0",
+  "unty_org_arcgis_rest_services_OpenData_Property_MapServer_12",
+  "_services_NWS_AddressPoints_Nstreets_centerlines_MapServer_0",
+  "server_rest_services_Intermap_Situs_address_WMAS_MapServer_0",
+  "g_arcgis_rest_services_Open_Data_Open_Data_1_FeatureServer_2",
+  "_services_Address_Points_AddressPoint_Native_FeatureServer_0@未定位-2"
+ ]
+}

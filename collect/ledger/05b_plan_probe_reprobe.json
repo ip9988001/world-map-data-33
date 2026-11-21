@@ -1,0 +1,47 @@
+{
+ "schema": "collect-plan-probe-reprobe/v1",
+ "stage": "05b",
+ "at": "2026-11-21T07:16:42Z",
+ "source_plan": "collect/ledger/05b_plan_probe.json",
+ "probe_fn": "collect/full_plan.py:_count_one (unchanged)",
+ "url_source": "worker_core._rows_from_csv+_norm_plan_row(layer_plan.csv) / _url_index()",
+ "timeout_s": 60,
+ "retries": 3,
+ "backoff_s": [
+  2,
+  4,
+  8
+ ],
+ "workers": 4,
+ "read_only": true,
+ "targets_n": 60,
+ "verdict_defs": {
+  "alive": "returnCountOnly 拿到 count",
+  "unverified": "服务已死：404/400/500/502/503/no Query/not supported/TLS/token required",
+  "pending": "暂时性：超时/429/连接重置"
+ },
+ "records": [
+  {
+   "layer": "is_rest_services_Address_Points_Council_Area_FeatureServer_0",
+   "url": "https://services-ap1.arcgis.com/vZiZyVhvE6TVma8f/arcgis/rest/services/Address_Points_Council_Area/FeatureServer/0",
+   "http_code": 200,
+   "err": "http200 without count | {\"error\":{\"code\":400,\"message\":\"Invalid URL\",\"details\":[\"Invalid URL\"]}}",
+   "tries": 4,
+   "elapsed_ms": 15330,
+   "expect_live": null,
+   "verdict": "unverified",
+   "url_source": "layer_plan.csv"
+  },
+  {
+   "layer": "_rest_services_NG24DataModelUpdate_WFL1_view_FeatureServer_0",
+   "url": "https://services7.arcgis.com/6Ys1qjTn2qXd9VRQ/arcgis/rest/services/NG24DataModelUpdate_WFL1_view/FeatureServer/0",
+   "http_code": 200,
+   "err": "http200 without count | {\"error\":{\"code\":499,\"message\":\"Token Required\",\"messageCode\":\"GWM_0003\",\"details\":[\"Token Required\"]}}",
+   "tries": 4,
+   "elapsed_ms": 15550,
+   "expect_live": null,
+   "verdict": "unverified",
+   "url_source": "layer_plan.csv"
+  }
+ ]
+}
