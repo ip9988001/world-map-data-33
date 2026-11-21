@@ -15,6 +15,7 @@ import json
 import os
 import sys
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
@@ -22,6 +23,8 @@ from concurrent.futures import ThreadPoolExecutor
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
+
+from lib.fetch import classify_failure, kinds_tally   # noqa: E402
 
 
 def _retry(fn, what, tries=3):
@@ -42,46 +45,230 @@ def _retry(fn, what, tries=3):
     raise last
 
 
-def _count_one(url, tries=2, timeout=25):
-    """单层 returnCountOnly（服务端 count(*)，走索引，通常 <1s）。失败返回 None。"""
-    u = (url or "").rstrip("/")
-    if not u:
-        return None
-    ep = u + "/query?" + urllib.parse.urlencode(
-        {"where": "1=1", "returnCountOnly": "true", "f": "json"})
-    for i in range(tries):
-        try:
-            with urllib.request.urlopen(ep, timeout=timeout) as r:
-                d = json.loads(r.read().decode("utf-8", "replace"))
-            c = d.get("count")
-            return int(c) if c is not None else None
-        except Exception:                                    # noqa: BLE001
-            time.sleep(1 + i)
-    return None
+# ★ 第 7 项（muse-000146）：**唯一**的层放行入口。
+#   「本轮采哪些层」只允许这一个来源决定 —— collect-full.yml 的 force_layers 输入 →
+#   full_plan.py --force-layers。全仓禁止第二处能独立放行层的入口（同类 only-*-layers 开关一律不许新增）；
+#   任何新开关都必须先经过 resolve_allowlist() 并留日志，不许在别处并行生效。
+LAYERS_ALLOWLIST_SOURCE = "force_layers"
+
+PROBE_ATTEMPTS = 3                  # 第 4 项：默认复探 3 次
+PROBE_BACKOFF = (1, 2, 4)           # 退避秒数（单测里注入 sleep，不真等）
+PROBE_TIMEOUT = 25
+COUNT_PATHS = ("count", "counts", "total")   # 依次尝试的计数路径（上游改名时能定位到哪条命中）
+DISPLAY_LIMIT = 50                  # 第 3 项：**只在展示层**截断，plan json 里必须全量
 
 
-def probe_live_counts(layers, workers=8):
-    """D3（2026-11-21 W33-042）：计划阶段用 returnCountOnly 存「上游实时 expect」。
+def _now_iso() -> str:
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
-    为什么计划阶段就要探：plan 里的 `expect` 来自 row_count 快照（batch.py 抓的，可能过期）。
-    138c05 快照 2,298 / 实时 2,300 —— 拿过期快照当验收分母会错判。
-    探测方式：每层 1 次 `.../query?where=1=1&returnCountOnly=true`，8 线程并发；
-    失败不阻断计划（记 None 并在 plan 里留 probe_failed 名单，让 preflight 看得见）。
-    返回 (expect_live: dict, failed: list)。
+
+def body_keys_sig(raw) -> str:
+    """响应体的键签名（用于发现「上游把 count 改名了」）。"""
+    if raw is None:
+        return "none"
+    text = raw.decode("utf-8", "replace") if isinstance(raw, (bytes, bytearray)) else str(raw)
+    text = text.strip()
+    if not text:
+        return "empty"
+    if text[:1] == "<":
+        return "html"
+    try:
+        d = json.loads(text)
+    except Exception:                                  # noqa: BLE001
+        return "non_json"
+    if isinstance(d, dict):
+        if d.get("error"):
+            return "error:" + ",".join(sorted((d["error"] or {}))[:6])
+        return ",".join(sorted(d)[:12])
+    return type(d).__name__
+
+
+def parse_count_body(raw) -> dict:
+    """★ 第 6 项：探针响应体的解析**固化在这里**（可单测），不许散在临时路径。
+
+    返回 {count, count_path, body_keys_sig, parse_ok, reason}：
+      · 正常 {"count": 2298}            → parse_ok=True, count_path="count"
+      · 字段改名 {"total": 2298}         → 命中 "total"；若是没见过的名字 → parse_ok=False + reason
+      · 空体 / HTML / 非 JSON / svcerr   → parse_ok=False + 具体 reason（**不许静默 None**）
     """
-    ids = [r["id"] for r in layers]
-    urls = [(r.get("url") or "") for r in layers]
-    out, failed = {}, []
-    with ThreadPoolExecutor(max_workers=max(1, workers)) as ex:
-        for lid, c in zip(ids, ex.map(_count_one, urls)):
-            if c is None:
-                failed.append(lid)
+    if raw is None:
+        return {"count": None, "count_path": None, "body_keys_sig": "none",
+                "parse_ok": False, "reason": "no_body"}
+    text = raw.decode("utf-8", "replace") if isinstance(raw, (bytes, bytearray)) else str(raw)
+    text = text.strip()
+    sig = body_keys_sig(raw)
+    if not text:
+        return {"count": None, "count_path": None, "body_keys_sig": "empty",
+                "parse_ok": False, "reason": "empty_body"}
+    if text[:1] == "<":
+        return {"count": None, "count_path": None, "body_keys_sig": "html",
+                "parse_ok": False, "reason": "html_body"}
+    try:
+        d = json.loads(text)
+    except Exception as e:                             # noqa: BLE001
+        return {"count": None, "count_path": None, "body_keys_sig": "non_json",
+                "parse_ok": False, "reason": "json_error:%s" % str(e)[:60]}
+    if isinstance(d, dict) and d.get("error"):
+        return {"count": None, "count_path": None, "body_keys_sig": sig,
+                "parse_ok": False,
+                "reason": "svcerr:%s" % json.dumps(d["error"], ensure_ascii=False)[:160]}
+    for path in COUNT_PATHS:
+        cur, hit = d, True
+        for part in path.split("."):
+            if isinstance(cur, dict) and part in cur:
+                cur = cur[part]
             else:
-                out[lid] = c
-    return out, failed
+                hit = False
+                break
+        if hit and isinstance(cur, (int, float)) and not isinstance(cur, bool):
+            return {"count": int(cur), "count_path": path, "body_keys_sig": sig,
+                    "parse_ok": True, "reason": ""}
+    return {"count": None, "count_path": None, "body_keys_sig": sig, "parse_ok": False,
+            "reason": "no_count_field(期望 %s；实际键 %s)" % ("/".join(COUNT_PATHS), sig)}
 
 
-def main() -> int:
+def _fetch_count_body(url, timeout=PROBE_TIMEOUT):
+    """取一次 returnCountOnly 的原始响应：(status, code, body_bytes, exc_text)。"""
+    ep = url.rstrip("/") + "/query?" + urllib.parse.urlencode(
+        {"where": "1=1", "returnCountOnly": "true", "f": "json"})
+    try:
+        with urllib.request.urlopen(ep, timeout=timeout) as r:
+            return 200, r.status, r.read(), ""
+    except urllib.error.HTTPError as e:
+        try:
+            body = e.read()
+        except Exception:                              # noqa: BLE001
+            body = b""
+        return e.code, e.code, body, ""
+    except Exception as e:                             # noqa: BLE001
+        return None, None, b"", str(e)[:200]
+
+
+def probe_layer(url, attempts=PROBE_ATTEMPTS, backoff=PROBE_BACKOFF,
+                timeout=PROBE_TIMEOUT, fetch=_fetch_count_body, sleep=time.sleep):
+    """★ 第 4 项：一层一次全流程 —— 复探 N 次（退避）全失败才判 dead，每次结果都落盘。
+
+    为什么要复探：以前一次失败就判死，上游一个 5xx 抖动就把层永久钉在 dead 上。
+    现在 dead 必须满足「N 次都失败」，且带 `dead_since`（UTC）与 `probe_attempts`（逐次证据）。
+    复探成功 → dead=False（回到待采），不需要人工捞。
+    """
+    rec = {"url": (url or ""), "ok": False, "count": None, "dead": False, "dead_since": None,
+           "count_path": None, "body_keys_sig": None, "parse_ok": False, "reason": "",
+           "probe_attempts": []}
+    if not (url or "").strip():
+        rec.update(dead=True, dead_since=_now_iso(), reason="empty_url")
+        return rec
+    attempts = max(1, int(attempts))
+    last_kind = None
+    for i in range(attempts):
+        t0 = time.time()
+        status, code, body, exc = fetch(url, timeout)
+        elapsed_ms = int((time.time() - t0) * 1000)
+        parsed = parse_count_body(body)
+        ok = status == 200 and parsed["parse_ok"]
+        kind = ("ok" if ok else
+                ("timeout" if (code is None and exc) else
+                 classify_failure(code=code, body=body, status=status, exc=exc)))
+        rec["probe_attempts"].append({"at": _now_iso(), "attempt": i + 1, "status": status,
+                                      "code": code, "elapsed_ms": elapsed_ms, "kind": kind})
+        last_kind = kind
+        rec.update({k: parsed[k] for k in ("count_path", "body_keys_sig", "parse_ok", "reason")})
+        if ok:
+            rec.update(ok=True, count=parsed["count"])
+            return rec
+        if i < attempts - 1:
+            sleep(backoff[min(i, len(backoff) - 1)])
+    rec.update(dead=True, dead_since=_now_iso(),
+               reason=rec["reason"] or ("probe_failed:%s" % last_kind))
+    return rec
+
+
+def _count_one(url, tries=2, timeout=25):
+    """**兼容壳**（plan_probe_retry2.py 直接 import 它）：返回 int 或 None。
+
+    语义与老版一致（失败返回 None），但内部走 probe_layer：解析固化 + 失败分类，
+    不再「body 里没有 count 就当 None 且无理由」。
+    """
+    rec = probe_layer(url, attempts=tries, timeout=timeout)
+    return rec["count"] if rec["ok"] else None
+
+
+def probe_live_counts(layers, workers=8, attempts=PROBE_ATTEMPTS, fetcher=None, sleep=time.sleep):
+    """计划阶段探上游实时行数 → (expect_live, failed_ids, results)。
+
+    第 3/4/5/6 项的落点：
+      · results[layer_id] = probe_layer 的完整记录（含 probe_attempts / count_path / kind）
+      · failed = 复探 N 次全失败的层（列表与 `probe_failed_n` **同源**，plan json 里全量）
+      · 失败按 kind 分桶（bad_request_paging / not_found_404 / server_5xx …互不串）
+    """
+    rows = [r for r in layers if (r.get("url") or "").strip()]
+    out, failed, results = {}, [], {}
+    kw = {"attempts": attempts, "sleep": sleep}
+    if fetcher is not None:
+        kw["fetch"] = fetcher
+    with ThreadPoolExecutor(max_workers=max(1, workers)) as ex:
+        futs = {ex.submit(probe_layer, r.get("url") or "", **kw): r["id"] for r in rows}
+        for fut in futs:
+            lid = futs[fut]
+            rec = fut.result()
+            results[lid] = rec
+            (out.__setitem__(lid, rec["count"]) if rec["ok"] else failed.append(lid))
+    for r in layers:                                   # url 为空的层也要有记录（不许静默丢）
+        if r["id"] not in results:
+            results[r["id"]] = {"url": "", "ok": False, "count": None, "dead": True,
+                                "dead_since": _now_iso(), "count_path": None,
+                                "body_keys_sig": "none", "parse_ok": False,
+                                "reason": "empty_url", "probe_attempts": []}
+            failed.append(r["id"])
+    return out, failed, results
+
+
+
+def resolve_allowlist(force_layers: str, force_unstable_layers: str = "") -> dict:
+    """★ 第 7 项：把「显式点名要采的层」收敛成**一份** allowlist。
+
+    现在有两条 CLI 开关（--force-layers / --force-unstable-layer），它们语义不同
+    （前者「即使判完成也要重跑」、后者「即使到重试上限也要再试」），但**都不允许自己
+    另行决定队列成员**：一律在这里合并成同一份 allowlist，由 main 统一施加。
+    其余任何入口（workflow input / 环境变量 / 另一个 python 脚本）都不许独立放行层。
+
+    返回 {forced, forced_unstable, source}；source 恒为 LAYERS_ALLOWLIST_SOURCE。
+    """
+    def _split(x):
+        return [y.strip() for y in (x or "").split(",") if y.strip()]
+    out = {"forced": _split(force_layers),
+           "forced_unstable": _split(force_unstable_layers),
+           "source": LAYERS_ALLOWLIST_SOURCE}
+    if out["forced"] or out["forced_unstable"]:
+        print("ℹ 层白名单唯一来源 = %s（本仓禁止第二处放行入口）" % LAYERS_ALLOWLIST_SOURCE)
+    return out
+
+
+def _last_kind(rec: dict) -> str:
+    at = (rec or {}).get("probe_attempts") or []
+    return (at[-1].get("kind") if at else None) or "other"
+
+
+def _failed_by_kind(results: dict, failed_ids) -> dict:
+    """第 5 项：失败按类别分桶（口径唯一来源 = lib.fetch.ALL_KINDS）。"""
+    items = [{"kind": _last_kind((results or {}).get(i))} for i in (failed_ids or [])]
+    return kinds_tally(items)
+
+
+def _dead_entries(results: dict) -> list:
+    """第 4 项：dead 项必须带 dead_since（UTC）与 probe_attempts（逐次证据）。"""
+    out = []
+    for lid, rec in sorted((results or {}).items()):
+        if rec.get("dead"):
+            out.append({"layer": lid, "dead_since": rec.get("dead_since"),
+                        "attempts_n": len(rec.get("probe_attempts") or []),
+                        "last_kind": _last_kind(rec),
+                        "reason": rec.get("reason") or "",
+                        "probe_attempts": rec.get("probe_attempts") or []})
+    return out
+
+
+def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--stage", required=True)
     ap.add_argument("--size", type=int, default=20)
@@ -97,7 +284,12 @@ def main() -> int:
     ap.add_argument("--force-unstable-layer", default="",
                     help="逗号分隔的层 id：即使已到重试上限也照旧排进待采队列（「仍要试」的显式开关）")
     ap.add_argument("--max-attempts", type=int, default=3, help="连续失败上限（默认 3）")
-    a = ap.parse_args()
+    ap.add_argument("--probe-attempts", type=int, default=PROBE_ATTEMPTS,
+                    help="探针复探次数（第 4 项，默认 %d；全失败才判 dead）" % PROBE_ATTEMPTS)
+    ap.add_argument("--reprobe-dead-prev-plan", default="",
+                    help="上一轮 plan json：其中判 dead 的层**重新复探**，成功即回到待采队列")
+    a = ap.parse_args(argv)
+    allow = resolve_allowlist(a.force_layers, a.force_unstable_layer)
 
     from worker_core import load_policy, select_layers   # noqa: E402
     pol = load_policy(a.stage)
@@ -136,7 +328,7 @@ def main() -> int:
             import attempt_log as _al                # noqa: E402
             _log = json.load(open(a.unstable_log, encoding="utf-8"))
             _sum = _al.summarize(_log.get("attempts") or [], a.max_attempts)
-            _force = [x.strip() for x in a.force_unstable_layer.split(",") if x.strip()]
+            _force = allow["forced_unstable"]
             ids_now = [r["id"] for r in layers]
             keep, excluded_unstable, forced_back = _al.partition_queue(ids_now, _sum, _force, a.max_attempts)
             keep_set = set(keep)
@@ -155,7 +347,7 @@ def main() -> int:
         except Exception as e:                       # noqa: BLE001
             print("::warning::尝试账本读取失败（%s）：本轮不剔除 unstable 层" % str(e)[:160],
                   file=sys.stderr)
-    forced = [x.strip() for x in a.force_layers.split(",") if x.strip()]
+    forced = allow["forced"]
     if forced:
         have = {r["id"] for r in layers}
         try:
@@ -178,9 +370,32 @@ def main() -> int:
               for i in range(0, len(ids), a.size)]
     rows_by_id = {r["id"]: (r.get("expect") or 0) for r in layers}
     # ★ D3：计划阶段探上游实时行数（returnCountOnly），写成 expect_live 供收尾对账用双分母。
-    expect_live, probe_failed = ({}, [])
+    # ★ 第 4 项：上一轮判 dead 的层先回到队列复探（复探成功即「回到待采」，不许留在 dead）
+    reprobed = []
+    if a.reprobe_dead_prev_plan and os.path.exists(a.reprobe_dead_prev_plan):
+        try:
+            prev = json.load(open(a.reprobe_dead_prev_plan, encoding="utf-8"))
+            dead_ids = [x.get("layer") for x in (prev.get("probe_dead") or []) if x.get("layer")]
+            have = {r["id"] for r in layers}
+            univ_all = _retry(lambda: select_layers(
+                a.stage, limit=0, policy=dict(pol, select=dict(sel, skip_done=False))),
+                "select_layers(%s, 复探)" % a.stage)
+            univ_map = {r["id"]: r for r in univ_all}
+            reprobed = [univ_map[i] for i in dead_ids if i in univ_map and i not in have]
+            layers = reprobed + layers
+            ids = [r["id"] for r in layers]
+            shards = [{"shard": i // a.size, "layers": ids[i:i + a.size]}
+                      for i in range(0, len(ids), a.size)]
+            rows_by_id = {r["id"]: (r.get("expect") or 0) for r in layers}
+            print("🔁 复探上一轮 dead 的 %d 层（进队列最前）：%s"
+                  % (len(reprobed), ", ".join(x["id"] for x in reprobed[:5])))
+        except Exception as e:                        # noqa: BLE001
+            print("::warning::复探上一轮 dead 失败（%s）：本轮不捞 dead 层" % str(e)[:160], file=sys.stderr)
+
+    expect_live, probe_failed, probe_results = ({}, [], {})
     if os.environ.get("PLAN_PROBE_COUNT", "1") not in ("0", "false", "no"):
-        expect_live, probe_failed = probe_live_counts(layers)
+        expect_live, probe_failed, probe_results = probe_live_counts(
+            layers, attempts=a.probe_attempts)
         print("★ 计划阶段 returnCountOnly 探到 %d/%d 层实时行数（%d 层失败，回退快照值）"
               % (len(expect_live), len(ids), len(probe_failed)))
     plan = {"schema": "collect-plan/v1", "stage": a.stage, "size": a.size,
@@ -190,7 +405,15 @@ def main() -> int:
             "expect_by_layer": rows_by_id,
             "expect_live": expect_live,
             "expect_live_total": sum(expect_live.values()),
-            "probe_failed": probe_failed[:50], "probe_failed_n": len(probe_failed),
+            # ★ 第 3 项：列表与计数同源（都取完整 len）——只许在展示层截断并写明「显示前 50 / 共 N」
+            "probe_failed": probe_failed, "probe_failed_n": len(probe_failed),
+            # ★ 第 5 项：失败按类别分桶，400（可修）与 404/500（上游坏）互不串
+            "probe_failed_by_kind": _failed_by_kind(probe_results, probe_failed),
+            # ★ 第 4 项：dead 必须有时间证据；复探成功的不进 dead
+            "probe_dead": _dead_entries(probe_results),
+            "probe_dead_n": len(_dead_entries(probe_results)),
+            # ★ 第 6 项：每条探针结果落解析证据（count 是怎么解析出来的、上游键名、失败原因）
+            "probe_results": probe_results,
             "unit_rows": pol.get("unit_rows"), "workers": pol.get("workers"),
             "done_from": str(pol.get("done_from") or a.stage),
             "tag": pol.get("tag"), "order": sel.get("order"),
@@ -201,7 +424,15 @@ def main() -> int:
                 a.unstable_log, ROOT) if a.unstable_log else ""}}
     os.makedirs(os.path.dirname(a.out) or ".", exist_ok=True)
     json.dump(plan, open(a.out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
-    print(json.dumps({k: v for k, v in plan.items() if k != "shards"}, ensure_ascii=False))
+    shown = {k: v for k, v in plan.items() if k not in ("shards", "probe_results")}
+    # ★ 第 3 项：**只在展示层**截断，且必须显式写「显示前 N / 共 M」
+    if plan["probe_failed_n"] > DISPLAY_LIMIT:
+        shown["probe_failed"] = plan["probe_failed"][:DISPLAY_LIMIT]
+        shown["probe_failed_display"] = "显示前 %d / 共 %d" % (DISPLAY_LIMIT, plan["probe_failed_n"])
+    if plan["probe_dead_n"] > DISPLAY_LIMIT:
+        shown["probe_dead"] = plan["probe_dead"][:DISPLAY_LIMIT]
+        shown["probe_dead_display"] = "显示前 %d / 共 %d" % (DISPLAY_LIMIT, plan["probe_dead_n"])
+    print(json.dumps(shown, ensure_ascii=False))
     if len(shards) > a.max_shards:
         print("::error::片数 %d 超过上限 %d" % (len(shards), a.max_shards), file=sys.stderr)
         return 3
