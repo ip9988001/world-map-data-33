@@ -9312,50 +9312,70 @@
    "diff": null,
    "parts": 0,
    "svc": "FeatureServer",
-   "status": "empty",
-   "reason": "上游声明 0 行，按空层记账"
+   "status": "unverified",
+   "reason": "上游已死：服务根与 /0 均 {\"error\":400 Invalid URL}；该 org 目录下 87 个服务无 ParkOPS_Address（改名/删除），无端点可取数",
+   "probe": {
+    "at": "2026-11-21T04:20:00Z",
+    "by": "07b-fix-20261121",
+    "evidence": "collect/analysis/07b-fix-20261121.json"
+   }
   },
   {
    "layer": "xt6cnCY2_arcgis_rest_services_Site_Addresses_FeatureServer_2",
    "rc": 0,
    "elapsed_s": 3.0,
    "at": "2026-10-31T08:59:37Z",
-   "declared": 0,
+   "declared": 339,
    "rows": 0,
    "err": "",
    "diff": null,
    "parts": 0,
    "svc": "FeatureServer",
-   "status": "empty",
-   "reason": "上游声明 0 行，按空层记账"
+   "status": "missing",
+   "reason": "账本 URL /2 不存在（Invalid URL）；已改指 /3 Address Points（实测 349 行，声明 339）；本轮只修端点、未重采，下一轮可重排（状态置 missing：没采到且无上游拒绝证据）",
+   "probe": {
+    "at": "2026-11-21T04:20:00Z",
+    "by": "07b-fix-20261121",
+    "evidence": "collect/analysis/07b-fix-20261121.json"
+   }
   },
   {
    "layer": "rcgis_rest_services_New_911_Address_Requests_FeatureServer_0",
    "rc": 0,
    "elapsed_s": 3.0,
    "at": "2026-10-31T08:38:28Z",
-   "declared": 0,
+   "declared": 1086,
    "rows": 0,
    "err": "",
    "diff": null,
    "parts": 0,
    "svc": "FeatureServer",
-   "status": "empty",
-   "reason": "上游声明 0 行，按空层记账"
+   "status": "unverified",
+   "reason": "层存在但 capabilities=Create,Editing（无 Query）：/query?where=1=1&returnCountOnly=true 与 outFields=* 均返回 {\"error\":400,\"details\":[\"This operation is not supported.\"]}；服务仅此 1 层、无 tables，无可取端点",
+   "probe": {
+    "at": "2026-11-21T04:20:00Z",
+    "by": "07b-fix-20261121",
+    "evidence": "collect/analysis/07b-fix-20261121.json"
+   }
   },
   {
    "layer": "ocEBv1Ip_arcgis_rest_services_Address___View_FeatureServer_0",
    "rc": 0,
    "elapsed_s": 3.0,
    "at": "2026-10-31T08:53:17Z",
-   "declared": 0,
+   "declared": 2268,
    "rows": 0,
    "err": "",
    "diff": null,
    "parts": 0,
    "svc": "FeatureServer",
-   "status": "empty",
-   "reason": "上游声明 0 行，按空层记账"
+   "status": "unverified",
+   "reason": "{\"error\":{\"code\":499,\"message\":\"Token Required\"}}：需凭据，无 token 不可取（按 muse 口径直接落 unverified，不重试）",
+   "probe": {
+    "at": "2026-11-21T04:20:00Z",
+    "by": "07b-fix-20261121",
+    "evidence": "collect/analysis/07b-fix-20261121.json"
+   }
   },
   {
    "layer": "S9sE3M9RybT_arcgis_rest_services_Address_Pts_FeatureServer_0",
@@ -11511,9 +11531,9 @@
  "capped_by_upstream": 0,
  "partial": 5,
  "upstream_unstable": 0,
- "missing": 0,
- "unverified": 1,
- "empty": 4,
+ "missing": 1,
+ "unverified": 4,
+ "empty": 0,
  "failed": 0,
  "skipped_done": 0,
  "shards_expected": 1,
@@ -11527,9 +11547,9 @@
   "capped_by_upstream": 0,
   "partial": 5,
   "upstream_unstable": 0,
-  "missing": 0,
-  "unverified": 1,
-  "empty": 4,
+  "missing": 1,
+  "unverified": 4,
+  "empty": 0,
   "failed": 0
  },
  "regressions": [],
@@ -11615,5 +11635,19 @@
    "declared_unknown_n": 0,
    "next": "下一轮可直接重排（没有上游拒绝的证据）"
   }
+ },
+ "plan": {
+  "layers_n": 1103,
+  "declared_rows": 1671856,
+  "shards_n": 6,
+  "size": 200,
+  "scope": "stage_universe",
+  "at": "20261121T041937Z",
+  "source": "阶段全集由 full_plan.py --stage 07b 实测：`⏭ 07 已有 945 层完成 → 待采 158 层`，全集 = 945 已采 + 158 待采 = 1,103 层；声明合计 1,671,856 行＝`ledger_rebuild.py --stage 07b --plan <全集>` 的 declared（同轮实测）。D14 分母用此数；collect/ledger/07b_plan.json 仍只是待采清单（158 层），不再作分母。",
+  "replaces": {
+   "layers_n": 158,
+   "what": "2026-11-20 run 44822536108 的待采计划（collect/ledger/07b_plan.json）被误当阶段计划"
+  },
+  "note": "本轮只新增本块；layers_n / buckets / records 一字未动"
  }
 }

@@ -1,0 +1,5684 @@
+{
+ "at": "2026-11-21T04:20:00Z",
+ "stage": "07b",
+ "scope": "4 层假 empty 逐层复探",
+ "records": [
+  {
+   "layer": "ckkXVBh_arcgis_rest_services_ParkOPS_Address_FeatureServer_0",
+   "url_service": "https://services3.arcgis.com/AbUjpCl3KckkXVBh/arcgis/rest/services/ParkOPS_Address/FeatureServer",
+   "service_meta": {
+    "error": {
+     "code": 400,
+     "message": "Invalid URL",
+     "details": [
+      "Invalid URL"
+     ]
+    }
+   },
+   "layer0_meta": {
+    "error": {
+     "code": 400,
+     "message": "Invalid URL",
+     "details": [
+      "Invalid URL"
+     ]
+    }
+   },
+   "org_services_probe": "87 个服务中无 Park*/OPS*/Address* 命中（services3.arcgis.com/AbUjpCl3KckkXVBh/arcgis/rest/services?f=json）"
+  },
+  {
+   "layer": "xt6cnCY2_arcgis_rest_services_Site_Addresses_FeatureServer_2",
+   "url_booked": "https://services6.arcgis.com/TyNXxLVlxt6cnCY2/arcgis/rest/services/Site_Addresses/FeatureServer/2",
+   "service_layers": [
+    [
+     0,
+     "DISPATCH"
+    ],
+    [
+     1,
+     "Entrance Points"
+    ],
+    [
+     3,
+     "Address Points"
+    ]
+   ],
+   "counts": {
+    "0": {
+     "currentVersion": 12,
+     "id": 0,
+     "name": "DISPATCH",
+     "type": "Feature Layer",
+     "serviceItemId": "5f62ee2004a246d3ba84d12d6c0b8b66",
+     "cacheMaxAge": 30,
+     "displayField": "fullname",
+     "description": "",
+     "copyrightText": "",
+     "defaultVisibility": true,
+     "editFieldsInfo": {
+      "creationDateField": "created_date",
+      "creatorField": "created_user",
+      "editDateField": "last_edited_date",
+      "editorField": "last_edited_user"
+     },
+     "editingInfo": {
+      "lastEditDate": 1794582850876,
+      "schemaLastEditDate": 1794582850876,
+      "dataLastEditDate": 1794582850876
+     },
+     "relationships": [
+      {
+       "id": 1,
+       "name": "PostalAddress",
+       "relatedTableId": 4,
+       "cardinality": "esriRelCardinalityOneToMany",
+       "role": "esriRelRoleOrigin",
+       "keyField": "siteaddid",
+       "composite": false
+      },
+      {
+       "id": 0,
+       "name": "AddressEntrancePoint",
+       "relatedTableId": 1,
+       "cardinality": "esriRelCardinalityOneToMany",
+       "role": "esriRelRoleOrigin",
+       "keyField": "siteaddid",
+       "composite": false
+      },
+      {
+       "id": 2,
+       "name": "AddressPoint",
+       "relatedTableId": 3,
+       "cardinality": "esriRelCardinalityOneToMany",
+       "role": "esriRelRoleDestination",
+       "keyField": "addressptid",
+       "composite": false
+      }
+     ],
+     "isDataVersioned": false,
+     "hasContingentValuesDefinition": false,
+     "supportsAppend": true,
+     "supportsCalculate": true,
+     "supportsASyncCalculate": true,
+     "supportsTruncate": true,
+     "supportsAttachmentsByUploadId": true,
+     "supportsAttachmentsResizing": true,
+     "supportsRollbackOnFailureParameter": true,
+     "supportsStatistics": true,
+     "supportsExceedsLimitStatistics": true,
+     "supportsAdvancedQueries": true,
+     "supportsValidateSql": true,
+     "supportsCoordinatesQuantization": true,
+     "supportsLayerOverrides": true,
+     "supportsTilesAndBasicQueriesMode": true,
+     "supportsFieldDescriptionProperty": true,
+     "supportsQuantizationEditMode": true,
+     "supportsColumnStoreIndex": true,
+     "supportsApplyEditsWithGlobalIds": true,
+     "supportsReturningQueryGeometry": true,
+     "enableNullGeometry": false,
+     "advancedQueryCapabilities": {
+      "supportsPagination": true,
+      "supportsPaginationOnAggregatedQueries": true,
+      "supportsQueryRelatedPagination": true,
+      "supportsQueryWithDistance": true,
+      "supportsOutDistance": true,
+      "supportsReturningQueryExtent": true,
+      "supportsStatistics": true,
+      "supportsOrderBy": true,
+      "supportsDistinct": true,
+      "supportsQueryWithResultType": true,
+      "supportsSqlExpression": true,
+      "supportsTimeRelation": true,
+      "supportsAdvancedQueryRelated": true,
+      "supportsCountDistinct": true,
+      "supportsPercentileStatistics": true,
+      "supportsApproxPercentileStatistics": true,
+      "supportsSpatialAggregationStatistics": true,
+      "supportedSpatialAggregationStatistics": [
+       "EnvelopeAggregate",
+       "CentroidAggregate",
+       "ConvexHullAggregate"
+      ],
+      "supportsLod": true,
+      "supportsQueryWithLodSR": false,
+      "supportedLodTypes": [
+       "geohash"
+      ],
+      "supportsReturningGeometryCentroid": false,
+      "supportsReturningGeometryEnvelope": false,
+      "supportsQueryWithDatumTransformation": true,
+      "supportsCurrentUserQueries": true,
+      "supportsHavingClause": true,
+      "supportsOutFieldSQLExpression": true,
+      "supportsMaxRecordCountFactor": true,
+      "supportsTopFeaturesQuery": true,
+      "supportsDisjointSpatialRel": true,
+      "supportsQueryWithCacheHint": true,
+      "supportedOperationsWithCacheHint": [
+       "query",
+       "queryTopFilter",
+       "queryAnalytics",
+       "queryAttachments",
+       "queryRelated",
+       "queryBins",
+       "queryPivot"
+      ],
+      "supportsQueryAnalytic": true,
+      "supportsQueryPivot": true,
+      "supportsQueryBins": true,
+      "supportsDefaultSR": true,
+      "supportsTranslations": false,
+      "supportsAggIds": true,
+      "supportsQueryWithCollation": true,
+      "supportsISODOW": true,
+      "supportsISOWeek": true,
+      "supportsFullTextSearch": true,
+      "fullTextSearchCapabilities": {
+       "supportsAccentSensitivity": true,
+       "supportsStopWords": true,
+       "supportsSearchOperator": true,
+       "supportsOperator": true
+      }
+     },
+     "advancedQueryAnalyticCapabilities": {
+      "supportsLinearRegression": true,
+      "supportsTrendlineRegression": true,
+      "supportsAsync": true,
+      "supportsPercentileAnalytic": true
+     },
+     "queryBinsCapabilities": {
+      "supportsAsync": true,
+      "supportsAutoIntervalBin": true,
+      "supportsFixedIntervalBin": true,
+      "supportsFixedBoundariesBin": true,
+      "supportsDateBin": true,
+      "supportsClassificationBin": true,
+      "supportsStackBy": true,
+      "supportsSplitBy": true,
+      "supportsFirstDayOfWeek": true,
+      "supportsSnapToData": true,
+      "supportsReturnFullIntervalBin": true,
+      "supportsReturnStackValueRange": true,
+      "supportsNormalization": true,
+      "supportedStatisticTypes": [
+       "COUNT",
+       "SUM",
+       "AVG",
+       "VAR",
+       "VAR_SAMP",
+       "VAR_POP",
+       "STDDEV",
+       "STDDEV_SAMP",
+       "STDDEV_POP",
+       "MIN",
+       "MAX",
+       "PERCENTILE_CONT",
+       "PERCENTILE_DISC",
+       "APPROX_PERCENTILE_CONT",
+       "APPROX_PERCENTILE_DISC",
+       "CentroidAggregate",
+       "EnvelopeAggregate",
+       "ConvexHullAggregate"
+      ],
+      "supportedNormalizationTypes": [
+       "boxCox",
+       "field",
+       "inverse",
+       "log",
+       "naturalLog",
+       "percentOfTotal",
+       "squareRoot"
+      ]
+     },
+     "supportedOperationsWithCollation": "query,addField,updateField",
+     "advancedEditingCapabilities": {
+      "supportedSqlFormatsInCalculate": [
+       "standard"
+      ],
+      "supportsAsyncApplyEdits": true,
+      "supportsReturnEditResults": true,
+      "supportsApplyEditsbyUploadID": true,
+      "supportedApplyEditsUploadIDFormats": "JSON,PBF",
+      "supportsTranslation": false,
+      "supportsMaxTranslations": 10
+     },
+     "infoInEstimates": [
+      "extent",
+      "count"
+     ],
+     "useStandardizedQueries": true,
+     "geometryType": "esriGeometryPoint",
+     "minScale": 0,
+     "maxScale": 0,
+     "extent": {
+      "xmin": 433776.9245459739,
+      "ymin": 139590.5400809799,
+      "xmax": 542175.0220598397,
+      "ymax": 345480.66675227194,
+      "spatialReference": {
+       "wkid": 3443,
+       "latestWkid": 3443
+      }
+     },
+     "spatialReference": {
+      "wkid": 3443,
+      "latestWkid": 3443
+     },
+     "drawingInfo": {
+      "renderer": {
+       "type": "uniqueValue",
+       "field1": "status",
+       "uniqueValueGroups": [
+        {
+         "heading": "Status",
+         "classes": [
+          {
+           "label": "Active",
+           "description": "Active",
+           "symbol": {
+            "type": "esriSMS",
+            "style": "esriSMSCircle",
+            "color": [
+             76,
+             230,
+             0,
+             255
+            ],
+            "size": 4,
+            "angle": 0,
+            "xoffset": 0,
+            "yoffset": 0,
+            "outline": {
+             "color": [
+              0,
+              0,
+              0,
+              255
+             ],
+             "width": 0.7
+            }
+           },
+           "values": [
+            [
+             "Active"
+            ]
+           ]
+          },
+          {
+           "label": "Inactive",
+           "description": "Inactive",
+           "symbol": {
+            "type": "esriSMS",
+            "style": "esriSMSCircle",
+            "color": [
+             255,
+             0,
+             0,
+             255
+            ],
+            "size": 4,
+            "angle": 0,
+            "xoffset": 0,
+            "yoffset": 0,
+            "outline": {
+             "color": [
+              0,
+              0,
+              0,
+              255
+             ],
+             "width": 0.7
+            }
+           },
+           "values": [
+            [
+             "Inactive"
+            ]
+           ]
+          },
+          {
+           "label": "On Hold",
+           "description": "On Hold",
+           "symbol": {
+            "type": "esriSMS",
+            "style": "esriSMSCircle",
+            "color": [
+             255,
+             255,
+             0,
+             255
+            ],
+            "size": 4,
+            "angle": 0,
+            "xoffset": 0,
+            "yoffset": 0,
+            "outline": {
+             "color": [
+              0,
+              0,
+              0,
+              255
+             ],
+             "width": 0.7
+            }
+           },
+           "values": [
+            [
+             "On Hold"
+            ]
+           ]
+          },
+          {
+           "label": "Pending",
+           "description": "Pending",
+           "symbol": {
+            "type": "esriSMS",
+            "style": "esriSMSCircle",
+            "color": [
+             197,
+             0,
+             255,
+             255
+            ],
+            "size": 4,
+            "angle": 0,
+            "xoffset": 0,
+            "yoffset": 0,
+            "outline": {
+             "color": [
+              0,
+              0,
+              0,
+              255
+             ],
+             "width": 0.7
+            }
+           },
+           "values": [
+            [
+             "Pending"
+            ]
+           ]
+          }
+         ]
+        }
+       ],
+       "uniqueValueInfos": [
+        {
+         "symbol": {
+          "type": "esriSMS",
+          "style": "esriSMSCircle",
+          "color": [
+           76,
+           230,
+           0,
+           255
+          ],
+          "size": 4,
+          "angle": 0,
+          "xoffset": 0,
+          "yoffset": 0,
+          "outline": {
+           "color": [
+            0,
+            0,
+            0,
+            255
+           ],
+           "width": 0.7
+          }
+         },
+         "value": "Active",
+         "label": "Active"
+        },
+        {
+         "symbol": {
+          "type": "esriSMS",
+          "style": "esriSMSCircle",
+          "color": [
+           255,
+           0,
+           0,
+           255
+          ],
+          "size": 4,
+          "angle": 0,
+          "xoffset": 0,
+          "yoffset": 0,
+          "outline": {
+           "color": [
+            0,
+            0,
+            0,
+            255
+           ],
+           "width": 0.7
+          }
+         },
+         "value": "Inactive",
+         "label": "Inactive"
+        },
+        {
+         "symbol": {
+          "type": "esriSMS",
+          "style": "esriSMSCircle",
+          "color": [
+           255,
+           255,
+           0,
+           255
+          ],
+          "size": 4,
+          "angle": 0,
+          "xoffset": 0,
+          "yoffset": 0,
+          "outline": {
+           "color": [
+            0,
+            0,
+            0,
+            255
+           ],
+           "width": 0.7
+          }
+         },
+         "value": "On Hold",
+         "label": "On Hold"
+        },
+        {
+         "symbol": {
+          "type": "esriSMS",
+          "style": "esriSMSCircle",
+          "color": [
+           197,
+           0,
+           255,
+           255
+          ],
+          "size": 4,
+          "angle": 0,
+          "xoffset": 0,
+          "yoffset": 0,
+          "outline": {
+           "color": [
+            0,
+            0,
+            0,
+            255
+           ],
+           "width": 0.7
+          }
+         },
+         "value": "Pending",
+         "label": "Pending"
+        }
+       ],
+       "fieldDelimiter": ",",
+       "authoringInfo": {
+        "colorRamp": {
+         "type": "multipart",
+         "colorRamps": [
+          {
+           "type": "algorithmic",
+           "algorithm": "esriCIELabAlgorithm",
+           "fromColor": [
+            194,
+            221,
+            252,
+            255
+           ],
+           "toColor": [
+            194,
+            221,
+            252,
+            255
+           ]
+          },
+          {
+           "type": "algorithmic",
+           "algorithm": "esriCIELabAlgorithm",
+           "fromColor": [
+            252,
+            252,
+            184,
+            255
+           ],
+           "toColor": [
+            252,
+            252,
+            184,
+            255
+           ]
+          },
+          {
+           "type": "algorithmic",
+           "algorithm": "esriCIELabAlgorithm",
+           "fromColor": [
+            252,
+            185,
+            182,
+            255
+           ],
+           "toColor": [
+            252,
+            185,
+            182,
+            255
+           ]
+          },
+          {
+           "type": "algorithmic",
+           "algorithm": "esriCIELabAlgorithm",
+           "fromColor": [
+            252,
+            182,
+            249,
+            255
+           ],
+           "toColor": [
+            252,
+            182,
+            249,
+            255
+           ]
+          },
+          {
+           "type": "algorithmic",
+           "algorithm": "esriCIELabAlgorithm",
+           "fromColor": [
+            184,
+            252,
+            224,
+            255
+           ],
+           "toColor": [
+            184,
+            252,
+            224,
+            255
+           ]
+          },
+          {
+           "type": "algorithmic",
+           "algorithm": "esriCIELabAlgorithm",
+           "fromColor": [
+            184,
+            184,
+            252,
+            255
+           ],
+           "toColor": [
+            184,
+            184,
+            252,
+            255
+           ]
+          },
+          {
+           "type": "algorithmic",
+           "algorithm": "esriCIELabAlgorithm",
+           "fromColor": [
+            252,
+            236,
+            212,
+            255
+           ],
+           "toColor": [
+            252,
+            236,
+            212,
+            255
+           ]
+          },
+          {
+           "type": "algorithmic",
+           "algorithm": "esriCIELabAlgorithm",
+           "fromColor": [
+            252,
+            204,
+            232,
+            255
+           ],
+           "toColor": [
+            252,
+            204,
+            232,
+            255
+           ]
+          },
+          {
+           "type": "algorithmic",
+           "algorithm": "esriCIELabAlgorithm",
+           "fromColor": [
+            193,
+            252,
+            184,
+            255
+           ],
+           "toColor": [
+            193,
+            252,
+            184,
+            255
+           ]
+          },
+          {
+           "type": "algorithmic",
+           "algorithm": "esriCIELabAlgorithm",
+           "fromColor": [
+            235,
+            252,
+            215,
+            255
+           ],
+           "toColor": [
+            235,
+            252,
+            215,
+            255
+           ]
+          },
+          {
+           "type": "algorithmic",
+           "algorithm": "esriCIELabAlgorithm",
+           "fromColor": [
+            207,
+            246,
+            252,
+            255
+           ],
+           "toColor": [
+            207,
+            246,
+            252,
+            255
+           ]
+          },
+          {
+           "type": "algorithmic",
+           "algorithm": "esriCIELabAlgorithm",
+           "fromColor": [
+            217,
+            202,
+            252,
+            255
+           ],
+           "toColor": [
+            217,
+            202,
+            252,
+            255
+           ]
+          },
+          {
+           "type": "algorithmic",
+           "algorithm": "esriCIELabAlgorithm",
+           "fromColor": [
+            252,
+            212,
+            214,
+            255
+           ],
+           "toColor": [
+            252,
+            212,
+            214,
+            255
+           ]
+          }
+         ]
+        }
+       }
+      },
+      "scaleSymbols": true,
+      "transparency": 0,
+      "labelingInfo": [
+       {
+        "labelExpressionInfo": {
+         "expression": "$feature.fulladdr",
+         "title": "Custom"
+        },
+        "labelPlacement": "esriServerPointLabelPlacementAboveRight",
+        "deconflictionStrategy": "dynamic",
+        "stackLabel": true,
+        "stackAlignment": "dynamic",
+        "removeDuplicates": "none",
+        "stackRowLength": 24,
+        "useCodedValues": true,
+        "maxScale": 0,
+        "minScale": 10000,
+        "name": "Class 1",
+        "priority": -1,
+        "symbol": {
+         "type": "esriTS",
+         "color": [
+          255,
+          0,
+          0,
+          255
+         ],
+         "backgroundColor": null,
+         "borderLineColor": null,
+         "borderLineSize": null,
+         "verticalAlignment": "bottom",
+         "horizontalAlignment": "left",
+         "rightToLeft": false,
+         "angle": 0,
+         "xoffset": 0,
+         "yoffset": 0,
+         "kerning": true,
+         "haloColor": [
+          0,
+          0,
+          0,
+          255
+         ],
+         "haloSize": 2,
+         "font": {
+          "family": "Tahoma",
+          "size": 12,
+          "style": "normal",
+          "weight": "normal",
+          "decoration": "none"
+         }
+        }
+       }
+      ]
+     },
+     "allowGeometryUpdates": true,
+     "hasAttachments": false,
+     "htmlPopupType": "esriServerHTMLPopupTypeAsHTMLText",
+     "hasMetadata": true,
+     "hasM": false,
+     "hasZ": true,
+     "enableZDefaults": true,
+     "zDefault": 0,
+     "objectIdField": "OBJECTID",
+     "uniqueIdField": {
+      "name": "OBJECTID",
+      "isSystemMaintained": true
+     },
+     "globalIdField": "GlobalID",
+     "typeIdField": "status",
+     "collation": {
+      "locale": "neutral",
+      "caseSensitive": false,
+      "accentSensitive": true
+     },
+     "fields": [
+      {
+       "name": "OBJECTID",
+       "type": "esriFieldTypeOID",
+       "alias": "OBJECTID",
+       "sqlType": "sqlTypeOther",
+       "nullable": false,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "siteaddid",
+       "type": "esriFieldTypeString",
+       "alias": "Site Address ID",
+       "sqlType": "sqlTypeOther",
+       "length": 20,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "addressptid",
+       "type": "esriFieldTypeString",
+       "alias": "Address Point ID",
+       "sqlType": "sqlTypeOther",
+       "length": 20,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "rclnguid",
+       "type": "esriFieldTypeString",
+       "alias": "NENA Global ID",
+       "sqlType": "sqlTypeOther",
+       "length": 254,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "discrpagid",
+       "type": "esriFieldTypeString",
+       "alias": "Discrepancy Agency ID",
+       "sqlType": "sqlTypeOther",
+       "length": 75,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "preaddrnum",
+       "type": "esriFieldTypeString",
+       "alias": "Address Number Prefix",
+       "sqlType": "sqlTypeOther",
+       "length": 5,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "addrnumsuf",
+       "type": "esriFieldTypeString",
+       "alias": "Address Number Suffix",
+       "sqlType": "sqlTypeOther",
+       "length": 5,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "addrnum",
+       "type": "esriFieldTypeString",
+       "alias": "Full Address Number",
+       "sqlType": "sqlTypeOther",
+       "length": 20,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "addrrange",
+       "type": "esriFieldTypeString",
+       "alias": "Address Range",
+       "sqlType": "sqlTypeOther",
+       "length": 50,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "unittype",
+       "type": "esriFieldTypeString",
+       "alias": "Address Unit Type",
+       "sqlType": "sqlTypeOther",
+       "length": 10,
+       "nullable": true,
+       "editable": true,
+       "domain": {
+        "type": "codedValue",
+        "name": "AddressUnitType",
+        "mergePolicy": "esriMPTDefaultValue",
+        "splitPolicy": "esriSPTDuplicate",
+        "description": "The type of address unit as adapted from the USPS Publication 28",
+        "codedValues": [
+         {
+          "name": "Apartment",
+          "code": "APT"
+         },
+         {
+          "name": "Basement",
+          "code": "BSMT"
+         },
+         {
+          "name": "Building",
+          "code": "BLDG"
+         },
+         {
+          "name": "Department",
+          "code": "DEPT"
+         },
+         {
+          "name": "Floor",
+          "code": "FL"
+         },
+         {
+          "name": "Front",
+          "code": "FRNT"
+         },
+         {
+          "name": "Hanger",
+          "code": "HNGR"
+         },
+         {
+          "name": "Key",
+          "code": "KEY"
+         },
+         {
+          "name": "Lobby",
+          "code": "LBBY"
+         },
+         {
+          "name": "Lot",
+          "code": "LOT"
+         },
+         {
+          "name": "Lower",
+          "code": "LOWR"
+         },
+         {
+          "name": "Office",
+          "code": "OFC"
+         },
+         {
+          "name": "Penthouse",
+          "code": "PH"
+         },
+         {
+          "name": "Pier",
+          "code": "PIER"
+         },
+         {
+          "name": "Rear",
+          "code": "REAR"
+         },
+         {
+          "name": "Room",
+          "code": "RM"
+         },
+         {
+          "name": "Seat",
+          "code": "SEAT"
+         },
+         {
+          "name": "Side",
+          "code": "SIDE"
+         },
+         {
+          "name": "Slip",
+          "code": "SLIP"
+         },
+         {
+          "name": "Space",
+          "code": "SPC"
+         },
+         {
+          "name": "Stop",
+          "code": "STOP"
+         },
+         {
+          "name": "Suite",
+          "code": "STE"
+         },
+         {
+          "name": "Trailer",
+          "code": "TRLR"
+         },
+         {
+          "name": "Unit",
+          "code": "UNIT"
+         },
+         {
+          "name": "Upper",
+          "code": "UPPR"
+         },
+         {
+          "name": "Other",
+          "code": "Other"
+         }
+        ]
+       },
+       "defaultValue": null
+      },
+      {
+       "name": "unitid",
+       "type": "esriFieldTypeString",
+       "alias": "Address Unit Number",
+       "sqlType": "sqlTypeOther",
+       "length": 10,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "altunittype",
+       "type": "esriFieldTypeString",
+       "alias": "Alternate Address Unit Type",
+       "sqlType": "sqlTypeOther",
+       "length": 10,
+       "nullable": true,
+       "editable": true,
+       "domain": {
+        "type": "codedValue",
+        "name": "AddressUnitType",
+        "mergePolicy": "esriMPTDefaultValue",
+        "splitPolicy": "esriSPTDuplicate",
+        "description": "The type of address unit as adapted from the USPS Publication 28",
+        "codedValues": [
+         {
+          "name": "Apartment",
+          "code": "APT"
+         },
+         {
+          "name": "Basement",
+          "code": "BSMT"
+         },
+         {
+          "name": "Building",
+          "code": "BLDG"
+         },
+         {
+          "name": "Department",
+          "code": "DEPT"
+         },
+         {
+          "name": "Floor",
+          "code": "FL"
+         },
+         {
+          "name": "Front",
+          "code": "FRNT"
+         },
+         {
+          "name": "Hanger",
+          "code": "HNGR"
+         },
+         {
+          "name": "Key",
+          "code": "KEY"
+         },
+         {
+          "name": "Lobby",
+          "code": "LBBY"
+         },
+         {
+          "name": "Lot",
+          "code": "LOT"
+         },
+         {
+          "name": "Lower",
+          "code": "LOWR"
+         },
+         {
+          "name": "Office",
+          "code": "OFC"
+         },
+         {
+          "name": "Penthouse",
+          "code": "PH"
+         },
+         {
+          "name": "Pier",
+          "code": "PIER"
+         },
+         {
+          "name": "Rear",
+          "code": "REAR"
+         },
+         {
+          "name": "Room",
+          "code": "RM"
+         },
+         {
+          "name": "Seat",
+          "code": "SEAT"
+         },
+         {
+          "name": "Side",
+          "code": "SIDE"
+         },
+         {
+          "name": "Slip",
+          "code": "SLIP"
+         },
+         {
+          "name": "Space",
+          "code": "SPC"
+         },
+         {
+          "name": "Stop",
+          "code": "STOP"
+         },
+         {
+          "name": "Suite",
+          "code": "STE"
+         },
+         {
+          "name": "Trailer",
+          "code": "TRLR"
+         },
+         {
+          "name": "Unit",
+          "code": "UNIT"
+         },
+         {
+          "name": "Upper",
+          "code": "UPPR"
+         },
+         {
+          "name": "Other",
+          "code": "Other"
+         }
+        ]
+       },
+       "defaultValue": null
+      },
+      {
+       "name": "altunitid",
+       "type": "esriFieldTypeString",
+       "alias": "Alternate Address Unit Number",
+       "sqlType": "sqlTypeOther",
+       "length": 10,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "secondaltunittype",
+       "type": "esriFieldTypeString",
+       "alias": "2nd Alternate Address Unit Type",
+       "sqlType": "sqlTypeOther",
+       "length": 10,
+       "nullable": true,
+       "editable": true,
+       "domain": {
+        "type": "codedValue",
+        "name": "AddressUnitType",
+        "mergePolicy": "esriMPTDefaultValue",
+        "splitPolicy": "esriSPTDuplicate",
+        "description": "The type of address unit as adapted from the USPS Publication 28",
+        "codedValues": [
+         {
+          "name": "Apartment",
+          "code": "APT"
+         },
+         {
+          "name": "Basement",
+          "code": "BSMT"
+         },
+         {
+          "name": "Building",
+          "code": "BLDG"
+         },
+         {
+          "name": "Department",
+          "code": "DEPT"
+         },
+         {
+          "name": "Floor",
+          "code": "FL"
+         },
+         {
+          "name": "Front",
+          "code": "FRNT"
+         },
+         {
+          "name": "Hanger",
+          "code": "HNGR"
+         },
+         {
+          "name": "Key",
+          "code": "KEY"
+         },
+         {
+          "name": "Lobby",
+          "code": "LBBY"
+         },
+         {
+          "name": "Lot",
+          "code": "LOT"
+         },
+         {
+          "name": "Lower",
+          "code": "LOWR"
+         },
+         {
+          "name": "Office",
+          "code": "OFC"
+         },
+         {
+          "name": "Penthouse",
+          "code": "PH"
+         },
+         {
+          "name": "Pier",
+          "code": "PIER"
+         },
+         {
+          "name": "Rear",
+          "code": "REAR"
+         },
+         {
+          "name": "Room",
+          "code": "RM"
+         },
+         {
+          "name": "Seat",
+          "code": "SEAT"
+         },
+         {
+          "name": "Side",
+          "code": "SIDE"
+         },
+         {
+          "name": "Slip",
+          "code": "SLIP"
+         },
+         {
+          "name": "Space",
+          "code": "SPC"
+         },
+         {
+          "name": "Stop",
+          "code": "STOP"
+         },
+         {
+          "name": "Suite",
+          "code": "STE"
+         },
+         {
+          "name": "Trailer",
+          "code": "TRLR"
+         },
+         {
+          "name": "Unit",
+          "code": "UNIT"
+         },
+         {
+          "name": "Upper",
+          "code": "UPPR"
+         },
+         {
+          "name": "Other",
+          "code": "Other"
+         }
+        ]
+       },
+       "defaultValue": null
+      },
+      {
+       "name": "secondaltunitid",
+       "type": "esriFieldTypeString",
+       "alias": "2nd Alternate Address Unit Number",
+       "sqlType": "sqlTypeOther",
+       "length": 10,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "thirdaltunittype",
+       "type": "esriFieldTypeString",
+       "alias": "3rd Alternate Address Unit Type",
+       "sqlType": "sqlTypeOther",
+       "length": 10,
+       "nullable": true,
+       "editable": true,
+       "domain": {
+        "type": "codedValue",
+        "name": "AddressUnitType",
+        "mergePolicy": "esriMPTDefaultValue",
+        "splitPolicy": "esriSPTDuplicate",
+        "description": "The type of address unit as adapted from the USPS Publication 28",
+        "codedValues": [
+         {
+          "name": "Apartment",
+          "code": "APT"
+         },
+         {
+          "name": "Basement",
+          "code": "BSMT"
+         },
+         {
+          "name": "Building",
+          "code": "BLDG"
+         },
+         {
+          "name": "Department",
+          "code": "DEPT"
+         },
+         {
+          "name": "Floor",
+          "code": "FL"
+         },
+         {
+          "name": "Front",
+          "code": "FRNT"
+         },
+         {
+          "name": "Hanger",
+          "code": "HNGR"
+         },
+         {
+          "name": "Key",
+          "code": "KEY"
+         },
+         {
+          "name": "Lobby",
+          "code": "LBBY"
+         },
+         {
+          "name": "Lot",
+          "code": "LOT"
+         },
+         {
+          "name": "Lower",
+          "code": "LOWR"
+         },
+         {
+          "name": "Office",
+          "code": "OFC"
+         },
+         {
+          "name": "Penthouse",
+          "code": "PH"
+         },
+         {
+          "name": "Pier",
+          "code": "PIER"
+         },
+         {
+          "name": "Rear",
+          "code": "REAR"
+         },
+         {
+          "name": "Room",
+          "code": "RM"
+         },
+         {
+          "name": "Seat",
+          "code": "SEAT"
+         },
+         {
+          "name": "Side",
+          "code": "SIDE"
+         },
+         {
+          "name": "Slip",
+          "code": "SLIP"
+         },
+         {
+          "name": "Space",
+          "code": "SPC"
+         },
+         {
+          "name": "Stop",
+          "code": "STOP"
+         },
+         {
+          "name": "Suite",
+          "code": "STE"
+         },
+         {
+          "name": "Trailer",
+          "code": "TRLR"
+         },
+         {
+          "name": "Unit",
+          "code": "UNIT"
+         },
+         {
+          "name": "Upper",
+          "code": "UPPR"
+         },
+         {
+          "name": "Other",
+          "code": "Other"
+         }
+        ]
+       },
+       "defaultValue": null
+      },
+      {
+       "name": "thirdaltunitid",
+       "type": "esriFieldTypeString",
+       "alias": "3rd Alternate Address Unit Number",
+       "sqlType": "sqlTypeOther",
+       "length": 10,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "fourthaltunittype",
+       "type": "esriFieldTypeString",
+       "alias": "4th Alternate Address Unit Type",
+       "sqlType": "sqlTypeOther",
+       "length": 10,
+       "nullable": true,
+       "editable": true,
+       "domain": {
+        "type": "codedValue",
+        "name": "AddressUnitType",
+        "mergePolicy": "esriMPTDefaultValue",
+        "splitPolicy": "esriSPTDuplicate",
+        "description": "The type of address unit as adapted from the USPS Publication 28",
+        "codedValues": [
+         {
+          "name": "Apartment",
+          "code": "APT"
+         },
+         {
+          "name": "Basement",
+          "code": "BSMT"
+         },
+         {
+          "name": "Building",
+          "code": "BLDG"
+         },
+         {
+          "name": "Department",
+          "code": "DEPT"
+         },
+         {
+          "name": "Floor",
+          "code": "FL"
+         },
+         {
+          "name": "Front",
+          "code": "FRNT"
+         },
+         {
+          "name": "Hanger",
+          "code": "HNGR"
+         },
+         {
+          "name": "Key",
+          "code": "KEY"
+         },
+         {
+          "name": "Lobby",
+          "code": "LBBY"
+         },
+         {
+          "name": "Lot",
+          "code": "LOT"
+         },
+         {
+          "name": "Lower",
+          "code": "LOWR"
+         },
+         {
+          "name": "Office",
+          "code": "OFC"
+         },
+         {
+          "name": "Penthouse",
+          "code": "PH"
+         },
+         {
+          "name": "Pier",
+          "code": "PIER"
+         },
+         {
+          "name": "Rear",
+          "code": "REAR"
+         },
+         {
+          "name": "Room",
+          "code": "RM"
+         },
+         {
+          "name": "Seat",
+          "code": "SEAT"
+         },
+         {
+          "name": "Side",
+          "code": "SIDE"
+         },
+         {
+          "name": "Slip",
+          "code": "SLIP"
+         },
+         {
+          "name": "Space",
+          "code": "SPC"
+         },
+         {
+          "name": "Stop",
+          "code": "STOP"
+         },
+         {
+          "name": "Suite",
+          "code": "STE"
+         },
+         {
+          "name": "Trailer",
+          "code": "TRLR"
+         },
+         {
+          "name": "Unit",
+          "code": "UNIT"
+         },
+         {
+          "name": "Upper",
+          "code": "UPPR"
+         },
+         {
+          "name": "Other",
+          "code": "Other"
+         }
+        ]
+       },
+       "defaultValue": null
+      },
+      {
+       "name": "fourthaltunitid",
+       "type": "esriFieldTypeString",
+       "alias": "4th Alternate Address Unit Number",
+       "sqlType": "sqlTypeOther",
+       "length": 10,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "fullname",
+       "type": "esriFieldTypeString",
+       "alias": "Full Road Name",
+       "sqlType": "sqlTypeOther",
+       "length": 300,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "fulladdr",
+       "type": "esriFieldTypeString",
+       "alias": "Full Address",
+       "sqlType": "sqlTypeOther",
+       "length": 500,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "placename",
+       "type": "esriFieldTypeString",
+       "alias": "Place Name",
+       "sqlType": "sqlTypeOther",
+       "length": 250,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "country",
+       "type": "esriFieldTypeString",
+       "alias": "Country Abbreviation",
+       "sqlType": "sqlTypeOther",
+       "length": 2,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": "US"
+      },
+      {
+       "name": "stateabbreviation",
+       "type": "esriFieldTypeString",
+       "alias": "State Abbreviation",
+       "sqlType": "sqlTypeOther",
+       "length": 2,
+       "nullable": true,
+       "editable": true,
+       "domain": {
+        "type": "codedValue",
+        "name": "StateAbbreviation",
+        "mergePolicy": "esriMPTDefaultValue",
+        "splitPolicy": "esriSPTDuplicate",
+        "description": "The two digital abbreviation for the fifty US states as adapted from the USPS Publication 28",
+        "codedValues": [
+         {
+          "name": "Alabama",
+          "code": "AL"
+         },
+         {
+          "name": "Alaska",
+          "code": "AK"
+         },
+         {
+          "name": "American Samoa",
+          "code": "AS"
+         },
+         {
+          "name": "Arizona",
+          "code": "AZ"
+         },
+         {
+          "name": "Arkansas",
+          "code": "AR"
+         },
+         {
+          "name": "California",
+          "code": "CA"
+         },
+         {
+          "name": "Colorado",
+          "code": "CO"
+         },
+         {
+          "name": "Connecticut",
+          "code": "CT"
+         },
+         {
+          "name": "Delaware",
+          "code": "DE"
+         },
+         {
+          "name": "District Of Columbia",
+          "code": "DC"
+         },
+         {
+          "name": "Federated States Of Micronesia",
+          "code": "FM"
+         },
+         {
+          "name": "Florida",
+          "code": "FL"
+         },
+         {
+          "name": "Georgia",
+          "code": "GA"
+         },
+         {
+          "name": "Guam",
+          "code": "GU"
+         },
+         {
+          "name": "Hawaii",
+          "code": "HI"
+         },
+         {
+          "name": "Idaho",
+          "code": "ID"
+         },
+         {
+          "name": "Illinois",
+          "code": "IL"
+         },
+         {
+          "name": "Indiana",
+          "code": "IN"
+         },
+         {
+          "name": "Iowa",
+          "code": "IA"
+         },
+         {
+          "name": "Kansas",
+          "code": "KS"
+         },
+         {
+          "name": "Kentucky",
+          "code": "KY"
+         },
+         {
+          "name": "Louisiana",
+          "code": "LA"
+         },
+         {
+          "name": "Maine",
+          "code": "ME"
+         },
+         {
+          "name": "Marshall Islands",
+          "code": "MH"
+         },
+         {
+          "name": "Maryland",
+          "code": "MD"
+         },
+         {
+          "name": "Massachusetts",
+          "code": "MA"
+         },
+         {
+          "name": "Michigan",
+          "code": "MI"
+         },
+         {
+          "name": "Minnesota",
+          "code": "MN"
+         },
+         {
+          "name": "Mississippi",
+          "code": "MS"
+         },
+         {
+          "name": "Missouri",
+          "code": "MO"
+         },
+         {
+          "name": "Montana",
+          "code": "MT"
+         },
+         {
+          "name": "Nebraska",
+          "code": "NE"
+         },
+         {
+          "name": "Nevada",
+          "code": "NV"
+         },
+         {
+          "name": "New Hampshire",
+          "code": "NH"
+         },
+         {
+          "name": "New Jersey",
+          "code": "NJ"
+         },
+         {
+          "name": "New Mexico",
+          "code": "NM"
+         },
+         {
+          "name": "New York",
+          "code": "NY"
+         },
+         {
+          "name": "North Carolina",
+          "code": "NC"
+         },
+         {
+          "name": "North Dakota",
+          "code": "ND"
+         },
+         {
+          "name": "Northern Mariana Islands",
+          "code": "MP"
+         },
+         {
+          "name": "Ohio",
+          "code": "OH"
+         },
+         {
+          "name": "Oklahoma",
+          "code": "OK"
+         },
+         {
+          "name": "Oregon",
+          "code": "OR"
+         },
+         {
+          "name": "Palau",
+          "code": "PW"
+         },
+         {
+          "name": "Pennsylvania",
+          "code": "PA"
+         },
+         {
+          "name": "Puerto Rico",
+          "code": "PR"
+         },
+         {
+          "name": "Rhode Island",
+          "code": "RI"
+         },
+         {
+          "name": "South Carolina",
+          "code": "SC"
+         },
+         {
+          "name": "South Dakota",
+          "code": "SD"
+         },
+         {
+          "name": "Tennessee",
+          "code": "TN"
+         },
+         {
+          "name": "Texas",
+          "code": "TX"
+         },
+         {
+          "name": "Utah",
+          "code": "UT"
+         },
+         {
+          "name": "Vermont",
+          "code": "VT"
+         },
+         {
+          "name": "Virgin Islands",
+          "code": "VI"
+         },
+         {
+          "name": "Virginia",
+          "code": "VA"
+         },
+         {
+          "name": "Washington",
+          "code": "WA"
+         },
+         {
+          "name": "West Virginia",
+          "code": "WV"
+         },
+         {
+          "name": "Wisconsin",
+          "code": "WI"
+         },
+         {
+          "name": "Wyoming",
+          "code": "WY"
+         }
+        ]
+       },
+       "defaultValue": "MO"
+      },
+      {
+       "name": "county",
+       "type": "esriFieldTypeString",
+       "alias": "County Name",
+       "sqlType": "sqlTypeOther",
+       "length": 40,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": "BOLLINGER"
+      },
+      {
+       "name": "municipality",
+       "type": "esriFieldTypeString",
+       "alias": "Municipality Name",
+       "sqlType": "sqlTypeOther",
+       "length": 100,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "esn",
+       "type": "esriFieldTypeString",
+       "alias": "Emergency Service Number",
+       "sqlType": "sqlTypeOther",
+       "length": 5,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "msag",
+       "type": "esriFieldTypeString",
+       "alias": "MSAG Community",
+       "sqlType": "sqlTypeOther",
+       "length": 35,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "usngcoord",
+       "type": "esriFieldTypeString",
+       "alias": "USNG Coordinate",
+       "sqlType": "sqlTypeOther",
+       "length": 50,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "addrclass",
+       "type": "esriFieldTypeInteger",
+       "alias": "Description",
+       "sqlType": "sqlTypeOther",
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "pointtype",
+       "type": "esriFieldTypeString",
+       "alias": "Location",
+       "sqlType": "sqlTypeOther",
+       "length": 30,
+       "nullable": true,
+       "editable": true,
+       "domain": {
+        "type": "codedValue",
+        "name": "SiteAddressLocation",
+        "mergePolicy": "esriMPTDefaultValue",
+        "splitPolicy": "esriSPTDuplicate",
+        "description": "A general description of the physical location represented by the site address point",
+        "codedValues": [
+         {
+          "name": "Building",
+          "code": "Building"
+         },
+         {
+          "name": "Mile Post",
+          "code": "Mile Post"
+         },
+         {
+          "name": "Parcel",
+          "code": "Parcel"
+         },
+         {
+          "name": "Unit, Condo, Office or Suite",
+          "code": "Unit, Condo, Office or Suite"
+         },
+         {
+          "name": "Utility Asset",
+          "code": "Utility Asset"
+         },
+         {
+          "name": "Other",
+          "code": "Other"
+         },
+         {
+          "name": "Unknown",
+          "code": "Unknown"
+         }
+        ]
+       },
+       "defaultValue": null
+      },
+      {
+       "name": "capturemeth",
+       "type": "esriFieldTypeString",
+       "alias": "Capture Method",
+       "sqlType": "sqlTypeOther",
+       "length": 30,
+       "nullable": true,
+       "editable": true,
+       "domain": {
+        "type": "codedValue",
+        "name": "PointCollectionMethod",
+        "mergePolicy": "esriMPTDefaultValue",
+        "splitPolicy": "esriSPTDuplicate",
+        "description": "The collection method for a point feature",
+        "codedValues": [
+         {
+          "name": "Community Contribution",
+          "code": "Community Contribution"
+         },
+         {
+          "name": "Other",
+          "code": "Other"
+         },
+         {
+          "name": "Plan or Drawing",
+          "code": "Plan or Drawing"
+         },
+         {
+          "name": "Site Visit",
+          "code": "Site Visit"
+         },
+         {
+          "name": "Aerial",
+          "code": "Aerial"
+         }
+        ]
+       },
+       "defaultValue": null
+      },
+      {
+       "name": "status",
+       "type": "esriFieldTypeString",
+       "alias": "Status",
+       "sqlType": "sqlTypeOther",
+       "length": 30,
+       "nullable": true,
+       "editable": true,
+       "domain": {
+        "type": "codedValue",
+        "name": "AddressStatus",
+        "mergePolicy": "esriMPTDefaultValue",
+        "splitPolicy": "esriSPTDuplicate",
+        "description": "The status of the address or related feature",
+        "codedValues": [
+         {
+          "name": "Active",
+          "code": "Active"
+         },
+         {
+          "name": "Inactive",
+          "code": "Inactive"
+         },
+         {
+          "name": "On Hold",
+          "code": "On Hold"
+         },
+         {
+          "name": "Pending",
+          "code": "Pending"
+         }
+        ]
+       },
+       "defaultValue": "Active"
+      },
+      {
+       "name": "GlobalID",
+       "type": "esriFieldTypeGlobalID",
+       "alias": "GlobalID",
+       "sqlType": "sqlTypeOther",
+       "length": 38,
+       "nullable": false,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "created_user",
+       "type": "esriFieldTypeString",
+       "alias": "created_user",
+       "sqlType": "sqlTypeOther",
+       "length": 255,
+       "nullable": true,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "created_date",
+       "type": "esriFieldTypeDate",
+       "alias": "created_date",
+       "sqlType": "sqlTypeOther",
+       "length": 8,
+       "nullable": true,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null,
+       "precision": 1
+      },
+      {
+       "name": "last_edited_user",
+       "type": "esriFieldTypeString",
+       "alias": "last_edited_user",
+       "sqlType": "sqlTypeOther",
+       "length": 255,
+       "nullable": true,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "last_edited_date",
+       "type": "esriFieldTypeDate",
+       "alias": "last_edited_date",
+       "sqlType": "sqlTypeOther",
+       "length": 8,
+       "nullable": true,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null,
+       "precision": 1
+      },
+      {
+       "name": "VALIDATIONSTATUS",
+       "type": "esriFieldTypeSmallInteger",
+       "alias": "Validation status",
+       "sqlType": "sqlTypeOther",
+       "nullable": true,
+       "editable": true,
+       "domain": {
+        "type": "codedValue",
+        "name": "Validation Status",
+        "mergePolicy": "esriMPTDefaultValue",
+        "splitPolicy": "esriSPTDefaultValue",
+        "description": "The current record's validation status.",
+        "codedValues": [
+         {
+          "name": "No calculation required, no validation required, no error",
+          "code": 0
+         },
+         {
+          "name": "No calculation required, no validation required, has error(s)",
+          "code": 1
+         },
+         {
+          "name": "No calculation required, validation required, no error",
+          "code": 2
+         },
+         {
+          "name": "No calculation required, validation required, has error(s)",
+          "code": 3
+         },
+         {
+          "name": "Calculation required, no validation required, no error",
+          "code": 4
+         },
+         {
+          "name": "Calculation required, no validation required, has error(s)",
+          "code": 5
+         },
+         {
+          "name": "Calculation required, validation required, no error",
+          "code": 6
+         },
+         {
+          "name": "Calculation required, validation required, has error(s)",
+          "code": 7
+         }
+        ]
+       },
+       "defaultValue": 6
+      },
+      {
+       "name": "addrtype",
+       "type": "esriFieldTypeString",
+       "alias": "addrtype",
+       "sqlType": "sqlTypeOther",
+       "length": 15,
+       "nullable": true,
+       "editable": true,
+       "domain": {
+        "type": "codedValue",
+        "name": "RoadClass",
+        "mergePolicy": "esriMPTDefaultValue",
+        "splitPolicy": "esriSPTDuplicate",
+        "description": "A functional classification of roads as adapted from the FHWA",
+        "codedValues": [
+         {
+          "name": "Freeway",
+          "code": "Freeway"
+         },
+         {
+          "name": "Highway",
+          "code": "Highway"
+         },
+         {
+          "name": "Ramp",
+          "code": "Ramp"
+         },
+         {
+          "name": "Major Arterial",
+          "code": "Major Arterial"
+         },
+         {
+          "name": "Minor Arterial",
+          "code": "Minor Arterial"
+         },
+         {
+          "name": "Collector",
+          "code": "Collector"
+         },
+         {
+          "name": "Local",
+          "code": "Local"
+         },
+         {
+          "name": "Service",
+          "code": "Service"
+         },
+         {
+          "name": "4WD",
+          "code": "4WD"
+         },
+         {
+          "name": "Recreation",
+          "code": "Recreation"
+         },
+         {
+          "name": "Resource",
+          "code": "Resource"
+         },
+         {
+          "name": "Ferry",
+          "code": "Ferry"
+         },
+         {
+          "name": "Other",
+          "code": "Other"
+         },
+         {
+          "name": "Unknown",
+          "code": "Unknown"
+         },
+         {
+          "name": "County",
+          "code": "CNTY"
+         },
+         {
+          "name": "Private Drive",
+          "code": "PVT"
+         },
+         {
+          "name": "City Street",
+          "code": "CST"
+         },
+         {
+          "name": "Lettered Highway",
+          "code": "LETTERHWY"
+         },
+         {
+          "name": "Numbered Highway",
+          "code": "NUMHWY"
+         },
+         {
+          "name": "State Route",
+          "code": "ST RT"
+         },
+         {
+          "name": "Numbered State Highway",
+          "code": "NUM SH"
+         }
+        ]
+       },
+       "defaultValue": null
+      },
+      {
+       "name": "zipcode",
+       "type": "esriFieldTypeInteger",
+       "alias": "zipcode",
+       "sqlType": "sqlTypeOther",
+       "nullable": true,
+       "editable": true,
+       "domain": {
+        "type": "codedValue",
+        "name": "Zipcode",
+        "mergePolicy": "esriMPTDefaultValue",
+        "splitPolicy": "esriSPTDefaultValue",
+        "description": "Zipcode for selected Municipality",
+        "codedValues": [
+         {
+          "name": "63655",
+          "code": 63655
+         },
+         {
+          "name": "63662",
+          "code": 63662
+         },
+         {
+          "name": "63730",
+          "code": 63730
+         },
+         {
+          "name": "63747",
+          "code": 63747
+         },
+         {
+          "name": "63750",
+          "code": 63750
+         },
+         {
+          "name": "63751",
+          "code": 63751
+         },
+         {
+          "name": "63760",
+          "code": 63760
+         },
+         {
+          "name": "63764",
+          "code": 63764
+         },
+         {
+          "name": "63766",
+          "code": 63766
+         },
+         {
+          "name": "63781",
+          "code": 63781
+         },
+         {
+          "name": "63782",
+          "code": 63782
+         },
+         {
+          "name": "63785",
+          "code": 63785
+         },
+         {
+          "name": "63787",
+          "code": 63787
+         },
+         {
+          "name": "63960",
+          "code": 63960
+         },
+         {
+          "name": "63645",
+          "code": 63645
+         },
+         {
+          "name": "63743",
+          "code": 63743
+         },
+         {
+          "name": "63763",
+          "code": 63763
+         },
+         {
+          "name": "63775",
+          "code": 63775
+         }
+        ]
+       },
+       "defaultValue": null
+      },
+      {
+       "name": "rtbox",
+       "type": "esriFieldTypeString",
+       "alias": "rtbox",
+       "sqlType": "sqlTypeOther",
+       "length": 25,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "type",
+       "type": "esriFieldTypeString",
+       "alias": "type",
+       "sqlType": "sqlTypeOther",
+       "length": 25,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "LATITUDE",
+       "type": "esriFieldTypeDouble",
+       "alias": "LATITUDE",
+       "sqlType": "sqlTypeOther",
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "LONGITUDE",
+       "type": "esriFieldTypeDouble",
+       "alias": "LONGITUDE",
+       "sqlType": "sqlTypeOther",
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      }
+     ],
+     "indexes": [
+      {
+       "name": "PK__SITE_ADD__F4B70D85EA914E96",
+       "fields": "OBJECTID",
+       "isAscending": true,
+       "isUnique": true,
+       "description": "",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "user_86620.SITE_ADDRESSES_DISPATCH2_Shape_sidx",
+       "fields": "Shape",
+       "isAscending": true,
+       "isUnique": false,
+       "description": "",
+       "indexType": "Spatial"
+      },
+      {
+       "name": "FDO_GlobalID",
+       "fields": "GlobalID",
+       "isAscending": true,
+       "isUnique": true,
+       "description": "",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "I26fulladdr",
+       "fields": "fulladdr",
+       "isAscending": true,
+       "isUnique": false,
+       "description": "",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "G26addressptid",
+       "fields": "addressptid",
+       "isAscending": true,
+       "isUnique": false,
+       "description": "",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "G26siteaddid",
+       "fields": "siteaddid",
+       "isAscending": true,
+       "isUnique": false,
+       "description": "",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "G26VALIDATIONSTATUS",
+       "fields": "VALIDATIONSTATUS",
+       "isAscending": true,
+       "isUnique": false,
+       "description": "",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "created_dateIndex",
+       "fields": "created_date",
+       "isAscending": true,
+       "isUnique": false,
+       "description": "created_date Field index",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "created_userIndex",
+       "fields": "created_user",
+       "isAscending": false,
+       "isUnique": false,
+       "description": "created_user Field index",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "last_edited_dateIndex",
+       "fields": "last_edited_date",
+       "isAscending": true,
+       "isUnique": false,
+       "description": "last_edited_date Field index",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "last_edited_userIndex",
+       "fields": "last_edited_user",
+       "isAscending": false,
+       "isUnique": false,
+       "description": "last_edited_user Field index",
+       "indexType": "Attribute"
+      }
+     ],
+     "dateFieldsTimeReference": {
+      "timeZone": "UTC",
+      "timeZoneIANA": "Etc/UTC",
+      "respectsDaylightSaving": false
+     },
+     "preferredTimeReference": null,
+     "types": [
+      {
+       "id": "Active",
+       "name": "Active",
+       "domains": {
+        "unittype": {
+         "type": "inherited"
+        },
+        "altunittype": {
+         "type": "inherited"
+        },
+        "secondaltunittype": {
+         "type": "inherited"
+        },
+        "thirdaltunittype": {
+         "type": "inherited"
+        },
+        "fourthaltunittype": {
+         "type": "inherited"
+        },
+        "stateabbreviation": {
+         "type": "inherited"
+        },
+        "pointtype": {
+         "type": "inherited"
+        },
+        "capturemeth": {
+         "type": "inherited"
+        },
+        "status": {
+         "type": "inherited"
+        },
+        "VALIDATIONSTATUS": {
+         "type": "inherited"
+        },
+        "addrtype": {
+         "type": "inherited"
+        },
+        "zipcode": {
+         "type": "inherited"
+        }
+       },
+       "templates": [
+        {
+         "name": "Active",
+         "description": "",
+         "drawingTool": "esriFeatureEditToolPoint",
+         "prototype": {
+          "attributes": {
+           "capturemeth": null,
+           "LATITUDE": null,
+           "siteaddid": null,
+           "addressptid": null,
+           "rclnguid": null,
+           "discrpagid": null,
+           "preaddrnum": null,
+           "addrnumsuf": null,
+           "addrnum": null,
+           "addrrange": null,
+           "unittype": null,
+           "unitid": null,
+           "altunittype": null,
+           "altunitid": null,
+           "secondaltunittype": null,
+           "secondaltunitid": null,
+           "thirdaltunittype": null,
+           "thirdaltunitid": null,
+           "fourthaltunittype": null,
+           "fourthaltunitid": null,
+           "fullname": null,
+           "fulladdr": null,
+           "placename": null,
+           "country": "US",
+           "stateabbreviation": "MO",
+           "county": "BOLLINGER",
+           "municipality": null,
+           "esn": null,
+           "msag": null,
+           "usngcoord": null,
+           "addrclass": null,
+           "pointtype": null,
+           "status": "Active",
+           "LONGITUDE": null,
+           "type": null,
+           "rtbox": null,
+           "zipcode": null,
+           "addrtype": null,
+           "VALIDATIONSTATUS": 6
+          }
+         }
+        }
+       ]
+      },
+      {
+       "id": "Inactive",
+       "name": "Inactive",
+       "domains": {
+        "unittype": {
+         "type": "inherited"
+        },
+        "altunittype": {
+         "type": "inherited"
+        },
+        "secondaltunittype": {
+         "type": "inherited"
+        },
+        "thirdaltunittype": {
+         "type": "inherited"
+        },
+        "fourthaltunittype": {
+         "type": "inherited"
+        },
+        "stateabbreviation": {
+         "type": "inherited"
+        },
+        "pointtype": {
+         "type": "inherited"
+        },
+        "capturemeth": {
+         "type": "inherited"
+        },
+        "status": {
+         "type": "inherited"
+        },
+        "VALIDATIONSTATUS": {
+         "type": "inherited"
+        },
+        "addrtype": {
+         "type": "inherited"
+        },
+        "zipcode": {
+         "type": "inherited"
+        }
+       },
+       "templates": [
+        {
+         "name": "Inactive",
+         "description": "",
+         "drawingTool": "esriFeatureEditToolPoint",
+         "prototype": {
+          "attributes": {
+           "capturemeth": null,
+           "LATITUDE": null,
+           "siteaddid": null,
+           "addressptid": null,
+           "rclnguid": null,
+           "discrpagid": null,
+           "preaddrnum": null,
+           "addrnumsuf": null,
+           "addrnum": null,
+           "addrrange": null,
+           "unittype": null,
+           "unitid": null,
+           "altunittype": null,
+           "altunitid": null,
+           "secondaltunittype": null,
+           "secondaltunitid": null,
+           "thirdaltunittype": null,
+           "thirdaltunitid": null,
+           "fourthaltunittype": null,
+           "fourthaltunitid": null,
+           "fullname": null,
+           "fulladdr": null,
+           "placename": null,
+           "country": "US",
+           "stateabbreviation": "MO",
+           "county": "BOLLINGER",
+           "municipality": null,
+           "esn": null,
+           "msag": null,
+           "usngcoord": null,
+           "addrclass": null,
+           "pointtype": null,
+           "status": "Inactive",
+           "LONGITUDE": null,
+           "type": null,
+           "rtbox": null,
+           "zipcode": null,
+           "addrtype": null,
+           "VALIDATIONSTATUS": 6
+          }
+         }
+        }
+       ]
+      },
+      {
+       "id": "On Hold",
+       "name": "On Hold",
+       "domains": {
+        "unittype": {
+         "type": "inherited"
+        },
+        "altunittype": {
+         "type": "inherited"
+        },
+        "secondaltunittype": {
+         "type": "inherited"
+        },
+        "thirdaltunittype": {
+         "type": "inherited"
+        },
+        "fourthaltunittype": {
+         "type": "inherited"
+        },
+        "stateabbreviation": {
+         "type": "inherited"
+        },
+        "pointtype": {
+         "type": "inherited"
+        },
+        "capturemeth": {
+         "type": "inherited"
+        },
+        "status": {
+         "type": "inherited"
+        },
+        "VALIDATIONSTATUS": {
+         "type": "inherited"
+        },
+        "addrtype": {
+         "type": "inherited"
+        },
+        "zipcode": {
+         "type": "inherited"
+        }
+       },
+       "templates": [
+        {
+         "name": "On Hold",
+         "description": "",
+         "drawingTool": "esriFeatureEditToolPoint",
+         "prototype": {
+          "attributes": {
+           "capturemeth": null,
+           "LATITUDE": null,
+           "siteaddid": null,
+           "addressptid": null,
+           "rclnguid": null,
+           "discrpagid": null,
+           "preaddrnum": null,
+           "addrnumsuf": null,
+           "addrnum": null,
+           "addrrange": null,
+           "unittype": null,
+           "unitid": null,
+           "altunittype": null,
+           "altunitid": null,
+           "secondaltunittype": null,
+           "secondaltunitid": null,
+           "thirdaltunittype": null,
+           "thirdaltunitid": null,
+           "fourthaltunittype": null,
+           "fourthaltunitid": null,
+           "fullname": null,
+           "fulladdr": null,
+           "placename": null,
+           "country": "US",
+           "stateabbreviation": "MO",
+           "county": "BOLLINGER",
+           "municipality": null,
+           "esn": null,
+           "msag": null,
+           "usngcoord": null,
+           "addrclass": null,
+           "pointtype": null,
+           "status": "On Hold",
+           "LONGITUDE": null,
+           "type": null,
+           "rtbox": null,
+           "zipcode": null,
+           "addrtype": null,
+           "VALIDATIONSTATUS": 6
+          }
+         }
+        }
+       ]
+      },
+      {
+       "id": "Pending",
+       "name": "Pending",
+       "domains": {
+        "unittype": {
+         "type": "inherited"
+        },
+        "altunittype": {
+         "type": "inherited"
+        },
+        "secondaltunittype": {
+         "type": "inherited"
+        },
+        "thirdaltunittype": {
+         "type": "inherited"
+        },
+        "fourthaltunittype": {
+         "type": "inherited"
+        },
+        "stateabbreviation": {
+         "type": "inherited"
+        },
+        "pointtype": {
+         "type": "inherited"
+        },
+        "capturemeth": {
+         "type": "inherited"
+        },
+        "status": {
+         "type": "inherited"
+        },
+        "VALIDATIONSTATUS": {
+         "type": "inherited"
+        },
+        "addrtype": {
+         "type": "inherited"
+        },
+        "zipcode": {
+         "type": "inherited"
+        }
+       },
+       "templates": [
+        {
+         "name": "Pending",
+         "description": "",
+         "drawingTool": "esriFeatureEditToolPoint",
+         "prototype": {
+          "attributes": {
+           "capturemeth": null,
+           "LATITUDE": null,
+           "siteaddid": null,
+           "addressptid": null,
+           "rclnguid": null,
+           "discrpagid": null,
+           "preaddrnum": null,
+           "addrnumsuf": null,
+           "addrnum": null,
+           "addrrange": null,
+           "unittype": null,
+           "unitid": null,
+           "altunittype": null,
+           "altunitid": null,
+           "secondaltunittype": null,
+           "secondaltunitid": null,
+           "thirdaltunittype": null,
+           "thirdaltunitid": null,
+           "fourthaltunittype": null,
+           "fourthaltunitid": null,
+           "fullname": null,
+           "fulladdr": null,
+           "placename": null,
+           "country": "US",
+           "stateabbreviation": "MO",
+           "county": "BOLLINGER",
+           "municipality": null,
+           "esn": null,
+           "msag": null,
+           "usngcoord": null,
+           "addrclass": null,
+           "pointtype": null,
+           "status": "Pending",
+           "LONGITUDE": null,
+           "type": null,
+           "rtbox": null,
+           "zipcode": null,
+           "addrtype": null,
+           "VALIDATIONSTATUS": 6
+          }
+         }
+        }
+       ]
+      }
+     ],
+     "templates": [],
+     "supportedQueryFormats": "JSON, geoJSON, PBF",
+     "supportedAppendFormats": "sqlite,geoPackage,shapefile,filegdb,featureCollection,geojson,csv,excel,jsonl,featureService,pbf",
+     "supportedAppendSourceFilterFormats": "sqlite,geoPackage,shapefile,filegdb,featureService",
+     "supportedExportFormats": "csv,shapefile,sqlite,geoPackage,filegdb,featureCollection,geojson,kml,excel,parquet",
+     "supportedConvertFileFormats": "JSON,PBF,Parquet",
+     "supportedConvertContentFormats": "LayerEditCollection,FeatureCollection",
+     "supportedSpatialRelationships": [
+      "esriSpatialRelIntersects",
+      "esriSpatialRelContains",
+      "esriSpatialRelCrosses",
+      "esriSpatialRelEnvelopeIntersects",
+      "esriSpatialRelIndexIntersects",
+      "esriSpatialRelOverlaps",
+      "esriSpatialRelTouches",
+      "esriSpatialRelWithin",
+      "esriSpatialRelDisjoint",
+      "esriSpatialRelRelation"
+     ],
+     "guidFormat": "",
+     "supportsContingentValues": true,
+     "supportsEditingContingentValues": true,
+     "supportedContingentValuesFormats": "JSON, PBF",
+     "supportsFieldGroups": true,
+     "supportedSyncDataOptions": 49412,
+     "hasStaticData": false,
+     "maxRecordCount": 2000,
+     "standardMaxRecordCount": 16000,
+     "maxIdsCount": 1000000,
+     "standardMaxRecordCountNoGeometry": 32000,
+     "tileMaxRecordCount": 8000,
+     "maxRecordCountFactor": 1,
+     "capabilities": "Query"
+    },
+    "1": {
+     "currentVersion": 12,
+     "id": 1,
+     "name": "Entrance Points",
+     "type": "Feature Layer",
+     "serviceItemId": "5f62ee2004a246d3ba84d12d6c0b8b66",
+     "cacheMaxAge": 30,
+     "displayField": "entranceptid",
+     "description": "Test",
+     "copyrightText": "",
+     "defaultVisibility": false,
+     "editFieldsInfo": {
+      "creationDateField": "created_date",
+      "creatorField": "created_user",
+      "editDateField": "last_edited_date",
+      "editorField": "last_edited_user"
+     },
+     "editingInfo": {
+      "lastEditDate": 1794582851111,
+      "schemaLastEditDate": 1794582851111,
+      "dataLastEditDate": 1794582851111
+     },
+     "relationships": [
+      {
+       "id": 0,
+       "name": "SiteAddressPoint",
+       "relatedTableId": 0,
+       "cardinality": "esriRelCardinalityOneToMany",
+       "role": "esriRelRoleDestination",
+       "keyField": "siteaddid",
+       "composite": false
+      }
+     ],
+     "isDataVersioned": false,
+     "hasContingentValuesDefinition": false,
+     "supportsAppend": true,
+     "supportsCalculate": true,
+     "supportsASyncCalculate": true,
+     "supportsTruncate": true,
+     "supportsAttachmentsByUploadId": true,
+     "supportsAttachmentsResizing": true,
+     "supportsRollbackOnFailureParameter": true,
+     "supportsStatistics": true,
+     "supportsExceedsLimitStatistics": true,
+     "supportsAdvancedQueries": true,
+     "supportsValidateSql": true,
+     "supportsCoordinatesQuantization": true,
+     "supportsLayerOverrides": true,
+     "supportsTilesAndBasicQueriesMode": true,
+     "supportsFieldDescriptionProperty": true,
+     "supportsQuantizationEditMode": true,
+     "supportsColumnStoreIndex": true,
+     "supportsApplyEditsWithGlobalIds": true,
+     "supportsReturningQueryGeometry": true,
+     "enableNullGeometry": false,
+     "advancedQueryCapabilities": {
+      "supportsPagination": true,
+      "supportsPaginationOnAggregatedQueries": true,
+      "supportsQueryRelatedPagination": true,
+      "supportsQueryWithDistance": true,
+      "supportsOutDistance": true,
+      "supportsReturningQueryExtent": true,
+      "supportsStatistics": true,
+      "supportsOrderBy": true,
+      "supportsDistinct": true,
+      "supportsQueryWithResultType": true,
+      "supportsSqlExpression": true,
+      "supportsTimeRelation": true,
+      "supportsAdvancedQueryRelated": true,
+      "supportsCountDistinct": true,
+      "supportsPercentileStatistics": true,
+      "supportsApproxPercentileStatistics": true,
+      "supportsSpatialAggregationStatistics": true,
+      "supportedSpatialAggregationStatistics": [
+       "EnvelopeAggregate",
+       "CentroidAggregate",
+       "ConvexHullAggregate"
+      ],
+      "supportsLod": true,
+      "supportsQueryWithLodSR": false,
+      "supportedLodTypes": [
+       "geohash"
+      ],
+      "supportsReturningGeometryCentroid": false,
+      "supportsReturningGeometryEnvelope": false,
+      "supportsQueryWithDatumTransformation": true,
+      "supportsCurrentUserQueries": true,
+      "supportsHavingClause": true,
+      "supportsOutFieldSQLExpression": true,
+      "supportsMaxRecordCountFactor": true,
+      "supportsTopFeaturesQuery": true,
+      "supportsDisjointSpatialRel": true,
+      "supportsQueryWithCacheHint": true,
+      "supportedOperationsWithCacheHint": [
+       "query",
+       "queryTopFilter",
+       "queryAnalytics",
+       "queryAttachments",
+       "queryRelated",
+       "queryBins",
+       "queryPivot"
+      ],
+      "supportsQueryAnalytic": true,
+      "supportsQueryPivot": true,
+      "supportsQueryBins": true,
+      "supportsDefaultSR": true,
+      "supportsTranslations": false,
+      "supportsAggIds": true,
+      "supportsQueryWithCollation": true,
+      "supportsISODOW": true,
+      "supportsISOWeek": true,
+      "supportsFullTextSearch": true,
+      "fullTextSearchCapabilities": {
+       "supportsAccentSensitivity": true,
+       "supportsStopWords": true,
+       "supportsSearchOperator": true,
+       "supportsOperator": true
+      }
+     },
+     "advancedQueryAnalyticCapabilities": {
+      "supportsLinearRegression": true,
+      "supportsTrendlineRegression": true,
+      "supportsAsync": true,
+      "supportsPercentileAnalytic": true
+     },
+     "queryBinsCapabilities": {
+      "supportsAsync": true,
+      "supportsAutoIntervalBin": true,
+      "supportsFixedIntervalBin": true,
+      "supportsFixedBoundariesBin": true,
+      "supportsDateBin": true,
+      "supportsClassificationBin": true,
+      "supportsStackBy": true,
+      "supportsSplitBy": true,
+      "supportsFirstDayOfWeek": true,
+      "supportsSnapToData": true,
+      "supportsReturnFullIntervalBin": true,
+      "supportsReturnStackValueRange": true,
+      "supportsNormalization": true,
+      "supportedStatisticTypes": [
+       "COUNT",
+       "SUM",
+       "AVG",
+       "VAR",
+       "VAR_SAMP",
+       "VAR_POP",
+       "STDDEV",
+       "STDDEV_SAMP",
+       "STDDEV_POP",
+       "MIN",
+       "MAX",
+       "PERCENTILE_CONT",
+       "PERCENTILE_DISC",
+       "APPROX_PERCENTILE_CONT",
+       "APPROX_PERCENTILE_DISC",
+       "CentroidAggregate",
+       "EnvelopeAggregate",
+       "ConvexHullAggregate"
+      ],
+      "supportedNormalizationTypes": [
+       "boxCox",
+       "field",
+       "inverse",
+       "log",
+       "naturalLog",
+       "percentOfTotal",
+       "squareRoot"
+      ]
+     },
+     "supportedOperationsWithCollation": "query,addField,updateField",
+     "advancedEditingCapabilities": {
+      "supportedSqlFormatsInCalculate": [
+       "standard"
+      ],
+      "supportsAsyncApplyEdits": true,
+      "supportsReturnEditResults": true,
+      "supportsApplyEditsbyUploadID": true,
+      "supportedApplyEditsUploadIDFormats": "JSON,PBF",
+      "supportsTranslation": false,
+      "supportsMaxTranslations": 10
+     },
+     "infoInEstimates": [
+      "extent",
+      "count"
+     ],
+     "useStandardizedQueries": true,
+     "geometryType": "esriGeometryPoint",
+     "minScale": 0,
+     "maxScale": 0,
+     "extent": {
+      "xmin": 462888.45260578435,
+      "ymin": 165800.62195716452,
+      "xmax": 463255.27904697426,
+      "ymax": 165898.91428972656,
+      "spatialReference": {
+       "wkid": 3443,
+       "latestWkid": 3443
+      }
+     },
+     "spatialReference": {
+      "wkid": 3443,
+      "latestWkid": 3443
+     },
+     "drawingInfo": {
+      "renderer": {
+       "type": "simple",
+       "symbol": {
+        "type": "esriSMS",
+        "style": "esriSMSCircle",
+        "color": [
+         81,
+         165,
+         51,
+         255
+        ],
+        "size": 4,
+        "angle": 0,
+        "xoffset": 0,
+        "yoffset": 0,
+        "outline": {
+         "color": [
+          0,
+          0,
+          0,
+          255
+         ],
+         "width": 0.7
+        }
+       }
+      },
+      "scaleSymbols": true,
+      "transparency": 0,
+      "labelingInfo": null
+     },
+     "allowGeometryUpdates": true,
+     "hasAttachments": false,
+     "htmlPopupType": "esriServerHTMLPopupTypeAsHTMLText",
+     "hasMetadata": true,
+     "hasM": false,
+     "hasZ": true,
+     "enableZDefaults": true,
+     "zDefault": 0,
+     "objectIdField": "OBJECTID",
+     "uniqueIdField": {
+      "name": "OBJECTID",
+      "isSystemMaintained": true
+     },
+     "globalIdField": "GlobalID",
+     "typeIdField": "",
+     "collation": {
+      "locale": "neutral",
+      "caseSensitive": false,
+      "accentSensitive": true
+     },
+     "fields": [
+      {
+       "name": "OBJECTID",
+       "type": "esriFieldTypeOID",
+       "alias": "OBJECTID",
+       "sqlType": "sqlTypeOther",
+       "nullable": false,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "entranceptid",
+       "type": "esriFieldTypeString",
+       "alias": "Entrance ID",
+       "sqlType": "sqlTypeOther",
+       "length": 20,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "siteaddid",
+       "type": "esriFieldTypeString",
+       "alias": "Site Address ID",
+       "sqlType": "sqlTypeOther",
+       "length": 20,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "pointtype",
+       "type": "esriFieldTypeString",
+       "alias": "Address Point Type",
+       "sqlType": "sqlTypeOther",
+       "length": 30,
+       "nullable": true,
+       "editable": true,
+       "domain": {
+        "type": "codedValue",
+        "name": "AddressPointType",
+        "mergePolicy": "esriMPTDefaultValue",
+        "splitPolicy": "esriSPTDuplicate",
+        "description": "The type of address point feature",
+        "codedValues": [
+         {
+          "name": "Driveway Entrance",
+          "code": "Driveway Entrance"
+         },
+         {
+          "name": "Building Entrance",
+          "code": "Building Entrance"
+         },
+         {
+          "name": "Other",
+          "code": "Other"
+         },
+         {
+          "name": "Unknown",
+          "code": "Unknown"
+         }
+        ]
+       },
+       "defaultValue": null
+      },
+      {
+       "name": "capturemeth",
+       "type": "esriFieldTypeString",
+       "alias": "Capture Method",
+       "sqlType": "sqlTypeOther",
+       "length": 30,
+       "nullable": true,
+       "editable": true,
+       "domain": {
+        "type": "codedValue",
+        "name": "PointCollectionMethod",
+        "mergePolicy": "esriMPTDefaultValue",
+        "splitPolicy": "esriSPTDuplicate",
+        "description": "The collection method for a point feature",
+        "codedValues": [
+         {
+          "name": "Community Contribution",
+          "code": "Community Contribution"
+         },
+         {
+          "name": "Other",
+          "code": "Other"
+         },
+         {
+          "name": "Plan or Drawing",
+          "code": "Plan or Drawing"
+         },
+         {
+          "name": "Site Visit",
+          "code": "Site Visit"
+         },
+         {
+          "name": "Aerial",
+          "code": "Aerial"
+         }
+        ]
+       },
+       "defaultValue": null
+      },
+      {
+       "name": "restaccess",
+       "type": "esriFieldTypeString",
+       "alias": "Restricted Access",
+       "sqlType": "sqlTypeOther",
+       "length": 5,
+       "nullable": true,
+       "editable": true,
+       "domain": {
+        "type": "codedValue",
+        "name": "YesNo",
+        "mergePolicy": "esriMPTDefaultValue",
+        "splitPolicy": "esriSPTDefaultValue",
+        "description": "A yes/no indicator",
+        "codedValues": [
+         {
+          "name": "Yes",
+          "code": "Yes"
+         },
+         {
+          "name": "No",
+          "code": "No"
+         }
+        ]
+       },
+       "defaultValue": null
+      },
+      {
+       "name": "GlobalID",
+       "type": "esriFieldTypeGlobalID",
+       "alias": "GlobalID",
+       "sqlType": "sqlTypeOther",
+       "length": 38,
+       "nullable": false,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "created_user",
+       "type": "esriFieldTypeString",
+       "alias": "created_user",
+       "sqlType": "sqlTypeOther",
+       "length": 255,
+       "nullable": true,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "created_date",
+       "type": "esriFieldTypeDate",
+       "alias": "created_date",
+       "sqlType": "sqlTypeOther",
+       "length": 8,
+       "nullable": true,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null,
+       "precision": 1
+      },
+      {
+       "name": "last_edited_user",
+       "type": "esriFieldTypeString",
+       "alias": "last_edited_user",
+       "sqlType": "sqlTypeOther",
+       "length": 255,
+       "nullable": true,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "last_edited_date",
+       "type": "esriFieldTypeDate",
+       "alias": "last_edited_date",
+       "sqlType": "sqlTypeOther",
+       "length": 8,
+       "nullable": true,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null,
+       "precision": 1
+      }
+     ],
+     "indexes": [
+      {
+       "name": "PK__SITE_ADD__F4B70D857044D0E4",
+       "fields": "OBJECTID",
+       "isAscending": true,
+       "isUnique": true,
+       "description": "",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "user_86620.SITE_ADDRESSES_ENTRANCE_POINTS2_Shape_sidx",
+       "fields": "SHAPE",
+       "isAscending": true,
+       "isUnique": false,
+       "description": "",
+       "indexType": "Spatial"
+      },
+      {
+       "name": "FDO_GlobalID",
+       "fields": "GlobalID",
+       "isAscending": true,
+       "isUnique": true,
+       "description": "",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "G27siteaddid",
+       "fields": "siteaddid",
+       "isAscending": true,
+       "isUnique": false,
+       "description": "",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "created_dateIndex",
+       "fields": "created_date",
+       "isAscending": true,
+       "isUnique": false,
+       "description": "created_date Field index",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "created_userIndex",
+       "fields": "created_user",
+       "isAscending": false,
+       "isUnique": false,
+       "description": "created_user Field index",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "last_edited_dateIndex",
+       "fields": "last_edited_date",
+       "isAscending": true,
+       "isUnique": false,
+       "description": "last_edited_date Field index",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "last_edited_userIndex",
+       "fields": "last_edited_user",
+       "isAscending": false,
+       "isUnique": false,
+       "description": "last_edited_user Field index",
+       "indexType": "Attribute"
+      }
+     ],
+     "dateFieldsTimeReference": {
+      "timeZone": "UTC",
+      "timeZoneIANA": "Etc/UTC",
+      "respectsDaylightSaving": false
+     },
+     "preferredTimeReference": null,
+     "types": [],
+     "templates": [
+      {
+       "name": "Entrance Points",
+       "description": "",
+       "drawingTool": "esriFeatureEditToolPoint",
+       "prototype": {
+        "attributes": {
+         "restaccess": null,
+         "entranceptid": null,
+         "siteaddid": null,
+         "pointtype": null,
+         "capturemeth": null
+        }
+       }
+      }
+     ],
+     "supportedQueryFormats": "JSON, geoJSON, PBF",
+     "supportedAppendFormats": "sqlite,geoPackage,shapefile,filegdb,featureCollection,geojson,csv,excel,jsonl,featureService,pbf",
+     "supportedAppendSourceFilterFormats": "sqlite,geoPackage,shapefile,filegdb,featureService",
+     "supportedExportFormats": "csv,shapefile,sqlite,geoPackage,filegdb,featureCollection,geojson,kml,excel,parquet",
+     "supportedConvertFileFormats": "JSON,PBF,Parquet",
+     "supportedConvertContentFormats": "LayerEditCollection,FeatureCollection",
+     "supportedSpatialRelationships": [
+      "esriSpatialRelIntersects",
+      "esriSpatialRelContains",
+      "esriSpatialRelCrosses",
+      "esriSpatialRelEnvelopeIntersects",
+      "esriSpatialRelIndexIntersects",
+      "esriSpatialRelOverlaps",
+      "esriSpatialRelTouches",
+      "esriSpatialRelWithin",
+      "esriSpatialRelDisjoint",
+      "esriSpatialRelRelation"
+     ],
+     "guidFormat": "",
+     "supportsContingentValues": true,
+     "supportsEditingContingentValues": true,
+     "supportedContingentValuesFormats": "JSON, PBF",
+     "supportsFieldGroups": true,
+     "supportedSyncDataOptions": 49412,
+     "hasStaticData": false,
+     "maxRecordCount": 2000,
+     "standardMaxRecordCount": 16000,
+     "maxIdsCount": 1000000,
+     "standardMaxRecordCountNoGeometry": 32000,
+     "tileMaxRecordCount": 8000,
+     "maxRecordCountFactor": 1,
+     "capabilities": "Query"
+    },
+    "2": {
+     "error": {
+      "code": 400,
+      "message": "",
+      "details": [
+       "The requested layer (layerId: 2) was not found."
+      ]
+     }
+    },
+    "3": {
+     "currentVersion": 12,
+     "id": 3,
+     "name": "Address Points",
+     "type": "Feature Layer",
+     "serviceItemId": "5f62ee2004a246d3ba84d12d6c0b8b66",
+     "cacheMaxAge": 30,
+     "displayField": "addressptid",
+     "description": "",
+     "copyrightText": "",
+     "defaultVisibility": true,
+     "editFieldsInfo": {
+      "creationDateField": "CreationDate",
+      "creatorField": "Creator",
+      "editDateField": "EditDate",
+      "editorField": "Editor"
+     },
+     "editingInfo": {
+      "lastEditDate": 1794582851387,
+      "schemaLastEditDate": 1794582851387,
+      "dataLastEditDate": 1794582851387
+     },
+     "relationships": [
+      {
+       "id": 2,
+       "name": "SiteAddressPoint",
+       "relatedTableId": 0,
+       "cardinality": "esriRelCardinalityOneToMany",
+       "role": "esriRelRoleOrigin",
+       "keyField": "addressptid",
+       "composite": false
+      }
+     ],
+     "isDataVersioned": false,
+     "hasContingentValuesDefinition": false,
+     "supportsAppend": true,
+     "supportsCalculate": true,
+     "supportsASyncCalculate": true,
+     "supportsTruncate": true,
+     "supportsAttachmentsByUploadId": true,
+     "supportsAttachmentsResizing": true,
+     "supportsRollbackOnFailureParameter": true,
+     "supportsStatistics": true,
+     "supportsExceedsLimitStatistics": true,
+     "supportsAdvancedQueries": true,
+     "supportsValidateSql": true,
+     "supportsCoordinatesQuantization": true,
+     "supportsLayerOverrides": true,
+     "supportsTilesAndBasicQueriesMode": true,
+     "supportsFieldDescriptionProperty": true,
+     "supportsQuantizationEditMode": true,
+     "supportsColumnStoreIndex": true,
+     "supportsApplyEditsWithGlobalIds": true,
+     "supportsReturningQueryGeometry": true,
+     "enableNullGeometry": false,
+     "advancedQueryCapabilities": {
+      "supportsPagination": true,
+      "supportsPaginationOnAggregatedQueries": true,
+      "supportsQueryRelatedPagination": true,
+      "supportsQueryWithDistance": true,
+      "supportsOutDistance": true,
+      "supportsReturningQueryExtent": true,
+      "supportsStatistics": true,
+      "supportsOrderBy": true,
+      "supportsDistinct": true,
+      "supportsQueryWithResultType": true,
+      "supportsSqlExpression": true,
+      "supportsTimeRelation": true,
+      "supportsAdvancedQueryRelated": true,
+      "supportsCountDistinct": true,
+      "supportsPercentileStatistics": true,
+      "supportsApproxPercentileStatistics": true,
+      "supportsSpatialAggregationStatistics": true,
+      "supportedSpatialAggregationStatistics": [
+       "EnvelopeAggregate",
+       "CentroidAggregate",
+       "ConvexHullAggregate"
+      ],
+      "supportsLod": true,
+      "supportsQueryWithLodSR": false,
+      "supportedLodTypes": [
+       "geohash"
+      ],
+      "supportsReturningGeometryCentroid": false,
+      "supportsReturningGeometryEnvelope": false,
+      "supportsQueryWithDatumTransformation": true,
+      "supportsCurrentUserQueries": true,
+      "supportsHavingClause": true,
+      "supportsOutFieldSQLExpression": true,
+      "supportsMaxRecordCountFactor": true,
+      "supportsTopFeaturesQuery": true,
+      "supportsDisjointSpatialRel": true,
+      "supportsQueryWithCacheHint": true,
+      "supportedOperationsWithCacheHint": [
+       "query",
+       "queryTopFilter",
+       "queryAnalytics",
+       "queryAttachments",
+       "queryRelated",
+       "queryBins",
+       "queryPivot"
+      ],
+      "supportsQueryAnalytic": true,
+      "supportsQueryPivot": true,
+      "supportsQueryBins": true,
+      "supportsDefaultSR": true,
+      "supportsTranslations": false,
+      "supportsAggIds": true,
+      "supportsQueryWithCollation": true,
+      "supportsISODOW": true,
+      "supportsISOWeek": true,
+      "supportsFullTextSearch": true,
+      "fullTextSearchCapabilities": {
+       "supportsAccentSensitivity": true,
+       "supportsStopWords": true,
+       "supportsSearchOperator": true,
+       "supportsOperator": true
+      }
+     },
+     "advancedQueryAnalyticCapabilities": {
+      "supportsLinearRegression": true,
+      "supportsTrendlineRegression": true,
+      "supportsAsync": true,
+      "supportsPercentileAnalytic": true
+     },
+     "queryBinsCapabilities": {
+      "supportsAsync": true,
+      "supportsAutoIntervalBin": true,
+      "supportsFixedIntervalBin": true,
+      "supportsFixedBoundariesBin": true,
+      "supportsDateBin": true,
+      "supportsClassificationBin": true,
+      "supportsStackBy": true,
+      "supportsSplitBy": true,
+      "supportsFirstDayOfWeek": true,
+      "supportsSnapToData": true,
+      "supportsReturnFullIntervalBin": true,
+      "supportsReturnStackValueRange": true,
+      "supportsNormalization": true,
+      "supportedStatisticTypes": [
+       "COUNT",
+       "SUM",
+       "AVG",
+       "VAR",
+       "VAR_SAMP",
+       "VAR_POP",
+       "STDDEV",
+       "STDDEV_SAMP",
+       "STDDEV_POP",
+       "MIN",
+       "MAX",
+       "PERCENTILE_CONT",
+       "PERCENTILE_DISC",
+       "APPROX_PERCENTILE_CONT",
+       "APPROX_PERCENTILE_DISC",
+       "CentroidAggregate",
+       "EnvelopeAggregate",
+       "ConvexHullAggregate"
+      ],
+      "supportedNormalizationTypes": [
+       "boxCox",
+       "field",
+       "inverse",
+       "log",
+       "naturalLog",
+       "percentOfTotal",
+       "squareRoot"
+      ]
+     },
+     "supportedOperationsWithCollation": "query,addField,updateField",
+     "advancedEditingCapabilities": {
+      "supportedSqlFormatsInCalculate": [
+       "standard"
+      ],
+      "supportsAsyncApplyEdits": true,
+      "supportsReturnEditResults": true,
+      "supportsApplyEditsbyUploadID": true,
+      "supportedApplyEditsUploadIDFormats": "JSON,PBF",
+      "supportsTranslation": false,
+      "supportsMaxTranslations": 10
+     },
+     "infoInEstimates": [
+      "extent",
+      "count"
+     ],
+     "useStandardizedQueries": true,
+     "geometryType": "esriGeometryPoint",
+     "minScale": 3600,
+     "maxScale": 0,
+     "extent": {
+      "xmin": 438088.7191034852,
+      "ymin": 139948.1680936389,
+      "xmax": 541094.2181586361,
+      "ymax": 344159.1678596442,
+      "spatialReference": {
+       "wkid": 3443,
+       "latestWkid": 3443
+      }
+     },
+     "spatialReference": {
+      "wkid": 3443,
+      "latestWkid": 3443
+     },
+     "drawingInfo": {
+      "renderer": {
+       "type": "simple",
+       "symbol": {
+        "type": "esriPMS",
+        "url": "7f12f24652aff75a82502a689f5eb0c1",
+        "imageData": "iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAA7EAAAOxAGVKw4bAAACEklEQVRIic2VT4hSQRzHP+ZCHQwRxZLy1iGQFS8VKrJQkYe6FAlBeKlbCCn5j+55C/aw2GHpIGhILAteOohdCwpCWC928rDgtuBJwZLMmG2GbPY9dV2C/cLw3m9m3nzm/d7vfWeF/6yVkwI4BawCF4AzwB6wA/SPCzgHPAceAG5t7AfQAF4AH5cBiEU3AZvJ+GngtmyvgSfAaFHAU2B9BlzXY+AScEuHGAFuAC85utaAVxJmCrACG/J6SHa7neFwyGh0KBNKj2S6PpgB7gKXpzssFguJRIJMJoPX62U8HtNoNEin07RaLSOIKIo7ZoB7+uxCoUA+n//7ilYr0WiUcDhMJBKh2Wzqj9wEzqoS1gFXpoNAIHCwcyPZbDaKxSKhUMioulZVmnTA+ekgFosd7NhMwWAQj8dDt9vVhzzqRgd8n657l8vFPDmdTiPA0AywK9ZVQbvdnrm4qKZOp2M0tGsGeC9Sr4JSqUQul8Pt1l3ij8rlMoPBQO/eB1pmgDfAMxX0ej3i8TjVahWHw/HPRFGqyWTSiFsFfpkBvgBbwH3VUa/X8fl8pFIp/H4//X6fWq1GpVJhMpnoiw+k+c20igRwDfCqDvERs9ksczSRNrE/D/BNOuQ74CKLaQyIfL1d1E135E9XlPYxS1+lVYsCOdJ5sCet4yrwELgu30idaJ+BbfnNfh7nyPwk21I6MYf+0voN4yaIU03e9AgAAAAASUVORK5CYII=",
+        "contentType": "image/png",
+        "width": 18,
+        "height": 18,
+        "angle": 0,
+        "xoffset": 0,
+        "yoffset": 0
+       }
+      },
+      "scaleSymbols": true,
+      "transparency": 0,
+      "labelingInfo": null
+     },
+     "allowGeometryUpdates": true,
+     "hasAttachments": false,
+     "htmlPopupType": "esriServerHTMLPopupTypeAsHTMLText",
+     "hasMetadata": true,
+     "hasM": false,
+     "hasZ": true,
+     "enableZDefaults": true,
+     "zDefault": 0,
+     "objectIdField": "OBJECTID",
+     "uniqueIdField": {
+      "name": "OBJECTID",
+      "isSystemMaintained": true
+     },
+     "globalIdField": "GlobalID",
+     "typeIdField": "",
+     "collation": {
+      "locale": "neutral",
+      "caseSensitive": false,
+      "accentSensitive": true
+     },
+     "fields": [
+      {
+       "name": "OBJECTID",
+       "type": "esriFieldTypeOID",
+       "alias": "OBJECTID",
+       "sqlType": "sqlTypeOther",
+       "nullable": false,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "addressptid",
+       "type": "esriFieldTypeString",
+       "alias": "Access ID",
+       "sqlType": "sqlTypeOther",
+       "length": 20,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "pointtype",
+       "type": "esriFieldTypeString",
+       "alias": "Address Point Type",
+       "sqlType": "sqlTypeOther",
+       "length": 30,
+       "nullable": true,
+       "editable": true,
+       "domain": {
+        "type": "codedValue",
+        "name": "AddressPointType",
+        "mergePolicy": "esriMPTDefaultValue",
+        "splitPolicy": "esriSPTDuplicate",
+        "description": "The type of address point feature",
+        "codedValues": [
+         {
+          "name": "Driveway Entrance",
+          "code": "Driveway Entrance"
+         },
+         {
+          "name": "Building Entrance",
+          "code": "Building Entrance"
+         },
+         {
+          "name": "Other",
+          "code": "Other"
+         },
+         {
+          "name": "Unknown",
+          "code": "Unknown"
+         }
+        ]
+       },
+       "defaultValue": null
+      },
+      {
+       "name": "capturemeth",
+       "type": "esriFieldTypeString",
+       "alias": "Capture Method",
+       "sqlType": "sqlTypeOther",
+       "length": 30,
+       "nullable": true,
+       "editable": true,
+       "domain": {
+        "type": "codedValue",
+        "name": "PointCollectionMethod",
+        "mergePolicy": "esriMPTDefaultValue",
+        "splitPolicy": "esriSPTDuplicate",
+        "description": "The collection method for a point feature",
+        "codedValues": [
+         {
+          "name": "Community Contribution",
+          "code": "Community Contribution"
+         },
+         {
+          "name": "Other",
+          "code": "Other"
+         },
+         {
+          "name": "Plan or Drawing",
+          "code": "Plan or Drawing"
+         },
+         {
+          "name": "Site Visit",
+          "code": "Site Visit"
+         },
+         {
+          "name": "Aerial",
+          "code": "Aerial"
+         }
+        ]
+       },
+       "defaultValue": null
+      },
+      {
+       "name": "offdist",
+       "type": "esriFieldTypeDouble",
+       "alias": "Offset Distance",
+       "sqlType": "sqlTypeOther",
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "offdir",
+       "type": "esriFieldTypeString",
+       "alias": "Offset Direction",
+       "sqlType": "sqlTypeOther",
+       "length": 5,
+       "nullable": true,
+       "editable": true,
+       "domain": {
+        "type": "codedValue",
+        "name": "LeftRight",
+        "mergePolicy": "esriMPTDefaultValue",
+        "splitPolicy": "esriSPTDefaultValue",
+        "description": "A left/right flag for creating site address point",
+        "codedValues": [
+         {
+          "name": "Left",
+          "code": "Left"
+         },
+         {
+          "name": "Right",
+          "code": "Right"
+         }
+        ]
+       },
+       "defaultValue": null
+      },
+      {
+       "name": "numpoints",
+       "type": "esriFieldTypeSmallInteger",
+       "alias": "# of Site Addresses",
+       "sqlType": "sqlTypeOther",
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": 1
+      },
+      {
+       "name": "incrementval",
+       "type": "esriFieldTypeSmallInteger",
+       "alias": "Increment Value",
+       "sqlType": "sqlTypeOther",
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": 0
+      },
+      {
+       "name": "GlobalID",
+       "type": "esriFieldTypeGlobalID",
+       "alias": "GlobalID",
+       "sqlType": "sqlTypeOther",
+       "length": 38,
+       "nullable": false,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "CreationDate",
+       "type": "esriFieldTypeDate",
+       "alias": "CreationDate",
+       "sqlType": "sqlTypeOther",
+       "length": 8,
+       "nullable": true,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null,
+       "precision": 1
+      },
+      {
+       "name": "Creator",
+       "type": "esriFieldTypeString",
+       "alias": "Creator",
+       "sqlType": "sqlTypeOther",
+       "length": 128,
+       "nullable": true,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "EditDate",
+       "type": "esriFieldTypeDate",
+       "alias": "EditDate",
+       "sqlType": "sqlTypeOther",
+       "length": 8,
+       "nullable": true,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null,
+       "precision": 1
+      },
+      {
+       "name": "Editor",
+       "type": "esriFieldTypeString",
+       "alias": "Editor",
+       "sqlType": "sqlTypeOther",
+       "length": 128,
+       "nullable": true,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null
+      }
+     ],
+     "indexes": [
+      {
+       "name": "G25addressptid",
+       "fields": "addressptid",
+       "isAscending": true,
+       "isUnique": false,
+       "description": "",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "PK__SITE_ADD__F4B70D85D6149C24",
+       "fields": "OBJECTID",
+       "isAscending": true,
+       "isUnique": true,
+       "description": "clustered, unique, primary key",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "user_86620.SITE_ADDRESSES_ADDRESS_POINTS_Shape_sidx",
+       "fields": "Shape",
+       "isAscending": true,
+       "isUnique": false,
+       "description": "Shape Index",
+       "indexType": "Spatial"
+      },
+      {
+       "name": "FDO_GlobalID",
+       "fields": "GlobalID",
+       "isAscending": true,
+       "isUnique": true,
+       "description": "",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "CreationDateIndex",
+       "fields": "CreationDate",
+       "isAscending": true,
+       "isUnique": false,
+       "description": "CreationDate Field index",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "CreatorIndex",
+       "fields": "Creator",
+       "isAscending": false,
+       "isUnique": false,
+       "description": "Creator Field index",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "EditDateIndex",
+       "fields": "EditDate",
+       "isAscending": true,
+       "isUnique": false,
+       "description": "EditDate Field index",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "EditorIndex",
+       "fields": "Editor",
+       "isAscending": false,
+       "isUnique": false,
+       "description": "Editor Field index",
+       "indexType": "Attribute"
+      }
+     ],
+     "dateFieldsTimeReference": {
+      "timeZone": "UTC",
+      "timeZoneIANA": "Etc/UTC",
+      "respectsDaylightSaving": false
+     },
+     "preferredTimeReference": null,
+     "types": [],
+     "templates": [
+      {
+       "name": "Offset on Left Side of Road",
+       "description": "",
+       "drawingTool": "esriFeatureEditToolPoint",
+       "prototype": {
+        "attributes": {
+         "distance": 0,
+         "direction": "Left",
+         "addressptid": null,
+         "pointtype": "Driveway Entrance",
+         "offdir": "Left",
+         "increment": 0,
+         "offdist": 0,
+         "capturemeth": "Plan or Drawing",
+         "numpoints": 1,
+         "incrementval": 0
+        }
+       }
+      },
+      {
+       "name": "Offset on Right Side of Road",
+       "description": "",
+       "drawingTool": "esriFeatureEditToolPoint",
+       "prototype": {
+        "attributes": {
+         "distance": 0,
+         "direction": "Right",
+         "addressptid": null,
+         "pointtype": "Driveway Entrance",
+         "offdir": "Right",
+         "increment": 0,
+         "capturemeth": "Plan or Drawing",
+         "offdist": 0,
+         "numpoints": 1,
+         "incrementval": 0
+        }
+       }
+      }
+     ],
+     "supportedQueryFormats": "JSON, geoJSON, PBF",
+     "supportedAppendFormats": "sqlite,geoPackage,shapefile,filegdb,featureCollection,geojson,csv,excel,jsonl,featureService,pbf",
+     "supportedAppendSourceFilterFormats": "sqlite,geoPackage,shapefile,filegdb,featureService",
+     "supportedExportFormats": "csv,shapefile,sqlite,geoPackage,filegdb,featureCollection,geojson,kml,excel,parquet",
+     "supportedConvertFileFormats": "JSON,PBF,Parquet",
+     "supportedConvertContentFormats": "LayerEditCollection,FeatureCollection",
+     "supportedSpatialRelationships": [
+      "esriSpatialRelIntersects",
+      "esriSpatialRelContains",
+      "esriSpatialRelCrosses",
+      "esriSpatialRelEnvelopeIntersects",
+      "esriSpatialRelIndexIntersects",
+      "esriSpatialRelOverlaps",
+      "esriSpatialRelTouches",
+      "esriSpatialRelWithin",
+      "esriSpatialRelDisjoint",
+      "esriSpatialRelRelation"
+     ],
+     "guidFormat": "",
+     "supportsContingentValues": true,
+     "supportsEditingContingentValues": true,
+     "supportedContingentValuesFormats": "JSON, PBF",
+     "supportsFieldGroups": true,
+     "supportedSyncDataOptions": 49412,
+     "hasStaticData": false,
+     "maxRecordCount": 2000,
+     "standardMaxRecordCount": 16000,
+     "maxIdsCount": 1000000,
+     "standardMaxRecordCountNoGeometry": 32000,
+     "tileMaxRecordCount": 8000,
+     "maxRecordCountFactor": 1,
+     "capabilities": "Query"
+    },
+    "4": {
+     "currentVersion": 12,
+     "id": 4,
+     "name": "Postal Addresses",
+     "type": "Table",
+     "serviceItemId": "5f62ee2004a246d3ba84d12d6c0b8b66",
+     "cacheMaxAge": 30,
+     "displayField": "pstladdid",
+     "description": "",
+     "copyrightText": "",
+     "defaultVisibility": true,
+     "editFieldsInfo": {
+      "creationDateField": "CreationDate",
+      "creatorField": "Creator",
+      "editDateField": "EditDate",
+      "editorField": "Editor"
+     },
+     "editingInfo": {
+      "lastEditDate": 1794582851559,
+      "schemaLastEditDate": 1794582851559,
+      "dataLastEditDate": 1794582851559
+     },
+     "relationships": [
+      {
+       "id": 1,
+       "name": "SiteAddressPoint",
+       "relatedTableId": 0,
+       "cardinality": "esriRelCardinalityOneToMany",
+       "role": "esriRelRoleDestination",
+       "keyField": "siteaddid",
+       "composite": false
+      }
+     ],
+     "isDataVersioned": false,
+     "hasContingentValuesDefinition": false,
+     "supportsAppend": true,
+     "supportsCalculate": true,
+     "supportsASyncCalculate": true,
+     "supportsTruncate": true,
+     "supportsAttachmentsByUploadId": true,
+     "supportsAttachmentsResizing": true,
+     "supportsRollbackOnFailureParameter": true,
+     "supportsStatistics": true,
+     "supportsExceedsLimitStatistics": true,
+     "supportsAdvancedQueries": true,
+     "supportsValidateSql": true,
+     "supportsCoordinatesQuantization": true,
+     "supportsLayerOverrides": true,
+     "supportsTilesAndBasicQueriesMode": true,
+     "supportsFieldDescriptionProperty": true,
+     "supportsQuantizationEditMode": true,
+     "supportsColumnStoreIndex": true,
+     "supportsApplyEditsWithGlobalIds": true,
+     "advancedQueryCapabilities": {
+      "supportsPagination": true,
+      "supportsPaginationOnAggregatedQueries": true,
+      "supportsQueryRelatedPagination": true,
+      "supportsQueryWithDistance": true,
+      "supportsReturningQueryExtent": false,
+      "supportsStatistics": true,
+      "supportsOrderBy": true,
+      "supportsDistinct": true,
+      "supportsQueryWithResultType": true,
+      "supportsSqlExpression": true,
+      "supportsTimeRelation": true,
+      "supportsAdvancedQueryRelated": true,
+      "supportsCountDistinct": true,
+      "supportsPercentileStatistics": true,
+      "supportsApproxPercentileStatistics": true,
+      "supportsSpatialAggregationStatistics": true,
+      "supportedSpatialAggregationStatistics": [
+       "EnvelopeAggregate",
+       "CentroidAggregate",
+       "ConvexHullAggregate"
+      ],
+      "supportsLod": true,
+      "supportsQueryWithLodSR": false,
+      "supportedLodTypes": [
+       "geohash"
+      ],
+      "supportsReturningGeometryCentroid": false,
+      "supportsReturningGeometryEnvelope": true,
+      "supportsQueryWithDatumTransformation": true,
+      "supportsCurrentUserQueries": true,
+      "supportsHavingClause": true,
+      "supportsOutFieldSQLExpression": true,
+      "supportsMaxRecordCountFactor": true,
+      "supportsTopFeaturesQuery": true,
+      "supportsQueryWithCacheHint": true,
+      "supportedOperationsWithCacheHint": [
+       "query",
+       "queryTopFilter",
+       "queryAnalytics",
+       "queryAttachments",
+       "queryRelated",
+       "queryBins",
+       "queryPivot"
+      ],
+      "supportsQueryAnalytic": true,
+      "supportsQueryPivot": true,
+      "supportsQueryBins": true,
+      "supportsDefaultSR": true,
+      "supportsTranslations": false,
+      "supportsAggIds": true,
+      "supportsQueryWithCollation": true,
+      "supportsISODOW": true,
+      "supportsISOWeek": true,
+      "supportsFullTextSearch": true,
+      "fullTextSearchCapabilities": {
+       "supportsAccentSensitivity": true,
+       "supportsStopWords": true,
+       "supportsSearchOperator": true,
+       "supportsOperator": true
+      }
+     },
+     "advancedQueryAnalyticCapabilities": {
+      "supportsLinearRegression": true,
+      "supportsTrendlineRegression": true,
+      "supportsAsync": true,
+      "supportsPercentileAnalytic": true
+     },
+     "queryBinsCapabilities": {
+      "supportsAsync": true,
+      "supportsAutoIntervalBin": true,
+      "supportsFixedIntervalBin": true,
+      "supportsFixedBoundariesBin": true,
+      "supportsDateBin": true,
+      "supportsClassificationBin": true,
+      "supportsStackBy": true,
+      "supportsSplitBy": true,
+      "supportsFirstDayOfWeek": true,
+      "supportsSnapToData": true,
+      "supportsReturnFullIntervalBin": true,
+      "supportsReturnStackValueRange": true,
+      "supportsNormalization": true,
+      "supportedStatisticTypes": [
+       "COUNT",
+       "SUM",
+       "AVG",
+       "VAR",
+       "VAR_SAMP",
+       "VAR_POP",
+       "STDDEV",
+       "STDDEV_SAMP",
+       "STDDEV_POP",
+       "MIN",
+       "MAX",
+       "PERCENTILE_CONT",
+       "PERCENTILE_DISC",
+       "APPROX_PERCENTILE_CONT",
+       "APPROX_PERCENTILE_DISC",
+       "CentroidAggregate",
+       "EnvelopeAggregate",
+       "ConvexHullAggregate"
+      ],
+      "supportedNormalizationTypes": [
+       "boxCox",
+       "field",
+       "inverse",
+       "log",
+       "naturalLog",
+       "percentOfTotal",
+       "squareRoot"
+      ]
+     },
+     "supportedOperationsWithCollation": "query,addField,updateField",
+     "advancedEditingCapabilities": {
+      "supportedSqlFormatsInCalculate": [
+       "standard"
+      ],
+      "supportsAsyncApplyEdits": true,
+      "supportsReturnEditResults": true,
+      "supportsApplyEditsbyUploadID": true,
+      "supportedApplyEditsUploadIDFormats": "JSON,PBF",
+      "supportsTranslation": false,
+      "supportsMaxTranslations": 10
+     },
+     "infoInEstimates": [
+      "count"
+     ],
+     "useStandardizedQueries": true,
+     "allowGeometryUpdates": true,
+     "hasAttachments": false,
+     "htmlPopupType": "esriServerHTMLPopupTypeNone",
+     "hasMetadata": true,
+     "hasM": false,
+     "hasZ": false,
+     "objectIdField": "OBJECTID",
+     "uniqueIdField": {
+      "name": "OBJECTID",
+      "isSystemMaintained": true
+     },
+     "globalIdField": "GlobalID",
+     "typeIdField": "",
+     "collation": {
+      "locale": "neutral",
+      "caseSensitive": false,
+      "accentSensitive": true
+     },
+     "fields": [
+      {
+       "name": "OBJECTID",
+       "type": "esriFieldTypeOID",
+       "alias": "OBJECTID",
+       "sqlType": "sqlTypeOther",
+       "nullable": false,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "pstladdid",
+       "type": "esriFieldTypeString",
+       "alias": "Postal Address Identifier",
+       "sqlType": "sqlTypeOther",
+       "length": 20,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "siteaddid",
+       "type": "esriFieldTypeString",
+       "alias": "Site Address ID",
+       "sqlType": "sqlTypeOther",
+       "length": 20,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "ownernm1",
+       "type": "esriFieldTypeString",
+       "alias": "Owner Name",
+       "sqlType": "sqlTypeOther",
+       "length": 150,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "ownernm2",
+       "type": "esriFieldTypeString",
+       "alias": "Owner Name",
+       "sqlType": "sqlTypeOther",
+       "length": 150,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "pstladdress",
+       "type": "esriFieldTypeString",
+       "alias": "Postal Address",
+       "sqlType": "sqlTypeOther",
+       "length": 300,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "pstlcity",
+       "type": "esriFieldTypeString",
+       "alias": "Postal City",
+       "sqlType": "sqlTypeOther",
+       "length": 100,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "pstlstate",
+       "type": "esriFieldTypeString",
+       "alias": "Postal State",
+       "sqlType": "sqlTypeOther",
+       "length": 2,
+       "nullable": true,
+       "editable": true,
+       "domain": {
+        "type": "codedValue",
+        "name": "StateAbbreviation",
+        "mergePolicy": "esriMPTDefaultValue",
+        "splitPolicy": "esriSPTDuplicate",
+        "description": "The two digital abbreviation for the fifty US states as adapted from the USPS Publication 28",
+        "codedValues": [
+         {
+          "name": "Alabama",
+          "code": "AL"
+         },
+         {
+          "name": "Alaska",
+          "code": "AK"
+         },
+         {
+          "name": "American Samoa",
+          "code": "AS"
+         },
+         {
+          "name": "Arizona",
+          "code": "AZ"
+         },
+         {
+          "name": "Arkansas",
+          "code": "AR"
+         },
+         {
+          "name": "California",
+          "code": "CA"
+         },
+         {
+          "name": "Colorado",
+          "code": "CO"
+         },
+         {
+          "name": "Connecticut",
+          "code": "CT"
+         },
+         {
+          "name": "Delaware",
+          "code": "DE"
+         },
+         {
+          "name": "District Of Columbia",
+          "code": "DC"
+         },
+         {
+          "name": "Federated States Of Micronesia",
+          "code": "FM"
+         },
+         {
+          "name": "Florida",
+          "code": "FL"
+         },
+         {
+          "name": "Georgia",
+          "code": "GA"
+         },
+         {
+          "name": "Guam",
+          "code": "GU"
+         },
+         {
+          "name": "Hawaii",
+          "code": "HI"
+         },
+         {
+          "name": "Idaho",
+          "code": "ID"
+         },
+         {
+          "name": "Illinois",
+          "code": "IL"
+         },
+         {
+          "name": "Indiana",
+          "code": "IN"
+         },
+         {
+          "name": "Iowa",
+          "code": "IA"
+         },
+         {
+          "name": "Kansas",
+          "code": "KS"
+         },
+         {
+          "name": "Kentucky",
+          "code": "KY"
+         },
+         {
+          "name": "Louisiana",
+          "code": "LA"
+         },
+         {
+          "name": "Maine",
+          "code": "ME"
+         },
+         {
+          "name": "Marshall Islands",
+          "code": "MH"
+         },
+         {
+          "name": "Maryland",
+          "code": "MD"
+         },
+         {
+          "name": "Massachusetts",
+          "code": "MA"
+         },
+         {
+          "name": "Michigan",
+          "code": "MI"
+         },
+         {
+          "name": "Minnesota",
+          "code": "MN"
+         },
+         {
+          "name": "Mississippi",
+          "code": "MS"
+         },
+         {
+          "name": "Missouri",
+          "code": "MO"
+         },
+         {
+          "name": "Montana",
+          "code": "MT"
+         },
+         {
+          "name": "Nebraska",
+          "code": "NE"
+         },
+         {
+          "name": "Nevada",
+          "code": "NV"
+         },
+         {
+          "name": "New Hampshire",
+          "code": "NH"
+         },
+         {
+          "name": "New Jersey",
+          "code": "NJ"
+         },
+         {
+          "name": "New Mexico",
+          "code": "NM"
+         },
+         {
+          "name": "New York",
+          "code": "NY"
+         },
+         {
+          "name": "North Carolina",
+          "code": "NC"
+         },
+         {
+          "name": "North Dakota",
+          "code": "ND"
+         },
+         {
+          "name": "Northern Mariana Islands",
+          "code": "MP"
+         },
+         {
+          "name": "Ohio",
+          "code": "OH"
+         },
+         {
+          "name": "Oklahoma",
+          "code": "OK"
+         },
+         {
+          "name": "Oregon",
+          "code": "OR"
+         },
+         {
+          "name": "Palau",
+          "code": "PW"
+         },
+         {
+          "name": "Pennsylvania",
+          "code": "PA"
+         },
+         {
+          "name": "Puerto Rico",
+          "code": "PR"
+         },
+         {
+          "name": "Rhode Island",
+          "code": "RI"
+         },
+         {
+          "name": "South Carolina",
+          "code": "SC"
+         },
+         {
+          "name": "South Dakota",
+          "code": "SD"
+         },
+         {
+          "name": "Tennessee",
+          "code": "TN"
+         },
+         {
+          "name": "Texas",
+          "code": "TX"
+         },
+         {
+          "name": "Utah",
+          "code": "UT"
+         },
+         {
+          "name": "Vermont",
+          "code": "VT"
+         },
+         {
+          "name": "Virgin Islands",
+          "code": "VI"
+         },
+         {
+          "name": "Virginia",
+          "code": "VA"
+         },
+         {
+          "name": "Washington",
+          "code": "WA"
+         },
+         {
+          "name": "West Virginia",
+          "code": "WV"
+         },
+         {
+          "name": "Wisconsin",
+          "code": "WI"
+         },
+         {
+          "name": "Wyoming",
+          "code": "WY"
+         }
+        ]
+       },
+       "defaultValue": null
+      },
+      {
+       "name": "pstlzip5",
+       "type": "esriFieldTypeString",
+       "alias": "Postal Zip 5",
+       "sqlType": "sqlTypeOther",
+       "length": 5,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "pstlzip4",
+       "type": "esriFieldTypeString",
+       "alias": "Postal Zip +4",
+       "sqlType": "sqlTypeOther",
+       "length": 4,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "intstate",
+       "type": "esriFieldTypeString",
+       "alias": "International State",
+       "sqlType": "sqlTypeOther",
+       "length": 5,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "intpstlcd",
+       "type": "esriFieldTypeString",
+       "alias": "International Postal Code",
+       "sqlType": "sqlTypeOther",
+       "length": 10,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "country",
+       "type": "esriFieldTypeString",
+       "alias": "Country",
+       "sqlType": "sqlTypeOther",
+       "length": 100,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "uspsboxtype",
+       "type": "esriFieldTypeString",
+       "alias": "USPS Box Type",
+       "sqlType": "sqlTypeOther",
+       "length": 10,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "uspsboxid",
+       "type": "esriFieldTypeString",
+       "alias": "USPS Box Identifier",
+       "sqlType": "sqlTypeOther",
+       "length": 25,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "uspsboxgrp",
+       "type": "esriFieldTypeString",
+       "alias": "USPS Box Group",
+       "sqlType": "sqlTypeOther",
+       "length": 50,
+       "nullable": true,
+       "editable": true,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "represent",
+       "type": "esriFieldTypeString",
+       "alias": "Owner / Occupant",
+       "sqlType": "sqlTypeOther",
+       "length": 30,
+       "nullable": true,
+       "editable": true,
+       "domain": {
+        "type": "codedValue",
+        "name": "MailingAddressType",
+        "mergePolicy": "esriMPTDefaultValue",
+        "splitPolicy": "esriSPTDuplicate",
+        "description": "The type of mailing address classifies the address record by owner, occupant or both.",
+        "codedValues": [
+         {
+          "name": "Owner/Occupant",
+          "code": "Owner/Occupant"
+         },
+         {
+          "name": "Owner",
+          "code": "Owner"
+         },
+         {
+          "name": "Occupant",
+          "code": "Occupant"
+         },
+         {
+          "name": "Other",
+          "code": "Other"
+         }
+        ]
+       },
+       "defaultValue": null
+      },
+      {
+       "name": "status",
+       "type": "esriFieldTypeString",
+       "alias": "Status",
+       "sqlType": "sqlTypeOther",
+       "length": 30,
+       "nullable": true,
+       "editable": true,
+       "domain": {
+        "type": "codedValue",
+        "name": "AddressStatus",
+        "mergePolicy": "esriMPTDefaultValue",
+        "splitPolicy": "esriSPTDuplicate",
+        "description": "The status of the address or related feature",
+        "codedValues": [
+         {
+          "name": "Active",
+          "code": "Active"
+         },
+         {
+          "name": "Inactive",
+          "code": "Inactive"
+         },
+         {
+          "name": "On Hold",
+          "code": "On Hold"
+         },
+         {
+          "name": "Pending",
+          "code": "Pending"
+         }
+        ]
+       },
+       "defaultValue": null
+      },
+      {
+       "name": "GlobalID",
+       "type": "esriFieldTypeGlobalID",
+       "alias": "GlobalID",
+       "sqlType": "sqlTypeOther",
+       "length": 38,
+       "nullable": false,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "CreationDate",
+       "type": "esriFieldTypeDate",
+       "alias": "CreationDate",
+       "sqlType": "sqlTypeOther",
+       "length": 8,
+       "nullable": true,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null,
+       "precision": 1
+      },
+      {
+       "name": "Creator",
+       "type": "esriFieldTypeString",
+       "alias": "Creator",
+       "sqlType": "sqlTypeOther",
+       "length": 128,
+       "nullable": true,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null
+      },
+      {
+       "name": "EditDate",
+       "type": "esriFieldTypeDate",
+       "alias": "EditDate",
+       "sqlType": "sqlTypeOther",
+       "length": 8,
+       "nullable": true,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null,
+       "precision": 1
+      },
+      {
+       "name": "Editor",
+       "type": "esriFieldTypeString",
+       "alias": "Editor",
+       "sqlType": "sqlTypeOther",
+       "length": 128,
+       "nullable": true,
+       "editable": false,
+       "domain": null,
+       "defaultValue": null
+      }
+     ],
+     "indexes": [
+      {
+       "name": "G23siteaddid",
+       "fields": "siteaddid",
+       "isAscending": true,
+       "isUnique": false,
+       "description": "",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "PK__SITE_ADD__F4B70D852136410D",
+       "fields": "OBJECTID",
+       "isAscending": true,
+       "isUnique": true,
+       "description": "clustered, unique, primary key",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "FDO_GlobalID",
+       "fields": "GlobalID",
+       "isAscending": true,
+       "isUnique": true,
+       "description": "",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "CreationDateIndex",
+       "fields": "CreationDate",
+       "isAscending": true,
+       "isUnique": false,
+       "description": "CreationDate Field index",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "CreatorIndex",
+       "fields": "Creator",
+       "isAscending": false,
+       "isUnique": false,
+       "description": "Creator Field index",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "EditDateIndex",
+       "fields": "EditDate",
+       "isAscending": true,
+       "isUnique": false,
+       "description": "EditDate Field index",
+       "indexType": "Attribute"
+      },
+      {
+       "name": "EditorIndex",
+       "fields": "Editor",
+       "isAscending": false,
+       "isUnique": false,
+       "description": "Editor Field index",
+       "indexType": "Attribute"
+      }
+     ],
+     "dateFieldsTimeReference": {
+      "timeZone": "UTC",
+      "timeZoneIANA": "Etc/UTC",
+      "respectsDaylightSaving": false
+     },
+     "preferredTimeReference": null,
+     "types": [],
+     "templates": [
+      {
+       "name": "Postal Addresses",
+       "description": "",
+       "drawingTool": "esriFeatureEditToolNone",
+       "prototype": {
+        "attributes": {
+         "uspsboxgrp": null,
+         "represent": "Owner/Occupant",
+         "status": "Current",
+         "pstladdid": null,
+         "siteaddid": null,
+         "ownernm1": null,
+         "ownernm2": null,
+         "pstladdress": null,
+         "pstlcity": null,
+         "pstlstate": null,
+         "pstlzip5": null,
+         "pstlzip4": null,
+         "intstate": null,
+         "intpstlcd": null,
+         "country": null,
+         "uspsboxtype": null,
+         "uspsboxid": null
+        }
+       }
+      }
+     ],
+     "supportedQueryFormats": "JSON, geoJSON, PBF",
+     "supportedAppendFormats": "sqlite,geoPackage,shapefile,filegdb,featureCollection,geojson,csv,excel,jsonl,featureService,pbf",
+     "supportedAppendSourceFilterFormats": "sqlite,geoPackage,shapefile,filegdb,featureService",
+     "supportedExportFormats": "csv,shapefile,sqlite,geoPackage,filegdb,featureCollection,geojson,kml,excel,parquet",
+     "supportedConvertFileFormats": "JSON,PBF,Parquet",
+     "supportedConvertContentFormats": "LayerEditCollection,FeatureCollection",
+     "guidFormat": "",
+     "supportsContingentValues": true,
+     "supportsEditingContingentValues": true,
+     "supportedContingentValuesFormats": "JSON, PBF",
+     "supportsFieldGroups": true,
+     "supportedSyncDataOptions": 49412,
+     "hasStaticData": false,
+     "maxRecordCount": 2000,
+     "standardMaxRecordCount": 32000,
+     "maxIdsCount": 1000000,
+     "tileMaxRecordCount": 8000,
+     "maxRecordCountFactor": 1,
+     "capabilities": "Query"
+    }
+   },
+   "decision": "账本记 /2（不存在，Invalid URL）。服务实际：/0 DISPATCH=7,426、/1 Entrance Points=3、/3 Address Points=349、/4 Postal Addresses=354。本层标题 Site Addresses、声明 339 行 → 语义与数量都对应 /3；/0 是 DISPATCH 派单表（不是地址），不取。URL 已改 /2→/3（collect/layer_plan_clean.csv）"
+  },
+  {
+   "layer": "rcgis_rest_services_New_911_Address_Requests_FeatureServer_0",
+   "url": "https://services1.arcgis.com/CcJI8wbz22fo71LO/arcgis/rest/services/New_911_Address_Requests/FeatureServer/0",
+   "layer_meta": {
+    "name": "New_Address_Requests",
+    "type": "Feature Layer",
+    "capabilities": "Create,Editing",
+    "hasAttachments": false
+   },
+   "service_meta": {
+    "capabilities": "Create,Editing",
+    "layers": [
+     {
+      "id": 0,
+      "name": "New_Address_Requests",
+      "parentLayerId": -1,
+      "defaultVisibility": true,
+      "subLayerIds": null,
+      "minScale": 0,
+      "maxScale": 0,
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPoint"
+     }
+    ],
+    "tables": []
+   },
+   "query_count": {
+    "currentVersion": 12,
+    "id": 0,
+    "name": "New_Address_Requests",
+    "type": "Feature Layer",
+    "serviceItemId": "ea792dbc375a4e8dab45f168788bcfa4",
+    "displayField": "",
+    "description": "",
+    "copyrightText": "",
+    "defaultVisibility": true,
+    "editFieldsInfo": {
+     "creationDateField": "CreationDate",
+     "creatorField": "Creator",
+     "editDateField": "EditDate",
+     "editorField": "Editor"
+    },
+    "editingInfo": {
+     "lastEditDate": 1795099301299,
+     "schemaLastEditDate": 1795099301299,
+     "dataLastEditDate": 1795099301299
+    },
+    "relationships": [],
+    "isDataVersioned": false,
+    "hasContingentValuesDefinition": false,
+    "supportsAppend": true,
+    "supportsCalculate": true,
+    "supportsASyncCalculate": true,
+    "supportsTruncate": true,
+    "supportsAttachmentsByUploadId": true,
+    "supportsAttachmentsResizing": true,
+    "supportsRollbackOnFailureParameter": true,
+    "supportsStatistics": true,
+    "supportsExceedsLimitStatistics": true,
+    "supportsAdvancedQueries": true,
+    "supportsValidateSql": true,
+    "supportsCoordinatesQuantization": true,
+    "supportsLayerOverrides": true,
+    "supportsTilesAndBasicQueriesMode": true,
+    "supportsFieldDescriptionProperty": true,
+    "supportsQuantizationEditMode": true,
+    "supportsColumnStoreIndex": true,
+    "supportsApplyEditsWithGlobalIds": true,
+    "supportsReturningQueryGeometry": true,
+    "enableNullGeometry": false,
+    "advancedQueryCapabilities": {
+     "supportsPagination": true,
+     "supportsPaginationOnAggregatedQueries": true,
+     "supportsQueryRelatedPagination": true,
+     "supportsQueryWithDistance": true,
+     "supportsOutDistance": true,
+     "supportsReturningQueryExtent": true,
+     "supportsStatistics": true,
+     "supportsOrderBy": true,
+     "supportsDistinct": true,
+     "supportsQueryWithResultType": true,
+     "supportsSqlExpression": true,
+     "supportsTimeRelation": true,
+     "supportsAdvancedQueryRelated": true,
+     "supportsCountDistinct": true,
+     "supportsPercentileStatistics": true,
+     "supportsApproxPercentileStatistics": true,
+     "supportsSpatialAggregationStatistics": true,
+     "supportedSpatialAggregationStatistics": [
+      "EnvelopeAggregate",
+      "CentroidAggregate",
+      "ConvexHullAggregate"
+     ],
+     "supportsLod": true,
+     "supportsQueryWithLodSR": false,
+     "supportedLodTypes": [
+      "geohash"
+     ],
+     "supportsReturningGeometryCentroid": false,
+     "supportsReturningGeometryEnvelope": false,
+     "supportsQueryWithDatumTransformation": true,
+     "supportsCurrentUserQueries": true,
+     "supportsHavingClause": true,
+     "supportsOutFieldSQLExpression": true,
+     "supportsMaxRecordCountFactor": true,
+     "supportsTopFeaturesQuery": true,
+     "supportsDisjointSpatialRel": true,
+     "supportsQueryWithCacheHint": true,
+     "supportedOperationsWithCacheHint": [
+      "query",
+      "queryTopFilter",
+      "queryAnalytics",
+      "queryAttachments",
+      "queryRelated",
+      "queryBins",
+      "queryPivot"
+     ],
+     "supportsQueryAnalytic": true,
+     "supportsQueryPivot": true,
+     "supportsQueryBins": true,
+     "supportsDefaultSR": true,
+     "supportsTranslations": false,
+     "supportsAggIds": true,
+     "supportsQueryWithCollation": true,
+     "supportsISODOW": true,
+     "supportsISOWeek": true,
+     "supportsFullTextSearch": true,
+     "fullTextSearchCapabilities": {
+      "supportsAccentSensitivity": true,
+      "supportsStopWords": true,
+      "supportsSearchOperator": true,
+      "supportsOperator": true
+     }
+    },
+    "advancedQueryAnalyticCapabilities": {
+     "supportsLinearRegression": true,
+     "supportsTrendlineRegression": true,
+     "supportsAsync": true,
+     "supportsPercentileAnalytic": true
+    },
+    "queryBinsCapabilities": {
+     "supportsAsync": true,
+     "supportsAutoIntervalBin": true,
+     "supportsFixedIntervalBin": true,
+     "supportsFixedBoundariesBin": true,
+     "supportsDateBin": true,
+     "supportsClassificationBin": true,
+     "supportsStackBy": true,
+     "supportsSplitBy": true,
+     "supportsFirstDayOfWeek": true,
+     "supportsSnapToData": true,
+     "supportsReturnFullIntervalBin": true,
+     "supportsReturnStackValueRange": true,
+     "supportsNormalization": true,
+     "supportedStatisticTypes": [
+      "COUNT",
+      "SUM",
+      "AVG",
+      "VAR",
+      "VAR_SAMP",
+      "VAR_POP",
+      "STDDEV",
+      "STDDEV_SAMP",
+      "STDDEV_POP",
+      "MIN",
+      "MAX",
+      "PERCENTILE_CONT",
+      "PERCENTILE_DISC",
+      "APPROX_PERCENTILE_CONT",
+      "APPROX_PERCENTILE_DISC",
+      "CentroidAggregate",
+      "EnvelopeAggregate",
+      "ConvexHullAggregate"
+     ],
+     "supportedNormalizationTypes": [
+      "boxCox",
+      "field",
+      "inverse",
+      "log",
+      "naturalLog",
+      "percentOfTotal",
+      "squareRoot"
+     ]
+    },
+    "supportedOperationsWithCollation": "query,addField,updateField",
+    "advancedEditingCapabilities": {
+     "supportedSqlFormatsInCalculate": [
+      "standard"
+     ],
+     "supportsAsyncApplyEdits": true,
+     "supportsReturnEditResults": true,
+     "supportsApplyEditsbyUploadID": true,
+     "supportedApplyEditsUploadIDFormats": "JSON,PBF",
+     "supportsTranslation": false,
+     "supportsMaxTranslations": 10
+    },
+    "infoInEstimates": [
+     "extent",
+     "count"
+    ],
+    "useStandardizedQueries": true,
+    "geometryType": "esriGeometryPoint",
+    "minScale": 0,
+    "maxScale": 0,
+    "extent": {
+     "xmin": -9342610.903117573,
+     "ymin": -0.23160000145435333,
+     "xmax": 3154323.7091999985,
+     "ymax": 6233857.9821000025,
+     "spatialReference": {
+      "wkid": 102100,
+      "latestWkid": 3857
+     }
+    },
+    "spatialReference": {
+     "wkid": 102100,
+     "latestWkid": 3857
+    },
+    "drawingInfo": {
+     "renderer": {
+      "type": "simple",
+      "symbol": {
+       "type": "esriPMS",
+       "url": "RedSphere.png",
+       "imageData": "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAGXRFWHRTb2Z0d2FyZQBQYWludC5ORVQgdjMuNS4xTuc4+QAAB3VJREFUeF7tmPlTlEcexnve94U5mANQbgQSbgiHXHINlxpRIBpRI6wHorLERUmIisKCQWM8cqigESVQS1Kx1piNi4mW2YpbcZONrilE140RCTcy3DDAcL/zbJP8CYPDL+9Ufau7uqb7eZ7P+/a8PS8hwkcgIBAQCAgEBAICAYGAQEAgIBAQCAgEBAICAYGAQEAgIBAQCDx/AoowKXFMUhD3lQrioZaQRVRS+fxl51eBTZUTdZ41U1Rox13/0JF9csGJ05Qv4jSz/YPWohtvLmSKN5iTGGqTm1+rc6weICOBRbZs1UVnrv87T1PUeovxyNsUP9P6n5cpHtCxu24cbrmwKLdj+osWiqrVKhI0xzbmZ7m1SpJ+1pFpvE2DPvGTomOxAoNLLKGLscZYvB10cbYYjrJCb7A5mrxleOBqim+cWJRakZY0JfnD/LieI9V1MrKtwokbrAtU4Vm0A3TJnphJD4B+RxD0u0LA7w7FTE4oprOCMbklEGNrfdGf4IqnQTb4wc0MFTYibZqM7JgjO8ZdJkpMln/sKu16pHZGb7IfptIWg389DPp9kcChWODoMuDdBOhL1JgpisbUvghM7AqFbtNiaFP80RLnhbuBdqi0N+1dbUpWGde9gWpuhFi95yL7sS7BA93JAb+Fn8mh4QujgPeTgb9kAZf3Apd2A+fXQ38yHjOHozB1IAJjOSEY2RSIwVUv4dd4X9wJccGHNrJ7CYQ4GGjLeNNfM+dyvgpzQstKf3pbB2A6m97uBRE0/Ergcxr8hyqg7hrwn0vAtRIKIRX6Y2pMl0RhIj8co9nBGFrvh55l3ngU7YObng7IVnFvGS+BYUpmHziY/Ls2zgP9SX50by/G9N5w6I+ogYvpwK1SoOlHQNsGfWcd9Peqof88B/rTyzF9hAIopAByQzC0JQB9ST5oVnvhnt+LOGsprvUhxNIwa0aY7cGR6Cp7tr8+whkjawIxkRWC6YJI6N+lAKq3Qf/Tx+B77oGfaQc/8hB8w2Xwtw9Bf3kzZspXY/JIDEbfpAB2BKLvVV90Jvjgoac9vpRxE8kciTVCBMMkNirJ7k/tRHyjtxwjKV4Yp3t/6s+R4E+/DH3N6+BrS8E314Dvvg2+/Sb4hxfBf5sP/up2TF3ZhonK1zD6dhwGdwail26DzqgX8MRKiq9ZBpkSkmeYOyPM3m9Jjl+1Z9D8AgNtlAq6bZ70qsZi+q+bwV/7I/hbB8D/dAr8Axq89iz474p/G5++koHJy1sx/lkGdBc2YjA3HF0rHNHuboomuQj/5DgclIvOGCGCYRKFFuTMV7YUAD3VDQaLMfyqBcZORGPy01QKYSNm/rYV/Nd/Av9NHvgbueBrsjDzRQamKKDxT9Kgq1iLkbIUDOSHoiNcgnYHgnYZi+9ZExSbiSoMc2eE2flKcuJLa4KGRQz6/U0wlGaP0feiMH4uFpMXEjBVlYjp6lWY+SSZtim0kulYMiYuJEJXuhTDJ9UYPByOvoIwdCxfgE4bAo0Jh39xLAoVpMwIEQyTyFCQvGpLon9sJ0K3J4OBDDcMH1dj9FQsxkrjMPFRPCbOx2GyfLal9VEcxstioTulxjAFNfROJPqLl6Bnfyg6V7ugz5yBhuHwrZjBdiU5YJg7I8wOpifAKoVIW7uQ3rpOBH2b3ekVjYT2WCRG3o+mIGKgO0OrlIaebU/HYOQDNbQnojB4NJyGD0NPfjA0bwTRE6Q7hsUcWhkWN8yZqSQlWWGECAZLmJfJmbrvVSI8taK37xpbdB/wQW8xPee/8xIGjvlj8IQ/hk4G0JbWcX8MHPVDX4kveoq8ocn3xLM33NCZRcPHOGJYZIKfpQyq7JjHS6yJjcHujLHADgkpuC7h8F8zEVqXSNC2awE69lqhs8AamkO26HrbDt2H7dBVQov2NcW26CiwQtu+BWjdY4n2nZboTbfCmKcCnRyDO/YmyLPnDlHvjDH8G6zhS9/wlEnYR7X00fWrFYuWdVI0ZpuhcbcczW/R2qdAcz6t/bRov4mONeaaoYl+p22rHF0bVNAmKtBvweIXGxNcfFH8eNlC4m6wMWMusEnKpn5hyo48pj9gLe4SNG9QoGGLAk8z5XiaJUd99u8122/IpBA2K9BGg2vWWKAvRYVeLzEa7E1R422m2+MsSTem97nSYnfKyN6/mzATv7AUgqcMrUnmaFlLX3ysM0fj+t/b5lQLtK22QEfyAmiSLKFZpUJ7kBRPXKW4HqCYynWVHKSG2LkyZex1uO1mZM9lKem9Tx9jjY5iNEYo0bKMhn7ZAu0r6H5PpLXCAq0rKJClSjSGynE/QIkrQYqBPe6S2X+AJsY2Ped6iWZk6RlL0c2r5szofRsO9R5S1IfQLRCpQL1aifoYFerpsbkuTImaUJXuXIDiH6/Ys8vm3Mg8L2i20YqsO7fItKLcSXyn0kXccclVqv3MS6at9JU/Ox+ouns+SF6Z4cSupz7l8+z1ucs7LF1AQjOdxfGZzmx8Iu1TRcfnrioICAQEAgIBgYBAQCAgEBAICAQEAgIBgYBAQCAgEBAICAQEAv8H44b/6ZiGvGAAAAAASUVORK5CYII=",
+       "contentType": "image/png",
+       "width": 15,
+       "height": 15
+      }
+     }
+    },
+    "allowGeometryUpdates": true,
+    "hasAttachments": false,
+    "htmlPopupType": "esriServerHTMLPopupTypeNone",
+    "hasMetadata": true,
+    "hasM": false,
+    "hasZ": false,
+    "objectIdField": "OBJECTID",
+    "uniqueIdField": {
+     "name": "OBJECTID",
+     "isSystemMaintained": true
+    },
+    "globalIdField": "GlobalID",
+    "typeIdField": "",
+    "collation": {
+     "locale": "neutral",
+     "caseSensitive": false,
+     "accentSensitive": true
+    },
+    "fields": [
+     {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "OBJECTID",
+      "sqlType": "sqlTypeOther",
+      "nullable": false,
+      "editable": false,
+      "domain": null,
+      "defaultValue": "",
+      "required": true
+     },
+     {
+      "name": "AD_LAST_NAME",
+      "type": "esriFieldTypeString",
+      "alias": "Applicant Last Name or Business Name",
+      "sqlType": "sqlTypeOther",
+      "length": 80,
+      "nullable": true,
+      "editable": true,
+      "domain": null,
+      "defaultValue": ""
+     },
+     {
+      "name": "AD_FIRST_NAME",
+      "type": "esriFieldTypeString",
+      "alias": "Applicant First Name",
+      "sqlType": "sqlTypeOther",
+      "length": 60,
+      "nullable": true,
+      "editable": true,
+      "domain": null,
+      "defaultValue": ""
+     },
+     {
+      "name": "AD_MAIL_ADDRESS",
+      "type": "esriFieldTypeString",
+      "alias": "Applicant Address (Number and Street)",
+      "sqlType": "sqlTypeOther",
+      "length": 50,
+      "nullable": true,
+      "editable": true,
+      "domain": null,
+      "defaultValue": ""
+     },
+     {
+      "name": "AD_MAIL_CITY",
+      "type": "esriFieldTypeString",
+      "alias": "Applicant Address (City)",
+      "sqlType": "sqlTypeOther",
+      "length": 50,
+      "nullable": true,
+      "editable": true,
+      "domain": null,
+      "defaultValue": ""
+     },
+     {
+      "name": "AD_MAIL_ZIP",
+      "type": "esriFieldTypeString",
+      "alias": "Applicant Address (Zipcode)",
+      "sqlType": "sqlTypeOther",
+      "length": 50,
+      "nullable": true,
+      "editable": true,
+      "domain": null,
+      "defaultValue": ""
+     },
+     {
+      "name": "AD_MUNI",
+      "type": "esriFieldTypeString",
+      "alias": "Municipality of new address",
+      "sqlType": "sqlTypeOther",
+      "length": 50,
+      "nullable": true,
+      "editable": true,
+      "domain": null,
+      "defaultValue": ""
+     },
+     {
+      "name": "AD_EMAIL",
+      "type": "esriFieldTypeString",
+      "alias": "Applicant email address",
+      "sqlType": "sqlTypeOther",
+      "length": 200,
+      "nullable": true,
+      "editable": true,
+      "domain": null,
+      "defaultValue": ""
+     },
+     {
+      "name": "AD_STREET_ACCESS",
+      "type": "esriFieldTypeString",
+      "alias": "Street name that driveway will access",
+      "sqlType": "sqlTypeOther",
+      "length": 100,
+      "nullable": true,
+      "editable": true,
+      "domain": null,
+      "defaultValue": ""
+     },
+     {
+      "name": "AD_RES_UNITS",
+      "type": "esriFieldTypeSmallInteger",
+      "alias": "How many residentual units (apartments)?",
+      "sqlType": "sqlTypeOther",
+      "nullable": true,
+      "editable": true,
+      "domain": null,
+      "defaultValue": ""
+     },
+     {
+      "name": "AD_COM_UNITS",
+      "type": "esriFieldTypeSmallInteger",
+      "alias": "How many commercial units (suites)?",
+      "sqlType": "sqlTypeOther",
+      "nullable": true,
+      "editable": true,
+      "domain": null,
+      "defaultValue": ""
+     },
+     {
+      "name": "AD_REQUEST_DATE",
+      "type": "esriFieldTypeDate",
+      "alias": "Date of address request",
+      "sqlType": "sqlTypeOther",
+      "length": 8,
+      "nullable": true,
+      "editable": true,
+      "domain": null,
+      "defaultValue": "",
+      "precision": 1
+     },
+     {
+      "name": "NOTES",
+      "type": "esriFieldTypeString",
+      "alias": "Additional Notes (up to 1000 characters)",
+      "sqlType": "sqlTypeOther",
+      "length": 1000,
+      "nullable": true,
+      "editable": true,
+      "domain": null,
+      "defaultValue": ""
+     },
+     {
+      "name": "AD_TYPE",
+      "type": "esriFieldTypeDouble",
+      "alias": "Site type of address requested",
+      "sqlType": "sqlTypeOther",
+      "nullable": true,
+      "editable": true,
+      "domain": {
+       "type": "codedValue",
+       "name": "New_Address_Requests_AD_TYPE_f2f1529a-a769-4d0f-9951-8e7d9909402f",
+       "codedValues": [
+        {
+         "name": "Commercial Use (4)",
+         "code": 4
+        },
+        {
+         "name": "Education (5)",
+         "code": 5
+        },
+        {
+         "name": "Government (12)",
+         "code": 12
+        },
+        {
+         "name": "Industrial (17)",
+         "code": 17
+        },
+        {
+         "name": "Medical (18)",
+         "code": 18
+        },
+        {
+         "name": "Mixed Use - Residential & Commerical (20)",
+         "code": 20
+        },
+        {
+         "name": "Pole Building (21)",
+         "code": 21
+        },
+        {
+         "name": "Recreational (25)",
+         "code": 25
+        },
+        {
+         "name": "Religious (27)",
+         "code": 27
+        },
+        {
+         "name": "Residential - Multi Family (28)",
+         "code": 28
+        },
+        {
+         "name": "Residential - Seasonal (29)",
+         "code": 29
+        },
+        {
+         "name": "Residential - Single Family (30)",
+         "code": 30
+        },
+        {
+         "name": "Utility (35)",
+         "code": 35
+        },
+        {
+         "name": "Garage (42)",
+         "code": 42
+        }
+       ]
+      },
+      "defaultValue": ""
+     },
+     {
+      "name": "AD_MAIL_STATE",
+      "type": "esriFieldTypeString",
+      "alias": "Applicant Address (State Abbreviation)",
+      "sqlType": "sqlTypeOther",
+      "length": 2,
+      "nullable": true,
+      "editable": true,
+      "domain": null,
+      "defaultValue": ""
+     },
+     {
+      "name": "AD_REQUEST_EDIT",
+      "type": "esriFieldTypeDate",
+      "alias": "Last record update",
+      "sqlType": "sqlTypeOther",
+      "length": 8,
+      "nullable": true,
+      "editable": true,
+      "domain": null,
+      "defaultValue": "",
+      "precision": 1
+     },
+     {
+      "name": "PHONE_NUMBER",
+      "type": "esriFieldTypeString",
+      "alias": "Phone Number",
+      "sqlType": "sqlTypeOther",
+      "length": 255,
+      "nullable": true,
+      "editable": true,
+      "domain": null,
+      "defaultValue": ""
+     },
+     {
+      "name": "TYPE_OF_REQUEST",
+      "type": "esriFieldTypeString",
+      "alias": "Type of Address Request",
+      "sqlType": "sqlTypeOther",
+      "length": 255,
+      "nullable": true,
+      "editable": true,
+      "domain": null,
+      "defaultValue": ""
+     },
+     {
+      "name": "STAFF_COMMENTS",
+      "type": "esriFieldTypeString",
+      "alias": "Crawford County Staff Comments",
+      "sqlType": "sqlTypeOther",
+      "length": 1000,
+      "nullable": true,
+      "editable": true,
+      "domain": null,
+      "defaultValue": ""
+     },
+     {
+      "name": "COMPLETED",
+      "type": "esriFieldTypeString",
+      "alias": "Has request been completed?",
+      "sqlType": "sqlTypeOther",
+      "length": 50,
+      "nullable": true,
+      "editable": true,
+      "domain": null,
+      "defaultValue": "N"
+     },
+     {
+      "name": "GlobalID",
+      "type": "esriFieldTypeGlobalID",
+      "alias": "GlobalID",
+      "sqlType": "sqlTypeOther",
+      "length": 38,
+      "nullable": false,
+      "editable": false,
+      "domain": null,
+      "defaultValue": null,
+      "required": true
+     },
+     {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "sqlType": "sqlTypeOther",
+      "length": 8,
+      "nullable": true,
+      "editable": false,
+      "domain": null,
+      "defaultValue": null,
+      "precision": 1
+     },
+     {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "sqlType": "sqlTypeOther",
+      "length": 128,
+      "nullable": true,
+      "editable": false,
+      "domain": null,
+      "defaultValue": null
+     },
+     {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "sqlType": "sqlTypeOther",
+      "length": 8,
+      "nullable": true,
+      "editable": false,
+      "domain": null,
+      "defaultValue": null,
+      "precision": 1
+     },
+     {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "sqlType": "sqlTypeOther",
+      "length": 128,
+      "nullable": true,
+      "editable": false,
+      "domain": null,
+      "defaultValue": null
+     }
+    ],
+    "indexes": [
+     {
+      "name": "FDO_GlobalID",
+      "fields": "GlobalID",
+      "isAscending": true,
+      "isUnique": true,
+      "description": "",
+      "indexType": "Attribute"
+     },
+     {
+      "name": "PK__NEW_911___F4B70D85C084F836",
+      "fields": "OBJECTID",
+      "isAscending": true,
+      "isUnique": true,
+      "description": "clustered, unique, primary key",
+      "indexType": "Attribute"
+     },
+     {
+      "name": "user_8527.NEW_911_ADDRESS_REQUESTS_NEW_ADDRESS_REQUESTS_Shape_sidx",
+      "fields": "Shape",
+      "isAscending": true,
+      "isUnique": false,
+      "description": "Shape Index",
+      "indexType": "Spatial"
+     },
+     {
+      "name": "CreationDateIndex",
+      "fields": "CreationDate",
+      "isAscending": true,
+      "isUnique": false,
+      "description": "CreationDate Field index",
+      "indexType": "Attribute"
+     },
+     {
+      "name": "CreatorIndex",
+      "fields": "Creator",
+      "isAscending": false,
+      "isUnique": false,
+      "description": "Creator Field index",
+      "indexType": "Attribute"
+     },
+     {
+      "name": "EditDateIndex",
+      "fields": "EditDate",
+      "isAscending": true,
+      "isUnique": false,
+      "description": "EditDate Field index",
+      "indexType": "Attribute"
+     },
+     {
+      "name": "EditorIndex",
+      "fields": "Editor",
+      "isAscending": false,
+      "isUnique": false,
+      "description": "Editor Field index",
+      "indexType": "Attribute"
+     },
+     {
+      "name": "COMPLETED_Index",
+      "fields": "COMPLETED",
+      "isAscending": true,
+      "isUnique": false,
+      "description": "COMPLETED_Index",
+      "indexType": "Attribute"
+     }
+    ],
+    "dateFieldsTimeReference": {
+     "timeZone": "UTC",
+     "timeZoneIANA": "Etc/UTC",
+     "respectsDaylightSaving": false
+    },
+    "preferredTimeReference": null,
+    "types": [],
+    "templates": [
+     {
+      "name": "New Feature",
+      "description": "",
+      "drawingTool": "esriFeatureEditToolPoint",
+      "prototype": {
+       "attributes": {
+        "AD_LAST_NAME": null,
+        "AD_FIRST_NAME": null,
+        "AD_MAIL_ADDRESS": null,
+        "AD_MAIL_CITY": null,
+        "AD_MAIL_ZIP": null,
+        "AD_MUNI": null,
+        "AD_EMAIL": null,
+        "AD_STREET_ACCESS": null,
+        "AD_RES_UNITS": null,
+        "AD_COM_UNITS": null,
+        "NOTES": null,
+        "AD_TYPE": null,
+        "AD_MAIL_STATE": null,
+        "PHONE_NUMBER": null,
+        "TYPE_OF_REQUEST": null,
+        "STAFF_COMMENTS": null,
+        "COMPLETED": "N"
+       }
+      }
+     }
+    ],
+    "supportedQueryFormats": "JSON, geoJSON, PBF",
+    "supportedAppendFormats": "sqlite,geoPackage,shapefile,filegdb,featureCollection,geojson,csv,excel,jsonl,featureService,pbf",
+    "supportedAppendSourceFilterFormats": "sqlite,geoPackage,shapefile,filegdb,featureService",
+    "supportedExportFormats": "csv,shapefile,sqlite,geoPackage,filegdb,featureCollection,geojson,kml,excel,parquet",
+    "supportedConvertFileFormats": "JSON,PBF,Parquet",
+    "supportedConvertContentFormats": "LayerEditCollection,FeatureCollection",
+    "supportedSpatialRelationships": [
+     "esriSpatialRelIntersects",
+     "esriSpatialRelContains",
+     "esriSpatialRelCrosses",
+     "esriSpatialRelEnvelopeIntersects",
+     "esriSpatialRelIndexIntersects",
+     "esriSpatialRelOverlaps",
+     "esriSpatialRelTouches",
+     "esriSpatialRelWithin",
+     "esriSpatialRelDisjoint",
+     "esriSpatialRelRelation"
+    ],
+    "guidFormat": "",
+    "supportsContingentValues": true,
+    "supportsEditingContingentValues": true,
+    "supportedContingentValuesFormats": "JSON, PBF",
+    "supportsFieldGroups": true,
+    "supportedSyncDataOptions": 49412,
+    "hasStaticData": false,
+    "maxRecordCount": 2000,
+    "standardMaxRecordCount": 16000,
+    "maxIdsCount": 400000,
+    "standardMaxRecordCountNoGeometry": 32000,
+    "tileMaxRecordCount": 8000,
+    "maxRecordCountFactor": 1,
+    "capabilities": "Create,Editing"
+   }
+  },
+  {
+   "layer": "ocEBv1Ip_arcgis_rest_services_Address___View_FeatureServer_0",
+   "url": "https://services9.arcgis.com/xVyQcG5socEBv1Ip/arcgis/rest/services/Address_-_View/FeatureServer/0",
+   "layer_meta": {
+    "error": {
+     "code": 499,
+     "message": "Token Required",
+     "messageCode": "GWM_0003",
+     "details": [
+      "Token Required"
+     ]
+    }
+   }
+  }
+ ]
+}
