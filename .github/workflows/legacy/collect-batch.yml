@@ -84,4 +84,4 @@ jobs:
         with:
           name: rep-${{ matrix.id }}
           path: collect/reports/
-          retention-days: 14
+          retention-days: 3

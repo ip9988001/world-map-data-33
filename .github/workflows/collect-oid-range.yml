@@ -109,17 +109,15 @@ jobs:
             collect/reports/${{ inputs.layer }}.json
             collect/out/${{ inputs.layer }}/_manifest.json
           if-no-files-found: warn
-          retention-days: 14
+          retention-days: 3
 
-      - name: 产物兜底（Release 上传失败时，灰度数据也不丢）
-        # 灰度产物只有 ~25 MB/单元：Release 挂了还能当 artifact 拿回来做比对。
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: oid-range-parts-${{ github.run_id }}
-          path: collect/out/${{ inputs.layer }}/**/*.ndjson.gz
-          if-no-files-found: warn
-          retention-days: 7
+      # ⛔ 已删除「产物兜底」artifact（原来是 `collect/out/<layer>/**/*.ndjson.gz`，retention 7）。
+      # 三仓是 **public**，public 仓的 Artifact 出口任何人可下载 → 行级 ndjson.gz 属 **S 级**，
+      # 一律禁止出现在公开仓出口（muse-000146 Phase 1a 第 3 片 · 第 9 项；判据实现在
+      # `collect/check_public_exports.py`，ci-smoke 已挂）。
+      # 行级产物的**唯一出口 = Release 的 `<tag>-r2` 资产**（下一步 `gh release upload`）：
+      # 它本来就是灰度比对的正式通道；下面的「产物是否真的进了 Release」会二分校验 tag 与资产，
+      # 进不去就红 → 重派，不需要 artifact 兜底。
 
       - name: 产物是否真的进了 Release（二分：tag 在不在 / 资产对不对）
         if: always()

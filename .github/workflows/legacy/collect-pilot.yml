@@ -92,7 +92,7 @@ jobs:
           name: rep-${{ matrix.layer }}
           path: collect/reports/${{ matrix.layer }}.json
           if-no-files-found: warn
-          retention-days: 14
+          retention-days: 3
   report:
     needs: collect
     if: always()

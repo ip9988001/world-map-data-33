@@ -40,7 +40,7 @@ jobs:
           name: rep-${{ inputs.step }}-step
           path: collect/reports/
           if-no-files-found: warn
-          retention-days: 14
+          retention-days: 3
 
   plan:
     if: inputs.single != 'true'
@@ -111,7 +111,7 @@ jobs:
           name: rep-${{ inputs.step }}-${{ matrix.layer }}
           path: collect/reports/${{ matrix.layer }}.json
           if-no-files-found: warn
-          retention-days: 14
+          retention-days: 3
 
   report:
     needs: collect

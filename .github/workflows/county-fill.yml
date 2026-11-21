@@ -73,7 +73,7 @@ jobs:
         with:
           name: county_plan
           path: collect/ledger/county_plan.json
-          retention-days: 30
+          retention-days: 3
 
   assign:
     needs: plan
@@ -138,4 +138,4 @@ jobs:
           path: |
             dist/county/county_ledger_shard*.json
             dist/county/rows-*.json
-          retention-days: 30
+          retention-days: 3

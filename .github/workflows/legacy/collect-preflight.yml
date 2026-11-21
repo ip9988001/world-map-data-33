@@ -15,7 +15,7 @@ jobs:
         with:
           name: plan-${{ matrix.shard }}
           path: collect/plan_${{ matrix.shard }}.csv
-          retention-days: 7
+          retention-days: 3
   merge:
     needs: preflight
     runs-on: ubuntu-latest

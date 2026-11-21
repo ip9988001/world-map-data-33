@@ -2,7 +2,7 @@ name: ci-smoke
 # 改动自检：任何 push 到 collect/ 或 scripts/ 的改动，先过五道闸，再过不了就别放量。
 on:
   push:
-    paths: ["collect/**", "scripts/**", "survey/ng911/scripts/**"]
+    paths: ["collect/**", "scripts/**", "survey/ng911/scripts/**", ".github/workflows/**"]
   workflow_dispatch:
 permissions: { contents: read }
 jobs:
@@ -30,6 +30,12 @@ jobs:
 
       - name: 结构自检 25 条
         run: python3 collect/supervisor.py --entry-check
+
+      # 公开仓出口门禁（muse-000146 Phase 1a 第 3 片 · 第 9 项）：
+      # 三仓是 public，Artifact / Cache 任何人可下载 → 含行级（ndjson/jsonl/parquet、
+      # collect/out、staging、raw/）的出口一律 rc=1。判据实现在 check_public_exports.py。
+      - name: 公开仓制品/缓存出口检查（S 级行级数据禁止上传）
+        run: python3 collect/check_public_exports.py
 
       - name: 判据卡与 steps.json 一致性
         run: python3 collect/check_docs.py

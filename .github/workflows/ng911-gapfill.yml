@@ -16,7 +16,7 @@ jobs:
         with:
           name: gap-nocount-${{ matrix.shard }}
           path: survey/ng911/gap_nocount_${{ matrix.shard }}.json
-          retention-days: 14
+          retention-days: 3
   agol:
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -27,7 +27,7 @@ jobs:
       - run: python3 scripts/gapfill.py --task agol
         working-directory: survey/ng911
       - uses: actions/upload-artifact@v4
-        with: { name: gap-agol, path: survey/ng911/gap_agol.json, retention-days: 14 }
+        with: { name: gap-agol, path: survey/ng911/gap_agol.json, retention-days: 3 }
   dirs:
     runs-on: ubuntu-latest
     timeout-minutes: 40
@@ -45,7 +45,7 @@ jobs:
         with:
           name: gap-dir-${{ matrix.st }}
           path: survey/ng911/gap_dir_${{ matrix.st }}.json
-          retention-days: 14
+          retention-days: 3
   merge:
     needs: [nocount, agol, dirs]
     runs-on: ubuntu-latest
