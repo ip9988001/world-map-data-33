@@ -1,0 +1,4132 @@
+{
+ "schema": "05b-declared-by-layer/v1",
+ "at": "2026-11-21T06:58:46Z",
+ "declared_source": "unavailable",
+ "denominator": "expect_live",
+ "reason": "run 44865991911 的 plan-05b artifact（id 14692340122，未过期，expires 2026-12-21）里只有 layers_n=585 / shards(仅层名) / declared_rows=32,337,294 汇总，**没有 expect_by_layer 字段**（该字段是 2026-11-21 之后才加进 full_plan 的），因此逐层 declared 不可得；按口径改用 expect_live 作分母，不用 05b_plan.json 总量或任何筛查产物倒推逐层 declared。",
+ "run_id": 44865991911,
+ "artifact": {
+  "name": "plan-05b",
+  "id": 14692340122,
+  "expires_at": "2026-12-21T04:26:56Z",
+  "size_in_bytes": 9358,
+  "sha256": "d5ff5467b7c1127bc4d5eb98f74194c0b71f486b5783a8064a618e60b5ea0c07",
+  "path_in_archive": "05b_plan.json",
+  "plan_layers_n": 585,
+  "plan_declared_rows": 32337294,
+  "plan_shards_n": 3
+ },
+ "plan_probe": {
+  "file": "collect/ledger/05b_plan_probe.json",
+  "layers_n": 583,
+  "expect_live_n": 523,
+  "probe_failed_n": 60
+ },
+ "layers_n": 583,
+ "layers": [
+  {
+   "layer": "ye4IXyXsdIpPb_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 5045,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "roY6O3ncx_arcgis_rest_services_MS4_addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 5060,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "d_Septic_System_Pilot_Project_Addresses_View_FeatureServer_0",
+   "declared": null,
+   "expect_live": 5071,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arcgis_rest_services_Hartford_911_Addresses__FeatureServer_0",
+   "declared": null,
+   "expect_live": 5108,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "g5mTyuNWO5xx6_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 5168,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "esses_In_Refuse_Recycle_Routes_WFL1_July2019_FeatureServer_0",
+   "declared": null,
+   "expect_live": 5219,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "67TISFO3iTjgFX_arcgis_rest_services_address2_FeatureServer_0",
+   "declared": null,
+   "expect_live": 5236,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "cgis_rest_services_Administrative_Addressing_FeatureServer_0",
+   "declared": null,
+   "expect_live": 5371,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "bK6DOd0VbR_arcgis_rest_services_SB_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 5403,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "TjgFX_arcgis_rest_services_addresses_120222a_FeatureServer_0",
+   "declared": null,
+   "expect_live": 5409,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "unty__GA_Online_911_Addresses_and_Roads_WFL1_FeatureServer_1",
+   "declared": null,
+   "expect_live": 5493,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "e3_arcgis_rest_services_SiteAddresses_public_FeatureServer_0",
+   "declared": null,
+   "expect_live": 5586,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "CRVuK_arcgis_rest_services_Map_View_Address_FeatureServer_42",
+   "declared": null,
+   "expect_live": 5634,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "HKRPMgv82EjLQ_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 5640,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "cgis_rest_services_SiteAddresses_public_2020_FeatureServer_1",
+   "declared": null,
+   "expect_live": 5655,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "dlWlBxzX_arcgis_rest_services_Newton_Address_FeatureServer_0",
+   "declared": null,
+   "expect_live": 5730,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "Iod9kh71mtnDG_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 5731,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "387Pb3S_arcgis_rest_services_LiveAdds_202504_FeatureServer_0",
+   "declared": null,
+   "expect_live": 5876,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "st_services_Curb_Transition_Magic_Number2027_FeatureServer_0",
+   "declared": null,
+   "expect_live": 5896,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_in_Incident_Address_and_Type_for_Date_Range_FeatureServer_0",
+   "declared": null,
+   "expect_live": 5929,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "wVADPEG6iD24f_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 6031,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ces_Stillwater_County_Addressing_Layers_2026_FeatureServer_0",
+   "declared": null,
+   "expect_live": 6112,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "yHixJV_arcgis_rest_services_Master_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 6184,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "teAddresses_8548b2fdfac0464392b3fd7620a632d7_FeatureServer_0",
+   "declared": null,
+   "expect_live": 6197,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ater_Meter_Replacement_Addresses_Zone_1_view_FeatureServer_1",
+   "declared": null,
+   "expect_live": 6361,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "st_services_Lincoln_City_Addresses_View_Only_FeatureServer_0",
+   "declared": null,
+   "expect_live": 6521,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "sdIpPb_arcgis_rest_services_Addresses_Splits_FeatureServer_0",
+   "declared": null,
+   "expect_live": 6583,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "SQHJsl5r_arcgis_rest_services_Address_Labels_FeatureServer_0",
+   "declared": null,
+   "expect_live": 6588,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "NuFrQ7kB_arcgis_rest_services_Master_Address_FeatureServer_0",
+   "declared": null,
+   "expect_live": 6655,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "7Y8pE5CiojuXeU_arcgis_rest_services_NewSitus_FeatureServer_0",
+   "declared": null,
+   "expect_live": 6686,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "M5KB8_arcgis_rest_services_E911_PairwiseClip_FeatureServer_0",
+   "declared": null,
+   "expect_live": 6716,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_rest_services_E911_Houses_Washington_County_FeatureServer_0",
+   "declared": null,
+   "expect_live": 6724,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "kttgSmcq6CPonms_arcgis_rest_services_Address_FeatureServer_0",
+   "declared": null,
+   "expect_live": 6953,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ieS2ld_arcgis_rest_services_Searcy_NG911_gdb_FeatureServer_2",
+   "declared": null,
+   "expect_live": 7144,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_Mountlake_Terrace_Washington_Addresses_view_FeatureServer_0",
+   "declared": null,
+   "expect_live": 7157,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rest_services_Site_Addresses_06012022_public_FeatureServer_2",
+   "declared": null,
+   "expect_live": 7163,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "CY2_arcgis_rest_services_Dispatcher_Map_WFL1_FeatureServer_0",
+   "declared": null,
+   "expect_live": 7165,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rest_services_Pella_Address_Data_Public_View_FeatureServer_2",
+   "declared": null,
+   "expect_live": 7242,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_ArcGIS_rest_services_AddressesE911Macon2022_FeatureServer_0",
+   "declared": null,
+   "expect_live": 7242,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "Z_arcgis_rest_services_CityofDemingAddresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 7251,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "l0FeW1NE_arcgis_rest_services_AddressesWInfo_FeatureServer_0",
+   "declared": null,
+   "expect_live": 7364,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "0hS_arcgis_rest_services_Address_Road_Update_FeatureServer_0",
+   "declared": null,
+   "expect_live": 7370,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "Q24dH_arcgis_rest_services_Addresses__Site__FeatureServer_13",
+   "declared": null,
+   "expect_live": 7440,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rest_services_Master_Address_Management_WFL1_FeatureServer_0",
+   "declared": null,
+   "expect_live": 7506,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ms_arcgis_rest_services_Address_Data_Public_FeatureServer_10",
+   "declared": null,
+   "expect_live": 7527,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "cgis_rest_services_Address_Data_Public_view_FeatureServer_10",
+   "declared": null,
+   "expect_live": 7527,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ses_public_3336c922d00a441e8f588e16c3dc2577_FeatureServer_10",
+   "declared": null,
+   "expect_live": 7529,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "gg5s_arcgis_rest_services_Building_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 7540,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "8nlIDAHxNx4_arcgis_rest_services_911_Address_FeatureServer_0",
+   "declared": null,
+   "expect_live": 7566,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "is_rest_services_Address_Points_Council_Area_FeatureServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "s_rest_services_Richland_County_ND_Addresses_FeatureServer_1",
+   "declared": null,
+   "expect_live": 7608,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "HRU_arcgis_rest_services_VFAC_Addresses_WFL1_FeatureServer_0",
+   "declared": null,
+   "expect_live": 7686,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "sses_public_e65dd46e9c084cddaedcb94aeea0ed6b_FeatureServer_0",
+   "declared": null,
+   "expect_live": 7798,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "DQNT3m6mbJlqZ_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 7733,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_services_Address_and_Street_Annotation_view_FeatureServer_0",
+   "declared": null,
+   "expect_live": 7836,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "s_rest_services_City_of_Dinuba_Addresses_gdb_FeatureServer_1",
+   "declared": null,
+   "expect_live": 7845,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_arcgis_rest_services_Site_Address_Occupants_FeatureServer_0",
+   "declared": null,
+   "expect_live": 7886,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "1uhbqnOZPx6qT_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 7888,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "es_City_Buildings_and_Address_Locations_WFL1_FeatureServer_4",
+   "declared": null,
+   "expect_live": 7969,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "resses___Archuleta_County_201411251147175537_FeatureServer_0",
+   "declared": null,
+   "expect_live": 8134,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "Zk1fY2MHCTEXz_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 8149,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "R_arcgis_rest_services_Tornado_Addresses_NLR_FeatureServer_0",
+   "declared": null,
+   "expect_live": 8182,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "vlQFEpKtV_arcgis_rest_services_DOUGLASCOUNTY_FeatureServer_0",
+   "declared": null,
+   "expect_live": 8201,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "wu_arcgis_rest_services_CoStafford_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 8246,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "PSO5BR5eOIggwRH_arcgis_rest_services_Address_FeatureServer_0",
+   "declared": null,
+   "expect_live": 8267,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "s_rest_services_Addressing_Addressing_public_FeatureServer_0@MN-3",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "mn_gov_arcgis_rest_services_Basemaps_LINKBasemap_MapServer_4",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "rcgis_rest_services_OsageCoKS_NG911Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 8287,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "Pc_arcgis_rest_services_EL_RENO_911ADDRESSES_FeatureServer_0",
+   "declared": null,
+   "expect_live": 8465,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "gUZUh16VF_arcgis_rest_services_SC_Addressing_FeatureServer_0",
+   "declared": null,
+   "expect_live": 8585,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "VF_arcgis_rest_services_SC_Addressing_2025_7_FeatureServer_0",
+   "declared": null,
+   "expect_live": 8586,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "sses_public_6332b4b81c614cb4894d5de569a96465_FeatureServer_0",
+   "declared": null,
+   "expect_live": 8635,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "cyjLcCCpGk8Ri_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 8688,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "BY6OUzMBTZcz_arcgis_rest_services_Addresses_FeatureServer_15",
+   "declared": null,
+   "expect_live": 8951,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "Sample_NCTECH_Volusia_Situs_Addresss_VRWorld_FeatureServer_0",
+   "declared": null,
+   "expect_live": 8990,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "hAmRP1z50gTbO_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 9107,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "oXVtxM_arcgis_rest_services_CountyAddresses_FeatureServer_23",
+   "declared": null,
+   "expect_live": 9126,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_arcgis_rest_services_Address_Pnts_ElSegundo_FeatureServer_2",
+   "declared": null,
+   "expect_live": 9137,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "QpZPT9qY_arcgis_rest_services_TOD_ADDRESS_IN_FeatureServer_0",
+   "declared": null,
+   "expect_live": 9149,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "st_services_Winneshiek_County_Address_Points_FeatureServer_1",
+   "declared": null,
+   "expect_live": 9211,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "jyn_arcgis_rest_services_Full_Street_Address_FeatureServer_0",
+   "declared": null,
+   "expect_live": 9371,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "s___Pulse_of_OC_Updated_Draft___Site_Address_FeatureServer_0",
+   "declared": null,
+   "expect_live": 9420,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_server_rest_services_Aspen_AspenEditEnabled_FeatureServer_0",
+   "declared": null,
+   "expect_live": 9451,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "QSIEviNS_arcgis_rest_services_Addresses_2025_FeatureServer_3",
+   "declared": null,
+   "expect_live": 9536,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_rest_services_NG24DataModelUpdate_WFL1_view_FeatureServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "wi_us_arcgis_rest_services_RichlandCo_GIS_Public_MapServer_6",
+   "declared": null,
+   "expect_live": 9628,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "p_arcgis_rest_services_Addresses_Public_View_FeatureServer_0",
+   "declared": null,
+   "expect_live": 9672,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "KcOCt7Lxga2AytI_arcgis_rest_services_Address_FeatureServer_0",
+   "declared": null,
+   "expect_live": 9704,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "tkincounty_com_arcgis_rest_services_Full_Address_MapServer_1",
+   "declared": null,
+   "expect_live": 9813,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "nDataMaps_OpenDataMAP_InfraZonePropBound_Layers_MapServer_33",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "Qwt3_arcgis_rest_services_Address_Layer_view_FeatureServer_0",
+   "declared": null,
+   "expect_live": 9866,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "FjYDrl_arcgis_rest_services_Address_12102021_FeatureServer_0",
+   "declared": null,
+   "expect_live": 9969,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "kFjYDrl_arcgis_rest_services_Address11292023_FeatureServer_0",
+   "declared": null,
+   "expect_live": 10216,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rWTl_arcgis_rest_services_Harrison_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 10330,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "4soU_arcgis_rest_services_Site_Addresses_gdb_FeatureServer_0",
+   "declared": null,
+   "expect_live": 10465,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "t_services_Perry_County_Address_Geocode_v1_1_FeatureServer_0",
+   "declared": null,
+   "expect_live": 10489,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "Pvc_arcgis_rest_services_Address_Points_View_FeatureServer_2",
+   "declared": null,
+   "expect_live": 10564,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "1mtnDG_arcgis_rest_services_Worth__ADDRESSES_FeatureServer_0",
+   "declared": null,
+   "expect_live": 10572,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "t_services_Public_20Notification_20Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 10606,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "lqccxOHLu_arcgis_rest_services_SiteAddresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 10667,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "kFjYDrl_arcgis_rest_services_Address02202025_FeatureServer_0",
+   "declared": null,
+   "expect_live": 10821,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "unty_com_arcgis_rest_services_Hosted_Address_FeatureServer_0",
+   "declared": null,
+   "expect_live": 10876,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "Us_arcgis_rest_services_OC_Site_Address_2023_FeatureServer_0",
+   "declared": null,
+   "expect_live": 11076,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ILCm3hbWNTZLH_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 11219,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "kFjYDrl_arcgis_rest_services_Address06192026_FeatureServer_0",
+   "declared": null,
+   "expect_live": 11221,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "Kw_arcgis_rest_services_Situs_Address_Public_FeatureServer_0",
+   "declared": null,
+   "expect_live": 11385,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arcgis_rest_services_BTV_e911_Address_Layers_FeatureServer_0",
+   "declared": null,
+   "expect_live": 11475,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arcgis_rest_services_PAunderservedstructures_FeatureServer_0",
+   "declared": null,
+   "expect_live": 11469,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ountyny_gov_server_rest_services_EMO_E911_Viewer_MapServer_5",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "DdwE7LMrYrEMJ_arcgis_rest_services_Addresses_FeatureServer_1",
+   "declared": null,
+   "expect_live": 11801,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "JE9B_arcgis_rest_services_Newberg_Addresses__FeatureServer_0",
+   "declared": null,
+   "expect_live": 11817,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ver_rest_services_ParcelViewer_Parcel_Map_Labels_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "wlO_arcgis_rest_services_Master_Address_List_FeatureServer_0",
+   "declared": null,
+   "expect_live": 11959,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "XhtlWzOFCTkO_arcgis_rest_services_AddressPts_FeatureServer_0",
+   "declared": null,
+   "expect_live": 11978,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "services_BRIC_WRC_Situs_Address_LookUp_Table_FeatureServer_0",
+   "declared": null,
+   "expect_live": 12115,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "gis_rest_services_Municipal_Address_Points_FeatureServer_214",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "5n_arcgis_rest_services_City_Limit_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 12152,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "st_services_Arlington_Addresses_current_view_FeatureServer_0",
+   "declared": null,
+   "expect_live": 12284,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "drG_arcgis_rest_services_Arlington_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 12284,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "l_Assessor_parcel_Map_June_06_09_2023_WFL1_FeatureServer_219",
+   "declared": null,
+   "expect_live": 12309,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "e8LteOjzU_arcgis_rest_services_MGO_AddressPt_FeatureServer_0",
+   "declared": null,
+   "expect_live": 12445,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "aAg05xQLgo7_arcgis_rest_services_SiteAddress_FeatureServer_0",
+   "declared": null,
+   "expect_live": 12411,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "dlWlBxzX_arcgis_rest_services_Searcy_Address_FeatureServer_0",
+   "declared": null,
+   "expect_live": 12573,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "teAddresses_176dcf6d135741fcbc3bf17da5aa7aff_FeatureServer_0",
+   "declared": null,
+   "expect_live": 12592,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "cgis_rest_services_Site_Addresses_View_Layer_FeatureServer_0",
+   "declared": null,
+   "expect_live": 12642,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "teAddresses_1a8d5e9d05674ad599c70df5dfdd4265_FeatureServer_0",
+   "declared": null,
+   "expect_live": 12642,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "m_jOKMO9vKmc98J4JC_arcgis_rest_services_E911_FeatureServer_0",
+   "declared": null,
+   "expect_live": 12649,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "BYQ9pcCt_arcgis_rest_services_e911_pt_txdist_FeatureServer_0",
+   "declared": null,
+   "expect_live": 12670,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rcgis_rest_services_VT_Data___E911_Landmarks_FeatureServer_0",
+   "declared": null,
+   "expect_live": 12867,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "dlWlBxzX_arcgis_rest_services_Marion_Address_FeatureServer_1",
+   "declared": null,
+   "expect_live": 12896,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "st_services_VacantResidentialProperties_WFL1_FeatureServer_0",
+   "declared": null,
+   "expect_live": 12933,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "is_rest_services_Grady_Site_Addresses_Public_FeatureServer_0",
+   "declared": null,
+   "expect_live": 12995,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "MJrpz61FbvL5t_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 13058,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "almbeach_com_arcgis_rest_services_BaseData_Situs_MapServer_0",
+   "declared": null,
+   "expect_live": 13120,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "gis_rest_services_AddressList_Update20250311_FeatureServer_0",
+   "declared": null,
+   "expect_live": 13166,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "us_server_rest_services_NG911_Address_Points_FeatureServer_3",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "_mn_us_server_rest_services_NG911_Address_Points_MapServer_3",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "aR3VIVeAhJdr_arcgis_rest_services_AddressBPs_FeatureServer_0",
+   "declared": null,
+   "expect_live": 13190,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "kh71mtnDG_arcgis_rest_services_E911addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 13205,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ELbQdlhsJLcCM_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 13329,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "t_server_rest_services_Public_Roseburg_Addresses_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "rcgis_rest_services_Johns_Creek_GA_Addresses_FeatureServer_1",
+   "declared": null,
+   "expect_live": 13540,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "Ia_arcgis_rest_services_County_911_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 13629,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "hP2NPfFE_arcgis_rest_services_Site_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 13677,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "m7axC2dD_arcgis_rest_services_WascoAddresses_FeatureServer_5",
+   "declared": null,
+   "expect_live": 13807,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ca_gov_server_rest_services_Address_Range_Labels_MapServer_0",
+   "declared": null,
+   "expect_live": 13849,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arcgis_rest_services_Short_Term_Rentals_WFL1_FeatureServer_1",
+   "declared": null,
+   "expect_live": 13863,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "8SWPG8KZ6r_arcgis_rest_services_911Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 13932,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_arcgis_rest_services_911_Addresses_Website2_FeatureServer_0",
+   "declared": null,
+   "expect_live": 14164,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "sses_public_35d07adabaff4ddba616f6f365b8954e_FeatureServer_0",
+   "declared": null,
+   "expect_live": 14203,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ervices_Lee_County_E911_Addresses_and_Roads_FeatureServer_20",
+   "declared": null,
+   "expect_live": 14215,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rcgis_rest_services_Newberg_Addresses_2_view_FeatureServer_0",
+   "declared": null,
+   "expect_live": 14236,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rent_Site_Addresses_and_Entrance_Points_view_FeatureServer_0",
+   "declared": null,
+   "expect_live": 14361,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "KPa_arcgis_rest_services_overture_address_sd_FeatureServer_0",
+   "declared": null,
+   "expect_live": 14350,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "C2HwTkBAlth_arcgis_rest_services_Address_gdb_FeatureServer_0",
+   "declared": null,
+   "expect_live": 14389,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "us_arcgis_rest_services_Addressing_AddressPoints_MapServer_0",
+   "declared": null,
+   "expect_live": 14470,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "kTU5o6Z_arcgis_rest_services_Addressing_AGOL_FeatureServer_0",
+   "declared": null,
+   "expect_live": 14712,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "X_arcgis_rest_services_County_P_Address_View_FeatureServer_0",
+   "declared": null,
+   "expect_live": 14758,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "jld0x0gpn_arcgis_rest_services_E911Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 14842,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "6Z_arcgis_rest_services_N911_Addresses__View_FeatureServer_0",
+   "declared": null,
+   "expect_live": 15024,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "8hGN_arcgis_rest_services_Polk_Addresses_GAC_FeatureServer_0",
+   "declared": null,
+   "expect_live": 15015,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "s_rest_services_Addressing_Addressing_public_FeatureServer_0@MN-1",
+   "declared": null,
+   "expect_live": 15033,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "cgis_rest_services_AtascaderoAddresses082025_FeatureServer_0",
+   "declared": null,
+   "expect_live": 15830,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "4OueTcnj_arcgis_rest_services_just_addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 15898,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "aAg05xQLgo7_arcgis_rest_services_WGS_Address_FeatureServer_0",
+   "declared": null,
+   "expect_live": 16393,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "gis_rest_services_GRANT_Address_ClerksOffice_FeatureServer_0",
+   "declared": null,
+   "expect_live": 16517,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rest_services_Addresses_Clark_County_WI_2019_FeatureServer_0",
+   "declared": null,
+   "expect_live": 16569,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "0_arcgis_rest_services_Duncanville_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 16574,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "0_arcgis_rest_services_2022_Sep_01_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 16579,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "gis_rest_services_SANGIS_AddressAPN_07312024_FeatureServer_0",
+   "declared": null,
+   "expect_live": 16657,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "erva_gov_arcgis_rest_services_Winchester_Address_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "So_arcgis_rest_services_SiteAddresses_public_FeatureServer_0",
+   "declared": null,
+   "expect_live": 16929,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ces_911_Address_Street_Review_WFL1_view_only_FeatureServer_0",
+   "declared": null,
+   "expect_live": 16997,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "gis_rest_services_Hosted_Master_Address_File_FeatureServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "ces_Pueblo_County_Addresses_Evacuation_Times_FeatureServer_0",
+   "declared": null,
+   "expect_live": 17168,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "TymXTmwPsPzPHRU_arcgis_rest_services_Address_FeatureServer_0",
+   "declared": null,
+   "expect_live": 17199,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "is_rest_services_Master_Address_Database_MAD_FeatureServer_0",
+   "declared": null,
+   "expect_live": 17222,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ellington_ca_server_rest_services_Parcels_Public_MapServer_1",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "cjlmqkA8ypi4T_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 17308,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ysZUz_arcgis_rest_services_Carroll_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 17328,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "is_rest_services_Bureau_County_911_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 17341,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "is_rest_services_Cottage_Grove_Address_Point_FeatureServer_0",
+   "declared": null,
+   "expect_live": 17425,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "WuVPEmGK_arcgis_rest_services_Addresses_View_FeatureServer_0",
+   "declared": null,
+   "expect_live": 17498,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "1N7Y1EilGjehZ_arcgis_rest_services_ADDRESSES_FeatureServer_0",
+   "declared": null,
+   "expect_live": 17575,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "meepNh_arcgis_rest_services_Master_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 17584,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "pNK5CvU_arcgis_rest_services_HempV_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 17586,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "cgis_rest_services_Skokie_Base_Address_View_FeatureServer_33",
+   "declared": null,
+   "expect_live": 17731,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "YdlWlBxzX_arcgis_rest_services_Boone_Address_FeatureServer_0",
+   "declared": null,
+   "expect_live": 17833,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "kIrNAR_arcgis_rest_services_E911_Share_Files_FeatureServer_0",
+   "declared": null,
+   "expect_live": 17883,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "wY8_arcgis_rest_services_Address_Ranges_WFL1_FeatureServer_0",
+   "declared": null,
+   "expect_live": 17908,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_rest_services_Oxford_911_Address_View_Layer_FeatureServer_1",
+   "declared": null,
+   "expect_live": 17976,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "m_x7Yxpfpio5GuQWF2_arcgis_rest_services_E911_FeatureServer_0",
+   "declared": null,
+   "expect_live": 18028,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rcgis_rest_services_Mailing_Address_Map_WFL1_FeatureServer_1",
+   "declared": null,
+   "expect_live": 18090,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "gis_rest_services_Mailing_Address_Map___WFL1_FeatureServer_1",
+   "declared": null,
+   "expect_live": 18090,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "gis_rest_services_Mailing_Address_Map_2_WFL1_FeatureServer_1",
+   "declared": null,
+   "expect_live": 18090,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_arcgis_rest_services_WyomingCountyAddresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 18194,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "gis_rest_services_Limestone_County_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 18275,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "xkcSkFAjt_arcgis_rest_services_911_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 18332,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "RnMdg5KWv_arcgis_rest_services_911_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 18406,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "tBHQoYlrmJI_arcgis_rest_services_address_pts_FeatureServer_1",
+   "declared": null,
+   "expect_live": 18526,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "X4bb8_arcgis_rest_services_Fulton_NG911_WFL1_FeatureServer_0",
+   "declared": null,
+   "expect_live": 18822,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "is_rest_services_Gloucester_County_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 19037,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "dHIlQ88_arcgis_rest_services_LCaddresspts_GW_FeatureServer_0",
+   "declared": null,
+   "expect_live": 19161,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "dHIlQ88_arcgis_rest_services_LCaddresspts_SB_FeatureServer_0",
+   "declared": null,
+   "expect_live": 19123,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rcgis_rest_services_Facility_Sites_E911_Clip_FeatureServer_0",
+   "declared": null,
+   "expect_live": 19154,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "sez_arcgis_rest_services_Tyler_Property_Data_FeatureServer_1",
+   "declared": null,
+   "expect_live": 19308,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "uTYf_arcgis_rest_services_Bell_AddressPoints_FeatureServer_0",
+   "declared": null,
+   "expect_live": 19339,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_arcgis_rest_services_Wyoming_SAMB_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 19767,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rcgis_rest_services_Sioux_Falls_SD_Addresses_FeatureServer_1",
+   "declared": null,
+   "expect_live": 19812,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "st_services_WinonaCounty_DBO_CountyAddresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 19966,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arcgis_rest_services_Winona_County_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 20014,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ZPiRSTUFu_arcgis_rest_services_Situs_Address_FeatureServer_0",
+   "declared": null,
+   "expect_live": 20040,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "l9_arcgis_rest_services_svcBndryAddress_view_FeatureServer_1",
+   "declared": null,
+   "expect_live": 20088,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "cgis_rest_services_AddressesWithElectionData_FeatureServer_0",
+   "declared": null,
+   "expect_live": 20202,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "Zm_arcgis_rest_services_Aurora_Address_view_FeatureServer_15",
+   "declared": null,
+   "expect_live": 20861,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rcgis_rest_services_TLWaddressInternetAccess_FeatureServer_0",
+   "declared": null,
+   "expect_live": 21006,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arcgis_rest_services_Master_Address_List_New_FeatureServer_0",
+   "declared": null,
+   "expect_live": 21055,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "j53q3aOgCSYTp_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 21092,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_rest_services_Delta_County_Address_01232025_FeatureServer_0",
+   "declared": null,
+   "expect_live": 21108,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arcgis_rest_services_Jasper_County_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 21594,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "WTywHfayX67L_arcgis_rest_services_NG911_Data_FeatureServer_0",
+   "declared": null,
+   "expect_live": 21706,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_rest_services_GIS_ENV_GIS_Work_Background_Layer_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "c_gov_arcgis_rest_services_Addresses_E911Address_MapServer_1",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "h_arcgis_rest_services_AddressesJuly26B_WFL1_FeatureServer_2",
+   "declared": null,
+   "expect_live": 21789,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arcgis_rest_services_AddressQC_fieldmap_WFL1_FeatureServer_0",
+   "declared": null,
+   "expect_live": 21951,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ow3ofS_arcgis_rest_services_NM_911_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 22208,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "eSvF_arcgis_rest_services_OpenData_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 22248,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "yjVw1fpWcwy7h_arcgis_rest_services_ADDRESSES_FeatureServer_0",
+   "declared": null,
+   "expect_live": 22283,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ycSVzMEzm7ey_arcgis_rest_services_Addressing_FeatureServer_0",
+   "declared": null,
+   "expect_live": 22930,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "field_College_Block_Lot_and_Address_Map_WFL1_FeatureServer_0",
+   "declared": null,
+   "expect_live": 23106,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "KckAl7VOw_arcgis_rest_services_Address_Lists_FeatureServer_0",
+   "declared": null,
+   "expect_live": 23136,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "g_arcgis_rest_services_BarryCounty_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 23141,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "st_services_GeorginaMap_W84_SiteAddressPoint_W84_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "ices_GeorginaMap_W84_SiteAddressPoint_Labels_W84_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "DL6ILvlkPNTg8_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 23338,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "h_arcgis_rest_services_Addresses_for_Clariti_FeatureServer_0",
+   "declared": null,
+   "expect_live": 23819,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "isapp_dunwoodyga_gov_arcgis_rest_services_Parcel_MapServer_1",
+   "declared": null,
+   "expect_live": 23776,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "gis_rest_services_BransonAddressSearch_WFL1_FeatureServer_54",
+   "declared": null,
+   "expect_live": 23859,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "0ipEAOFhn_arcgis_rest_services_Address_Tiles_FeatureServer_0",
+   "declared": null,
+   "expect_live": 23869,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "7IM34hqT9y9ew_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 23950,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "RmLNAomixG_arcgis_rest_services_RP_Addr_2022_FeatureServer_0",
+   "declared": null,
+   "expect_live": 24045,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "yYd7fCfTTiVp8_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 24107,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "Yd7fCfTTiVp8_arcgis_rest_services_Addresses2_FeatureServer_0",
+   "declared": null,
+   "expect_live": 24109,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arcgis_rest_services_BarryCountyMO_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 24123,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "TlITuys_arcgis_rest_services_WyboSiteAddress_FeatureServer_0",
+   "declared": null,
+   "expect_live": 24136,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rest_services_Addresses_With_Voting_Precinct_FeatureServer_0",
+   "declared": null,
+   "expect_live": 24398,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "m_Iwwqwcdc5CWG2jt9_arcgis_rest_services_ADDR_FeatureServer_0",
+   "declared": null,
+   "expect_live": 24465,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "s_rest_services_Fayette_County_911_Addresses_FeatureServer_1",
+   "declared": null,
+   "expect_live": 24529,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ices_Assessor_Data_Webster_Parish_Address_Points_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "rcgis_rest_services_GC_Address_Points_Public_FeatureServer_8",
+   "declared": null,
+   "expect_live": 25091,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "sKPeG_arcgis_rest_services_Address_ViewLayer_FeatureServer_0",
+   "declared": null,
+   "expect_live": 24987,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "Gr3P_arcgis_rest_services_ETJ_addresses_WFL1_FeatureServer_1",
+   "declared": null,
+   "expect_live": 25081,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "l_org_arcgis_rest_services_Weston_Basemap_cache_MapServer_20",
+   "declared": null,
+   "expect_live": 25367,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_arcgis_rest_services_Shawano_Addresses_2026_FeatureServer_0",
+   "declared": null,
+   "expect_live": 25427,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "st_services_City_of_Pittsburg_Address_Public_FeatureServer_0",
+   "declared": null,
+   "expect_live": 25582,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "DDRnnsbCKWWP_arcgis_rest_services_Addresses2_FeatureServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "WQTB2G8AH9RQYE_arcgis_rest_services_address_FeatureServer_16",
+   "declared": null,
+   "expect_live": 25817,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ttesville_org_cvgisweb_rest_services_OpenData_1_MapServer_76",
+   "declared": null,
+   "expect_live": 25834,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "J9QAHCiGx_arcgis_rest_services_SiteAddresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 26021,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "iGx_arcgis_rest_services_Addresses_Only_view_FeatureServer_0",
+   "declared": null,
+   "expect_live": 26320,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_rest_services_NM_911_Addresses_Large_Scale_FeatureServer_32",
+   "declared": null,
+   "expect_live": 26410,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_rest_services_NM_911_Addresses_Small_Scale_FeatureServer_33",
+   "declared": null,
+   "expect_live": 26410,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "OLvsmwpY1RmFG_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 26510,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "es_Service_Location_Moving_ToCURB_ASof712025_FeatureServer_0",
+   "declared": null,
+   "expect_live": 26684,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_services_Lincoln_LUCA_Addresses_Counts_WFL1_FeatureServer_0",
+   "declared": null,
+   "expect_live": 26903,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arcgis_rest_services_Hinesville_GA_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 26965,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "j_arcgis_rest_services_BARRON_ADDRESSES_2025_FeatureServer_0",
+   "declared": null,
+   "expect_live": 27058,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arcgis_rest_services_Wellington_FL_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 27213,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "vices_Campbell_County__VA_Broadband_Map_WFL1_FeatureServer_0",
+   "declared": null,
+   "expect_live": 27456,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ices_City_of_Cuyahoga_Falls_Addressing_WFL1_FeatureServer_11",
+   "declared": null,
+   "expect_live": 27479,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_arcgis_rest_services_TehamaCounty_NG911_gdb_FeatureServer_8",
+   "declared": null,
+   "expect_live": 27565,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rest_services_Hurricane_Ian_Damage_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 27912,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "est_services_Street_Sweeping_Pilot_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 28338,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rcgis_rest_services_Bedford_County_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 28352,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_arcgis_rest_services_Logan_County_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 28571,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "paca_wi_us_arcgis_rest_services_Public_OpenData_MapServer_24",
+   "declared": null,
+   "expect_live": 28660,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "8lct5k3LSbyO_arcgis_rest_services_AddressULM_FeatureServer_1",
+   "declared": null,
+   "expect_live": 28996,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "TOM4lipn_arcgis_rest_services_Addresses_2023_FeatureServer_0",
+   "declared": null,
+   "expect_live": 29170,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "4x6y8cTIstSBE_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 29448,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "xLBcrikqFM0vkoy_arcgis_rest_services_Address_FeatureServer_0",
+   "declared": null,
+   "expect_live": 29507,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "Mk18pL_arcgis_rest_services_Coffee_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 29524,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "s_rest_services_DynamicMaps_Address_Explorer_Map_MapServer_1",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "DgvxltnFwP_arcgis_rest_services_NG911_Layers_FeatureServer_1",
+   "declared": null,
+   "expect_live": 30273,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "is_rest_services_Lead_Service_Line_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 30565,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_arcgis_rest_services_EnerGov_Test_Map1_WFL1_FeatureServer_3",
+   "declared": null,
+   "expect_live": 30649,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "s_rest_services_Rural_Addresses__Label_Only__FeatureServer_0",
+   "declared": null,
+   "expect_live": 30747,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rcgis_rest_services_Buildings_and_Addresses_FeatureServer_17",
+   "declared": null,
+   "expect_live": 30856,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "aLg_arcgis_rest_services_Address_Hemet031325_FeatureServer_0",
+   "declared": null,
+   "expect_live": 30879,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ez8fHeIiDRbgb_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 30935,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arcgis_rest_services_FranklinCountyAddresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 31516,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "Uiqh7X11gGV2d_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 31520,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "VDElDOMEad_arcgis_rest_services_WayneAddress_FeatureServer_0",
+   "declared": null,
+   "expect_live": 31980,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rest_services_Cherokee_Address_Analysis_WFL1_FeatureServer_0",
+   "declared": null,
+   "expect_live": 32167,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "BpZX2wFbS_arcgis_rest_services_911addressing_FeatureServer_0",
+   "declared": null,
+   "expect_live": 32197,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "JRr_arcgis_rest_services_MAT_NG911_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 32353,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_org_gisarcweb_rest_services_Base_Base_Addresses_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "j7VSF_arcgis_rest_services_TemeculaAddresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 32615,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_arcgis_rest_services_zoningAddressingSearch_FeatureServer_0",
+   "declared": null,
+   "expect_live": 32625,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "st_services_Vector_Tile_Site_Address_Labels_FeatureServer_57",
+   "declared": null,
+   "expect_live": 32917,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "cgis_rest_services_Riley_County_KS_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 33193,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "yvfv_arcgis_rest_services_Mercer_SiteAddress_FeatureServer_0",
+   "declared": null,
+   "expect_live": 33215,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "S1a_arcgis_rest_services_Address_Mailing_Map_FeatureServer_1",
+   "declared": null,
+   "expect_live": 33587,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "1_arcgis_rest_services_Longview_TX_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 33603,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "cgis_rest_services_Franklin_Co_911_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 33769,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "cgis_rest_services_FranklinCoVA_911Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 33769,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "WCoI_arcgis_rest_services_20260601_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 33856,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rcgis_rest_services_Essex_Address_Pts_9_9_25_FeatureServer_0",
+   "declared": null,
+   "expect_live": 33904,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "cgis_rest_services_Sarpy_County_NE_Addresses_FeatureServer_1",
+   "declared": null,
+   "expect_live": 33980,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "kOGGtW27pGICf_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 34063,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "cgis_rest_services_Master_Addresses_for_Grid_FeatureServer_0",
+   "declared": null,
+   "expect_live": 34386,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "pMfHt82xFG_arcgis_rest_services_RouteAddress_FeatureServer_0",
+   "declared": null,
+   "expect_live": 34495,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "1p_arcgis_rest_services_ADDRESS_20230403_CoB_FeatureServer_0",
+   "declared": null,
+   "expect_live": 34536,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "maps_rest_services_OPENDATA_RegionalBaseOpenData_MapServer_2",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "_arcgis_rest_services_Civic_Rec_QC_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 34840,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arcgis_rest_services_OpenNewmarket_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 34929,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "s_rest_services_OPENNewmarket_Address_3_view_FeatureServer_0",
+   "declared": null,
+   "expect_live": 34929,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arcgis_rest_services_Alexandria_VA_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 34927,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "fMdTkPeHLCobS_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 35199,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_map_claycountymn_gov_arcgis_rest_services_NG911_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "fpl_arcgis_rest_services_ArcGISHub_OpenData_FeatureServer_13",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "PlhvQwvs_arcgis_rest_services_E911_Addrs_Pts_FeatureServer_0",
+   "declared": null,
+   "expect_live": 35637,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rcgis_rest_services_CTSI_AddressChecker_WFL1_FeatureServer_0",
+   "declared": null,
+   "expect_live": 35710,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "s_rest_services_CTSI_Address_Check_2023_WFL1_FeatureServer_0",
+   "declared": null,
+   "expect_live": 35710,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rOyyLV2jNLiBS_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 35810,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ofS_arcgis_rest_services_Taos_E911_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 35970,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "gT_arcgis_rest_services_USU_Addressing_view_FeatureServer_26",
+   "declared": null,
+   "expect_live": 36150,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "s_Meade_Co_KY_Addresses_Roads_Lot_Lines_WFL1_FeatureServer_0",
+   "declared": null,
+   "expect_live": 36292,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ervices_Meade_Co_KY_Addresses_and_Roads_WFL1_FeatureServer_1",
+   "declared": null,
+   "expect_live": 36292,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "CSVXisSNlAAjd_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 36725,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "zUpjDtspiBG0j_arcgis_rest_services_E911_Copy_FeatureServer_0",
+   "declared": null,
+   "expect_live": 37066,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_arcgis_rest_services_Flagstaff_AZ_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 37174,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "QYTTiP6CrfEsw_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 37276,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "is_rest_services_Madison_County_KY_Addresses_FeatureServer_1",
+   "declared": null,
+   "expect_live": 37446,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rest_services_CarthageWardsandaddresses_WFL1_FeatureServer_1",
+   "declared": null,
+   "expect_live": 37764,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "Ypus4pYH0S_arcgis_rest_services_Site_Address_FeatureServer_4",
+   "declared": null,
+   "expect_live": 37961,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rcgis_rest_services_Daly_City_Addresses_AGOL_FeatureServer_2",
+   "declared": null,
+   "expect_live": 38299,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "TiP6CrfEsw_arcgis_rest_services_Ward_Address_FeatureServer_0",
+   "declared": null,
+   "expect_live": 38345,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "d_Waste__Days_of_Service_Per_Address_092424_FeatureServer_52",
+   "declared": null,
+   "expect_live": 38389,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arcgis_rest_services_MGO_Master_Address_View_FeatureServer_0",
+   "declared": null,
+   "expect_live": 38656,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rcgis_rest_services_Res_Address_Demographics_FeatureServer_1",
+   "declared": null,
+   "expect_live": 39114,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "y_us_arcgis_rest_services_Addresses_WC_2022_FeatureServer_54",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "p_arcgis_rest_services_LAFO_ADDRESS_12_17_13_FeatureServer_0",
+   "declared": null,
+   "expect_live": 39847,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "m_nEIrIdcFpdK28ibf_arcgis_rest_services_E911_FeatureServer_1",
+   "declared": null,
+   "expect_live": 39855,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "u6oHu4Z_arcgis_rest_services_SITUS_PUB_CBB_2_FeatureServer_0",
+   "declared": null,
+   "expect_live": 39951,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "IzAwdHlO_arcgis_rest_services_Address_hosted_FeatureServer_0",
+   "declared": null,
+   "expect_live": 40255,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "1_arcgis_rest_services_Bismarck_ND_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 40568,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "q_arcgis_rest_services_Site_Addresses_Public_FeatureServer_0",
+   "declared": null,
+   "expect_live": 40586,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "is_rest_services_Public_View_Site_Addresses__FeatureServer_0",
+   "declared": null,
+   "expect_live": 40586,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_gov_arcgis_rest_services_Land_Records_Open_Data_MapServer_1",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "OU_arcgis_rest_services_Addresses_SIO_Hosted_FeatureServer_0",
+   "declared": null,
+   "expect_live": 40752,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "t_services_SummitCntyCO_Addresses_Pictometry_FeatureServer_0",
+   "declared": null,
+   "expect_live": 41010,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "gis_com_kcsgis_rest_services_Etowah_AL31_VAM_MS_MapServer_10",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "s_rest_services_Master_Address_List_Aug_2026_FeatureServer_0",
+   "declared": null,
+   "expect_live": 41460,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ervices_DataPortal_DataPortal_BuildingsAddresses_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "est_services_NormanResidentialTrashAddresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 41811,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "3kMP_arcgis_rest_services_E911AddressforSOMA_FeatureServer_0",
+   "declared": null,
+   "expect_live": 41887,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "s_rest_services_Raleigh_Co_EOC_Address_Sites_FeatureServer_0",
+   "declared": null,
+   "expect_live": 42165,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "s_rest_services_CityAddresses2022bu_CHE_view_FeatureServer_0",
+   "declared": null,
+   "expect_live": 42337,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "4Ui_arcgis_rest_services_CityAddresses2022bu_FeatureServer_0",
+   "declared": null,
+   "expect_live": 42337,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "unty_oh_gov_arcgisdev_rest_services_WMAS_Address_MapServer_0",
+   "declared": null,
+   "expect_live": 43042,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "27IJC_arcgis_rest_services_Address_Locations_FeatureServer_0",
+   "declared": null,
+   "expect_live": 43405,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_arcgis_rest_services_Addresses_NOT_ELIGIBLE_FeatureServer_0",
+   "declared": null,
+   "expect_live": 43411,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rcgis_rest_services_Unincorporated_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 43499,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "wFbS_arcgis_rest_services_Chemungaddress_pts_FeatureServer_0",
+   "declared": null,
+   "expect_live": 44642,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "2kwz79KUqUvxC_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 44833,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "71LO_arcgis_rest_services_Addresses_CivQuest_FeatureServer_0",
+   "declared": null,
+   "expect_live": 45012,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "qTGWY_arcgis_rest_services_JoCo_Site_Address_FeatureServer_1",
+   "declared": null,
+   "expect_live": 45019,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "county_com_arcgis_rest_services_features_Address_MapServer_0",
+   "declared": null,
+   "expect_live": 45713,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "gis_rest_services_CountyAddress2023_CHE_View_FeatureServer_7",
+   "declared": null,
+   "expect_live": 45807,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "I64Ui_arcgis_rest_services_CountyAddress2023_FeatureServer_7",
+   "declared": null,
+   "expect_live": 45807,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ges_arcgis_rest_services_AddressAndRoads2022_FeatureServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "st_services_Schools_ChathamSchools_AddressPoints_MapServer_0",
+   "declared": null,
+   "expect_live": 46456,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "e_Rollout__Days_of_Service_Per_Address__WFL1_FeatureServer_1",
+   "declared": null,
+   "expect_live": 46949,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_arcgis_rest_services_BG911_Address_20250501_FeatureServer_0",
+   "declared": null,
+   "expect_live": 47191,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "Bq9hgug_arcgis_rest_services_BG911_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 47191,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "Ilt_arcgis_rest_services_Clinton_Address_Pts_FeatureServer_0",
+   "declared": null,
+   "expect_live": 47510,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "untywi_gov_vilasgis_rest_services_V4_SiteAddress_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "Geezhu2j_arcgis_rest_services_E911_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 48443,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "KpsCnqD7H_arcgis_rest_services_SiteAddresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 48448,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "cgis_rest_services_NRSA_Address_Locator_WFL1_FeatureServer_8",
+   "declared": null,
+   "expect_live": 48634,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "aNxg1PvwI_arcgis_rest_services_All_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 48666,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "eajjke_arcgis_rest_services_Addresses_Rogers_FeatureServer_0",
+   "declared": null,
+   "expect_live": 48889,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "EjnCT_arcgis_rest_services_Leander_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 49100,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_gov_uk_arcweb_rest_services_Addresses_Addresses_MapServer_0",
+   "declared": null,
+   "expect_live": 49374,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "sses_public_e7c532395de343e38e58a8463128cfb7_FeatureServer_0",
+   "declared": null,
+   "expect_live": 49800,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "teAddresses_ecd2ff39fbb34f39a2ec415fd784331b_FeatureServer_0",
+   "declared": null,
+   "expect_live": 49802,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "teAddresses_b786541565b5475593a786a08ba6b3e2_FeatureServer_0",
+   "declared": null,
+   "expect_live": 49802,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "sses_public_a000778ae1664a348de916831f1a0ac0_FeatureServer_0",
+   "declared": null,
+   "expect_live": 49802,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "sses_public_0af1fc8b92f7415dbfdf37c6fa956c77_FeatureServer_0",
+   "declared": null,
+   "expect_live": 49802,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "teAddresses_1809c74f027741ce815587367a5cfd68_FeatureServer_0",
+   "declared": null,
+   "expect_live": 49802,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "teAddresses_33e99042997a472fa1a25a8b6f4465cf_FeatureServer_0",
+   "declared": null,
+   "expect_live": 49802,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "teAddresses_25f96256e2164540bc18abbff8a9d5c2_FeatureServer_0",
+   "declared": null,
+   "expect_live": 49802,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "sses_public_33e99042997a472fa1a25a8b6f4465cf_FeatureServer_0",
+   "declared": null,
+   "expect_live": 49802,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "vN_arcgis_rest_services_SiteAddresses_public_FeatureServer_0",
+   "declared": null,
+   "expect_live": 49802,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "sses_public_3ac05ddeab6d46389b7b3c0616abc861_FeatureServer_0",
+   "declared": null,
+   "expect_live": 49802,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "d1DIvN_arcgis_rest_services_SiteAddresses__1_FeatureServer_1",
+   "declared": null,
+   "expect_live": 49802,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "sses_public_a2522c3dfde94f6da7500df892abf9aa_FeatureServer_0",
+   "declared": null,
+   "expect_live": 49802,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "sses_public_fa4be22034f14c15a3a589dd7009ca64_FeatureServer_0",
+   "declared": null,
+   "expect_live": 49802,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "0JE2L2xUd_arcgis_rest_services_SiteAddresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 49802,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "com_arcgis_rest_services_CommunityAddressing_FeatureServer_0",
+   "declared": null,
+   "expect_live": 49804,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "st_services_A4_Landscape_addressverification_FeatureServer_1",
+   "declared": null,
+   "expect_live": 49808,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "om_arcgis_rest_services_Cadastral_Address_Points_MapServer_0",
+   "declared": null,
+   "expect_live": 50423,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "gis_net_arcgis_rest_services_BASE_Address_Points_MapServer_0",
+   "declared": null,
+   "expect_live": 50911,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "BvD2F_arcgis_rest_services_COG_StreetAddress_FeatureServer_1",
+   "declared": null,
+   "expect_live": 51423,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "exxB_arcgis_rest_services_911_Address_Labels_FeatureServer_6",
+   "declared": null,
+   "expect_live": 52022,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "est_services_AddressPtsAndUnitNumbersWebsite_FeatureServer_0",
+   "declared": null,
+   "expect_live": 52368,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_qnjIrwR8z5Izc0ij_arcgis_rest_services_ng911_FeatureServer_0",
+   "declared": null,
+   "expect_live": 52649,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "eeeoWYqSyV5I_arcgis_rest_services_E911_gdb__FeatureServer_11",
+   "declared": null,
+   "expect_live": 54644,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rcgis_rest_services_Deerfield_Case_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 54793,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_cfmdyB05xBau1dNQ_arcgis_rest_services_Situs_FeatureServer_0",
+   "declared": null,
+   "expect_live": 55639,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rXp_arcgis_rest_services_LPG_Address_Records_FeatureServer_0",
+   "declared": null,
+   "expect_live": 56599,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_ca_arcgis_adaptor_rest_services_LCGIS_VertiGIS_MapServer_25",
+   "declared": null,
+   "expect_live": 56888,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "tamonica_gov_server_rest_services_Address_Points_MapServer_0",
+   "declared": null,
+   "expect_live": 57063,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "d1_arcgis_rest_services_Visalia_CA_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 57934,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "1Vphzvgd_arcgis_rest_services_City_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 58034,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rcgis_rest_services_MC_Address_Pts_PMG_View1_FeatureServer_0",
+   "declared": null,
+   "expect_live": 58269,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rvices_Deerfield_Case_Addresses_FeatureLayer_FeatureServer_0",
+   "declared": null,
+   "expect_live": 58760,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "i4lYRFOsss0F5_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 59831,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arcgis_rest_services_Tompkins_County_Address_FeatureServer_0",
+   "declared": null,
+   "expect_live": 59711,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "vF0A_arcgis_rest_services_AddressSearchLayer_FeatureServer_0",
+   "declared": null,
+   "expect_live": 59886,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "AAWNInLrxvF0A_arcgis_rest_services_TCAddress_FeatureServer_0",
+   "declared": null,
+   "expect_live": 59886,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "s_rest_services_Marathon_County_WI_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 59998,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "WNInLrxvF0A_arcgis_rest_services_Address_gdb_FeatureServer_0",
+   "declared": null,
+   "expect_live": 60326,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "InLrxvF0A_arcgis_rest_services_AddressR2_gdb_FeatureServer_0",
+   "declared": null,
+   "expect_live": 60615,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "C2lEIpJ2TRrs5_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 62581,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "dresses_in_City_Limits___ESD9___Web_Map_WFL1_FeatureServer_1",
+   "declared": null,
+   "expect_live": 62839,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "5jlmVkpxP_arcgis_rest_services_Online911Data_FeatureServer_0",
+   "declared": null,
+   "expect_live": 63126,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "gis_rest_services_Queen_Creek_Addresses__All_FeatureServer_0",
+   "declared": null,
+   "expect_live": 63212,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "AQdtmx0tv46_arcgis_rest_services_Address_Nye_FeatureServer_6",
+   "declared": null,
+   "expect_live": 63594,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "cgis_rest_services_Cedar_Rapids_IA_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 63767,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "AQncZQEtBv_arcgis_rest_services_Address_Clip_FeatureServer_0",
+   "declared": null,
+   "expect_live": 64333,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "Tpwo5_arcgis_rest_services_FullAddress032026_FeatureServer_0",
+   "declared": null,
+   "expect_live": 64608,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_rest_services_Randall_County_Addresses_WFL1_FeatureServer_1",
+   "declared": null,
+   "expect_live": 64757,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "eDUBgTeCT3_arcgis_rest_services_LC_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 64989,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "zOpn2_arcgis_rest_services_Streets_Buidlings_FeatureServer_0",
+   "declared": null,
+   "expect_live": 65488,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arverLink_Address_Lookup_20250623_PublicView_FeatureServer_0",
+   "declared": null,
+   "expect_live": 67699,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "0gE_arcgis_rest_services_CenCom_Address_View_FeatureServer_0",
+   "declared": null,
+   "expect_live": 69075,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "is_rest_services_Building_Permit_Addresssing_FeatureServer_0",
+   "declared": null,
+   "expect_live": 69365,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "f_arcgis_rest_services_Killeen_AddressPoints_FeatureServer_0",
+   "declared": null,
+   "expect_live": 70199,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "i_rest_services_Cadastral_Site_Address_Point_FeatureServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "t3XQ_arcgis_rest_services_AddressPt_20230629_FeatureServer_0",
+   "declared": null,
+   "expect_live": 70491,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arcgis_rest_services_AddressPt_20240705_WFL1_FeatureServer_0",
+   "declared": null,
+   "expect_live": 70586,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rcgis_rest_services_AddressPts_20230817_WFL1_FeatureServer_0",
+   "declared": null,
+   "expect_live": 70830,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "U5257_arcgis_rest_services_Yonkers_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 71097,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_arcgis_rest_services_CharlesCountyAddresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 71260,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "3P_arcgis_rest_services_SiteAddresses_public_FeatureServer_0@TX-2",
+   "declared": null,
+   "expect_live": 71798,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_pa_us_arcgis_rest_services_Hosted_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 72208,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "CXd1_arcgis_rest_services_Fargo_ND_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 72684,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "araca_gov_maps_rest_services_LAYERS_RegionalBase_MapServer_2",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "ntaclaraca_gov_maps_rest_services_LAYERS_BaseMap_MapServer_2",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "C0yIuqCBxq_arcgis_rest_services_Address_2024_FeatureServer_0",
+   "declared": null,
+   "expect_live": 73380,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "Cz_arcgis_rest_services_HC_MD_Addresses_10mi_FeatureServer_0",
+   "declared": null,
+   "expect_live": 74273,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ld_oh_us_arcgis_rest_services_OpenData_Addresses_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "_arcgis_rest_services_Addresses_USA_combined_FeatureServer_0",
+   "declared": null,
+   "expect_live": 75340,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arcgis_rest_services_modified_JaCo_addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 75681,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "wLs3iGyK80EW_arcgis_rest_services_911Address_FeatureServer_0",
+   "declared": null,
+   "expect_live": 75909,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "C_arcgis_rest_services_Active_Addresses_2025_FeatureServer_0",
+   "declared": null,
+   "expect_live": 77324,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "jSxUKayj_arcgis_rest_services_911_Addresses_FeatureServer_58",
+   "declared": null,
+   "expect_live": 81591,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "5V8PH7DzSE6AU_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 82602,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "zxvnVEjzQ6xuSXS_arcgis_rest_services_Address_FeatureServer_0",
+   "declared": null,
+   "expect_live": 83101,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "Spu5VOlu_arcgis_rest_services_Site_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 83144,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "I64Ui_arcgis_rest_services_WLAddressAndRoads_FeatureServer_0",
+   "declared": null,
+   "expect_live": 83223,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "t_services_Katy_ISD_Harris_County_Addresses_FeatureServer_68",
+   "declared": null,
+   "expect_live": 83545,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ov_public_rest_services_public_Council_Wards_FeatureServer_1",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "g_arcgis_rest_services_Search_SMSA_ParcelAddress_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "_rest_services_EmergencyManagement_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 87697,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "mxCAS_arcgis_rest_services_ClermontAddresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 88301,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "iJkq4oXsPh_arcgis_rest_services_Addresses_SR_FeatureServer_0",
+   "declared": null,
+   "expect_live": 88553,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "is_rest_services_AddressValidationTest2_WFL1_FeatureServer_0",
+   "declared": null,
+   "expect_live": 91269,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_arcgis_rest_services_BILLING_ACCT_LOCATIONS_FeatureServer_0",
+   "declared": null,
+   "expect_live": 91378,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "k6RO1_arcgis_rest_services_HudsonCty_AddrPts_FeatureServer_0",
+   "declared": null,
+   "expect_live": 91765,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arcgis_rest_services_Hudson_County_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 91765,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "u0_arcgis_rest_services_Address_OfflineCopy_FeatureServer_21",
+   "declared": null,
+   "expect_live": 93230,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ntygov_com_server_rest_services_Addresses_Public_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "is_rest_services_Forsyth_County_GA_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 93990,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "is_rest_services_NM911_Address_202301_SC_Web_FeatureServer_0",
+   "declared": null,
+   "expect_live": 95212,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "gis_rest_services_Address_For_WebApp_Locator_FeatureServer_0",
+   "declared": null,
+   "expect_live": 96253,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_rest_services_NM911_Address_202401_SC_Web_a_FeatureServer_0",
+   "declared": null,
+   "expect_live": 96299,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "nQPdJ0azuLyn_arcgis_rest_services_AddressPts_FeatureServer_0",
+   "declared": null,
+   "expect_live": 97202,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "st_services_Springfield_address_density_WFL1_FeatureServer_2",
+   "declared": null,
+   "expect_live": 97259,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "VWAC8iN_arcgis_rest_services_road_centerline_FeatureServer_0",
+   "declared": null,
+   "expect_live": 97499,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "F_arcgis_rest_services_NM911_Address_10_2024_FeatureServer_0",
+   "declared": null,
+   "expect_live": 97603,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "F_arcgis_rest_services_NM911_Address_02_2025_FeatureServer_0",
+   "declared": null,
+   "expect_live": 97956,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arcgis_rest_services_NM911_Address_202506_SC_FeatureServer_0",
+   "declared": null,
+   "expect_live": 98409,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "wbCJ2GMP_arcgis_rest_services_E911calls_2020_FeatureServer_0",
+   "declared": null,
+   "expect_live": 98649,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "s_rest_services_NM911_Address_01_2026_SC_Web_FeatureServer_0",
+   "declared": null,
+   "expect_live": 99052,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "r_arcgis_rest_services_Coryell_address_5Mile_FeatureServer_0",
+   "declared": null,
+   "expect_live": 99593,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "vices_Join_Features_to_Address_Points_2_view_FeatureServer_0",
+   "declared": null,
+   "expect_live": 100314,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rb80Pvlu_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "tg2A1_arcgis_rest_services_vw_dist_addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 100714,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "cgis_rest_services_Delaware_County_E911_Data_FeatureServer_0",
+   "declared": null,
+   "expect_live": 103591,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "GEllMqef1LMjj_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 106530,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "vices_Yuma_911_Data_Roads_and_Addresses_WFL1_FeatureServer_0",
+   "declared": null,
+   "expect_live": 108514,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_services_NG911_ReadOnly_NG911_Addressing_Layers_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "V5FXPLX_arcgis_rest_services_Addresses_Units_FeatureServer_0",
+   "declared": null,
+   "expect_live": 110120,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "McTk2tV5FXPLX_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 110848,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "s_rest_services_ElectionsPollingPlaceAddress_FeatureServer_0",
+   "declared": null,
+   "expect_live": 110991,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "LmXo7Hn9vNc_arcgis_rest_services_E911Address_FeatureServer_0",
+   "declared": null,
+   "expect_live": 111350,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "GOi6N4Rq5cqFv_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 112607,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rvices_Situs_for_ConsolidatedPrecincts_AGOL_FeatureServer_51",
+   "declared": null,
+   "expect_live": 112728,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "4427d57d2827830_rest_services_Base_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 113649,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "CRg_arcgis_rest_services_SBCnty_Address_Grid_FeatureServer_0",
+   "declared": null,
+   "expect_live": 114312,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "aVKdPC5e_arcgis_rest_services_Address_Public_FeatureServer_0",
+   "declared": null,
+   "expect_live": 114869,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "is_rest_services_Addresses_CitizenServe_View_FeatureServer_0",
+   "declared": null,
+   "expect_live": 114869,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "tUCmxaVKdPC5e_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 114869,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "JdBHI0_arcgis_rest_services_Addresses_SC_USE_FeatureServer_0",
+   "declared": null,
+   "expect_live": 114589,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "t_services_NG911_Map__Lake_County__Ohio_WFL1_FeatureServer_0",
+   "declared": null,
+   "expect_live": 118128,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rvices_WCAddresses20251003_gdb_view_Geocivix_FeatureServer_0",
+   "declared": null,
+   "expect_live": 118119,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "is_rest_services_Addresses_2015_Boston_BARI__FeatureServer_0",
+   "declared": null,
+   "expect_live": 118918,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ervices_64a951f0_b017_11e6_b4e3_22000b8406af_FeatureServer_0",
+   "declared": null,
+   "expect_live": 118918,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "est_services_Collier_Addresses_Within_3_Mile_FeatureServer_0",
+   "declared": null,
+   "expect_live": 121820,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "nc_gov_server_rest_services_CityWorks_Basemap_CW_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "8JRPoNeQjgcLi_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 128917,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "wbHlfF_arcgis_rest_services_Addresses_Hosted_FeatureServer_0",
+   "declared": null,
+   "expect_live": 129693,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "cgis_rest_services_Infrastructure_Transportation_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "_services_Infrastructure_Transportation_Sheriffs_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "ABcyiF_arcgis_rest_services_Address_pt_views_FeatureServer_0",
+   "declared": null,
+   "expect_live": 130132,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_arcgis_rest_services_city_address_march2025_FeatureServer_0",
+   "declared": null,
+   "expect_live": 130386,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_rest_services_HenricoCountyGIS_05082023_gdb_FeatureServer_0",
+   "declared": null,
+   "expect_live": 134041,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "cgis_rest_services_Indianapolis_IN_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 138941,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ervices_Zanna_E911_Sites_Outside_8min_Buffer_FeatureServer_2",
+   "declared": null,
+   "expect_live": 139097,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "LmYGD_arcgis_rest_services_DC_Addresses_WFL1_FeatureServer_0",
+   "declared": null,
+   "expect_live": 144111,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rcgis_rest_services_HostedServices_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "is_rest_services_Barry_County_E911_Map_WFL1_FeatureServer_29",
+   "declared": null,
+   "expect_live": 147967,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rvices_stratmap19_addresspoints_48027_vector_FeatureServer_0",
+   "declared": null,
+   "expect_live": 150676,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rvices_MapServices_TLC_OverlayAddressSearch_D_WM_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "C7QlRK1kZ_arcgis_rest_services_EAS_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 156027,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "countyfl_gov_accelasupp_rest_services_AccelaXAPO_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "leoncountyfl_gov_accela_rest_services_AccelaXAPO_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "ountyfl_gov_accela_rest_services_AccelaXAPO_Test_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "st_services_Vector_COT_UtilityERM_Addresses_D_WM_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "LxyiJoNiVHKwq_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 158719,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arcgis_rest_services_Addresses_Arcade_Labels_FeatureServer_0",
+   "declared": null,
+   "expect_live": 161806,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "QGwSSLC0l_arcgis_rest_services_t07_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 168093,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "j7_arcgis_rest_services_Addresses_GeneralUse_FeatureServer_0",
+   "declared": null,
+   "expect_live": 169896,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "s_rest_services_Solano_County_Addresses_WFL1_FeatureServer_0",
+   "declared": null,
+   "expect_live": 171954,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_rest_services_Site_Addresses_FLOCK_10302024_FeatureServer_0",
+   "declared": null,
+   "expect_live": 172313,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_services_Rutherford_Site_Addresses_11012024_FeatureServer_0",
+   "declared": null,
+   "expect_live": 172313,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "gis_rest_services_NENA_Addresses_WGS_Service_FeatureServer_0",
+   "declared": null,
+   "expect_live": 173381,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rest_services_E911_Addresses_Hamilton_County_FeatureServer_0",
+   "declared": null,
+   "expect_live": 173477,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rcgis_rest_services_Addressing_RoadsAndAddresses_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "W83eUIFui_arcgis_rest_services_Address_Sites_FeatureServer_0",
+   "declared": null,
+   "expect_live": 181440,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "couver_us_arcgis_rest_services_common_BasemapPUB_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "cGIS_rest_services_Baldwin911Addresses__view_FeatureServer_2",
+   "declared": null,
+   "expect_live": 183836,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "buncombecounty_org_arcgis_rest_services_opendata_MapServer_2",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "SE6sXfoLq_arcgis_rest_services_Address_ProdA_FeatureServer_0",
+   "declared": null,
+   "expect_live": 190252,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ervices_AddressPts_DamageAssessment_REA_VIEW_FeatureServer_0",
+   "declared": null,
+   "expect_live": 190765,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_rest_services_Address__GCS_WGS_1984__Public_FeatureServer_0",
+   "declared": null,
+   "expect_live": 192634,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "vices_BaseLayers_BaseLayers_for_BackdropPurposes_MapServer_1",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "rvices_BaseLayers_Addresses_for_BackdropPurposes_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "v_gis_rest_services_Map_Reference_Street_Address_MapServer_0",
+   "declared": null,
+   "expect_live": 207275,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ov_gis_rest_services_Map_Reference_Address_Label_MapServer_0",
+   "declared": null,
+   "expect_live": 207275,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "i_arcgis_rest_services_Ada_County_Addresses_FeatureServer_13",
+   "declared": null,
+   "expect_live": 207396,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "services_Zanna_E911_Sites_Within_8min_Buffer_FeatureServer_1",
+   "declared": null,
+   "expect_live": 207581,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "services_CountyServices_Municipal_Addressing_FeatureServer_2",
+   "declared": null,
+   "expect_live": 207685,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "vt_nz_arcgis_rest_services_CorporateData_Address_MapServer_0",
+   "declared": null,
+   "expect_live": 209203,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "M5ymMLbxIyWTjn2_arcgis_rest_services_Address_FeatureServer_0",
+   "declared": null,
+   "expect_live": 219960,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "is_rest_services_Chester_County_PA_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 221873,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rcgis_rest_services_Address_Pts_Living_Units_FeatureServer_0",
+   "declared": null,
+   "expect_live": 221905,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_Zs2aNLFN00jrS4gG_arcgis_rest_services_data2_FeatureServer_0",
+   "declared": null,
+   "expect_live": 224317,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "ZHFr6zdgNZuVG0_arcgis_rest_services_Address2_FeatureServer_3",
+   "declared": null,
+   "expect_live": 226170,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arcgis_rest_services_Jeffco_Address_Map_WFL1_FeatureServer_1",
+   "declared": null,
+   "expect_live": 226170,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "MCHD_Environmental_Health_Public_Service_Map_FeatureServer_0",
+   "declared": null,
+   "expect_live": 226508,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_arcgis_rest_services_AMI_Deployment_Address_FeatureServer_0",
+   "declared": null,
+   "expect_live": 227847,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "27_Great_Mississippi_Flood_in_Arkansas_WFL1_FeatureServer_14",
+   "declared": null,
+   "expect_live": 230816,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_services_Lower_MS_Sediment_Bottleneck_WFL1_FeatureServer_14",
+   "declared": null,
+   "expect_live": 230816,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_Mississippi_Flood_in_Arkansas__Final__WFL1_FeatureServer_14",
+   "declared": null,
+   "expect_live": 230816,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_rest_services_Atlanta_Streets_and_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "unty_org_arcgis_rest_services_OpenData_Property_MapServer_12",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "_services_NWS_AddressPoints_Nstreets_centerlines_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "xLqeJd2jOX_arcgis_rest_services_VC_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 263947,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "oN_arcgis_rest_services_WASD_Addresses_3_23_FeatureServer_52",
+   "declared": null,
+   "expect_live": 264398,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "0yIuqCBxq_arcgis_rest_services_CNO_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 267730,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "arcgis_rest_services_Nightly_OpenData_Update_FeatureServer_3",
+   "declared": null,
+   "expect_live": 268405,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "server_rest_services_Intermap_Situs_address_WMAS_MapServer_0",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "is_rest_services_Address_1424300337393713068_FeatureServer_0",
+   "declared": null,
+   "expect_live": 274644,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "rcgis_rest_services_Richfield_Comm_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 278192,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "g_arcgis_rest_services_Open_Data_Open_Data_1_FeatureServer_2",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "w_arcgis_rest_services_Addresses_not_in_Town_FeatureServer_5",
+   "declared": null,
+   "expect_live": 277958,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "_services_Address_Points_AddressPoint_Native_FeatureServer_0@未定位-2",
+   "declared": null,
+   "expect_live": null,
+   "denominator": null,
+   "source": "unknown(probe_failed)"
+  },
+  {
+   "layer": "_rest_services_Arapahoe_County_Addresses_gdb_FeatureServer_0",
+   "declared": null,
+   "expect_live": 281486,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "hedVoters_Statewide_withSiteTypeDescription_FeatureServer_32",
+   "declared": null,
+   "expect_live": 283974,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  },
+  {
+   "layer": "jvohPcWJU5ij6_arcgis_rest_services_Addresses_FeatureServer_0",
+   "declared": null,
+   "expect_live": 285259,
+   "denominator": "expect_live",
+   "source": "expect_live@plan-probe"
+  }
+ ],
+ "provenance": {
+  "why": "两个 declared 总量并存，**口径不同（run 计划 vs 探针计划），不合并、不抵消、不当 declared 用**。不猜哪份对。",
+  "run_plan_artifact": {
+   "file": "collect/ledger/05b_plan.json",
+   "declared_rows": 32337294,
+   "layers_n": 585,
+   "sha256": "d5ff5467b7c1127bc4d5eb98f74194c0b71f486b5783a8064a618e60b5ea0c07",
+   "mtime": "2026-11-21T05:11:00Z",
+   "origin": "run 44865991911 的 plan-05b artifact（id 14692340122）落库副本"
+  },
+  "probe_plan": {
+   "file": "collect/ledger/step05b_plan.json",
+   "declared_rows": 32303033,
+   "layers_n": 583,
+   "sha256": "361fc29e4c828c3c59aef88051aa72bb37bb46b2699c8537af8f1864e4a8a0b5",
+   "mtime": "2026-11-21T07:19:04Z",
+   "origin": "collect/full_plan.py 计划期产物（探针阶段所用）"
+  },
+  "delta_rows": 34261,
+  "delta_pct": 0.106,
+  "delta_reason": "585 层 vs 583 层：skip_done 刷掉 2 层（_cog_server_rest_services_test_Address_Point_FeatureServer_0 已 ok、_com_geoserver_rest_services_Public_GIS_Data_FeatureServer_0 判 empty）",
+  "usage_ban": "逐层 declared 不可得（artifact 无 expect_by_layer），两个总量都**不得**作为逐层验收分母或缺口分母"
+ }
+}
