@@ -1,0 +1,65 @@
+name: judgment-gate
+# 判据文件门禁（2026-11-21 muse-000139）
+# 只对「判据 / 流水线定义」四条路径生效：.github/workflows/collect-full.yml
+#   collect/preflight_dispatch.py · collect/pilot.py · collect/full_plan.py
+# 动到它们 = 必须有一次「作者以外的人」的 APPROVED review，否则本检查红、合不进去。
+# 没动到 = 秒过，docs/ ledger/ 照旧可 self-merge。
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review, edited]
+permissions:
+  contents: read
+  pull-requests: read
+jobs:
+  judgment-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: 判据文件改动 → 需一次外部 review
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          set -euo pipefail
+          PROTECTED=(
+            ".github/workflows/collect-full.yml"
+            "collect/preflight_dispatch.py"
+            "collect/pilot.py"
+            "collect/full_plan.py"
+          )
+          gh api "repos/$REPO/pulls/$PR/files" --paginate --jq '.[].filename' | sort -u > /tmp/changed
+          echo "== PR 改动文件 =="; sed 's/^/  /' /tmp/changed
+          TOUCHED=()
+          for f in "${PROTECTED[@]}"; do
+            if grep -qxF "$f" /tmp/changed; then TOUCHED+=("$f"); fi
+          done
+          if [ ${#TOUCHED[@]} -eq 0 ]; then
+            echo "✅ 未触及判据文件（4 条），放行"
+            exit 0
+          fi
+          echo "⚠️ 触及判据文件：" ; printf '  - %s\n' "${TOUCHED[@]}"
+          # 必须有一次非作者、非 bot 的 APPROVED review，且该 review 在最后一次 push 之后
+          gh api "repos/$REPO/pulls/$PR/reviews" --paginate > /tmp/reviews.json
+          OK=$(jq -r --arg author "$AUTHOR" '
+            [ .[] | select(.state=="APPROVED")
+                  | select(.user.login != $author)
+                  | select(.user.type != "Bot")
+                  | select((.user.login|ascii_downcase) != "github-actions[bot]")
+                  | select((.user.login|ascii_downcase) != "collect-bot")
+                  | .user.login ] | unique | length' /tmp/reviews.json)
+          echo "外部 APPROVED review 数：$OK（作者 $AUTHOR 的自审不计）"
+          if [ "$OK" -ge 1 ]; then
+            echo "✅ 判据文件改动已有外部 review"
+            exit 0
+          fi
+          echo "::error::判据文件被改动，但没有作者以外的 APPROVED review。四条判据文件（collect-full.yml / preflight_dispatch.py / pilot.py / full_plan.py）改动必须先拿到一次 review 再合。"
+          echo "## ❌ 判据文件门禁未过" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "本 PR 触及：" >> "$GITHUB_STEP_SUMMARY"
+          printf -- "- \`%s\`\n" "${TOUCHED[@]}" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "要求：作者（$AUTHOR）以外的账号给出 **Approve**。自审不算。" >> "$GITHUB_STEP_SUMMARY"
+          exit 1
