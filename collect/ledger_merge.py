@@ -268,6 +268,62 @@ def recount(records):
     return cnt
 
 
+SUSPECT_RATIO_LO, SUSPECT_RATIO_HI = 1.9, 2.1
+
+
+def annotate_rows_suspect(records, *, at: str | None = None, run_id="") -> tuple[list, dict | None]:
+    """给「跨代际两代行都被计入」的层打**留档标记**（★ 一个字都不改 rows）。
+
+    ★ 2026-11-22 W33-060（用户裁定「改底账比留错数更糟」）：
+      已入库的那批虚高 rows **不回改**，只在记录上加
+        `rows_suspect: "legacy_double_count"` + `rows_legacy_kept: rows - declared`
+      并留 `rows_suspect_note`。新一轮采完自然覆盖；在此之前任何读账本的人都能看见
+      「这层的行数是可疑的、多出来多少」，而不是被静默吞掉。
+
+    判据只用账本自身的算术（`rows/declared ∈ [1.9, 2.1]`），不做上游调用：
+      · 双算的签名就是 2.0×（旧代际一整份 + 新代际一整份），实测 101 层全落在这个区间，
+        且各层 `rows - declared` 之和 = 7,359,939 ≈ 仿真的 legacy_kept 合计；
+      · 上游正常漂移（几百行）的层不会被误标 —— 它们进不了 1.9 档。
+    标记是**幂等**的：重复调用不会改变结果，也不会叠加计数。
+    """
+    at = at or _now()
+    out, hit, extra = [], [], 0
+    for r in (records or []):
+        rr = dict(r)
+        declared = int(rr.get("declared") or 0)
+        rows = rows_of(rr)
+        if declared > 0 and SUSPECT_RATIO_LO <= rows / float(declared) <= SUSPECT_RATIO_HI:
+            keep = rows - declared
+            rr["rows_suspect"] = "legacy_double_count"
+            rr["rows_legacy_kept"] = keep
+            rr["rows_suspect_note"] = (
+                "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → %s 行是上一代副本。"
+                "rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法"
+                "在下一轮采集后自然覆盖。" % f"{keep:,}")
+            hit.append(rr.get("layer"))
+            extra += keep
+        elif rr.get("rows_suspect") == "legacy_double_count" and not (
+                declared > 0 and SUSPECT_RATIO_LO <= rows / float(declared) <= SUSPECT_RATIO_HI):
+            # 已经不再双算（新一轮采完/被 supersede）→ 摘掉标记，别留下过期的指控
+            for k in ("rows_suspect", "rows_legacy_kept", "rows_suspect_note"):
+                rr.pop(k, None)
+        out.append(rr)
+    if not hit:
+        return out, None
+    return out, {
+        "kind": "legacy_double_count",
+        "layers": len(hit),
+        "overcounted_rows": extra,
+        "detected_at": at,
+        "detected_by": "ledger_merge.annotate_rows_suspect (W33-060)",
+        "run_id": str(run_id) if run_id else None,
+        "policy": "rows 不回改，只加标记留档（用户裁定 2026-11-22）",
+        "fix": "W33-060：merge_checkpoints 对「旧 unit 索引 ⊆ 新」的旧包标 superseded_by、"
+               "counted_rows=0；旧 ⊋ 新 的多出单元照计（唯一副本）",
+        "note": "下一轮采集/合并后这些层会自然回到单代行数，届时本标记会被摘掉",
+    }
+
+
 def stage_overwrite_allowed(run_layers: int, stage_layers: int, allow: bool = False) -> tuple[bool, str]:
     """阶段账本能不能被本 run 合并（W33-059，2026-11-22 修）。
 
@@ -331,6 +387,8 @@ def merge_stage_ledger(stage: str, base: dict | None, run_led: dict, run_id: str
     at = at or _now()
     base = dict(base or {})
     merged_recs, stats = merge_records(base.get("records") or [], run_led.get("records") or [])
+    # ★ W33-060：合并后重新打「跨代际双算」留档标记（base 里带的旧标记若已不再双算会被摘掉）
+    merged_recs, suspect = annotate_rows_suspect(merged_recs, at=at, run_id=run_id)
     cnt = recount(merged_recs)
     # ★ rows 回退：合并前先逐层比一次（取更优者会把它掩盖掉，必须先记下来）
     regs_new = row_regressions(base.get("records") or [], run_led.get("records") or [],
@@ -349,6 +407,10 @@ def merge_stage_ledger(stage: str, base: dict | None, run_led: dict, run_id: str
         "records": merged_recs,
         "last_merge": {"run_id": run_id, "at": at, "stats": stats},
     })
+    if suspect:
+        out["rows_suspect"] = suspect
+    else:
+        out.pop("rows_suspect", None)
     for k in COUNT_KEYS:
         out[k] = cnt[k]
     # 片口径四件套是**本轮 run 的**（闸门读它判「本轮有没有片没跑完」），

@@ -466,3 +466,67 @@ class MergeCoversEverythingInvariant(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestRowsSuspectMarker(unittest.TestCase):
+    """W33-060 留档标记：双算层加标记、rows 一个字不改、漂移层不误标、幂等。"""
+
+    def _rec(self, layer, rows, declared, status="ok", **kw):
+        d = {"layer": layer, "rows": rows, "declared": declared, "status": status}
+        d.update(kw)
+        return d
+
+    def test_double_count_layer_marked_rows_untouched(self):
+        import ledger_merge as LM
+        recs = [self._rec("dgis_x_0", 555729, 277958)]
+        out, summary = LM.annotate_rows_suspect(recs, at="2026-11-22T00:00:00Z", run_id="r1")
+        self.assertEqual(out[0]["rows"], 555729, "rows 必须原样（用户裁定不回改）")
+        self.assertEqual(out[0]["rows_suspect"], "legacy_double_count")
+        self.assertEqual(out[0]["rows_legacy_kept"], 555729 - 277958)
+        self.assertIn("不回改", out[0]["rows_suspect_note"])
+        self.assertEqual(summary["layers"], 1)
+        self.assertEqual(summary["overcounted_rows"], 555729 - 277958)
+        self.assertEqual(summary["kind"], "legacy_double_count")
+
+    def test_small_drift_is_not_marked(self):
+        """上游正常漂移（几行到几百行）不许被误标成双算 —— 那是诬告。"""
+        import ledger_merge as LM
+        recs = [self._rec("a", 180273, 180238), self._rec("b", 13505, 13503),
+                self._rec("c", 209057, 209026)]
+        out, summary = LM.annotate_rows_suspect(recs)
+        self.assertIsNone(summary)
+        self.assertFalse([r for r in out if r.get("rows_suspect")])
+
+    def test_boundary_and_idempotent(self):
+        """1.9 / 2.1 边界内都算；重复调用结果一致、计数不叠加。"""
+        import ledger_merge as LM
+        recs = [self._rec("lo", 190, 100), self._rec("hi", 210, 100),
+                self._rec("out", 189, 100)]
+        out, s1 = LM.annotate_rows_suspect(recs, at="t")
+        self.assertEqual(s1["layers"], 2)
+        self.assertEqual(s1["overcounted_rows"], 90 + 110)
+        out2, s2 = LM.annotate_rows_suspect(out, at="t")
+        self.assertEqual(s2["layers"], 2)
+        self.assertEqual(s2["overcounted_rows"], s1["overcounted_rows"])
+        self.assertEqual(out2, out)
+
+    def test_marker_removed_when_no_longer_double_counted(self):
+        """新一轮采完 → 比例回到 1.0，过期的标记必须被摘掉（不许留诬告）。"""
+        import ledger_merge as LM
+        recs = [dict(self._rec("x", 81784, 81784),
+                     rows_suspect="legacy_double_count", rows_legacy_kept=81437)]
+        out, summary = LM.annotate_rows_suspect(recs)
+        self.assertIsNone(summary)
+        self.assertNotIn("rows_suspect", out[0])
+        self.assertNotIn("rows_legacy_kept", out[0])
+
+    def test_stage_merge_writes_summary_block(self):
+        """merge_stage_ledger 出来的阶段账本要带顶层 rows_suspect 汇总。"""
+        import ledger_merge as LM
+        base = {"records": [self._rec("y", 163221, 81784)]}
+        run_led = {"records": [self._rec("y", 163221, 81784)]}
+        merged, _stats = LM.merge_stage_ledger("05b", base, run_led, "r9",
+                                               at="2026-11-22T00:00:00Z")
+        self.assertEqual(merged["rows_suspect"]["layers"], 1)
+        self.assertEqual(merged["rows_suspect"]["overcounted_rows"], 163221 - 81784)
+        self.assertEqual(merged["rows"], 163221, "汇总 rows 不许被标记改动")

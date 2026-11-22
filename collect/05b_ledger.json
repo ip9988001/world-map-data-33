@@ -51398,7 +51398,10 @@
    "parts": 7,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.76%（实采 555706 / 声明 278192）"
+   "reason": "缺口 -99.76%（实采 555706 / 声明 278192）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 277514,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 277,514 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "w_arcgis_rest_services_Addresses_not_in_Town_FeatureServer_5",
@@ -51412,7 +51415,10 @@
    "parts": 8,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.93%（实采 555729 / 声明 277958）"
+   "reason": "缺口 -99.93%（实采 555729 / 声明 277958）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 277771,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 277,771 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "is_rest_services_Address_1424300337393713068_FeatureServer_0",
@@ -51440,7 +51446,10 @@
    "parts": 6,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.90%（实采 536539 / 声明 268407）"
+   "reason": "缺口 -99.90%（实采 536539 / 声明 268407）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 268132,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 268,132 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "server_rest_services_Intermap_Situs_address_WMAS_MapServer_0",
@@ -51454,7 +51463,10 @@
    "parts": 6,
    "svc": "MapServer",
    "status": "partial",
-   "reason": "缺口 -100.03%（实采 536539 / 声明 268229）"
+   "reason": "缺口 -100.03%（实采 536539 / 声明 268229）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 268310,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 268,310 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "0yIuqCBxq_arcgis_rest_services_CNO_Addresses_FeatureServer_0",
@@ -51552,7 +51564,10 @@
    "parts": 6,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -100.00%（实采 455698 / 声明 227847）"
+   "reason": "缺口 -100.00%（实采 455698 / 声明 227847）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 227851,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 227,851 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "MCHD_Environmental_Health_Public_Service_Map_FeatureServer_0",
@@ -51608,7 +51623,10 @@
    "parts": 6,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -100.00%（实采 448628 / 声明 224311）"
+   "reason": "缺口 -100.00%（实采 448628 / 声明 224311）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 224317,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 224,317 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "rcgis_rest_services_Address_Pts_Living_Units_FeatureServer_0",
@@ -51650,7 +51668,10 @@
    "parts": 6,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.92%（实采 439750 / 声明 219960）"
+   "reason": "缺口 -99.92%（实采 439750 / 声明 219960）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 219790,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 219,790 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "services_CountyServices_Municipal_Addressing_FeatureServer_2",
@@ -51734,7 +51755,10 @@
    "parts": 4,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.96%（实采 385198 / 声明 192634）"
+   "reason": "缺口 -99.96%（实采 385198 / 声明 192634）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 192564,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 192,564 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "ervices_AddressPts_DamageAssessment_REA_VIEW_FeatureServer_0",
@@ -51762,7 +51786,10 @@
    "parts": 4,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.99%（实采 380483 / 声明 190252）"
+   "reason": "缺口 -99.99%（实采 380483 / 声明 190252）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 190231,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 190,231 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "cGIS_rest_services_Baldwin911Addresses__view_FeatureServer_2",
@@ -51776,7 +51803,10 @@
    "parts": 4,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.68%（实采 367080 / 声明 183836）"
+   "reason": "缺口 -99.68%（实采 367080 / 声明 183836）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 183244,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 183,244 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "couver_us_arcgis_rest_services_common_BasemapPUB_MapServer_0",
@@ -51790,7 +51820,10 @@
    "parts": 4,
    "svc": "MapServer",
    "status": "partial",
-   "reason": "缺口 -99.89%（实采 365117 / 声明 182659）"
+   "reason": "缺口 -99.89%（实采 365117 / 声明 182659）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 182458,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 182,458 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "W83eUIFui_arcgis_rest_services_Address_Sites_FeatureServer_0",
@@ -51804,7 +51837,10 @@
    "parts": 4,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.90%（实采 362701 / 声明 181440）"
+   "reason": "缺口 -99.90%（实采 362701 / 声明 181440）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 181261,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 181,261 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "rcgis_rest_services_Addressing_RoadsAndAddresses_MapServer_0",
@@ -51818,7 +51854,10 @@
    "parts": 5,
    "svc": "MapServer",
    "status": "partial",
-   "reason": "缺口 -99.99%（实采 358962 / 声明 179493）"
+   "reason": "缺口 -99.99%（实采 358962 / 声明 179493）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 179469,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 179,469 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "rest_services_E911_Addresses_Hamilton_County_FeatureServer_0",
@@ -51846,7 +51885,10 @@
    "parts": 4,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.99%（实采 346745 / 声明 173381）"
+   "reason": "缺口 -99.99%（实采 346745 / 声明 173381）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 173364,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 173,364 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "_rest_services_Site_Addresses_FLOCK_10302024_FeatureServer_0",
@@ -51944,7 +51986,10 @@
    "parts": 4,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.80%（实采 317114 / 声明 158719）"
+   "reason": "缺口 -99.80%（实采 317114 / 声明 158719）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 158395,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 158,395 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "st_services_Vector_COT_UtilityERM_Addresses_D_WM_MapServer_0",
@@ -51958,7 +52003,10 @@
    "parts": 4,
    "svc": "MapServer",
    "status": "partial",
-   "reason": "缺口 -99.74%（实采 316405 / 声明 158408）"
+   "reason": "缺口 -99.74%（实采 316405 / 声明 158408）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 157997,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 157,997 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "countyfl_gov_accelasupp_rest_services_AccelaXAPO_MapServer_0",
@@ -52014,7 +52062,10 @@
    "parts": 4,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.99%（实采 312042 / 声明 156027）"
+   "reason": "缺口 -99.99%（实采 312042 / 声明 156027）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 156015,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 156,015 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "rvices_MapServices_TLC_OverlayAddressSearch_D_WM_MapServer_0",
@@ -52028,7 +52079,10 @@
    "parts": 4,
    "svc": "MapServer",
    "status": "partial",
-   "reason": "缺口 -99.66%（实采 310782 / 声明 155653）"
+   "reason": "缺口 -99.66%（实采 310782 / 声明 155653）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 155129,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 155,129 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "rvices_stratmap19_addresspoints_48027_vector_FeatureServer_0",
@@ -52070,7 +52124,10 @@
    "parts": 4,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.91%（实采 295706 / 声明 147918）"
+   "reason": "缺口 -99.91%（实采 295706 / 声明 147918）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 147788,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 147,788 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "LmYGD_arcgis_rest_services_DC_Addresses_WFL1_FeatureServer_0",
@@ -52154,7 +52211,10 @@
    "parts": 4,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -100.03%（实采 260301 / 声明 130132）"
+   "reason": "缺口 -100.03%（实采 260301 / 声明 130132）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 130169,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 130,169 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "cgis_rest_services_Infrastructure_Transportation_MapServer_0",
@@ -52168,7 +52228,10 @@
    "parts": 4,
    "svc": "MapServer",
    "status": "partial",
-   "reason": "缺口 -99.74%（实采 259861 / 声明 130102）"
+   "reason": "缺口 -99.74%（实采 259861 / 声明 130102）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 129759,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 129,759 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "_services_Infrastructure_Transportation_Sheriffs_MapServer_0",
@@ -52182,7 +52245,10 @@
    "parts": 4,
    "svc": "MapServer",
    "status": "partial",
-   "reason": "缺口 -99.74%（实采 259861 / 声明 130102）"
+   "reason": "缺口 -99.74%（实采 259861 / 声明 130102）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 129759,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 129,759 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "wbHlfF_arcgis_rest_services_Addresses_Hosted_FeatureServer_0",
@@ -52196,7 +52262,10 @@
    "parts": 4,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.99%（实采 259369 / 声明 129693）"
+   "reason": "缺口 -99.99%（实采 259369 / 声明 129693）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 129676,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 129,676 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "8JRPoNeQjgcLi_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -52266,7 +52335,10 @@
    "parts": 4,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.25%（实采 235365 / 声明 118128）"
+   "reason": "缺口 -99.25%（实采 235365 / 声明 118128）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 117237,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 117,237 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "rvices_WCAddresses20251003_gdb_view_Geocivix_FeatureServer_0",
@@ -52294,7 +52366,10 @@
    "parts": 4,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.76%（实采 229458 / 声明 114869）"
+   "reason": "缺口 -99.76%（实采 229458 / 声明 114869）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 114589,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 114,589 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "is_rest_services_Addresses_CitizenServe_View_FeatureServer_0",
@@ -52308,7 +52383,10 @@
    "parts": 4,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.76%（实采 229458 / 声明 114869）"
+   "reason": "缺口 -99.76%（实采 229458 / 声明 114869）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 114589,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 114,589 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "tUCmxaVKdPC5e_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -52322,7 +52400,10 @@
    "parts": 4,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.76%（实采 229458 / 声明 114869）"
+   "reason": "缺口 -99.76%（实采 229458 / 声明 114869）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 114589,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 114,589 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "JdBHI0_arcgis_rest_services_Addresses_SC_USE_FeatureServer_0",
@@ -52336,7 +52417,10 @@
    "parts": 4,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -100.16%（实采 229361 / 声明 114589）"
+   "reason": "缺口 -100.16%（实采 229361 / 声明 114589）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 114772,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 114,772 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "CRg_arcgis_rest_services_SBCnty_Address_Grid_FeatureServer_0",
@@ -52406,7 +52490,10 @@
    "parts": 4,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.96%（实采 222652 / 声明 111350）"
+   "reason": "缺口 -99.96%（实采 222652 / 声明 111350）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 111302,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 111,302 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "s_rest_services_ElectionsPollingPlaceAddress_FeatureServer_0",
@@ -52420,7 +52507,10 @@
    "parts": 4,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.96%（实采 221935 / 声明 110991）"
+   "reason": "缺口 -99.96%（实采 221935 / 声明 110991）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 110944,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 110,944 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "McTk2tV5FXPLX_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -52798,7 +52888,10 @@
    "parts": 2,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.43%（实采 174890 / 声明 87697）"
+   "reason": "缺口 -99.43%（实采 174890 / 声明 87697）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 87193,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 87,193 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "ov_public_rest_services_public_Council_Wards_FeatureServer_1",
@@ -52812,7 +52905,10 @@
    "parts": 2,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.79%（实采 168433 / 声明 84306）"
+   "reason": "缺口 -99.79%（实采 168433 / 声明 84306）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 84127,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 84,127 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "t_services_Katy_ISD_Harris_County_Addresses_FeatureServer_68",
@@ -52882,7 +52978,10 @@
    "parts": 2,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.98%（实采 165191 / 声明 82602）"
+   "reason": "缺口 -99.98%（实采 165191 / 声明 82602）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 82589,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 82,589 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "jSxUKayj_arcgis_rest_services_911_Addresses_FeatureServer_58",
@@ -53008,7 +53107,10 @@
    "parts": 2,
    "svc": "MapServer",
    "status": "partial",
-   "reason": "缺口 -99.99%（实采 145729 / 声明 72868）"
+   "reason": "缺口 -99.99%（实采 145729 / 声明 72868）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 72861,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 72,861 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "ntaclaraca_gov_maps_rest_services_LAYERS_BaseMap_MapServer_2",
@@ -53022,7 +53124,10 @@
    "parts": 2,
    "svc": "MapServer",
    "status": "partial",
-   "reason": "缺口 -99.99%（实采 145729 / 声明 72868）"
+   "reason": "缺口 -99.99%（实采 145729 / 声明 72868）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 72861,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 72,861 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "CXd1_arcgis_rest_services_Fargo_ND_Addresses_FeatureServer_0",
@@ -53078,7 +53183,10 @@
    "parts": 2,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.89%（实采 142442 / 声明 71260）"
+   "reason": "缺口 -99.89%（实采 142442 / 声明 71260）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 71182,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 71,182 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "U5257_arcgis_rest_services_Yonkers_Addresses_FeatureServer_0",
@@ -53232,7 +53340,10 @@
    "parts": 2,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.97%（实采 129960 / 声明 64989）"
+   "reason": "缺口 -99.97%（实采 129960 / 声明 64989）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 64971,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 64,971 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "_rest_services_Randall_County_Addresses_WFL1_FeatureServer_1",
@@ -53316,7 +53427,10 @@
    "parts": 2,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.91%（实采 126366 / 声明 63212）"
+   "reason": "缺口 -99.91%（实采 126366 / 声明 63212）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 63154,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 63,154 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "5jlmVkpxP_arcgis_rest_services_Online911Data_FeatureServer_0",
@@ -53358,7 +53472,10 @@
    "parts": 2,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.99%（实采 125156 / 声明 62581）"
+   "reason": "缺口 -99.99%（实采 125156 / 声明 62581）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 62575,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 62,575 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "InLrxvF0A_arcgis_rest_services_AddressR2_gdb_FeatureServer_0",
@@ -53442,7 +53559,10 @@
    "parts": 2,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.73%（实采 119500 / 声明 59831）"
+   "reason": "缺口 -99.73%（实采 119500 / 声明 59831）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 59669,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 59,669 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "arcgis_rest_services_Tompkins_County_Address_FeatureServer_0",
@@ -53470,7 +53590,10 @@
    "parts": 2,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.58%（实采 117274 / 声明 58760）"
+   "reason": "缺口 -99.58%（实采 117274 / 声明 58760）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 58514,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 58,514 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "rcgis_rest_services_MC_Address_Pts_PMG_View1_FeatureServer_0",
@@ -53498,7 +53621,10 @@
    "parts": 2,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.96%（实采 116044 / 声明 58034）"
+   "reason": "缺口 -99.96%（实采 116044 / 声明 58034）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 58010,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 58,010 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "d1_arcgis_rest_services_Visalia_CA_Addresses_FeatureServer_0",
@@ -53526,7 +53652,10 @@
    "parts": 2,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -100.12%（实采 113267 / 声明 56599）"
+   "reason": "缺口 -100.12%（实采 113267 / 声明 56599）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 56668,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 56,668 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "_cfmdyB05xBau1dNQ_arcgis_rest_services_Situs_FeatureServer_0",
@@ -53568,7 +53697,10 @@
    "parts": 2,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.96%（实采 109268 / 声明 54644）"
+   "reason": "缺口 -99.96%（实采 109268 / 声明 54644）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 54624,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 54,624 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "_qnjIrwR8z5Izc0ij_arcgis_rest_services_ng911_FeatureServer_0",
@@ -53624,7 +53756,10 @@
    "parts": 2,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.94%（实采 102815 / 声明 51423）"
+   "reason": "缺口 -99.94%（实采 102815 / 声明 51423）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 51392,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 51,392 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "st_services_A4_Landscape_addressverification_FeatureServer_1",
@@ -53876,7 +54011,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.95%（实采 98176 / 声明 49100）"
+   "reason": "缺口 -99.95%（实采 98176 / 声明 49100）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 49076,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 49,076 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "eajjke_arcgis_rest_services_Addresses_Rogers_FeatureServer_0",
@@ -54100,7 +54238,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.99%（实采 86993 / 声明 43499）"
+   "reason": "缺口 -99.99%（实采 86993 / 声明 43499）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 43494,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 43,494 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "_arcgis_rest_services_Addresses_NOT_ELIGIBLE_FeatureServer_0",
@@ -54128,7 +54269,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.95%（实采 86789 / 声明 43405）"
+   "reason": "缺口 -99.95%（实采 86789 / 声明 43405）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 43384,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 43,384 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "unty_oh_gov_arcgisdev_rest_services_WMAS_Address_MapServer_0",
@@ -54142,7 +54286,10 @@
    "parts": 1,
    "svc": "MapServer",
    "status": "partial",
-   "reason": "缺口 -99.82%（实采 86008 / 声明 43042）"
+   "reason": "缺口 -99.82%（实采 86008 / 声明 43042）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 42966,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 42,966 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "s_rest_services_CityAddresses2022bu_CHE_view_FeatureServer_0",
@@ -54254,7 +54401,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.98%（实采 82028 / 声明 41018）"
+   "reason": "缺口 -99.98%（实采 82028 / 声明 41018）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 41010,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 41,010 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "OU_arcgis_rest_services_Addresses_SIO_Hosted_FeatureServer_0",
@@ -54282,7 +54432,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -100.00%（实采 81170 / 声明 40586）"
+   "reason": "缺口 -100.00%（实采 81170 / 声明 40586）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 40584,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 40,584 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "is_rest_services_Public_View_Site_Addresses__FeatureServer_0",
@@ -54296,7 +54449,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -100.00%（实采 81170 / 声明 40586）"
+   "reason": "缺口 -100.00%（实采 81170 / 声明 40586）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 40584,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 40,584 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "1_arcgis_rest_services_Bismarck_ND_Addresses_FeatureServer_0",
@@ -54408,7 +54564,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.98%（实采 77304 / 声明 38656）"
+   "reason": "缺口 -99.98%（实采 77304 / 声明 38656）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 38648,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 38,648 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "d_Waste__Days_of_Service_Per_Address_092424_FeatureServer_52",
@@ -54548,7 +54707,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.98%（实采 73441 / 声明 36725）"
+   "reason": "缺口 -99.98%（实采 73441 / 声明 36725）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 36716,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 36,716 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "s_Meade_Co_KY_Addresses_Roads_Lot_Lines_WFL1_FeatureServer_0",
@@ -54674,7 +54836,10 @@
    "parts": 1,
    "svc": "MapServer",
    "status": "partial",
-   "reason": "缺口 -100.00%（实采 70424 / 声明 35212）"
+   "reason": "缺口 -100.00%（实采 70424 / 声明 35212）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 35212,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 35,212 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "fMdTkPeHLCobS_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -54702,7 +54867,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.98%（实采 69851 / 声明 34929）"
+   "reason": "缺口 -99.98%（实采 69851 / 声明 34929）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 34922,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 34,922 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "s_rest_services_OPENNewmarket_Address_3_view_FeatureServer_0",
@@ -54716,7 +54884,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.98%（实采 69851 / 声明 34929）"
+   "reason": "缺口 -99.98%（实采 69851 / 声明 34929）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 34922,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 34,922 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "arcgis_rest_services_Alexandria_VA_Addresses_FeatureServer_0",
@@ -54744,7 +54915,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -100.00%（实采 69679 / 声明 34840）"
+   "reason": "缺口 -100.00%（实采 69679 / 声明 34840）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 34839,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 34,839 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "maps_rest_services_OPENDATA_RegionalBaseOpenData_MapServer_2",
@@ -54996,7 +55170,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.95%（实采 64689 / 声明 32353）"
+   "reason": "缺口 -99.95%（实采 64689 / 声明 32353）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 32336,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 32,336 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "BpZX2wFbS_arcgis_rest_services_911addressing_FeatureServer_0",
@@ -55430,7 +55607,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -100.27%（实采 52891 / 声明 26410）"
+   "reason": "缺口 -100.27%（实采 52891 / 声明 26410）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 26481,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 26,481 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "_rest_services_NM_911_Addresses_Small_Scale_FeatureServer_33",
@@ -55444,7 +55624,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -100.27%（实采 52891 / 声明 26410）"
+   "reason": "缺口 -100.27%（实采 52891 / 声明 26410）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 26481,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 26,481 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "iGx_arcgis_rest_services_Addresses_Only_view_FeatureServer_0",
@@ -55458,7 +55641,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.98%（实采 52635 / 声明 26320）"
+   "reason": "缺口 -99.98%（实采 52635 / 声明 26320）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 26315,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 26,315 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "J9QAHCiGx_arcgis_rest_services_SiteAddresses_FeatureServer_0",
@@ -55486,7 +55672,10 @@
    "parts": 1,
    "svc": "MapServer",
    "status": "partial",
-   "reason": "缺口 -100.00%（实采 51668 / 声明 25834）"
+   "reason": "缺口 -100.00%（实采 51668 / 声明 25834）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 25834,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 25,834 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "WQTB2G8AH9RQYE_arcgis_rest_services_address_FeatureServer_16",
@@ -55500,7 +55689,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.90%（实采 51608 / 声明 25817）"
+   "reason": "缺口 -99.90%（实采 51608 / 声明 25817）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 25791,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 25,791 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "st_services_City_of_Pittsburg_Address_Public_FeatureServer_0",
@@ -55542,7 +55734,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.55%（实采 50069 / 声明 25091）"
+   "reason": "缺口 -99.55%（实采 50069 / 声明 25091）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 24978,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 24,978 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "Gr3P_arcgis_rest_services_ETJ_addresses_WFL1_FeatureServer_1",
@@ -55710,7 +55905,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.97%（实采 47732 / 声明 23869）"
+   "reason": "缺口 -99.97%（实采 47732 / 声明 23869）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 23863,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 23,863 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "gis_rest_services_BransonAddressSearch_WFL1_FeatureServer_54",
@@ -55738,7 +55936,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -98.32%（实采 47237 / 声明 23819）"
+   "reason": "缺口 -98.32%（实采 47237 / 声明 23819）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 23418,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 23,418 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "isapp_dunwoodyga_gov_arcgis_rest_services_Parcel_MapServer_1",
@@ -55752,7 +55953,10 @@
    "parts": 1,
    "svc": "MapServer",
    "status": "partial",
-   "reason": "缺口 -100.00%（实采 47553 / 声明 23776）"
+   "reason": "缺口 -100.00%（实采 47553 / 声明 23776）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 23777,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 23,777 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "DL6ILvlkPNTg8_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -55766,7 +55970,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.98%（实采 46672 / 声明 23338）"
+   "reason": "缺口 -99.98%（实采 46672 / 声明 23338）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 23334,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 23,334 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "g_arcgis_rest_services_BarryCounty_Addresses_FeatureServer_0",
@@ -55850,7 +56057,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -100.00%（实采 44495 / 声明 22248）"
+   "reason": "缺口 -100.00%（实采 44495 / 声明 22248）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 22247,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 22,247 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "ow3ofS_arcgis_rest_services_NM_911_Addresses_FeatureServer_0",
@@ -55906,7 +56116,10 @@
    "parts": 1,
    "svc": "MapServer",
    "status": "partial",
-   "reason": "缺口 -99.93%（实采 43524 / 声明 21770）"
+   "reason": "缺口 -99.93%（实采 43524 / 声明 21770）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 21754,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 21,754 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "_rest_services_GIS_ENV_GIS_Work_Background_Layer_MapServer_0",
@@ -56060,7 +56273,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -100.00%（实采 40080 / 声明 20040）"
+   "reason": "缺口 -100.00%（实采 40080 / 声明 20040）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 20040,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 20,040 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "arcgis_rest_services_Winona_County_Addresses_FeatureServer_0",
@@ -56158,7 +56374,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.80%（实采 38284 / 声明 19161）"
+   "reason": "缺口 -99.80%（实采 38284 / 声明 19161）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 19123,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 19,123 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "rcgis_rest_services_Facility_Sites_E911_Clip_FeatureServer_0",
@@ -56228,7 +56447,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.89%（实采 37031 / 声明 18526）"
+   "reason": "缺口 -99.89%（实采 37031 / 声明 18526）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 18505,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 18,505 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "RnMdg5KWv_arcgis_rest_services_911_Addresses_FeatureServer_0",
@@ -56354,7 +56576,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.99%（实采 35950 / 声明 17976）"
+   "reason": "缺口 -99.99%（实采 35950 / 声明 17976）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 17974,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 17,974 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "wY8_arcgis_rest_services_Address_Ranges_WFL1_FeatureServer_0",
@@ -56410,7 +56635,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -100.00%（实采 35462 / 声明 17731）"
+   "reason": "缺口 -100.00%（实采 35462 / 声明 17731）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 17731,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 17,731 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "pNK5CvU_arcgis_rest_services_HempV_Addresses_FeatureServer_0",
@@ -56508,7 +56736,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.98%（实采 34653 / 声明 17328）"
+   "reason": "缺口 -99.98%（实采 34653 / 声明 17328）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 17325,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 17,325 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "cjlmqkA8ypi4T_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -56732,7 +56963,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.61%（实采 29989 / 声明 15024）"
+   "reason": "缺口 -99.61%（实采 29989 / 声明 15024）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 14965,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 14,965 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "8hGN_arcgis_rest_services_Polk_Addresses_GAC_FeatureServer_0",
@@ -56816,7 +57050,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.92%（实采 28710 / 声明 14361）"
+   "reason": "缺口 -99.92%（实采 28710 / 声明 14361）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 14349,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 14,349 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "KPa_arcgis_rest_services_overture_address_sd_FeatureServer_0",
@@ -56844,7 +57081,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.99%（实采 28470 / 声明 14236）"
+   "reason": "缺口 -99.99%（实采 28470 / 声明 14236）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 14234,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 14,234 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "ervices_Lee_County_E911_Addresses_and_Roads_FeatureServer_20",
@@ -56886,7 +57126,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.68%（实采 28282 / 声明 14164）"
+   "reason": "缺口 -99.68%（实采 28282 / 声明 14164）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 14118,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 14,118 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "8SWPG8KZ6r_arcgis_rest_services_911Addresses_FeatureServer_0",
@@ -56984,7 +57227,10 @@
    "parts": 1,
    "svc": "MapServer",
    "status": "partial",
-   "reason": "缺口 -99.99%（实采 26705 / 声明 13353）"
+   "reason": "缺口 -99.99%（实采 26705 / 声明 13353）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 13352,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 13,352 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "ELbQdlhsJLcCM_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -57068,7 +57314,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.93%（实采 25981 / 声明 12995）"
+   "reason": "缺口 -99.93%（实采 25981 / 声明 12995）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 12986,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 12,986 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "st_services_VacantResidentialProperties_WFL1_FeatureServer_0",
@@ -57152,7 +57401,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.98%（实采 25281 / 声明 12642）"
+   "reason": "缺口 -99.98%（实采 25281 / 声明 12642）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 12639,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 12,639 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "teAddresses_1a8d5e9d05674ad599c70df5dfdd4265_FeatureServer_0",
@@ -57166,7 +57418,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.98%（实采 25281 / 声明 12642）"
+   "reason": "缺口 -99.98%（实采 25281 / 声明 12642）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 12639,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 12,639 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "teAddresses_176dcf6d135741fcbc3bf17da5aa7aff_FeatureServer_0",
@@ -57208,7 +57463,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.33%（实采 24807 / 声明 12445）"
+   "reason": "缺口 -99.33%（实采 24807 / 声明 12445）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 12362,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 12,362 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "aAg05xQLgo7_arcgis_rest_services_SiteAddress_FeatureServer_0",
@@ -57250,7 +57508,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -100.02%（实采 24570 / 声明 12284）"
+   "reason": "缺口 -100.02%（实采 24570 / 声明 12284）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 12286,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 12,286 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "drG_arcgis_rest_services_Arlington_Addresses_FeatureServer_0",
@@ -57264,7 +57525,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -100.02%（实采 24570 / 声明 12284）"
+   "reason": "缺口 -100.02%（实采 24570 / 声明 12284）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 12286,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 12,286 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "5n_arcgis_rest_services_City_Limit_Addresses_FeatureServer_0",
@@ -57278,7 +57542,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.93%（实采 24296 / 声明 12152）"
+   "reason": "缺口 -99.93%（实采 24296 / 声明 12152）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 12144,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 12,144 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "services_BRIC_WRC_Situs_Address_LookUp_Table_FeatureServer_0",
@@ -57348,7 +57615,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.98%（实采 23632 / 声明 11817）"
+   "reason": "缺口 -99.98%（实采 23632 / 声明 11817）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 11815,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 11,815 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "DdwE7LMrYrEMJ_arcgis_rest_services_Addresses_FeatureServer_1",
@@ -57362,7 +57632,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.86%（实采 23585 / 声明 11801）"
+   "reason": "缺口 -99.86%（实采 23585 / 声明 11801）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 11784,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 11,784 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "ountyny_gov_server_rest_services_EMO_E911_Viewer_MapServer_5",
@@ -57390,7 +57663,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.89%（实采 22937 / 声明 11475）"
+   "reason": "缺口 -99.89%（实采 22937 / 声明 11475）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 11462,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 11,462 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "arcgis_rest_services_PAunderservedstructures_FeatureServer_0",
@@ -57418,7 +57694,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -100.00%（实采 22770 / 声明 11385）"
+   "reason": "缺口 -100.00%（实采 22770 / 声明 11385）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 11385,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 11,385 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "kFjYDrl_arcgis_rest_services_Address06192026_FeatureServer_0",
@@ -57516,7 +57795,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.99%（实采 21211 / 声明 10606）"
+   "reason": "缺口 -99.99%（实采 21211 / 声明 10606）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 10605,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 10,605 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "1mtnDG_arcgis_rest_services_Worth__ADDRESSES_FeatureServer_0",
@@ -57642,7 +57924,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.96%（实采 19404 / 声明 9704）"
+   "reason": "缺口 -99.96%（实采 19404 / 声明 9704）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 9700,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 9,700 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "p_arcgis_rest_services_Addresses_Public_View_FeatureServer_0",
@@ -57908,7 +58193,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.98%（实采 16558 / 声明 8280）"
+   "reason": "缺口 -99.98%（实采 16558 / 声明 8280）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 8278,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 8,278 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "mn_gov_arcgis_rest_services_Basemaps_LINKBasemap_MapServer_4",
@@ -57922,7 +58210,10 @@
    "parts": 1,
    "svc": "MapServer",
    "status": "partial",
-   "reason": "缺口 -99.98%（实采 16558 / 声明 8280）"
+   "reason": "缺口 -99.98%（实采 16558 / 声明 8280）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 8278,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 8,278 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "PSO5BR5eOIggwRH_arcgis_rest_services_Address_FeatureServer_0",
@@ -58090,7 +58381,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -98.78%（实采 15501 / 声明 7798）"
+   "reason": "缺口 -98.78%（实采 15501 / 声明 7798）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 7703,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 7,703 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "DQNT3m6mbJlqZ_arcgis_rest_services_Addresses_FeatureServer_0",
@@ -58454,7 +58748,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.92%（实采 13161 / 声明 6583）"
+   "reason": "缺口 -99.92%（实采 13161 / 声明 6583）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 6578,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 6,578 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "st_services_Lincoln_City_Addresses_View_Only_FeatureServer_0",
@@ -58566,7 +58863,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -100.27%（实采 11808 / 声明 5896）"
+   "reason": "缺口 -100.27%（实采 11808 / 声明 5896）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 5912,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 5,912 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "387Pb3S_arcgis_rest_services_LiveAdds_202504_FeatureServer_0",
@@ -58818,7 +59118,10 @@
    "parts": 1,
    "svc": "FeatureServer",
    "status": "partial",
-   "reason": "缺口 -99.90%（实采 10085 / 声明 5045）"
+   "reason": "缺口 -99.90%（实采 10085 / 声明 5045）",
+   "rows_suspect": "legacy_double_count",
+   "rows_legacy_kept": 5040,
+   "rows_suspect_note": "旧代际（无 r<hash> 前缀的单元包）+ 新代际两代行都被计入 → 5,040 行是上一代副本。rows 字段按用户裁定**不回改**（改底账比留错数更糟），由 W33-060 supersede 修法在下一轮采集后自然覆盖。"
   },
   {
    "layer": "DDRnnsbCKWWP_arcgis_rest_services_Addresses2_FeatureServer_0",
@@ -59485,5 +59788,16 @@
    "declared_unknown_n": 0,
    "next": "下一轮可直接重排（没有上游拒绝的证据）"
   }
+ },
+ "rows_suspect": {
+  "kind": "legacy_double_count",
+  "layers": 101,
+  "overcounted_rows": 7359939,
+  "detected_at": "2026-11-22T11:12:43Z",
+  "detected_by": "ledger_merge.annotate_rows_suspect (W33-060)",
+  "run_id": "45010130014",
+  "policy": "rows 不回改，只加标记留档（用户裁定 2026-11-22）",
+  "fix": "W33-060：merge_checkpoints 对「旧 unit 索引 ⊆ 新」的旧包标 superseded_by、counted_rows=0；旧 ⊋ 新 的多出单元照计（唯一副本）",
+  "note": "下一轮采集/合并后这些层会自然回到单代行数，届时本标记会被摘掉"
  }
 }

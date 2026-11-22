@@ -121,6 +121,11 @@ def run_layer(step: str, lid: str, workers: int, unit_rows: int, tag_prefix: str
     diff = man.get("diff")
     rec.update({"declared": declared, "rows": rows, "err": err, "diff": diff,
                 "parts": man.get("parts"), "svc": man.get("svc")})
+    # ★ W33-061：把「用哪个主键 / 剔了哪几列」带到层记录里（默认可无，不塞空字段）
+    if man.get("oid_field"):
+        rec["oid_field"] = man["oid_field"]
+    if man.get("dropped_fields"):
+        rec["dropped_fields"] = list(man["dropped_fields"])
     if rc != 0 or err:
         rec.update(status="failed", reason="rc=%s err=%s" % (rc, err or "?"))
     elif declared == 0:
