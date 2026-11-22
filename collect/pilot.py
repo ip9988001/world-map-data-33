@@ -83,6 +83,25 @@ def pick_oid_field(meta: dict, api: str) -> str:
 
 
 # ---------------- 字段归一化 ----------------
+def _row_key(at, oid_field=""):
+    """行的身份键（W33-048）：优先 OID，无 OID 时对属性做稳定摘要。
+
+    为什么不用 collect/dedup_reduce.py 的键：那是 08 阶段的**地址归并**键
+    （`state|county|num|street|unit`），会把「同一地址的两条真实记录」合成一条 ——
+    在这里用会少行。这里要的是「同一条上游记录被翻两次」的判重，必须一行一身份。
+    """
+    if oid_field:
+        v = at.get(oid_field)
+        if v is not None:
+            return ("oid", str(v))
+    for k in ("OBJECTID", "OBJECTID_1", "FID", "OID"):
+        v = at.get(k)
+        if v is not None:
+            return ("oid", str(v))
+    blob = json.dumps(at, ensure_ascii=False, sort_keys=True, default=str)
+    return ("h", hashlib.sha1(blob.encode("utf-8")).hexdigest())
+
+
 def _top_up_offset(api, base, ps, start_offset, expect, oid_field, idx, log, sink):
     """★ 2026-11-21 W33-042 收尾补翻：用 resultOffset 从 start_offset 继续翻，直到：
       ①累计已够 expect；②翻空（返回 0 行）；③服务说本页不满且没有更多。
@@ -90,7 +109,7 @@ def _top_up_offset(api, base, ps, start_offset, expect, oid_field, idx, log, sin
     为什么不能只靠 keyset：138c05 的 OBJECTID 有 169 行为 null，`OBJECTID>n` 谓词永远匹配不到它们，
     只有 offset 能取到。返回 (gained_rows, err_or_empty)。
     """
-    got, off, guard = 0, int(start_offset or 0), 0
+    got, off, guard, stall = 0, int(start_offset or 0), 0, 0
     while guard < 500:
         guard += 1
         q = dict(base, resultOffset=off, resultRecordCount=ps, orderByFields=oid_field)
@@ -100,9 +119,16 @@ def _top_up_offset(api, base, ps, start_offset, expect, oid_field, idx, log, sin
         feats = r.get("features") or []
         if not feats:
             break
-        sink(feats)
-        got += len(feats)
+        # ★ W33-048：只算**真正收下的新行**（sink 内部按 OID 判重）。
+        #   旧版 `got += len(feats)` 再加到 rows 上，等于把补翻行数算两遍，
+        #   而 sink 又把重复行实写进 part —— 363,000 / 181,471 的 2.000× 就是这么来的。
+        acc = sink(feats)
+        got += len(feats) if acc is None else acc   # sink 返回 None = 老调用方「全收」
         off += len(feats)
+        # 服务把 resultOffset 夹住/忽略时，同一页会反复回来：连续两页 0 新行就停，别空转到 500 页
+        stall = stall + 1 if acc == 0 else 0
+        if stall >= 2:
+            break
         if not r.get("exceededTransferLimit") and len(feats) < ps:
             break
         time.sleep(0.1)
@@ -1043,23 +1069,42 @@ def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock
         part_no += 1
         buf = []
 
+    seen_keys = set()          # ★ W33-048：本单元已写过的行身份（OID / 属性摘要）
+
     def _absorb(feats):
-        """把一页 features 收进 buf（主循环与补翻共用同一套 OID 跟踪）。"""
-        nonlocal rows, last
+        """把一页 features 收进 buf，返回**真正新增**的行数（0 = 整页都是重复）。
+
+        ★ W33-048：keyset 与 offset 顶补的边界一定会重叠（服务夹 offset、null OID、
+          orderBy 非唯一……），所以「写得对不对」不能靠翻页逻辑保证，只能靠行身份兜底：
+          · 已经写过的身份 → 直接丢（不重复上行）；
+          · keyset 模式下 oid ≤ 游标 → 丢（游标单调，防服务乱序回吐旧页）；
+          · 新增才更新游标、才计数。
+        """
+        nonlocal last
+        added = 0
         for ft in feats:
             at = ft.get("attributes") or {}
-            buf.append(make_rec(ft))
-            rows += 1
-            oid = at.get(oid_field)
+            key = _row_key(at, oid_field)
+            if key in seen_keys:
+                continue
+            oid = None
+            if oid_field and at.get(oid_field) is not None:
+                oid = at.get(oid_field)
             if oid is None:
                 for k in (oid_field, "OBJECTID_1", "OBJECTID", "FID", "OID"):
-                    if k in at and at[k] is not None:
+                    if at.get(k) is not None:
                         oid = at[k]
                         break
+            if mode == "keyset" and oid is not None and last is not None and oid <= last:
+                continue
+            seen_keys.add(key)
+            buf.append(make_rec(ft))
+            added += 1
             if oid is not None:
                 last = oid
         if len(buf) >= CHUNK:
             flush()
+        return added
 
     while True:
         if mode == "keyset":
@@ -1080,25 +1125,14 @@ def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock
             if not feats:
                 # keyset 翻不动（服务端把「主键>n」当空条件）但 count 没拿够 → 换 resultOffset 续翻
                 if mode == "keyset" and rows > 0 and rows < expect:
+                    # ★ W33-048：起点用「已写的不同行数」，并且**允许重叠** ——
+                    #   重叠的页会被 _absorb 的 OID 判重挡掉，比猜一个不重叠的 offset 安全。
                     mode, off = "offset", rows
                     log("  u%d keyset 停在 %d/%d → 切 resultOffset" % (idx, rows, expect))
                     continue
                 break
-        for ft in feats:
-            at = ft.get("attributes") or {}
-            rec = make_rec(ft)
-            buf.append(rec)
-            rows += 1
-            oid = at.get(oid_field)
-            if oid is None:
-                for k in ("OBJECTID", "OBJECTID_1", "FID", "OID"):
-                    if k in at:
-                        oid = at[k]
-                        break
-            if oid is not None:
-                last = oid
-        if len(buf) >= CHUNK:
-            flush()
+        # ★ W33-048：主循环也走 _absorb（同一套判重/游标），不再各自写 buf
+        rows += _absorb(feats)
         with lock:
             prog["workers"][str(idx)] = rows
             prog["rows"] = prog.get("base_rows", 0) + sum(prog["workers"].values())
@@ -1121,7 +1155,7 @@ def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock
                 break
             gained, berr = _top_up_offset(api, base, ps2, rows, expect, oid_field, idx, log,
                                           sink=lambda feats: _absorb(feats))
-            rows += gained
+            rows += gained          # gained = sink 收下的新增行数（不含重复页）
             flush()
             log("  u%d 补翻(ps=%d)：+%d → %d/%d %s" % (idx, ps2, gained, rows, expect, berr or ""))
         if gap_short(rows, expect):

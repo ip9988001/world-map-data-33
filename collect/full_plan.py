@@ -25,6 +25,7 @@ ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 
 from lib.fetch import classify_failure, kinds_tally   # noqa: E402
+from worker_core import base_layer_id   # noqa: E402  W33-048 变体合并
 
 
 def _retry(fn, what, tries=3):
@@ -268,6 +269,47 @@ def _dead_entries(results: dict) -> list:
     return out
 
 
+def resolve_forced(forced, univ_rows, queue):
+    """★ W33-048 缺陷 A：把 `--force-layers` 名单解析成「必须排在队首的层」。
+
+    旧实现 `add = [univ[i] for i in forced if i in univ and i not in have]` 有两个洞：
+      ① force 写的是 `@未定位-2`，而队列里同一层的实际 id 是 `@未定位-1`（或反过来）
+         → `i in univ` 命中不到，整条名单被当成 unknown 静默丢掉；
+      ② 就算命中了，`i not in have` 会因为「另一个变体已在队列里」而跳过 → 提不到队首。
+    现在一律按 **base 层 id** 解析；命中队列的层直接**提到队首**（不是跳过）。
+
+    返回 (front, rest, unknown, merged)：
+      front   = 要放在队首的层（名单顺序、按真实 id 去重）
+      rest    = 原队列里除掉 front 后的剩余（按 base id 去重，同一个层不重复计数）
+      unknown = 选层范围里找不到的名单项（不静默）
+      merged  = [(名单里写的 id, 实际使用的 id)]，变体被归并时留痕
+    """
+    by_id = {str(r["id"]): r for r in (univ_rows or [])}
+    by_base = {}
+    for r in univ_rows or []:
+        by_base.setdefault(base_layer_id(r["id"]), r)
+    front, seen, unknown, merged = [], set(), [], []
+    for raw in forced or []:
+        fid = str(raw or "").strip()
+        if not fid:
+            continue
+        row = by_id.get(fid) or by_base.get(base_layer_id(fid))
+        if not row:
+            unknown.append(fid)
+            continue
+        rid = str(row["id"])
+        if rid != fid:
+            merged.append((fid, rid))
+        if rid in seen:
+            continue
+        seen.add(rid)
+        front.append(row)
+    front_bases = {base_layer_id(x) for x in seen}
+    rest = [r for r in (queue or [])
+            if str(r["id"]) not in seen and base_layer_id(r["id"]) not in front_bases]
+    return front, rest, unknown, merged
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--stage", required=True)
@@ -291,7 +333,7 @@ def main(argv=None) -> int:
     a = ap.parse_args(argv)
     allow = resolve_allowlist(a.force_layers, a.force_unstable_layer)
 
-    from worker_core import load_policy, select_layers   # noqa: E402
+    from worker_core import load_policy, select_layers, base_layer_id   # noqa: E402
     pol = load_policy(a.stage)
     sel = dict(pol.get("select") or {})
     # 计划阶段必须做 skip_done（这是「不重采」的唯一开关）；layers 显式清单不算续采
@@ -348,6 +390,7 @@ def main(argv=None) -> int:
             print("::warning::尝试账本读取失败（%s）：本轮不剔除 unstable 层" % str(e)[:160],
                   file=sys.stderr)
     forced = allow["forced"]
+    forced_merged = []
     if forced:
         have = {r["id"] for r in layers}
         try:
@@ -357,14 +400,20 @@ def main(argv=None) -> int:
         except Exception as e:  # noqa: BLE001
             print("::error::强制重跑名单无法核对（扫 Releases 失败）：%s" % str(e)[:200])
             return 4
-        univ = {r["id"]: r for r in univ_l}
-        add = [univ[i] for i in forced if i in univ and i not in have]
-        unknown = [i for i in forced if i not in univ]
+        # ★ W33-048：按 base 层 id 解析；命中队列的提到队首（旧版会因另一个变体已在队列里而跳过）
+        front, rest, unknown, merged = resolve_forced(forced, univ_l, layers)
+        forced_merged = merged
+        already = sum(1 for r in front if r["id"] in have)
+        layers = front + rest
+        if merged:
+            print("⚠️ force 名单里有 %d 条是 `@变体` 写法，已归并到真实层 id：%s"
+                  % (len(merged), "; ".join("%s→%s" % (x, y) for x, y in merged[:5])),
+                  file=sys.stderr)
         if unknown:
             print("⚠️ 强制重跑名单里有 %d 层不在本步选层范围内（已忽略，不静默）：%s"
                   % (len(unknown), ", ".join(unknown[:5])), file=sys.stderr)
-        layers = add + layers
-        print("★ 强制重跑 %d 层（其中 %d 层原本被判完成）" % (len(add), len(add)))
+        print("★ 强制重跑 %d 层（其中 %d 层原本已在队列、已提到队首；%d 层原本被判完成）"
+              % (len(front), already, len(front) - already))
     ids = [r["id"] for r in layers]
     shards = [{"shard": i // a.size, "layers": ids[i:i + a.size]}
               for i in range(0, len(ids), a.size)]
@@ -417,7 +466,10 @@ def main(argv=None) -> int:
             "unit_rows": pol.get("unit_rows"), "workers": pol.get("workers"),
             "done_from": str(pol.get("done_from") or a.stage),
             "tag": pol.get("tag"), "order": sel.get("order"),
-            "forced_layers": forced, "shards": shards,
+            "forced_layers": [r["id"] for r in layers[:len(forced)]],
+            "forced_layers_raw": forced,
+            "forced_layers_merged": [{"raw": x, "resolved": y} for x, y in forced_merged],
+            "shards": shards,
             "excluded_unstable": excluded_unstable,
             "excluded_unstable_n": len(excluded_unstable),
             "retry_cap": {"max_attempts": a.max_attempts, "attempt_log": os.path.relpath(
