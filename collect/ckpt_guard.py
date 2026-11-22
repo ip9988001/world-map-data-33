@@ -223,13 +223,23 @@ def backup_assets_to_delete(assets_idx: dict, layer: str, run_id,
 
 # ---------------- 合并（不整份覆盖） ----------------
 def merge_checkpoints(legacy: dict | None, new: dict, *, layer: str, run_id,
-                      assets=None, evidence: str = "") -> tuple[dict, dict]:
+                      assets=None, evidence: str = "",
+                      supersede_legacy: bool = False,
+                      supersede_all: bool = False) -> tuple[dict, dict]:
     """把旧检查点的完成度按单元并进新检查点。返回 (merged_ck, report)。
 
     规则（逐条对应事故）：
       · 旧单元包在 Release 里仍在且可下载 → 行数保留、`unit_uploaded=true`、`legacy_split=true`；
       · **切分不兼容 + 新代际重采了同一 unit 索引** → 旧包标 `superseded_by`，行数**不计入**
         （这是 2026-11-22 双算事故的修法：旧包是同一批行的上一代副本，不是增量）；
+      · **`supersede_legacy=True`（force+fresh 真重采）** → 即使切分完全相同，也按同一条
+        规则 supersede：本轮的意图就是「这批行重采一遍」，旧代是上一代副本而不是增量
+        （2026-11-22 第二次事故：旧代际包没有 `r<hash>-` 前缀，plan_hash 一致 → 合并按
+        「切分兼容」把两代相加 = rows 2×，supersede 永远不触发）；
+      · **`supersede_all=True`（fresh 且新代际整层采完）** → 旧代际**全部**落
+        `superseded_by`，不再按 unit 索引对齐：切分粒度变了（旧 2 个单元 / 新 1 个单元）时，
+        按索引对齐会把旧 u00001 当「唯一副本」照计，行的还是同一批数据（只是被切细了）；
+        调用方必须先证「新代际整层采完」（全部单元 done + 上传成功），否则只能按索引走；
       · **旧代际多出来的 unit**（索引不在新代际里）→ 唯一副本，行数**照计**（硬约束）；
       · 新代际对应单元没上传成功 → 不 supersede，旧包继续计入（它是唯一可用副本）；
       · 本 run 用同名包覆盖了旧包 → 按包名去重，取两者行数较大者（不双算），增量记
@@ -276,9 +286,12 @@ def merge_checkpoints(legacy: dict | None, new: dict, *, layer: str, run_id,
             dropped.append(name)
         else:
             cp = _new_has(l["idx"])
-            if cp and not split_compatible:
-                entry.update({"superseded_by": cp, "supersede_reason":
-                              "新代际已重采同一 unit 索引（旧包是上一代副本）"})
+            if supersede_all or (cp and (supersede_legacy or not split_compatible)):
+                entry.update({"superseded_by": cp or ("fresh:%s" % now_ish(run_id)),
+                              "supersede_reason": (
+                                  "fresh 整层重采：旧代际是上一代副本（切分粒度可能已变，"
+                                  "按 unit 索引对齐会重复计入）" if supersede_all else
+                                  "新代际已重采同一 unit 索引（旧包是上一代副本）")})
                 superseded.append(name)
             else:
                 rows_by_pkg[name] = rows_by_pkg.get(name, 0) + l["rows"]
@@ -302,9 +315,11 @@ def merge_checkpoints(legacy: dict | None, new: dict, *, layer: str, run_id,
         entry = {"package": name, "idx": u.get("idx"), "rows": rows_u, "present": True,
                  "legacy_split": True, "carried_over": True, "kept_rows": 0,
                  "counted_rows": 0, "counted_as": None}
-        if cp and not split_compatible:
-            entry.update({"superseded_by": cp, "supersede_reason":
-                          "新代际已重采同一 unit 索引（上一轮遗留的旧代际副本）"})
+        if supersede_all or (cp and (supersede_legacy or not split_compatible)):
+            entry.update({"superseded_by": cp or ("fresh:%s" % now_ish(run_id)),
+                          "supersede_reason": (
+                              "fresh 整层重采：上一轮遗留的旧代际副本" if supersede_all else
+                              "新代际已重采同一 unit 索引（上一轮遗留的旧代际副本）")})
             superseded.append(name)
         else:
             rows_by_pkg[name] = rows_by_pkg.get(name, 0) + rows_u
@@ -324,6 +339,9 @@ def merge_checkpoints(legacy: dict | None, new: dict, *, layer: str, run_id,
         "at_merge_run_id": now_ish(run_id),
         "layer": layer,
         "rows_before": before,
+        # 旧检查点自报的总行数（含它自己上一轮合并进来的 legacy 行）；`rows_before` 只数
+        # `unit_rows`，含双算的历史检查点这两个数会差一整代。留档，别让人以为少了行。
+        "rows_before_incl_legacy_units": max(before, int(legacy.get("rows_total") or 0)),
         "rows_after": after,
         "rows_new": rows_of(new),
         "rows_legacy_kept": sum(u["counted_rows"] for u in units_legacy
@@ -338,6 +356,9 @@ def merge_checkpoints(legacy: dict | None, new: dict, *, layer: str, run_id,
         "packages_dropped": dropped,
         "packages_superseded": superseded,
         "split_compatible": split_compatible,
+        "supersede_mode": ("fresh_all" if supersede_all else
+                           ("fresh" if supersede_legacy else
+                            ("split_incompatible" if not split_compatible else "none"))),
         "plan_hash_legacy": legacy.get("plan_hash"),
         "plan_hash_new": new.get("plan_hash"),
         "legacy_verified_against_release": (None if assets_idx is None else True),
@@ -362,7 +383,13 @@ def merge_checkpoints(legacy: dict | None, new: dict, *, layer: str, run_id,
                                "rows_legacy_kept", "rows_legacy_superseded",
                                "units_legacy", "units_new",
                                "packages_dropped", "split_compatible", "at_merge_run_id")}]
-    report.update(assert_rows_invariant(merged, legacy, new, layer=layer, run_id=run_id))
+    inv = assert_rows_invariant(merged, legacy, new, layer=layer, run_id=run_id)
+    report.update(inv)
+    # 等式复算结果也写进检查点本体：以后审计不用重跑合并，打开文件就能对账
+    merged["rows_total_recomputed"] = inv["rows_total_recomputed"]
+    merged["rows_legacy_side"] = inv["rows_legacy_side"]
+    merged["invariant_ok"] = inv["invariant_ok"]
+    merged["invariant"] = inv["invariant"]
     return merged, report
 
 

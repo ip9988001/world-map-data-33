@@ -319,6 +319,9 @@ def main(argv=None) -> int:
                     help="matrix job 上限 256，留余量")
     ap.add_argument("--force-layers", default="",
                     help="逗号分隔的层 id：**即使已判完成也强制重跑**（补 cancelled 片 / 口径差）")
+    ap.add_argument("--force-fresh", action="store_true",
+                    help="★ W33-062：名单内的层**真重采**（忽略检查点/开新代际，旧代际 supersede）。"
+                         "本开关只把意图写进 plan（供 shard 与事后审计），不自己决定分层")
     # ★ 重试上限（2026-10-31 用户立规）：已判 upstream_unstable 的层**默认不进待采队列**，
     #   否则同一个层会连续吃掉 3 轮 CI。要再试必须显式点名。
     ap.add_argument("--unstable-log", default=os.path.join(ROOT, "analysis", "04b-attempt-log.json"),
@@ -391,6 +394,13 @@ def main(argv=None) -> int:
                   file=sys.stderr)
     forced = allow["forced"]
     forced_merged = []
+    if a.force_fresh and not forced:
+        # ★ W33-062：fresh 只对名单内层生效 —— 没名单就必须喊出来，不能默默无效
+        print("::warning::--force-fresh 没配 --force-layers → 本轮没有任何层会被真重采"
+              "（名单外用层的续跑行为不受影响）", file=sys.stderr)
+    elif a.force_fresh:
+        print("★ --force-fresh：名单内 %d 层忽略检查点真重采（旧代际 supersede，不计入 rows_total）"
+              % len(forced))
     if forced:
         have = {r["id"] for r in layers}
         try:
@@ -469,6 +479,9 @@ def main(argv=None) -> int:
             "forced_layers": [r["id"] for r in layers[:len(forced)]],
             "forced_layers_raw": forced,
             "forced_layers_merged": [{"raw": x, "resolved": y} for x, y in forced_merged],
+            # ★ W33-062：fresh 真重采开关（plan → shard 的传透点之一；shard 只能对名单内层生效）
+            "force_fresh": bool(a.force_fresh),
+            "force_fresh_layers": [r["id"] for r in layers[:len(forced)]] if a.force_fresh else [],
             "shards": shards,
             "excluded_unstable": excluded_unstable,
             "excluded_unstable_n": len(excluded_unstable),

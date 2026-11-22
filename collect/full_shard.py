@@ -79,11 +79,16 @@ def coverage_note(rows, declared):
 
 
 def run_layer(step: str, lid: str, workers: int, unit_rows: int, tag_prefix: str = "",
-              layer_timeout_min: float = LAYER_TIMEOUT_MIN, force_rerun: bool = False) -> dict:
+              layer_timeout_min: float = LAYER_TIMEOUT_MIN, force_rerun: bool = False,
+              fresh: bool = False) -> dict:
     """跑一层，返回账本记录（四态之一 + 原因）。
 
     `force_rerun=True` → 传 `PILOT_FORCE_RERUN=1`：pilot 会先把旧检查点备份成
-    `_checkpoint.bak-<RUN_ID>`（本地 + Release 各留 3 代），再按单元合并而不是整份覆盖。"""
+    `_checkpoint.bak-<RUN_ID>`（本地 + Release 各留 3 代），再按单元合并而不是整份覆盖。
+
+    `fresh=True`（W33-062）→ 再传 `PILOT_FORCE_FRESH=1`：pilot **忽略检查点真重采**，
+    新单元包带 `f<runid>-` 代际前缀，收尾把旧代际标 `superseded_by`、不计入 rows_total。
+    只靠 `force_rerun` 是「备份+合并+续跑」：实测 elapsed 2 秒、新采 0 行、2× 原样保留。"""
     t0 = time.time()
     cmd = [sys.executable, os.path.join(HERE, "run_step_%s.py" % step),
            "--layer", lid, "--workers", str(workers), "--unit-rows", str(unit_rows)]
@@ -96,6 +101,10 @@ def run_layer(step: str, lid: str, workers: int, unit_rows: int, tag_prefix: str
         env["PILOT_HEARTBEAT_PUSH"] = "1"
     if force_rerun:
         env["PILOT_FORCE_RERUN"] = "1"
+    if fresh:
+        # ★ W33-062：必须和 PILOT_FORCE_RERUN 一起发 —— 前者让 pilot 忽略检查点，
+        #   後者让它先备份旧检查点（出事时旧证据还在）。
+        env["PILOT_FORCE_FRESH"] = "1"
     try:
         r = subprocess.run(cmd, capture_output=True, text=True,
                            timeout=max(60, int(layer_timeout_min * 60)), env=env)
@@ -126,6 +135,23 @@ def run_layer(step: str, lid: str, workers: int, unit_rows: int, tag_prefix: str
         rec["oid_field"] = man["oid_field"]
     if man.get("dropped_fields"):
         rec["dropped_fields"] = list(man["dropped_fields"])
+    # ★ W33-062：fresh 真重采的证据带到层记录上（没 fresh 就不塞字段）
+    if man.get("fresh"):
+        rec["fresh"] = True
+        for k in ("rows_before_fresh", "rows_superseded_by_fresh",
+                  "units_legacy_superseded", "units_new", "rows_after_fresh",
+                  "supersede_mode", "unit_ns"):
+            if man.get(k) is not None:
+                rec[k] = man[k]
+        rec["regression_reason"] = (
+            "fresh 真重采：旧代际标 superseded_by、不计入 rows_total（rows 为新代际单算；"
+            "旧代际 %s 行在检查点 units_legacy[] 里留档）" % f"{int(man.get('rows_superseded_by_fresh') or 0):,}")
+        # 证据路径：merge job 的 step_full_report 先写 run 账本再跑闸门（见 ledger_merge），
+        # 所以这个文件在闸门判定时一定在，content 里就是本层的 rows_before/rows_after。
+        _sname = STAGE_NAMES.get(step, step)                 # step05b / 05b
+        _lname = _sname[4:] if _sname.startswith("step") else _sname
+        rec["row_regression_evidence"] = "collect/ledger/%s_run%s.json" % (
+            _lname, os.environ.get("GITHUB_RUN_ID") or "local")
     if rc != 0 or err:
         rec.update(status="failed", reason="rc=%s err=%s" % (rc, err or "?"))
     elif declared == 0:
@@ -137,6 +163,13 @@ def run_layer(step: str, lid: str, workers: int, unit_rows: int, tag_prefix: str
         rec.update(status="partial", reason=note, **flags)
     else:
         rec.update(status="ok", reason="", **coverage_note(rows, declared)[1])
+    # ★ W33-062 反例（用户点名要的）：fresh 传了但一行新数据也没采到 ——
+    #   绝不静默当成「重采成功」（那样 2× 会原样保留、账本看着却像重采过了）。
+    if fresh and (rows or 0) == 0:
+        rec["fresh_but_upstream_empty"] = True
+        note = ("fresh 真重采但本轮新采 0 行（declared=%s）—— 旧代际**未** supersede，"
+                "不当作重采成功" % f"{int(declared or 0):,}")
+        rec["reason"] = (rec.get("reason") + "；" + note) if rec.get("reason") else note
     return rec
 
 
@@ -156,6 +189,11 @@ def write_ledger(out, name, stage, shard, shards, plan, unit_rows, forced_here,
            "shards_total": len(shards), "size": plan.get("size"),
            "unit_rows": unit_rows, "at": now(),
            "forced_n": len(forced_here),
+           # ★ W33-062：fresh 口径落到片账本上（多少人真重采 / 多少层 fresh 但上游 0 行）
+           "force_fresh": bool(plan.get("force_fresh")),
+           "fresh_n": sum(1 for r in recs if r.get("fresh")),
+           "fresh_but_upstream_empty_n": sum(1 for r in recs
+                                             if r.get("fresh_but_upstream_empty")),
            "layers_planned": len(layers), "layers_n": len(recs),
            "partial_run": bool(partial_run),
            "ok": cnt.get("ok", 0), "empty": cnt.get("empty", 0),
@@ -184,6 +222,10 @@ def main() -> int:
     ap.add_argument("--force-layers", default="",
                     help="逗号分隔的层 id：即使已判完成也强制重跑（补 cancelled 片的半截层）。"
                          "重跑前 pilot 会先备份旧检查点、再按单元合并，绝不让某层 rows 变小")
+    ap.add_argument("--force-fresh", action="store_true",
+                    help="★ W33-062：对 --force-layers 名单内的层**真重采** —— 忽略既有检查点/单元包，"
+                         "开新代际（f<runid>- 前缀）重够，旧代际按 supersede 合并、不计入 rows_total。"
+                         "不传时 --force-layers 维持既有语义（只提队首，仍 checkpoint 续跑）。")
     a = ap.parse_args()
     stage = a.stage
     name = STAGE_NAMES.get(stage)
@@ -221,8 +263,13 @@ def main() -> int:
             print("⚠️ release_done 取不到（%s），跨轮标注退化为无" % str(e)[:100], flush=True)
     forced_here = [lid for lid in layers if lid in forced]
     if forced_here:
-        print("[%s] 本片含 %d 层强制重跑：%s"
-              % (name, len(forced_here), ", ".join(forced_here[:3])), flush=True)
+        print("[%s] 本片含 %d 层强制重跑：%s%s"
+              % (name, len(forced_here), ", ".join(forced_here[:3]),
+                 "（fresh：忽略检查点，开新代际重采）" if a.force_fresh else "（续跑）"),
+              flush=True)
+    if a.force_fresh and not forced:
+        # 只说一次，不说一白遍：fresh 只对名单内的层生效，没名单 = 什么都不做
+        print("::warning::--force-fresh 没配 --force-layers → 本片没有任何层受影响", flush=True)
 
     # 账本路径先算好：循环里每跑完一层就落一次盘（被杀也留痕）
     lname = stage if stage.endswith("b") else name
@@ -243,14 +290,19 @@ def main() -> int:
             continue
         print("[%s] (%d/%d) %s" % (name, i, len(layers), lid), flush=True)
         rec = run_layer(base, lid, a.workers, unit_rows, a.tag_prefix, a.layer_timeout,
-                        force_rerun=(lid in forced))
+                        force_rerun=(lid in forced), fresh=(lid in forced and a.force_fresh))
         if lid in forced:
             pu = sum(1 for n in ((prior.get(lid) or {}).get("assets") or [])
                      if re.search(r"-u\d{5}\.tar\.gz$", n or ""))
             rec.update({"forced": True, "prior_units": pu, "cross_round": bool(pu)})
-            if pu:
+            if lid in forced and a.force_fresh:
+                rec["force_fresh"] = True
+            if pu and not (lid in forced and a.force_fresh):
                 note = "跨轮：上轮已有 %d 个单元包，本轮只补缺口" % pu
                 rec["reason"] = (rec.get("reason") + "；" + note) if rec.get("reason") else note
+            elif pu:
+                rec["prior_units_note"] = ("上轮 %d 个单元包已按 fresh supersede 处理"
+                                           "（不计入 rows_total）" % pu)
         recs.append(rec)
         flush()          # 每层落一次账：被 350 分钟掐掉时，已跑完的层不会跟着蒸发
 
