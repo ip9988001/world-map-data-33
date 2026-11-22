@@ -676,10 +676,14 @@ def _backup_legacy_ckpt(ck, log, assets_idx=None):
 
 
 def _merge_legacy_ckpt(ck, legacy_ck, assets_idx, log):
-    """把旧检查点的完成度按**单元包名**并进本次检查点，并执行「行数只许涨」闸门。
+    """把旧检查点的完成度按**单元包名**并进本次检查点，并执行行数等式闸门。
 
-    返回合并后的新 dict（不改入参）。行数变小且拿不出实证时抛 `ckpt_guard.RowsRegression`，
-    由调用方拒绝写盘（宁可不写，也不能把 0 行盖上去）。"""
+    返回合并后的新 dict（不改入参）。三种情况会拒绝写盘（宁可不写，也不能把账算错）：
+      · 旧包真的从 Release 消失且拿不出证据 → `ckpt_guard.RowsRegression`；
+      · `rows_total` 对不上 `Σunits_new + Σunits_legacy.counted_rows` → `RowsInvariantError`。
+
+    ★ 2026-11-22：原来这里守的是「行数只许涨」，但它把双算当成了健康增长（100 层翻倍
+      全部放行）。现在换成可复算的等式，由 `merge_checkpoints` 内部调 `assert_rows_invariant`。"""
     import ckpt_guard
     evidence = os.environ.get("PILOT_ROWS_EVIDENCE") or ""
     merged, rep = ckpt_guard.merge_checkpoints(
@@ -688,20 +692,26 @@ def _merge_legacy_ckpt(ck, legacy_ck, assets_idx, log):
     if rep["packages_dropped"]:
         reason = ("%d 个旧单元包已不在 Release（%s）"
                   % (len(rep["packages_dropped"]), ",".join(rep["packages_dropped"][:3])))
-    guard = ckpt_guard.assert_rows_not_shrunk(
-        rep["rows_before"], rep["rows_after"], layer=CUR["id"], run_id=RUN_ID,
-        reason=reason, evidence=evidence)
-    if guard:
-        merged["row_regression"] = guard
-        log("  ⚠ 行数回退已放行（有实证：%s）：%s 行 → %s 行，原因：%s"
-            % (evidence, f"{guard['rows_before']:,}", f"{guard['rows_after']:,}",
-               guard["regression_reason"]))
+        guard = ckpt_guard.assert_rows_not_shrunk(
+            rep["rows_before"], rep["rows_after"], layer=CUR["id"], run_id=RUN_ID,
+            reason=reason, evidence=evidence)
+        if guard:
+            merged["row_regression"] = guard
+            log("  ⚠ 旧包消失导致行数回退，已放行（有实证：%s）：%s 行 → %s 行，原因：%s"
+                % (evidence, f"{guard['rows_before']:,}", f"{guard['rows_after']:,}",
+                   guard["regression_reason"]))
     merged["forced_rerun"] = (os.environ.get("PILOT_FORCE_RERUN") == "1")
-    log("  ⇄ 检查点合并：旧 %s 行（%d 单元，保留 %s 行）+ 本轮 %s 行 → 合计 %s 行"
+    log("  ⇄ 检查点合并：旧 %s 行（%d 单元：supersede %d 个 / 独有 unit 计入 %d 个 = %s 行）"
+        " + 本轮 %s 行 → 合计 %s 行（等式按 %s 复算）"
         % (f"{rep['rows_before']:,}", rep["units_legacy"],
-           f"{rep['rows_legacy_kept']:,}", f"{rep['rows_new']:,}", f"{rep['rows_after']:,}"))
+           rep["units_legacy_superseded"], rep["units_legacy_only"],
+           f"{rep['rows_legacy_kept']:,}", f"{rep['rows_new']:,}",
+           f"{rep['rows_after']:,}", f"{rep['rows_total_recomputed']:,}"))
+    if rep["rows_legacy_superseded"]:
+        log("  ⇄ 旧代际 %d 行被新代际重采覆盖 → 标 superseded_by，不进 rows_total（仍留档可审计）"
+            % rep["rows_legacy_superseded"])
     if rep["split_compatible"] is False:
-        log("  ⇄ 新旧切分不兼容：units_legacy=%d / units_new=%d 两边都记，按包名去重"
+        log("  ⇄ 新旧切分不兼容：units_legacy=%d / units_new=%d，旧包按 unit 索引判定 supersede"
             % (rep["units_legacy"], rep["units_new"]))
     return merged
 
@@ -1599,7 +1609,8 @@ def main():
         return 0
     code, short = verdict(rows, count, err, a.limit)
     if short:
-        log("❌ 数据不齐 rows=%d count=%d（缺 %.2f%%）" % (rows, count, 100.0 * (count - rows) / max(count, 1)))
+        log("❌ 数据不齐 rows=%d count=%d（缺口 %.2f%%）"
+            % (rows, count, max(0.0, 100.0 * (count - rows) / max(count, 1))))
     return code
 
 

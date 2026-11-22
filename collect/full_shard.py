@@ -44,6 +44,40 @@ def now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
+def coverage_pct(rows, declared):
+    """覆盖率 = `min(rows, declared) / declared`（百分数）。
+
+    ★ 2026-11-22：以前用 `(declared - rows) / declared` 算「缺口 %」，`rows > declared`
+      时直接算出**负缺口**（run 44992201755 的 100 层渲染成「缺口 -99.93%」）—— 那是账本
+      在说谎：读者会以为差 99.93% 没采到，实际是多算了一倍。用 min() 后覆盖率封顶 100%，
+      「超额」另用 `rows_exceeds_declared` 标记`（见 `coverage_note`），异常信号不静默吞掉。
+    """
+    d, r = int(declared or 0), int(rows or 0)
+    if d <= 0:
+        return None
+    return 100.0 * min(max(r, 0), d) / d
+
+
+def coverage_note(rows, declared):
+    """→ (给人看的文本, 要落到账本记录上的标记 dict)。
+
+    `rows > declared` 时**不当作「多采了真好」**：它本身就是「要么上游少了、要么我们重复计数」
+    的线索（正是这条线索把 100 层 2× 双算顶出来的），所以保留 `rows_exceeds_declared=true`
+    与超额行数，不上报成 100% 覆盖率就完事。
+    """
+    rows, declared = int(rows or 0), int(declared or 0)
+    flags = {}
+    if declared <= 0:
+        return ("上游声明 %s 行（无分母）" % f"{declared:,}"), flags
+    cov = coverage_pct(rows, declared)
+    txt = "覆盖率 %.2f%%（实采 %s / 声明 %s）" % (cov, f"{rows:,}", f"{declared:,}")
+    if rows > declared:
+        flags = {"rows_exceeds_declared": True, "rows_excess": rows - declared}
+        txt += "；实采超出声明 %s 行（%.2f%%）→ 查重复/双算，不是缺口" % (
+            f"{rows - declared:,}", 100.0 * (rows - declared) / declared)
+    return txt, flags
+
+
 def run_layer(step: str, lid: str, workers: int, unit_rows: int, tag_prefix: str = "",
               layer_timeout_min: float = LAYER_TIMEOUT_MIN, force_rerun: bool = False) -> dict:
     """跑一层，返回账本记录（四态之一 + 原因）。
@@ -94,11 +128,10 @@ def run_layer(step: str, lid: str, workers: int, unit_rows: int, tag_prefix: str
     elif rows == 0:
         rec.update(status="failed", reason="声明 %s 行但实采 0 行" % declared)
     elif declared and (diff is None or diff > DIFF_TOL):
-        rec.update(status="partial",
-                   reason="缺口 %.2f%%（实采 %s / 声明 %s）"
-                          % (100.0 * (declared - rows) / max(declared, 1), rows, declared))
+        note, flags = coverage_note(rows, declared)
+        rec.update(status="partial", reason=note, **flags)
     else:
-        rec.update(status="ok", reason="")
+        rec.update(status="ok", reason="", **coverage_note(rows, declared)[1])
     return rec
 
 

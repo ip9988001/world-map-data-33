@@ -46,5 +46,41 @@ class WriteLedger(unittest.TestCase):
         self.assertEqual((led['ok'],led['empty'],led['partial'],led['skipped_done']),(1,1,1,1))
         self.assertEqual(led['rows'],6)
 
+class CoverageDisplay(unittest.TestCase):
+    """★ 2026-11-22：`rows > declared` 不许再渲染成负缺口。
+
+    事故（run 44992201755）：100 层因跨代际双算 rows≈2×declared，而 `partial` 的 reason 用
+    `(declared - rows)/declared` 算 → 账本上写着「缺口 -99.93%」。读者只会得出「差 99.93%
+    没采到」的结论，实际是多算了一倍 —— 账本在说谎。现在覆盖率封顶 100%，
+    「实采超出声明」单独留 `rows_exceeds_declared` 标记（异常信号不许静默吞掉）。
+    """
+
+    def test_rows_exceed_declared_is_capped_not_negative(self):
+        txt, flags = FS.coverage_note(555729, 277958)
+        self.assertEqual(FS.coverage_pct(555729, 277958), 100.0)
+        self.assertIn("100.00%", txt)
+        self.assertNotIn("-", txt)                       # 不许出现负缺口
+        self.assertNotIn("缺口 -", txt)
+        self.assertTrue(flags["rows_exceeds_declared"])
+        self.assertEqual(flags["rows_excess"], 277771)
+
+    def test_exact_match_has_no_flag(self):
+        txt, flags = FS.coverage_note(25834, 25834)
+        self.assertEqual(flags, {})
+        self.assertIn("100.00%", txt)
+
+    def test_short_layer_still_reports_coverage(self):
+        txt, flags = FS.coverage_note(25776, 25834)
+        self.assertEqual(flags, {})
+        self.assertAlmostEqual(FS.coverage_pct(25776, 25834), 99.7755, places=3)
+
+    def test_zero_declared_has_no_denominator(self):
+        txt, flags = FS.coverage_note(0, 0)
+        self.assertIn("无分母", txt)
+        self.assertEqual(flags, {})
+        self.assertIsNone(FS.coverage_pct(0, 0))
+        self.assertIsNone(FS.coverage_pct(5, None))
+
+
 if __name__ == "__main__":
     unittest.main()
