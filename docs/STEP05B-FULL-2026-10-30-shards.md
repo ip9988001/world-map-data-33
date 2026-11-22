@@ -3,11 +3,11 @@
 ## 一、总账
 
 - 阶段：`05b` —— 县市碎片 05b（5,000~300,000 行）
-- 计划：580 层 / 声明 31,967,696 行 / 3 片（每片 200 层，unit_rows=100000）
-- 账本覆盖：**1017 层**（片文件 21 个）
-- 逐态：**ok 947** / capped_by_upstream 0 / empty 17 / partial 25 / failed 28 / skipped_done 0
-- 片完成度：应有 **3** 片，有账本 21 片，**未完成 3 片**：片号 0, 1, 2
-- 声明行合计：**41,874,243**；实采行合计：**41,484,729**；差额 389,514（0.930%）
+- 计划：580 层 / 声明 31,967,696 行 / 194 片（每片 3 层，unit_rows=100000）
+- 账本覆盖：**962 层**（片文件 21 个）
+- 逐态：**ok 897** / capped_by_upstream 0 / empty 16 / partial 21 / failed 28 / skipped_done 0
+- 片完成度：应有 **194** 片，有账本 21 片，**未完成 175 片**：片号 1, 2, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193
+- 声明行合计：**41,524,278**；实采行合计：**41,109,530**；差额 414,748（0.999%）
 
 
 > 差额口径：`declared` 是上游 returnCount 的声明值，`rows` 是实采并落 Release 的行数。
@@ -18,7 +18,7 @@
 
 | 片 | 计划层 | 已记层 | 实采行 | 状态 |
 |---|---|---|---|---|
-| 0 | 200 | 58 | 940,923 | 未完成：片内没跑完（partial_run=true） |
+| 0 | 3 | 3 | 565,724 | 完成 |
 | 1 | 200 | 69 | 1,912,004 | 未完成：片内没跑完（partial_run=true） |
 | 2 | 180 | 11 | 592,909 | 未完成：片内没跑完（partial_run=true） |
 | 3 | 50 | 50 | 467,524 | 完成 |
@@ -39,8 +39,381 @@
 | 18 | 50 | 50 | 4,562,833 | 完成 |
 | 19 | 50 | 50 | 6,807,437 | 完成 |
 | 20 | 33 | 33 | 8,819,199 | 完成 |
+| 21 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 22 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 23 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 24 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 25 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 26 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 27 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 28 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 29 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 30 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 31 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 32 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 33 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 34 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 35 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 36 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 37 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 38 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 39 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 40 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 41 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 42 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 43 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 44 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 45 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 46 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 47 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 48 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 49 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 50 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 51 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 52 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 53 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 54 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 55 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 56 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 57 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 58 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 59 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 60 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 61 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 62 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 63 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 64 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 65 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 66 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 67 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 68 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 69 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 70 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 71 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 72 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 73 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 74 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 75 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 76 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 77 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 78 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 79 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 80 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 81 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 82 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 83 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 84 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 85 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 86 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 87 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 88 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 89 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 90 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 91 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 92 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 93 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 94 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 95 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 96 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 97 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 98 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 99 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 100 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 101 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 102 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 103 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 104 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 105 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 106 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 107 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 108 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 109 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 110 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 111 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 112 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 113 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 114 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 115 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 116 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 117 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 118 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 119 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 120 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 121 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 122 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 123 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 124 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 125 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 126 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 127 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 128 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 129 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 130 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 131 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 132 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 133 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 134 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 135 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 136 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 137 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 138 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 139 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 140 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 141 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 142 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 143 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 144 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 145 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 146 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 147 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 148 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 149 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 150 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 151 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 152 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 153 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 154 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 155 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 156 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 157 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 158 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 159 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 160 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 161 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 162 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 163 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 164 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 165 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 166 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 167 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 168 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 169 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 170 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 171 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 172 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 173 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 174 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 175 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 176 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 177 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 178 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 179 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 180 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 181 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 182 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 183 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 184 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 185 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 186 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 187 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 188 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 189 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 190 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 191 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 192 | 3 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
+| 193 | 1 | 0 | 0 | 未完成：无账本（片被取消/没启动） |
 
-**未完成片共 3 个，至少 442 层没有任何账本条目**（这些层不是 failed，是「没跑到」，续跑入口：`force_layers` 点名或原地重切）。
+**未完成片共 175 个，至少 817 层没有任何账本条目**（这些层不是 failed，是「没跑到」，续跑入口：`force_layers` 点名或原地重切）。
+
+## 二之二、max_shards 截断：本轮注定没跑的片（W33-036）
+
+> 这不是「没采到」，是 **没派**：`max_shards=1` 把 194 片截成 1 片，577 层连 job 都没起。清单同时写在 plan 的 `shards_dropped[]`，账本 `shards_incomplete` 也会点名。要全跑请 `max_shards=0`。
+
+| 被砍分片 | 层数 | 层 id |
+|---|---|---|
+| 1 | 3 | `ye4IXyXsdIpPb_arcgis_rest_services_Addresses_FeatureServer_0`, `roY6O3ncx_arcgis_rest_services_MS4_addresses_FeatureServer_0`, `d_Septic_System_Pilot_Project_Addresses_View_FeatureServer_0` |
+| 2 | 3 | `arcgis_rest_services_Hartford_911_Addresses__FeatureServer_0`, `g5mTyuNWO5xx6_arcgis_rest_services_Addresses_FeatureServer_0`, `esses_In_Refuse_Recycle_Routes_WFL1_July2019_FeatureServer_0` |
+| 3 | 3 | `67TISFO3iTjgFX_arcgis_rest_services_address2_FeatureServer_0`, `cgis_rest_services_Administrative_Addressing_FeatureServer_0`, `bK6DOd0VbR_arcgis_rest_services_SB_Addresses_FeatureServer_0` |
+| 4 | 3 | `TjgFX_arcgis_rest_services_addresses_120222a_FeatureServer_0`, `unty__GA_Online_911_Addresses_and_Roads_WFL1_FeatureServer_1`, `e3_arcgis_rest_services_SiteAddresses_public_FeatureServer_0` |
+| 5 | 3 | `CRVuK_arcgis_rest_services_Map_View_Address_FeatureServer_42`, `HKRPMgv82EjLQ_arcgis_rest_services_Addresses_FeatureServer_0`, `cgis_rest_services_SiteAddresses_public_2020_FeatureServer_1` |
+| 6 | 3 | `dlWlBxzX_arcgis_rest_services_Newton_Address_FeatureServer_0`, `Iod9kh71mtnDG_arcgis_rest_services_Addresses_FeatureServer_0`, `387Pb3S_arcgis_rest_services_LiveAdds_202504_FeatureServer_0` |
+| 7 | 3 | `st_services_Curb_Transition_Magic_Number2027_FeatureServer_0`, `_in_Incident_Address_and_Type_for_Date_Range_FeatureServer_0`, `wVADPEG6iD24f_arcgis_rest_services_Addresses_FeatureServer_0` |
+| 8 | 3 | `ces_Stillwater_County_Addressing_Layers_2026_FeatureServer_0`, `yHixJV_arcgis_rest_services_Master_Addresses_FeatureServer_0`, `teAddresses_8548b2fdfac0464392b3fd7620a632d7_FeatureServer_0` |
+| 9 | 3 | `ater_Meter_Replacement_Addresses_Zone_1_view_FeatureServer_1`, `st_services_Lincoln_City_Addresses_View_Only_FeatureServer_0`, `sdIpPb_arcgis_rest_services_Addresses_Splits_FeatureServer_0` |
+| 10 | 3 | `SQHJsl5r_arcgis_rest_services_Address_Labels_FeatureServer_0`, `NuFrQ7kB_arcgis_rest_services_Master_Address_FeatureServer_0`, `7Y8pE5CiojuXeU_arcgis_rest_services_NewSitus_FeatureServer_0` |
+| 11 | 3 | `M5KB8_arcgis_rest_services_E911_PairwiseClip_FeatureServer_0`, `_rest_services_E911_Houses_Washington_County_FeatureServer_0`, `kttgSmcq6CPonms_arcgis_rest_services_Address_FeatureServer_0` |
+| 12 | 3 | `ieS2ld_arcgis_rest_services_Searcy_NG911_gdb_FeatureServer_2`, `_Mountlake_Terrace_Washington_Addresses_view_FeatureServer_0`, `rest_services_Site_Addresses_06012022_public_FeatureServer_2` |
+| 13 | 3 | `CY2_arcgis_rest_services_Dispatcher_Map_WFL1_FeatureServer_0`, `rest_services_Pella_Address_Data_Public_View_FeatureServer_2`, `_ArcGIS_rest_services_AddressesE911Macon2022_FeatureServer_0` |
+| 14 | 3 | `Z_arcgis_rest_services_CityofDemingAddresses_FeatureServer_0`, `l0FeW1NE_arcgis_rest_services_AddressesWInfo_FeatureServer_0`, `0hS_arcgis_rest_services_Address_Road_Update_FeatureServer_0` |
+| 15 | 3 | `Q24dH_arcgis_rest_services_Addresses__Site__FeatureServer_13`, `rest_services_Master_Address_Management_WFL1_FeatureServer_0`, `ms_arcgis_rest_services_Address_Data_Public_FeatureServer_10` |
+| 16 | 3 | `cgis_rest_services_Address_Data_Public_view_FeatureServer_10`, `ses_public_3336c922d00a441e8f588e16c3dc2577_FeatureServer_10`, `gg5s_arcgis_rest_services_Building_Addresses_FeatureServer_0` |
+| 17 | 3 | `8nlIDAHxNx4_arcgis_rest_services_911_Address_FeatureServer_0`, `is_rest_services_Address_Points_Council_Area_FeatureServer_0`, `s_rest_services_Richland_County_ND_Addresses_FeatureServer_1` |
+| 18 | 3 | `HRU_arcgis_rest_services_VFAC_Addresses_WFL1_FeatureServer_0`, `sses_public_e65dd46e9c084cddaedcb94aeea0ed6b_FeatureServer_0`, `DQNT3m6mbJlqZ_arcgis_rest_services_Addresses_FeatureServer_0` |
+| 19 | 3 | `_services_Address_and_Street_Annotation_view_FeatureServer_0`, `s_rest_services_City_of_Dinuba_Addresses_gdb_FeatureServer_1`, `_arcgis_rest_services_Site_Address_Occupants_FeatureServer_0` |
+| 20 | 3 | `1uhbqnOZPx6qT_arcgis_rest_services_Addresses_FeatureServer_0`, `es_City_Buildings_and_Address_Locations_WFL1_FeatureServer_4`, `resses___Archuleta_County_201411251147175537_FeatureServer_0` |
+| 21 | 3 | `Zk1fY2MHCTEXz_arcgis_rest_services_Addresses_FeatureServer_0`, `R_arcgis_rest_services_Tornado_Addresses_NLR_FeatureServer_0`, `vlQFEpKtV_arcgis_rest_services_DOUGLASCOUNTY_FeatureServer_0` |
+| 22 | 3 | `wu_arcgis_rest_services_CoStafford_Addresses_FeatureServer_0`, `PSO5BR5eOIggwRH_arcgis_rest_services_Address_FeatureServer_0`, `s_rest_services_Addressing_Addressing_public_FeatureServer_0@MN-3` |
+| 23 | 3 | `mn_gov_arcgis_rest_services_Basemaps_LINKBasemap_MapServer_4`, `rcgis_rest_services_OsageCoKS_NG911Addresses_FeatureServer_0`, `Pc_arcgis_rest_services_EL_RENO_911ADDRESSES_FeatureServer_0` |
+| 24 | 3 | `gUZUh16VF_arcgis_rest_services_SC_Addressing_FeatureServer_0`, `VF_arcgis_rest_services_SC_Addressing_2025_7_FeatureServer_0`, `sses_public_6332b4b81c614cb4894d5de569a96465_FeatureServer_0` |
+| 25 | 3 | `cyjLcCCpGk8Ri_arcgis_rest_services_Addresses_FeatureServer_0`, `BY6OUzMBTZcz_arcgis_rest_services_Addresses_FeatureServer_15`, `Sample_NCTECH_Volusia_Situs_Addresss_VRWorld_FeatureServer_0` |
+| 26 | 3 | `hAmRP1z50gTbO_arcgis_rest_services_Addresses_FeatureServer_0`, `oXVtxM_arcgis_rest_services_CountyAddresses_FeatureServer_23`, `_arcgis_rest_services_Address_Pnts_ElSegundo_FeatureServer_2` |
+| 27 | 3 | `QpZPT9qY_arcgis_rest_services_TOD_ADDRESS_IN_FeatureServer_0`, `st_services_Winneshiek_County_Address_Points_FeatureServer_1`, `jyn_arcgis_rest_services_Full_Street_Address_FeatureServer_0` |
+| 28 | 3 | `s___Pulse_of_OC_Updated_Draft___Site_Address_FeatureServer_0`, `_server_rest_services_Aspen_AspenEditEnabled_FeatureServer_0`, `QSIEviNS_arcgis_rest_services_Addresses_2025_FeatureServer_3` |
+| 29 | 3 | `_rest_services_NG24DataModelUpdate_WFL1_view_FeatureServer_0`, `wi_us_arcgis_rest_services_RichlandCo_GIS_Public_MapServer_6`, `p_arcgis_rest_services_Addresses_Public_View_FeatureServer_0` |
+| 30 | 3 | `KcOCt7Lxga2AytI_arcgis_rest_services_Address_FeatureServer_0`, `tkincounty_com_arcgis_rest_services_Full_Address_MapServer_1`, `nDataMaps_OpenDataMAP_InfraZonePropBound_Layers_MapServer_33` |
+| 31 | 3 | `Qwt3_arcgis_rest_services_Address_Layer_view_FeatureServer_0`, `FjYDrl_arcgis_rest_services_Address_12102021_FeatureServer_0`, `kFjYDrl_arcgis_rest_services_Address11292023_FeatureServer_0` |
+| 32 | 3 | `rWTl_arcgis_rest_services_Harrison_Addresses_FeatureServer_0`, `4soU_arcgis_rest_services_Site_Addresses_gdb_FeatureServer_0`, `t_services_Perry_County_Address_Geocode_v1_1_FeatureServer_0` |
+| 33 | 3 | `Pvc_arcgis_rest_services_Address_Points_View_FeatureServer_2`, `1mtnDG_arcgis_rest_services_Worth__ADDRESSES_FeatureServer_0`, `t_services_Public_20Notification_20Addresses_FeatureServer_0` |
+| 34 | 3 | `lqccxOHLu_arcgis_rest_services_SiteAddresses_FeatureServer_0`, `kFjYDrl_arcgis_rest_services_Address02202025_FeatureServer_0`, `unty_com_arcgis_rest_services_Hosted_Address_FeatureServer_0` |
+| 35 | 3 | `Us_arcgis_rest_services_OC_Site_Address_2023_FeatureServer_0`, `ILCm3hbWNTZLH_arcgis_rest_services_Addresses_FeatureServer_0`, `kFjYDrl_arcgis_rest_services_Address06192026_FeatureServer_0` |
+| 36 | 3 | `Kw_arcgis_rest_services_Situs_Address_Public_FeatureServer_0`, `arcgis_rest_services_BTV_e911_Address_Layers_FeatureServer_0`, `arcgis_rest_services_PAunderservedstructures_FeatureServer_0` |
+| 37 | 3 | `ountyny_gov_server_rest_services_EMO_E911_Viewer_MapServer_5`, `DdwE7LMrYrEMJ_arcgis_rest_services_Addresses_FeatureServer_1`, `JE9B_arcgis_rest_services_Newberg_Addresses__FeatureServer_0` |
+| 38 | 3 | `ver_rest_services_ParcelViewer_Parcel_Map_Labels_MapServer_0`, `wlO_arcgis_rest_services_Master_Address_List_FeatureServer_0`, `XhtlWzOFCTkO_arcgis_rest_services_AddressPts_FeatureServer_0` |
+| 39 | 3 | `services_BRIC_WRC_Situs_Address_LookUp_Table_FeatureServer_0`, `gis_rest_services_Municipal_Address_Points_FeatureServer_214`, `5n_arcgis_rest_services_City_Limit_Addresses_FeatureServer_0` |
+| 40 | 3 | `st_services_Arlington_Addresses_current_view_FeatureServer_0`, `drG_arcgis_rest_services_Arlington_Addresses_FeatureServer_0`, `l_Assessor_parcel_Map_June_06_09_2023_WFL1_FeatureServer_219` |
+| 41 | 3 | `e8LteOjzU_arcgis_rest_services_MGO_AddressPt_FeatureServer_0`, `aAg05xQLgo7_arcgis_rest_services_SiteAddress_FeatureServer_0`, `dlWlBxzX_arcgis_rest_services_Searcy_Address_FeatureServer_0` |
+| 42 | 3 | `teAddresses_176dcf6d135741fcbc3bf17da5aa7aff_FeatureServer_0`, `cgis_rest_services_Site_Addresses_View_Layer_FeatureServer_0`, `teAddresses_1a8d5e9d05674ad599c70df5dfdd4265_FeatureServer_0` |
+| 43 | 3 | `m_jOKMO9vKmc98J4JC_arcgis_rest_services_E911_FeatureServer_0`, `BYQ9pcCt_arcgis_rest_services_e911_pt_txdist_FeatureServer_0`, `rcgis_rest_services_VT_Data___E911_Landmarks_FeatureServer_0` |
+| 44 | 3 | `dlWlBxzX_arcgis_rest_services_Marion_Address_FeatureServer_1`, `st_services_VacantResidentialProperties_WFL1_FeatureServer_0`, `is_rest_services_Grady_Site_Addresses_Public_FeatureServer_0` |
+| 45 | 3 | `MJrpz61FbvL5t_arcgis_rest_services_Addresses_FeatureServer_0`, `gis_rest_services_AddressList_Update20250311_FeatureServer_0`, `us_server_rest_services_NG911_Address_Points_FeatureServer_3` |
+| 46 | 3 | `_mn_us_server_rest_services_NG911_Address_Points_MapServer_3`, `aR3VIVeAhJdr_arcgis_rest_services_AddressBPs_FeatureServer_0`, `kh71mtnDG_arcgis_rest_services_E911addresses_FeatureServer_0` |
+| 47 | 3 | `ELbQdlhsJLcCM_arcgis_rest_services_Addresses_FeatureServer_0`, `t_server_rest_services_Public_Roseburg_Addresses_MapServer_0`, `rcgis_rest_services_Johns_Creek_GA_Addresses_FeatureServer_1` |
+| 48 | 3 | `Ia_arcgis_rest_services_County_911_Addresses_FeatureServer_0`, `hP2NPfFE_arcgis_rest_services_Site_Addresses_FeatureServer_0`, `m7axC2dD_arcgis_rest_services_WascoAddresses_FeatureServer_5` |
+| 49 | 3 | `ca_gov_server_rest_services_Address_Range_Labels_MapServer_0`, `arcgis_rest_services_Short_Term_Rentals_WFL1_FeatureServer_1`, `8SWPG8KZ6r_arcgis_rest_services_911Addresses_FeatureServer_0` |
+| 50 | 3 | `_arcgis_rest_services_911_Addresses_Website2_FeatureServer_0`, `sses_public_35d07adabaff4ddba616f6f365b8954e_FeatureServer_0`, `ervices_Lee_County_E911_Addresses_and_Roads_FeatureServer_20` |
+| 51 | 3 | `rcgis_rest_services_Newberg_Addresses_2_view_FeatureServer_0`, `rent_Site_Addresses_and_Entrance_Points_view_FeatureServer_0`, `KPa_arcgis_rest_services_overture_address_sd_FeatureServer_0` |
+| 52 | 3 | `C2HwTkBAlth_arcgis_rest_services_Address_gdb_FeatureServer_0`, `us_arcgis_rest_services_Addressing_AddressPoints_MapServer_0`, `kTU5o6Z_arcgis_rest_services_Addressing_AGOL_FeatureServer_0` |
+| 53 | 3 | `X_arcgis_rest_services_County_P_Address_View_FeatureServer_0`, `jld0x0gpn_arcgis_rest_services_E911Addresses_FeatureServer_0`, `6Z_arcgis_rest_services_N911_Addresses__View_FeatureServer_0` |
+| 54 | 3 | `8hGN_arcgis_rest_services_Polk_Addresses_GAC_FeatureServer_0`, `s_rest_services_Addressing_Addressing_public_FeatureServer_0@MN-1`, `cgis_rest_services_AtascaderoAddresses082025_FeatureServer_0` |
+| 55 | 3 | `4OueTcnj_arcgis_rest_services_just_addresses_FeatureServer_0`, `aAg05xQLgo7_arcgis_rest_services_WGS_Address_FeatureServer_0`, `gis_rest_services_GRANT_Address_ClerksOffice_FeatureServer_0` |
+| 56 | 3 | `rest_services_Addresses_Clark_County_WI_2019_FeatureServer_0`, `0_arcgis_rest_services_Duncanville_Addresses_FeatureServer_0`, `0_arcgis_rest_services_2022_Sep_01_Addresses_FeatureServer_0` |
+| 57 | 3 | `gis_rest_services_SANGIS_AddressAPN_07312024_FeatureServer_0`, `erva_gov_arcgis_rest_services_Winchester_Address_MapServer_0`, `So_arcgis_rest_services_SiteAddresses_public_FeatureServer_0` |
+| 58 | 3 | `ces_911_Address_Street_Review_WFL1_view_only_FeatureServer_0`, `gis_rest_services_Hosted_Master_Address_File_FeatureServer_0`, `ces_Pueblo_County_Addresses_Evacuation_Times_FeatureServer_0` |
+| 59 | 3 | `TymXTmwPsPzPHRU_arcgis_rest_services_Address_FeatureServer_0`, `is_rest_services_Master_Address_Database_MAD_FeatureServer_0`, `cjlmqkA8ypi4T_arcgis_rest_services_Addresses_FeatureServer_0` |
+| 60 | 3 | `ysZUz_arcgis_rest_services_Carroll_Addresses_FeatureServer_0`, `is_rest_services_Bureau_County_911_Addresses_FeatureServer_0`, `is_rest_services_Cottage_Grove_Address_Point_FeatureServer_0` |
+| 61 | 3 | `WuVPEmGK_arcgis_rest_services_Addresses_View_FeatureServer_0`, `1N7Y1EilGjehZ_arcgis_rest_services_ADDRESSES_FeatureServer_0`, `meepNh_arcgis_rest_services_Master_Addresses_FeatureServer_0` |
+| 62 | 3 | `pNK5CvU_arcgis_rest_services_HempV_Addresses_FeatureServer_0`, `cgis_rest_services_Skokie_Base_Address_View_FeatureServer_33`, `YdlWlBxzX_arcgis_rest_services_Boone_Address_FeatureServer_0` |
+| 63 | 3 | `kIrNAR_arcgis_rest_services_E911_Share_Files_FeatureServer_0`, `wY8_arcgis_rest_services_Address_Ranges_WFL1_FeatureServer_0`, `_rest_services_Oxford_911_Address_View_Layer_FeatureServer_1` |
+| 64 | 3 | `m_x7Yxpfpio5GuQWF2_arcgis_rest_services_E911_FeatureServer_0`, `rcgis_rest_services_Mailing_Address_Map_WFL1_FeatureServer_1`, `gis_rest_services_Mailing_Address_Map___WFL1_FeatureServer_1` |
+| 65 | 3 | `gis_rest_services_Mailing_Address_Map_2_WFL1_FeatureServer_1`, `_arcgis_rest_services_WyomingCountyAddresses_FeatureServer_0`, `gis_rest_services_Limestone_County_Addresses_FeatureServer_0` |
+| 66 | 3 | `xkcSkFAjt_arcgis_rest_services_911_Addresses_FeatureServer_0`, `RnMdg5KWv_arcgis_rest_services_911_Addresses_FeatureServer_0`, `tBHQoYlrmJI_arcgis_rest_services_address_pts_FeatureServer_1` |
+| 67 | 3 | `X4bb8_arcgis_rest_services_Fulton_NG911_WFL1_FeatureServer_0`, `is_rest_services_Gloucester_County_Addresses_FeatureServer_0`, `dHIlQ88_arcgis_rest_services_LCaddresspts_GW_FeatureServer_0` |
+| 68 | 3 | `dHIlQ88_arcgis_rest_services_LCaddresspts_SB_FeatureServer_0`, `rcgis_rest_services_Facility_Sites_E911_Clip_FeatureServer_0`, `sez_arcgis_rest_services_Tyler_Property_Data_FeatureServer_1` |
+| 69 | 3 | `uTYf_arcgis_rest_services_Bell_AddressPoints_FeatureServer_0`, `_arcgis_rest_services_Wyoming_SAMB_Addresses_FeatureServer_0`, `rcgis_rest_services_Sioux_Falls_SD_Addresses_FeatureServer_1` |
+| 70 | 3 | `st_services_WinonaCounty_DBO_CountyAddresses_FeatureServer_0`, `arcgis_rest_services_Winona_County_Addresses_FeatureServer_0`, `ZPiRSTUFu_arcgis_rest_services_Situs_Address_FeatureServer_0` |
+| 71 | 3 | `l9_arcgis_rest_services_svcBndryAddress_view_FeatureServer_1`, `cgis_rest_services_AddressesWithElectionData_FeatureServer_0`, `Zm_arcgis_rest_services_Aurora_Address_view_FeatureServer_15` |
+| 72 | 3 | `rcgis_rest_services_TLWaddressInternetAccess_FeatureServer_0`, `arcgis_rest_services_Master_Address_List_New_FeatureServer_0`, `j53q3aOgCSYTp_arcgis_rest_services_Addresses_FeatureServer_0` |
+| 73 | 3 | `_rest_services_Delta_County_Address_01232025_FeatureServer_0`, `arcgis_rest_services_Jasper_County_Addresses_FeatureServer_0`, `WTywHfayX67L_arcgis_rest_services_NG911_Data_FeatureServer_0` |
+| 74 | 3 | `_rest_services_GIS_ENV_GIS_Work_Background_Layer_MapServer_0`, `c_gov_arcgis_rest_services_Addresses_E911Address_MapServer_1`, `h_arcgis_rest_services_AddressesJuly26B_WFL1_FeatureServer_2` |
+| 75 | 3 | `arcgis_rest_services_AddressQC_fieldmap_WFL1_FeatureServer_0`, `ow3ofS_arcgis_rest_services_NM_911_Addresses_FeatureServer_0`, `eSvF_arcgis_rest_services_OpenData_Addresses_FeatureServer_0` |
+| 76 | 3 | `yjVw1fpWcwy7h_arcgis_rest_services_ADDRESSES_FeatureServer_0`, `ycSVzMEzm7ey_arcgis_rest_services_Addressing_FeatureServer_0`, `field_College_Block_Lot_and_Address_Map_WFL1_FeatureServer_0` |
+| 77 | 3 | `KckAl7VOw_arcgis_rest_services_Address_Lists_FeatureServer_0`, `g_arcgis_rest_services_BarryCounty_Addresses_FeatureServer_0`, `st_services_GeorginaMap_W84_SiteAddressPoint_W84_MapServer_0` |
+| 78 | 3 | `ices_GeorginaMap_W84_SiteAddressPoint_Labels_W84_MapServer_0`, `DL6ILvlkPNTg8_arcgis_rest_services_Addresses_FeatureServer_0`, `h_arcgis_rest_services_Addresses_for_Clariti_FeatureServer_0` |
+| 79 | 3 | `isapp_dunwoodyga_gov_arcgis_rest_services_Parcel_MapServer_1`, `gis_rest_services_BransonAddressSearch_WFL1_FeatureServer_54`, `0ipEAOFhn_arcgis_rest_services_Address_Tiles_FeatureServer_0` |
+| 80 | 3 | `7IM34hqT9y9ew_arcgis_rest_services_Addresses_FeatureServer_0`, `RmLNAomixG_arcgis_rest_services_RP_Addr_2022_FeatureServer_0`, `yYd7fCfTTiVp8_arcgis_rest_services_Addresses_FeatureServer_0` |
+| 81 | 3 | `Yd7fCfTTiVp8_arcgis_rest_services_Addresses2_FeatureServer_0`, `arcgis_rest_services_BarryCountyMO_Addresses_FeatureServer_0`, `TlITuys_arcgis_rest_services_WyboSiteAddress_FeatureServer_0` |
+| 82 | 3 | `rest_services_Addresses_With_Voting_Precinct_FeatureServer_0`, `m_Iwwqwcdc5CWG2jt9_arcgis_rest_services_ADDR_FeatureServer_0`, `s_rest_services_Fayette_County_911_Addresses_FeatureServer_1` |
+| 83 | 3 | `ices_Assessor_Data_Webster_Parish_Address_Points_MapServer_0`, `rcgis_rest_services_GC_Address_Points_Public_FeatureServer_8`, `sKPeG_arcgis_rest_services_Address_ViewLayer_FeatureServer_0` |
+| 84 | 3 | `Gr3P_arcgis_rest_services_ETJ_addresses_WFL1_FeatureServer_1`, `l_org_arcgis_rest_services_Weston_Basemap_cache_MapServer_20`, `_arcgis_rest_services_Shawano_Addresses_2026_FeatureServer_0` |
+| 85 | 3 | `st_services_City_of_Pittsburg_Address_Public_FeatureServer_0`, `DDRnnsbCKWWP_arcgis_rest_services_Addresses2_FeatureServer_0`, `WQTB2G8AH9RQYE_arcgis_rest_services_address_FeatureServer_16` |
+| 86 | 3 | `ttesville_org_cvgisweb_rest_services_OpenData_1_MapServer_76`, `J9QAHCiGx_arcgis_rest_services_SiteAddresses_FeatureServer_0`, `iGx_arcgis_rest_services_Addresses_Only_view_FeatureServer_0` |
+| 87 | 3 | `_rest_services_NM_911_Addresses_Large_Scale_FeatureServer_32`, `_rest_services_NM_911_Addresses_Small_Scale_FeatureServer_33`, `OLvsmwpY1RmFG_arcgis_rest_services_Addresses_FeatureServer_0` |
+| 88 | 3 | `es_Service_Location_Moving_ToCURB_ASof712025_FeatureServer_0`, `_services_Lincoln_LUCA_Addresses_Counts_WFL1_FeatureServer_0`, `arcgis_rest_services_Hinesville_GA_Addresses_FeatureServer_0` |
+| 89 | 3 | `j_arcgis_rest_services_BARRON_ADDRESSES_2025_FeatureServer_0`, `arcgis_rest_services_Wellington_FL_Addresses_FeatureServer_0`, `vices_Campbell_County__VA_Broadband_Map_WFL1_FeatureServer_0` |
+| 90 | 3 | `ices_City_of_Cuyahoga_Falls_Addressing_WFL1_FeatureServer_11`, `_arcgis_rest_services_TehamaCounty_NG911_gdb_FeatureServer_8`, `rest_services_Hurricane_Ian_Damage_Addresses_FeatureServer_0` |
+| 91 | 3 | `est_services_Street_Sweeping_Pilot_Addresses_FeatureServer_0`, `rcgis_rest_services_Bedford_County_Addresses_FeatureServer_0`, `_arcgis_rest_services_Logan_County_Addresses_FeatureServer_0` |
+| 92 | 3 | `paca_wi_us_arcgis_rest_services_Public_OpenData_MapServer_24`, `8lct5k3LSbyO_arcgis_rest_services_AddressULM_FeatureServer_1`, `TOM4lipn_arcgis_rest_services_Addresses_2023_FeatureServer_0` |
+| 93 | 3 | `4x6y8cTIstSBE_arcgis_rest_services_Addresses_FeatureServer_0`, `xLBcrikqFM0vkoy_arcgis_rest_services_Address_FeatureServer_0`, `Mk18pL_arcgis_rest_services_Coffee_Addresses_FeatureServer_0` |
+| 94 | 3 | `s_rest_services_DynamicMaps_Address_Explorer_Map_MapServer_1`, `DgvxltnFwP_arcgis_rest_services_NG911_Layers_FeatureServer_1`, `is_rest_services_Lead_Service_Line_Addresses_FeatureServer_0` |
+| 95 | 3 | `_arcgis_rest_services_EnerGov_Test_Map1_WFL1_FeatureServer_3`, `s_rest_services_Rural_Addresses__Label_Only__FeatureServer_0`, `rcgis_rest_services_Buildings_and_Addresses_FeatureServer_17` |
+| 96 | 3 | `aLg_arcgis_rest_services_Address_Hemet031325_FeatureServer_0`, `ez8fHeIiDRbgb_arcgis_rest_services_Addresses_FeatureServer_0`, `arcgis_rest_services_FranklinCountyAddresses_FeatureServer_0` |
+| 97 | 3 | `Uiqh7X11gGV2d_arcgis_rest_services_Addresses_FeatureServer_0`, `VDElDOMEad_arcgis_rest_services_WayneAddress_FeatureServer_0`, `rest_services_Cherokee_Address_Analysis_WFL1_FeatureServer_0` |
+| 98 | 3 | `BpZX2wFbS_arcgis_rest_services_911addressing_FeatureServer_0`, `JRr_arcgis_rest_services_MAT_NG911_Addresses_FeatureServer_0`, `j7VSF_arcgis_rest_services_TemeculaAddresses_FeatureServer_0` |
+| 99 | 3 | `_arcgis_rest_services_zoningAddressingSearch_FeatureServer_0`, `st_services_Vector_Tile_Site_Address_Labels_FeatureServer_57`, `cgis_rest_services_Riley_County_KS_Addresses_FeatureServer_0` |
+| 100 | 3 | `yvfv_arcgis_rest_services_Mercer_SiteAddress_FeatureServer_0`, `S1a_arcgis_rest_services_Address_Mailing_Map_FeatureServer_1`, `1_arcgis_rest_services_Longview_TX_Addresses_FeatureServer_0` |
+| 101 | 3 | `cgis_rest_services_Franklin_Co_911_Addresses_FeatureServer_0`, `cgis_rest_services_FranklinCoVA_911Addresses_FeatureServer_0`, `WCoI_arcgis_rest_services_20260601_Addresses_FeatureServer_0` |
+| 102 | 3 | `rcgis_rest_services_Essex_Address_Pts_9_9_25_FeatureServer_0`, `cgis_rest_services_Sarpy_County_NE_Addresses_FeatureServer_1`, `kOGGtW27pGICf_arcgis_rest_services_Addresses_FeatureServer_0` |
+| 103 | 3 | `cgis_rest_services_Master_Addresses_for_Grid_FeatureServer_0`, `pMfHt82xFG_arcgis_rest_services_RouteAddress_FeatureServer_0`, `1p_arcgis_rest_services_ADDRESS_20230403_CoB_FeatureServer_0` |
+| 104 | 3 | `maps_rest_services_OPENDATA_RegionalBaseOpenData_MapServer_2`, `_arcgis_rest_services_Civic_Rec_QC_Addresses_FeatureServer_0`, `arcgis_rest_services_OpenNewmarket_Addresses_FeatureServer_0` |
+| 105 | 3 | `s_rest_services_OPENNewmarket_Address_3_view_FeatureServer_0`, `arcgis_rest_services_Alexandria_VA_Addresses_FeatureServer_0`, `fMdTkPeHLCobS_arcgis_rest_services_Addresses_FeatureServer_0` |
+| 106 | 3 | `_map_claycountymn_gov_arcgis_rest_services_NG911_MapServer_0`, `fpl_arcgis_rest_services_ArcGISHub_OpenData_FeatureServer_13`, `PlhvQwvs_arcgis_rest_services_E911_Addrs_Pts_FeatureServer_0` |
+| 107 | 3 | `rcgis_rest_services_CTSI_AddressChecker_WFL1_FeatureServer_0`, `s_rest_services_CTSI_Address_Check_2023_WFL1_FeatureServer_0`, `rOyyLV2jNLiBS_arcgis_rest_services_Addresses_FeatureServer_0` |
+| 108 | 3 | `ofS_arcgis_rest_services_Taos_E911_Addresses_FeatureServer_0`, `gT_arcgis_rest_services_USU_Addressing_view_FeatureServer_26`, `s_Meade_Co_KY_Addresses_Roads_Lot_Lines_WFL1_FeatureServer_0` |
+| 109 | 3 | `ervices_Meade_Co_KY_Addresses_and_Roads_WFL1_FeatureServer_1`, `CSVXisSNlAAjd_arcgis_rest_services_Addresses_FeatureServer_0`, `zUpjDtspiBG0j_arcgis_rest_services_E911_Copy_FeatureServer_0` |
+| 110 | 3 | `_arcgis_rest_services_Flagstaff_AZ_Addresses_FeatureServer_0`, `QYTTiP6CrfEsw_arcgis_rest_services_Addresses_FeatureServer_0`, `is_rest_services_Madison_County_KY_Addresses_FeatureServer_1` |
+| 111 | 3 | `rest_services_CarthageWardsandaddresses_WFL1_FeatureServer_1`, `Ypus4pYH0S_arcgis_rest_services_Site_Address_FeatureServer_4`, `rcgis_rest_services_Daly_City_Addresses_AGOL_FeatureServer_2` |
+| 112 | 3 | `TiP6CrfEsw_arcgis_rest_services_Ward_Address_FeatureServer_0`, `d_Waste__Days_of_Service_Per_Address_092424_FeatureServer_52`, `arcgis_rest_services_MGO_Master_Address_View_FeatureServer_0` |
+| 113 | 3 | `rcgis_rest_services_Res_Address_Demographics_FeatureServer_1`, `y_us_arcgis_rest_services_Addresses_WC_2022_FeatureServer_54`, `p_arcgis_rest_services_LAFO_ADDRESS_12_17_13_FeatureServer_0` |
+| 114 | 3 | `m_nEIrIdcFpdK28ibf_arcgis_rest_services_E911_FeatureServer_1`, `u6oHu4Z_arcgis_rest_services_SITUS_PUB_CBB_2_FeatureServer_0`, `IzAwdHlO_arcgis_rest_services_Address_hosted_FeatureServer_0` |
+| 115 | 3 | `1_arcgis_rest_services_Bismarck_ND_Addresses_FeatureServer_0`, `q_arcgis_rest_services_Site_Addresses_Public_FeatureServer_0`, `is_rest_services_Public_View_Site_Addresses__FeatureServer_0` |
+| 116 | 3 | `_gov_arcgis_rest_services_Land_Records_Open_Data_MapServer_1`, `OU_arcgis_rest_services_Addresses_SIO_Hosted_FeatureServer_0`, `t_services_SummitCntyCO_Addresses_Pictometry_FeatureServer_0` |
+| 117 | 3 | `gis_com_kcsgis_rest_services_Etowah_AL31_VAM_MS_MapServer_10`, `s_rest_services_Master_Address_List_Aug_2026_FeatureServer_0`, `ervices_DataPortal_DataPortal_BuildingsAddresses_MapServer_0` |
+| 118 | 3 | `est_services_NormanResidentialTrashAddresses_FeatureServer_0`, `3kMP_arcgis_rest_services_E911AddressforSOMA_FeatureServer_0`, `s_rest_services_Raleigh_Co_EOC_Address_Sites_FeatureServer_0` |
+| 119 | 3 | `s_rest_services_CityAddresses2022bu_CHE_view_FeatureServer_0`, `4Ui_arcgis_rest_services_CityAddresses2022bu_FeatureServer_0`, `unty_oh_gov_arcgisdev_rest_services_WMAS_Address_MapServer_0` |
+| 120 | 3 | `27IJC_arcgis_rest_services_Address_Locations_FeatureServer_0`, `_arcgis_rest_services_Addresses_NOT_ELIGIBLE_FeatureServer_0`, `rcgis_rest_services_Unincorporated_Addresses_FeatureServer_0` |
+| 121 | 3 | `wFbS_arcgis_rest_services_Chemungaddress_pts_FeatureServer_0`, `2kwz79KUqUvxC_arcgis_rest_services_Addresses_FeatureServer_0`, `71LO_arcgis_rest_services_Addresses_CivQuest_FeatureServer_0` |
+| 122 | 3 | `qTGWY_arcgis_rest_services_JoCo_Site_Address_FeatureServer_1`, `county_com_arcgis_rest_services_features_Address_MapServer_0`, `gis_rest_services_CountyAddress2023_CHE_View_FeatureServer_7` |
+| 123 | 3 | `I64Ui_arcgis_rest_services_CountyAddress2023_FeatureServer_7`, `ges_arcgis_rest_services_AddressAndRoads2022_FeatureServer_0`, `e_Rollout__Days_of_Service_Per_Address__WFL1_FeatureServer_1` |
+| 124 | 3 | `_arcgis_rest_services_BG911_Address_20250501_FeatureServer_0`, `Bq9hgug_arcgis_rest_services_BG911_Addresses_FeatureServer_0`, `Ilt_arcgis_rest_services_Clinton_Address_Pts_FeatureServer_0` |
+| 125 | 3 | `untywi_gov_vilasgis_rest_services_V4_SiteAddress_MapServer_0`, `Geezhu2j_arcgis_rest_services_E911_Addresses_FeatureServer_0`, `KpsCnqD7H_arcgis_rest_services_SiteAddresses_FeatureServer_0` |
+| 126 | 3 | `cgis_rest_services_NRSA_Address_Locator_WFL1_FeatureServer_8`, `aNxg1PvwI_arcgis_rest_services_All_Addresses_FeatureServer_0`, `eajjke_arcgis_rest_services_Addresses_Rogers_FeatureServer_0` |
+| 127 | 3 | `EjnCT_arcgis_rest_services_Leander_Addresses_FeatureServer_0`, `_gov_uk_arcweb_rest_services_Addresses_Addresses_MapServer_0`, `sses_public_e7c532395de343e38e58a8463128cfb7_FeatureServer_0` |
+| 128 | 3 | `teAddresses_ecd2ff39fbb34f39a2ec415fd784331b_FeatureServer_0`, `teAddresses_b786541565b5475593a786a08ba6b3e2_FeatureServer_0`, `sses_public_a000778ae1664a348de916831f1a0ac0_FeatureServer_0` |
+| 129 | 3 | `sses_public_0af1fc8b92f7415dbfdf37c6fa956c77_FeatureServer_0`, `teAddresses_1809c74f027741ce815587367a5cfd68_FeatureServer_0`, `teAddresses_33e99042997a472fa1a25a8b6f4465cf_FeatureServer_0` |
+| 130 | 3 | `teAddresses_25f96256e2164540bc18abbff8a9d5c2_FeatureServer_0`, `sses_public_33e99042997a472fa1a25a8b6f4465cf_FeatureServer_0`, `vN_arcgis_rest_services_SiteAddresses_public_FeatureServer_0` |
+| 131 | 3 | `sses_public_3ac05ddeab6d46389b7b3c0616abc861_FeatureServer_0`, `d1DIvN_arcgis_rest_services_SiteAddresses__1_FeatureServer_1`, `sses_public_a2522c3dfde94f6da7500df892abf9aa_FeatureServer_0` |
+| 132 | 3 | `sses_public_fa4be22034f14c15a3a589dd7009ca64_FeatureServer_0`, `0JE2L2xUd_arcgis_rest_services_SiteAddresses_FeatureServer_0`, `com_arcgis_rest_services_CommunityAddressing_FeatureServer_0` |
+| 133 | 3 | `st_services_A4_Landscape_addressverification_FeatureServer_1`, `om_arcgis_rest_services_Cadastral_Address_Points_MapServer_0`, `gis_net_arcgis_rest_services_BASE_Address_Points_MapServer_0` |
+| 134 | 3 | `BvD2F_arcgis_rest_services_COG_StreetAddress_FeatureServer_1`, `exxB_arcgis_rest_services_911_Address_Labels_FeatureServer_6`, `est_services_AddressPtsAndUnitNumbersWebsite_FeatureServer_0` |
+| 135 | 3 | `_qnjIrwR8z5Izc0ij_arcgis_rest_services_ng911_FeatureServer_0`, `eeeoWYqSyV5I_arcgis_rest_services_E911_gdb__FeatureServer_11`, `rcgis_rest_services_Deerfield_Case_Addresses_FeatureServer_0` |
+| 136 | 3 | `_cfmdyB05xBau1dNQ_arcgis_rest_services_Situs_FeatureServer_0`, `rXp_arcgis_rest_services_LPG_Address_Records_FeatureServer_0`, `_ca_arcgis_adaptor_rest_services_LCGIS_VertiGIS_MapServer_25` |
+| 137 | 3 | `tamonica_gov_server_rest_services_Address_Points_MapServer_0`, `d1_arcgis_rest_services_Visalia_CA_Addresses_FeatureServer_0`, `1Vphzvgd_arcgis_rest_services_City_Addresses_FeatureServer_0` |
+| 138 | 3 | `rcgis_rest_services_MC_Address_Pts_PMG_View1_FeatureServer_0`, `rvices_Deerfield_Case_Addresses_FeatureLayer_FeatureServer_0`, `i4lYRFOsss0F5_arcgis_rest_services_Addresses_FeatureServer_0` |
+| 139 | 3 | `arcgis_rest_services_Tompkins_County_Address_FeatureServer_0`, `vF0A_arcgis_rest_services_AddressSearchLayer_FeatureServer_0`, `AAWNInLrxvF0A_arcgis_rest_services_TCAddress_FeatureServer_0` |
+| 140 | 3 | `s_rest_services_Marathon_County_WI_Addresses_FeatureServer_0`, `WNInLrxvF0A_arcgis_rest_services_Address_gdb_FeatureServer_0`, `InLrxvF0A_arcgis_rest_services_AddressR2_gdb_FeatureServer_0` |
+| 141 | 3 | `C2lEIpJ2TRrs5_arcgis_rest_services_Addresses_FeatureServer_0`, `dresses_in_City_Limits___ESD9___Web_Map_WFL1_FeatureServer_1`, `5jlmVkpxP_arcgis_rest_services_Online911Data_FeatureServer_0` |
+| 142 | 3 | `gis_rest_services_Queen_Creek_Addresses__All_FeatureServer_0`, `AQdtmx0tv46_arcgis_rest_services_Address_Nye_FeatureServer_6`, `cgis_rest_services_Cedar_Rapids_IA_Addresses_FeatureServer_0` |
+| 143 | 3 | `AQncZQEtBv_arcgis_rest_services_Address_Clip_FeatureServer_0`, `Tpwo5_arcgis_rest_services_FullAddress032026_FeatureServer_0`, `_rest_services_Randall_County_Addresses_WFL1_FeatureServer_1` |
+| 144 | 3 | `eDUBgTeCT3_arcgis_rest_services_LC_Addresses_FeatureServer_0`, `zOpn2_arcgis_rest_services_Streets_Buidlings_FeatureServer_0`, `arverLink_Address_Lookup_20250623_PublicView_FeatureServer_0` |
+| 145 | 3 | `0gE_arcgis_rest_services_CenCom_Address_View_FeatureServer_0`, `is_rest_services_Building_Permit_Addresssing_FeatureServer_0`, `f_arcgis_rest_services_Killeen_AddressPoints_FeatureServer_0` |
+| 146 | 3 | `i_rest_services_Cadastral_Site_Address_Point_FeatureServer_0`, `t3XQ_arcgis_rest_services_AddressPt_20230629_FeatureServer_0`, `arcgis_rest_services_AddressPt_20240705_WFL1_FeatureServer_0` |
+| 147 | 3 | `rcgis_rest_services_AddressPts_20230817_WFL1_FeatureServer_0`, `U5257_arcgis_rest_services_Yonkers_Addresses_FeatureServer_0`, `_arcgis_rest_services_CharlesCountyAddresses_FeatureServer_0` |
+| 148 | 3 | `3P_arcgis_rest_services_SiteAddresses_public_FeatureServer_0@TX-2`, `_pa_us_arcgis_rest_services_Hosted_Addresses_FeatureServer_0`, `CXd1_arcgis_rest_services_Fargo_ND_Addresses_FeatureServer_0` |
+| 149 | 3 | `araca_gov_maps_rest_services_LAYERS_RegionalBase_MapServer_2`, `ntaclaraca_gov_maps_rest_services_LAYERS_BaseMap_MapServer_2`, `C0yIuqCBxq_arcgis_rest_services_Address_2024_FeatureServer_0` |
+| 150 | 3 | `Cz_arcgis_rest_services_HC_MD_Addresses_10mi_FeatureServer_0`, `ld_oh_us_arcgis_rest_services_OpenData_Addresses_MapServer_0`, `_arcgis_rest_services_Addresses_USA_combined_FeatureServer_0` |
+| 151 | 3 | `arcgis_rest_services_modified_JaCo_addresses_FeatureServer_0`, `wLs3iGyK80EW_arcgis_rest_services_911Address_FeatureServer_0`, `C_arcgis_rest_services_Active_Addresses_2025_FeatureServer_0` |
+| 152 | 3 | `jSxUKayj_arcgis_rest_services_911_Addresses_FeatureServer_58`, `5V8PH7DzSE6AU_arcgis_rest_services_Addresses_FeatureServer_0`, `zxvnVEjzQ6xuSXS_arcgis_rest_services_Address_FeatureServer_0` |
+| 153 | 3 | `Spu5VOlu_arcgis_rest_services_Site_Addresses_FeatureServer_0`, `I64Ui_arcgis_rest_services_WLAddressAndRoads_FeatureServer_0`, `t_services_Katy_ISD_Harris_County_Addresses_FeatureServer_68` |
+| 154 | 3 | `ov_public_rest_services_public_Council_Wards_FeatureServer_1`, `g_arcgis_rest_services_Search_SMSA_ParcelAddress_MapServer_0`, `_rest_services_EmergencyManagement_Addresses_FeatureServer_0` |
+| 155 | 3 | `mxCAS_arcgis_rest_services_ClermontAddresses_FeatureServer_0`, `iJkq4oXsPh_arcgis_rest_services_Addresses_SR_FeatureServer_0`, `is_rest_services_AddressValidationTest2_WFL1_FeatureServer_0` |
+| 156 | 3 | `_arcgis_rest_services_BILLING_ACCT_LOCATIONS_FeatureServer_0`, `k6RO1_arcgis_rest_services_HudsonCty_AddrPts_FeatureServer_0`, `arcgis_rest_services_Hudson_County_Addresses_FeatureServer_0` |
+| 157 | 3 | `u0_arcgis_rest_services_Address_OfflineCopy_FeatureServer_21`, `ntygov_com_server_rest_services_Addresses_Public_MapServer_0`, `is_rest_services_Forsyth_County_GA_Addresses_FeatureServer_0` |
+| 158 | 3 | `is_rest_services_NM911_Address_202301_SC_Web_FeatureServer_0`, `gis_rest_services_Address_For_WebApp_Locator_FeatureServer_0`, `_rest_services_NM911_Address_202401_SC_Web_a_FeatureServer_0` |
+| 159 | 3 | `nQPdJ0azuLyn_arcgis_rest_services_AddressPts_FeatureServer_0`, `st_services_Springfield_address_density_WFL1_FeatureServer_2`, `VWAC8iN_arcgis_rest_services_road_centerline_FeatureServer_0` |
+| 160 | 3 | `F_arcgis_rest_services_NM911_Address_10_2024_FeatureServer_0`, `F_arcgis_rest_services_NM911_Address_02_2025_FeatureServer_0`, `arcgis_rest_services_NM911_Address_202506_SC_FeatureServer_0` |
+| 161 | 3 | `wbCJ2GMP_arcgis_rest_services_E911calls_2020_FeatureServer_0`, `s_rest_services_NM911_Address_01_2026_SC_Web_FeatureServer_0`, `r_arcgis_rest_services_Coryell_address_5Mile_FeatureServer_0` |
+| 162 | 3 | `vices_Join_Features_to_Address_Points_2_view_FeatureServer_0`, `rb80Pvlu_arcgis_rest_services_Address_Points_FeatureServer_0`, `tg2A1_arcgis_rest_services_vw_dist_addresses_FeatureServer_0` |
+| 163 | 3 | `cgis_rest_services_Delaware_County_E911_Data_FeatureServer_0`, `GEllMqef1LMjj_arcgis_rest_services_Addresses_FeatureServer_0`, `vices_Yuma_911_Data_Roads_and_Addresses_WFL1_FeatureServer_0` |
+| 164 | 3 | `_services_NG911_ReadOnly_NG911_Addressing_Layers_MapServer_0`, `V5FXPLX_arcgis_rest_services_Addresses_Units_FeatureServer_0`, `McTk2tV5FXPLX_arcgis_rest_services_Addresses_FeatureServer_0` |
+| 165 | 3 | `s_rest_services_ElectionsPollingPlaceAddress_FeatureServer_0`, `LmXo7Hn9vNc_arcgis_rest_services_E911Address_FeatureServer_0`, `GOi6N4Rq5cqFv_arcgis_rest_services_Addresses_FeatureServer_0` |
+| 166 | 3 | `rvices_Situs_for_ConsolidatedPrecincts_AGOL_FeatureServer_51`, `4427d57d2827830_rest_services_Base_Addresses_FeatureServer_0`, `CRg_arcgis_rest_services_SBCnty_Address_Grid_FeatureServer_0` |
+| 167 | 3 | `aVKdPC5e_arcgis_rest_services_Address_Public_FeatureServer_0`, `is_rest_services_Addresses_CitizenServe_View_FeatureServer_0`, `tUCmxaVKdPC5e_arcgis_rest_services_Addresses_FeatureServer_0` |
+| 168 | 3 | `JdBHI0_arcgis_rest_services_Addresses_SC_USE_FeatureServer_0`, `t_services_NG911_Map__Lake_County__Ohio_WFL1_FeatureServer_0`, `rvices_WCAddresses20251003_gdb_view_Geocivix_FeatureServer_0` |
+| 169 | 3 | `is_rest_services_Addresses_2015_Boston_BARI__FeatureServer_0`, `ervices_64a951f0_b017_11e6_b4e3_22000b8406af_FeatureServer_0`, `est_services_Collier_Addresses_Within_3_Mile_FeatureServer_0` |
+| 170 | 3 | `nc_gov_server_rest_services_CityWorks_Basemap_CW_MapServer_0`, `8JRPoNeQjgcLi_arcgis_rest_services_Addresses_FeatureServer_0`, `wbHlfF_arcgis_rest_services_Addresses_Hosted_FeatureServer_0` |
+| 171 | 3 | `cgis_rest_services_Infrastructure_Transportation_MapServer_0`, `_services_Infrastructure_Transportation_Sheriffs_MapServer_0`, `ABcyiF_arcgis_rest_services_Address_pt_views_FeatureServer_0` |
+| 172 | 3 | `_arcgis_rest_services_city_address_march2025_FeatureServer_0`, `_rest_services_HenricoCountyGIS_05082023_gdb_FeatureServer_0`, `cgis_rest_services_Indianapolis_IN_Addresses_FeatureServer_0` |
+| 173 | 3 | `ervices_Zanna_E911_Sites_Outside_8min_Buffer_FeatureServer_2`, `LmYGD_arcgis_rest_services_DC_Addresses_WFL1_FeatureServer_0`, `rcgis_rest_services_HostedServices_Addresses_FeatureServer_0` |
+| 174 | 3 | `is_rest_services_Barry_County_E911_Map_WFL1_FeatureServer_29`, `rvices_stratmap19_addresspoints_48027_vector_FeatureServer_0`, `rvices_MapServices_TLC_OverlayAddressSearch_D_WM_MapServer_0` |
+| 175 | 3 | `C7QlRK1kZ_arcgis_rest_services_EAS_Addresses_FeatureServer_0`, `countyfl_gov_accelasupp_rest_services_AccelaXAPO_MapServer_0`, `leoncountyfl_gov_accela_rest_services_AccelaXAPO_MapServer_0` |
+| 176 | 3 | `ountyfl_gov_accela_rest_services_AccelaXAPO_Test_MapServer_0`, `st_services_Vector_COT_UtilityERM_Addresses_D_WM_MapServer_0`, `LxyiJoNiVHKwq_arcgis_rest_services_Addresses_FeatureServer_0` |
+| 177 | 3 | `arcgis_rest_services_Addresses_Arcade_Labels_FeatureServer_0`, `QGwSSLC0l_arcgis_rest_services_t07_Addresses_FeatureServer_0`, `j7_arcgis_rest_services_Addresses_GeneralUse_FeatureServer_0` |
+| 178 | 3 | `s_rest_services_Solano_County_Addresses_WFL1_FeatureServer_0`, `_rest_services_Site_Addresses_FLOCK_10302024_FeatureServer_0`, `_services_Rutherford_Site_Addresses_11012024_FeatureServer_0` |
+| 179 | 3 | `gis_rest_services_NENA_Addresses_WGS_Service_FeatureServer_0`, `rest_services_E911_Addresses_Hamilton_County_FeatureServer_0`, `rcgis_rest_services_Addressing_RoadsAndAddresses_MapServer_0` |
+| 180 | 3 | `W83eUIFui_arcgis_rest_services_Address_Sites_FeatureServer_0`, `couver_us_arcgis_rest_services_common_BasemapPUB_MapServer_0`, `cGIS_rest_services_Baldwin911Addresses__view_FeatureServer_2` |
+| 181 | 3 | `buncombecounty_org_arcgis_rest_services_opendata_MapServer_2`, `SE6sXfoLq_arcgis_rest_services_Address_ProdA_FeatureServer_0`, `ervices_AddressPts_DamageAssessment_REA_VIEW_FeatureServer_0` |
+| 182 | 3 | `_rest_services_Address__GCS_WGS_1984__Public_FeatureServer_0`, `vices_BaseLayers_BaseLayers_for_BackdropPurposes_MapServer_1`, `rvices_BaseLayers_Addresses_for_BackdropPurposes_MapServer_0` |
+| 183 | 3 | `v_gis_rest_services_Map_Reference_Street_Address_MapServer_0`, `ov_gis_rest_services_Map_Reference_Address_Label_MapServer_0`, `i_arcgis_rest_services_Ada_County_Addresses_FeatureServer_13` |
+| 184 | 3 | `services_Zanna_E911_Sites_Within_8min_Buffer_FeatureServer_1`, `services_CountyServices_Municipal_Addressing_FeatureServer_2`, `vt_nz_arcgis_rest_services_CorporateData_Address_MapServer_0` |
+| 185 | 3 | `M5ymMLbxIyWTjn2_arcgis_rest_services_Address_FeatureServer_0`, `is_rest_services_Chester_County_PA_Addresses_FeatureServer_0`, `rcgis_rest_services_Address_Pts_Living_Units_FeatureServer_0` |
+| 186 | 3 | `_Zs2aNLFN00jrS4gG_arcgis_rest_services_data2_FeatureServer_0`, `ZHFr6zdgNZuVG0_arcgis_rest_services_Address2_FeatureServer_3`, `arcgis_rest_services_Jeffco_Address_Map_WFL1_FeatureServer_1` |
+| 187 | 3 | `MCHD_Environmental_Health_Public_Service_Map_FeatureServer_0`, `_arcgis_rest_services_AMI_Deployment_Address_FeatureServer_0`, `27_Great_Mississippi_Flood_in_Arkansas_WFL1_FeatureServer_14` |
+| 188 | 3 | `_services_Lower_MS_Sediment_Bottleneck_WFL1_FeatureServer_14`, `_Mississippi_Flood_in_Arkansas__Final__WFL1_FeatureServer_14`, `_rest_services_Atlanta_Streets_and_Addresses_FeatureServer_0` |
+| 189 | 3 | `unty_org_arcgis_rest_services_OpenData_Property_MapServer_12`, `xLqeJd2jOX_arcgis_rest_services_VC_Addresses_FeatureServer_0`, `oN_arcgis_rest_services_WASD_Addresses_3_23_FeatureServer_52` |
+| 190 | 3 | `0yIuqCBxq_arcgis_rest_services_CNO_Addresses_FeatureServer_0`, `arcgis_rest_services_Nightly_OpenData_Update_FeatureServer_3`, `server_rest_services_Intermap_Situs_address_WMAS_MapServer_0` |
+| 191 | 3 | `is_rest_services_Address_1424300337393713068_FeatureServer_0`, `rcgis_rest_services_Richfield_Comm_Addresses_FeatureServer_0`, `w_arcgis_rest_services_Addresses_not_in_Town_FeatureServer_5` |
+| 192 | 3 | `_services_Address_Points_AddressPoint_Native_FeatureServer_0@未定位-2`, `_rest_services_Arapahoe_County_Addresses_gdb_FeatureServer_0`, `hedVoters_Statewide_withSiteTypeDescription_FeatureServer_32` |
+| 193 | 1 | `jvohPcWJU5ij6_arcgis_rest_services_Addresses_FeatureServer_0` |
 
 ## 三、差额最大的 10 层
 
@@ -100,10 +473,6 @@
 | `84Po4FBDs_arcgis_rest_services_Address_Point_FeatureServer_0` | partial | 14616 | 26616 | 缺口 -82.10%（实采 26616 / 声明 14616） |
 | `us_arcgis_rest_services_Addressing_AddressPoints_MapServer_0` | failed | 14470 | 6616 | rc=1 err=? |
 | `Pvc_arcgis_rest_services_Address_Points_View_FeatureServer_2` | failed | 10564 | 0 | rc=1 err=query_fail:svcerr:{"code": 400, "message": "Cannot perform query. Invalid query parameters.", "details": ["Unab |
-| `sses_public_e65dd46e9c084cddaedcb94aeea0ed6b_FeatureServer_0` | partial | 7798 | 15501 | 缺口 -98.78%（实采 15501 / 声明 7798） |
-| `sdIpPb_arcgis_rest_services_Addresses_Splits_FeatureServer_0` | partial | 6583 | 13161 | 缺口 -99.92%（实采 13161 / 声明 6583） |
-| `st_services_Curb_Transition_Magic_Number2027_FeatureServer_0` | partial | 5896 | 11808 | 缺口 -100.27%（实采 11808 / 声明 5896） |
-| `ye4IXyXsdIpPb_arcgis_rest_services_Addresses_FeatureServer_0` | partial | 5045 | 10085 | 缺口 -99.90%（实采 10085 / 声明 5045） |
 | `almbeach_com_arcgis_rest_services_BaseData_Situs_MapServer_0` | failed | None | None | job 内单层超时 60 分钟（--layer-timeout） |
 | `ca_gov_server_rest_services_Address_Range_Labels_MapServer_0` | failed | None | None | job 内单层超时 60 分钟（--layer-timeout） |
 | `paca_wi_us_arcgis_rest_services_Public_OpenData_MapServer_24` | failed | None | None | job 内单层超时 60 分钟（--layer-timeout） |
@@ -1055,92 +1424,37 @@
 | 934 | `z9O_arcgis_rest_services_OpenGovAddress_view_FeatureServer_2` | 9,145 | 9,145 | 0.00% | ok |
 | 935 | `OMEad_arcgis_rest_services_Doddridge_Address_FeatureServer_1` | 9,144 | 9,144 | 0.00% | ok |
 | 936 | `gis_rest_services_911_Address_Points_PC_2024_FeatureServer_0` | 9,129 | 9,129 | 0.00% | ok |
-| 937 | `_services_Address_and_Street_Annotation_view_FeatureServer_0` | 7,836 | 7,836 | 0.00% | ok |
-| 938 | `sses_public_e65dd46e9c084cddaedcb94aeea0ed6b_FeatureServer_0` | 7,798 | 15,501 | -98.78% | partial |
-| 939 | `DQNT3m6mbJlqZ_arcgis_rest_services_Addresses_FeatureServer_0` | 7,733 | 7,733 | 0.00% | ok |
-| 940 | `HRU_arcgis_rest_services_VFAC_Addresses_WFL1_FeatureServer_0` | 7,686 | 7,686 | 0.00% | ok |
-| 941 | `s_rest_services_Richland_County_ND_Addresses_FeatureServer_1` | 7,608 | 7,608 | 0.00% | ok |
-| 942 | `8nlIDAHxNx4_arcgis_rest_services_911_Address_FeatureServer_0` | 7,566 | 7,566 | 0.00% | ok |
-| 943 | `gg5s_arcgis_rest_services_Building_Addresses_FeatureServer_0` | 7,540 | 7,540 | 0.00% | ok |
-| 944 | `ses_public_3336c922d00a441e8f588e16c3dc2577_FeatureServer_10` | 7,529 | 7,529 | 0.00% | ok |
-| 945 | `ms_arcgis_rest_services_Address_Data_Public_FeatureServer_10` | 7,527 | 7,527 | 0.00% | ok |
-| 946 | `cgis_rest_services_Address_Data_Public_view_FeatureServer_10` | 7,527 | 7,527 | 0.00% | ok |
-| 947 | `rest_services_Master_Address_Management_WFL1_FeatureServer_0` | 7,506 | 7,506 | 0.00% | ok |
-| 948 | `Q24dH_arcgis_rest_services_Addresses__Site__FeatureServer_13` | 7,440 | 7,440 | 0.00% | ok |
-| 949 | `0hS_arcgis_rest_services_Address_Road_Update_FeatureServer_0` | 7,370 | 7,370 | 0.00% | ok |
-| 950 | `l0FeW1NE_arcgis_rest_services_AddressesWInfo_FeatureServer_0` | 7,364 | 7,364 | 0.00% | ok |
-| 951 | `Z_arcgis_rest_services_CityofDemingAddresses_FeatureServer_0` | 7,251 | 7,251 | 0.00% | ok |
-| 952 | `rest_services_Pella_Address_Data_Public_View_FeatureServer_2` | 7,242 | 7,242 | 0.00% | ok |
-| 953 | `_ArcGIS_rest_services_AddressesE911Macon2022_FeatureServer_0` | 7,242 | 7,242 | 0.00% | ok |
-| 954 | `CY2_arcgis_rest_services_Dispatcher_Map_WFL1_FeatureServer_0` | 7,165 | 7,165 | 0.00% | ok |
-| 955 | `rest_services_Site_Addresses_06012022_public_FeatureServer_2` | 7,163 | 7,163 | 0.00% | ok |
-| 956 | `_Mountlake_Terrace_Washington_Addresses_view_FeatureServer_0` | 7,157 | 7,157 | 0.00% | ok |
-| 957 | `ieS2ld_arcgis_rest_services_Searcy_NG911_gdb_FeatureServer_2` | 7,144 | 7,144 | 0.00% | ok |
-| 958 | `kttgSmcq6CPonms_arcgis_rest_services_Address_FeatureServer_0` | 6,953 | 6,953 | 0.00% | ok |
-| 959 | `_rest_services_E911_Houses_Washington_County_FeatureServer_0` | 6,724 | 6,724 | 0.00% | ok |
-| 960 | `M5KB8_arcgis_rest_services_E911_PairwiseClip_FeatureServer_0` | 6,716 | 6,716 | 0.00% | ok |
-| 961 | `7Y8pE5CiojuXeU_arcgis_rest_services_NewSitus_FeatureServer_0` | 6,686 | 6,686 | 0.00% | ok |
-| 962 | `NuFrQ7kB_arcgis_rest_services_Master_Address_FeatureServer_0` | 6,655 | 6,655 | 0.00% | ok |
-| 963 | `SQHJsl5r_arcgis_rest_services_Address_Labels_FeatureServer_0` | 6,588 | 6,588 | 0.00% | ok |
-| 964 | `sdIpPb_arcgis_rest_services_Addresses_Splits_FeatureServer_0` | 6,583 | 13,161 | -99.92% | partial |
-| 965 | `st_services_Lincoln_City_Addresses_View_Only_FeatureServer_0` | 6,521 | 6,521 | 0.00% | ok |
-| 966 | `ater_Meter_Replacement_Addresses_Zone_1_view_FeatureServer_1` | 6,361 | 6,361 | 0.00% | ok |
-| 967 | `teAddresses_8548b2fdfac0464392b3fd7620a632d7_FeatureServer_0` | 6,197 | 6,197 | 0.00% | ok |
-| 968 | `yHixJV_arcgis_rest_services_Master_Addresses_FeatureServer_0` | 6,184 | 6,184 | 0.00% | ok |
-| 969 | `ces_Stillwater_County_Addressing_Layers_2026_FeatureServer_0` | 6,112 | 6,112 | 0.00% | ok |
-| 970 | `wVADPEG6iD24f_arcgis_rest_services_Addresses_FeatureServer_0` | 6,031 | 6,031 | 0.00% | ok |
-| 971 | `_in_Incident_Address_and_Type_for_Date_Range_FeatureServer_0` | 5,929 | 5,929 | 0.00% | ok |
-| 972 | `st_services_Curb_Transition_Magic_Number2027_FeatureServer_0` | 5,896 | 11,808 | -100.27% | partial |
-| 973 | `387Pb3S_arcgis_rest_services_LiveAdds_202504_FeatureServer_0` | 5,876 | 5,876 | 0.00% | ok |
-| 974 | `Iod9kh71mtnDG_arcgis_rest_services_Addresses_FeatureServer_0` | 5,731 | 5,731 | 0.00% | ok |
-| 975 | `dlWlBxzX_arcgis_rest_services_Newton_Address_FeatureServer_0` | 5,730 | 5,730 | 0.00% | ok |
-| 976 | `cgis_rest_services_SiteAddresses_public_2020_FeatureServer_1` | 5,655 | 5,655 | 0.00% | ok |
-| 977 | `HKRPMgv82EjLQ_arcgis_rest_services_Addresses_FeatureServer_0` | 5,640 | 5,640 | 0.00% | ok |
-| 978 | `CRVuK_arcgis_rest_services_Map_View_Address_FeatureServer_42` | 5,634 | 5,634 | 0.00% | ok |
-| 979 | `e3_arcgis_rest_services_SiteAddresses_public_FeatureServer_0` | 5,586 | 5,586 | 0.00% | ok |
-| 980 | `unty__GA_Online_911_Addresses_and_Roads_WFL1_FeatureServer_1` | 5,493 | 5,493 | 0.00% | ok |
-| 981 | `TjgFX_arcgis_rest_services_addresses_120222a_FeatureServer_0` | 5,409 | 5,410 | -0.02% | ok |
-| 982 | `bK6DOd0VbR_arcgis_rest_services_SB_Addresses_FeatureServer_0` | 5,403 | 5,403 | 0.00% | ok |
-| 983 | `cgis_rest_services_Administrative_Addressing_FeatureServer_0` | 5,371 | 5,371 | 0.00% | ok |
-| 984 | `67TISFO3iTjgFX_arcgis_rest_services_address2_FeatureServer_0` | 5,236 | 5,236 | 0.00% | ok |
-| 985 | `esses_In_Refuse_Recycle_Routes_WFL1_July2019_FeatureServer_0` | 5,219 | 5,219 | 0.00% | ok |
-| 986 | `g5mTyuNWO5xx6_arcgis_rest_services_Addresses_FeatureServer_0` | 5,168 | 5,168 | 0.00% | ok |
-| 987 | `arcgis_rest_services_Hartford_911_Addresses__FeatureServer_0` | 5,108 | 5,108 | 0.00% | ok |
-| 988 | `d_Septic_System_Pilot_Project_Addresses_View_FeatureServer_0` | 5,071 | 5,071 | 0.00% | ok |
-| 989 | `roY6O3ncx_arcgis_rest_services_MS4_addresses_FeatureServer_0` | 5,060 | 5,060 | 0.00% | ok |
-| 990 | `ye4IXyXsdIpPb_arcgis_rest_services_Addresses_FeatureServer_0` | 5,045 | 10,085 | -99.90% | partial |
-| 991 | `is_rest_services_Address_Points_Council_Area_FeatureServer_0` | - | 0 | 0.00% | empty |
-| 992 | `ices_Assessor_Data_Webster_Parish_Address_Points_MapServer_0` | - | 0 | 0.00% | empty |
-| 993 | `DDRnnsbCKWWP_arcgis_rest_services_Addresses2_FeatureServer_0` | - | 25,659 | 0.00% | empty |
-| 994 | `_rest_services_NG24DataModelUpdate_WFL1_view_FeatureServer_0` | - | 0 | 0.00% | empty |
-| 995 | `gis_rest_services_Municipal_Address_Points_FeatureServer_214` | - | 0 | 0.00% | empty |
-| 996 | `almbeach_com_arcgis_rest_services_BaseData_Situs_MapServer_0` | - | 0 | 0.00% | failed |
-| 997 | `us_server_rest_services_NG911_Address_Points_FeatureServer_3` | - | 0 | 0.00% | empty |
-| 998 | `_mn_us_server_rest_services_NG911_Address_Points_MapServer_3` | - | 0 | 0.00% | empty |
-| 999 | `ca_gov_server_rest_services_Address_Range_Labels_MapServer_0` | - | 0 | 0.00% | failed |
-| 1000 | `gis_rest_services_Hosted_Master_Address_File_FeatureServer_0` | - | 0 | 0.00% | empty |
-| 1001 | `_com_geoserver_rest_services_Public_GIS_Data_FeatureServer_0` | - | 0 | 0.00% | empty |
-| 1002 | `paca_wi_us_arcgis_rest_services_Public_OpenData_MapServer_24` | - | 0 | 0.00% | failed |
-| 1003 | `s_rest_services_DynamicMaps_Address_Explorer_Map_MapServer_1` | - | 0 | 0.00% | empty |
-| 1004 | `_org_gisarcweb_rest_services_Base_Base_Addresses_MapServer_0` | - | 0 | 0.00% | empty |
-| 1005 | `fpl_arcgis_rest_services_ArcGISHub_OpenData_FeatureServer_13` | - | 0 | 0.00% | empty |
-| 1006 | `ervices_DataPortal_DataPortal_BuildingsAddresses_MapServer_0` | - | 0 | 0.00% | failed |
-| 1007 | `county_com_arcgis_rest_services_features_Address_MapServer_0` | - | 0 | 0.00% | failed |
-| 1008 | `st_services_Schools_ChathamSchools_AddressPoints_MapServer_0` | - | 0 | 0.00% | empty |
-| 1009 | `untywi_gov_vilasgis_rest_services_V4_SiteAddress_MapServer_0` | - | 0 | 0.00% | failed |
-| 1010 | `tamonica_gov_server_rest_services_Address_Points_MapServer_0` | - | 0 | 0.00% | failed |
-| 1011 | `g_arcgis_rest_services_Search_SMSA_ParcelAddress_MapServer_0` | - | 0 | 0.00% | failed |
-| 1012 | `rb80Pvlu_arcgis_rest_services_Address_Points_FeatureServer_0` | - | 0 | 0.00% | empty |
-| 1013 | `_services_NG911_ReadOnly_NG911_Addressing_Layers_MapServer_0` | - | 0 | 0.00% | failed |
-| 1014 | `buncombecounty_org_arcgis_rest_services_opendata_MapServer_2` | - | 0 | 0.00% | failed |
-| 1015 | `unty_org_arcgis_rest_services_OpenData_Property_MapServer_12` | - | 0 | 0.00% | empty |
-| 1016 | `g_arcgis_rest_services_Open_Data_Open_Data_1_FeatureServer_2` | - | 0 | 0.00% | empty |
-| 1017 | `_services_Address_Points_AddressPoint_Native_FeatureServer_0@未定位-2` | - | 0 | 0.00% | empty |
+| 937 | `ices_Assessor_Data_Webster_Parish_Address_Points_MapServer_0` | - | 0 | 0.00% | empty |
+| 938 | `DDRnnsbCKWWP_arcgis_rest_services_Addresses2_FeatureServer_0` | - | 25,659 | 0.00% | empty |
+| 939 | `_rest_services_NG24DataModelUpdate_WFL1_view_FeatureServer_0` | - | 0 | 0.00% | empty |
+| 940 | `gis_rest_services_Municipal_Address_Points_FeatureServer_214` | - | 0 | 0.00% | empty |
+| 941 | `almbeach_com_arcgis_rest_services_BaseData_Situs_MapServer_0` | - | 0 | 0.00% | failed |
+| 942 | `us_server_rest_services_NG911_Address_Points_FeatureServer_3` | - | 0 | 0.00% | empty |
+| 943 | `_mn_us_server_rest_services_NG911_Address_Points_MapServer_3` | - | 0 | 0.00% | empty |
+| 944 | `ca_gov_server_rest_services_Address_Range_Labels_MapServer_0` | - | 0 | 0.00% | failed |
+| 945 | `gis_rest_services_Hosted_Master_Address_File_FeatureServer_0` | - | 0 | 0.00% | empty |
+| 946 | `_com_geoserver_rest_services_Public_GIS_Data_FeatureServer_0` | - | 0 | 0.00% | empty |
+| 947 | `paca_wi_us_arcgis_rest_services_Public_OpenData_MapServer_24` | - | 0 | 0.00% | failed |
+| 948 | `s_rest_services_DynamicMaps_Address_Explorer_Map_MapServer_1` | - | 0 | 0.00% | empty |
+| 949 | `_org_gisarcweb_rest_services_Base_Base_Addresses_MapServer_0` | - | 0 | 0.00% | empty |
+| 950 | `fpl_arcgis_rest_services_ArcGISHub_OpenData_FeatureServer_13` | - | 0 | 0.00% | empty |
+| 951 | `ervices_DataPortal_DataPortal_BuildingsAddresses_MapServer_0` | - | 0 | 0.00% | failed |
+| 952 | `county_com_arcgis_rest_services_features_Address_MapServer_0` | - | 0 | 0.00% | failed |
+| 953 | `st_services_Schools_ChathamSchools_AddressPoints_MapServer_0` | - | 0 | 0.00% | empty |
+| 954 | `untywi_gov_vilasgis_rest_services_V4_SiteAddress_MapServer_0` | - | 0 | 0.00% | failed |
+| 955 | `tamonica_gov_server_rest_services_Address_Points_MapServer_0` | - | 0 | 0.00% | failed |
+| 956 | `g_arcgis_rest_services_Search_SMSA_ParcelAddress_MapServer_0` | - | 0 | 0.00% | failed |
+| 957 | `rb80Pvlu_arcgis_rest_services_Address_Points_FeatureServer_0` | - | 0 | 0.00% | empty |
+| 958 | `_services_NG911_ReadOnly_NG911_Addressing_Layers_MapServer_0` | - | 0 | 0.00% | failed |
+| 959 | `buncombecounty_org_arcgis_rest_services_opendata_MapServer_2` | - | 0 | 0.00% | failed |
+| 960 | `unty_org_arcgis_rest_services_OpenData_Property_MapServer_12` | - | 0 | 0.00% | empty |
+| 961 | `g_arcgis_rest_services_Open_Data_Open_Data_1_FeatureServer_2` | - | 0 | 0.00% | empty |
+| 962 | `_services_Address_Points_AddressPoint_Native_FeatureServer_0@未定位-2` | - | 0 | 0.00% | empty |
 
 ## 六、复现
 
 ```bash
 gh workflow run collect-full.yml -f stage=05b
-python3 collect/full_plan.py --stage 05b --size 200 --out collect/ledger/05b_plan.json
+python3 collect/full_plan.py --stage 05b --size 3 --out collect/ledger/05b_plan.json
 python3 collect/full_shard.py --stage 05b --shard 0 --plan collect/ledger/05b_plan.json
 ```

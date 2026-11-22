@@ -2,7 +2,7 @@
  "schema": "collect-attempt-log/v1",
  "stage": "05b",
  "cap": 3,
- "at": "2026-11-22T04:32:14Z",
+ "at": "2026-11-22T04:40:10Z",
  "sources": [
   "collect/ledger/05b_run41167836540.json",
   "collect/ledger/05b_run44865991911.json",
@@ -10,6 +10,7 @@
   "collect/ledger/05b_run44931175026.json",
   "collect/ledger/05b_run44960026303.json",
   "collect/ledger/05b_run44985016796.json",
+  "collect/ledger/05b_run44985733259.json",
   "collect/ledger/05b_shard00.json",
   "collect/ledger/05b_shard01.json",
   "collect/ledger/05b_shard02.json",
@@ -31,11 +32,11 @@
   "collect/ledger/05b_shard18.json",
   "collect/ledger/05b_shard19.json",
   "collect/ledger/05b_shard20.json",
-  "git-history(141 条旧尝试)"
+  "git-history(142 条旧尝试)"
  ],
  "append": true,
  "kept_from_prev_n": 2,
- "attempts_n": 247,
+ "attempts_n": 249,
  "layers_n": 34,
  "unstable_n": 20,
  "kind_rule": "失败类型先判 token(499) → 503 → 非 JSON → 超时 → 4xx → DNS/TLS → other；503 的正文里带 «Wait timeout…»，所以必须排在「超时」之前，否则会被误记成超时。",
@@ -280,6 +281,41 @@
     0,
     1,
     9
+   ]
+  },
+  {
+   "layer": "arcgis_rest_services_LAWRENCEGIS_NG911Addressing_MapServer_0",
+   "attempts_n": 8,
+   "kinds": [
+    "other",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other"
+   ],
+   "kinds_n": {
+    "other": 8
+   },
+   "first_at": "2026-11-21T08:34:19Z",
+   "last_at": "2026-11-22T04:40:10Z",
+   "last_kind": "other",
+   "rows_at_last": 39503,
+   "prior_units_at_last": 1,
+   "no_progress": true,
+   "elapsed_s": 397.1,
+   "elapsed_min": 6.6,
+   "unstable": true,
+   "runs": [
+    "44884914552",
+    "44931175026",
+    "44985016796",
+    "44985733259"
+   ],
+   "shards": [
+    0
    ]
   },
   {
@@ -651,38 +687,6 @@
    "shards": [
     1,
     16
-   ]
-  },
-  {
-   "layer": "arcgis_rest_services_LAWRENCEGIS_NG911Addressing_MapServer_0",
-   "attempts_n": 6,
-   "kinds": [
-    "other",
-    "other",
-    "other",
-    "other",
-    "other",
-    "other"
-   ],
-   "kinds_n": {
-    "other": 6
-   },
-   "first_at": "2026-11-21T08:34:19Z",
-   "last_at": "2026-11-22T04:31:03Z",
-   "last_kind": "other",
-   "rows_at_last": 39503,
-   "prior_units_at_last": 1,
-   "no_progress": true,
-   "elapsed_s": 385.7,
-   "elapsed_min": 6.4,
-   "unstable": true,
-   "runs": [
-    "44884914552",
-    "44931175026",
-    "44985016796"
-   ],
-   "shards": [
-    0
    ]
   },
   {
@@ -1530,6 +1534,35 @@
    "run": "44985016796",
    "shard": 0,
    "source": "05b_run44985016796.json",
+   "err": ""
+  },
+  {
+   "layer": "arcgis_rest_services_LAWRENCEGIS_NG911Addressing_MapServer_0",
+   "at": "2026-11-22T04:31:03Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 5.2,
+   "rows": 39503,
+   "prior_units": 1,
+   "run": "",
+   "shard": 0,
+   "source": "git:collect/ledger/05b_shard00.json@c4100c2",
+   "err": "",
+   "from_git": true
+  },
+  {
+   "layer": "arcgis_rest_services_LAWRENCEGIS_NG911Addressing_MapServer_0",
+   "at": "2026-11-22T04:40:10Z",
+   "at_src": "record",
+   "kind": "other",
+   "rc": 1,
+   "elapsed_s": 6.2,
+   "rows": 39503,
+   "prior_units": 1,
+   "run": "44985733259",
+   "shard": 0,
+   "source": "05b_run44985733259.json",
    "err": ""
   },
   {
@@ -4584,8 +4617,10 @@
   },
   "arcgis_rest_services_LAWRENCEGIS_NG911Addressing_MapServer_0": {
    "layer": "arcgis_rest_services_LAWRENCEGIS_NG911Addressing_MapServer_0",
-   "attempts_n": 6,
+   "attempts_n": 8,
    "kinds": [
+    "other",
+    "other",
     "other",
     "other",
     "other",
@@ -4594,21 +4629,22 @@
     "other"
    ],
    "kinds_n": {
-    "other": 6
+    "other": 8
    },
    "first_at": "2026-11-21T08:34:19Z",
-   "last_at": "2026-11-22T04:31:03Z",
+   "last_at": "2026-11-22T04:40:10Z",
    "last_kind": "other",
    "rows_at_last": 39503,
    "prior_units_at_last": 1,
    "no_progress": true,
-   "elapsed_s": 385.7,
-   "elapsed_min": 6.4,
+   "elapsed_s": 397.1,
+   "elapsed_min": 6.6,
    "unstable": true,
    "runs": [
     "44884914552",
     "44931175026",
-    "44985016796"
+    "44985016796",
+    "44985733259"
    ],
    "shards": [
     0
