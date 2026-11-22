@@ -82,6 +82,59 @@ def expected_of(plan):
     return []
 
 
+def shard_no_of_file(path):
+    """片号只认文件名尾部的 `_shardNN`（plan 里的片号就是这个 NN）。"""
+    m = re.search(r"_shard0*(\d+)\.json$", os.path.basename(path))
+    return int(m.group(1)) if m else None
+
+
+def scope_shard_files(files, plan):
+    """按「本轮 plan 里有几片就读几片」收窄片文件（W33-058 · merge 作用域缺陷）。
+
+    旧行为无条件 glob `<stage>_shard*.json`，把历次轮次遗留的片文件也吃进 merge：
+    05b 实测 plan 只有 3 片、目录里躺着 21 片 → 577 层被冲成 1426 层、37,069,680 行被冲成 75,100,286 行。
+    口径：片号 ∈ plan 的片号集合才读，其余一律不读，并逐个打印（不许静默丢）。
+
+    返回 (kept, ignored, unknown, mode)：mode="plan" = 按 plan 收窄；"dir-all" = 无 plan 片号信息，退回旧行为。
+    """
+    expected = expected_of(plan)
+    if not expected:
+        return list(files), [], [], "dir-all"
+    keep = set(expected)
+    kept, ignored, unknown = [], [], []
+    for f in files:
+        n = shard_no_of_file(f)
+        if n is None:
+            unknown.append(f)          # 判不出片号：不静默丢，保留并喊出来
+            kept.append(f)
+        elif n in keep:
+            kept.append(f)
+        else:
+            ignored.append(f)
+    if unknown:
+        print("::warning::%d 个片文件判不出片号（文件名里没有 _shardNN），已保留读取：%s"
+              % (len(unknown), ", ".join(os.path.basename(x) for x in unknown)), flush=True)
+    return kept, ignored, unknown, "plan"
+
+
+def audit_ignored(ignored):
+    """审计被排除的遗留片文件（**只在 --audit-ignored 时调用，不参与 merge**）。
+
+    目的仅仅是让收官文档说得出「本轮排除了哪些遗留片、它们各有多少层」，
+    数字口径仍是 `layers_n`（与片账本自己写的一致）。"""
+    out = []
+    for f in ignored:
+        try:
+            d = json.load(open(f, encoding="utf-8"))
+        except Exception:                                # noqa: BLE001
+            out.append({"file": os.path.basename(f), "shard": shard_no_of_file(f),
+                        "layers_n": None})
+            continue
+        out.append({"file": os.path.basename(f), "shard": _shard_of(f, d),
+                    "layers_n": d.get("layers_n") or len(d.get("records") or [])})
+    return out
+
+
 def planned_layers_of(plan, sid):
     """某片计划了多少层（缺片时说得出「至少少了多少层」）。"""
     shards = plan.get("shards")
@@ -111,10 +164,12 @@ def main() -> int:
     ap.add_argument("--row-shrink-evidence", action="append", default=[], metavar="LAYER=PATH",
                     help="某层 rows 允许变小的实证（可重复）：没有它时，任何一层 rows 变小都会"
                          "拒绝写阶段账本并非零退出（2026-10-30 NAD view 被覆盖事故的总闸门）")
+    ap.add_argument("--audit-ignored", action="store_true",
+                    help="审计被 plan 作用域排除的遗留片文件（列出片号/层数）——只影响收官文档，"
+                         "merge 仍然一片都不读（W33-058）")
     a = ap.parse_args()
     stage = a.stage
     tag, title = TITLES.get(stage, (stage.upper(), stage))
-    files = sorted(glob.glob(os.path.join(a.base_dir, "ledger", stage + "_shard*.json")))
 
     plan = {}
     if a.plan and os.path.exists(a.plan):
@@ -124,9 +179,22 @@ def main() -> int:
         if os.path.exists(guess):
             plan = json.load(open(guess, encoding="utf-8"))
 
+    # ★ W33-058：merge 作用域 = 本轮 plan 的片号集合，不是「目录里有多少片」。
+    #   遗留片文件（历史 run 留下的 <stage>_shardNN.json）不计入任何数字，且必须点名。
+    files_all = sorted(glob.glob(os.path.join(a.base_dir, "ledger", stage + "_shard*.json")))
+    files, ignored_files, unknown_files, shard_scope = scope_shard_files(files_all, plan)
+    if ignored_files:
+        print("忽略遗留片文件 %d 个：%s"
+              % (len(ignored_files), ", ".join(os.path.basename(x) for x in ignored_files)),
+              flush=True)
+    elif shard_scope == "dir-all":
+        print("::warning::无 plan（或 plan 里没有片号），按目录全量读 %d 个片文件，可能吃到遗留片"
+              % len(files_all), flush=True)
+
     if not files and not expected_of(plan):
         raise SystemExit("没有任何片账本、也没有计划文件：无法判断采到什么")
     shard_info, expected = collect_shards(files, plan)
+    read_shards = sorted(k for k in shard_info if k is not None)
 
     recs = []
     meta = {}
@@ -162,7 +230,9 @@ def main() -> int:
 
     # ---- 片完成度：缺片 / partial_run 片 = 未完成片，显式列出，绝不静默 ----
     incomplete, shard_rows = [], []
-    for sid in sorted(set(expected) | set(shard_info)):
+    #   shard_info 里可能有 None（判不出片号的文件）：它不属于任何「片」，不进完成度表，
+    #   已在上面逐个 warning 点名，这里只需别把它当片号去排序（py3 里 None < int 会直接抛）。
+    for sid in sorted((set(expected) | set(shard_info)) - {None}):
         si = shard_info.get(sid)
         if si is None:
             planned = planned_layers_of(plan, sid)
@@ -185,7 +255,8 @@ def main() -> int:
          f"- 阶段：`{stage}` —— {title}",
          f"- 计划：{plan.get('layers_n', '?')} 层 / 声明 {plan.get('declared_rows', 0):,} 行 / "
          f"{plan.get('shards_n', '?')} 片（每片 {plan.get('size', '?')} 层，unit_rows={plan.get('unit_rows', '?')}）",
-         f"- 账本覆盖：**{len(recs)} 层**（片文件 {len(files)} 个）",
+         f"- 账本覆盖：**{len(recs)} 层**（片文件 {len(files)} 个"
+         + (f"；已按 plan 作用域排除遗留片 {len(ignored_files)} 个" if ignored_files else "") + "）",
          f"- 逐态：**ok {cnt.get('ok', 0)}** / capped_by_upstream {cnt.get('capped_by_upstream', 0)} / "
          f"empty {cnt.get('empty', 0)} / partial {cnt.get('partial', 0)} / "
          f"failed {cnt.get('failed', 0)} / skipped_done {cnt.get('skipped_done', 0)}",
@@ -236,6 +307,29 @@ def main() -> int:
                                             ", ".join("`%s`" % x for x in d["layers"])))
         L += [""]
 
+    # ★ W33-058：被作用域排除的遗留片文件必须写进文档（不许静默丢）
+    if ignored_files:
+        legacy = (audit_ignored(ignored_files) if a.audit_ignored else
+                  [{"file": os.path.basename(x), "shard": shard_no_of_file(x), "layers_n": None}
+                   for x in ignored_files])
+        L += ["## 二之三、遗留片文件（不计入本轮）", "",
+              "> 本轮 plan 只有 **%d** 片（片号 %s），同目录另有 **%d** 个同 stage 前缀的片文件属于更早轮次。"
+              "merge 作用域按 plan 收窄（W33-058 修）：这些文件**不被读取、不计入任何数字**。"
+              "以前无条件 glob 会把它们一起吃进来，让层数与行数虚高。"
+              % (len(expected), ", ".join(str(x) for x in sorted(expected)), len(ignored_files)), ""]
+        if a.audit_ignored:
+            tot = sum((x["layers_n"] or 0) for x in legacy)
+            L += ["| 遗留片文件 | 片号 | 层数 |", "|---|---|---|"]
+            for x in legacy:
+                L.append("| `%s` | %s | %s |"
+                         % (x["file"], "-" if x["shard"] is None else x["shard"],
+                            "-" if x["layers_n"] is None else f"{x['layers_n']:,}"))
+            L += ["", "**遗留片合计 %d 个文件 / %s 层记录**（其中与上面几片重层的会在按层合并时被去重，"
+                  "所以「净增层数」会小于这个数）。这些层属于更早轮次，要采必须单独派单。"
+                  % (len(legacy), f"{tot:,}"), ""]
+        else:
+            L += ["文件清单：", ""] + ["- `%s`" % x["file"] for x in legacy] + [""]
+
     L += ["## 三、差额最大的 10 层", ""]
     if gaps:
         L += ["| 层 | 声明 | 实采 | 差额 | 状态 | 原因 |", "|---|---|---|---|---|---|"]
@@ -278,6 +372,12 @@ def main() -> int:
     # （docs/STEP04-FULL-<date>.md）分开，避免分片口径覆盖真值口径。
     out = a.out or os.path.join(ROOT, "docs", tag + "-FULL-2026-10-30-shards.md")
 
+    # ★ 口径备注：与人写的 `<out 去后缀>.notes.md` 并排存放，生成时自动追加 ——
+    #   这样 CI 重跑（collect-full.yml 的 merge step）不会把备注冲掉。
+    notes = os.path.splitext(out)[0] + ".notes.md"
+    if os.path.exists(notes):
+        L += ["", open(notes, encoding="utf-8").read().rstrip(), ""]
+
     # 本次 run 的汇总（内存对象；写盘由 ledger_merge 决定去哪个文件）
     led = {"schema": "collect-ledger-agg/v1", "stage": stage, "at":
            datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -292,6 +392,11 @@ def main() -> int:
            "shards_expected": len(expected), "shards_reported": len(shard_info),
            "shards_incomplete": [s["shard"] for s in incomplete],
            "shards_incomplete_detail": incomplete,
+           # ★ W33-058：本轮到底读了哪几片、排除了哪些遗留片（谁都能复核）
+           "shard_scope": shard_scope,
+           "read_shards": read_shards,
+           "ignored_shard_files": [os.path.basename(x) for x in ignored_files],
+           "unparsable_shard_files": [os.path.basename(x) for x in unknown_files],
            # ★ W33-036：plan 被 max_shards 截断时，把“本轮注定没跑的片/层”写进账本，
            #   收口时一眼看到缺口是谁；没截断则为 None（不干扰旧账对比）。
            "plan_truncated": plan.get("plan_truncated"),
@@ -332,6 +437,8 @@ def main() -> int:
     print(json.dumps({k: led[k] for k in ("stage", "layers_n", "ok", "empty", "partial",
                                          "failed", "skipped_done", "declared", "rows",
                                           "shards_expected", "shards_reported",
+                                          "read_shards", "ignored_shard_files",
+                                          "unparsable_shard_files",
                                           "shards_incomplete", "complete")},
                      ensure_ascii=False))
     print(json.dumps({"run_ledger": res}, ensure_ascii=False))
