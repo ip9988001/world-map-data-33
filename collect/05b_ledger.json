@@ -1,7 +1,7 @@
 {
  "schema": "collect-ledger-agg/v1",
  "stage": "05b",
- "at": "2026-11-22T11:12:43Z",
+ "at": "2026-11-22T11:38:22Z",
  "layers_n": 3307,
  "ok": 3155,
  "empty": 19,
@@ -11,10 +11,1038 @@
  "declared": 171718212,
  "rows": 178231770,
  "gap": -6513558,
- "shards_expected": 3,
- "shards_reported": 3,
- "shards_incomplete": [],
- "shards_incomplete_detail": [],
+ "shards_expected": 192,
+ "shards_reported": 21,
+ "shards_incomplete": [
+  21,
+  22,
+  23,
+  24,
+  25,
+  26,
+  27,
+  28,
+  29,
+  30,
+  31,
+  32,
+  33,
+  34,
+  35,
+  36,
+  37,
+  38,
+  39,
+  40,
+  41,
+  42,
+  43,
+  44,
+  45,
+  46,
+  47,
+  48,
+  49,
+  50,
+  51,
+  52,
+  53,
+  54,
+  55,
+  56,
+  57,
+  58,
+  59,
+  60,
+  61,
+  62,
+  63,
+  64,
+  65,
+  66,
+  67,
+  68,
+  69,
+  70,
+  71,
+  72,
+  73,
+  74,
+  75,
+  76,
+  77,
+  78,
+  79,
+  80,
+  81,
+  82,
+  83,
+  84,
+  85,
+  86,
+  87,
+  88,
+  89,
+  90,
+  91,
+  92,
+  93,
+  94,
+  95,
+  96,
+  97,
+  98,
+  99,
+  100,
+  101,
+  102,
+  103,
+  104,
+  105,
+  106,
+  107,
+  108,
+  109,
+  110,
+  111,
+  112,
+  113,
+  114,
+  115,
+  116,
+  117,
+  118,
+  119,
+  120,
+  121,
+  122,
+  123,
+  124,
+  125,
+  126,
+  127,
+  128,
+  129,
+  130,
+  131,
+  132,
+  133,
+  134,
+  135,
+  136,
+  137,
+  138,
+  139,
+  140,
+  141,
+  142,
+  143,
+  144,
+  145,
+  146,
+  147,
+  148,
+  149,
+  150,
+  151,
+  152,
+  153,
+  154,
+  155,
+  156,
+  157,
+  158,
+  159,
+  160,
+  161,
+  162,
+  163,
+  164,
+  165,
+  166,
+  167,
+  168,
+  169,
+  170,
+  171,
+  172,
+  173,
+  174,
+  175,
+  176,
+  177,
+  178,
+  179,
+  180,
+  181,
+  182,
+  183,
+  184,
+  185,
+  186,
+  187,
+  188,
+  189,
+  190,
+  191
+ ],
+ "shards_incomplete_detail": [
+  {
+   "shard": 21,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 22,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 23,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 24,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 25,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 26,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 27,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 28,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 29,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 30,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 31,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 32,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 33,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 34,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 35,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 36,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 37,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 38,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 39,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 40,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 41,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 42,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 43,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 44,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 45,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 46,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 47,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 48,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 49,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 50,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 51,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 52,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 53,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 54,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 55,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 56,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 57,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 58,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 59,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 60,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 61,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 62,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 63,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 64,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 65,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 66,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 67,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 68,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 69,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 70,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 71,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 72,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 73,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 74,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 75,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 76,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 77,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 78,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 79,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 80,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 81,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 82,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 83,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 84,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 85,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 86,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 87,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 88,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 89,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 90,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 91,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 92,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 93,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 94,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 95,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 96,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 97,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 98,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 99,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 100,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 101,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 102,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 103,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 104,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 105,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 106,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 107,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 108,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 109,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 110,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 111,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 112,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 113,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 114,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 115,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 116,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 117,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 118,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 119,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 120,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 121,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 122,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 123,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 124,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 125,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 126,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 127,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 128,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 129,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 130,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 131,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 132,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 133,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 134,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 135,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 136,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 137,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 138,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 139,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 140,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 141,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 142,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 143,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 144,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 145,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 146,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 147,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 148,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 149,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 150,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 151,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 152,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 153,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 154,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 155,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 156,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 157,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 158,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 159,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 160,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 161,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 162,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 163,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 164,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 165,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 166,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 167,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 168,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 169,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 170,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 171,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 172,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 173,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 174,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 175,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 176,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 177,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 178,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 179,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 180,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 181,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 182,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 183,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 184,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 185,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 186,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 187,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 188,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 189,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 190,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  },
+  {
+   "shard": 191,
+   "cause": "no_ledger",
+   "layers_planned": 3
+  }
+ ],
  "complete": false,
  "plan": {
   "layers_n": 2770,
@@ -58183,18 +59211,13 @@
  "scope": "stage",
  "gap_pct": -3.7932,
  "last_merge": {
-  "run_id": "45010130014",
-  "at": "2026-11-22T11:12:43Z",
+  "run_id": "45017922274",
+  "at": "2026-11-22T11:38:22Z",
   "stats": {
-   "added": 3,
-   "updated": 1,
-   "kept": 575,
+   "added": 0,
+   "updated": 0,
+   "kept": 1241,
    "downgrade_blocked": [
-    {
-     "layer": "unty_org_arcgis_rest_services_OpenData_Property_MapServer_12",
-     "stage_status": "empty",
-     "run_status": "failed"
-    },
     {
      "layer": "vt_nz_arcgis_rest_services_CorporateData_Address_MapServer_0",
      "stage_status": "upstream_unstable",
@@ -58216,11 +59239,6 @@
      "run_status": "failed"
     },
     {
-     "layer": "qKAFwdGU_arcgis_rest_services_Address_Points_FeatureServer_0",
-     "stage_status": "ok",
-     "run_status": "partial"
-    },
-    {
      "layer": "nc_gov_server_rest_services_CityWorks_Basemap_CW_MapServer_0",
      "stage_status": "missing",
      "run_status": "failed"
@@ -58234,11 +59252,6 @@
      "layer": "ntygov_com_server_rest_services_Addresses_Public_MapServer_0",
      "stage_status": "unverified",
      "run_status": "failed"
-    },
-    {
-     "layer": "cgis_rest_services_911_Addresses_Public_View_FeatureServer_2",
-     "stage_status": "ok",
-     "run_status": "partial"
     },
     {
      "layer": "_ca_arcgis_adaptor_rest_services_LCGIS_VertiGIS_MapServer_25",
@@ -58286,6 +59299,11 @@
      "run_status": "failed"
     },
     {
+     "layer": "ellington_ca_server_rest_services_Parcels_Public_MapServer_1",
+     "stage_status": "partial",
+     "run_status": "failed"
+    },
+    {
      "layer": "erva_gov_arcgis_rest_services_Winchester_Address_MapServer_0",
      "stage_status": "unverified",
      "run_status": "failed"
@@ -58297,21 +59315,6 @@
     },
     {
      "layer": "Pvc_arcgis_rest_services_Address_Points_View_FeatureServer_2",
-     "stage_status": "upstream_unstable",
-     "run_status": "failed"
-    },
-    {
-     "layer": "nDataMaps_OpenDataMAP_InfraZonePropBound_Layers_MapServer_33",
-     "stage_status": "partial",
-     "run_status": "failed"
-    },
-    {
-     "layer": "wi_us_arcgis_rest_services_RichlandCo_GIS_Public_MapServer_6",
-     "stage_status": "partial",
-     "run_status": "failed"
-    },
-    {
-     "layer": "ca_gov_server_rest_services_Address_Range_Labels_MapServer_0",
      "stage_status": "upstream_unstable",
      "run_status": "failed"
     },
@@ -58349,6 +59352,16 @@
      "layer": "_services_NG911_ReadOnly_NG911_Addressing_Layers_MapServer_0",
      "stage_status": "upstream_unstable",
      "run_status": "failed"
+    },
+    {
+     "layer": "almbeach_com_arcgis_rest_services_BaseData_Situs_MapServer_0",
+     "stage_status": "upstream_unstable",
+     "run_status": "failed"
+    },
+    {
+     "layer": "ca_gov_server_rest_services_Address_Range_Labels_MapServer_0",
+     "stage_status": "upstream_unstable",
+     "run_status": "failed"
     }
    ]
   }
@@ -58357,7 +59370,7 @@
  "upstream_unstable": 19,
  "missing": 1,
  "unverified": 4,
- "shards_run_id": "45010130014",
+ "shards_run_id": "45017922274",
  "buckets": {
   "ok": 3155,
   "capped_by_upstream": 0,
@@ -58420,10 +59433,36 @@
    "merge_outcome": "kept_stage_record_status_better",
    "reason": "状态变差且行数变少（合并保留了旧记录）",
    "evidence": ""
+  },
+  {
+   "layer": "arcgis_rest_services_LAWRENCEGIS_NG911Addressing_MapServer_0",
+   "run_id": "45017922274",
+   "at": "2026-11-22T11:38:22Z",
+   "stage_rows": 39504,
+   "run_rows": 39503,
+   "delta": -1,
+   "stage_status": "ok",
+   "run_status": "failed",
+   "merge_outcome": "kept_stage_record_status_better",
+   "reason": "状态变差且行数变少（合并保留了旧记录）",
+   "evidence": ""
+  },
+  {
+   "layer": "ttesville_org_cvgisweb_rest_services_OpenData_1_MapServer_76",
+   "run_id": "45017922274",
+   "at": "2026-11-22T11:38:22Z",
+   "stage_rows": 51668,
+   "run_rows": 51610,
+   "delta": -58,
+   "stage_status": "partial",
+   "run_status": "failed",
+   "merge_outcome": "kept_stage_record_status_better",
+   "reason": "状态变差且行数变少（合并保留了旧记录）",
+   "evidence": ""
   }
  ],
- "rows_regressions": 4,
- "rows_regressions_unexplained": 4,
+ "rows_regressions": 6,
+ "rows_regressions_unexplained": 6,
  "revisions": [
   {
    "kind": "stage_merge",
@@ -58515,6 +59554,202 @@
     "ttesville_org_cvgisweb_rest_services_OpenData_1_MapServer_76"
    ],
    "note": "单 run 结果按层合并进阶段账本（状态取更优者，同状态取行数大者）"
+  },
+  {
+   "kind": "stage_merge",
+   "at": "2026-11-22T11:38:22Z",
+   "run_id": "45017922274",
+   "run_layers_n": 1241,
+   "run_shards_expected": 192,
+   "run_shards_reported": 21,
+   "run_shards_incomplete": [
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112,
+    113,
+    114,
+    115,
+    116,
+    117,
+    118,
+    119,
+    120,
+    121,
+    122,
+    123,
+    124,
+    125,
+    126,
+    127,
+    128,
+    129,
+    130,
+    131,
+    132,
+    133,
+    134,
+    135,
+    136,
+    137,
+    138,
+    139,
+    140,
+    141,
+    142,
+    143,
+    144,
+    145,
+    146,
+    147,
+    148,
+    149,
+    150,
+    151,
+    152,
+    153,
+    154,
+    155,
+    156,
+    157,
+    158,
+    159,
+    160,
+    161,
+    162,
+    163,
+    164,
+    165,
+    166,
+    167,
+    168,
+    169,
+    170,
+    171,
+    172,
+    173,
+    174,
+    175,
+    176,
+    177,
+    178,
+    179,
+    180,
+    181,
+    182,
+    183,
+    184,
+    185,
+    186,
+    187,
+    188,
+    189,
+    190,
+    191
+   ],
+   "run_ok": 1119,
+   "run_failed": 29,
+   "run_rows": 72120512,
+   "stage_layers_before": 3307,
+   "stage_layers_after": 3307,
+   "records_added": 0,
+   "records_updated": 0,
+   "records_kept": 1241,
+   "downgrades_blocked": 29,
+   "rows_regressions": 2,
+   "rows_regressions_layers": [
+    "arcgis_rest_services_LAWRENCEGIS_NG911Addressing_MapServer_0",
+    "ttesville_org_cvgisweb_rest_services_OpenData_1_MapServer_76"
+   ],
+   "note": "单 run 结果按层合并进阶段账本（状态取更优者，同状态取行数大者）"
   }
  ],
  "adjudicated_at": "2026-10-31T03:35:13Z",
@@ -58558,7 +59793,7 @@
   "kind": "legacy_double_count",
   "layers": 101,
   "overcounted_rows": 7359939,
-  "detected_at": "2026-11-22T11:12:43Z",
+  "detected_at": "2026-11-22T11:42:22Z",
   "detected_by": "ledger_merge.annotate_rows_suspect (W33-060)",
   "run_id": "45010130014",
   "policy": "rows 不回改，只加标记留档（用户裁定 2026-11-22）",
