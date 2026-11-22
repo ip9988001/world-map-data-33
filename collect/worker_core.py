@@ -63,6 +63,87 @@ def load_policy(step):
     return pol
 
 
+#: `@<状态>-<n>` 唯一化后缀（见 _rows_from_csv）。
+#: ★ W33-048 缺陷 A：这个后缀只是「同一层在清单里出现多行」时的区分符，**不是新层**。
+#:   把它当独立层会造成：①一个小层占两个名额 ②Release 里只有其中一个变体的 tag，
+#:   另一个变体永远判不到 done（天天重采）③--force-layers 点名时 add 只加 `not in have`，
+#:   队列里已有另一个变体 → force 的那条反而提不到队首。
+VAR_SUFFIX_RE = re.compile(r"^(?P<base>.+)@(?P<state>[^@]+)-(?P<n>\d+)$")
+
+
+def base_layer_id(lid):
+    """剥掉 `@<状态>-<n>` 唯一化后缀，返回真实层 id。没有后缀原样返回。"""
+    s = str(lid or "")
+    m = VAR_SUFFIX_RE.match(s)
+    return m.group("base") if m else s
+
+
+def merge_layer_variants(rows, prefer_ids=None, log=None):
+    """★ W33-048：同一 base 层的 `@<状态>-<n>` 变体合并为**一层**（稳定规则，可复现）。
+
+    保留优先级（高→低）：
+      1. `prefer_ids` 里有的（= Release 已有 tag / 已判完成的那条），多条的取序号最小；
+      2. 序号（n）最小；
+      3. 输入顺序靠前。
+    被合并掉的条目不会人间蒸发：其 id/url 记到保留项 `merged_variants[]`（供审计与人工核对）。
+
+    为什么不能「随便留一条」：两条 URL 可能是同一个服务的两个入口（baltegis / egis），
+    留哪条直接影响能不能真采到数据；所以优先留**已有 Release 证据**的那条。
+    """
+    pref = set(str(x) for x in (prefer_ids or []))
+
+    def _rank(x):
+        xid = str(x.get("id") or "")
+        m = VAR_SUFFIX_RE.match(xid)
+        n = int(m.group("n")) if m else 0
+        return (0 if xid in pref else 1, n, 0 if xid == base_layer_id(xid) else 1)
+
+    best, order, dropped = {}, [], {}
+    for r in rows or []:
+        b = base_layer_id(str(r.get("id") or ""))
+        if b not in best:
+            best[b] = r
+            order.append(b)
+            continue
+        if _rank(r) < _rank(best[b]):
+            best[b], r = r, best[b]
+        dropped.setdefault(b, []).append(str(r.get("id") or ""))
+    out = []
+    for b in order:
+        r = dict(best[b])
+        merges = dropped.get(b) or []
+        if merges:
+            r["merged_variants"] = merges
+            alts = list(r.get("alt_urls") or [])
+            for other in rows or []:
+                oid = str(other.get("id") or "")
+                if oid in merges and other.get("url") and other.get("url") != r.get("url"):
+                    alts.append(other["url"])
+            if alts:
+                r["alt_urls"] = sorted(set(alts))
+            if log:
+                log("🔗 变体合并：%s ← %s（同为一层，只算一个名额）" % (r["id"], ", ".join(merges)))
+        out.append(r)
+    return out
+
+
+def split_done(rows, done):
+    """★ W33-048 缺陷 A：按 **base 层 id** 剔除已采层，返回 (待采列表, 跳过数)。
+
+    为什么不能只比全名：变体合并后队列里只剩一条（比如 `@未定位-1`），而 Releases 的
+    历史 tag 可能记在被合并掉的另一个变体名下；只按全名比 → 这层永远判不到 done，
+    每天重采一遍。两边都先剥 `@<状态>-<n>` 再比，才能「同一层算一个」。
+    """
+    done_ids = set(str(x) for x in (done or ()))
+    if not done_ids:
+        return list(rows or []), 0
+    done_bases = {base_layer_id(x) for x in done_ids}
+    keep = [r for r in (rows or [])
+            if str(r.get("id")) not in done_ids
+            and base_layer_id(r.get("id")) not in done_bases]
+    return keep, len(rows or []) - len(keep)
+
+
 def _rows_from_csv(path=None):
     path = path or PLAN_F          # 不能在默认参数里绑 PLAN_F：那样 patch 模块属性会失效
     if not os.path.exists(path):
@@ -452,11 +533,25 @@ def select_layers(step, limit=0, policy=None):
         #   先切 [off:off+size] 再剔除，切出来的 20 层里仍混着已采层，等于白跑。
         # ★ 显式点名要采的层（--layers）不算续采，不能剔：冒烟测的就是已采层。
         #   自动选层才走 skip_done。
+        # ★ W33-048 缺陷 A：先把同一 base 层的 `@<状态>-<n>` 变体合并成一层再走后续过滤/排序/
+        #   已采剔除 —— 否则同一个层占两个名额，且只有带 tag 的那个变体能被判完成。
+        #   优先保留「Release 已有 tag」的那条：需要已采集合，只在真出现变体时才去取（不多花 API）。
+        _done_pref = None
+        if any(VAR_SUFFIX_RE.match(str(r.get("id") or "")) for r in out):
+            try:
+                _done_pref = set(done_layers(step))
+            except Exception as e:                             # noqa: BLE001
+                print("⚠️ 变体合并取不到已采集合（%s）：退化为按序号最小保留" % str(e)[:100],
+                      file=sys.stderr)
+            out = merge_layer_variants(out, prefer_ids=_done_pref,
+                                       log=lambda m: print(m, file=sys.stderr))
         if sel.get("skip_done") and not sel.get("layers"):
-            done = done_layers(step)
+            done = _done_pref if _done_pref is not None else done_layers(step)
             if done:
                 _b = len(out)
-                out = [r for r in out if r["id"] not in done]
+                # ★ 比对一律走 base id：变体合并后队列里只剩一条，但 Releases 的历史 tag
+                #   可能是被合并掉的另一个变体名（`@未定位-1`），只按全名字比对就会永远判不到完成。
+                out, _skipped = split_done(out, done)
                 # ★ 必须走 stderr：--list-matrix 的 stdout 是给 workflow 解 JSON 用的，
                 #   一行提示混进去就是 JSONDecodeError: line 1 column 1（2026-10-27 踩过）
                 print("⏭ 跳过已采 %d 层，待采 %d 层" % (_b - len(out), len(out)), file=sys.stderr)
