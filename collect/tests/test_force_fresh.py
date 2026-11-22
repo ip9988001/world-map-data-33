@@ -125,7 +125,10 @@ class FreshBase(unittest.TestCase):
         pilot.OUTBASE = self.tmp
         pilot.PROG_DIR = os.path.join(self.tmp, "progress")
         pilot.UNIT_ROWS = 500              # 1200 行 → 3 个单元（400/400/400）
-        pilot._pub = lambda *a, **k: True
+        # ★ `_pub` 的真实契约是 `(rc, 输出)`；打桩也必须返回二元组 ——
+        #   返回 True 只会在**本机**侥幸通过（GITHUB_REPOSITORY 未设 → _publish_ckpt 早退），
+        #   到 CI 上 GITHUB_REPOSITORY 一定存在 → `rc, o = True` → TypeError（smoke 45020368971）。
+        pilot._pub = lambda *a, **k: (0, "")
         pilot.RUN_ID = "99999"
         pilot.UNIT_NS = ""
         pilot.FRESH = False
@@ -451,6 +454,67 @@ class TestSupersedeMode(unittest.TestCase):
                                            assets=None, supersede_legacy=True)
         self.assertEqual(rep["units_legacy_superseded"], 1, "只 supersede 上传成功的那个索引")
         self.assertEqual(merged["rows_total"], 300, "新代 200 + 旧包唯一副本 100")
+
+
+# ---------------------------------------------------------------- `_pub` 契约（不许被测试掩盖）
+class TestPubContractNotStubbed(unittest.TestCase):
+    """`_pub` 必须是 `(rc, 输出)` 二元组 —— 这条测试**不打桩 `_pub`**。
+
+    ★ 为什么必须有（2026-11-22 CI 真红，smoke run 45020368971 / PR #41）：
+      上一版把 `pilot._pub` 打桩成返回 `True`。本机 `GITHUB_REPOSITORY` 未设置 →
+      `_publish_ckpt` 在 `/tmp` 之前就 `return False`，解包那行永远不执行 → 本机「569 OK」；
+      CI 上 `GITHUB_REPOSITORY` 一定存在 → `rc, o = True` → TypeError，5 个用例全红。
+      打桩可以把契约错掩盖住，所以这里只把 `subprocess.run` 换成假进程，`_pub` 走真实实现。
+    """
+
+    def setUp(self):
+        self._orig = (pilot.CUR.get("id"), os.environ.get("GITHUB_REPOSITORY"),
+                      pilot.subprocess.run, pilot._tag)
+        self.real_run = pilot.subprocess.run                 # 真 run（给「真跑一次」那条用）
+        pilot.CUR["id"] = "L"
+        os.environ["GITHUB_REPOSITORY"] = "owner/repo"        # ★ CI 上它一定存在，本机靠它复现
+        pilot._tag = lambda: "collect-test-L"
+        self.calls = []
+
+        class R:
+            returncode = 0
+            stdout = "ok"
+            stderr = ""
+
+        def fake_run(cmd, **kw):
+            self.calls.append(cmd)
+            return R()
+
+        self.fake_run = fake_run
+        pilot.subprocess.run = fake_run                       # 只拦进程，不拦契约
+
+    def tearDown(self):
+        cid, rep, run_, tag = self._orig
+        pilot.subprocess.run, pilot._tag = run_, tag
+        pilot.CUR["id"] = cid
+        if rep is None:
+            os.environ.pop("GITHUB_REPOSITORY", None)
+        else:
+            os.environ["GITHUB_REPOSITORY"] = rep
+
+    def test_pub_returns_rc_and_output_tuple(self):
+        """真跑一次子进程（`_pub` 与 `subprocess.run` 都不打桩）：返回值必须是 (int, str)。"""
+        pilot.subprocess.run = self.real_run
+        try:
+            rc, out = pilot._pub([sys.executable, "-c", "print('hello')"])
+        finally:
+            pilot.subprocess.run = self.fake_run
+        self.assertIsInstance(rc, int)
+        self.assertIsInstance(out, str)
+        self.assertIn("hello", out)
+
+    def test_publish_ckpt_unpacks_pub_as_tuple(self):
+        """`_publish_ckpt` 直接按 (rc, o) 解包 → `_pub` 一改契约就在这里红（本机也红）。"""
+        ok = pilot._publish_ckpt({"ver": 2, "plan_hash": "h"}, lambda m: None)
+        self.assertIs(ok, True)
+        last = self.calls[-1]
+        self.assertEqual(last[:4], ["gh", "release", "upload", "collect-test-L"])
+        self.assertIn("--clobber", last)
 
 
 # ---------------------------------------------------------------- 账本口径

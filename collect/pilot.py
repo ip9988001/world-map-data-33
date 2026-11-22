@@ -691,7 +691,15 @@ def _tag():
 
 
 
-def _pub(cmd, timeout=600):
+def _pub(cmd, timeout=600) -> tuple[int, str]:
+    """跑一条发布命令 → **`(rc, 输出前 300 字符)` 二元组**（绝不是 bool）。
+
+    ★ 2026-11-22 CI 真红（smoke run 45020368971 / PR #41）：测试把 `pilot._pub` 打桩成
+      返回 `True`，本机 `GITHUB_REPOSITORY` 未设置 → `_publish_ckpt` 早退 False，从不执行解包；
+      CI 上该变量一定存在 → `rc, o = True` → `TypeError: cannot unpack non-iterable bool`。
+      契约只此一份：本仓 7 处调用（`_upload` / `_publish_ckpt` / `_backup_legacy_ckpt` 清旧备份 /
+      `_fetch_ckpt_asset` 的 view+download）**全部按 `(rc, o)` 解包**，打桩必须同样返回二元组。
+    """
     try:
         r = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
         return r.returncode, ((r.stdout or "") + (r.stderr or ""))[:300]
