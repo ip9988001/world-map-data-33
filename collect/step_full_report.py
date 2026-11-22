@@ -408,7 +408,8 @@ def main() -> int:
     # 汇总账本
     # ★ 2026-10-30 第二次事故（run 41121952357 把 272 层阶段账本冲成 31 层）：这里不再直接写
     #   collect/<stage>_ledger.json。改为：① 单 run 结果 → collect/ledger/<stage>_run<RUN_ID>.json；
-    #   ② 阶段账本按 layer_id 合并（状态取更优者，同状态取行数大者）；③ 小 run（<1/2）默认不碰阶段账本。
+    #   ② 阶段账本按 layer_id **并集**合并（状态取更优者，同状态取行数大者）；
+    #   ③ 并集合并只增不减，所以不再用体积判据拦小 run（W33-059），改用不变量：「原有层一个不许丢」。
     #   详见 collect/ledger_merge.py（带单测）。
     from ledger_merge import write_run_and_stage, format_regressions_section   # noqa: E402
     run_id = a.run_id or os.environ.get("GITHUB_RUN_ID") or "local"
@@ -420,6 +421,15 @@ def main() -> int:
     res = write_run_and_stage(stage, led, run_id, base_dir=a.base_dir,
                               allow_stage_overwrite=a.allow_stage_overwrite,
                               allow_shrink=allow_shrink)
+
+    # ★ W33-059（2026-11-22）：阶段账本没并进本轮 → 必须喊出来。
+    #   旧行为是静默：run 44960026303 就这样把「3 层 ok + 1 层 empty」锁在 run 账本里，
+    #   聚合账本与接续闸门全看成上一轮的内容（闸门报 incomplete_shards=[2]，而本轮一片不缺）。
+    if not res.get("stage_written") and not res.get("error"):
+        print("::warning::本轮没有并入阶段账本（reason=%s）：%d 层只写了 %s，"
+              "聚合账本 %s 仍是上一轮的内容（本轮新增/更新的层不会出现在里面）"
+              % (res.get("reason"), led["layers_n"], os.path.basename(res["run_path"]),
+                 os.path.basename(res["stage_path"])), flush=True)
 
     # ★ rows 回退单独成节（2026-10-31）：状态取优者 + 行数取大者会把「真丢数据」掩盖成
     #   「本次没采到那么多」，所以只要本轮某层 rows < 阶段账本 rows，就必须在这里点名。

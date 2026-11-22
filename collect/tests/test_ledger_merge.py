@@ -38,18 +38,30 @@ def _run(n=31):
 
 
 class SingleRunCannotOverwriteStage(unittest.TestCase):
-    def test_31_layers_does_not_touch_272_layer_stage(self):
+    """★ 2026-11-22 W33-059：这一组用例固化的正是事故判据，已改写。
+
+    旧断言：「run 31 层 < 阶段账本 272 层的一半 → 拒写，reason=run_layers_31_lt_half_of_stage_272」。
+    这条规则把**增量轮次永久挡在门外**（run 44960026303 真实事件：3 层 status=ok 的记录一行没进
+    聚合账本，闸门只能读到上一轮的 shards_incomplete）。
+    并集合并本身只增不减，所以现在改为校验**不变量**：原有层一个不许丢 + 逐层 rows 不许变小。
+    """
+
+    def test_31_layers_merges_into_272_layer_stage_without_losing_a_layer(self):
         with tempfile.TemporaryDirectory() as d:
             os.makedirs(os.path.join(d, "ledger"))
             json.dump(_stage(272), open(os.path.join(d, "04b_ledger.json"), "w"))
             res = lm.write_run_and_stage("04b", _run(31), "41121952357", base_dir=d)
-            self.assertFalse(res["stage_written"])
-            self.assertEqual(res["reason"], "run_layers_31_lt_half_of_stage_272")
-            # 阶段账本一个字节都没动
+            self.assertTrue(res["stage_written"])
+            self.assertEqual(res["reason"], "union_merge_run_31_stage_272")
             stage = json.load(open(os.path.join(d, "04b_ledger.json")))
+            # 31 层全部与阶段账本重层 → 并集仍是 272 层；阶段账本的 ok 层一层不少、不被降级
             self.assertEqual(stage["layers_n"], 272)
             self.assertEqual(stage["ok"], 272)
-            self.assertEqual(stage["revisions"], [])
+            self.assertEqual(stage["failed"], 0)
+            self.assertEqual(len(stage["records"]), 272)
+            self.assertEqual(stage["last_merge"]["run_id"], "41121952357")
+            self.assertEqual(stage["last_merge"]["stats"]["downgrade_blocked"][0]["run_status"],
+                             "failed")
             # 单 run 文件必须写出来（scope=single_run + 片口径三件套）
             run = json.load(open(os.path.join(d, "ledger", "04b_run41121952357.json")))
             self.assertEqual(run["scope"], "single_run")
@@ -57,6 +69,42 @@ class SingleRunCannotOverwriteStage(unittest.TestCase):
             self.assertEqual(run["shards_expected"], 3)
             self.assertEqual(run["shards_reported"], 3)
             self.assertEqual(run["shards_incomplete"], [])
+
+    def test_run_with_new_layers_is_added_to_stage(self):
+        """真事故形状：阶段账本没有这几层（新采到的 ok）→ 必须并进来，不是“只接受状态变好”。"""
+        with tempfile.TemporaryDirectory() as d:
+            os.makedirs(os.path.join(d, "ledger"))
+            json.dump(_stage(272), open(os.path.join(d, "04b_ledger.json"), "w"))
+            run = {"schema": "collect-ledger-agg/v1", "stage": "04b", "layers_n": 2,
+                   "ok": 2, "failed": 0, "declared": 2000, "rows": 2000,
+                   "shards_expected": 3, "shards_reported": 3, "shards_incomplete": [],
+                   "records": [_rec("brand_new_a", "ok", 1000), _rec("brand_new_b", "ok", 1000)]}
+            res = lm.write_run_and_stage("04b", run, "44960026303", base_dir=d)
+            self.assertTrue(res["stage_written"])
+            self.assertEqual(res["stats"]["added"], 2)
+            by = {r["layer"]: r for r in json.load(
+                open(os.path.join(d, "04b_ledger.json")))["records"]}
+            self.assertEqual(by["brand_new_a"]["status"], "ok")
+            self.assertEqual(len(by), 274)
+
+    def test_empty_run_does_not_touch_stage(self):
+        """空转 run（一条记录都没采到）仍然不许碰阶段账本 —— 不变量外的唯一例外。"""
+        with tempfile.TemporaryDirectory() as d:
+            os.makedirs(os.path.join(d, "ledger"))
+            json.dump(_stage(272), open(os.path.join(d, "04b_ledger.json"), "w"))
+            res = lm.write_run_and_stage("04b", {"stage": "04b", "layers_n": 0,
+                                                  "records": []}, "R0", base_dir=d)
+            self.assertFalse(res["stage_written"])
+            self.assertEqual(res["reason"], "run_has_no_records")
+            self.assertEqual(json.load(open(os.path.join(d, "04b_ledger.json")))["layers_n"], 272)
+
+    def test_stage_merge_never_drops_a_layer(self):
+        """并集合并不丢层：拿真形状直接验不变量函数。"""
+        base = [_rec("keep_me", "ok", 10)]
+        with self.assertRaises(ValueError) as ctx:
+            lm.assert_no_layer_lost(base, [_rec("other", "ok", 10)])
+        self.assertIn("keep_me", str(ctx.exception))
+        self.assertTrue(lm.assert_no_layer_lost(base, base + [_rec("new", "ok", 1)]))
 
     def test_big_enough_run_merges(self):
         with tempfile.TemporaryDirectory() as d:
@@ -327,6 +375,93 @@ class RowsRegressionNotSilent(unittest.TestCase):
             self.assertEqual(stage["rows_regressions"], 1)
             self.assertEqual(stage["records"][2]["rows"], 1000)   # 合并仍取更大值
             self.assertEqual(stage["regressions"][0]["run_rows"], 10)
+
+
+class MergeCoversEverythingInvariant(unittest.TestCase):
+    """W33-059 硬后置条件：合并结果必须覆盖「阶段账本层 ∪ 本轮分片层」（按 base id 归一）。
+
+    事故形状（run 44960026303）：阶段账本 3304 层、本轮 577 层，3 层 status=ok 的新记录
+    在 run 账本里、却不在聚合账本里。下面这些用例把“丢层”变成**红**，而不是一条 warning。
+    """
+
+    def test_lost_run_layer_raises_not_warns(self):
+        base = [_rec("keep", "ok", 10)]
+        run = [_rec("keep", "ok", 10), _rec("brand_new", "ok", 281486)]
+        merged = [_rec("keep", "ok", 10)]                 # 故意抽掉 brand_new
+        with self.assertRaises(lm.MergeInvariantError) as ctx:
+            lm.assert_merge_covers(base, run, merged)
+        e = ctx.exception
+        self.assertEqual(e.detail["lost_from_run"], ["brand_new"])
+        self.assertEqual(e.detail["lost_from_stage"], [])
+        self.assertIn("brand_new", str(e))
+
+    def test_lost_stage_layer_raises(self):
+        base = [_rec("old_a", "ok", 10), _rec("old_b", "partial", 5)]
+        with self.assertRaises(lm.MergeInvariantError) as ctx:
+            lm.assert_merge_covers(base, [], [_rec("old_a", "ok", 10)])
+        self.assertEqual(ctx.exception.detail["lost_from_stage"], ["old_b"])
+
+    def test_variant_suffix_normalized_before_comparing(self):
+        """聚合账本里还留着 `xxx@未定位-2`，本轮写的是 base id `xxx` → 归一后算同一层。"""
+        base = [_rec("_svc_AddressPoints@未定位-2", "empty", 0),
+                _rec("_svc_AddressPoints@未定位-1", "ok", 279299)]
+        run = [_rec("_svc_AddressPoints", "ok", 279299)]
+        merged = [_rec("_svc_AddressPoints", "ok", 279299)]
+        self.assertTrue(lm.assert_merge_covers(base, [], run and merged))
+        self.assertEqual(lm.norm_layer("_svc_x@未定位-12"), "_svc_x")
+        self.assertEqual(lm.norm_layer("plain_layer"), "plain_layer")
+
+    def test_write_run_and_stage_propagates_the_invariant(self):
+        """违反不变量必须 raise 到调用方（FAIL），不是转成 res["error"]/warning 往下走。"""
+        with tempfile.TemporaryDirectory() as d:
+            os.makedirs(os.path.join(d, "ledger"))
+            json.dump(_stage(4), open(os.path.join(d, "04b_ledger.json"), "w"))
+            run = {"layers_n": 2, "ok": 2, "failed": 0, "shards_expected": 1,
+                   "shards_reported": 1, "shards_incomplete": [],
+                   "records": [_rec("layer_000", "ok", 1000), _rec("new_ok", "ok", 7)]}
+            orig = lm.merge_stage_ledger
+            lm.merge_stage_ledger = lambda *a, **k: (
+                {"records": [_rec("layer_000", "ok", 1000)]}, {"added": 0})   # 吞掉 new_ok
+            try:
+                with self.assertRaises(lm.MergeInvariantError):
+                    lm.write_run_and_stage("04b", run, "R9", base_dir=d)
+            finally:
+                lm.merge_stage_ledger = orig
+            # 阶段账本不许被写半截（raise 前就写了 run 账本，且 run 账本完整）
+            stage = json.load(open(os.path.join(d, "04b_ledger.json")))
+            self.assertEqual(stage["layers_n"], 4)
+            self.assertIsNone(stage.get("last_merge"))
+            self.assertEqual(json.load(open(os.path.join(
+                d, "ledger", "04b_runR9.json")))["layers_n"], 2)
+
+    def test_real_accident_shape_loses_zero_layers(self):
+        """真事故形状（3304 层账本 + 577 层增量 run + 3 层新 ok）→ 并集后一层不丢。"""
+        with tempfile.TemporaryDirectory() as d:
+            os.makedirs(os.path.join(d, "ledger"))
+            base = _stage(3304)
+            # 模拟聚合账本里旧变体壳（空）
+            base["records"].append(_rec("_svc_ap@未定位-2", "empty", 0))
+            base["layers_n"] = len(base["records"])
+            json.dump(base, open(os.path.join(d, "05b_ledger.json"), "w"))
+            recs = [_rec("layer_%03d" % i, "partial", 666) for i in range(574)]
+            recs += [_rec("_svc_ap", "ok", 279299),
+                     _rec("arapahoe", "ok", 281486),
+                     _rec("hedvoters", "ok", 283974),
+                     _rec("jvoh", "ok", 285259)]
+            run = {"layers_n": len(recs), "ok": 4, "partial": 574, "failed": 0,
+                   "shards_expected": 3, "shards_reported": 3, "shards_incomplete": [],
+                   "records": recs}
+            res = lm.write_run_and_stage("05b", run, "44960026303", base_dir=d)
+            self.assertTrue(res["stage_written"])
+            self.assertEqual(res["reason"], "union_merge_run_578_stage_3305")
+            stage = json.load(open(os.path.join(d, "05b_ledger.json")))
+            by = {r["layer"]: r for r in stage["records"]}
+            for k in ("arapahoe", "hedvoters", "jvoh", "_svc_ap"):
+                self.assertIn(k, by)
+                self.assertEqual(by[k]["status"], "ok")
+            self.assertEqual(by["_svc_ap"]["rows"], 279299)
+            self.assertEqual(stage["shards_incomplete"], [])          # 片口径是本轮的
+            self.assertEqual(stage["shards_run_id"], "44960026303")
 
 
 if __name__ == "__main__":
