@@ -14,10 +14,13 @@
 本文件是那行逻辑的替换：
 
   ① 单 run 的结果一律写 `collect/ledger/<stage>_run<RUN_ID>.json`（`scope=single_run`）；
-  ② `collect/<stage>_ledger.json` 只做**按层合并**：以已有阶段账本为底，按 layer_id 覆盖/更新，
+  ② `collect/<stage>_ledger.json` 只做**按层并集合并**：以已有阶段账本为底，按 layer_id 覆盖/更新，
      状态取更优者（ok > partial > missing > unverified > empty > failed，同状态取行数大者）；
-  ③ **硬保护**：本次 run 的 layers_n 小于阶段账本 layers_n 的 1/2 → 只写单 run 文件，
-     不碰阶段文件（除非显式 allow_stage_overwrite=True）；
+  ③ **硬保护（2026-11-22 W33-059 改）**：并集合并只增不减，所以不再用「run < 阶段账本 1/2」这种
+     体积判据拦小 run ——那会把**所有增量轮次永久挡在门外**（run 44960026303：1426 层 vs 3304 层，
+     2852 < 3304 → 拒写，3 层 status=ok 的新记录一行没进聚合账本）。现在只拦「本 run 一条记录都没有」，
+     并用两条**不变量**兑底：合并后「阶段账本原有层 ∪ 本轮分片层」一个不许丢（`assert_merge_covers`，
+     不满足**直接 raise**）+ 逐层 rows 不许变小（`ckpt_guard`，无实证拒写）；
   ④ `revisions[]` 只追加不替换，每次 run 的增量与时间都留痕（同一 run_id 去重）。
 
 状态优先级说明：`failed` 排在最后，所以「本次 run 把某层跑挂了」**不会**把阶段账本里
@@ -35,6 +38,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 from datetime import datetime, timezone
 
 # 状态优先级：数值越大越「好」。未知状态按 0 处理（永远输给已知状态）。
@@ -63,6 +67,21 @@ COUNT_KEYS = ("ok", "capped_by_upstream", "partial", "upstream_unstable", "missi
 
 def _now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+class MergeInvariantError(ValueError):
+    """合并不变量被破坏（丢层）。带上 `detail` 供调用方打出可核对的清单。"""
+
+
+# `@<state>-<n>` 变体后缀（与 worker_core.VAR_SUFFIX_RE 同构；不 import worker_core：
+# 它 import 时会读 collect/steps.json，账本合并不该被那个副作用绑住）。
+VAR_SUFFIX_RE = re.compile(r"^(?P<base>.+)@(?P<state>[^@]+)-(?P<n>\d+)$")
+
+
+def norm_layer(lid: str) -> str:
+    """层 id 归一：`xxx@未定位-2` → `xxx`（其余原样）。"""
+    m = VAR_SUFFIX_RE.match(lid or "")
+    return m.group("base") if m else (lid or "")
 
 
 def layer_key(rec: dict) -> str:
@@ -250,14 +269,60 @@ def recount(records):
 
 
 def stage_overwrite_allowed(run_layers: int, stage_layers: int, allow: bool = False) -> tuple[bool, str]:
-    """硬保护：小 run 不许覆盖大阶段账本。"""
+    """阶段账本能不能被本 run 合并（W33-059，2026-11-22 修）。
+
+    ★ 旧判据「run 层数 < 阶段账本 1/2 → 拒写」把**增量轮次永久挡在门外**。
+      实测 run 44960026303：run 1426 层、阶段账本 3304 层 → 2852 < 3304 → 拒写，
+      于是 3 层 status=ok 的新记录一行没进 `collect/05b_ledger.json`（数据在 run 账本里，
+      聚合账本却停在上一轮，闸门还读到上一轮的 shards_incomplete=[2]）。
+
+      1/2 判据是给「覆盖式写入」设计的；而 `merge_stage_ledger` 是**按层并集**，
+      永远只增不减（不可能把 3304 层写少）。真正的护栏另有两条且都在：
+        ① 并集后**两侧的层一个都不许消失**（`assert_merge_covers`，失败直接 raise）；
+        ② 任何一层 rows 不许变小（`ckpt_guard.guard_ledger_rows`，无实证直接拒写）。
+      所以这里只拦「本 run 一行记录都没有」这种空转，其余一律允许合并。
+    """
     if allow:
         return True, "explicit_allow"
     if not stage_layers:
         return True, "no_stage_ledger_yet"
-    if run_layers * 2 < stage_layers:
-        return False, "run_layers_%d_lt_half_of_stage_%d" % (run_layers, stage_layers)
-    return True, "run_big_enough"
+    if not run_layers:
+        return False, "run_has_no_records"
+    return True, "union_merge_run_%d_stage_%d" % (run_layers, stage_layers)
+
+
+def assert_no_layer_lost(base_records, merged_records):
+    """并集合并的硬后置条件（旧名，保留兼容）：阶段账本原有的层一个不许消失。"""
+    return assert_merge_covers(base_records, [], merged_records)
+
+
+def assert_merge_covers(base_records, run_records, merged_records):
+    """★ 硬后置条件（W33-059）：合并结果必须**覆盖两侧的层集合**，不满足直接 raise。
+
+    校验两件事（按 base id 归一后比，见 `norm_layer`）：
+      ① 阶段账本原有的层一个没丢（并集合并不该丢层）；
+      ② **本轮分片 records 里的层全部进去了** —— 这正是 run 44960026303 丢的那个东西：
+         3 层 status=ok 在 run 账本里、却不在聚合账本里（旧逻辑直接把整次合并跳过了）。
+
+    为什么“归一”：W33-048 起 `@<state>-<n>` 变体在采集侧就归并成一个 base id
+    （`worker_core.merge_layer_variants`），所以 base 里可能还留着旧变体 id（`xxx@未定位-2`），
+    而本轮写的是 base id（`xxx`）——两边归一后才能公平比对。
+
+    不满足时抛 `MergeInvariantError`（`write_run_and_stage` **不捕获**，让它冒到调用方非零退出），
+    而不是打 warning 了事：丢层是 bug，不是提示。
+    """
+    merged = {norm_layer(layer_key(r)) for r in (merged_records or []) if layer_key(r)}
+    lost_base = sorted({norm_layer(layer_key(r)) for r in (base_records or []) if layer_key(r)}
+                       - merged)
+    lost_run = sorted({norm_layer(layer_key(r)) for r in (run_records or []) if layer_key(r)}
+                      - merged)
+    if lost_base or lost_run:
+        e = MergeInvariantError(
+            "合并后丢层：阶段账本丢 %d 层、本轮分片丢 %d 层（并集合并不该丢层）：%s"
+            % (len(lost_base), len(lost_run), ", ".join((lost_base + lost_run)[:5])))
+        e.detail = {"lost_from_stage": lost_base, "lost_from_run": lost_run}  # type: ignore[attr-defined]
+        raise e
+    return True
 
 
 def merge_stage_ledger(stage: str, base: dict | None, run_led: dict, run_id: str,
@@ -364,10 +429,16 @@ def write_run_and_stage(stage: str, run_led: dict, run_id: str, base_dir: str,
     res = {"run_path": run_path, "stage_path": stage_path, "run_layers_n": run_layers,
            "stage_layers_before": stage_layers, "stage_written": False, "reason": why}
     if not ok:
-        res["note"] = ("单 run 只有 %d 层，小于阶段账本 %d 层的 1/2 → 只写单 run 文件，"
-                       "阶段账本不动（要覆盖请显式 --allow-stage-overwrite）" % (run_layers, stage_layers))
+        res["note"] = ("本 run 没有可合并的层记录（layers_n=%d）→ 只写单 run 文件，阶段账本不动"
+                       % run_layers)
         return res
     merged, stats = merge_stage_ledger(stage, base, run_led, run_id, at=at, note=note)
+    # ---- 硬后置条件（W33-059）：合并结果必须覆盖「阶段账本原有层 ∪ 本轮分片层」 ----
+    #   ★ 这里**故意不 catch**：丢层是 bug，必须冒到调用方非零退出（FAIL），
+    #     而不是转成一条 res["error"] 或 warning 让流程继续往下走。
+    assert_merge_covers((base or {}).get("records") or [],
+                        run_led.get("records") or [],
+                        merged.get("records") or [])
     # ---- 总闸门（ckpt_guard）：合并后**逐层 rows 不许比阶段账本小** ----
     #   判「合并结果 vs 旧账本」，不是「本轮 vs 旧账本」：
     #     · 本轮 failed/0 行 = 没测到，不是测出 0 —— pick_better 已保留旧值，不算回退；
