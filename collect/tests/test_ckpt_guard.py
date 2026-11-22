@@ -162,24 +162,124 @@ class Backup(unittest.TestCase):
         self.assertEqual(G.backup_assets_to_delete({}, LAYER, "r1", keep=3), [])
 
 
-class Merge(unittest.TestCase):
-    def test_legacy_packages_present_are_kept_and_flagged(self):
+class SupersedeLegacyGeneration(unittest.TestCase):
+    """★ 2026-11-22（run 44992201755，2× 双算）：旧代际被新代际重采 → supersede，不再双算。
+
+    事故形态：强制重跑换了切分 → 新单元包带代际前缀（`r<plan_hash8>-`）→ 新旧包名不同
+    → 旧逻辑「旧包还在 Release ⇒ 行数保留」把两代相加，100 层 rows/declared 恰好 2×
+    （合计多算 7,351,656 行）。方案 A：旧包标 `superseded_by`、行数不计入，但整条留档。
+    """
+
+    def test_old_subset_of_new_is_superseded_and_rows_do_not_grow(self):
+        """反例测试 ①：旧 unit 索引 ⊆ 新 unit 索引 → 全部 supersede，rows 不涨。"""
         legacy = ck({0: 586401, 1: 500000, 2: 490000}, plan_hash="old")
         # 切分不兼容 → pilot 给新单元包加代际前缀，旧包名不受影响
-        new = ck({0: 7, 1: 3, 2: 1, 3: 11, 4: 12, 5: 13}, plan_hash="new", unit_ns="rabcd1234-")
+        # 同一批单元重采一遍（行数相同），外加 3 个 0 行的新单元 —— 索引集合 ⊇，量不变
+        new = ck({0: 586401, 1: 500000, 2: 490000, 3: 0, 4: 0, 5: 0},
+                 plan_hash="new", unit_ns="rabcd1234-")
         names = [G.pkg_name(LAYER, i) for i in range(3)]
         merged, rep = G.merge_checkpoints(legacy, new, layer=LAYER, run_id="41126178216",
                                           assets=assets_of(names))
         self.assertEqual(rep["rows_before"], 1576401)
-        self.assertEqual(rep["rows_legacy_kept"], 1576401)   # 旧包在 → 行数一行不少
-        self.assertGreater(rep["rows_after"], rep["rows_before"])   # 只许涨
         self.assertFalse(rep["split_compatible"])
         self.assertEqual((rep["units_legacy"], rep["units_new"]), (3, 6))
+
+        # ① 旧包全部 supersede：不计入 rows_total，但一行不少地留在 units_legacy 里
+        self.assertEqual(rep["rows_legacy_superseded"], 1576401)
+        self.assertEqual(rep["rows_legacy_kept"], 0)
+        self.assertEqual(rep["units_legacy_superseded"], 3)
+        self.assertEqual(len(rep["packages_superseded"]), 3)
         for u in merged["units_legacy"]:
             self.assertTrue(u["legacy_split"])
-            self.assertTrue(u["present"])
-            self.assertEqual(u["kept_rows"], u["rows"])
+            self.assertTrue(u["present"])          # 旧包确实还在 Release（可审计）
+            self.assertEqual(u["rows"], {0: 586401, 1: 500000, 2: 490000}[int(u["idx"])])
+            self.assertEqual(u["counted_rows"], 0)
+            self.assertIsNone(u["counted_as"])
+            self.assertTrue(u["superseded_by"].endswith("-u%05d.tar.gz" % int(u["idx"])))
+            self.assertIn("rabcd1234-", u["superseded_by"])
+
+        # ② rows 不涨：等于新代际单算，不是两代相加
+        self.assertEqual(rep["rows_new"], 1576401)
+        self.assertEqual(rep["rows_after"], rep["rows_new"])
+        self.assertEqual(rep["rows_after"], rep["rows_before"])          # rows 不涨
+        self.assertNotEqual(rep["rows_after"], rep["rows_before"] + rep["rows_legacy_superseded"])
+        # ③ 等式复算通过（merge 内部已 raise 过一次，这里再显式打一次）
+        inv = G.assert_rows_invariant(merged, legacy, new, layer=LAYER, run_id="41126178216")
+        self.assertTrue(inv["invariant_ok"])
+        self.assertEqual(inv["rows_total_recomputed"], rep["rows_after"])
         self.assertEqual(merged["rows_total"], rep["rows_after"])
+
+    def test_old_superset_of_new_counts_the_extra_units(self):
+        """反例测试 ②：旧 unit 索引 ⊋ 新 → 多出的 unit 是唯一副本，行数照计、不误报回退。"""
+        legacy = ck({0: 100, 1: 200, 2: 300, 3: 400}, plan_hash="old")   # 4 个单元
+        new = ck({0: 100, 1: 200}, plan_hash="new", unit_ns="rabcd1234-")  # 新切分只 2 个
+        names = [G.pkg_name(LAYER, i) for i in range(4)]
+        merged, rep = G.merge_checkpoints(legacy, new, layer=LAYER, run_id="r",
+                                          assets=assets_of(names))
+        # 0/1 被 supersede；2/3 是旧代际独有 → 必须计入
+        self.assertEqual(rep["rows_legacy_superseded"], 300)
+        self.assertEqual(rep["rows_legacy_kept"], 700)
+        self.assertEqual(rep["units_legacy_only"], 2)
+        only = [u for u in merged["units_legacy"] if u.get("counted_as") == "units_legacy"]
+        self.assertEqual([u["idx"] for u in only], ["2", "3"])
+        self.assertTrue(all(u["legacy_only_unit"] for u in only))
+        self.assertEqual(rep["rows_after"], 300 + 700)     # 新 300 + 旧独有 700
+        self.assertEqual(rep["rows_after"], rep["rows_before"])   # 一行没丢
+        # 旧护栏在「旧 ⊋ 新」上也**不该误报**（行数没变小）
+        self.assertIsNone(G.assert_rows_not_shrunk(rep["rows_before"], rep["rows_after"],
+                                                   layer=LAYER, run_id="r"))
+        # 极端：新代际一个单元都没产出 → 全部旧单元照计，行数不变，不误报
+        merged2, rep2 = G.merge_checkpoints(legacy, ck({}, plan_hash="new", unit_ns="rabcd1234-"),
+                                            layer=LAYER, run_id="r", assets=assets_of(names))
+        self.assertEqual(rep2["rows_after"], rep2["rows_before"])
+        self.assertEqual(rep2["units_legacy_only"], 4)
+        self.assertIsNone(G.assert_rows_not_shrunk(rep2["rows_before"], rep2["rows_after"],
+                                                   layer=LAYER, run_id="r"))
+
+    def test_new_unit_missing_keeps_legacy_as_only_copy(self):
+        """新代际有同一索引但没上传成功 → 不许 supersede（旧包是唯一可用副本）。"""
+        legacy = ck({0: 500, 1: 500}, plan_hash="old")
+        new = ck({0: 0}, plan_hash="new", unit_ns="rabcd1234-", uploaded=False)
+        names = [G.pkg_name(LAYER, i) for i in range(2)]
+        merged, rep = G.merge_checkpoints(legacy, new, layer=LAYER, run_id="r",
+                                          assets=assets_of(names))
+        self.assertEqual(rep["rows_legacy_superseded"], 0)
+        self.assertEqual(rep["rows_legacy_kept"], 1000)
+        self.assertIn("新代际该单元未上传成功", merged["units_legacy"][0]["counted_reason"])
+
+    def test_double_count_is_now_caught_by_invariant(self):
+        """老逻辑的产物（两代相加）丢给新护栏 → 必须 raise，不是 warning。"""
+        legacy = ck({0: 500, 1: 500}, plan_hash="old")
+        new = ck({0: 500, 1: 500}, plan_hash="new", unit_ns="rabcd1234-")
+        merged, rep = G.merge_checkpoints(legacy, new, layer=LAYER, run_id="r", assets=None)
+        bad = dict(merged)
+        bad["rows_total"] = rep["rows_after"] + rep["rows_legacy_superseded"]   # 手工双算
+        with self.assertRaises(G.RowsInvariantError) as cm:
+            G.assert_rows_invariant(bad, legacy, new, layer=LAYER, run_id="r")
+        self.assertIn("拒绝写入", str(cm.exception))
+        self.assertTrue(cm.exception.detail["problems"])
+
+    def test_carried_over_legacy_only_units_survive_a_third_generation(self):
+        """上一轮合并留下的旧代际独有单元，第三代再合并时不许静默消失。"""
+        legacy = ck({0: 100, 1: 200, 2: 300}, plan_hash="old")
+        new = ck({0: 100, 1: 200}, plan_hash="mid", unit_ns="rabcd1234-")
+        names = [G.pkg_name(LAYER, i) for i in range(3)]
+        named = names + ["%s-rabcd1234-u%05d.tar.gz" % (LAYER, i) for i in range(3)]
+        merged, rep = G.merge_checkpoints(legacy, new, layer=LAYER, run_id="r1",
+                                          assets=assets_of(names))
+        self.assertEqual(rep["rows_after"], 600)      # 新 300 + 旧独有 unit2 的 300
+        # 第三代：又换一次切分，只跑 1 个单元
+        third = ck({0: 100}, plan_hash="new3", unit_ns="rdeadbeef-")
+        merged2, rep2 = G.merge_checkpoints(merged, third, layer=LAYER, run_id="r2",
+                                            assets=assets_of(named + [
+                                                "%s-rdeadbeef-u00000.tar.gz" % LAYER]))
+        self.assertEqual(rep2["packages_dropped"], [])
+        # 新 100 + 上代遗留的 idx1(200, 本代没重采) + 遗留独有 idx2(300) —— 一行都不丢
+        self.assertEqual(rep2["rows_after"], 100 + 200 + 300)
+        self.assertEqual(rep2["units_legacy_only"], 2)
+        self.assertTrue(G.assert_rows_invariant(merged2, merged, third, layer=LAYER,
+                                                run_id="r2")["invariant_ok"])
+
         self.assertEqual(G.assert_rows_not_shrunk(rep["rows_before"], rep["rows_after"],
                                                   layer=LAYER, run_id="r"), None)
 

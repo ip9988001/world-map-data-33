@@ -16,8 +16,33 @@ partial(39,875,268) 掉成 failed(0)，`ledger_rebuild` 的 rows 因此少 33.4M
    size>0），其 `unit_uploaded=true` 与行数**必须保留**，并标 `legacy_split=true`；
    新旧切分不兼容时两边都记（`units_new[]` / `units_legacy[]`），行数按**包名**去重后求和，
    不靠猜、不靠下标对齐。
-3. **行数只许涨**：任何重跑都不得让某层 rows 变小，除非有实证证明旧记录是错的
-   （`regression_reason` + 证据路径）。没有证据就拒绝写入并报错退出。
+3. **不让行数凭空变小**：任何重跑都不得让某层 rows 变小，除非能说清它去哪了
+   （`regression_reason` + 证据路径，或者下面这条更强的等式）。没有证据就拒绝写入并报错退出。
+
+## 2026-11-22 修正：「行数只许涨」这条护栏退场，换成可复算的不变量
+
+事故（run 44992201755）：强制重跑换了切分 → `pilot.UNIT_NS` 给新单元包加代际前缀
+→ 新旧包名不同 → 旧包按「还在 Release」全部保留 → **旧代际 + 新代际双算**，100 层
+`rows/declared` 恰好 2×（合计多算 7,351,656 行）。根因就是上面第 3 条：它把「涨」当成健康，
+于是一次重跑让 100 层全部「健康地翻倍」，护栏反而成了双算的护身符。
+
+现在的规则（方案 A）：
+
+- `split_compatible=false` 且**旧单元索引集合 ⊆ 新代际索引集合** → 旧包标 `superseded_by`，
+  行数**不计入** `rows_total`，但仍完整留在 `units_legacy[]` 里可审计（含原 rows / present）。
+  理由：新代际把同一批单元重采了一遍，旧包是**同一批行的上一代副本**，不是增量。
+- **旧 ⊋ 新（旧代际多出 unit）→ 多出来的 unit 是唯一副本，必须计入**。这条是硬约束：
+  宁可留着旧行，也不许把「只存在于旧切分里的单元」丢掉。
+- 新代际里对应单元**没上传成功**（`uploaded=false` 或包不在）→ 不 supersede，旧包继续计入：
+  新代际缺这一块，它就是唯一可用副本。
+- 切分兼容（同名包覆盖）→ 仍按包名取大者，增量记 `collision_extra`，不双算。
+
+替代护栏（`assert_rows_invariant`）是**可独立复算的等式**：
+
+    rows_total == Σ(units_new[].rows) + Σ(units_legacy[].counted_rows)
+
+只要对不上就 raise `RowsInvariantError`。旧护栏问的是「涨了没有」（双算=涨=通过），
+新护栏问的是「这笔账能不能对上」（双算对不上 → 直接拦）。
 
 本模块是纯函数 + 薄 IO：pilot（检查点）与 ledger_merge（账本）共用同一套判定，
 两处口径不一致时以本模块为准。
@@ -203,60 +228,116 @@ def merge_checkpoints(legacy: dict | None, new: dict, *, layer: str, run_id,
 
     规则（逐条对应事故）：
       · 旧单元包在 Release 里仍在且可下载 → 行数保留、`unit_uploaded=true`、`legacy_split=true`；
-      · 本 run 用同名包覆盖了旧包 → 按包名去重，取两者行数较大者（不双算），并标
-        `overwritten_by_run`；
+      · **切分不兼容 + 新代际重采了同一 unit 索引** → 旧包标 `superseded_by`，行数**不计入**
+        （这是 2026-11-22 双算事故的修法：旧包是同一批行的上一代副本，不是增量）；
+      · **旧代际多出来的 unit**（索引不在新代际里）→ 唯一副本，行数**照计**（硬约束）；
+      · 新代际对应单元没上传成功 → 不 supersede，旧包继续计入（它是唯一可用副本）；
+      · 本 run 用同名包覆盖了旧包 → 按包名去重，取两者行数较大者（不双算），增量记
+        `counted_rows`；
       · 旧包已不在 Release（真没了）→ 这部分的完成度不再计入，**必须**有 `evidence`
-        说明它去哪了，否则 `assert_rows_not_shrunk` 会拦住；
+        说明它去哪了，否则调用方会抛 `RowsRegression`；
       · 查不到 Release 资产清单（assets=None）→ 保守按「还在」处理，绝不用「不知道」当理由丢行。
+
+    合并完立刻用 `assert_rows_invariant` 复算一遍等式，对不上就 raise。
     """
     legacy = legacy or {}
     new = new or {}
     assets_idx = assets
     before = rows_of(legacy)
+    split_compatible = legacy.get("plan_hash") in (None, new.get("plan_hash"))
     legacy_pkgs = package_map(legacy, layer)
     new_pkgs = package_map(new, layer)
-    merged_rows_by_pkg, units_legacy, units_new = {}, [], []
-    dropped = []
+    new_by_idx = {str(n["idx"]): name for name, n in new_pkgs.items()}
+
+    rows_by_pkg = {name: n["rows"] for name, n in new_pkgs.items()}
+    units_legacy, units_new, dropped, superseded = [], [], [], []
+
+    def _new_has(idx):
+        """新代际有没有「算完成」的同一 unit 索引（包在且 uploaded 不为 False）。"""
+        name = new_by_idx.get(str(idx))
+        if not name:
+            return None
+        return name if new_pkgs[name].get("uploaded") is not False else None
 
     for name, l in sorted(legacy_pkgs.items()):
         present = package_downloadable(assets_idx, name)
         collided = name in new_pkgs and new_pkgs[name].get("uploaded") is not False
         entry = {"package": name, "idx": l["idx"], "rows": l["rows"],
-                 "present": present, "legacy_split": True, "kept_rows": 0}
+                 "present": present, "legacy_split": True, "kept_rows": 0,
+                 "counted_rows": 0, "counted_as": None}
         if collided:
-            rows = max(l["rows"], new_pkgs[name]["rows"])
-            merged_rows_by_pkg[name] = rows
-            entry.update({"kept_rows": 0, "counted_as": "units_new",
+            extra = max(0, l["rows"] - new_pkgs[name]["rows"])
+            rows_by_pkg[name] = new_pkgs[name]["rows"] + extra
+            entry.update({"kept_rows": extra, "counted_rows": extra, "counted_as": "units_new",
                           "dedupe": "same_package_name", "overwritten_by_run": now_ish(run_id),
-                          "note": "本 run 用同名包覆盖了旧包：行数取两者较大者，不双算"})
+                          "note": "本 run 用同名包覆盖了旧包：取两者较大者，增量记在旧包上，不双算"})
         elif present is False:
-            entry.update({"kept_rows": 0, "counted_as": None,
-                          "dropped_reason": "单元包在 Release 中已不存在或不可下载"})
-            dropped.append(entry["package"])
+            entry.update({"dropped_reason": "单元包在 Release 中已不存在或不可下载"})
+            dropped.append(name)
         else:
-            merged_rows_by_pkg[name] = l["rows"]
-            entry.update({"kept_rows": l["rows"], "counted_as": "units_legacy",
-                          "verified": present is True})
+            cp = _new_has(l["idx"])
+            if cp and not split_compatible:
+                entry.update({"superseded_by": cp, "supersede_reason":
+                              "新代际已重采同一 unit 索引（旧包是上一代副本）"})
+                superseded.append(name)
+            else:
+                rows_by_pkg[name] = rows_by_pkg.get(name, 0) + l["rows"]
+                entry.update({"kept_rows": l["rows"], "counted_rows": l["rows"],
+                              "counted_as": "units_legacy", "verified": present is True,
+                              "legacy_only_unit": True,
+                              "counted_reason": (
+                                  "旧代际多出的 unit（新代际没有这个索引）→ 唯一副本"
+                                  if str(l["idx"]) not in new_by_idx else
+                                  "新代际该单元未上传成功 → 旧包是唯一可用副本")})
+        units_legacy.append(entry)
+
+    # 上一轮合并留下的「旧代际独有单元」：它们不在这份检查点的 unit_rows 里，
+    # 但仍是唯一副本 —— 不带上就会在第二次强制重跑时静默消失（三代同堂的情形）。
+    for u in (legacy.get("units_legacy") or []):
+        name = str(u.get("package") or "")
+        if not name or name in legacy_pkgs or u.get("counted_as") != "units_legacy":
+            continue
+        rows_u = int(u.get("rows") or 0)
+        cp = _new_has(u.get("idx"))
+        entry = {"package": name, "idx": u.get("idx"), "rows": rows_u, "present": True,
+                 "legacy_split": True, "carried_over": True, "kept_rows": 0,
+                 "counted_rows": 0, "counted_as": None}
+        if cp and not split_compatible:
+            entry.update({"superseded_by": cp, "supersede_reason":
+                          "新代际已重采同一 unit 索引（上一轮遗留的旧代际副本）"})
+            superseded.append(name)
+        else:
+            rows_by_pkg[name] = rows_by_pkg.get(name, 0) + rows_u
+            entry.update({"kept_rows": rows_u, "counted_rows": rows_u,
+                          "counted_as": "units_legacy", "legacy_only_unit": True,
+                          "counted_reason": "上一轮遗留的旧代际独有单元（照旧计入）"})
         units_legacy.append(entry)
 
     for name, n in sorted(new_pkgs.items()):
-        merged_rows_by_pkg.setdefault(name, n["rows"])
         units_new.append({"package": name, "idx": n["idx"], "rows": n["rows"],
+                          "counted_rows": n["rows"],
                           "uploaded": bool(n.get("uploaded")),
                           "collides_with_legacy": name in legacy_pkgs})
 
-    after = sum(merged_rows_by_pkg.values())
+    after = sum(rows_by_pkg.values())
     report = {
         "at_merge_run_id": now_ish(run_id),
         "layer": layer,
         "rows_before": before,
         "rows_after": after,
         "rows_new": rows_of(new),
-        "rows_legacy_kept": sum(u["kept_rows"] for u in units_legacy),
+        "rows_legacy_kept": sum(u["counted_rows"] for u in units_legacy
+                                if u.get("counted_as") == "units_legacy"),
+        "rows_legacy_superseded": sum(u["rows"] for u in units_legacy
+                                      if u.get("superseded_by")),
         "units_legacy": len(units_legacy),
         "units_new": len(units_new),
+        "units_legacy_superseded": sum(1 for u in units_legacy if u.get("superseded_by")),
+        "units_legacy_only": sum(1 for u in units_legacy
+                                 if u.get("counted_as") == "units_legacy"),
         "packages_dropped": dropped,
-        "split_compatible": (legacy.get("plan_hash") in (None, new.get("plan_hash"))),
+        "packages_superseded": superseded,
+        "split_compatible": split_compatible,
         "plan_hash_legacy": legacy.get("plan_hash"),
         "plan_hash_new": new.get("plan_hash"),
         "legacy_verified_against_release": (None if assets_idx is None else True),
@@ -266,25 +347,95 @@ def merge_checkpoints(legacy: dict | None, new: dict, *, layer: str, run_id,
     merged = dict(new)
     merged["units_legacy"] = units_legacy
     merged["units_new"] = units_new
-    merged["rows_by_package"] = merged_rows_by_pkg
+    merged["rows_by_package"] = rows_by_pkg
     merged["rows_total"] = after
     merged["rows_new_plan"] = rows_of(new)
     merged["rows_legacy_kept"] = report["rows_legacy_kept"]
+    merged["rows_legacy_superseded"] = report["rows_legacy_superseded"]
     merged["legacy"] = {"run_id": report["at_merge_run_id"],
                         "plan_hash": legacy.get("plan_hash"),
                         "rows": before, "units": len(legacy_pkgs),
+                        "plan_hash_new": new.get("plan_hash"),
                         "snapshot": legacy or None}
     merged["merge_history"] = list((new or {}).get("merge_history") or []) + [{
         k: report[k] for k in ("rows_before", "rows_after", "rows_new",
-                               "rows_legacy_kept", "units_legacy", "units_new",
+                               "rows_legacy_kept", "rows_legacy_superseded",
+                               "units_legacy", "units_new",
                                "packages_dropped", "split_compatible", "at_merge_run_id")}]
+    report.update(assert_rows_invariant(merged, legacy, new, layer=layer, run_id=run_id))
     return merged, report
+
+
+# ---------------- 护栏：行数要对得上（替代「只许涨」） ----------------
+class RowsInvariantError(Exception):
+    """合并后的行数等式对不上 —— 说明账本里有行算了两遍或者漏了一遍。"""
+
+    def __init__(self, msg: str, detail: dict):
+        super().__init__(msg)
+        self.detail = detail
+
+
+def rows_recheck(legacy: dict | None, new: dict | None, merged: dict, layer: str) -> dict:
+    """**独立复算**合并后的行数（不信任 `rows_total`，也不信任 `rows_by_package`）。
+
+    两条互不相干的取数路径：
+      ① `rows_of(new)` —— 直接读新检查点的 `unit_rows[_seen]`；
+      ② `units_legacy[].counted_rows` —— 逐条累加「这一轮允许计入的旧行」。
+    等式：`rows_total == ① + ②`，并且 `Σ units_new[].rows == ①`
+    （后者抓「两个 unit 索引映射到同一个包名」导致的下漏）。
+    """
+    new_check = new or {}
+    new_side = rows_of(new_check)
+    legacy_side = sum(int(u.get("counted_rows") or 0) for u in (merged.get("units_legacy") or []))
+    units_new_sum = sum(int(u.get("rows") or 0) for u in (merged.get("units_new") or []))
+    return {"new_side": new_side, "legacy_side": legacy_side,
+            "total": new_side + legacy_side, "units_new_sum": units_new_sum,
+            "rows_total": int(merged.get("rows_total") or 0),
+            "rows_by_package_sum": sum(int(v or 0)
+                                       for v in (merged.get("rows_by_package") or {}).values()),
+            "legacy_rows_before": rows_of(legacy or {})}
+
+
+def assert_rows_invariant(merged: dict, legacy: dict | None = None, new: dict | None = None,
+                          *, layer: str, run_id) -> dict:
+    """`rows_total == Σ(新代际本轮唯一行数) + Σ(被计入的旧包独有 unit 行数)`，不满足 raise。
+
+    为什么这条能拦住双算：旧护栏问「涨了没有」，一次重跑让 100 层翻倍 = 涨 = 通过；
+    这条问「这笔账对不对得上」——旧代际那 7,351,656 行既不在 `units_new` 里、
+    也没资格进 `counted_rows`（它们被 supersede 了），于是 `rows_total` 一对就多出来，
+    立刻 raise。反过来，真丢了单元（旧 ⊋ 新 的那部分没计入）也会当场对不上。
+    """
+    d = rows_recheck(legacy, new, merged, layer)
+    problems = []
+    if d["rows_total"] != d["total"]:
+        problems.append("rows_total=%s ≠ Σunits_new(%s)+Σunits_legacy.counted_rows(%s)=%s"
+                        % (f"{d['rows_total']:,}", f"{d['new_side']:,}",
+                           f"{d['legacy_side']:,}", f"{d['total']:,}"))
+    if d["units_new_sum"] != d["new_side"]:
+        problems.append("Σ units_new[].rows=%s ≠ 检查点 unit_rows 合计 %s（两个 unit 索引撞到同一个包名？）"
+                        % (f"{d['units_new_sum']:,}", f"{d['new_side']:,}"))
+    if d["rows_by_package_sum"] != d["rows_total"]:
+        problems.append("Σ rows_by_package=%s ≠ rows_total=%s"
+                        % (f"{d['rows_by_package_sum']:,}", f"{d['rows_total']:,}"))
+    if problems:
+        raise RowsInvariantError(
+            "%s 行数等式不成立（拒绝写入）：%s" % (layer, "；".join(problems)),
+            {"layer": layer, "run_id": now_ish(run_id), **d, "problems": problems})
+    return {"rows_total_recomputed": d["total"], "rows_new_side": d["new_side"],
+            "rows_legacy_side": d["legacy_side"], "invariant_ok": True,
+            "rows_legacy_before": d["legacy_rows_before"],
+            "invariant": "rows_total == Σ(units_new) + Σ(units_legacy.counted_rows)"}
 
 
 # ---------------- 护栏：行数只许涨 ----------------
 def assert_rows_not_shrunk(before: int, after: int, *, layer: str, run_id,
                            reason: str = "", evidence: str = "") -> dict | None:
-    """after < before 时：有实证 → 返回 {regression_reason, evidence}；没实证 → RowsRegression。"""
+    """after < before 时：有实证 → 返回 {regression_reason, evidence}；没实证 → RowsRegression。
+
+    ★ 2026-11-22 起它**不再是检查点合并的闸门**（合并改用 `assert_rows_invariant`）：
+      这条判据把「涨」当健康，而双算正好表现为「涨」—— 它自己就是双算事故的护身符。
+      仍然保留给**账本口径**用（`guard_ledger_rows`：阶段账本的行数不许被一次没测到的
+      重跑冲小），那里的「只许涨」语义是对的。"""
     if int(after or 0) >= int(before or 0):
         return None
     detail = {"layer": layer, "run_id": now_ish(run_id), "rows_before": int(before or 0),
