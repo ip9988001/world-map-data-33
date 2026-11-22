@@ -39,8 +39,19 @@ TARGET_BYTES = 2_000_000
 #   env 覆盖：PILOT_GAP_TOL=0.002 等。
 GAP_TOL = float(os.environ.get("PILOT_GAP_TOL") or "0.001")
 
-# 主键候选（MapServer 的 objectIdField 常为 null，只能按非空率挑）
+# 主键候选（MapServer 的 objectIdField 常为 null，只能按名字/类型挑）
 OID_CANDIDATES = ("OBJECTID", "OBJECTID_1", "OBJECTID_12", "OBJECTID_2", "FID", "OID")
+
+# ★ 2026-11-22 W33-061：本层实际可用的 outFields（"*" 或显式列清单），以及被服务端 400 剔掉的列。
+#   每次 collect_arcgis_v2 入口按层重置（resolve_out_fields 负责探测）。
+OUT_FIELDS = "*"
+DROPPED_FIELDS: list = []
+OID_FIELD = ""
+
+
+def _field_names(meta: dict) -> list:
+    """meta.fields 里的字段名（保序、去空）。大小写保持上游原样。"""
+    return [f.get("name") for f in (meta.get("fields") or []) if f.get("name")]
 
 
 def gap_short(rows: int, expect: int, tol: float | None = None) -> bool:
@@ -52,19 +63,47 @@ def gap_short(rows: int, expect: int, tol: float | None = None) -> bool:
 
 
 def pick_oid_field(meta: dict, api: str) -> str:
-    """★ 2026-11-21 W33-042：主键探测从「按字段名优先级取第一个」改成「取非空率最高」。
+    """主键字段名（上游原始大小写）；**确实没有就返回 ""** —— 绝不再瞎猜 "OBJECTID"。
 
-    事故（138c05）：MapServer 的 objectIdField 为 null，兜底按名字拿到 OBJECTID，
-    而该列有 169 行是 null（真实主键 OBJECTID_1）→ keyset 的 `OBJECTID>n` 永远取不到那 169 行。
-    现在抽样 50 行比非空率，谁有值用谁。
+    ★ 2026-11-21 W33-042：主键探测从「按字段名优先级取第一个」改成「取非空率最高」。
+      事故（138c05）：MapServer 的 objectIdField 为 null，兜底按名字拿到 OBJECTID，
+      而该列有 169 行是 null（真实主键 OBJECTID_1）→ keyset 的 `OBJECTID>n` 永远取不到那 169 行。
+
+    ★ 2026-11-22 W33-061（本函数重写）：上层「400 Invalid or missing input parameters」
+      全是**我们自己**发出去的不存在的排序键（HTTP 200 + body 里 code=400，账本看着像上游的锅）。
+      根因是旧版全大写精确匹配 + 取不到就 fallback "OBJECTID"。现在按可靠性取四级：
+        ① `objectIdField`/`objectIdFieldName`（**大小写不敏感**，且必须真的在 fields 里）；
+        ② `fields[].type == esriFieldTypeOID` —— 上游不声明 objectIdField 时唯一可靠来源
+           （实测 vt_nz 的 StreetAddressID、k3gis 的 objectid_1 都只在这里露脸）；
+        ③ 名字候选（大小写不敏感）；
+        ④ 名字里带 objectid/fid/oid 的字段（前缀或后缀）；
+      ⑤ 都没有 → ""（调用方必须走 resultOffset 分页，不许把不存在的列塞进 orderByFields）。
+      多候选时抽样 50 行按非空率取最优。
     """
+    fns = _field_names(meta)
+    if not fns:
+        return ""
+    lower = {n.lower(): n for n in fns}
     declared = meta.get("objectIdField") or meta.get("objectIdFieldName")
-    fns = [f.get("name") for f in (meta.get("fields") or [])]
-    cands = [c for c in OID_CANDIDATES if c in fns]
-    if declared:
-        cands = [declared] + [c for c in cands if c != declared]
+    cands = []
+    if declared and str(declared).lower() in lower:
+        cands.append(lower[str(declared).lower()])
+    for f in (meta.get("fields") or []):
+        if str(f.get("type") or "").lower() == "esrifieldtypeoid":
+            n = f.get("name")
+            if n and n not in cands:
+                cands.append(n)
+    for c in OID_CANDIDATES:
+        real = lower.get(c.lower())
+        if real and real not in cands:
+            cands.append(real)
     if not cands:
-        return declared or "OBJECTID"
+        for n in fns:
+            ln = n.lower()
+            if ln.startswith(("objectid", "oid", "fid")) or ln.endswith(("objectid", "oid", "fid")):
+                cands.append(n)
+    if not cands:
+        return ""
     if len(cands) == 1:
         return cands[0]
     try:
@@ -78,6 +117,95 @@ def pick_oid_field(meta: dict, api: str) -> str:
     best = max(cands, key=lambda k: sum(
         1 for f in feats if (f.get("attributes") or {}).get(k) is not None))
     return best
+
+
+def _probe_geom_params() -> dict:
+    """探针必须与正式取数同口径（面层 contract：returnCentroid + outSR=4326 + returnGeometry）。
+
+    单测 test_poly_requests_return_centroid 就是钉这条：面层任何带 outFields 的请求都不许
+    退化成「只取属性」，否则质心兜底在真实采集里会被悄悄关掉。
+    """
+    p = {"returnGeometry": "true", "outSR": "4326"}
+    if POLY_CENTROID and geom_is_poly():
+        p["returnCentroid"] = "true"
+    return p
+
+
+def _out_fields_ok(api: str, names: list, budget: list) -> bool | None:
+    """这批列能不能一起查。True/False；预算耗尽返回 None（= 不知道，保守不剔）。"""
+    if budget[0] <= 0:
+        return None
+    budget[0] -= 1
+    q = {"where": "1=1", "outFields": ",".join(names),
+         "resultRecordCount": 1, "f": "json"}
+    q.update(_probe_geom_params())
+    r = _q(api, q, timeout=60)
+    return "__error__" not in r
+
+
+def _find_bad_fields(api: str, names: list, budget: int = 80) -> set:
+    """二分找出会被服务端 400 拒掉的列（k 个坏列 ≈ O(k·log n) 次请求）。
+
+    为什么不能只看 `*` 报错就整层认输：实测 Pvc 层 49 列里只有 `Assess_Num` 一列坏
+    （单列查就 400、其余 48 列单独取都 200），outFields=* 把整层打成 400 → 0 行。
+    宁可少一列，不可丢整层。
+    """
+    bad, bud = set(), [budget]
+
+    def split(subset):
+        if len(subset) == 1:
+            if _out_fields_ok(api, subset, bud) is False:
+                bad.add(subset[0])
+            return
+        mid = len(subset) // 2
+        for part in (subset[:mid], subset[mid:]):
+            res = _out_fields_ok(api, part, bud)
+            if res is False:
+                split(part)
+            elif res is None:
+                return
+
+    if len(names) > 1:
+        split(list(names))
+    else:
+        split(list(names))
+    return bad
+
+
+def resolve_out_fields(meta: dict, api: str, log=print) -> tuple[str, list]:
+    """探出本层能用的 `outFields`：先 `*`，被 400 就剔坏列用剩余列重取。
+
+    返回 (out_fields, dropped_fields)，并写回模块级 OUT_FIELDS / DROPPED_FIELDS。
+    ① `*` 能用 → 原样用 `*`（不改变正常层的行为）；
+    ② `*` 报 400 → 二分找坏列，剔掉后用显式列清单；
+    ③ 剔完仍不通 → 退回 `*`，由调用方按原来的错误路径记 query_fail（不静默）。
+    """
+    global OUT_FIELDS, DROPPED_FIELDS
+    names = _field_names(meta)
+    probe = {"where": "1=1", "outFields": "*", "resultRecordCount": 1, "f": "json"}
+    probe.update(_probe_geom_params())
+    r = _q(api, probe, timeout=60)
+    if "__error__" not in r:
+        OUT_FIELDS, DROPPED_FIELDS = "*", []
+        return "*", []
+    err0 = str(r.get("__error__"))[:160]
+    if not names:
+        OUT_FIELDS, DROPPED_FIELDS = "*", []
+        return "*", []
+    bad = _find_bad_fields(api, names)
+    good = [n for n in names if n not in bad]
+    if bad and good:
+        probe = _out_fields_ok(api, good, [3])
+        if probe is not False:
+            OUT_FIELDS = ",".join(good)
+            DROPPED_FIELDS = sorted(bad)
+            log("  ⚠ outFields=* 被拒（%s）→ 剔除 %d 列 %s，改用剩余 %d 列重取"
+                % (err0, len(bad), sorted(bad)[:8], len(good)))
+            return OUT_FIELDS, DROPPED_FIELDS
+    # 剔不出来（或剔完还不通）→ 保持 `*`，让上层按原错误路径记账，不假装正常
+    log("  ⚠ outFields=* 被拒（%s），二分未能定位坏列 → 保持 * （不静默）" % err0)
+    OUT_FIELDS, DROPPED_FIELDS = "*", []
+    return "*", []
 
 
 
@@ -112,7 +240,9 @@ def _top_up_offset(api, base, ps, start_offset, expect, oid_field, idx, log, sin
     got, off, guard, stall = 0, int(start_offset or 0), 0, 0
     while guard < 500:
         guard += 1
-        q = dict(base, resultOffset=off, resultRecordCount=ps, orderByFields=oid_field)
+        q = dict(base, resultOffset=off, resultRecordCount=ps)
+        if oid_field:
+            q["orderByFields"] = oid_field   # ★ W33-061：没有主键就别发排序键（会 400）
         r = _q(api, q)
         if "__error__" in r:
             return got, "backfill_fail:" + str(r["__error__"])[:120]
@@ -185,9 +315,10 @@ def collect_arcgis(url, limit=0, log=print):
         where = where0 if last_oid is None else f"{oid_field}>{last_oid}"
         if defexpr:
             where = f"({defexpr}) AND {where}" if last_oid is not None else defexpr
-        q = {"where": where, "outFields": "*", "returnGeometry": "true",
-             "outSR": "4326", "f": "json", "resultRecordCount": ps,
-             "orderByFields": oid_field}
+        q = {"where": where, "outFields": OUT_FIELDS, "returnGeometry": "true",
+             "outSR": "4326", "f": "json", "resultRecordCount": ps}
+        if oid_field:
+            q["orderByFields"] = oid_field
         if POLY_CENTROID and geom_is_poly():
             q["returnCentroid"] = "true"
         u = api + "/query?" + urllib.parse.urlencode(q)
@@ -198,7 +329,7 @@ def collect_arcgis(url, limit=0, log=print):
         if not feats:
             if rows == 0 and not d.get("exceededTransferLimit"):
                 # 首查空但 count>0：去掉排序/游标再试一次（有的服务不支持 orderBy）
-                q2 = {"where": where0, "outFields": "*", "returnGeometry": "true",
+                q2 = {"where": where0, "outFields": OUT_FIELDS, "returnGeometry": "true",
                       "outSR": "4326", "f": "json"}
                 d2 = get_json(api + "/query?" + urllib.parse.urlencode(q2), timeout=180)
                 feats = (d2.get("features") or []) if "__error__" not in d2 else []
@@ -1039,22 +1170,41 @@ def resume_todo(units, ck, count=0, tol=None, log=None):
     return sorted(keep), redone
 
 
-def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock, ck):
-    """一个 OID 区间单元。返回 (rows, files, err)。"""
-    conds = []
-    if defexpr:
-        conds.append("(%s)" % defexpr)
-    if lo is not None:
-        conds.append("%s>=%s" % (oid_field, lo))
-    if hi is not None:
-        conds.append("%s<=%s" % (oid_field, hi))
-    w0 = " AND ".join(conds) or "1=1"
-    c = _q(api, {"where": w0, "returnCountOnly": "true", "f": "json"}, timeout=90)
-    try:
-        expect = int(c.get("count") or 0)
-    except Exception:
-        expect = 0
-    base = {"where": w0, "outFields": "*", "returnGeometry": "true", "outSR": "4326", "f": "json"}
+def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock, ck,
+                count_hint=None):
+    """一个单元。返回 (rows, files, err, expect)。
+
+    两种切分共用入口：
+      · `oid_field` 非空 → `lo/hi` 是 **OID 区间**（keyset 游标 + offset 补翻）；
+      · `oid_field` 为空 → `lo/hi` 是 **resultOffset 窗口**（只有 offset 能翻，
+        绝不能发 orderByFields：实测 vt_nz 层因为这一句直接 400，整层 209,203 行丢光）。
+    """
+    offset_mode = not oid_field
+    hi_off = None
+    off = 0
+    if offset_mode:
+        w0 = ("(%s)" % defexpr) if defexpr else "1=1"
+        off = int(lo or 0)
+        hi_off = int(hi) if hi is not None else count_hint
+        total = int(count_hint) if count_hint is not None else (hi_off or 0)
+        if hi_off is None:
+            hi_off = total
+        expect = max(0, min(hi_off, total) - off)
+    else:
+        conds = []
+        if defexpr:
+            conds.append("(%s)" % defexpr)
+        if lo is not None:
+            conds.append("%s>=%s" % (oid_field, lo))
+        if hi is not None:
+            conds.append("%s<=%s" % (oid_field, hi))
+        w0 = " AND ".join(conds) or "1=1"
+        c = _q(api, {"where": w0, "returnCountOnly": "true", "f": "json"}, timeout=90)
+        try:
+            expect = int(c.get("count") or 0)
+        except Exception:
+            expect = 0
+    base = {"where": w0, "outFields": OUT_FIELDS, "returnGeometry": "true", "outSR": "4326", "f": "json"}
     if POLY_CENTROID and geom_is_poly():
         base["returnCentroid"] = "true"          # 服务端质心 = 本地算不出来时的兜底
     d = os.path.join(OUTBASE, CUR["id"])
@@ -1064,7 +1214,7 @@ def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock
     if limit:                       # 试采：把页大小压到 limit，别一次拉回 2000 行
         ps = max(1, min(ps, limit))
     rows = part_no = 0
-    buf, last, off, mode = [], None, 0, "keyset"
+    buf, last, mode = [], None, ("offset" if offset_mode else "keyset")
     files = []
 
     def flush():
@@ -1121,7 +1271,14 @@ def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock
             w = w0 if last is None else "%s AND %s>%s" % (w0, oid_field, last)
             q = dict(base, where=w, resultRecordCount=ps, orderByFields=oid_field)
         else:
-            q = dict(base, resultOffset=off, resultRecordCount=ps, orderByFields=oid_field)
+            take = ps
+            if offset_mode and hi_off is not None:
+                take = min(ps, max(0, int(hi_off) - int(off)))
+                if take <= 0:          # 本窗口已经翻完
+                    break
+            q = dict(base, resultOffset=off, resultRecordCount=take)
+            if oid_field:              # ★ W33-061：无主键时绝不放排序键
+                q["orderByFields"] = oid_field
         r = _q(api, q)
         if "__error__" in r:
             flush()
@@ -1163,8 +1320,9 @@ def _unit_range(api, oid_field, defexpr, lo, hi, idx, ps, limit, log, prog, lock
         for ps2 in (ps, max(200, ps // 4)):
             if not gap_short(rows, expect):
                 break
-            gained, berr = _top_up_offset(api, base, ps2, rows, expect, oid_field, idx, log,
-                                          sink=lambda feats: _absorb(feats))
+            gained, berr = _top_up_offset(api, base, ps2,
+                                          (off if offset_mode else rows), expect, oid_field,
+                                          idx, log, sink=lambda feats: _absorb(feats))
             rows += gained          # gained = sink 收下的新增行数（不含重复页）
             flush()
             log("  u%d 补翻(ps=%d)：+%d → %d/%d %s" % (idx, ps2, gained, rows, expect, berr or ""))
@@ -1182,7 +1340,7 @@ def _unit_ids(api, batches, idx, log, prog, lock, limit=0):
     os.makedirs(d, exist_ok=True)
     rows, files, errs = 0, [], []
     for bi, batch in batches:
-        q = {"objectIds": ",".join(str(x) for x in batch), "outFields": "*",
+        q = {"objectIds": ",".join(str(x) for x in batch), "outFields": OUT_FIELDS,
              "returnGeometry": "true", "outSR": "4326", "f": "json"}
         if POLY_CENTROID and geom_is_poly():
             q["returnCentroid"] = "true"
@@ -1215,8 +1373,9 @@ def _unit_ids(api, batches, idx, log, prog, lock, limit=0):
 
 
 def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range=None):
-    global STRATEGY, UNIT_ROWS, GEOM_TYPE, RINGS_SKIP
+    global STRATEGY, UNIT_ROWS, GEOM_TYPE, RINGS_SKIP, OUT_FIELDS, DROPPED_FIELDS, OID_FIELD
     RINGS_SKIP = ""
+    OUT_FIELDS, DROPPED_FIELDS = "*", []
     m = re.search(r"/(FeatureServer|MapServer)(/\d+)?$", url.rstrip("/"))
     api = url.split("?")[0].rstrip("/")
     if m and not m.group(2):
@@ -1225,7 +1384,12 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range
     GEOM_TYPE = str(meta.get("geometryType") or "")
     if POLY_CENTROID and geom_is_poly():
         log("  面层（%s）→ 质心开：rings 就地算 representative_point，落 _lat/_lon" % GEOM_TYPE)
-    oid_field = pick_oid_field(meta, api)          # ★ W33-042：取非空率最高的候选主键
+    oid_field = pick_oid_field(meta, api)          # ★ W33-042/W33-061：按类型+名字（大小写不敏感）取
+    OID_FIELD = oid_field
+    if not oid_field:
+        log("  ⚠ 本层取不到任何主键字段（objectIdField 空且无 esriFieldTypeOID）"
+            " → 不发 orderByFields，改走 resultOffset 分页（W33-061）")
+    resolve_out_fields(meta, api, log)             # ★ W33-061：outFields=* 被 400 就剔坏列
     defexpr = meta.get("definitionExpression") or ""
     w_all = "(%s)" % defexpr if defexpr else "1=1"
     cnt = get_json(api + "/query?where=1%3D1&returnCountOnly=true&f=json", timeout=60)
@@ -1251,25 +1415,44 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range
             % (rlo, rhi, count, count_full, OID_RANGE_TAG_SUFFIX))
 
     ok_page, why = _probe_pagination(api, log)
-    STRATEGY = "keyset" if ok_page else "ids"
+    if not oid_field:
+        # ★ W33-061：没主键 → keyset 无意义（orderByFields 会 400）。能分页就 offset，
+        #   否则退回 ids（objectIds 批取，不依赖“我们猜的主键名”）。
+        STRATEGY = "offset" if ok_page else "ids"
+    else:
+        STRATEGY = "keyset" if ok_page else "ids"
     log("  api=%s count=%d pagesize=%d workers=%d strategy=%s%s"
         % (api, count, ps, workers, STRATEGY, "" if ok_page else "（%s）" % why))
 
     # ---- 切分方案（决定断点能不能续：切分必须确定） ----
     ids, units, plan = None, [], {}
-    if STRATEGY == "ids":
+    if STRATEGY == "offset":
+        # 按上游位置切窗口：count 一定，切分就确定（plan_sig 只看 kind+units）
+        cap_off = max(1, int(UNIT_ROWS))
+        span = cap_off
+        units = [(o, min(o + span, count)) for o in range(0, count, span)] or [(0, 0)]
+        plan = {"kind": "offset", "units": units, "unit_rows_cap": cap_off,
+                "paging": "resultOffset", "oid_field": None}
+    elif STRATEGY == "ids":
         r_ids = _q(api, {"where": w_all, "returnIdsOnly": "true", "f": "json"}, timeout=180)
         ids = r_ids.get("objectIds") or []
         if not ids:
-            log("  returnIdsOnly 失败（%s）→ 退回 keyset" % str(r_ids.get("__error__"))[:80])
-            STRATEGY = "keyset"
+            log("  returnIdsOnly 失败（%s）→ 退回 %s"
+                % (str(r_ids.get("__error__"))[:80], "resultOffset" if not oid_field else "keyset"))
+            STRATEGY = "offset" if not oid_field else "keyset"
         elif ids_truncated(len(ids), count):
             # ★ 2026-10-30 实测事故：97.9M 行的层 returnIdsOnly 只回 18.76M（截断），
             #   ids 策略据此只切 34 个单元 → 「全单元 done+uploaded」看起来完美，
             #   实际少采 80%。截断必须当场看见：退回 keyset（OID 区间，不依赖 id 全量）。
-            log("  ⚠ returnIdsOnly 只回 %d/%d（%.1f%%）→ 判定为截断，退回 keyset 分区采"
-                % (len(ids), count, 100.0 * len(ids) / max(count, 1)))
-            STRATEGY = "keyset"
+            log("  ⚠ returnIdsOnly 只回 %d/%d（%.1f%%）→ 判定为截断，退回 %s 分区采"
+                % (len(ids), count, 100.0 * len(ids) / max(count, 1),
+                   "resultOffset" if not oid_field else "keyset"))
+            STRATEGY = "offset" if not oid_field else "keyset"
+    if STRATEGY == "offset" and not units:
+        cap_off = max(1, int(UNIT_ROWS))
+        units = [(o, min(o + cap_off, count)) for o in range(0, count, cap_off)] or [(0, 0)]
+        plan = {"kind": "offset", "units": units, "unit_rows_cap": cap_off,
+                "paging": "resultOffset", "oid_field": None}
     if STRATEGY == "ids":
         bpr_ids, _vm, _n = estimate_bytes_per_row(api, w_all, log=log)
         _u, cap_ids = plan_units(len(ids), 0, 0, bytes_per_row=bpr_ids, kind="ids")
@@ -1286,7 +1469,9 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range
                 "units": [[b[0] for b in u] for u in units],
                 "bytes_per_row_est": round(bpr_ids, 1), "unit_bytes_cap": UNIT_BYTES,
                 "unit_rows_cap": cap_ids}
-    else:
+    elif STRATEGY != "offset":
+        # ★ W33-061：offset 切分已在上面定好（kind=offset），这里不能再按 OID 域重算 ——
+        #   没有主键时 _oid_bounds("") 拿到的是整层的 min/max，会静默把 offset 窗口改成 OID 区间。
         if oid_range and oid_range[0] is not None and oid_range[1] is not None:
             mn, mx, e = int(oid_range[0]), int(oid_range[1]), ""      # 域由参数给定，不猜、不查
         else:
@@ -1393,7 +1578,8 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range
         else:
             lo, hi = u
             rows, files, err, expect = _unit_range(api, oid_field, defexpr, lo, hi, i, ps,
-                                                   limit, log, prog, lock, ck)
+                                                   limit, log, prog, lock, ck,
+                                                   count_hint=count)
         # ① 无错 ② 行数对得上（--limit 试采不判）③ 上传成功 —— 三条同时成立才算完成
         # ★ W33-043：门槛与 GAP_TOL 同源（以前写死 0.999，且 short_ack 会把它清掉）
         if not err and not limit and expect > 0 and rows < expect * (1.0 - GAP_TOL):
@@ -1593,6 +1779,10 @@ def main():
     man = {"id": CUR["id"], "title": CUR["title"], "url": CUR["url"], "svc": CUR["svc"],
            "count": count, "rows": rows, "parts": parts, "diff": diff,
            "elapsed_s": elapsed, "err": err, "limit": a.limit, "strategy": STRATEGY,
+           # ★ W33-061：把「用哪个主键 / 剔了哪几列」写进报告，shard 账本再把它们带到 records
+           "oid_field": OID_FIELD or None,
+           "out_fields": "*" if OUT_FIELDS == "*" else len(OUT_FIELDS.split(",")),
+           "dropped_fields": list(DROPPED_FIELDS or []),
            "oid_range": list(OID_RANGE) if OID_RANGE else None,
            "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
     with open(os.path.join(OUTBASE, CUR["id"], "_manifest.json"), "w", encoding="utf-8") as f:
