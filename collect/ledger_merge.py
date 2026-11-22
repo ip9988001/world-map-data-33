@@ -194,7 +194,15 @@ def format_regressions_section(regressions, limit: int = 30) -> list:
 
 
 def pick_better(cur: dict, new: dict) -> tuple[dict, str]:
-    """两层记录取「更优者」：状态优先，同状态取行数大者。返回 (winner, how)。"""
+    """两层记录取「更优者」：状态优先，同状态取行数大者。返回 (winner, how)。
+
+    ★ W33-062 例外：`new` 是 **fresh 真重采**的记录时，它是权威值 —— 不能拿
+      「同状态取行数大者」去比。旧账本里那坨大数可能正是**跨代际双算**（旧代际包没被
+      supersede，两代相加），若让「大者赢」，错的那个数永远赢（2× 就是这么活下来的）。
+      状态更差的 fresh 记录（failed/partial 于旧值）仍然不许盖旧值。
+    """
+    if new.get("fresh") and rank(new.get("status")) >= rank(cur.get("status")):
+        return new, "fresh_rerun_authoritative"
     rc, rn = rank(cur.get("status")), rank(new.get("status"))
     if rn > rc:
         return new, "new_status_better"
@@ -322,6 +330,41 @@ def annotate_rows_suspect(records, *, at: str | None = None, run_id="") -> tuple
                "counted_rows=0；旧 ⊋ 新 的多出单元照计（唯一副本）",
         "note": "下一轮采集/合并后这些层会自然回到单代行数，届时本标记会被摘掉",
     }
+
+
+def annotate_ledger_file(path: str, *, run_id: str = "", at: str | None = None,
+                         write: bool = True) -> dict:
+    """把 `annotate_rows_suspect` 应用到**已入库**的聚合账本（幂等，可重复跑）。
+
+    ★ 为什么需要这个入口（W33-062）：标记本来是 merge 时自动重打的，但 2026-11-22 那一轮
+      run 是按**旧 sha 派单**、收尾用的是旧代码的 merge job → 把 202 处标记清成了 0 处
+      （rows 还是 178,231,770 那坨含双算的数）。代码修好之后，还得能把已经写坏的文件补回来，
+      而且必须跟 merge 走**同一个函数**：两套判据 = 两份「可疑层」名单，迟早对不上。
+    """
+    d = json.load(open(path, encoding="utf-8"))
+    recs_in = d.get("records") or []
+    recs, suspect = annotate_rows_suspect(recs_in, at=at, run_id=run_id)
+    out = dict(d)
+    out["records"] = recs
+    if suspect:
+        out["rows_suspect"] = suspect
+    else:
+        out.pop("rows_suspect", None)
+    rows_before = sum(rows_of(r) for r in recs_in)
+    rows_after = sum(rows_of(r) for r in recs)
+    res = {"path": path,
+           "marked_before": sum(1 for r in recs_in if r.get("rows_suspect")),
+           "marked_after": sum(1 for r in recs if r.get("rows_suspect")),
+           "layers": (suspect or {}).get("layers", 0),
+           "overcounted_rows": (suspect or {}).get("overcounted_rows", 0),
+           "rows_before": rows_before, "rows_after": rows_after,
+           "rows_unchanged": rows_before == rows_after,
+           "layers_n": len(recs), "written": bool(write)}
+    if write:
+        tmp = path + ".tmp"
+        json.dump(out, open(tmp, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+        os.replace(tmp, path)
+    return res
 
 
 def stage_overwrite_allowed(run_layers: int, stage_layers: int, allow: bool = False) -> tuple[bool, str]:
@@ -534,3 +577,29 @@ def write_run_and_stage(stage: str, run_led: dict, run_id: str, base_dir: str,
                 "rows_regressions_unexplained": len([e for e in regs_run if not e.get("evidence")]),
                 "rows_regressions_total": len(merged.get("regressions") or [])})
     return res
+
+
+def main(argv=None) -> int:
+    """CLI：给一份已入库的阶段账本补打 / 摘掉「跨代际双算」标记（幂等）。
+
+    用法：
+      python3 collect/ledger_merge.py --ledger collect/05b_ledger.json --check
+      python3 collect/ledger_merge.py --ledger collect/05b_ledger.json --run-id 45010130014
+    """
+    import argparse
+    ap = argparse.ArgumentParser(description="阶段账本 rows_suspect 标记（幂等，不改 rows）")
+    ap.add_argument("--ledger", required=True, help="聚合账本路径，如 collect/05b_ledger.json")
+    ap.add_argument("--run-id", default="", help="留档用：判定发生在哪一轮")
+    ap.add_argument("--at", default="", help="判定时间（默认当前 UTC）")
+    ap.add_argument("--check", action="store_true", help="只报结果，不写盘")
+    a = ap.parse_args(argv)
+    res = annotate_ledger_file(a.ledger, run_id=a.run_id, at=a.at or None, write=not a.check)
+    print(json.dumps(res, ensure_ascii=False, indent=1))
+    if not res["rows_unchanged"]:
+        print("::error::rows 被改动了 —— 这不该发生（裁定：rows 不回改）", flush=True)
+        return 2
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

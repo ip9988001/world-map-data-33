@@ -636,6 +636,15 @@ CKPT_VER = 2
 #     `gh release upload --clobber` 是同名覆盖，不加前缀就会把旧单元包（真数据）
 #     悄悄换成新切的半截包 —— 覆盖了就没有回滚基准。
 RUN_ID = os.environ.get("GITHUB_RUN_ID") or "local"
+# ★ W33-062：`--force-fresh` 的最后一站。`PILOT_FORCE_FRESH=1` = 本层**真重采**：
+#   · 不续跑（既有检查点一个单元都不认）→ 单元全部重翻，rows_new > 0；
+#   · 单元包名带新代际前缀 `f<runid>-`，`gh release upload --clobber` 碰不到旧包；
+#   · 收尾把旧检查点当 legacy 证据，以 `supersede_legacy=True` 合并 —— 旧代际标
+#     `superseded_by`、**不计入 rows_total**（这是「force 补采」唯一真的重采通道：
+#     `PILOT_FORCE_RERUN` 只备份+合并，仍走 checkpoint 续跑 → elapsed 2 秒、新采 0 行）。
+FRESH = (os.environ.get("PILOT_FORCE_FRESH") == "1")
+# 本层 fresh 合并报告（main() 写进 report，full_shard 再带到层记录上）
+FRESH_MERGE_REPORT = {}
 UNIT_NS = ""
 UNIT_ROWS = int(os.environ.get("PILOT_UNIT_ROWS", "500000"))   # 一个「单元」的**行数**上限（参考值）
 # ★ 2026-10-30 全局修正：GitHub 单资产 2 GB —— 只按行数切会撞线。
@@ -682,7 +691,15 @@ def _tag():
 
 
 
-def _pub(cmd, timeout=600):
+def _pub(cmd, timeout=600) -> tuple[int, str]:
+    """跑一条发布命令 → **`(rc, 输出前 300 字符)` 二元组**（绝不是 bool）。
+
+    ★ 2026-11-22 CI 真红（smoke run 45020368971 / PR #41）：测试把 `pilot._pub` 打桩成
+      返回 `True`，本机 `GITHUB_REPOSITORY` 未设置 → `_publish_ckpt` 早退 False，从不执行解包；
+      CI 上该变量一定存在 → `rc, o = True` → `TypeError: cannot unpack non-iterable bool`。
+      契约只此一份：本仓 7 处调用（`_upload` / `_publish_ckpt` / `_backup_legacy_ckpt` 清旧备份 /
+      `_fetch_ckpt_asset` 的 view+download）**全部按 `(rc, o)` 解包**，打桩必须同样返回二元组。
+    """
     try:
         r = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
         return r.returncode, ((r.stdout or "") + (r.stderr or ""))[:300]
@@ -806,7 +823,8 @@ def _backup_legacy_ckpt(ck, log, assets_idx=None):
     return local
 
 
-def _merge_legacy_ckpt(ck, legacy_ck, assets_idx, log):
+def _merge_legacy_ckpt(ck, legacy_ck, assets_idx, log, fresh: bool = False,
+                       fresh_complete: bool = False):
     """把旧检查点的完成度按**单元包名**并进本次检查点，并执行行数等式闸门。
 
     返回合并后的新 dict（不改入参）。三种情况会拒绝写盘（宁可不写，也不能把账算错）：
@@ -817,10 +835,16 @@ def _merge_legacy_ckpt(ck, legacy_ck, assets_idx, log):
       全部放行）。现在换成可复算的等式，由 `merge_checkpoints` 内部调 `assert_rows_invariant`。"""
     import ckpt_guard
     evidence = os.environ.get("PILOT_ROWS_EVIDENCE") or ""
+    # `fresh=True`（force+fresh 真重采）→ 旧代际一律 supersede：切分完全相同也照 supersede，
+    # 否则「plan_hash 一致 → split_compatible → 两代相加」正是 2× 双算的生成器。
     merged, rep = ckpt_guard.merge_checkpoints(
-        legacy_ck, ck, layer=CUR["id"], run_id=RUN_ID, assets=assets_idx, evidence=evidence)
+        legacy_ck, ck, layer=CUR["id"], run_id=RUN_ID, assets=assets_idx, evidence=evidence,
+        supersede_legacy=bool(fresh), supersede_all=bool(fresh and fresh_complete))
     reason = ""
-    if rep["packages_dropped"]:
+    if rep["packages_dropped"] and fresh:
+        log("  ⟳ fresh：%d 个旧单元包已不在 Release（%s）→ 不计入（本就按 supersede 处理）"
+            % (len(rep["packages_dropped"]), ",".join(rep["packages_dropped"][:3])))
+    elif rep["packages_dropped"]:
         reason = ("%d 个旧单元包已不在 Release（%s）"
                   % (len(rep["packages_dropped"]), ",".join(rep["packages_dropped"][:3])))
         guard = ckpt_guard.assert_rows_not_shrunk(
@@ -832,6 +856,19 @@ def _merge_legacy_ckpt(ck, legacy_ck, assets_idx, log):
                 % (evidence, f"{guard['rows_before']:,}", f"{guard['rows_after']:,}",
                    guard["regression_reason"]))
     merged["forced_rerun"] = (os.environ.get("PILOT_FORCE_RERUN") == "1")
+    if fresh:
+        merged["fresh_rerun"] = True
+        merged["fresh_rerun_at"] = str(RUN_ID)
+        merged["rows_before_fresh"] = rep["rows_before"]
+        merged["rows_superseded_by_fresh"] = rep["rows_legacy_superseded"]
+        globals()["FRESH_MERGE_REPORT"] = {
+            "rows_before_fresh": rep["rows_before"],
+            "rows_before_fresh_total": rep.get("rows_before_incl_legacy_units"),
+            "rows_superseded_by_fresh": rep["rows_legacy_superseded"],
+            "units_legacy_superseded": rep["units_legacy_superseded"],
+            "units_new": rep["units_new"], "rows_after_fresh": rep["rows_after"],
+            "supersede_mode": rep.get("supersede_mode"),
+            "unit_ns": UNIT_NS}
     log("  ⇄ 检查点合并：旧 %s 行（%d 单元：supersede %d 个 / 独有 unit 计入 %d 个 = %s 行）"
         " + 本轮 %s 行 → 合计 %s 行（等式按 %s 复算）"
         % (f"{rep['rows_before']:,}", rep["units_legacy"],
@@ -1505,9 +1542,24 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range
         # --limit 是试采用：只跑一个单元、单线程、忽略既有检查点，免得 5 个单元各采 limit 行
         units, workers, fresh = units[:1], 1, True
     plan_hash = plan_sig(plan)
-    ck = None if fresh else _load_ckpt(plan_hash)
+    ck = None if (fresh or FRESH) else _load_ckpt(plan_hash)
     legacy_ck, assets_idx = None, None
-    if ck is None and not fresh:
+    if FRESH:
+        # ★ W33-062：真重采。旧检查点**只当 legacy 证据**（不读 done_units、不续跑），
+        #   新代际前缀与任何既有包名都不同 → 旧单元包一字节都不动。
+        globals()["UNIT_NS"] = "f%s-" % str(RUN_ID)[:12]
+        _matching, _raw = _fetch_ckpt_asset(plan_hash, log, with_raw=True)
+        legacy_ck = _raw if _raw is not None else _matching
+        assets_idx = _list_assets(log)
+        if legacy_ck is not None:
+            _backup_legacy_ckpt(legacy_ck, log, assets_idx)
+            log("  ⟳ fresh 真重采：忽略旧检查点（%s 行 / %s 个单元包），新代际前缀 %r —— "
+                "旧单元包不碰，收尾按 supersede 合并"
+                % (f"{sum((legacy_ck.get('unit_rows_seen') or legacy_ck.get('unit_rows') or {}).values()):,}",
+                   len(legacy_ck.get('unit_rows') or {}), UNIT_NS))
+        else:
+            log("  ⟳ fresh 真重采：取不到旧检查点 → 从头采（新代际前缀 %r）" % UNIT_NS)
+    elif ck is None and not fresh:
         # ★ with_raw=True：即便切分不一致，也要把旧检查点拿在手里（证据 + 备份 + 合并）。
         ck, legacy_ck = _fetch_ckpt_asset(plan_hash, log, with_raw=True)
         if ck is not None:
@@ -1521,7 +1573,8 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range
             if assets_idx and any(re.search(r"-u\d{5}\.tar\.gz$", n) for n in assets_idx):
                 log("  ⚠ Release 里已有旧单元包但检查点取不到 → 本轮单元包加代际前缀，旧包不碰")
                 globals()["UNIT_NS"] = "r%s-" % str(plan_hash)[:8]
-    if legacy_ck is not None and legacy_ck.get("plan_hash") not in (None, plan_hash):
+    if legacy_ck is not None and legacy_ck.get("plan_hash") not in (None, plan_hash) \
+            and not FRESH:
         globals()["UNIT_NS"] = "r%s-" % str(plan_hash)[:8]
         log("  ⚠ 切分与旧检查点不一致（old=%s new=%s）→ 本轮单元包名加代际前缀 %r，"
             "绝不 --clobber 覆盖旧单元包"
@@ -1648,8 +1701,17 @@ def collect_arcgis_v2(url, limit=0, log=print, workers=1, fresh=False, oid_range
             #   出事时 legacy_ck 就是「被 force 抛在后面」的那份旧证据；
             #   没实证却要变小时不能默默写盘：抛 SystemExit，full_shard 会把本层记 failed。
             if legacy_ck is not None and not limit:
+                # ★ W33-062：fresh 且**整层采完**（全部单元 done）→ 旧代际整代 supersede，
+                #   不再按 unit 索引对齐：切分粒度变了（旧 2 单元 / 新 1 单元）时按索引对齐
+                #   会把旧 u00001 当「唯一副本」照计 —— 行还是同一批数据，只是被切细了。
                 try:
-                    ck = _merge_legacy_ckpt(ck, legacy_ck, assets_idx, log)
+                    _done_now = {int(x) for x in (ck.get("done_units") or [])}
+                except (TypeError, ValueError):
+                    _done_now = set()
+                _fresh_all = bool(FRESH and units and set(range(len(units))) <= _done_now)
+                try:
+                    ck = _merge_legacy_ckpt(ck, legacy_ck, assets_idx, log, fresh=FRESH,
+                                            fresh_complete=_fresh_all)
                 except Exception as e:              # noqa: BLE001
                     log("✗ 检查点合并失败/行数回退 → 拒绝写入：%s" % str(e)[:400])
                     raise SystemExit("✗ %s 行数回退且无实证 → 拒绝写入检查点：%s"
@@ -1784,7 +1846,11 @@ def main():
            "out_fields": "*" if OUT_FIELDS == "*" else len(OUT_FIELDS.split(",")),
            "dropped_fields": list(DROPPED_FIELDS or []),
            "oid_range": list(OID_RANGE) if OID_RANGE else None,
+           # ★ W33-062：fresh 真重采的合并结果（没 fresh 就不塞字段，账本不留空壳）
+           "fresh": bool(FRESH),
            "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+    if FRESH:
+        man.update(FRESH_MERGE_REPORT or {})
     with open(os.path.join(OUTBASE, CUR["id"], "_manifest.json"), "w", encoding="utf-8") as f:
         json.dump(man, f, ensure_ascii=False, indent=1)
     os.makedirs(os.path.join(ROOT, "collect", "reports"), exist_ok=True)

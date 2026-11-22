@@ -247,7 +247,8 @@ class CollectBase(unittest.TestCase):
         pilot.OUTBASE = self.tmp
         pilot.PROG_DIR = os.path.join(self.tmp, "progress")
         pilot.UNIT_ROWS = 500
-        pilot._pub = lambda *a, **k: True
+        # ★ 契约同 test_force_fresh：`_pub` 返回 (rc, 输出)，打桩返回 True 只在本机侥幸不炸
+        pilot._pub = lambda *a, **k: (0, "")
         self.uploaded_rows = 0
 
         def fake_upload(files, log=None, tag=None):

@@ -59793,7 +59793,7 @@
   "kind": "legacy_double_count",
   "layers": 101,
   "overcounted_rows": 7359939,
-  "detected_at": "2026-11-22T11:12:43Z",
+  "detected_at": "2026-11-22T11:42:22Z",
   "detected_by": "ledger_merge.annotate_rows_suspect (W33-060)",
   "run_id": "45010130014",
   "policy": "rows 不回改，只加标记留档（用户裁定 2026-11-22）",

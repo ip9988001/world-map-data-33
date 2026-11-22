@@ -33,6 +33,11 @@ on:
       #   为什么需要：cancelled 片里的层会留下「单元标完成、产物没上传」或「计划期口径差」
       #   的半截状态，done_layers（只看 tag+checkpoint）看不见 → 不定点重跑就永久缺口。
       force_layers: { description: "强制重跑的层 id（逗号分隔，cancelled 片续跑用）", default: "" }
+      # ★ W33-062：`force_layers` 只绕 plan 的 skip_done，**不绕 pilot 的 checkpoint 续跑** ——
+      #   实测 run 45010130014 里 3 层 elapsed 1.9~3.0s、新采 0 行，2× 原样保留。
+      #   要对名单内层**真重采**必须同时打开这个开关：开新代际（f<runid>- 前缀）、
+      #   旧代际按 supersede 合并（不计入 rows_total）。不传则 maintain 旧语义（只提队首、仍续跑）。
+      force_fresh:  { description: "1=true 时 force_layers 名单内的层忽略 checkpoint 真重采（旧代际 supersede）", default: "0" }
       # ★ F16 故障清单（2026-11-22 muse-000143）：本次派单涉及的类别，逗号分隔；留空则由 preflight 按
       #   「--ref 相对 main 的改动文件」自行推导（那样常推导不出 → F16 只能 WARN）。
       ledger_category: { description: "F16 故障清单：本次派单涉及类别（逗号分隔，如 账本与口径,checkpoint与断点）", default: "" }
@@ -112,6 +117,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STAGE: ${{ inputs.stage }}
           FORCE: ${{ inputs.force_layers }}
+          FRESH: ${{ inputs.force_fresh }}
         run: |
           set -euo pipefail
           mkdir -p collect/ledger
@@ -122,8 +128,12 @@ jobs:
           esac
           SIZE="${{ inputs.size }}"; [ "$SIZE" = "0" ] && SIZE="$DEF"
           python3 collect/run_step_${STAGE}.py --validate
+          # ★ W33-062：force_fresh 只给名单内层真重采；不传 = 旧语义（续跑）
+          FRESHF=""
+          if [ "$FRESH" = "1" ] || [ "$FRESH" = "true" ]; then FRESHF="--force-fresh"; fi
           python3 collect/full_plan.py --stage "$STAGE" --size "$SIZE" \
             ${FORCE:+--force-layers "$FORCE"} \
+            ${FRESHF:+$FRESHF} \
             --out "collect/ledger/${STAGE}_plan.json" | tee /tmp/plan.log
           MAX="${{ inputs.max_shards }}"
           # ★ max_shards 截断必须喊出来（W33-036，2026-10-31）：旧实现是这两行 shell
@@ -226,6 +236,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PILOT_HEARTBEAT_PUSH: "1"
           FORCE: ${{ inputs.force_layers }}
+          FRESH: ${{ inputs.force_fresh }}
           LT: ${{ inputs.layer_timeout }}
         run: |
           set -euo pipefail
@@ -233,6 +244,8 @@ jobs:
           # 0 = 用脚本默认（60 分钟）。注意：不能写成 `[ ... ] && LT=""`，
           # 条件为假时整条命令返回值非 0，在 set -e 下会直接退出（踩过）。
           if [ "${LT}" = "0" ]; then LT=""; fi
+          FRESHF=""
+          if [ "$FRESH" = "1" ] || [ "$FRESH" = "true" ]; then FRESHF="--force-fresh"; fi
           # tag 与 steps.json 一致（collect-step04-<layer> 等），换 run 能续跑
           TAGPFX=$(python3 -c "import json;print(json.load(open('collect/ledger/${STAGE}_plan.json'))['tag'].replace('{layer}',''))")
           echo "TAG 前缀：$TAGPFX"
@@ -240,6 +253,7 @@ jobs:
             --plan "collect/ledger/${STAGE}_plan.json" \
             --workers "${{ inputs.workers }}" --unit-rows "${{ inputs.unit_rows }}" \
             ${FORCE:+--force-layers "$FORCE"} \
+            ${FRESHF:+$FRESHF} \
             ${LT:+--layer-timeout "$LT"} \
             --tag-prefix "$TAGPFX"
       - name: 提交本片账本（只动自己那一个文件，用重置到 main 的方式避免并发冲突）
