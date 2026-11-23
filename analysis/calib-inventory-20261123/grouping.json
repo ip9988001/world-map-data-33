@@ -1,0 +1,44 @@
+{
+ "group_counts": {
+  "full_address": 0,
+  "no_zip": 5,
+  "no_city": 5,
+  "no_number": 0,
+  "road_only": 4,
+  "empty_shell": 3
+ },
+ "groups": {
+  "full_address": [],
+  "no_zip": [
+   "Virginia Address Points",
+   "Site Addresses",
+   "CNO_Addresses",
+   "VC Addresses",
+   "Site Address Points Spokane County Map View"
+  ],
+  "no_city": [
+   "SUSS Address Points",
+   "OC Addresses 20260811",
+   "Address Points",
+   "NG911 ESN",
+   "EAS_Addresses"
+  ],
+  "no_number": [],
+  "road_only": [
+   "Sacramento County, CA Addresses",
+   "City of Boston, MA Addresses",
+   "Address Points_V",
+   "Address Points and CPNs"
+  ],
+  "empty_shell": [
+   "Fire_Stations",
+   "2022 Lightbox Address Points Option B",
+   "Address_1424300337393713068"
+  ]
+ },
+ "class_counts": {
+  "A": 8,
+  "C": 7,
+  "B": 2
+ }
+}
