@@ -110,6 +110,46 @@ def test_nad_de_fixture_has_numbers():
     assert prof["nonnull"]["street"] > 0.5
 
 
+def test_number_alias_addr_housenumber():
+    """F1: OSM 风格 `addr_housenumber`（Sacramento/Boston 的真实字段）必须被认成门牌。"""
+    rec = {"addr_housenumber": "225", "addr_street": "Jibboom Street",
+           "addr_city": "Sacramento", "addr_state": "CA", "addr_postcode": "95811"}
+    assert rules.canonical(rec)["number"] == "225"
+    assert rules.has_number(rec) is True
+    assert rules.field_group(rec) != "road_only"
+    assert rules.field_group(rec) == "no_zip"  # 缺坐标 → 不是 full_address
+    assert rules.classify(rec) == "A"
+
+
+def test_number_alias_addr_number_upper_wins_over_building():
+    """F1: `ADDR_NUMBER`（MD）要认，而且不能被泛化别名 `building` 抢走。"""
+    rec = {"ADDR_NUMBER": 1910, "BUILDING": 3, "STREET_NAME": "ELKHART", "STREET_TYPE": "ST",
+           "POSTAL_CITY": "SILVER SPRING", "STATE": "MD", "ZIP": "20910"}
+    assert rules.canonical(rec)["number"] == 1910
+    assert rules.has_number(rec) is True
+    assert rules.field_group(rec) != "road_only"
+    assert rules.classify(rec) == "A"
+
+
+def test_number_alias_housenumbe_truncated():
+    """F1: 10 字符截断后的 `HOUSENUMBE`（IL）也要认。"""
+    rec = {"HOUSENUMBE": "12", "STREETNAME": "COUNTY LINE", "CITY": "CUSTER PARK",
+           "STATE": "IL", "ZIP_CODE": "60481"}
+    assert rules.canonical(rec)["number"] == "12"
+    assert rules.has_number(rec) is True
+    assert rules.field_group(rec) != "road_only"
+
+
+def test_number_alias_does_not_swallow_unit_or_suffix_fields():
+    """F1 反向护栏：单元号/号段后缀/记录序号都不许当门牌（否则 road_only 判据反向失真）。"""
+    for rec in ({"UNIT_NUM": "5", "STREET_NAME": "Main St", "ZIP": "1"},
+                {"ADDRNUMSUF": "A", "STREET_NAME": "Main St", "ZIP": "1"},
+                {"ADDR_RECNO": 7, "STREET_NAME": "Main St", "ZIP": "1"},
+                {"PREADDRNUM": "9", "STREET_NAME": "Main St", "ZIP": "1"}):
+        assert rules.has_number(rec) is False, rec
+        assert rules.field_group(rec) == "road_only", rec
+
+
 def test_no_production_imports():
     src = open(os.path.join(HERE, "rules.py"), encoding="utf-8").read()
     for bad in ("collectors", "gold_fuse", "gold_refiner", "pipeline", "sqlite3"):

@@ -2,10 +2,10 @@
 """Assemble calibration inventory: local + NG911(20) + dirty(15) -> csv + md + grouping."""
 import csv, json, os, sys, collections
 
-sys.path.insert(0, "/data/workspace/world-map-data-33/sandbox")
-import rules
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # 随 checkout 走，不写死某个 worktree
+sys.path.insert(0, f"{BASE}/sandbox")
+import rules  # noqa: E402
 
-BASE = "/data/workspace/world-map-data-33"
 OUT = f"{BASE}/analysis/calib-inventory-20261123"
 WMD = "/data/workspace/wmd-merge"
 
@@ -79,22 +79,36 @@ def main():
                 survey[r["url"].rstrip("/")] = json.loads(r["samples"])
             except Exception:
                 pass
-    layer_recs = {}
+    # F2 (2026-11-24): 用 url 当唯一键。层标题会撞名（20 层里 4 个都叫 "Address Points"：PA/GA/OH/AR），
+    # 以标题作 dict key 会静默互相覆盖、把分母算小（曾算成 17）。层名只作可读字段 layers_by_url。
+    layer_recs, layers_by_url, states_by_url = {}, {}, {}
     for r in ng:
         m = re.search(r"url=(\S+)$", r.get("note") or "")
         url = m.group(1).rstrip("/") if m else None
-        smp = survey.get(url) or []
-        if smp:
-            layer_recs[r["layer"]] = smp
-    g = rules.group_layers(layer_recs)
+        smp = (survey.get(url) or []) if url else []
+        if not smp:
+            continue
+        layer_recs[url] = smp
+        layers_by_url[url] = r["layer"]
+        states_by_url[url] = r["state"]
+    g = rules.group_layers(layer_recs)   # 多数票定组（每层全部样值投票），与 class 的众数口径一致
     cls = collections.Counter()
-    for layer, recs in layer_recs.items():
-        p = rules.layer_profile(layer, recs)
+    classes_by_url = {}
+    for url, recs in layer_recs.items():
+        p = rules.layer_profile(layers_by_url[url], recs)
         cls[p["class_mode"]] += 1
-        g["groups"][p["group"]].append(layer) if layer not in g["groups"][p["group"]] else None
-    json.dump({"group_counts": {k: len(v) for k, v in g["groups"].items()},
-               "groups": g["groups"], "class_counts": dict(cls)},
+        classes_by_url[url] = p["class_mode"]
+    json.dump({"key": "url", "denominator": len(layer_recs),
+               "group_counts": {k: len(v) for k, v in g["groups"].items()},
+               "groups": g["groups"], "class_counts": dict(cls),
+               "classes_by_url": classes_by_url, "layers_by_url": layers_by_url},
               open(f"{OUT}/grouping.json", "w"), ensure_ascii=False, indent=1)
+    print("denominator", len(layer_recs), "groups", {k: len(v) for k, v in g["groups"].items()},
+          "classes", dict(cls), flush=True)
+    group_of = {url: grp for grp, urls in g["groups"].items() for url in urls}
+    for url in sorted(layer_recs, key=lambda u: (classes_by_url[u], group_of[u], layers_by_url[u])):
+        print(f"  {classes_by_url[url]}  {group_of[url]:12s} {layers_by_url[url][:44]:44s} {url}",
+              flush=True)
 
     per = collections.Counter((r["state"], r["source"]) for r in records)
     md = [f"# 校准集逐层盘点（{len(records)} 条）\n",
@@ -109,8 +123,16 @@ def main():
     md += ["", "## 分层输出（S/A/B/C）", "", "| 级别 | 层数 |", "|---|---|"]
     for k, v in sorted(cls.items()):
         md.append(f"| {k} | {v} |")
+    md += ["", f"分组分母（url 唯一键）= **{len(layer_recs)}** 层；组/层按 url 归并，层名仅供人读",
+           "", "## 20 层 NG911 逐层（url 为键）", "",
+           "| # | 州 | 层名 | class | group | url |", "|---|---|---|---|---|---|"]
+    for i, url in enumerate(sorted(layer_recs, key=lambda u: (classes_by_url[u], group_of[u],
+                                                             layers_by_url[u], u)), 1):
+        md.append(f"| {i} | {states_by_url[url]} | {layers_by_url[url]} | {classes_by_url[url]} | "
+                  f"{group_of[url]} | `{url}` |")
     open(f"{OUT}/calib-inventory.md", "w", encoding="utf-8").write("\n".join(md) + "\n")
-    print("records", len(records), "groups", {k: len(v) for k, v in g["groups"].items()}, "classes", dict(cls))
+    print("records", len(records), "denominator", len(layer_recs),
+          "groups", {k: len(v) for k, v in g["groups"].items()}, "classes", dict(cls))
 
 if __name__ == "__main__":
     main()

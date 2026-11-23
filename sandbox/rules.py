@@ -16,8 +16,16 @@ import zipfile
 
 # ---------------------------------------------------------------- field aliases
 ALIASES = {
+    # F1 (2026-11-24): 4 个别名由数据驱动补齐 —— 只收 15 层远程 NG911 + 299 层本地盘点的
+    # `fields` 清单里真实出现过、且语义确为「门牌号」的写法（扫出 349 个字段名，未映射 292 个，
+    # 其中 number 语义的只有这几个）。刻意不收：*_SUF（后缀）、UNIT_NUM/UNITNUMBER（单元号，
+    # 收进来会让只有单元号的记录假判有门牌）、ADDR_RECNO（记录序号）、PREADDRNUM/AddNum_Pre
+    # （前置号段，实测 0/20 非空）、HOUSE_FRACTION、SUBHOUSE、BLDG_*（建筑属性）、
+    # FULLADDR/FULLADDRES/ADDRESS（复合全址，属 street 侧，不许塞进 number）。
+    # 顺序：具体别名一律排在泛化别名（num / building）之前，避免 BUILDING 抢先。
     "number": ["number", "house_number", "housenum", "add_number", "addrnum", "address_number",
-               "addnum", "house_no", "hno", "num", "building"],
+               "addnum", "addr_housenumber", "addrnumber", "addressnum", "housenumbe",
+               "house_no", "hno", "num", "building"],
     "street": ["street", "street_name", "st_name", "stnam_full", "fullname", "road", "streetaddress",
                "street_address", "addr_street", "road_name", "streetname"],
     "city": ["city", "postal_city", "town", "municipality", "place", "city_name", "post_office"],
