@@ -1,0 +1,167 @@
+[
+ {
+  "ledger_layer_truncated": "ices_GeorginaMap_W84_SiteAddressPoint_Labels_W84_MapServer_0",
+  "state": "NY",
+  "title": "SiteAddressPoint_Labels",
+  "url": "https://maps.georgina.ca/arcgis/rest/services/GeorginaMap_W84/SiteAddressPoint_Labels_W84/MapServer/0",
+  "survey_count": "23246",
+  "declared_in_ledger": "23246",
+  "rows_observed": "20570",
+  "geom": "esriGeometryPoint",
+  "nfields": "41"
+ },
+ {
+  "ledger_layer_truncated": "st_services_GeorginaMap_W84_SiteAddressPoint_W84_MapServer_0",
+  "state": "NY",
+  "title": "Georgina - Site Address Point W84",
+  "url": "https://maps.georgina.ca/arcgis/rest/services/GeorginaMap_W84/SiteAddressPoint_W84/MapServer/0",
+  "survey_count": "23241",
+  "declared_in_ledger": "23241",
+  "rows_observed": "20567",
+  "geom": "esriGeometryPoint",
+  "nfields": "41"
+ },
+ {
+  "ledger_layer_truncated": "84Po4FBDs_arcgis_rest_services_Address_Point_FeatureServer_0",
+  "state": "未定位",
+  "title": "Address Point",
+  "url": "https://services5.arcgis.com/GrsHGJ284Po4FBDs/arcgis/rest/services/Address_Point/FeatureServer/0",
+  "survey_count": "14616",
+  "declared_in_ledger": "14616",
+  "rows_observed": "26616",
+  "geom": "esriGeometryPoint",
+  "nfields": "40"
+ },
+ {
+  "ledger_layer_truncated": "ellington_ca_server_rest_services_Parcels_Public_MapServer_1",
+  "state": "未定位",
+  "title": "Addresses",
+  "url": "https://gis.centrewellington.ca/server/rest/services/Parcels_Public/MapServer/1",
+  "survey_count": "17295",
+  "declared_in_ledger": "17295",
+  "rows_observed": "17270",
+  "geom": "esriGeometryPoint",
+  "nfields": "13"
+ },
+ {
+  "ledger_layer_truncated": "nDataMaps_OpenDataMAP_InfraZonePropBound_Layers_MapServer_33",
+  "state": "MI",
+  "title": "Town of Tecumseh Address Points ",
+  "url": "https://gisweb.tecumseh.ca/arcgis/rest/services/OpenDataMaps/OpenDataMAP_InfraZonePropBound_Layers/MapServer/33",
+  "survey_count": "",
+  "declared_in_ledger": "9861",
+  "rows_observed": "9602",
+  "geom": "",
+  "nfields": ""
+ },
+ {
+  "ledger_layer_truncated": "wi_us_arcgis_rest_services_RichlandCo_GIS_Public_MapServer_6",
+  "state": "未定位",
+  "title": "Address Points (Enterprise Portal)",
+  "url": "https://gis.co.richland.wi.us/arcgis/rest/services/RichlandCo_GIS_Public/MapServer/6",
+  "survey_count": "9614",
+  "declared_in_ledger": "9624",
+  "rows_observed": "9101",
+  "geom": "esriGeometryPoint",
+  "nfields": "30"
+ },
+ {
+  "ledger_layer_truncated": "us_arcgis_rest_services_Addressing_AddressPoints_MapServer_0",
+  "state": "MN",
+  "title": "Address Points",
+  "url": "https://gis.co.polk.mn.us/arcgis/rest/services/Addressing/AddressPoints/MapServer/0",
+  "survey_count": "14470",
+  "declared_in_ledger": "14470",
+  "rows_observed": "6616",
+  "geom": "esriGeometryPoint",
+  "nfields": "21"
+ },
+ {
+  "ledger_layer_truncated": "_services_NWS_AddressPoints_Nstreets_centerlines_MapServer_0",
+  "state": "未定位",
+  "title": "Address Points County wide",
+  "url": "https://gisportal.co.burlington.nj.us/hosting/rest/services/NWS_AddressPoints_Nstreets_centerlines/MapServer/0",
+  "survey_count": "251639",
+  "declared_in_ledger": "251639",
+  "rows_observed": "118916",
+  "geom": "esriGeometryPoint",
+  "nfields": "111"
+ },
+ {
+  "ledger_layer_truncated": "paca_wi_us_arcgis_rest_services_Public_OpenData_MapServer_24",
+  "state": "未定位",
+  "title": "Addresses",
+  "url": "https://public1.co.waupaca.wi.us/arcgis/rest/services/Public/OpenData/MapServer/24",
+  "survey_count": "28646",
+  "declared_in_ledger": "None",
+  "rows_observed": "",
+  "geom": "esriGeometryPoint",
+  "nfields": "25"
+ },
+ {
+  "ledger_layer_truncated": "tamonica_gov_server_rest_services_Address_Points_MapServer_0",
+  "state": "未定位",
+  "title": "Address Points",
+  "url": "https://gis.santamonica.gov/server/rest/services/Address_Points/MapServer/0",
+  "survey_count": "57063",
+  "declared_in_ledger": "None",
+  "rows_observed": "",
+  "geom": "esriGeometryPoint",
+  "nfields": "13"
+ },
+ {
+  "ledger_layer_truncated": "untywi_gov_vilasgis_rest_services_V4_SiteAddress_MapServer_0",
+  "state": "未定位",
+  "title": "Site Address",
+  "url": "https://maps.vilascountywi.gov/vilasgis/rest/services/V4/SiteAddress/MapServer/0",
+  "survey_count": "48148",
+  "declared_in_ledger": "None",
+  "rows_observed": "",
+  "geom": "esriGeometryPoint",
+  "nfields": "75"
+ },
+ {
+  "ledger_layer_truncated": "almbeach_com_arcgis_rest_services_BaseData_Situs_MapServer_0",
+  "state": "未定位",
+  "title": "Situs",
+  "url": "https://gis.townofpalmbeach.com/arcgis/rest/services/BaseData/Situs/MapServer/0",
+  "survey_count": "13190",
+  "declared_in_ledger": "None",
+  "rows_observed": "",
+  "geom": "esriGeometryPoint",
+  "nfields": "42"
+ },
+ {
+  "ledger_layer_truncated": "county_com_arcgis_rest_services_features_Address_MapServer_0",
+  "state": "未定位",
+  "title": "Address Points",
+  "url": "https://maps.laramiecounty.com/arcgis/rest/services/features/Address/MapServer/0",
+  "survey_count": "45670",
+  "declared_in_ledger": "None",
+  "rows_observed": "",
+  "geom": "esriGeometryPoint",
+  "nfields": "59"
+ },
+ {
+  "ledger_layer_truncated": "_services_NG911_ReadOnly_NG911_Addressing_Layers_MapServer_0",
+  "state": "未定位",
+  "title": "NG911 Addressing Layers",
+  "url": "https://gismaps.onslowcountync.gov/server/rest/services/NG911_ReadOnly/NG911_Addressing_Layers/MapServer/0",
+  "survey_count": "108836",
+  "declared_in_ledger": "None",
+  "rows_observed": "",
+  "geom": "esriGeometryPoint",
+  "nfields": "52"
+ },
+ {
+  "ledger_layer_truncated": "buncombecounty_org_arcgis_rest_services_opendata_MapServer_2",
+  "state": "未定位",
+  "title": "Buncombe County, NC - Addresses",
+  "url": "https://gis.buncombecounty.org/arcgis/rest/services/opendata/MapServer/2",
+  "survey_count": "187802",
+  "declared_in_ledger": "None",
+  "rows_observed": "",
+  "geom": "esriGeometryPoint",
+  "nfields": "10"
+ }
+]

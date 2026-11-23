@@ -1,0 +1,680 @@
+[
+ {
+  "idx": 295,
+  "state_declared": "NH",
+  "count": 205,
+  "url": "https://services4.arcgis.com/ZFghKabnNJcV4IUj/arcgis/rest/services/OSM_Amenities_Fire_Stations/FeatureServer/0",
+  "meta_name": "OSM_Amenities_Fire_Stations",
+  "title": "Fire_Stations",
+  "n_fields": 18,
+  "sample_http": 200,
+  "sample_err": "",
+  "sampled_n": 20,
+  "field_map": {
+   "number": "addr_housenumber",
+   "street": "addr_street",
+   "city": "addr_city",
+   "state": "addr_state",
+   "zip": "addr_postcode"
+  },
+  "map_missing_fields": [],
+  "nonnull": {
+   "number": 1,
+   "street": 1,
+   "city": 1,
+   "state": 20,
+   "zip": 1
+  },
+  "state_field_values": [
+   "VT"
+  ],
+  "state_field_distinct": 1,
+  "sample1": {
+   "OBJECTID": 1,
+   "TARGET_FID": 1,
+   "osm_id": 366665713,
+   "addr_state": "VT",
+   "amenity": "fire_station",
+   "ele": "87",
+   "name": "Vernon Volunteer Fire Department",
+   "source_transform": "USGS Geonames",
+   "osm_id2": "366665713"
+  }
+ },
+ {
+  "idx": 297,
+  "state_declared": "VA",
+  "count": 3881020,
+  "url": "https://vginmaps.vdem.virginia.gov/arcgis/rest/services/VA_Base_Layers/VA_Address_Points/FeatureServer/0",
+  "meta_name": "Virginia Address Points",
+  "title": "Virginia Address Points",
+  "n_fields": 33,
+  "sample_http": 200,
+  "sample_err": "",
+  "sampled_n": 20,
+  "field_map": {
+   "number": "ADDRNUM",
+   "street": "FULLNAME",
+   "city": "MUNICIPALITY",
+   "state": "STATE",
+   "zip": "ZIP_5"
+  },
+  "map_missing_fields": [],
+  "nonnull": {
+   "number": 20,
+   "street": 20,
+   "city": 20,
+   "state": 20,
+   "zip": 20
+  },
+  "state_field_values": [
+   "VA"
+  ],
+  "state_field_distinct": 1,
+  "sample1": {
+   "OBJECTID": 1,
+   "SITEADDID": 51105000009085.0,
+   "ADDPTKEY": "-35839077833",
+   "ADDRNUM": "505",
+   "STREET_NAME": "CEDAR CROSS",
+   "STREET_TYPE": "DR",
+   "FULLNAME": "CEDAR CROSS DR",
+   "FULLADDR": "505 CEDAR CROSS DR",
+   "FIPS": "51105",
+   "MUNICIPALITY": "Lee County",
+   "ESN": "867",
+   "PSAP": "7156",
+   "MSAG_COMMUNITY": "EWING",
+   "USNGCOORD": "17SKA7578356897",
+   "LAT": 36.63126912,
+   "LONG": -83.50768173,
+   "LASTUPDATE": 1784160000000,
+   "PO_NAME": "EWING",
+   "STATE": "VA",
+   "ZIP_5": 24248
+  }
+ },
+ {
+  "idx": 298,
+  "state_declared": "CA",
+  "count": 1180322,
+  "url": "https://services7.arcgis.com/vhU7TaevMOAtV9Qd/arcgis/rest/services/OC_Addresses_20260811/FeatureServer/0",
+  "meta_name": "AddressPoint",
+  "title": "OC Addresses 20260811",
+  "n_fields": 14,
+  "sample_http": 200,
+  "sample_err": "",
+  "sampled_n": 20,
+  "field_map": {
+   "number": "AddressNumber",
+   "street": "StreetName",
+   "city": "CADCityCode",
+   "state": null,
+   "zip": "Zipcode"
+  },
+  "map_missing_fields": [],
+  "nonnull": {
+   "number": 20,
+   "street": 20,
+   "city": 20,
+   "state": null,
+   "zip": 20
+  },
+  "state_field_values": [],
+  "state_field_distinct": 0,
+  "sample1": {
+   "OBJECTID": 1,
+   "AddressPtID": 10001119,
+   "RoadNameID": 33728,
+   "StreetName": "STARLING LN",
+   "AddressNumber": 18074,
+   "CADCityCode": "AVO",
+   "Jurisdiction": "AVO",
+   "Zipcode": "92656"
+  }
+ },
+ {
+  "idx": 299,
+  "state_declared": "PA",
+  "count": 1044844,
+  "url": "https://services2.arcgis.com/Q4NxsjNmWBIR4LYH/arcgis/rest/services/Address_Points/FeatureServer/0",
+  "meta_name": "SCTF_SiteStructureAddressPoints",
+  "title": "Address Points",
+  "n_fields": 24,
+  "sample_http": 200,
+  "sample_err": "",
+  "sampled_n": 20,
+  "field_map": {
+   "number": "Address_Number",
+   "street": "StName",
+   "city": "Municipality",
+   "state": null,
+   "zip": "ZIP"
+  },
+  "map_missing_fields": [],
+  "nonnull": {
+   "number": 2,
+   "street": 12,
+   "city": 0,
+   "state": null,
+   "zip": 20
+  },
+  "state_field_values": [],
+  "state_field_distinct": 0,
+  "sample1": {
+   "OBJECTID": 11937060,
+   "Permanent_Identifier": "4210721-14-0036.001",
+   "Source_FeatureID": "21-14-0036.001",
+   "Source_DatasetID": "Addresses_42107",
+   "Source_DataDesc": "Schuylkill County Address Points",
+   "Source_Originator": "Schuylkill County GIS",
+   "Data_Security": 5,
+   "Distribution_Policy": "B1",
+   "LoadDate": 1620864000000,
+   "Local_Address_ID": "21-14-0036.001",
+   "Full_Address": "      RD",
+   "Address_Suffix": "RD",
+   "StType": "RD",
+   "ZIP": "17963",
+   "Address_Type": "Other",
+   "CollectionMethod": "Placed on Map",
+   "GlobalID": "edeaf29a-d0be-46bd-9501-ca1e9ee3d5d3"
+  }
+ },
+ {
+  "idx": 300,
+  "state_declared": "KS",
+  "count": 662634,
+  "url": "https://services6.arcgis.com/Do88DoK2xjTUCXd1/arcgis/rest/services/Sacramento_County_CA_Addresses/FeatureServer/0",
+  "meta_name": "Sacramento_County_CA_Addresses",
+  "title": "Sacramento County, CA Addresses",
+  "n_fields": 7,
+  "sample_http": 200,
+  "sample_err": "",
+  "sampled_n": 20,
+  "field_map": {
+   "number": "addr_housenumber",
+   "street": "addr_street",
+   "city": "addr_city",
+   "state": "addr_state",
+   "zip": "addr_postcode"
+  },
+  "map_missing_fields": [],
+  "nonnull": {
+   "number": 20,
+   "street": 20,
+   "city": 20,
+   "state": 20,
+   "zip": 20
+  },
+  "state_field_values": [
+   "CA"
+  ],
+  "state_field_distinct": 1,
+  "sample1": {
+   "OBJECTID": 5382614,
+   "addr_housenumber": "225",
+   "addr_street": "Jibboom Street",
+   "addr_city": "Sacramento",
+   "addr_state": "CA",
+   "addr_postcode": "95811"
+  }
+ },
+ {
+  "idx": 301,
+  "state_declared": "TN",
+  "count": 442066,
+  "url": "https://services7.arcgis.com/uFAr0LUPy14bDaLg/arcgis/rest/services/Nashville_110623B_WFL1/FeatureServer/0",
+  "meta_name": "Address Points(1-1250)",
+  "title": "NG911 ESN",
+  "n_fields": 27,
+  "sample_http": 200,
+  "sample_err": "",
+  "sampled_n": 20,
+  "field_map": {
+   "number": "Addr_Num",
+   "street": "Addr_St",
+   "city": "City",
+   "state": null,
+   "zip": "Zipcode"
+  },
+  "map_missing_fields": [],
+  "nonnull": {
+   "number": 20,
+   "street": 20,
+   "city": 20,
+   "state": null,
+   "zip": 20
+  },
+  "state_field_values": [],
+  "state_field_distinct": 0,
+  "sample1": {
+   "OBJECTID": 1,
+   "OIRID": "DAVIDSON_11",
+   "Addr_Num": "1803",
+   "Addr_St": "BROADWAY",
+   "UNIT_NUM": "614",
+   "ADDRESS": "1803 BROADWAY",
+   "LABEL": "614",
+   "ESN": "001",
+   "LON": "-86° 47.699'",
+   "LAT": "36° 9.108'",
+   "City": "MIDTOWN",
+   "PD_SUB2": "811K",
+   "REPORT_DISTS_ID": "5705",
+   "Zipcode": "37203",
+   "PD_SUB1": "811",
+   "Police_DIS": "MIDTOWN HILLS",
+   "Fire_DIS": "19",
+   "Fire_SUB1": "19F",
+   "NAME": "19F"
+  }
+ },
+ {
+  "idx": 302,
+  "state_declared": "CO",
+  "count": 397598,
+  "url": "https://services7.arcgis.com/piPfTFmrV9d1DIvN/arcgis/rest/services/SiteAddresses_public_84b35cee615045ffbebd93e11cdb072e/FeatureServer/0",
+  "meta_name": "Site Addresses",
+  "title": "Site Addresses",
+  "n_fields": 23,
+  "sample_http": 200,
+  "sample_err": "",
+  "sampled_n": 20,
+  "field_map": {
+   "number": "ADDRNUM",
+   "street": "FULLNAME",
+   "city": "MUNICIPALITY",
+   "state": null,
+   "zip": null
+  },
+  "map_missing_fields": [],
+  "nonnull": {
+   "number": 20,
+   "street": 0,
+   "city": 20,
+   "state": null,
+   "zip": null
+  },
+  "state_field_values": [],
+  "state_field_distinct": 0,
+  "sample1": {
+   "OBJECTID": 1,
+   "SITEADDID": "801",
+   "ADDRNUM": "5456",
+   "FULLADDR": "5456 N Eagle St",
+   "MUNICIPALITY": "Denver",
+   "ADDRCLASS": 0
+  }
+ },
+ {
+  "idx": 303,
+  "state_declared": "MA",
+  "count": 396923,
+  "url": "https://services6.arcgis.com/Do88DoK2xjTUCXd1/arcgis/rest/services/Boston_MA_Addresses/FeatureServer/0",
+  "meta_name": "Boston_Addresses",
+  "title": "City of Boston, MA Addresses",
+  "n_fields": 10,
+  "sample_http": 200,
+  "sample_err": "",
+  "sampled_n": 20,
+  "field_map": {
+   "number": "addr_housenumber",
+   "street": "addr_street",
+   "city": "addr_city",
+   "state": "addr_state",
+   "zip": "addr_postcode"
+  },
+  "map_missing_fields": [],
+  "nonnull": {
+   "number": 20,
+   "street": 20,
+   "city": 20,
+   "state": 20,
+   "zip": 20
+  },
+  "state_field_values": [
+   "MA"
+  ],
+  "state_field_distinct": 1,
+  "sample1": {
+   "OBJECTID": 1,
+   "ADDR_RECNO": 0,
+   "addr_housenumber": "6-10",
+   "addr_street": "A Street",
+   "addr_city": "Hyde Park",
+   "addr_state": "MA",
+   "addr_postcode": "02136",
+   "Import_2_OSM": 1,
+   "BlockGroup": "250251403003"
+  }
+ },
+ {
+  "idx": 304,
+  "state_declared": "GA",
+  "count": 392001,
+  "url": "https://services2.arcgis.com/IxVN2oUE9EYLSnPE/arcgis/rest/services/SiteAddressPointsOD/FeatureServer/0",
+  "meta_name": "AddressPoints",
+  "title": "Address Points",
+  "n_fields": 38,
+  "sample_http": 200,
+  "sample_err": "",
+  "sampled_n": 20,
+  "field_map": {
+   "number": "ADDRNUM",
+   "street": "FULLNAME",
+   "city": "POSTAL_CITY",
+   "state": "STATE",
+   "zip": "ZIPCODE"
+  },
+  "map_missing_fields": [],
+  "nonnull": {
+   "number": 20,
+   "street": 20,
+   "city": 20,
+   "state": 20,
+   "zip": 20
+  },
+  "state_field_values": [
+   "GA"
+  ],
+  "state_field_distinct": 1,
+  "sample1": {
+   "SITEADDID": "366880",
+   "ADDRNUM": "102",
+   "FULLNAME": "Mountain Springs Drive",
+   "FULLADDR": "102 Mountain Springs Drive",
+   "STATUS": "Current",
+   "LASTUPDATE": 1770292090000,
+   "LASTEDITOR": "dekalbgisadmin",
+   "STREETNAMEID": 5859,
+   "PARCELID": "18 073 01 124",
+   "CREATEEDITOR": "TWLUCKY",
+   "CREATEDATE": 1528110382000,
+   "PRIMARYSECONDARY": "SECONDARY",
+   "ADDRESSTYPE": "APARTMENT",
+   "POSTAL_CITY": "Stone Mountain",
+   "ZIPCODE": "30083",
+   "STATE": "GA",
+   "ZIP_PLUS4": "3657",
+   "ADDRKEY": 553822,
+   "OBJECTID": 1
+  }
+ },
+ {
+  "idx": 305,
+  "state_declared": "IL",
+  "count": 388335,
+  "url": "https://services.arcgis.com/fGsbyIOAuxHnF97m/arcgis/rest/services/Address_Points_V/FeatureServer/0",
+  "meta_name": "Address Points",
+  "title": "Address Points_V",
+  "n_fields": 24,
+  "sample_http": 200,
+  "sample_err": "",
+  "sampled_n": 20,
+  "field_map": {
+   "number": "HOUSENUMBE",
+   "street": "STREETNAME",
+   "city": "CITY",
+   "state": "STATE",
+   "zip": "ZIP_CODE"
+  },
+  "map_missing_fields": [],
+  "nonnull": {
+   "number": 20,
+   "street": 20,
+   "city": 20,
+   "state": 20,
+   "zip": 20
+  },
+  "state_field_values": [
+   "IL"
+  ],
+  "state_field_distinct": 1,
+  "sample1": {
+   "PIN": "0124344000030000",
+   "DXF_TEXT": "24-34D-E",
+   "PIN_RECORDER": "01-24-34-400-003-0000",
+   "Tax_Code": "0105",
+   "Property_Class": "F",
+   "Valuation_Date": "7011985",
+   "Acres": "60",
+   "HOUSENUMBE": "V",
+   "PREFIXDIRE": "W",
+   "SUFFIXTYPE": "RD",
+   "STREETNAME": "COUNTY LINE",
+   "CITY": "CUSTER PARK",
+   "COUNTY": "WILL COUNTY",
+   "STATE": "IL",
+   "ZIP_CODE": "60481",
+   "USPS_ADDRE": "V W COUNTY LINE RD CUSTER PARK, IL 60481",
+   "OBJECTID": 143609043,
+   "ACT_INACT": "TRUE"
+  }
+ },
+ {
+  "idx": 306,
+  "state_declared": "MD",
+  "count": 300309,
+  "url": "https://services2.arcgis.com/gEFt9c3jUfWMXCEP/arcgis/rest/services/Address_Points_and_CPNs_Update/FeatureServer/3",
+  "meta_name": "Address Labels below 4K",
+  "title": "Address Points and CPNs",
+  "n_fields": 38,
+  "sample_http": 200,
+  "sample_err": "",
+  "sampled_n": 20,
+  "field_map": {
+   "number": "ADDR_NUMBER",
+   "street": "STREET_NAME",
+   "city": "POSTAL_CITY",
+   "state": "STATE",
+   "zip": "ZIP"
+  },
+  "map_missing_fields": [],
+  "nonnull": {
+   "number": 20,
+   "street": 20,
+   "city": 20,
+   "state": 20,
+   "zip": 20
+  },
+  "state_field_values": [
+   "MD"
+  ],
+  "state_field_distinct": 1,
+  "sample1": {
+   "OBJECTID": 1,
+   "GlobalID": "90b36e01-77be-4758-b549-9f0e05c18ae9",
+   "ADDR_NUMBER": 1910,
+   "STREET_NAME": "ELKHART",
+   "STREET_TYPE": "ST",
+   "ZIP": "20910",
+   "LABEL": "1910",
+   "BLDG_CLASS": "P",
+   "X_COORD": 1300695.7280208,
+   "Y_COORD": 486509.02034414,
+   "POSTAL_CITY": "SILVER SPRING",
+   "ADDRESS": "1910 ELKHART ST",
+   "ADDRESS_ID": 202957,
+   "STATE": "MD",
+   "STATUS": "A",
+   "SOURCE": "MNCPPC",
+   "COUNTY": "MCG",
+   "CORE_ADDRESS": "1910 ELKHART ST",
+   "JURISD": "MCG"
+  }
+ },
+ {
+  "idx": 307,
+  "state_declared": "AZ",
+  "count": 274644,
+  "url": "https://services3.arcgis.com/0OPQIK59PJJqLK0A/arcgis/rest/services/Address_1424300337393713068/FeatureServer/0",
+  "meta_name": "Address_1424300337393713068",
+  "title": "Address_1424300337393713068",
+  "n_fields": 13,
+  "sample_http": 200,
+  "sample_err": "",
+  "sampled_n": 20,
+  "field_map": {
+   "number": "ADDRESSNUM",
+   "street": "ADDRESSSTR",
+   "city": "JURISDICTI",
+   "state": null,
+   "zip": null
+  },
+  "map_missing_fields": [],
+  "nonnull": {
+   "number": 20,
+   "street": 20,
+   "city": 20,
+   "state": null,
+   "zip": null
+  },
+  "state_field_values": [],
+  "state_field_distinct": 0,
+  "sample1": {
+   "FID": 1,
+   "FULLADDRES": "2457 W KIOWA AVE",
+   "ADDRESSNUM": 2457,
+   "ADDRESSSTR": "W KIOWA AVE",
+   "JURISDICTI": "MESA",
+   "LANDSTATUS": "E",
+   "ADDRESSCLA": "RS",
+   "ADDRESSCOU": 3,
+   "ADDRESSUNI": "Site"
+  }
+ },
+ {
+  "idx": 308,
+  "state_declared": "LA",
+  "count": 267730,
+  "url": "https://services2.arcgis.com/LJwIycC0yIuqCBxq/arcgis/rest/services/CNO_Addresses/FeatureServer/0",
+  "meta_name": "CNO_Addresses",
+  "title": "CNO_Addresses",
+  "n_fields": 34,
+  "sample_http": 200,
+  "sample_err": "",
+  "sampled_n": 20,
+  "field_map": {
+   "number": "ADDRNUM",
+   "street": "FULLNAME",
+   "city": "MUNICIPALITY",
+   "state": null,
+   "zip": null
+  },
+  "map_missing_fields": [],
+  "nonnull": {
+   "number": 20,
+   "street": 20,
+   "city": 20,
+   "state": null,
+   "zip": null
+  },
+  "state_field_values": [],
+  "state_field_distinct": 0,
+  "sample1": {
+   "OBJECTID": 1,
+   "POINTTYPE": "Building",
+   "CAPTUREMETH": "GPS",
+   "LASTUPDATE": 1457730585000,
+   "SITEADDID": "85000086",
+   "ADDRNUM": "3210",
+   "FULLNAME": "Gravier St",
+   "FULLADDR": "3210 Gravier St",
+   "MUNICIPALITY": "New Orleans",
+   "STATUS": "Current",
+   "SOURCE": "Original",
+   "ADDR_TYPE": "P"
+  }
+ },
+ {
+  "idx": 309,
+  "state_declared": "FL",
+  "count": 263947,
+  "url": "https://services2.arcgis.com/2rIG17xLqeJd2jOX/arcgis/rest/services/VC_Addresses/FeatureServer/0",
+  "meta_name": "Addresses",
+  "title": "VC Addresses",
+  "n_fields": 27,
+  "sample_http": 200,
+  "sample_err": "",
+  "sampled_n": 20,
+  "field_map": {
+   "number": "ADDRNUM",
+   "street": "FULLNAME",
+   "city": "MUNICIPALITY",
+   "state": null,
+   "zip": null
+  },
+  "map_missing_fields": [],
+  "nonnull": {
+   "number": 20,
+   "street": 20,
+   "city": 20,
+   "state": null,
+   "zip": null
+  },
+  "state_field_values": [],
+  "state_field_distinct": 0,
+  "sample1": {
+   "OBJECTID": 1,
+   "SITEADDID": "16268",
+   "ADDPTKEY": "424401070065",
+   "ADDRNUM": "848",
+   "FULLNAME": "848 W COLONIAL CIR",
+   "FULLADDR": "848 W COLONIAL CIR DAYTONA BEACH FL 32117",
+   "MUNICIPALITY": "DAYTONA BEACH",
+   "STATUS": "ACTIVE",
+   "LASTUPDATE": 1461681225000,
+   "LASTEDITOR": "LGIMEditAdmin",
+   "Unique_ID": 16268,
+   "RuleID": 1
+  }
+ },
+ {
+  "idx": 313,
+  "state_declared": "MN",
+  "count": 156027,
+  "url": "https://services.arcgis.com/afSMGVsC7QlRK1kZ/arcgis/rest/services/EAS_Addresses/FeatureServer/0",
+  "meta_name": "EAS_Addresses",
+  "title": "EAS_Addresses",
+  "n_fields": 20,
+  "sample_http": 200,
+  "sample_err": "",
+  "sampled_n": 20,
+  "field_map": {
+   "number": "AddrNum",
+   "street": "StreetName",
+   "city": null,
+   "state": null,
+   "zip": "ZipCode"
+  },
+  "map_missing_fields": [],
+  "nonnull": {
+   "number": 20,
+   "street": 20,
+   "city": null,
+   "state": null,
+   "zip": 19
+  },
+  "state_field_values": [],
+  "state_field_distinct": 0,
+  "sample1": {
+   "EASAddressId": "ADDR100001",
+   "ObjectId": 5571,
+   "AddrNum": 1,
+   "StreetNameID": 5,
+   "StreetName": "10TH",
+   "StreetType": "AVE",
+   "PostDir": "S",
+   "APN": "2302924440004",
+   "StatusCode": "ACTIVE",
+   "IsAlias": "N",
+   "AddressTypeDesc": "Parcel",
+   "LastUpdateDate": 1526908991000,
+   "Display": "1 10TH AVE S",
+   "EffectiveDate": 1336748796000,
+   "ZipCode": "55454",
+   "OBJECTID_1": 1
+  }
+ }
+]
