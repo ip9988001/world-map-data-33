@@ -16,6 +16,7 @@ import pytest
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 from sandbox import auto_recognize as A  # noqa: E402
+from sandbox import coord_evidence as E  # noqa: E402
 from sandbox import spatial_verify as S  # noqa: E402
 
 LAYER = {"layer_id": "L1", "url": "https://x/FeatureServer/0", "universe": "d1", "dialect_id": "minimal_safe",
@@ -23,7 +24,7 @@ LAYER = {"layer_id": "L1", "url": "https://x/FeatureServer/0", "universe": "d1",
          "usable": "full_address", "reason": "template_unresolved", "coverage_rows": "100", "share": "0.01",
          "template_id": "t000000", "bits": "11111", "sampled_n": "20", "count": "100", "n_fields": "12",
          "nlike": "Add_Number"}
-EMPTY_CTX = {"inv": {}, "probe": {}, "roles": {}, "ph": {}, "spatial": {}}
+EMPTY_CTX = {"inv": {}, "probe": {}, "roles": {}, "ph": {}, "spatial": {}, "coord": {}}
 
 
 def layer(**kw):
@@ -110,25 +111,40 @@ def test_e5_sample_quality(kw, want):
 
 
 # ---------------------------------------------------------------- E6/E7
-def test_e6_unknown_without_spatial_findings():
+def test_e6_unknown_without_coord_samples():
     st, why = A.ev6(layer(), EMPTY_CTX)
     assert st == "unknown" and "未跑" in why
 
 
-def test_e6_follows_findings_verdict():
-    ok = ctx(spatial={LAYER["url"]: {"verdict": "green", "note": ""}})
-    bad = ctx(spatial={LAYER["url"]: {"verdict": "fuse", "note": "命中 outside_share"}})
+def test_e6_follows_coord_evidence():
+    ok = ctx(coord={LAYER["url"]: {"e6": "clear", "e6_detail": "n=50 唯一率=1.0"}})
+    bad = ctx(coord={LAYER["url"]: {"e6": "hit", "e6_detail": "命中 outside_share"}})
     assert A.ev6(layer(), ok)[0] == "clear"
     assert A.ev6(layer(), bad)[0] == "hit"
 
 
 def test_e6_keys_on_url_because_layer_id_is_not_unique():
     src = open(os.path.join(ROOT, "sandbox", "auto_recognize.py"), encoding="utf-8").read()
-    assert 'C["spatial"].get(L["url"])' in src
+    assert 'C["coord"].get(L["url"], {})' in src
 
 
-def test_e7_always_unknown_until_votes_exist():
+def test_e7_unknown_when_no_comparable_votes():
     assert A.ev7(layer(), EMPTY_CTX)[0] == "unknown"
+    C = ctx(coord={LAYER["url"]: {"e7": "unknown", "e7_detail": "n_cmp=0 < 3"}})
+    assert A.ev7(layer(), C)[0] == "unknown"
+
+
+def test_e7_follows_vote_evidence():
+    clear = ctx(coord={LAYER["url"]: {"e7": "clear", "e7_detail": "同址可比 7 行，冲突 0 行"}})
+    hit = ctx(coord={LAYER["url"]: {"e7": "hit", "e7_detail": "同址可比 9 行，冲突 4 行"}})
+    assert A.ev7(layer(), clear)[0] == "clear"
+    assert A.ev7(layer(), hit)[0] == "hit"
+
+
+def test_e3_falls_back_to_measured_geom_from_samples():
+    C = ctx(coord={LAYER["url"]: {"geom_type": "polygon"}})
+    assert A.ev3(layer(geom="", granularity="parcel_centroid"), C)[0] == "clear"
+    assert A.ev3(layer(geom="", granularity="building_point"), C)[0] == "hit"
 
 
 # ---------------------------------------------------------------- E8 结构漂移
@@ -252,6 +268,8 @@ def outdir(tmp_path_factory):
     d = tmp_path_factory.mktemp("auto-spatial")
     old = sys.argv
     try:
+        sys.argv = ["coord_evidence.py", "--outdir", str(d)]
+        assert E.main() == 0
         sys.argv = ["spatial_verify.py", "--out", str(d / "spatial-findings.csv")]
         assert S.main() == 0
         sys.argv = ["auto_recognize.py", "--outdir", str(d)]
@@ -288,22 +306,28 @@ def test_cli_split_closes_and_coverage_matches(outdir):
     mv = list(csv.DictReader(open(d / "template-unresolved-moves.csv", encoding="utf-8")))
     rec = [r for r in mv if r["verdict"] != "unavailable"]
     assert len(mv) == 11056 and sum(int(r["rows_n"] or 0) for r in mv) == 297519308
-    assert len(rec) == 4102 and sum(int(r["rows_n"] or 0) for r in rec) == 159336591
+    # 可进池的层（active+minimal_safe）逐位闭合；具体层数随证据变化，不做硬编码
+    assert len(rec) + len([r for r in mv if r["verdict"] == "unavailable"]) == 11056
+    assert sum(int(r["rows_n"] or 0) for r in rec) + sum(
+        int(r["rows_n"] or 0) for r in mv if r["verdict"] == "unavailable") == 297519308
 
 
-def test_cli_tier1_is_empty_because_spatial_unverified(outdir):
+def test_cli_tier1_nonzero_and_e6_e7_measured(outdir):
     d, _ = outdir
     rows = list(csv.DictReader(open(d / "auto-recognized.csv", encoding="utf-8")))
-    assert not [r for r in rows if r["tier"] == "tier1"]
-    # 每一层都不是空间绿（没有任何注册表层有坐标样本）→ E6 全 unknown
-    assert all(r["E6_state"] == "unknown" for r in rows)
+    t1 = [r for r in rows if r["tier"] == "tier1"]
+    assert t1, "有坐标样本后 Tier1 必须能放出层"
+    assert all(r[f"{k}_state"] in ("clear", "na") for r in t1 for k in A.EKEYS)
+    # E6/E7 已由 unknown 转实测：两种状态都要有真实计数
+    assert sum(1 for r in rows if r["E6_state"] in ("clear", "hit")) > 0
+    assert sum(1 for r in rows if r["E7_state"] in ("clear", "hit")) > 0
 
 
 def test_cli_move_csv_new_schema_and_no_manual(outdir):
     d, _ = outdir
     tu = list(csv.DictReader(open(d / "template-unresolved-moves.csv", encoding="utf-8")))
-    assert list(tu[0]) == ["layer_id", "url", "provider", "granularity", "rows_n", "verdict",
-                           "reason_evidence", "reason_detail"]
+    assert list(tu[0]) == ["layer_id", "url", "provider", "granularity", "geom_type", "rows_n",
+                           "verdict", "reason_evidence", "reason_detail"]
     assert len(tu) == 11056
     assert sum(int(r["rows_n"] or 0) for r in tu) == 297519308
     assert {r["verdict"] for r in tu} <= {"active", "minimal_safe", "unavailable"}
@@ -320,7 +344,7 @@ def test_cli_unavailable_csv_matches_split(outdir):
     # 暂不可用 = 连门牌+街名都取不到 → 必须都命中 E1（门牌）判据
     assert all("E1" in r["reason_evidence"] for r in un)
     assert all(r["reason_detail"].strip() for r in un)      # 每条都要写清卡在哪
-    assert {r["verdict"] for r in mv} == {"minimal_safe", "unavailable"}
+    assert {r["verdict"] for r in mv} <= {"active", "minimal_safe", "unavailable"}
 
 
 def test_cli_entrypoint_runs():

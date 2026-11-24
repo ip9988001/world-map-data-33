@@ -6,13 +6,11 @@ import argparse, collections, csv, json, os, re, yaml
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DIAL = os.path.join(ROOT, "analysis", "dialect-20261124")
 INV = os.path.join(ROOT, "analysis", "full-inventory-20261124")
-EKEYS = ("E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8")
-FATAL = ("E1", "E2", "E3", "E8")
-GRAN_REQ = {"building_point": {"point"}, "apartment_unit_point": {"point"}, "parcel_centroid": {"polygon"},
-            "range_interpolation": {"point", "polyline"}, "centerline_midpoint": {"polyline"}}  # 粒度→合法几何
+EKEYS, FATAL = ("E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8"), ("E1", "E2", "E3", "E8")
+GRAN_REQ = {"building_point": {"point"}, "apartment_unit_point": {"point"}, "parcel_centroid": {"polygon"}, "range_interpolation": {"point", "polyline"}, "centerline_midpoint": {"polyline"}}
 NUM_NEG = re.compile(r"parcel|route|hwy|phone|area|bike|juris|district|tract|lot|block|gpid|objectid|fid|globalid|permit|book|page|sheet|sqft|mile|percent|year|capacity|lane|unit")
 PLACEHOLDER = {"TBD", "UNKNOWN", "NULL", "N/A", "NA", "NONE", "-"}
-MOVE_COLS = ("layer_id", "url", "provider", "granularity", "rows_n", "verdict", "reason_evidence", "reason_detail")
+MOVE_COLS = ("layer_id", "url", "provider", "granularity", "geom_type", "rows_n", "verdict", "reason_evidence", "reason_detail")
 norm = lambda f: re.sub(r"[^a-z0-9]", "", (f or "").lower())
 
 
@@ -38,7 +36,9 @@ def load_ctx(outdir):
             ph[r["url"]].add(r["field"])
     sf = os.path.join(outdir, "spatial-findings.csv")
     spatial = {r["key"]: r for r in csv.DictReader(open(sf, encoding="utf-8")) if r["kind"] == "fixture_layer"} if os.path.isfile(sf) else {}
-    return {"inv": inv, "probe": probe, "roles": roles, "ph": ph, "spatial": spatial}
+    ce = os.path.join(outdir, "coord-evidence.csv")
+    coord = {r["url"]: r for r in csv.DictReader(open(ce, encoding="utf-8"))} if os.path.isfile(ce) else {}
+    return {"inv": inv, "probe": probe, "roles": roles, "ph": ph, "spatial": spatial, "coord": coord}
 
 
 def ev1(L, C):  # 门牌：addr_core_hit[0] = 20 行样值里门牌族含数字是否过半
@@ -51,19 +51,20 @@ def ev2(L, C):  # 街名：addr_core_hit[1] + 本地样值占位字面值
     if L["bits"][1] == "0":
         return "hit", "addr_core_hit[1]=0（街名族样值半数以上为空）"
     return ("hit", "样值含占位字面值 " + ",".join(sorted(C["ph"][L["url"]]))) if C["ph"].get(L["url"]) else ("clear", "")
-def ev3(L, C):  # 几何语义：granularity ⇄ geom 类型
-    g, gran = (L["geom"] or "").lower(), (L["granularity"] or "unknown")
+def ev3(L, C):  # 几何语义：granularity ⇄ geom 类型（geom 缺失时用坐标样本实测 geom_type 兜底）
+    g, gran = (L["geom"] or "").lower() or C["coord"].get(L["url"], {}).get("geom_type", ""), (L["granularity"] or "unknown")
     if not g or gran == "unknown":
         return "unknown", f"geom={L['geom'] or '缺'} / granularity={gran}（点位语义不可判）"
-    return ("clear", "") if g in (GRAN_REQ.get(gran) or set()) else ("hit", f"{gran} 与 geom={L['geom']} 冲突")
+    return ("clear", "") if g in (GRAN_REQ.get(gran) or set()) else ("hit", f"{gran} 与 geom={g} 冲突")
 def ev4(L, C):  # 别名冲突：门牌证据落在负向字段族（parcel/route/phone…）或同名字段跨方言映射到不同要素
-    fields, bad = C["probe"].get(L["url"]), set()
+    sf = [f for f in (C["coord"].get(L["url"], {}).get("sample_fields") or "").split("|") if f]
+    fields, bad = C["probe"].get(L["url"]) or sf or None, set()
     bad |= {f for f in (L["nlike"] or "").split(",") if f and NUM_NEG.search(norm(f))}
     bad |= {f for f in (fields or []) if len(C["roles"].get(f) or ()) > 1}
     if bad:
         return "hit", "门牌族被负向规则命中/跨要素同名字段: " + ",".join(sorted(bad)[:6])
-    return ("unknown", "无同源探针字段集（探针配额 1,000/1,000 已用满）") if fields is None \
-        else ("clear", f"探针 {len(fields)} 字段无冲突")
+    return ("unknown", "无同源探针字段集、也无坐标样本字段（探针配额 1,000/1,000 已用满）") if fields is None \
+        else ("clear", f"{'样本' if C['probe'].get(L['url']) is None else '探针'} {len(fields)} 字段无冲突")
 def ev5(L, C):  # 样本份额：抽样为空 / 抽样被截断 / 层份额过低
     n, cnt, share = int(L["sampled_n"] or 0), int(float(L["count"] or 0)), float(L["share"] or 0)
     if n == 0:
@@ -71,12 +72,12 @@ def ev5(L, C):  # 样本份额：抽样为空 / 抽样被截断 / 层份额过�
     if cnt and n < min(20, cnt):
         return "hit", f"抽样被截断 n={n} < min(20,count={cnt})"
     return ("hit", f"层份额 {share} < 0.01%") if share < 1e-4 else ("clear", f"n={n} count={cnt}")
-def ev6(L, C):  # 空间验算（只认本目录 spatial-findings.csv 的真实结论；按 url 找，layer_id 不唯一）
-    f = C["spatial"].get(L["url"])
-    if not f:
-        return "unknown", "无坐标样本 → 空间验算未跑（第 3 步只探 meta，未采坐标）"
-    return ("clear", "") if f["verdict"] == "green" else ("hit", f["note"])
-ev7 = lambda L, C: ("unknown", "无多源同址解析结果（第 3 步未产出地址级多源投票）")  # noqa: E731 源间投票
+def ev6(L, C):  # 空间验算：只认坐标样本实测结论（coord-evidence.csv；按 url 找，layer_id 不唯一）
+    c = C["coord"].get(L["url"], {})
+    return (c["e6"], c["e6_detail"]) if c else ("unknown", "该 url 无坐标样本 → 空间验算未跑")
+def ev7(L, C):  # 源间同址投票：同址跨源坐标 >300m 记冲突，可比行 <3 记 unknown（投不出票不冒充 clear）
+    c = C["coord"].get(L["url"], {})
+    return (c["e7"], c["e7_detail"]) if c else ("unknown", "该 url 无坐标样本 → 无源间同址投票")
 def ev8(L, C):  # 结构漂移：字段集/类型 ⇄ 注册表模板
     fields, tpl = C["probe"].get(L["url"]), (L["template_id"] or "")
     if tpl in ("", "t000000"):
@@ -84,7 +85,6 @@ def ev8(L, C):  # 结构漂移：字段集/类型 ⇄ 注册表模板
     if fields is None:
         return "unknown", f"模板 {tpl} 存在但无探针字段集，无法比对"
     return ("hit", "n_fields=0 但模板要求字段集") if L["n_fields"] in ("", "0") else ("clear", f"{tpl} 可对齐")
-
 
 EVIDENCES = (ev1, ev2, ev3, ev4, ev5, ev6, ev7, ev8)
 
@@ -119,7 +119,8 @@ def evaluate(L, C):
     det = "; ".join(f"{k}={ev[k][1]}" for k in why.split(",") if k and ev.get(k, ("", ""))[1])
     return {"layer_id": L["layer_id"], "url": L["url"], "universe": L["universe"], "dialect_id": L["dialect_id"],
             "provider_id": L["provider_id"], "provider": L["provider_id"], "state": L["state"],
-            "granularity": L["granularity"], "geom": L["geom"], "usable": L["usable"], "share": L["share"],
+            "granularity": L["granularity"], "geom": L["geom"],
+            "geom_type": C["coord"].get(L["url"], {}).get("geom_type") or (L["geom"] or "").lower(), "usable": L["usable"], "share": L["share"],
             "assign_reason": L["reason"], "coverage_rows": L["coverage_rows"], "rows_n": L["coverage_rows"],
             "tier": t, "move": mv, "verdict": mv, "reason_evidence": why, "reason_detail": det,
             **{f"{k}_state": st[k] for k in EKEYS}, **{f"{k}_detail": ev[k][1] for k in EKEYS if ev[k][1]}}
@@ -137,8 +138,7 @@ def main():
     mv = [{k: r[k] for k in MOVE_COLS} for r in tu]
     os.makedirs(outdir, exist_ok=True)
     for name, rs, flds in (("auto-recognized.csv", rows, cols), ("template-unresolved-moves.csv", mv, MOVE_COLS),
-                           ("template-unresolved-unavailable.csv",
-                            [r for r in mv if r["verdict"] == "unavailable"], MOVE_COLS)):
+                           ("template-unresolved-unavailable.csv", [r for r in mv if r["verdict"] == "unavailable"], MOVE_COLS)):
         with open(os.path.join(outdir, name), "w", newline="", encoding="utf-8") as fh:
             w = csv.DictWriter(fh, fieldnames=flds, restval="")
             w.writeheader()

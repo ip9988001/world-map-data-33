@@ -34,3 +34,17 @@ p95:                                   # 层内相对异常（不与红线混用
 unavailable:                           # 明确标注「未跑」的项（不许用占位值糊过去）
   building_outline_distance: 仓库内无建筑轮廓数据源（无 building footprint 图层）；只实现函数接口与单测，全量算距离标 unavailable。
   zip_zcta_table: 仓库内无 ZCTA/邮编表；本轮**未接入**（代码里没有 zip-table 参数，不许写成已实现），注册表层的邮编交叉校验一律记 unavailable，留第 6 步先定数据来源再做。
+
+e7:                                    # E7 源间同址投票（sandbox/coord_evidence.py）
+  max_addr_conflict_m:
+    value: 300.0
+    why: 同一个「门牌+街名(+邮编)」在两个不同源里给出 >300m 的坐标，已超出地址点采集/投影误差（同址不同源通常差数十米内）；300m 约为一个城市街区的量级。
+    source: 无外部标定；本仓库首次设定，冷启动值。地址点与地块质心混用时会自然冲突，这正是要抓的。
+  max_conflict_share:
+    value: 0.10
+    why: 同址行里 >10% 跨源冲突即判该层 E7 命中；留 10% 容差给「地址同号但门牌号重号」「街名缩写不同」这类键归一化误差。
+    source: 与 fuse.max_outside_share 同一套容差逻辑（个别脏行不否定整层）。
+  min_cmp_rows:
+    value: 3
+    why: 跨源同址可比行 <3 时不投票（投不出票就记 unknown，不写 clear 冒充「无冲突」）。
+    source: 与 fuse.min_sample_rows 一致的最小可判样本。
