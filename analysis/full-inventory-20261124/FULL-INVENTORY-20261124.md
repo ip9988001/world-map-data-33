@@ -162,8 +162,22 @@
 - 每 200 层落 checkpoint：`inventory-remote-uncollected.shards/shard-NNNNN.ndjson` + 追加 CSV + 刷新 `progress.json`
 - 续跑：启动时读所有分片，跳过已完成 url
 
-试点 40 层实测：24.9 s、1.61 层/s、ok 8 / 失败 32（全部 HTTP 0 或 404 —— survey 里确实混着 storymaps 之类非 ArcGIS 条目）。
-按 1.6 层/s 推算全量 ≈ **9.5 小时**（muse 估的 8 小时同量级），逐层结果见 `inventory-remote-uncollected.csv`。
+**实测速率（两段）**：
+- 试点 40 层：24.9 s → **1.61 层/s**（这批里死站少）
+- 全量开跑后前 240 层：约 8 min → **0.50 层/s**，其中 `unreachable` **177/240 = 74%**
+  （survey 是按 url 字母序排的，开头这段恰好是 `URL: https://storymaps…`、`ags1.wgxtreme.com` 这类死站/非 ArcGIS 条目；
+  失败层只会花 8 秒 meta 超时即放弃，不再发 sample 请求）
+
+⇒ **按 0.5 层/s 全量要 ≈ 30 小时；按字母序后半段的活站比例（试点段 20% 存活）乐观值仍有 ≈ 9–10 小时**。
+两种都属于「20 小时截止线」边缘，因此本轮**不追求跑完**：按 200 层一批落 checkpoint，随时可续，
+已扫结果随时可用（`inventory-remote-uncollected.csv` 由分片重建，见 §4.1）。
+
+### 4.1 CSV 与分片的关系（避免「CSV 看起来少了」的误判）
+
+`full_inventory_remote.py` 运行中按 200 层一批**追加**写 CSV；重启/试点重跑会与分片产生偏差。
+**分片 `shards/shard-NNNNN.ndjson` 是唯一 source of truth**，`full_inventory_remote_merge.py` 按 url 去重重建整表
+（本轮已跑一次：240 行 = 试点 40 + 首批 200，`requests_n` 合计 361，`usable`：unreachable 177 / empty_shell 53 /
+road_only 8 / full_address 1 / no_zip 1）。
 
 ---
 
@@ -174,3 +188,6 @@
 3. **Phase 3 跑完后**：54,812 层里能用地址五要素的层会成为「未采候选池」，可与 3,709 已采层做 URL 去重，直接给第 3 步定采集通道。
 4. **本地中间件不要当原始层用**：要原始字段名，必须走 Phase 3 的 `?f=json` 或按需拉分片；`zip5` 缺失是规范化口径问题（08 索引只在 addr 表里尽力补），不是上游没有。
 5. **7 个脏层**里 3 个（Vilas / Onslow / Buncombe）建议下次探针用 60s 超时 + 2 次换时段，别用 8s 就判死。
+
+
+> Phase 3 提交时点快照：已扫 **240** 层（分片行数），计划 54,772，剩余 54532；作业仍在后台运行，checkpoint 可续。
