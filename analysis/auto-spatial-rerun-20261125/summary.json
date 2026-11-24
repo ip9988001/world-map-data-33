@@ -1,0 +1,294 @@
+{
+ "generated_utc": "2026-11-24T17:02:04Z",
+ "seed": 20261125,
+ "inputs": {
+  "samples": "analysis/coord-samples-20261124/samples/*.csv",
+  "evidence": "analysis/auto-spatial-rerun-20261125/coord-evidence.csv",
+  "recognized": "analysis/auto-spatial-rerun-20261125/auto-recognized.csv"
+ },
+ "denominator": 17168,
+ "rows_total": 984719364,
+ "tiers": {
+  "tier1": {
+   "layers": 30,
+   "rows": 1073302,
+   "pct_layers": 0.17
+  },
+  "tier2": {
+   "layers": 1005,
+   "rows": 85388202,
+   "pct_layers": 5.85
+  },
+  "tier3": {
+   "layers": 16133,
+   "rows": 898257860,
+   "pct_layers": 93.97
+  }
+ },
+ "moves": {
+  "active": {
+   "layers": 25,
+   "rows": 320583
+  },
+  "minimal_safe": {
+   "layers": 4077,
+   "rows": 159016008
+  },
+  "unavailable": {
+   "layers": 6954,
+   "rows": 138182717
+  },
+  "_check": {
+   "layers": 11056,
+   "rows": 297519308,
+   "tu_layers": 11056,
+   "tu_rows": 297519308
+  }
+ },
+ "previous_round": {
+  "tier1": [
+   0,
+   0
+  ],
+  "tier2": [
+   1123,
+   92206281
+  ],
+  "tier3": [
+   16045,
+   892513083
+  ],
+  "active": [
+   0,
+   0
+  ],
+  "minimal_safe": [
+   4102,
+   159336591
+  ],
+  "unavailable": [
+   6954,
+   138182717
+  ]
+ },
+ "evidences": {
+  "E1": {
+   "clear": 6855,
+   "hit": 9896,
+   "unknown": 417,
+   "na": 0
+  },
+  "E2": {
+   "clear": 16748,
+   "hit": 3,
+   "unknown": 417,
+   "na": 0
+  },
+  "E3": {
+   "clear": 4188,
+   "hit": 482,
+   "unknown": 12498,
+   "na": 0
+  },
+  "E4": {
+   "clear": 13388,
+   "hit": 2911,
+   "unknown": 869,
+   "na": 0
+  },
+  "E5": {
+   "clear": 15855,
+   "hit": 1313,
+   "unknown": 0,
+   "na": 0
+  },
+  "E6": {
+   "clear": 14759,
+   "hit": 1485,
+   "unknown": 924,
+   "na": 0
+  },
+  "E7": {
+   "clear": 785,
+   "hit": 56,
+   "unknown": 16327,
+   "na": 0
+  },
+  "E8": {
+   "clear": 864,
+   "hit": 0,
+   "unknown": 5584,
+   "na": 10720
+  }
+ },
+ "by_geom": {
+  "multiple": {
+   "layers": 1,
+   "rows": 66000,
+   "e6": {
+    "clear": 0,
+    "hit": 0,
+    "unknown": 1
+   },
+   "e7": {
+    "clear": 0,
+    "hit": 0,
+    "unknown": 1
+   }
+  },
+  "multipoint": {
+   "layers": 39,
+   "rows": 6611384,
+   "e6": {
+    "clear": 29,
+    "hit": 9,
+    "unknown": 1
+   },
+   "e7": {
+    "clear": 2,
+    "hit": 0,
+    "unknown": 37
+   }
+  },
+  "point": {
+   "layers": 9154,
+   "rows": 654323974,
+   "e6": {
+    "clear": 7934,
+    "hit": 905,
+    "unknown": 315
+   },
+   "e7": {
+    "clear": 636,
+    "hit": 20,
+    "unknown": 8498
+   }
+  },
+  "polygon": {
+   "layers": 3353,
+   "rows": 167975479,
+   "e6": {
+    "clear": 2946,
+    "hit": 290,
+    "unknown": 117
+   },
+   "e7": {
+    "clear": 141,
+    "hit": 28,
+    "unknown": 3184
+   }
+  },
+  "polyline": {
+   "layers": 4188,
+   "rows": 91465538,
+   "e6": {
+    "clear": 3850,
+    "hit": 281,
+    "unknown": 57
+   },
+   "e7": {
+    "clear": 6,
+    "hit": 8,
+    "unknown": 4174
+   }
+  },
+  "unknown": {
+   "layers": 433,
+   "rows": 64276989,
+   "e6": {
+    "clear": 0,
+    "hit": 0,
+    "unknown": 433
+   },
+   "e7": {
+    "clear": 0,
+    "hit": 0,
+    "unknown": 433
+   }
+  }
+ },
+ "tier1_combos": [
+  {
+   "granularity": "parcel_centroid",
+   "geom_type": "polygon",
+   "layers": 23,
+   "rows": 735262,
+   "evidence": "E1..E6 全 clear、E7 同址投票无冲突、E8 na/clear（见 tier1-evidence.csv）"
+  },
+  {
+   "granularity": "apartment_unit_point",
+   "geom_type": "point",
+   "layers": 5,
+   "rows": 54851,
+   "evidence": "E1..E6 全 clear、E7 同址投票无冲突、E8 na/clear（见 tier1-evidence.csv）"
+  },
+  {
+   "granularity": "building_point",
+   "geom_type": "point",
+   "layers": 1,
+   "rows": 269175,
+   "evidence": "E1..E6 全 clear、E7 同址投票无冲突、E8 na/clear（见 tier1-evidence.csv）"
+  },
+  {
+   "granularity": "centerline_midpoint",
+   "geom_type": "polyline",
+   "layers": 1,
+   "rows": 14014,
+   "evidence": "E1..E6 全 clear、E7 同址投票无冲突、E8 na/clear（见 tier1-evidence.csv）"
+  }
+ ],
+ "e6_unknown_reasons": [
+  [
+   "该 url 无坐标样本 → 空间验算未跑",
+   535
+  ],
+  [
+   "有效坐标 1 < min_sample_rows=3",
+   256
+  ],
+  [
+   "有效坐标 2 < min_sample_rows=3",
+   133
+  ]
+ ],
+ "e7_unknown_reasons": [
+  [
+   "本层样本无『门牌+街名』键",
+   13714
+  ],
+  [
+   "跨源同址可比值 n_cmp=0 < min_cmp_rows=3",
+   1832
+  ],
+  [
+   "该 url 无坐标样本 → 无源间同址投票",
+   535
+  ],
+  [
+   "跨源同址可比值 n_cmp=1 < min_cmp_rows=3",
+   166
+  ],
+  [
+   "跨源同址可比值 n_cmp=2 < min_cmp_rows=3",
+   80
+  ]
+ ],
+ "sensitivity": {
+  "e3_unknown_as_na_when_geom_measured": {
+   "layers": 166,
+   "rows": 22490316
+  },
+  "e6_e7_both_measured_and_all_clear": {
+   "layers": 30,
+   "rows": 1073302
+  },
+  "only_e7_unverifiable": {
+   "layers": 393,
+   "rows": 23075724
+  },
+  "e3_na_and_only_e7_unverifiable": {
+   "layers": 1831,
+   "rows": 65131527
+  }
+ }
+}
