@@ -1,7 +1,9 @@
 # 全量盘点 · 2026-11-24（task `w2-20261124-full-inventory`）
 
+**状态：Phase 3 已完成（终版）· 2026-11-24**
+
 > 只盘点：不融合、不分级、不重写引擎、不动 Release/账本/网站、未起任何 collect run、未直推 main。
-> 本文件随 Phase 进度追加；数字全部来自本目录 CSV/JSON，可逐条复算。
+> 本文件为终版（Phase 0–3 全部收口）；数字全部来自本目录 CSV/JSON，可逐条复算。
 
 ## 〇、口径声明（先看这 6 条，后面所有表都按它读）
 
@@ -153,31 +155,116 @@
 
 ---
 
-## 四、Phase 3：远程未采层 2 请求极速盘点（**进行中，可续跑**）
+## 四、Phase 3：远程未采层 2 请求极速盘点（**已完成 · 终版**）
 
-- 计划层数 **54,772**（54,812 − 试点已扫 40）
-- 每层 2 请求（meta + 20 条样值），count 取不到才补第 3 请求（`requests_n` 逐层记录）
-- 并发 8、单层超时：meta 8s / sample 15s；**meta 失败即跳过 sample**（死站单层成本 28s→8s）
-- 429/5xx 才退避重试（1 次），超时/断连不重试（避免 3 倍白等）
-- 每 200 层落 checkpoint：`inventory-remote-uncollected.shards/shard-NNNNN.ndjson` + 追加 CSV + 刷新 `progress.json`
-- 续跑：启动时读所有分片，跳过已完成 url
+产物：`inventory-remote-uncollected.csv`（54,812 数据行 / unique url 54,812）+ `inventory-remote-uncollected.shards/`（275 个 ndjson，54,812 行 / unique url 54,812）+ `progress.json`（`phase3_live.done = 54,812`）。
 
-**实测速率（两段）**：
-- 试点 40 层：24.9 s → **1.61 层/s**（这批里死站少）
-- 全量开跑后前 240 层：约 8 min → **0.50 层/s**，其中 `unreachable` **177/240 = 74%**
-  （survey 是按 url 字母序排的，开头这段恰好是 `URL: https://storymaps…`、`ags1.wgxtreme.com` 这类死站/非 ArcGIS 条目；
-  失败层只会花 8 秒 meta 超时即放弃，不再发 sample 请求）
+### 4.0 总账
 
-⇒ **按 0.5 层/s 全量要 ≈ 30 小时；按字母序后半段的活站比例（试点段 20% 存活）乐观值仍有 ≈ 9–10 小时**。
-两种都属于「20 小时截止线」边缘，因此本轮**不追求跑完**：按 200 层一批落 checkpoint，随时可续，
-已扫结果随时可用（`inventory-remote-uncollected.csv` 由分片重建，见 §4.1）。
+| 项 | 值 |
+|---|---|
+| 计划 / 已扫 | **54,812 / 54,812 = 100%** |
+| ok | **41,570** |
+| fail | **13,355** |
+| 落盘层数（三处一致） | 分片 54,812 行 = unique url 54,812；CSV 54,812 数据行 = unique url 54,812；`progress.json` done 54,812 |
+| 耗时 | 06:06:56Z → 09:55:38Z = **13,722 s（3 小时 49 分）**，其中 1 次看门狗重启 |
+| 平均速率 | 全程 38,572 层 / 13,722 s = **2.81 层/s**；重启后末段 **3.87 层/s**（`progress.json.phase3.rate_layers_per_s`） |
 
-### 4.1 CSV 与分片的关系（避免「CSV 看起来少了」的误判）
+> 上一版按前 240 层估的「9–11 小时」偏保守：survey 按 url 字母序排，**前半段恰好是死站密集区**（死站 8s 就放弃、
+> 不发第二请求，但仍是「一层一层排队」），后半段大量层能正常返回 meta，请求变多反而吞吐更高 → 实际 3.8 小时跑完。
 
-`full_inventory_remote.py` 运行中按 200 层一批**追加**写 CSV；重启/试点重跑会与分片产生偏差。
-**分片 `shards/shard-NNNNN.ndjson` 是唯一 source of truth**，`full_inventory_remote_merge.py` 按 url 去重重建整表
-（本轮已跑一次：240 行 = 试点 40 + 首批 200，`requests_n` 合计 361，`usable`：unreachable 177 / empty_shell 53 /
-road_only 8 / full_address 1 / no_zip 1）。
+### 4.1 为什么 `ok 41,570` 比「ok 层的实际条数」多 113（必须解释清楚）
+
+**结论口径**：看门狗重启后，同一批层被二次探活，ok 计数重复记录，故 ok 合计比层数多 113 条；
+**落盘数据本身没有重复、没有脏数据**（CSV / 分片 / 进度三处层数均为 54,812）。
+
+自证四步（都可在本目录复算）：
+
+1. **落盘零重复**：分片 54,812 行，`unique url = 54,812`；CSV 54,812 数据行，`unique url = 54,812`。两个口径都看不到重复行。
+2. **两个来源的 ok 差 113**：`progress.json` 的 `phase3.ok = 41,570`；CSV 里满足脚本同一判据（`http_meta==200 or http_sample==200`）的行 = **41,457**；差 **113**。
+3. **fail 两侧一分不差**：CSV 非 200 行 = **13,355** = `progress.json` 的 `fail`。→ 113 只落在 ok 计数上，不是层数问题。
+4. **113 的量级与「未落盘缓冲」吻合**：分片按 **200 层**一批落盘。`supervisor.log` 记录 `2026-11-24T09:12:26Z restart #1 reason=dead done=44953/54812`——进程被杀时，最多 200 层**已经探活、但还没写进分片**；重启进程按分片续跑，把这批**没落盘的层重新探了一遍**，而重启时读入的**累计基**（`progress.json.phase3.ok`）已经把上一轮这批算过一次 → 计数 +113，落盘仍是 1 层 1 行。
+
+⇒ 等式闭合：`41,570 − 113 = 41,457`（落盘真实成功层）= `41,457 + 13,355 = 54,812`（层数）。
+**下次若还要「ok 与层数严格相等」，做法是把 ok/fail 一律从分片重算，不接受进程内计数器。**
+
+### 4.2 `fail 13,355` 的拆分（先交代 `url_shape` 列的事）
+
+CSV 的实际列只有 18 个：`url, state, title, svc, geom, n_fields, maxRecordCount, count, count_source, sampled_n,
+fields_number_like, number_nonnull, addr_core_hit, usable, requests_n, http_meta, http_sample, probe_note`
+—— **没有 `url_shape` 列**（全仓 `grep -rn url_shape` 零命中，merge 脚本的 `COLS` 里也没有）。
+所以「url_shape 拆分」是按 **url 路径形态现推**的等价口径；推完与 Muse 给的 **8,365 逐位吻合**，因此可以当作同一口径用：
+
+| url_shape（按 url 路径形态派生） | fail 条数 | 说明 |
+|---|---|---|
+| **Socrata 门户/数据集页** `…/d/<id>` | **8,817** | 其中 **HTTP 404 = 8,365（= Muse 的 8,365，逐位对上）**；其余 452 = 406 Not Acceptable 203 + 超时 122 + 临时解析失败 108 + DNS 13 + Errno-5 3 + 503 2 + 403 1 |
+| Socrata 数据集 API `…/resource/<id>.json` | 1,720 | 400 = 1,660、超时 49、403 = 4、临时解析失败 5、断连 1、404 = 1 |
+| 非 Socrata（ArcGIS / CKAN / hub / 文件） | 2,818 | FeatureServer 1,478 + CKAN/下载 739 + MapServer 470 + hub 124 + agol 3 + 文件下载 3 + 空 1 |
+| **合计** | **13,355** | 与 `progress.json` 的 `fail` 一致 |
+
+**这 8,365 条属「门户页形态」，不代表数据源缺失**：它们是各市 Socrata 站点的**数据集浏览页 HTML 路径**（`data.xxx.gov/d/<id>`），
+不是 Socrata 数据 API。拿它当 ArcGIS REST 端点去探 `?f=json`，必然 404 —— 404 是**探针打错门**，不是层消失。
+同一批数据集的真正入口是 `/resource/<id>.json`（该形态 1,720 条里 1,660 条是 400 Bad Request，属参数/口径不对，换个查询参数大概率能救）。
+
+**剩余 4,990 条**（= 13,355 − 8,365）= Socrata 其余 2,172（数据集 API 1,720 + 门户页非 404 的 452）+ 非 Socrata 2,818，按失败原因归类：
+
+| 失败原因（`probe_note` 归类） | 条数 |
+|---|---|
+| HTTP 404（端点不存在 / 已下线 / 路径错） | 8,395 |
+| HTTP 400 Bad Request（Socrata API 参数/口径不对，**最可能可救**） | 2,001 |
+| 超时（meta 8s 超时，**未判死**，只代表这次没应答） | 1,146 |
+| HTTP 401 / 403（需 token 或被拒） | 596 |
+| URL 非法（含控制字符，survey 抓取时带入） | 518 |
+| HTTP 406 Not Acceptable | 209 |
+| Temporary failure in name resolution | 141 |
+| UnicodeEncodeError（url 含非 ASCII 字符） | 121 |
+| DNS 不存在（域名已废 / 内网名如 `*.local:6080`） | 111 |
+| 连接被拒 / 被重置 | 54 |
+| HTTP 5xx（500/502/503） | 36 |
+| Errno -5 No address associated with hostname | 12 |
+| HTTP 202（异步未完成，不算失败） | 10 |
+| HTTP 572 / 521 / Errno 101 / worker TypeError | 5 |
+| **合计** | **13,355** |
+
+### 4.3 可用性七类合计 54,812（与 Muse 核过的一致）
+
+| `usable` | 层数 | 含义 |
+|---|---|---|
+| `empty_shell` | 25,447 | 探通了，但样值里没有门牌也没有街名（多为面/线要素、或字段名不在识别表里） |
+| `unreachable` | 13,354 | 两请求全失败（= fail 的主体） |
+| `road_only` | 9,896 | 有街名、无门牌 |
+| `no_zip` | 3,169 | 有门牌+街名+城市+州，缺邮编 |
+| `full_address` | 1,994 | 门牌+街名+城市+州+邮编 五要素齐 |
+| `no_city` | 951 | 有门牌+街名，缺城市 |
+| `worker_error` | 1 | 单层解析异常（`worker_err:TypeError`） |
+| **合计** | **54,812** | 与总账逐位一致（无「其他」「未知」桶，不留兜底） |
+
+**下一轮可用的候选池（本轮只给数，不采集）**：
+- 门牌 + 街名齐（五要素或四要素）**6,114 层** = `full_address` 1,994 + `no_zip` 3,169 + `no_city` 951；
+- 再加「只有街名」的 `road_only` 9,896 层 → **16,010 层有街名**；
+- 这 6,114 / 16,010 才是「第 3 步采集通道选择」的真正输入；`empty_shell` 25,447 层建议**先不做地址采集**（字段识别没打中，不等于上游没有——要原始字段名得回 Phase 3 的 `?f=json` 逐层看）。
+
+### 4.4 采集纪律（本轮参数，照实记录）
+
+- 每层 2 请求（meta `?f=json` + 20 条样值），`count` 取不到才补第 3 请求；`requests_n` 逐层落盘可核
+- 并发 **8**；单层超时 meta **8 s** / sample **15 s**；**meta 失败即跳过 sample**（死站单层成本 28 s → 8 s）
+- 429/5xx 才退避重试 1 次（1 s/3 s）；**超时/断连不重试**（避免 3 倍白等）
+- 每 200 层：写 `shard-NNNNN.ndjson` + 追加 CSV + 刷 `progress.json`；**分片是唯一 source of truth**，
+  `full_inventory_remote_merge.py` 可按 url 去重重建整表（本轮 CSV 与分片最终已一致：54,812 / 54,812）
+- 零写入上游、零下载资产（只要 metadata + 20 条样值）
+
+### 4.5 三次进程事件（不停产，但全部留痕）
+
+| 时点（UTC） | 事件 | 处置 | 证据 |
+|---|---|---|---|
+| 03:08:27Z | 首轮后台进程**静默死亡**（无 traceback、无 OOM、日志停在 `16000/54772`） | 06:07Z 手工续跑（靠分片跳过已完成 url，零重采） | `progress.json` 停机时 `done=16240`；`run.log` |
+| 06:07Z | 续跑启动，补 30 s 心跳 + 累计基 + `RLock`（探针逻辑零改动） | pid 583907，60 s 查活存活 | `run.log` 第 1–2 行 `todo=38572 already_done=16240` |
+| 09:12:26Z | 第二次静默死亡（`done=44953`） | **看门狗自动拉起**（`full_inventory_supervise.sh`，60 s 轮询） | `supervisor.log: restart #1 reason=dead` |
+
+**层数口径的坑（顺手记下，避免下次误判）**：CSV 物理行数比层数多，是因为
+① 表头 1 行；② 个别 url 含控制字符被 csv 引号包成**跨物理行**
+（例：`montgomeryplans.org/arcgis4/…/MapServer/13`）。所以「已探层」一律取
+`unique url` 或分片行数，**不要用 `wc -l` 直接当层数**。
 
 ---
 
@@ -185,35 +272,11 @@ road_only 8 / full_address 1 / no_zip 1）。
 
 1. **先别全量落盘**：3,550 层要 200–590 GB 压缩包 / 2–8 TB 解压，本机只剩 110 GB。建议只对「第 3 步候选」拉层（按 URL 直取，不走 Release）。
 2. **补一份完整 release 快照**（`gh api` 全量 4,908 tag）→ 可把 3,550 层从「未下载」进一步细分为「有分片/只有 merged/只有 checkpoint」，并把 1,206 个 `no_assets` 假阴性纠正。
-3. **Phase 3 跑完后**：54,812 层里能用地址五要素的层会成为「未采候选池」，可与 3,709 已采层做 URL 去重，直接给第 3 步定采集通道。
+3. **采集通道选择**（Phase 3 已给出输入）：直接用 6,114 层（门牌+街名齐）做第一批候选；Socrata 那 1,720 条 `/resource/<id>.json` 换成 Socrata 正规查询（`$limit`/`$where`）再探一次，比按 ArcGIS REST 探有效得多。
 4. **本地中间件不要当原始层用**：要原始字段名，必须走 Phase 3 的 `?f=json` 或按需拉分片；`zip5` 缺失是规范化口径问题（08 索引只在 addr 表里尽力补），不是上游没有。
-5. **7 个脏层**里 3 个（Vilas / Onslow / Buncombe）建议下次探针用 60s 超时 + 2 次换时段，别用 8s 就判死。
-
+5. **7 个脏层**里 3 个（Vilas / Onslow / Buncombe）建议下次探针用 60s 超时 + 2 次换时段，别用 8s 就判死（本轮 1,146 条超时同理，属「这次没应答」，不是「层不存在」）。
+6. **ok/fail 一律从分片重算**：进程内计数器在重启后会重复计数（本轮多 113），落盘永远干净、计数器不保证。
 
 ---
 
-### 4.2 2026-11-24 06:07Z 续跑记录（首次后台进程已于 03:08:27Z 静默死亡）
-
-**死因（{未完全定位}）**：最后写入 `shard-00081.ndjson` 03:08、`progress.json` phase3 `done=16240`，此后无任何进程、无 traceback，`dmesg` 无 OOM 记录；日志最后一行是 `16000/54772` 的常规进度行。判为「宿主/会话侧静默终止」，非脚本异常 → 因此加了看门狗（见下）。
-
-**续跑语义（未改）**：`full_inventory_remote.py:163` `def load_done()` 读 `shards/*.ndjson` 所有 `url` → `:194` `todo = [x for x in todo if x["url"].rstrip("/") not in done]`。启动自证：`todo=38572 already_done=16240 concurrency=8`。
-
-**层数口径对齐（16,240 vs 16,242）**：CSV 物理行 16,242 = 表头 1 + 数据 16,240 + **1 行跨两个物理行**（`montgomeryplans.org/…/MapServer/13` 的 url 含控制字符被 csv 引号包裹）。故「已探层」= **16,240**（分片行数与 CSV 去重 url 数三方一致）。剩余 = 54,812 − 16,240 = **38,572**。
-
-**对脚本的唯一改动（探针逻辑零改动）**：
-1. `phase3_live` 心跳：30s 一次原子写（`progress.json.tmp` + `os.replace`），字段 `done/total/pct/last_url/pid/updated_at/eta_utc`（另附 `ok/fail/rate/elapsed`）；原 200 层才写一次 → 现在 ≤60s 保证刷新。
-2. `phase3.ok/fail/unreachable` 改为**累计基**（重启前由 16,240 条分片按脚本同一判据重算：ok 3,741 / fail 12,499 / unreachable 12,499），避免重启把计数清零。
-3. `_lock` 由 `Lock` → `RLock`（心跳与 flush 互斥，不可重入会死锁）。
-
-**看门狗**：`analysis/full_inventory_supervise.sh`（pid 583968，60s 轮询）
-- 进程消失 → append 日志 + 重新拉起（续跑仍靠分片，不重采）
-- 进程在但 `phase3_live.updated_at` 落后 >600s → 判卡死，kill + 拉起
-- `done >= total` 即自退；最多重启 24 次；全程留痕 `inventory-remote-uncollected.supervisor.log`
-
-**运行体**：探测进程 pid 583907（PPID 1，setsid 脱离会话），日志 append 到 `inventory-remote-uncollected.run.log`；启动后 60s / 92s 两次查活均存活（RSS 485 MB）。
-
-**续跑后实测**：`shard-00082` 于 06:10:5x 落盘（200 行，与既有 16,240 url 交集 **0**）；
-06:11 时 `done=16,440/54,812 (29.99%)`，窗口速率 0.91–1.21 层/s →
-**ETA ≈ 2026-11-24T18:00Z（±1.5h，区间 16:30Z–19:30Z）**。
-
-> 快照（此文件最后更新时点）：已扫 **16,440** 层，计划 54,812，剩余 38,372；探测进程与看门狗均在跑。
+> 终版快照：Phase 3 已完成 **54,812 / 54,812（100%）**，分片/CSV/进度三处层数一致，`ok 41,570 / fail 13,355`（ok 含 113 条重启重复计数，落盘真实 ok 41,457）。
