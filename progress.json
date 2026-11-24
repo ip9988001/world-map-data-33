@@ -38,13 +38,13 @@
   "concurrency_max": 8
  },
  "phase3": {
-  "at": "2026-11-24T01:19:11Z",
+  "at": "2026-11-24T01:25:08Z",
   "planned": 54812,
-  "done": 240,
-  "ok": 55,
-  "fail": 145,
-  "unreachable": 145,
-  "elapsed_s": 138.5,
-  "rate_layers_per_s": 1.444
+  "done": 640,
+  "ok": 92,
+  "fail": 508,
+  "unreachable": 508,
+  "elapsed_s": 494.8,
+  "rate_layers_per_s": 1.213
  }
 }
