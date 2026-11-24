@@ -1,0 +1,552 @@
+{
+ "layers": 17168,
+ "rows": 984719364,
+ "tu_layers": 11056,
+ "tu_rows": 297519308,
+ "split": {
+  "active": {
+   "layers": 0,
+   "rows": 0
+  },
+  "minimal_safe": {
+   "layers": 4102,
+   "rows": 159336591
+  },
+  "unavailable": {
+   "layers": 6954,
+   "rows": 138182717
+  }
+ },
+ "coverage": {
+  "layers": [
+   4102,
+   11056,
+   37.1
+  ],
+  "rows": [
+   159336591,
+   297519308,
+   53.56
+  ],
+  "providers_total": 4645,
+  "providers_recognized": 2421
+ },
+ "provider_top": [
+  {
+   "provider": "none",
+   "layers": 417,
+   "recognized": 0,
+   "rows": 62774977,
+   "recognized_rows": 0,
+   "coverage_pct": 0.0
+  },
+  {
+   "provider": "dom:services-ap1.arcgis.com",
+   "layers": 88,
+   "recognized": 41,
+   "rows": 10289243,
+   "recognized_rows": 10251321,
+   "coverage_pct": 46.59
+  },
+  {
+   "provider": "agol:eNPJk90aMrXNOKF8",
+   "layers": 75,
+   "recognized": 59,
+   "rows": 52311,
+   "recognized_rows": 30341,
+   "coverage_pct": 78.67
+  },
+  {
+   "provider": "agol:PwY9ZuZRDiI5nXUB",
+   "layers": 48,
+   "recognized": 6,
+   "rows": 71917,
+   "recognized_rows": 68005,
+   "coverage_pct": 12.5
+  },
+  {
+   "provider": "agol:p0Gk2nDbPs7KEqSZ",
+   "layers": 48,
+   "recognized": 12,
+   "rows": 235430,
+   "recognized_rows": 204544,
+   "coverage_pct": 25.0
+  },
+  {
+   "provider": "agol:RmCCgQtiZLDCtblq",
+   "layers": 46,
+   "recognized": 11,
+   "rows": 2345687,
+   "recognized_rows": 1499105,
+   "coverage_pct": 23.91
+  },
+  {
+   "provider": "agol:4rLKnK666kgOhEj4",
+   "layers": 36,
+   "recognized": 0,
+   "rows": 40382,
+   "recognized_rows": 0,
+   "coverage_pct": 0.0
+  },
+  {
+   "provider": "agol:EFg39h3DBNzpxORa",
+   "layers": 35,
+   "recognized": 26,
+   "rows": 8294,
+   "recognized_rows": 1348,
+   "coverage_pct": 74.29
+  },
+  {
+   "provider": "agol:uUvqNMGPm7axC2dD",
+   "layers": 34,
+   "recognized": 10,
+   "rows": 58788,
+   "recognized_rows": 3789,
+   "coverage_pct": 29.41
+  },
+  {
+   "provider": "agol:M68M8H7oABBFs1Pf",
+   "layers": 34,
+   "recognized": 1,
+   "rows": 9681,
+   "recognized_rows": 13,
+   "coverage_pct": 2.94
+  },
+  {
+   "provider": "agol:WnzC35krSYGuYov4",
+   "layers": 34,
+   "recognized": 5,
+   "rows": 85954,
+   "recognized_rows": 66552,
+   "coverage_pct": 14.71
+  },
+  {
+   "provider": "agol:uEH09Hfm70zI2ZxR",
+   "layers": 33,
+   "recognized": 0,
+   "rows": 31749,
+   "recognized_rows": 0,
+   "coverage_pct": 0.0
+  },
+  {
+   "provider": "agol:LBbVDC0hKPAnLRpO",
+   "layers": 32,
+   "recognized": 4,
+   "rows": 50849,
+   "recognized_rows": 31915,
+   "coverage_pct": 12.5
+  },
+  {
+   "provider": "agol:cTNi34MxOdcfum3A",
+   "layers": 32,
+   "recognized": 15,
+   "rows": 445927,
+   "recognized_rows": 181717,
+   "coverage_pct": 46.88
+  },
+  {
+   "provider": "socrata:gisdata.in.gov",
+   "layers": 31,
+   "recognized": 3,
+   "rows": 28698265,
+   "recognized_rows": 6642576,
+   "coverage_pct": 9.68
+  }
+ ],
+ "closure": {
+  "split_layers": 11056,
+  "split_rows": 297519308,
+  "diff_layers": 0,
+  "diff_rows": 0,
+  "unavailable_csv_rows": 6954,
+  "unavailable_csv_all_unavailable": true,
+  "verdict_values": [
+   "minimal_safe",
+   "unavailable"
+  ],
+  "manual_verdict_present": false
+ },
+ "reconcile_old_manual": {
+  "layers": 10013,
+  "rows": 233535391,
+  "to_minimal_safe": [
+   3059,
+   95352674
+  ],
+  "to_unavailable": [
+   6954,
+   138182717
+  ]
+ },
+ "tier": {
+  "tier1": {
+   "layers": 0,
+   "rows": 0
+  },
+  "tier2": {
+   "layers": 1043,
+   "rows": 63983917
+  },
+  "tier3": {
+   "layers": 10013,
+   "rows": 233535391
+  }
+ },
+ "evidence": {
+  "E1": {
+   "hit_layers": 9896,
+   "hit_rows": 247614330,
+   "unknown_layers": 417,
+   "na_layers": 0,
+   "tu_hit_layers": 6537,
+   "tu_hit_rows": 75407740,
+   "provider_top": [
+    [
+     "agol:NuWFvHYDMVmmxMeM",
+     130
+    ],
+    [
+     "agol:Ezk9fcjSUkeadg6u",
+     125
+    ],
+    [
+     "agol:uFAr0LUPy14bDaLg",
+     60
+    ],
+    [
+     "agol:o98K21Ga5N91Ugjw",
+     56
+    ],
+    [
+     "dom:services-ap1.arcgis.com",
+     47
+    ]
+   ],
+   "granularity": [
+    [
+     "unknown",
+     7394
+    ],
+    [
+     "centerline_midpoint",
+     1292
+    ],
+    [
+     "parcel_centroid",
+     959
+    ],
+    [
+     "apartment_unit_point",
+     117
+    ],
+    [
+     "building_point",
+     108
+    ],
+    [
+     "range_interpolation",
+     26
+    ]
+   ]
+  },
+  "E2": {
+   "hit_layers": 3,
+   "hit_rows": 55374,
+   "unknown_layers": 417,
+   "na_layers": 0,
+   "tu_hit_layers": 3,
+   "tu_hit_rows": 55374,
+   "provider_top": [
+    [
+     "agol:iqrNQm6g4Pj36MWn",
+     1
+    ],
+    [
+     "agol:HGAmixalCnA5OLkS",
+     1
+    ],
+    [
+     "agol:NNPaUnXVoJt8FVVE",
+     1
+    ]
+   ],
+   "granularity": [
+    [
+     "building_point",
+     3
+    ]
+   ]
+  },
+  "E3": {
+   "hit_layers": 482,
+   "hit_rows": 16991320,
+   "unknown_layers": 12498,
+   "na_layers": 0,
+   "tu_hit_layers": 310,
+   "tu_hit_rows": 6108551,
+   "provider_top": [
+    [
+     "agol:Pu6Fai10JE2L2xUd",
+     14
+    ],
+    [
+     "agol:2TPYEzbyXSiAqSUs",
+     6
+    ],
+    [
+     "agol:HnPbdNoPBNAJ6Oel",
+     5
+    ],
+    [
+     "agol:DlJzJLOZpPXmMpWi",
+     5
+    ],
+    [
+     "agol:piPfTFmrV9d1DIvN",
+     5
+    ]
+   ],
+   "granularity": [
+    [
+     "parcel_centroid",
+     253
+    ],
+    [
+     "building_point",
+     107
+    ],
+    [
+     "apartment_unit_point",
+     61
+    ],
+    [
+     "centerline_midpoint",
+     54
+    ],
+    [
+     "range_interpolation",
+     7
+    ]
+   ]
+  },
+  "E4": {
+   "hit_layers": 2911,
+   "hit_rows": 307966031,
+   "unknown_layers": 13443,
+   "na_layers": 0,
+   "tu_hit_layers": 1671,
+   "tu_hit_rows": 21327565,
+   "provider_top": [
+    [
+     "agol:YiULsZbgRKmBtdZN",
+     232
+    ],
+    [
+     "dom:services-ap1.arcgis.com",
+     38
+    ],
+    [
+     "agol:EFg39h3DBNzpxORa",
+     28
+    ],
+    [
+     "agol:xnOV358bj0tLwxji",
+     26
+    ],
+    [
+     "agol:q5Jezm9AgzqyE7Q6",
+     17
+    ]
+   ],
+   "granularity": [
+    [
+     "unknown",
+     2035
+    ],
+    [
+     "parcel_centroid",
+     525
+    ],
+    [
+     "centerline_midpoint",
+     258
+    ],
+    [
+     "apartment_unit_point",
+     48
+    ],
+    [
+     "building_point",
+     38
+    ],
+    [
+     "range_interpolation",
+     7
+    ]
+   ]
+  },
+  "E5": {
+   "hit_layers": 1313,
+   "hit_rows": 256249808,
+   "unknown_layers": 0,
+   "na_layers": 0,
+   "tu_hit_layers": 1017,
+   "tu_hit_rows": 149611421,
+   "provider_top": [
+    [
+     "none",
+     417
+    ],
+    [
+     "agol:Do88DoK2xjTUCXd1",
+     29
+    ],
+    [
+     "agol:piPfTFmrV9d1DIvN",
+     15
+    ],
+    [
+     "agol:SkttgSmcq6CPonms",
+     10
+    ],
+    [
+     "agol:4YineAQdtmx0tv46",
+     8
+    ]
+   ],
+   "granularity": [
+    [
+     "building_point",
+     948
+    ],
+    [
+     "unknown",
+     184
+    ],
+    [
+     "parcel_centroid",
+     69
+    ],
+    [
+     "apartment_unit_point",
+     63
+    ],
+    [
+     "centerline_midpoint",
+     39
+    ],
+    [
+     "range_interpolation",
+     10
+    ]
+   ]
+  },
+  "E6": {
+   "hit_layers": 0,
+   "hit_rows": 0,
+   "unknown_layers": 17168,
+   "na_layers": 0,
+   "tu_hit_layers": 0,
+   "tu_hit_rows": 0,
+   "provider_top": [],
+   "granularity": []
+  },
+  "E7": {
+   "hit_layers": 0,
+   "hit_rows": 0,
+   "unknown_layers": 17168,
+   "na_layers": 0,
+   "tu_hit_layers": 0,
+   "tu_hit_rows": 0,
+   "provider_top": [],
+   "granularity": []
+  },
+  "E8": {
+   "hit_layers": 0,
+   "hit_rows": 0,
+   "unknown_layers": 5584,
+   "na_layers": 10720,
+   "tu_hit_layers": 0,
+   "tu_hit_rows": 0,
+   "provider_top": [],
+   "granularity": []
+  }
+ },
+ "unavailable_blockers": [
+  [
+   "E1,E3,E6,E7",
+   5019
+  ],
+  [
+   "E1,E6,E7",
+   1490
+  ],
+  [
+   "E1,E2,E3,E5,E6,E7",
+   417
+  ],
+  [
+   "E1,E3,E8,E6,E7",
+   20
+  ],
+  [
+   "E1,E5,E6,E7",
+   5
+  ],
+  [
+   "E1,E3,E5,E6,E7",
+   2
+  ],
+  [
+   "E1,E8,E6,E7",
+   1
+  ]
+ ],
+ "unavailable_missing": {
+  "缺门牌": 6954,
+  "缺街名": 417,
+  "无 url/本地读不出(provider=none)": 417
+ },
+ "spatial": {
+  "fixture_layers": 3,
+  "verdicts": [
+   [
+    "green",
+    3
+   ]
+  ],
+  "null_rate_jump_layers": 645,
+  "fixtures": [
+   {
+    "key": "granit_nh_belknap",
+    "n": "25",
+    "outside_share": "0.0",
+    "unique_rate": "1.0",
+    "top_point_share": "0.04",
+    "p50_boundary_dist_m": "9251.2",
+    "p95_boundary_dist_m": "9430.7",
+    "verdict": "green"
+   },
+   {
+    "key": "nad_de_kent",
+    "n": "25",
+    "outside_share": "0.0",
+    "unique_rate": "1.0",
+    "top_point_share": "0.04",
+    "p50_boundary_dist_m": "2661.0",
+    "p95_boundary_dist_m": "7905.8",
+    "verdict": "green"
+   },
+   {
+    "key": "tiger_nh_interp_33001",
+    "n": "25",
+    "outside_share": "0.0",
+    "unique_rate": "1.0",
+    "top_point_share": "0.04",
+    "p50_boundary_dist_m": "5943.3",
+    "p95_boundary_dist_m": "5962.3",
+    "verdict": "green"
+   }
+  ]
+ }
+}

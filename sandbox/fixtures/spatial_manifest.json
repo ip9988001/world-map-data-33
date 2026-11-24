@@ -1,0 +1,39 @@
+{
+  "schema": "spatial-fixture-manifest.v1/2026-11-24",
+  "note": "三份真实样本（各 25 行，均带坐标），第 4 步已随仓库提交；本清单只补『坐标列名 / 声明 county_fips / 来源』，不改样本内容。",
+  "fixtures": [
+    {
+      "name": "granit_nh_belknap",
+      "file": "granit_nh_belknap.json",
+      "lon_key": "_lon",
+      "lat_key": "_lat",
+      "state": "NH",
+      "county_fips": "33001",
+      "declared_in_sample": "county_fips",
+      "source": "GRANIT NH 地块合并件（本地 intake 样本）",
+      "fetched_at": "2026-10-30"
+    },
+    {
+      "name": "nad_de_kent",
+      "file": "nad_de_kent.json",
+      "lon_key": "_lon",
+      "lat_key": "_lat",
+      "state": "DE",
+      "county_fips": "10001",
+      "declared_in_sample": "County=Kent / State=DE（样本无 fips，按 2020 县名唯一映射）",
+      "source": "NAD DE Kent County 地址点（本地 intake 样本）",
+      "fetched_at": "2026-10-30"
+    },
+    {
+      "name": "tiger_nh_interp_33001",
+      "file": "tiger_nh_interp_33001.json",
+      "lon_key": "lon",
+      "lat_key": "lat",
+      "state": "NH",
+      "county_fips": "33001",
+      "declared_in_sample": "county_fips",
+      "source": "TIGER/Line 地址区间插值（本地 intake 样本）",
+      "fetched_at": "2026-10-30"
+    }
+  ]
+}
