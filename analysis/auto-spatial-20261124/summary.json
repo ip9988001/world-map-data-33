@@ -1,0 +1,524 @@
+{
+ "layers": 17168,
+ "rows": 984719364,
+ "tu_layers": 11056,
+ "tu_rows": 297519308,
+ "tier": {
+  "tier1": {
+   "layers": 0,
+   "rows": 0,
+   "tu_layers": 0,
+   "tu_rows": 0
+  },
+  "tier2": {
+   "layers": 1123,
+   "rows": 92206281,
+   "tu_layers": 1043,
+   "tu_rows": 63983917
+  },
+  "tier3": {
+   "layers": 16045,
+   "rows": 892513083,
+   "tu_layers": 10013,
+   "tu_rows": 233535391
+  }
+ },
+ "move": {
+  "active": {
+   "layers": 0,
+   "rows": 0,
+   "tu_layers": 0,
+   "tu_rows": 0
+  },
+  "minimal_safe": {
+   "layers": 1123,
+   "rows": 92206281,
+   "tu_layers": 1043,
+   "tu_rows": 63983917
+  },
+  "manual": {
+   "layers": 16045,
+   "rows": 892513083,
+   "tu_layers": 10013,
+   "tu_rows": 233535391
+  }
+ },
+ "evidence": {
+  "E1": {
+   "hit_layers": 9896,
+   "hit_rows": 247614330,
+   "unknown_layers": 417,
+   "na_layers": 0,
+   "tu_hit_layers": 6537,
+   "tu_hit_rows": 75407740,
+   "provider_top": [
+    [
+     "agol:NuWFvHYDMVmmxMeM",
+     130
+    ],
+    [
+     "agol:Ezk9fcjSUkeadg6u",
+     125
+    ],
+    [
+     "agol:uFAr0LUPy14bDaLg",
+     60
+    ],
+    [
+     "agol:o98K21Ga5N91Ugjw",
+     56
+    ],
+    [
+     "dom:services-ap1.arcgis.com",
+     47
+    ]
+   ],
+   "granularity": [
+    [
+     "unknown",
+     7394
+    ],
+    [
+     "centerline_midpoint",
+     1292
+    ],
+    [
+     "parcel_centroid",
+     959
+    ],
+    [
+     "apartment_unit_point",
+     117
+    ],
+    [
+     "building_point",
+     108
+    ],
+    [
+     "range_interpolation",
+     26
+    ]
+   ],
+   "sample_detail": [
+    "addr_core_hit[0]=0；门牌族候选=-",
+    "addr_core_hit[0]=0；门牌族候选=ACM_Fut_Num_Lanes",
+    "addr_core_hit[0]=0；门牌族候选=ACQ_NOTES,TRL_NUM"
+   ]
+  },
+  "E2": {
+   "hit_layers": 3,
+   "hit_rows": 55374,
+   "unknown_layers": 417,
+   "na_layers": 0,
+   "tu_hit_layers": 3,
+   "tu_hit_rows": 55374,
+   "provider_top": [
+    [
+     "agol:iqrNQm6g4Pj36MWn",
+     1
+    ],
+    [
+     "agol:HGAmixalCnA5OLkS",
+     1
+    ],
+    [
+     "agol:NNPaUnXVoJt8FVVE",
+     1
+    ]
+   ],
+   "granularity": [
+    [
+     "building_point",
+     3
+    ]
+   ],
+   "sample_detail": [
+    "样值含占位字面值 street_full,street_name",
+    "样值含占位字面值 street_name"
+   ]
+  },
+  "E3": {
+   "hit_layers": 482,
+   "hit_rows": 16991320,
+   "unknown_layers": 12498,
+   "na_layers": 0,
+   "tu_hit_layers": 310,
+   "tu_hit_rows": 6108551,
+   "provider_top": [
+    [
+     "agol:Pu6Fai10JE2L2xUd",
+     14
+    ],
+    [
+     "agol:2TPYEzbyXSiAqSUs",
+     6
+    ],
+    [
+     "agol:HnPbdNoPBNAJ6Oel",
+     5
+    ],
+    [
+     "agol:DlJzJLOZpPXmMpWi",
+     5
+    ],
+    [
+     "agol:piPfTFmrV9d1DIvN",
+     5
+    ]
+   ],
+   "granularity": [
+    [
+     "parcel_centroid",
+     253
+    ],
+    [
+     "building_point",
+     107
+    ],
+    [
+     "apartment_unit_point",
+     61
+    ],
+    [
+     "centerline_midpoint",
+     54
+    ],
+    [
+     "range_interpolation",
+     7
+    ]
+   ],
+   "sample_detail": [
+    "apartment_unit_point 与 geom=Polygon 冲突",
+    "apartment_unit_point 与 geom=Polyline 冲突",
+    "building_point 与 geom=Polygon 冲突"
+   ]
+  },
+  "E4": {
+   "hit_layers": 2911,
+   "hit_rows": 307966031,
+   "unknown_layers": 13443,
+   "na_layers": 0,
+   "tu_hit_layers": 1671,
+   "tu_hit_rows": 21327565,
+   "provider_top": [
+    [
+     "agol:YiULsZbgRKmBtdZN",
+     232
+    ],
+    [
+     "dom:services-ap1.arcgis.com",
+     38
+    ],
+    [
+     "agol:EFg39h3DBNzpxORa",
+     28
+    ],
+    [
+     "agol:xnOV358bj0tLwxji",
+     26
+    ],
+    [
+     "agol:q5Jezm9AgzqyE7Q6",
+     17
+    ]
+   ],
+   "granularity": [
+    [
+     "unknown",
+     2035
+    ],
+    [
+     "parcel_centroid",
+     525
+    ],
+    [
+     "centerline_midpoint",
+     258
+    ],
+    [
+     "apartment_unit_point",
+     48
+    ],
+    [
+     "building_point",
+     38
+    ],
+    [
+     "range_interpolation",
+     7
+    ]
+   ],
+   "sample_detail": [
+    "门牌族被负向规则命中/跨要素同名字段: A1_HWY_NUM,A2_HWY_NUM,A3_HWY_NUM,HWY_NUM",
+    "门牌族被负向规则命中/跨要素同名字段: A1_HWY_NUM,A2_HWY_NUM,HWY_NUM",
+    "门牌族被负向规则命中/跨要素同名字段: ACM_Fut_Num_Lanes"
+   ]
+  },
+  "E5": {
+   "hit_layers": 1313,
+   "hit_rows": 256249808,
+   "unknown_layers": 0,
+   "na_layers": 0,
+   "tu_hit_layers": 1017,
+   "tu_hit_rows": 149611421,
+   "provider_top": [
+    [
+     "none",
+     417
+    ],
+    [
+     "agol:Do88DoK2xjTUCXd1",
+     29
+    ],
+    [
+     "agol:piPfTFmrV9d1DIvN",
+     15
+    ],
+    [
+     "agol:SkttgSmcq6CPonms",
+     10
+    ],
+    [
+     "agol:4YineAQdtmx0tv46",
+     8
+    ]
+   ],
+   "granularity": [
+    [
+     "building_point",
+     948
+    ],
+    [
+     "unknown",
+     184
+    ],
+    [
+     "parcel_centroid",
+     69
+    ],
+    [
+     "apartment_unit_point",
+     63
+    ],
+    [
+     "centerline_midpoint",
+     39
+    ],
+    [
+     "range_interpolation",
+     10
+    ]
+   ],
+   "sample_detail": [
+    "层份额 0.0 < 0.01%",
+    "层份额 1.1e-05 < 0.01%",
+    "层份额 1.2e-05 < 0.01%"
+   ]
+  },
+  "E6": {
+   "hit_layers": 0,
+   "hit_rows": 0,
+   "unknown_layers": 17168,
+   "na_layers": 0,
+   "tu_hit_layers": 0,
+   "tu_hit_rows": 0,
+   "provider_top": [],
+   "granularity": [],
+   "sample_detail": []
+  },
+  "E7": {
+   "hit_layers": 0,
+   "hit_rows": 0,
+   "unknown_layers": 17168,
+   "na_layers": 0,
+   "tu_hit_layers": 0,
+   "tu_hit_rows": 0,
+   "provider_top": [],
+   "granularity": [],
+   "sample_detail": []
+  },
+  "E8": {
+   "hit_layers": 0,
+   "hit_rows": 0,
+   "unknown_layers": 5584,
+   "na_layers": 10720,
+   "tu_hit_layers": 0,
+   "tu_hit_rows": 0,
+   "provider_top": [],
+   "granularity": [],
+   "sample_detail": []
+  }
+ },
+ "tu_blockers": [
+  [
+   "E1,E3,E6,E7",
+   5019
+  ],
+  [
+   "E3,E6,E7",
+   2741
+  ],
+  [
+   "E1,E6,E7",
+   1490
+  ],
+  [
+   "E1,E2,E3,E5,E6,E7",
+   417
+  ],
+  [
+   "E8,E5,E6,E7",
+   286
+  ],
+  [
+   "E1,E3,E8,E6,E7",
+   20
+  ],
+  [
+   "E3,E5,E6,E7",
+   14
+  ],
+  [
+   "E8,E6,E7",
+   10
+  ],
+  [
+   "E1,E5,E6,E7",
+   5
+  ],
+  [
+   "E3,E8,E6,E7",
+   5
+  ],
+  [
+   "E1,E3,E5,E6,E7",
+   2
+  ],
+  [
+   "E2,E8,E5,E6,E7",
+   2
+  ],
+  [
+   "E2,E5,E6,E7",
+   1
+  ],
+  [
+   "E1,E8,E6,E7",
+   1
+  ]
+ ],
+ "tier2_samples": [
+  {
+   "layer_id": "cgis_rest_services_Infrastructure_Transportation_MapServer_0",
+   "provider_id": "host:ags.myokaloosa.com",
+   "state": "AL",
+   "granularity": "building_point",
+   "geom": "point",
+   "usable": "no_zip",
+   "share": "0.006680",
+   "coverage_rows": "129741",
+   "move_reason": "门牌+街名齐（addr_core_hit[:2]=11），交 minimal_safe 解析器"
+  },
+  {
+   "layer_id": "_services_Infrastructure_Transportation_Sheriffs_MapServer_0",
+   "provider_id": "host:ags.myokaloosa.com",
+   "state": "AL",
+   "granularity": "building_point",
+   "geom": "point",
+   "usable": "no_zip",
+   "share": "0.006680",
+   "coverage_rows": "129741",
+   "move_reason": "门牌+街名齐（addr_core_hit[:2]=11），交 minimal_safe 解析器"
+  },
+  {
+   "layer_id": "unty_oh_gov_arcgisdev_rest_services_WMAS_Address_MapServer_0",
+   "provider_id": "socrata:arcgis.eriecounty.oh.gov",
+   "state": "OH",
+   "granularity": "building_point",
+   "geom": "point",
+   "usable": "no_zip",
+   "share": "0.014484",
+   "coverage_rows": "42966",
+   "move_reason": "门牌+街名齐（addr_core_hit[:2]=11），交 minimal_safe 解析器"
+  },
+  {
+   "layer_id": "FeatureServer/0",
+   "provider_id": "socrata:arcgisweb.co.trumbull.oh.us",
+   "state": "OH",
+   "granularity": "centerline_midpoint",
+   "geom": "Polyline",
+   "usable": "no_city",
+   "share": "0.006256",
+   "coverage_rows": "12719",
+   "move_reason": "门牌+街名齐（addr_core_hit[:2]=11），交 minimal_safe 解析器"
+  },
+  {
+   "layer_id": "MapServer/0",
+   "provider_id": "host:coggis.cityofgadsden.com",
+   "state": "未定位",
+   "granularity": "building_point",
+   "geom": "Point",
+   "usable": "full_address",
+   "share": "0.006680",
+   "coverage_rows": "19500",
+   "move_reason": "门牌+街名齐（addr_core_hit[:2]=11），交 minimal_safe 解析器"
+  }
+ ],
+ "spatial": {
+  "fixture_layers": 3,
+  "verdicts": [
+   [
+    "green",
+    3
+   ]
+  ],
+  "null_rate_jump_layers": 645,
+  "fixtures": [
+   {
+    "key": "granit_nh_belknap",
+    "n": "25",
+    "outside_share": "0.0",
+    "unique_rate": "1.0",
+    "top_point_share": "0.04",
+    "p50_boundary_dist_m": "9251.2",
+    "p95_boundary_dist_m": "9430.7",
+    "verdict": "green"
+   },
+   {
+    "key": "nad_de_kent",
+    "n": "25",
+    "outside_share": "0.0",
+    "unique_rate": "1.0",
+    "top_point_share": "0.04",
+    "p50_boundary_dist_m": "2661.0",
+    "p95_boundary_dist_m": "7905.8",
+    "verdict": "green"
+   },
+   {
+    "key": "tiger_nh_interp_33001",
+    "n": "25",
+    "outside_share": "0.0",
+    "unique_rate": "1.0",
+    "top_point_share": "0.04",
+    "p50_boundary_dist_m": "5943.3",
+    "p95_boundary_dist_m": "5962.3",
+    "verdict": "green"
+   }
+  ]
+ },
+ "sampling": {
+  "fixture_layers": 3,
+  "local_layers": 882,
+  "total": 885
+ },
+ "closure": {
+  "tier_layers": 17168,
+  "tier_rows": 984719364,
+  "move_layers": 17168,
+  "move_rows": 984719364,
+  "tu_move_layers": 11056,
+  "tu_move_rows": 297519308,
+  "tu_blocked_layers": 10013
+ }
+}
