@@ -1,0 +1,245 @@
+{
+ "generated_utc": "2026-11-24T20:36:22Z",
+ "inputs": {
+  "strict_dir": "analysis/auto-spatial-rerun-20261125",
+  "relax_evidence": "analysis/auto-spatial-relax-20261125/coord-evidence-relax.csv",
+  "thresholds": "sandbox/spatial_thresholds.yaml"
+ },
+ "e3_relax_default": "on",
+ "denominator": 17168,
+ "rows_total": 984719364,
+ "tiers": {
+  "tier1": {
+   "layers": 176,
+   "rows": 22762695,
+   "pct_layers": 1.03
+  },
+  "tier2": {
+   "layers": 3343,
+   "rows": 140019737,
+   "pct_layers": 19.47
+  },
+  "tier3": {
+   "layers": 13649,
+   "rows": 821936932,
+   "pct_layers": 79.5
+  }
+ },
+ "buckets": {
+  "strict": {
+   "layers": 30,
+   "rows": 1073302,
+   "granularity": {
+    "parcel_centroid": 23,
+    "apartment_unit_point": 5,
+    "building_point": 1,
+    "centerline_midpoint": 1
+   },
+   "e3_off_e7_off": 30,
+   "e3_on_e7_off": 30,
+   "e3_off_e7_on": 30
+  },
+  "e3_only": {
+   "layers": 136,
+   "rows": 21417014,
+   "granularity": {
+    "unknown": 136
+   },
+   "e3_off_e7_off": 0,
+   "e3_on_e7_off": 136,
+   "e3_off_e7_on": 0
+  },
+  "e7_only": {
+   "layers": 0,
+   "rows": 0,
+   "granularity": {},
+   "e3_off_e7_off": 0,
+   "e3_on_e7_off": 0,
+   "e3_off_e7_on": 0
+  },
+  "both": {
+   "layers": 10,
+   "rows": 272379,
+   "granularity": {
+    "unknown": 10
+   },
+   "e3_off_e7_off": 0,
+   "e3_on_e7_off": 0,
+   "e3_off_e7_on": 0
+  }
+ },
+ "moves": {
+  "active": {
+   "layers": 143,
+   "rows": 20384453
+  },
+  "minimal_safe": {
+   "layers": 3959,
+   "rows": 138952138
+  },
+  "unavailable": {
+   "layers": 6954,
+   "rows": 138182717
+  }
+ },
+ "checks": {
+  "tiers_layers": 17168,
+  "tiers_rows": 984719364,
+  "tiers_diff_layers": 0,
+  "tiers_diff_rows": 0,
+  "moves_layers": 11056,
+  "moves_rows": 297519308,
+  "tu_layers": 11056,
+  "tu_rows": 297519308,
+  "bucket_sum_layers": 176,
+  "bucket_sum_rows": 22762695,
+  "tier1_layers": 176,
+  "tier1_rows": 22762695,
+  "buckets_equal_tier1": true,
+  "strict_reproduced_layers": 17168,
+  "moves_diff_layers": 0,
+  "moves_diff_rows": 0,
+  "tiers_closed": true,
+  "moves_closed": true,
+  "minimal_safe_unchanged": true
+ },
+ "target_1831": {
+  "target": 1831,
+  "actual": 176,
+  "diff": -1655,
+  "pct_diff": -90.39,
+  "beyond_5pct": true
+ },
+ "e3": {
+  "unknown_to_na_layers": 12065,
+  "detail": "granularity=unknown 且有实测 geom_type 的层记 na；E3 仍 FATAL"
+ },
+ "e7": {
+  "evaluated_urls": 16742,
+  "newly_verifiable_layers": 336,
+  "resolved_any_layers": 1180,
+  "flips": {
+   "unknown->hit": 54,
+   "unknown->clear": 282,
+   "unknown->unknown": 15456,
+   "clear->clear": 785,
+   "hit->hit": 56
+  },
+  "still_unknown_not_tier1": {
+   "无可投票行（样本 0 行 + 本地全表无 addr 行 / 无门牌+街名键）": 12975,
+   "n_cmp<3（有键但跨源同址行不足）": 2481,
+   "无坐标样本（url 不在坐标样本里）": 535
+  },
+  "detail": "参照池 = 738,174 行坐标样本 + 本地全表每层前 N 行；冲突线 300.0m、min_cmp_rows=3"
+ },
+ "minimal_safe_regression": {
+  "layers": 3959,
+  "rows": 138952138,
+  "strict_layers": 4077,
+  "promoted_to_active": 118,
+  "new_minimal_safe_not_in_strict": 0,
+  "bits_11_all": true,
+  "a_pool_eligible": "false（registry/evaluator.py L84-86 硬编码，本轮未改一个字节）",
+  "unchanged": true
+ },
+ "attribution": {
+  "hypothetical_both_relax_tier1": 1831,
+  "achieved": 176,
+  "blocked": {
+   "E7 unknown：样本/本地全表都构不出门牌+街名键": 1340,
+   "E7 unknown：n_cmp=0 < 3": 442,
+   "E7 unknown：n_cmp=2 < 3": 13,
+   "已进 Tier1（E7 放宽兑现）": 10,
+   "E7 unknown：n_cmp=1 < 3": 26
+  },
+  "combo_cells_rest_clear": {
+   "E3=hit|E7=unknown": 79,
+   "E3=clear|E7=unknown": 393,
+   "E3=E3_na|E7=unknown": 1438,
+   "E3=clear|E7=clear": 30,
+   "E3=E3_na|E7=clear": 136,
+   "E3=clear|E7=hit": 3,
+   "E3=hit|E7=clear": 9,
+   "E3=hit|E7=hit": 1,
+   "E3=E3_na|E7=hit": 7
+  },
+  "note": "1,831 = 1,438(E3 未定+E7 未定) + 393(仅 E7 未定)，是「E7 完全可验」假设下**被 E7 挡住的层数**，不含本来就靠 E3 放宽进 Tier1 的 166 层；同假设下 Tier1 总数应为 1,997。实算 176 → E7 放宽只兑现 10 层，其余按上面 blocked 逐证据归因（不含调参）。"
+ },
+ "demoted_by_e7_relax": [],
+ "e7_refpool": {
+  "per_layer_cap": 2000,
+  "max_cmp_per_row": 200,
+  "sample_rows": 738174,
+  "pool_rows": 1242744,
+  "pool_rows_by_state": {
+   "WA": 29435,
+   "MO": 58008,
+   "TX": 68587,
+   "ND": 7270,
+   "MD": 12103,
+   "MT": 10111,
+   "AZ": 24310,
+   "LA": 24975,
+   "NM": 47474,
+   "SC": 11216,
+   "KS": 30833,
+   "GA": 51700,
+   "FL": 84502,
+   "CA": 99123,
+   "MA": 26000,
+   "AK": 5946,
+   "MN": 25764,
+   "VA": 75492,
+   "WY": 1053,
+   "AL": 34431,
+   "NC": 33149,
+   "OH": 36474,
+   "ID": 18462,
+   "UT": 20912,
+   "PA": 30000,
+   "OK": 15791,
+   "IL": 48002,
+   "NY": 27863,
+   "TN": 24106,
+   "OR": 37570,
+   "KY": 16352,
+   "MS": 10000,
+   "NE": 4682,
+   "NJ": 10046,
+   "RI": 16008,
+   "CO": 49612,
+   "AR": 8012,
+   "CT": 118,
+   "MI": 8045,
+   "DC": 8277,
+   "IA": 16520,
+   "WV": 6126,
+   "ME": 17639,
+   "WI": 8000,
+   "IN": 21266,
+   "DE": 2000,
+   "NV": 6000,
+   "NH": 4000,
+   "HI": 6000,
+   "SD": 1379,
+   "VT": 2000
+  },
+  "pool_layers_total": 1158,
+  "pool_layers_with_rows": 748,
+  "pool_layers_keyed": 748,
+  "pool_layers_capped": 581,
+  "pool_layers_mapped_to_denominator": 741,
+  "skipped_layers": 417,
+  "skip_reasons": {
+   "addr 表为空（本地全表无地址行）": 410,
+   "本地全表行无 src_layer_url（无法映射到分母 url，只作他源参照）": 7
+  },
+  "e7_status_after_relax": {
+   "unknown": 15562,
+   "clear": 1070,
+   "hit": 110
+  },
+  "urls_evaluated": 16742,
+  "note": "每层取前 N 行是采样、不是全量：capped 层与 skip 原因逐层见 e7-refpool-stats.csv"
+ }
+}
