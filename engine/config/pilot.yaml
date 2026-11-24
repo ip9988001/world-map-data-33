@@ -1,0 +1,124 @@
+# 三州试点配置（第 6 步）—— 所有阈值/优先级/分级规则都在这里，代码里不硬编码
+schema: engine-pilot.v1/2026-11-25
+version: pilot-20261125
+states: [DE, NH, IA]
+
+# 只读输入根目录（原始源数据，不在本仓库内，逐文件清单见 MANIFEST 与报告）
+roots:
+  calib: /data/scratch/calib-20261123
+  nh: /data/workspace/nh-collect-both
+repo:
+  samples: analysis/coord-samples-20261124/samples
+  tiers: analysis/auto-spatial-rerun-20261125/auto-recognized.csv   # 逐层 tier（url → tier1/2/3）
+outdir: analysis/engine-pilot-20261125
+
+addrkey:                    # addrkey v3（engine/outlet_clean.py 实现，此处只配开关）
+  version: v3
+  include_unit: true        # 单元号入键：同一栋楼的不同单元是不同地址行
+  hash: sha1-20hex          # "a3:" + sha1(parts).hexdigest()[:20]
+
+coord_conflict_m: 100
+export_shard_mb: 40         # 分级数据按 40MB/片导出（避免单文件撞 GitHub 100MB 硬上限）       # 同址多源坐标相差 > 100m 记 coord_conflict（保留高优先级源，provenance 全留）
+
+priority:                   # 数值小 = 冲突时保留（越靠前越权威）
+  dialect_layer: 5          # 第 4/5 步已审过的层（有实测 Tier）
+  granit: 10                # 州脊 GRANIT 地块点
+  nad: 20                   # 全国地址库
+  overture: 30
+  tiger: 40                 # 街段插值/区间
+  oa: 50                    # OpenAddresses（二次聚合源，最后）
+
+tier_rank: {tier1: 1, tier2: 2, tier3: 3, unrated: 9}
+
+# 完整度分级：每级要求的特征全为真才命中；从 S 往 C 依次试
+# 特征来源 engine/outlet_clean.py:clean() → features{number,street,city,state,zip5,point,point_any}
+grades:
+  S: [number, street, city, state, zip5, point]        # 全要素 + 真实点（非插值）
+  A: [number, street, state, zip5, point_any]          # 有点，但缺城市或点来自插值
+  B: [number, street, state]                           # 无点，但门牌+街名+州齐
+  C: [street]                                          # 只有街名（或无门牌）
+min_grade: C                # 低于 C 不入库（记 dropped_low_grade）
+
+sources:
+  # ---------------- DE（无 GRANIT，NAD/OA/TIGER/Overture + 方言层样本） ----------------
+  - id: de_nad
+    family: nad
+    state: DE
+    dialect: nad-v1
+    glob: "{calib}/de/NAD-US-DE-*.ndjson.gz"
+  - id: de_oa
+    family: oa
+    state: DE
+    dialect: oa-v1
+    glob: "{calib}/de/OA-US-DE-*.zip"
+  - id: de_tiger
+    family: tiger
+    state: DE
+    dialect: tiger-addrfeat-v1
+    glob: "{calib}/de/TIGER-US-DE-*-addrfeat.zip"
+    range_only: true
+  - id: de_overture
+    family: overture
+    state: DE
+    dialect: overture-v1
+    glob: "{calib}/de/OVERTURE-US-DE.parquet"
+  - id: de_dialect
+    family: dialect_layer
+    state: DE
+    dialect: engine-dialect-samples-v1
+    glob: "{repo}/samples/DE.csv"
+
+  # ---------------- NH（GRANIT 脊 + TIGER 插值 + NAD + 方言层样本） ----------------
+  - id: nh_granit
+    family: granit
+    state: NH
+    dialect: granit-parcel-v1
+    glob: "{nh}/GRANIT-US-NH-[0-9]*-parcel-points.ndjson.gz"
+  - id: nh_tiger
+    family: tiger
+    state: NH
+    dialect: tiger-interp-v1
+    glob: "{nh}/TIGER-US-NH-addrfeat-interpolated.ndjson.gz"
+  - id: nh_nad
+    family: nad
+    state: NH
+    dialect: nad-v1
+    glob: "{calib}/nh/NAD-*.ndjson.gz"
+  - id: nh_dialect
+    family: dialect_layer
+    state: NH
+    dialect: engine-dialect-samples-v1
+    glob: "{repo}/samples/NH.csv"
+
+  # ---------------- IA（TIGER 200 县区间 + NAD + OA + Overture + 方言层样本） ----------------
+  - id: ia_nad
+    family: nad
+    state: IA
+    dialect: nad-v1
+    glob: "{calib}/ia/NAD-US-IA-*.ndjson.gz"
+  - id: ia_oa
+    family: oa
+    state: IA
+    dialect: oa-v1
+    glob: "{calib}/ia/OA-US-IA-*.zip"
+  - id: ia_tiger
+    family: tiger
+    state: IA
+    dialect: tiger-addrfeat-v1
+    glob: "{calib}/ia/TIGER-US-IA-*-addrfeat.zip"
+    range_only: true
+  - id: ia_overture
+    family: overture
+    state: IA
+    dialect: overture-v1
+    glob: "{calib}/ia/OVERTURE-US-IA.parquet"
+  - id: ia_dialect
+    family: dialect_layer
+    state: IA
+    dialect: engine-dialect-samples-v1
+    glob: "{repo}/samples/IA.csv"
+
+# 已知缺源（如实写在报告里，不拿别的州顶替）
+missing_spines:
+  DE: "仓库内无 DE 州脊（GRANIT 只覆盖 VT/NH）；用 NAD/OA/TIGER/Overture 叠 + 方言层"
+  IA: "TIGER 只有 addrfeat 街段区间（无门牌点）；NAD/OA/Overture 提供点"

@@ -1,0 +1,13 @@
+tier,grade,addrkey,number,street,city,zip5,state,lon,lat,n_sources,precision,source_family
+tier3,B,a3:96fa04bed6d1764b98ed,36,JUNIPER Drive,,,NH,-72.322090944428,43.69230454440889,13,mixed,dialect_layer
+tier3,B,a3:c25353f61f17d770dcbc,71,North MAIN Street,,,NH,-72.31987038377078,43.64930596895294,24,mixed,dialect_layer
+tier3,B,a3:d0e6611054a546f4284d,267,KINGS Highway,,,NH,-72.37770839355464,43.657290775479936,5,mixed,dialect_layer
+tier3,S,a3:07d9eda5b2429ab1f73e,188,RIVER STREET,MONTPELIER,05602,NH,-72.55597022562844,44.25039675120665,10,mixed,dialect_layer
+tier3,S,a3:25db76c07eead6a0ec19,15,DOVER STREET,SOUTH BURLINGTON,05403,NH,-73.16028293271553,44.45095996600186,11,mixed,dialect_layer
+tier3,S,a3:1f89e3b731f5a236991e,114,FRANKLIN STREET,RUTLAND CITY,05701,NH,-72.98349440720658,43.602487146359785,11,mixed,dialect_layer
+unrated,A,a3:055a3ca44b5659389287,1,Carey Rd,,03249,NH,-71.391812,43.587124,3,range_interpolation,tiger
+unrated,A,a3:19a5437853a2539f878a,5,Carey Rd,,03249,NH,-71.3918396,43.587099,3,range_interpolation,tiger
+unrated,A,a3:52a2dedc2a1d35434ff8,9,Carey Rd,,03249,NH,-71.3918672,43.5870739,3,range_interpolation,tiger
+unrated,B,a3:2685dd1e5bde431ccddf,58,BARBARA DRIVE,ALTON,,NH,-71.30199800937591,43.47892854530412,2,parcel_centroid,granit
+unrated,B,a3:195200d091a27380cc32,52,BARBARA DRIVE,ALTON,,NH,-71.30168965593298,43.47903361426722,2,parcel_centroid,granit
+unrated,B,a3:3b82c6ef8eabb2e278f9,46,BARBARA DRIVE,ALTON,,NH,-71.30127988661667,43.479349036326234,2,parcel_centroid,granit
