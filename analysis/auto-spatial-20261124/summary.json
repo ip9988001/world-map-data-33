@@ -3,44 +3,193 @@
  "rows": 984719364,
  "tu_layers": 11056,
  "tu_rows": 297519308,
+ "split": {
+  "active": {
+   "layers": 0,
+   "rows": 0
+  },
+  "minimal_safe": {
+   "layers": 4102,
+   "rows": 159336591
+  },
+  "unavailable": {
+   "layers": 6954,
+   "rows": 138182717
+  }
+ },
+ "coverage": {
+  "layers": [
+   4102,
+   11056,
+   37.1
+  ],
+  "rows": [
+   159336591,
+   297519308,
+   53.56
+  ],
+  "providers_total": 4645,
+  "providers_recognized": 2421
+ },
+ "provider_top": [
+  {
+   "provider": "none",
+   "layers": 417,
+   "recognized": 0,
+   "rows": 62774977,
+   "recognized_rows": 0,
+   "coverage_pct": 0.0
+  },
+  {
+   "provider": "dom:services-ap1.arcgis.com",
+   "layers": 88,
+   "recognized": 41,
+   "rows": 10289243,
+   "recognized_rows": 10251321,
+   "coverage_pct": 46.59
+  },
+  {
+   "provider": "agol:eNPJk90aMrXNOKF8",
+   "layers": 75,
+   "recognized": 59,
+   "rows": 52311,
+   "recognized_rows": 30341,
+   "coverage_pct": 78.67
+  },
+  {
+   "provider": "agol:PwY9ZuZRDiI5nXUB",
+   "layers": 48,
+   "recognized": 6,
+   "rows": 71917,
+   "recognized_rows": 68005,
+   "coverage_pct": 12.5
+  },
+  {
+   "provider": "agol:p0Gk2nDbPs7KEqSZ",
+   "layers": 48,
+   "recognized": 12,
+   "rows": 235430,
+   "recognized_rows": 204544,
+   "coverage_pct": 25.0
+  },
+  {
+   "provider": "agol:RmCCgQtiZLDCtblq",
+   "layers": 46,
+   "recognized": 11,
+   "rows": 2345687,
+   "recognized_rows": 1499105,
+   "coverage_pct": 23.91
+  },
+  {
+   "provider": "agol:4rLKnK666kgOhEj4",
+   "layers": 36,
+   "recognized": 0,
+   "rows": 40382,
+   "recognized_rows": 0,
+   "coverage_pct": 0.0
+  },
+  {
+   "provider": "agol:EFg39h3DBNzpxORa",
+   "layers": 35,
+   "recognized": 26,
+   "rows": 8294,
+   "recognized_rows": 1348,
+   "coverage_pct": 74.29
+  },
+  {
+   "provider": "agol:uUvqNMGPm7axC2dD",
+   "layers": 34,
+   "recognized": 10,
+   "rows": 58788,
+   "recognized_rows": 3789,
+   "coverage_pct": 29.41
+  },
+  {
+   "provider": "agol:M68M8H7oABBFs1Pf",
+   "layers": 34,
+   "recognized": 1,
+   "rows": 9681,
+   "recognized_rows": 13,
+   "coverage_pct": 2.94
+  },
+  {
+   "provider": "agol:WnzC35krSYGuYov4",
+   "layers": 34,
+   "recognized": 5,
+   "rows": 85954,
+   "recognized_rows": 66552,
+   "coverage_pct": 14.71
+  },
+  {
+   "provider": "agol:uEH09Hfm70zI2ZxR",
+   "layers": 33,
+   "recognized": 0,
+   "rows": 31749,
+   "recognized_rows": 0,
+   "coverage_pct": 0.0
+  },
+  {
+   "provider": "agol:LBbVDC0hKPAnLRpO",
+   "layers": 32,
+   "recognized": 4,
+   "rows": 50849,
+   "recognized_rows": 31915,
+   "coverage_pct": 12.5
+  },
+  {
+   "provider": "agol:cTNi34MxOdcfum3A",
+   "layers": 32,
+   "recognized": 15,
+   "rows": 445927,
+   "recognized_rows": 181717,
+   "coverage_pct": 46.88
+  },
+  {
+   "provider": "socrata:gisdata.in.gov",
+   "layers": 31,
+   "recognized": 3,
+   "rows": 28698265,
+   "recognized_rows": 6642576,
+   "coverage_pct": 9.68
+  }
+ ],
+ "closure": {
+  "split_layers": 11056,
+  "split_rows": 297519308,
+  "diff_layers": 0,
+  "diff_rows": 0,
+  "unavailable_csv_rows": 6954,
+  "unavailable_csv_all_unavailable": true,
+  "verdict_values": [
+   "minimal_safe",
+   "unavailable"
+  ],
+  "manual_verdict_present": false
+ },
+ "reconcile_old_manual": {
+  "layers": 10013,
+  "rows": 233535391,
+  "to_minimal_safe": [
+   3059,
+   95352674
+  ],
+  "to_unavailable": [
+   6954,
+   138182717
+  ]
+ },
  "tier": {
   "tier1": {
    "layers": 0,
-   "rows": 0,
-   "tu_layers": 0,
-   "tu_rows": 0
+   "rows": 0
   },
   "tier2": {
-   "layers": 1123,
-   "rows": 92206281,
-   "tu_layers": 1043,
-   "tu_rows": 63983917
+   "layers": 1043,
+   "rows": 63983917
   },
   "tier3": {
-   "layers": 16045,
-   "rows": 892513083,
-   "tu_layers": 10013,
-   "tu_rows": 233535391
-  }
- },
- "move": {
-  "active": {
-   "layers": 0,
-   "rows": 0,
-   "tu_layers": 0,
-   "tu_rows": 0
-  },
-  "minimal_safe": {
-   "layers": 1123,
-   "rows": 92206281,
-   "tu_layers": 1043,
-   "tu_rows": 63983917
-  },
-  "manual": {
-   "layers": 16045,
-   "rows": 892513083,
-   "tu_layers": 10013,
-   "tu_rows": 233535391
+   "layers": 10013,
+   "rows": 233535391
   }
  },
  "evidence": {
@@ -98,11 +247,6 @@
      "range_interpolation",
      26
     ]
-   ],
-   "sample_detail": [
-    "addr_core_hit[0]=0；门牌族候选=-",
-    "addr_core_hit[0]=0；门牌族候选=ACM_Fut_Num_Lanes",
-    "addr_core_hit[0]=0；门牌族候选=ACQ_NOTES,TRL_NUM"
    ]
   },
   "E2": {
@@ -131,10 +275,6 @@
      "building_point",
      3
     ]
-   ],
-   "sample_detail": [
-    "样值含占位字面值 street_full,street_name",
-    "样值含占位字面值 street_name"
    ]
   },
   "E3": {
@@ -187,11 +327,6 @@
      "range_interpolation",
      7
     ]
-   ],
-   "sample_detail": [
-    "apartment_unit_point 与 geom=Polygon 冲突",
-    "apartment_unit_point 与 geom=Polyline 冲突",
-    "building_point 与 geom=Polygon 冲突"
    ]
   },
   "E4": {
@@ -248,11 +383,6 @@
      "range_interpolation",
      7
     ]
-   ],
-   "sample_detail": [
-    "门牌族被负向规则命中/跨要素同名字段: A1_HWY_NUM,A2_HWY_NUM,A3_HWY_NUM,HWY_NUM",
-    "门牌族被负向规则命中/跨要素同名字段: A1_HWY_NUM,A2_HWY_NUM,HWY_NUM",
-    "门牌族被负向规则命中/跨要素同名字段: ACM_Fut_Num_Lanes"
    ]
   },
   "E5": {
@@ -309,11 +439,6 @@
      "range_interpolation",
      10
     ]
-   ],
-   "sample_detail": [
-    "层份额 0.0 < 0.01%",
-    "层份额 1.1e-05 < 0.01%",
-    "层份额 1.2e-05 < 0.01%"
    ]
   },
   "E6": {
@@ -324,8 +449,7 @@
    "tu_hit_layers": 0,
    "tu_hit_rows": 0,
    "provider_top": [],
-   "granularity": [],
-   "sample_detail": []
+   "granularity": []
   },
   "E7": {
    "hit_layers": 0,
@@ -335,8 +459,7 @@
    "tu_hit_layers": 0,
    "tu_hit_rows": 0,
    "provider_top": [],
-   "granularity": [],
-   "sample_detail": []
+   "granularity": []
   },
   "E8": {
    "hit_layers": 0,
@@ -346,18 +469,13 @@
    "tu_hit_layers": 0,
    "tu_hit_rows": 0,
    "provider_top": [],
-   "granularity": [],
-   "sample_detail": []
+   "granularity": []
   }
  },
- "tu_blockers": [
+ "unavailable_blockers": [
   [
    "E1,E3,E6,E7",
    5019
-  ],
-  [
-   "E3,E6,E7",
-   2741
   ],
   [
    "E1,E6,E7",
@@ -368,27 +486,11 @@
    417
   ],
   [
-   "E8,E5,E6,E7",
-   286
-  ],
-  [
    "E1,E3,E8,E6,E7",
    20
   ],
   [
-   "E3,E5,E6,E7",
-   14
-  ],
-  [
-   "E8,E6,E7",
-   10
-  ],
-  [
    "E1,E5,E6,E7",
-   5
-  ],
-  [
-   "E3,E8,E6,E7",
    5
   ],
   [
@@ -396,75 +498,15 @@
    2
   ],
   [
-   "E2,E8,E5,E6,E7",
-   2
-  ],
-  [
-   "E2,E5,E6,E7",
-   1
-  ],
-  [
    "E1,E8,E6,E7",
    1
   ]
  ],
- "tier2_samples": [
-  {
-   "layer_id": "cgis_rest_services_Infrastructure_Transportation_MapServer_0",
-   "provider_id": "host:ags.myokaloosa.com",
-   "state": "AL",
-   "granularity": "building_point",
-   "geom": "point",
-   "usable": "no_zip",
-   "share": "0.006680",
-   "coverage_rows": "129741",
-   "move_reason": "门牌+街名齐（addr_core_hit[:2]=11），交 minimal_safe 解析器"
-  },
-  {
-   "layer_id": "_services_Infrastructure_Transportation_Sheriffs_MapServer_0",
-   "provider_id": "host:ags.myokaloosa.com",
-   "state": "AL",
-   "granularity": "building_point",
-   "geom": "point",
-   "usable": "no_zip",
-   "share": "0.006680",
-   "coverage_rows": "129741",
-   "move_reason": "门牌+街名齐（addr_core_hit[:2]=11），交 minimal_safe 解析器"
-  },
-  {
-   "layer_id": "unty_oh_gov_arcgisdev_rest_services_WMAS_Address_MapServer_0",
-   "provider_id": "socrata:arcgis.eriecounty.oh.gov",
-   "state": "OH",
-   "granularity": "building_point",
-   "geom": "point",
-   "usable": "no_zip",
-   "share": "0.014484",
-   "coverage_rows": "42966",
-   "move_reason": "门牌+街名齐（addr_core_hit[:2]=11），交 minimal_safe 解析器"
-  },
-  {
-   "layer_id": "FeatureServer/0",
-   "provider_id": "socrata:arcgisweb.co.trumbull.oh.us",
-   "state": "OH",
-   "granularity": "centerline_midpoint",
-   "geom": "Polyline",
-   "usable": "no_city",
-   "share": "0.006256",
-   "coverage_rows": "12719",
-   "move_reason": "门牌+街名齐（addr_core_hit[:2]=11），交 minimal_safe 解析器"
-  },
-  {
-   "layer_id": "MapServer/0",
-   "provider_id": "host:coggis.cityofgadsden.com",
-   "state": "未定位",
-   "granularity": "building_point",
-   "geom": "Point",
-   "usable": "full_address",
-   "share": "0.006680",
-   "coverage_rows": "19500",
-   "move_reason": "门牌+街名齐（addr_core_hit[:2]=11），交 minimal_safe 解析器"
-  }
- ],
+ "unavailable_missing": {
+  "缺门牌": 6954,
+  "缺街名": 417,
+  "无 url/本地读不出(provider=none)": 417
+ },
  "spatial": {
   "fixture_layers": 3,
   "verdicts": [
@@ -506,19 +548,5 @@
     "verdict": "green"
    }
   ]
- },
- "sampling": {
-  "fixture_layers": 3,
-  "local_layers": 882,
-  "total": 885
- },
- "closure": {
-  "tier_layers": 17168,
-  "tier_rows": 984719364,
-  "move_layers": 17168,
-  "move_rows": 984719364,
-  "tu_move_layers": 11056,
-  "tu_move_rows": 297519308,
-  "tu_blocked_layers": 10013
  }
 }

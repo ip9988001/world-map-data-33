@@ -6,9 +6,12 @@
 > 未融合、未分级、未重写引擎（引擎是第 6 步）、未直推 main（本分支另开 PR，只开不合）。
 > 本文件每个数字都能用本目录 CSV + `summarize.py` 复算；取不到的写 `unavailable`，没有估算值。
 
-## 〇、这一轮最硬的一条结论（先看这个）
+## 〇、本轮两条头牌结论（先看这个）
 
-**Tier 1（自动放行）= 0 层。** 原因不是判据太严，而是**没有坐标样本**：
+**① 模板覆盖率（新验收指标）：按层 4,102/11,056 = 37.10%，按行 159,336,591/297,519,308 = 53.56%，
+按 provider 2,421/4,645 = 52.12%。** 认不出的 6,954 层一律不排人工队列，单列「暂不可用」表（§4.5）。
+
+**② Tier 1（自动放行）= 0 层。** 原因不是判据太严，而是**没有坐标样本**：
 第 3 步 1,000/1,000 探针配额全部用在 `?f=json` meta 上，只拿到字段名/几何类型/CRS，
 **没有采到任何一行的经纬度**；仓库里也没有 `dist/`（本地层只在 fixtures 里留了 3 份 25 行真实样本）。
 所以 17,168 层里 **E6（空间验算）全部 `unknown`、E7（源间投票）全部 `unknown`** —— 按三档定义，
@@ -17,6 +20,9 @@
 这不是本轮的失误，而是**第 6 步的前置条件**：想真正放行任何一层，必须先拿到该层的坐标抽样
 （每层 ≥50 行、带 `x/y` 或 `geometry`，落盘到受控目录），否则自动认只能停在 Tier 2，
 而 Tier 2 又必须由第 6 步的抽样复核兜底。
+
+> 口径提醒（muse-000216）：本轮起**验收指标是模板覆盖率，不是「挪了多少层」**；
+> 「挪进 manual」这一列已作废（§4.2/§4.3）。
 
 ---
 
@@ -77,9 +83,13 @@
 | Tier 3 强制人工 | **16,045** | **892,513,083** | 10,013 | 233,535,391 | 至少有 1 条致命证据命中或不可判 |
 | 合计 | **17,168** | **984,719,364** | **11,056** | **297,519,308** | 与第 4 步分母逐位相等，差额 0 |
 
-**Tier 2 ≠ 可以上线**：它只是「值得抽样复核」的候选池。Tier 2 的 1,123 层在本轮的 `move` 一律是
-`minimal_safe`（manual 池、`a_pool_eligible=false`），不放 A 货池。理由：空间与多源两条证据仍然缺，
+**Tier 2 ≠ 可以上线**：它只是「值得抽样复核」的候选池。Tier 2 的 1,123 层在本轮 `verdict` 一律是
+`minimal_safe`（`pool=manual`、`a_pool_eligible=false`），不放 A 货池。理由：空间与多源两条证据仍然缺，
 且第 6 步才是引擎。
+
+**三档是「认的把握度」，不是交付去向**。交付去向只看 §4.2 三列（`active` / `minimal_safe` / 暂不可用）：
+Tier 3 的 10,013 层 TU 里，3,059 层仍能进 `minimal_safe`（门牌+街名齐），6,954 层进「暂不可用」。
+**本轮不再有任何「manual」交付列。**
 
 ### Tier 2 样例（5 层，5 个不同 provider / 4 个州，且 `layer_id` 在本库内唯一）
 
@@ -157,58 +167,121 @@ fixture 明细（`spatial-findings.csv` 前 3 行）：
 
 ---
 
-## 四、11,056 层 template_unresolved 挪动表（**只是沙盒结论**）
+## 四、验收指标换成「模板覆盖率」（不再统计挪进 manual 多少层）
 
-本轮不写回任何账本、不改 CSV 生产口径；结论只落在 `template-unresolved-moves.csv`。
+### 4.1 模板覆盖率（三个视图）
 
-| 列 | 层数 | 行数 | 占比（行） | 依据 |
+分母固定为第 4 步 `template_unresolved` 的 **11,056 层 / 297,519,308 行**；
+分子 = 本目录 `template-unresolved-moves.csv` 里 `verdict ∈ {active, minimal_safe}` 的行。
+
+| 视图 | 分子 | 分母 | 覆盖率 | 分子/分母来源 |
 |---|---:|---:|---:|---|
-| 可认 → `active` | **0** | **0** | 0% | 需 Tier 1，而 Tier 1 被 ⑥⑦ 的 unknown 硬卡（§0）——**不许硬挪** |
-| 可降级 → `minimal_safe` | **1,043** | **63,983,917** | 21.5% | Tier 2 且 `addr_core_hit[:2]=11`（门牌+街名齐），可交 `registry/evaluator.py::minimal_safe` 解析器；`pool=manual`、`a_pool_eligible=false` 不变 |
-| 留 `manual` | **10,013** | **233,535,391** | 78.5% | 至少 1 条致命证据命中或不可判，见下「卡点分布」 |
-| **合计** | **11,056** | **297,519,308** | 100% | 与第 4 步 TU 分母**逐位相等**，差额 **0 层 / 0 行** |
+| **按层** | **4,102** | **11,056** | **37.10%** | 分子：`template-unresolved-moves.csv` 计数 `verdict != "unavailable"`；分母：`analysis/dialect-20261124/dialect-coverage.csv` 的 `minimal_safe.layers_n = 11056` |
+| **按行** | **159,336,591** | **297,519,308** | **53.56%** | 分子：同文件 `rows_n` 列求和；分母：同文件 `minimal_safe.rows = 297519308`（= `dialect-assignment.csv` 中 `reason=template_unresolved` 行的 `coverage_rows` 之和） |
+| **按 provider** | **2,421 个 provider 有 ≥1 可认层** | **4,645 个 provider** | **52.12%** | `template-unresolved-moves.csv` 的 `provider` 列去重计数（`none` = 本地无 url 层，算 1 个 provider，417 层全不可用） |
 
-### 卡点分布（留 manual 的 10,013 层，按证据组合；层数合计 10,013）
+按 provider 的前 15 名（层数降序，`provider / TU 层 / 可认层 / 覆盖率`；完整表见 `summary.json:provider_top`）：
 
-| 证据组合 | 层数 | 读法 |
-|---|---:|---|
-| `E1,E3,E6,E7` | 5,019 | 既没门牌、粒度也没定（unknown），空间未跑 —— 最大的单一卡点，实为「road_only + granularity unknown」叠加 |
-| `E3,E6,E7` | 2,741 | 有门牌但粒度 unknown（第 4 步没定点位语义） |
-| `E1,E6,E7` | 1,490 | 粒度已知但没门牌（线要素/地块层） |
-| `E1,E2,E3,E5,E6,E7` | 417 | 本地读不出（`sampled_zero_rows` 276 / `road_only` 103 / `no_zip` 37 / `empty_shell` 1，全为 `d2`） |
-| `E8,E5,E6,E7` | 286 | 有模板但 `n_fields=0` 且抽样为空 —— 结构漂移实锤 |
-| `E1,E3,E8,E6,E7` | 20 | 三重叠加 |
-| 其余 6 种组合 | 40 | 见 CSV `move_reason` 列 |
-| **合计** | **10,013** | 与上表 manual 列一致 |
+| provider | TU 层 | 可认层 | 覆盖率 | 可认行 / TU 行 |
+|---|---:|---:|---:|---|
+| `none`（本地无 url，全是读不出的 `d2`） | 417 | **0** | **0.00%** | 0 / 62,774,977 |
+| `dom:services-ap1.arcgis.com` | 88 | 41 | **46.59%** | 10,251,321 / 10,289,243 |
+| `agol:eNPJk90aMrXNOKF8` | 75 | 59 | **78.67%** | 30,341 / 52,311 |
+| `agol:PwY9ZuZRDiI5nXUB` | 48 | 6 | 12.50% | 68,005 / 71,917 |
+| `agol:p0Gk2nDbPs7KEqSZ` | 48 | 12 | 25.00% | 204,544 / 235,430 |
+| `agol:RmCCgQtiZLDCtblq` | 46 | 11 | 23.91% | 1,499,105 / 2,345,687 |
+| 其余 4,639 个 provider | 10,334 | 3,973 | 38.45% | — |
+| **合计** | **11,056** | **4,102** | **37.10%** | 159,336,591 / 297,519,308 |
 
-### 差额解释（逐条，不许四舍五入）
+> 读法：覆盖率在**机构/门户维度差异极大** —— `agol:eNPJk90aMrXNOKF8` 78.67%、`dom:services-ap1` 46.59%，
+> 而本地读不出的 `none` 组 0.00%。**按 provider 归并去做补采/补探针，比逐层推人工划算得多**：
+> 4,645 个 provider 里 2,421 个已有可认层，剩下 2,224 个全不可用（多数每 provider 只有 1–2 层）。
 
-1. **TU 行数**：`minimal_safe 63,983,917 + manual 233,535,391 = 297,519,308` —— 与 `dialect-coverage.csv` 里
-   `minimal_safe` 组的 297,519,308 **完全相等**，差额 0。
-2. **TU 层数**：`1,043 + 10,013 = 11,056` —— 与 `dialect-coverage.csv` 的 `layers_n=11056` 相等，差额 0。
-3. **第 4 步遗留的口径小差（104 层）本轮已定位，不影响挪动表**：
-   `dialect-assignment.csv` 里 TU 层有 `usable=road_only` 6,641 层，而按 `addr_core_hit[0]=0` 复算是 6,537 层，
-   差 **104** 层；这 104 层的 `inventory` 记录是 `sampled_zero_rows` 且 `addr_core_hit` 为空
-   （第 4 步按 provider 借用探针把 `road_only` 继承下来了）。本轮一律以 `addr_core_hit` 原位证据为准，
-   这 104 层落进 `E1 unknown`（与另外 313 层合计 417 层，全部为本地区 `d2` 读不出层），**最终都进 manual**，
-   所以挪动表三列之和不受影响。
+### 4.2 三列新表：`active` / `minimal_safe` / 暂不可用
+
+上一版「留 manual」这一列**作废**；原 10,013 层已按新规则重新分流（见 4.3）。三列之和**逐位等于**分母：
+
+| 列 | 层数 | 行数 | 行占比 | 定义 |
+|---|---:|---:|---:|---|
+| `active` | **0** | **0** | 0% | 需 Tier 1（8 条全 clear + 空间全绿 + 抽样零冲突）；被 ⑥⑦ 的 unknown 硬卡（§0），**不许硬挪** |
+| `minimal_safe` | **4,102** | **159,336,591** | 53.56% | 门牌+街名两要素齐（`addr_core_hit[:2] == "11"`），交 `registry/evaluator.py::minimal_safe`；其余要素留空 |
+| 暂不可用（`unavailable`） | **6,954** | **138,182,717** | 46.44% | 连门牌+街名都取不到 → 单列 `template-unresolved-unavailable.csv` |
+| **合计** | **11,056** | **297,519,308** | 100% | 差额 **0 层 / 0 行**（`summary.json:closure.diff_layers=0, diff_rows=0`） |
+
+> 关于 `rows_n` 的 2 个空值：`MapServer/0`（`host:gisweb.pwcva.gov`）与 `FeatureServer/0`（`agol:7DJFMLstNUGRFz6m`）
+> 在第 4 步就是 `count_unavailable_layers=2`（上游拿不到 count），`rows_n` 留空、求和按 0 计入，
+> 分母 297,519,308 本来也不含它们 —— 两侧一致，不是缺数。
+
+### 4.3 上一版「留 manual 10,013 层 / 233,535,391 行」的去向对账
+
+旧口径的 manual = 本目录 `auto-recognized.csv` 里 `tier=="tier3"` 的 TU 行（可复算）。分流结果：
+
+| 去向 | 层数 | 行数 |
+|---|---:|---:|
+| → `minimal_safe` | **3,059** | **95,352,674** |
+| → 暂不可用 | **6,954** | **138,182,717** |
+| **合计** | **10,013** | **233,535,391** |
+
+层数 3,059 + 6,954 = 10,013 ✅；行数 95,352,674 + 138,182,717 = 233,535,391 ✅（差额 0，无一条原样搬过来）。
+旧口径的 1,043 层 `minimal_safe`（Tier 2）全部保留在新 `minimal_safe` 里：1,043 + 3,059 = **4,102**。
+
+### 4.4 `minimal_safe` 不变式（代码 + 报告双写）
+
+**不变式：`minimal_safe` 只取「门牌号 + 街名」两要素，其余要素全部留空；`pool=manual`、`a_pool_eligible=false`，永不进 A 货池。**
+
+- 代码：`sandbox/auto_recognize.py` **第 102–104 行**（`move_of` docstring 三条不变式）、
+  **第 110 行**（`return ("minimal_safe" if (L["bits"] or "")[:2] == "11" else "unavailable"), ...`）；
+  硬保证不在沙盒里，而在 `registry/evaluator.py::minimal_safe`（`pool="manual"`, `a_pool_eligible=False` 字面量）。
+- 报告：本节 + §4.2 表格「定义」列。
+- 测试锁死：`sandbox/test_auto_recognize.py::test_minimal_safe_invariant_a_pool_eligible_false`
+  （调 `registry.evaluator.minimal_safe()` 断言 `pool='manual'`、`a_pool_eligible is False`、`parsed` 只有两要素）
+  与 `::test_minimal_safe_needs_number_and_street_only`（7 组 bits 覆盖 11x/10x/01x/空/单位数）。
+
+### 4.5 暂不可用表（`template-unresolved-unavailable.csv`，**不是人工队列**）
+
+列：`layer_id,url,provider,granularity,rows_n,verdict,reason_evidence,reason_detail`（与 moves 同 schema，`verdict` 恒为 `unavailable`）。
+
+| 统计项 | 值 |
+|---|---:|
+| 行数 | **6,954** |
+| 行数（rows_n 求和） | **138,182,717** |
+| 缺门牌（`reason_evidence` 含 E1） | **6,954（100%）** |
+| 缺街名（含 E2） | 417（全部是 E1+E2 同时缺的本地读不出层） |
+| `provider=none`（本地无 url） | 417 |
+| `verdict=manual` 的行 | **0** |
+
+卡点组合**全部 7 种**（`reason_evidence` 列，可复算，合计 6,954）：
+`E1,E3,E6,E7` **5,019** / `E1,E6,E7` **1,490** / `E1,E2,E3,E5,E6,E7` **417** /
+`E1,E3,E8,E6,E7` **20** / `E1,E5,E6,E7` **5** / `E1,E3,E5,E6,E7` **2** / `E1,E8,E6,E7` **1**。
+（对照：`E3,E6,E7` 那 2,741 层与 `E8,E5,E6,E7` 那 286 层**有**门牌+街名，已进 `minimal_safe`，不在本表。）
+
+**这张表不是人工队列**：不进 `manual-queue.csv`、不排期、不要求任何人逐条看；
+它是「要再啃就必须补采什么」的清单 —— 全部 6,954 层的第一拦路判据都是 **E1（门牌要素缺失/不可解析）**，
+建议（`reason_detail` 逐条写明）= 补采该层字段级样值 + 原始元素名，确认是否存在未被 `fields_number_like` 命中的门牌列。
 
 ---
 
-## 五、附带修正（muse-000215 决定①：人工队列口径文字）
+## 五、人工队列作废声明 + registry fallback 待办
 
-`analysis/dialect-20261124/manual-queue.csv` 的真实口径是：
+### 5.1 人工队列作废（muse-000216）
 
-- **70 条 / 17,129 层**（`layers_n` 求和）/ 902,619,012 行（`coverage_rows` 求和）；
-- 最后一条 `rank=70` 的 `week_end = 141` —— **尾巴是第 141 周**；
-- 第 1 条（`minimal_safe`，11,056 层）`week=1 / week_end=56`，**第 2 条**的 `week_end` 才是 56 → 以此类推递增；
-- 因此此前记录里写的「排到第 57 周」是**错的**（那是第 2 条的 `week_end`，不是队尾）。
+`analysis/dialect-20261124/manual-queue.csv`（**70 条 / 17,129 层 / 902,619,012 行 / 队尾 `week_end=141`**）
+**就此作废，不再作为排期依据，也不作为本任务的关键路径**。本轮起：
 
-同时更正口径：**200 层/周只是护栏**（`registry/dialects.v1.yaml: weekly_cap_layers: 200`），
-属后台清理节奏，**不在关键路径**；`template_unresolved` 的 11,056 层由第 5/6 步**程序化**啃
-（本轮已给出 1,043 层可降级 / 10,013 层卡点明细），不靠人工 200 层/周去推。
+- 不统计、不汇报「挪进 manual 多少层」；
+- `template_unresolved` 的 11,056 层按 §4 三路分流（`active` / `minimal_safe` / 暂不可用），
+  「暂不可用」不进任何队列、不排期；
+- 200 层/周 只是 `registry/dialects.v1.yaml: weekly_cap_layers` 的护栏，属后台清理节奏，不在关键路径。
 
-`registry/` 本轮**一个字节未改**（`git status --porcelain registry/` 为空）。
+（历史口径事实保留供查：该 CSV 最后一条 `rank=70` 的 `week_end=141`；此前记录里「排到第 57 周」是错的，
+那是第 2 条的 `week_end`。）
+
+### 5.2 待办：下版改 registry fallback pool（本轮不动 registry）
+
+`registry/dialects.v1.yaml` 的 `fallback.pool` 现在是 `manual`，下个版本应改为 `minimal_safe`
+（`a_pool_eligible` 保持 `false` 不变）。**本轮不改**：`registry/` 冻结只读，一个字节未动
+（`git diff --stat registry/` 为空；`registry/validate.py` 仍输出 `dialects=3 golden_cases=14 denominator=17168`，
+`pytest registry/tests` 仍 40 passed）。
 
 ---
 
@@ -216,23 +289,23 @@ fixture 明细（`spatial-findings.csv` 前 3 行）：
 
 | 文件 | 行数 / 内容 |
 |---|---|
-| `sandbox/auto_recognize.py` | **148 行**：8 条证据 + 三档 + 挪动判定（无状态、纯函数优先、不联网、不写 DB） |
+| `sandbox/auto_recognize.py` | **154 行**：8 条证据 + 三档 + 三路分流（active / minimal_safe / unavailable；无状态、不联网、不写 DB） |
 | `sandbox/spatial_verify.py` | **146 行**：点落判定 / 跨边界距离 / 层内离群 / 阈值加载 |
-| 合计 | **294 行**（200–300 区间内，守 300 行硬上限；`wc -l` 可验） |
+| 合计 | **300 行**（守 200–300 区间与 300 行硬上限；为给分流逻辑腾空间，本轮删掉两个未用常量 `ENAMES`/`NUM_FAM`、把 `ev7` 压成 lambda、`spatial` 字典单行化） |
 | `sandbox/spatial_thresholds.yaml` | 每条阈值带 `value/why/source` + 显式 `unavailable` 清单 |
 | `sandbox/fixtures/spatial_manifest.json` | 3 份 fixture 的坐标列名 / 声明 county_fips / 来源 / 抓取日 |
-| `sandbox/test_auto_recognize.py` | 47 用例 |
+| `sandbox/test_auto_recognize.py` | **58 用例**（本轮新增 11 条：minimal_safe 降级 7 组参数化 / 无 manual 断言 / `a_pool_eligible=false` 不变式 / unavailable 表对账 / 覆盖率闭合） |
 | `sandbox/test_spatial_verify.py` | 21 用例 |
 | `analysis/auto-spatial-20261124/summarize.py` | 报告全部表格的复算脚本（只聚合，不加判据） |
 | `analysis/auto-spatial-20261124/auto-recognized.csv` | 17,168 行 × 31 列（含 `E1..E8_state` 与 `*_detail`） |
-| `analysis/auto-spatial-20261124/template-unresolved-moves.csv` | 11,056 行（TU 子集，同列） |
+| `analysis/auto-spatial-20261124/template-unresolved-moves.csv` | 11,056 行 × 8 列（`layer_id,url,provider,granularity,rows_n,verdict,reason_evidence,reason_detail`；`verdict` 只允许 active/minimal_safe/unavailable） |
+| `analysis/auto-spatial-20261124/template-unresolved-unavailable.csv` | **6,954 行**（暂不可用表；**不是人工队列**） |
 | `analysis/auto-spatial-20261124/spatial-findings.csv` | 648 行（3 fixture + 645 null 率突变层） |
 | `analysis/auto-spatial-20261124/sampling-list.csv` | 885 行抽样清单（含种子） |
 | `analysis/auto-spatial-20261124/summary.json` | 上述所有表的机器可读版（含闭合断言） |
 
-**测试与覆盖率**：`python3 -m pytest sandbox -q` → **86 passed / 0 failed**（47 auto + 21 spatial + 18 既有 `test_rules.py`）；
-`coverage` 实测（`--include=sandbox/auto_recognize.py,sandbox/spatial_verify.py`）→
-**213 语句 / 未覆盖 3 / 覆盖率 99%**（未覆盖的 3 行是两个 `if __name__` 入口与 null 率分支的 `else`）。
+**测试与覆盖率**：`python3 -m pytest sandbox -q` → **97 passed / 0 failed**（58 auto + 21 spatial + 18 既有 `test_rules.py`）；`coverage`
+（`--include=sandbox/auto_recognize.py,sandbox/spatial_verify.py`）→ **212 语句 / 未覆盖 3 / 99%**（未覆盖仅两个 `if __name__` 入口与 null 率分支 `else`）。
 
 **复算命令**（全部离线，只读）：
 
@@ -254,7 +327,8 @@ python3 -m pytest sandbox -q
 | 邮编/ZCTA 交叉校验 | 仓库内无 ZCTA 表，本轮有意不联网 | 先定数据来源与许可，再落 `sandbox/fixtures/`（≤5MB 小样本可先做单测） |
 | 源间投票（⑦） | 无地址级多源解析结果 | 第 6 步产出同址多源候选后再判 |
 | 远程层的街名占位值扫描（②的后半条） | 第 3 步只持久化了计数，没持久化值样本 | 值样本落盘后才能扫字面值 |
-| `minimal_safe` 1,043 层的实跑解析 | 本轮只做判定，不执行解析器 | 第 6 步接引擎时跑，且必须守 `pool=manual` |
+| `minimal_safe` 4,102 层的实跑解析 | 本轮只做判定，不执行解析器 | 第 6 步接引擎时跑，且必须守 `pool=manual`、`a_pool_eligible=false` |
+| 暂不可用 6,954 层的补救 | 100% 卡在门牌要素（E1），需补探针/补值样本才知道有没有漏认的门牌列 | 补采该层字段级样值 + 原始元素名（探针配额需先放宽） |
 
 ## 八、给第 6 步的三条硬建议
 
@@ -263,5 +337,6 @@ python3 -m pytest sandbox -q
 2. **E3（粒度 unknown）是最大的人工成本项**：12,498 层 unknown，其中 7,394 层同时没门牌。
    建议第 6 步先按「有 geom 类型 + 有坐标」把 granularity 重新定出来（几何类型 + 点位密度就能定大半），
    这一条能一次消掉 2,741 + 1,490 两档卡点。
-3. **1,043 层可降级是现成收益**：门牌+街名齐、粒度相容、无别名冲突，只要第 6 步能给它们
-   `minimal_safe` 解析 + 坐标复核，就能从 manual 池里挪出一批可用地址（仍不进 A 货池）。
+3. **4,102 层 `minimal_safe` 是现成收益（占 37.10% 层 / 53.56% 行）**：门牌+街名齐，
+   只要第 6 步给它们 minimal_safe 解析 + 坐标复核，就能产出一批可用地址（仍不进 A 货池）。
+   剩下 6,954 层 100% 卡在 E1（门牌），**补探针配额比补人划算**。

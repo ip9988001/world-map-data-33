@@ -1,7 +1,8 @@
 """从沙盒产出的 CSV 复算 REPORT.md 里的每张表（不产生新判据，只做聚合）。
 
 跑法：python3 analysis/auto-spatial-20261124/summarize.py
-输出：同目录 summary.json（表结构）+ 终端可粘贴的 markdown 片段
+输出：同目录 summary.json + 终端可粘贴的 markdown 片段
+口径：验收指标是**模板覆盖率**（可认层 / 11,056），不再统计「挪进 manual 多少层」。
 """
 from __future__ import annotations
 
@@ -12,6 +13,7 @@ import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 EKEYS = ("E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8")
+TU_LAYERS, TU_ROWS = 11056, 297519308
 
 
 def load(name):
@@ -19,29 +21,69 @@ def load(name):
         return list(csv.DictReader(fh))
 
 
-def rows_of(rs):
-    return sum(int(r["coverage_rows"] or 0) for r in rs)
+def rows_of(rs, key="coverage_rows"):
+    return sum(int(r.get(key) or 0) for r in rs)
+
+
+def pct(a, b):
+    return round(100.0 * a / b, 2) if b else 0.0
 
 
 def main():
     rows = load("auto-recognized.csv")
-    tu = [r for r in rows if r["assign_reason"] == "template_unresolved"]
+    mv = load("template-unresolved-moves.csv")
+    un = load("template-unresolved-unavailable.csv")
     spatial = load("spatial-findings.csv")
+    tu = [r for r in rows if r["assign_reason"] == "template_unresolved"]
+
     out = {"layers": len(rows), "rows": rows_of(rows), "tu_layers": len(tu), "tu_rows": rows_of(tu)}
 
-    # ---- 三档
-    out["tier"] = {t: {"layers": sum(1 for r in rows if r["tier"] == t),
-                       "rows": rows_of([r for r in rows if r["tier"] == t]),
-                       "tu_layers": sum(1 for r in tu if r["tier"] == t),
-                       "tu_rows": rows_of([r for r in tu if r["tier"] == t])}
+    # ---- 三路分流（三列新表）
+    by_v = {v: [r for r in mv if r["verdict"] == v] for v in ("active", "minimal_safe", "unavailable")}
+    out["split"] = {v: {"layers": len(rs), "rows": rows_of(rs, "rows_n")} for v, rs in by_v.items()}
+    # ---- 模板覆盖率（层 / 行 / provider 三视图）
+    rec = by_v["active"] + by_v["minimal_safe"]
+    out["coverage"] = {
+        "layers": [len(rec), TU_LAYERS, pct(len(rec), TU_LAYERS)],
+        "rows": [rows_of(rec, "rows_n"), TU_ROWS, pct(rows_of(rec, "rows_n"), TU_ROWS)],
+        "providers_total": len({r["provider"] for r in mv}),
+        "providers_recognized": len({r["provider"] for r in rec}),
+    }
+    per_prov = collections.defaultdict(lambda: {"layers": 0, "recognized": 0, "rows": 0, "recognized_rows": 0})
+    for r in mv:
+        p = per_prov[r["provider"]]
+        p["layers"] += 1
+        p["rows"] += int(r["rows_n"] or 0)
+        if r["verdict"] != "unavailable":
+            p["recognized"] += 1
+            p["recognized_rows"] += int(r["rows_n"] or 0)
+    out["provider_top"] = [{"provider": k, **v, "coverage_pct": pct(v["recognized"], v["layers"])}
+                           for k, v in sorted(per_prov.items(), key=lambda kv: -kv[1]["layers"])[:15]]
+    # ---- 三列之和 vs 分母（差额必须为 0）
+    out["closure"] = {
+        "split_layers": sum(v["layers"] for v in out["split"].values()),
+        "split_rows": sum(v["rows"] for v in out["split"].values()),
+        "diff_layers": sum(v["layers"] for v in out["split"].values()) - TU_LAYERS,
+        "diff_rows": sum(v["rows"] for v in out["split"].values()) - TU_ROWS,
+        "unavailable_csv_rows": len(un),
+        "unavailable_csv_all_unavailable": all(r["verdict"] == "unavailable" for r in un),
+        "verdict_values": sorted({r["verdict"] for r in mv}),
+        "manual_verdict_present": any(r["verdict"] == "manual" for r in mv),
+    }
+    # ---- 上一版「留 manual 10,013 层」的去向对账（旧口径 = tier3）
+    old_manual = [r for r in tu if r["tier"] == "tier3"]
+    out["reconcile_old_manual"] = {
+        "layers": len(old_manual), "rows": rows_of(old_manual),
+        "to_minimal_safe": [sum(1 for r in old_manual if r["verdict"] == "minimal_safe"),
+                            rows_of([r for r in old_manual if r["verdict"] == "minimal_safe"])],
+        "to_unavailable": [sum(1 for r in old_manual if r["verdict"] == "unavailable"),
+                           rows_of([r for r in old_manual if r["verdict"] == "unavailable"])],
+    }
+    # ---- 三档（判据不变，作参考）
+    out["tier"] = {t: {"layers": sum(1 for r in tu if r["tier"] == t),
+                       "rows": rows_of([r for r in tu if r["tier"] == t])}
                    for t in ("tier1", "tier2", "tier3")}
-    # ---- 挪动表
-    out["move"] = {m: {"layers": sum(1 for r in rows if r["move"] == m),
-                       "rows": rows_of([r for r in rows if r["move"] == m]),
-                       "tu_layers": sum(1 for r in tu if r["move"] == m),
-                       "tu_rows": rows_of([r for r in tu if r["move"] == m])}
-                   for m in ("active", "minimal_safe", "manual")}
-    # ---- 8 条否定证据
+    # ---- 8 条否定证据（全库 + TU）
     out["evidence"] = {}
     for k in EKEYS:
         hit = [r for r in rows if r[f"{k}_state"] == "hit"]
@@ -52,14 +94,14 @@ def main():
             "tu_hit_layers": sum(1 for r in tu if r[f"{k}_state"] == "hit"),
             "tu_hit_rows": rows_of([r for r in tu if r[f"{k}_state"] == "hit"]),
             "provider_top": collections.Counter(r["provider_id"] for r in hit).most_common(5),
-            "granularity": collections.Counter(r["granularity"] for r in hit).most_common(),
-            "sample_detail": sorted({r[f"{k}_detail"] for r in hit if r.get(f"{k}_detail")})[:3]}
-    # ---- TU 留 manual 的卡点
-    out["tu_blockers"] = collections.Counter(r["move_reason"] for r in tu if r["move"] == "manual").most_common()
-    # ---- Tier2 样例
-    out["tier2_samples"] = [{kk: r[kk] for kk in ("layer_id", "provider_id", "state", "granularity", "geom",
-                                                  "usable", "share", "coverage_rows", "move_reason")}
-                            for r in tu if r["tier"] == "tier2"][:5]
+            "granularity": collections.Counter(r["granularity"] for r in hit).most_common()}
+    # ---- 暂不可用的卡点分布（新的 delivery 依据）
+    out["unavailable_blockers"] = collections.Counter(r["reason_evidence"] for r in un).most_common(12)
+    out["unavailable_missing"] = {
+        "缺门牌": sum(1 for r in un if "E1" in r["reason_evidence"]),
+        "缺街名": sum(1 for r in un if "E2" in r["reason_evidence"]),
+        "无 url/本地读不出(provider=none)": sum(1 for r in un if r["provider"] == "none"),
+    }
     # ---- 空间验算
     fx = [r for r in spatial if r["kind"] == "fixture_layer"]
     out["spatial"] = {"fixture_layers": len(fx),
@@ -68,35 +110,9 @@ def main():
                       "fixtures": [{kk: r[kk] for kk in ("key", "n", "outside_share", "unique_rate",
                                                          "top_point_share", "p50_boundary_dist_m",
                                                          "p95_boundary_dist_m", "verdict")} for r in fx]}
-    # ---- 抽样清单（第 5 步抽样/全扫范围，落盘备查）
-    slist = [{"layer_id": f["key"], "kind": "fixture_layer", "n_rows": f["n"], "seed": 20261124,
-              "note": "真实样本，逐行坐标全部参与空间验算"} for f in fx]
-    lf = os.path.join(os.path.dirname(HERE), "full-inventory-20261124", "inventory-local-fields.csv")
-    seen = {}
-    for r in csv.DictReader(open(lf, encoding="utf-8")):
-        seen.setdefault(r["layer"], set()).add(r["denom"])
-    slist += [{"layer_id": k, "kind": "local_layer_field_table", "n_rows": max(v), "seed": 0,
-               "note": "字段级全表（非抽样）参与 null 率突变检测"} for k, v in sorted(seen.items())]
-    slist += [{"layer_id": f"registry_layer:{r['layer_id']}", "kind": "registry_layer",
-               "n_rows": 0, "seed": 20261124, "note": "无坐标样本 → 空间验算未跑（不计入抽样）"}
-              for r in rows[:0]]
-    with open(os.path.join(HERE, "sampling-list.csv"), "w", newline="", encoding="utf-8") as fh:
-        w = csv.DictWriter(fh, fieldnames=["layer_id", "kind", "n_rows", "seed", "note"])
-        w.writeheader()
-        w.writerows(slist)
-    out["sampling"] = {"fixture_layers": len(fx), "local_layers": len(seen), "total": len(slist)}
-    # ---- 闭合断言（差额必须为 0，写进报告）
-    out["closure"] = {
-        "tier_layers": sum(v["layers"] for v in out["tier"].values()),
-        "tier_rows": sum(v["rows"] for v in out["tier"].values()),
-        "move_layers": sum(v["layers"] for v in out["move"].values()),
-        "move_rows": sum(v["rows"] for v in out["move"].values()),
-        "tu_move_layers": sum(v["tu_layers"] for v in out["move"].values()),
-        "tu_move_rows": sum(v["tu_rows"] for v in out["move"].values()),
-        "tu_blocked_layers": sum(n for _, n in out["tu_blockers"]),
-    }
     json.dump(out, open(os.path.join(HERE, "summary.json"), "w"), ensure_ascii=False, indent=1)
-    print(json.dumps(out, ensure_ascii=False, indent=1))
+    print(json.dumps({k: out[k] for k in ("split", "coverage", "closure", "reconcile_old_manual",
+                                          "unavailable_missing")}, ensure_ascii=False, indent=1))
 
 
 if __name__ == "__main__":
