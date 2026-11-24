@@ -235,8 +235,6 @@ def main() -> int:
                    "universe": "d1", "provider": L["provider"], "rows": [],
                    "status": "unavailable", "reason": f"worker_exc: {type(e).__name__}: {e}",
                    "http_code": None, "attempts": 0}
-        if rec.get("status") == "unavailable" and rec.get("reason", "").startswith("exhausted"):
-            return L["url"], rec   # 不落盘的临时失败，下一轮还能重试
         tmp = p + ".tmp"
         with open(tmp, "w") as f:
             json.dump(rec, f, ensure_ascii=False, separators=(",", ":"))

@@ -39,6 +39,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--states", default="DE,NH,IA")
     ap.add_argument("--n", type=int, default=3)
+    ap.add_argument("--name", default="SPOTCHECK.md")
     a = ap.parse_args()
     os.makedirs(OUT, exist_ok=True)
     lines, hits = [], 0
@@ -67,7 +68,7 @@ def main() -> int:
                 f"| {st} | {r['layer_url']} | `{os.path.basename(gz)}` | "
                 f"{fg[0]:.9f}, {fg[1]:.9f} ({fg[2]}) | "
                 f"{float(r['lon_raw']):.9f}, {float(r['lat_raw']):.9f} | {'✅ 一致' if ok else '❌ 不一致'} |")
-    with open(os.path.join(OUT, "SPOTCHECK.md"), "w") as f:
+    with open(os.path.join(OUT, a.name), "w") as f:
         f.write("# 坐标真实性抽查（CSV ↔ 原始响应）\n\n")
         f.write("原始响应缓存在采集机 `/data/coord-work-20261124/cache/<sha1(url)[:16]>.json.gz`，")
         f.write("未提交进仓库（体积原因）；校验方式：`scripts/spotcheck.py --states DE,NH,IA --n 3`。\n\n")

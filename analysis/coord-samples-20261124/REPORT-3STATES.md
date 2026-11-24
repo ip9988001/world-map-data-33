@@ -106,7 +106,7 @@
 
 ---
 
-## 6. 文件清单（本段）
+## 6. 文件清单（本段）；全量报告见 `REPORT-ALL.md`
 
 | 文件 | 内容 |
 |---|---|
@@ -118,9 +118,9 @@
 | `scripts/spotcheck.py` | CSV ↔ 原始响应抽查 |
 | `samples/DE.csv` `samples/NH.csv` `samples/IA.csv` | 一行一采样点，13 列 |
 | `summary-3states.json` | 三州汇总（`denominator=17168`） |
-| `layers-status.csv` | 177 行逐层状态（本段只含三州） |
-| `unavailable.csv` | 三州 1 条不可用层 + 原因 + HTTP 码 + 尝试次数 |
-| `spotcheck/SPOTCHECK.md` | 9 层逐位比对 |
+| `layers-status.csv` | 逐层状态表；全量阶段收口后为 17,168 行，三州子集用 `build_samples.py --states DE,NH,IA` 复算（`summary-3states.json` 保持三州口径） |
+| `unavailable.csv` | 不可用层 + 原因 + HTTP 码 + 尝试次数（三州部分：1 条） |
+| `spotcheck/SPOTCHECK.md` | 三州 9 层逐位比对（全量段另有 `SPOTCHECK-ALL.md`，25 层/10 个桶，25/25 一致） |
 | `logs/remote-full.log` | 全量采集日志（三州段在里面） |
 
 ## 7. 复算命令
