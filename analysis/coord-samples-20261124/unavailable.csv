@@ -1,0 +1,2 @@
+layer_url,layer_id,state,universe,reason,http_code,attempts
+https://services1.arcgis.com/BkFxaEFNwHqX3tAw/arcgis/rest/services/FS_VCGI_OPENDATA_TABLE_E911_GEONAMES_SP_v1/FeatureServer/0,FeatureServer/0,NH,d1,"no_geometry_in_response (features=50, geometryType=none)",200,1

@@ -1,0 +1,39 @@
+{
+ "scope": "3STATES",
+ "denominator": 17168,
+ "states_in_scope": [
+  "DE",
+  "IA",
+  "NH"
+ ],
+ "layers_in_scope": 177,
+ "layers_sampled_ge50": 143,
+ "layers_sampled_partial": 33,
+ "layers_unavailable": 1,
+ "rows_total": 7956,
+ "by_state": {
+  "DE": {
+   "layers": 41,
+   "ge50": 33,
+   "partial": 8,
+   "unavailable": 0,
+   "rows": 1876
+  },
+  "IA": {
+   "layers": 83,
+   "ge50": 69,
+   "partial": 14,
+   "unavailable": 0,
+   "rows": 3751
+  },
+  "NH": {
+   "layers": 53,
+   "ge50": 41,
+   "partial": 11,
+   "unavailable": 1,
+   "rows": 2329
+  }
+ },
+ "target_rows_per_layer": 50,
+ "generated_utc": "2026-11-24T15:32:32Z"
+}
