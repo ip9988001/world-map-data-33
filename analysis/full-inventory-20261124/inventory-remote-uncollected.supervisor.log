@@ -1,0 +1,1 @@
+2026-11-24T06:11:19Z supervisor start pid=583968 pattern=^python3 -u analysis/full_inventory_remote\.py stall=600s max_restarts=24

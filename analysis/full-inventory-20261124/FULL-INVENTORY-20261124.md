@@ -190,4 +190,30 @@ road_only 8 / full_address 1 / no_zip 1）。
 5. **7 个脏层**里 3 个（Vilas / Onslow / Buncombe）建议下次探针用 60s 超时 + 2 次换时段，别用 8s 就判死。
 
 
-> Phase 3 提交时点快照：已扫 **240** 层（分片行数），计划 54,772，剩余 54532；作业仍在后台运行，checkpoint 可续。
+---
+
+### 4.2 2026-11-24 06:07Z 续跑记录（首次后台进程已于 03:08:27Z 静默死亡）
+
+**死因（{未完全定位}）**：最后写入 `shard-00081.ndjson` 03:08、`progress.json` phase3 `done=16240`，此后无任何进程、无 traceback，`dmesg` 无 OOM 记录；日志最后一行是 `16000/54772` 的常规进度行。判为「宿主/会话侧静默终止」，非脚本异常 → 因此加了看门狗（见下）。
+
+**续跑语义（未改）**：`full_inventory_remote.py:163` `def load_done()` 读 `shards/*.ndjson` 所有 `url` → `:194` `todo = [x for x in todo if x["url"].rstrip("/") not in done]`。启动自证：`todo=38572 already_done=16240 concurrency=8`。
+
+**层数口径对齐（16,240 vs 16,242）**：CSV 物理行 16,242 = 表头 1 + 数据 16,240 + **1 行跨两个物理行**（`montgomeryplans.org/…/MapServer/13` 的 url 含控制字符被 csv 引号包裹）。故「已探层」= **16,240**（分片行数与 CSV 去重 url 数三方一致）。剩余 = 54,812 − 16,240 = **38,572**。
+
+**对脚本的唯一改动（探针逻辑零改动）**：
+1. `phase3_live` 心跳：30s 一次原子写（`progress.json.tmp` + `os.replace`），字段 `done/total/pct/last_url/pid/updated_at/eta_utc`（另附 `ok/fail/rate/elapsed`）；原 200 层才写一次 → 现在 ≤60s 保证刷新。
+2. `phase3.ok/fail/unreachable` 改为**累计基**（重启前由 16,240 条分片按脚本同一判据重算：ok 3,741 / fail 12,499 / unreachable 12,499），避免重启把计数清零。
+3. `_lock` 由 `Lock` → `RLock`（心跳与 flush 互斥，不可重入会死锁）。
+
+**看门狗**：`analysis/full_inventory_supervise.sh`（pid 583968，60s 轮询）
+- 进程消失 → append 日志 + 重新拉起（续跑仍靠分片，不重采）
+- 进程在但 `phase3_live.updated_at` 落后 >600s → 判卡死，kill + 拉起
+- `done >= total` 即自退；最多重启 24 次；全程留痕 `inventory-remote-uncollected.supervisor.log`
+
+**运行体**：探测进程 pid 583907（PPID 1，setsid 脱离会话），日志 append 到 `inventory-remote-uncollected.run.log`；启动后 60s / 92s 两次查活均存活（RSS 485 MB）。
+
+**续跑后实测**：`shard-00082` 于 06:10:5x 落盘（200 行，与既有 16,240 url 交集 **0**）；
+06:11 时 `done=16,440/54,812 (29.99%)`，窗口速率 0.91–1.21 层/s →
+**ETA ≈ 2026-11-24T18:00Z（±1.5h，区间 16:30Z–19:30Z）**。
+
+> 快照（此文件最后更新时点）：已扫 **16,440** 层，计划 54,812，剩余 38,372；探测进程与看门狗均在跑。

@@ -45,7 +45,59 @@ NUM = ("housenum", "addrnum", "addnum", "number", "num", "houseno", "situs", "bl
 COLS = ["url", "state", "title", "svc", "geom", "n_fields", "maxRecordCount", "count",
         "count_source", "sampled_n", "fields_number_like", "number_nonnull",
         "addr_core_hit", "usable", "requests_n", "http_meta", "http_sample", "probe_note"]
-_lock = threading.Lock()
+_lock = threading.RLock()
+# 实时状态（供 30s 心跳写 progress.json；不改动采集语义）
+STATE = {"done": 0, "done0": 0, "total": 0, "last_url": "", "pid": 0,
+         "ok": 0, "fail": 0, "unreachable": 0, "t0": 0.0}
+_stop = threading.Event()
+
+
+def utcnow(offset_s=0.0):
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() + offset_s))
+
+
+def write_progress():
+    """原子写 progress.json：新增顶层 phase3_live（done/total/pct/last_url/pid/
+    updated_at/eta_utc），同时刷新既有 phase3 块，不删除任何既有键。"""
+    with _lock:
+        st = dict(STATE)
+        try:
+            prog = (json.load(open(PROGRESS, encoding="utf-8"))
+                    if os.path.exists(PROGRESS) else {})
+            if not isinstance(prog, dict):
+                prog = {}
+        except Exception:  # noqa: BLE001
+            prog = {}
+        el = max(1e-9, time.time() - st["t0"]) if st["t0"] else 0.0
+        rate = (st["done"] - st["done0"]) / el if el else 0.0
+        remain = max(0, st["total"] - st["done"])
+        live = {"done": st["done"], "total": st["total"],
+                "pct": round(100.0 * st["done"] / st["total"], 2) if st["total"] else 0.0,
+                "last_url": st["last_url"], "pid": st["pid"],
+                "updated_at": utcnow(),
+                "eta_utc": utcnow(remain / rate) if rate > 0 else "",
+                "ok": st["ok"], "fail": st["fail"],
+                "rate_layers_per_s": round(rate, 3), "elapsed_s": round(el, 1)}
+        prog = {"phase3_live": live, **{k: v for k, v in prog.items() if k != "phase3_live"}}
+        p3 = prog.get("phase3")
+        if not isinstance(p3, dict):
+            p3 = prog["phase3"] = {}
+        p3.update({"at": live["updated_at"], "planned": st["total"], "done": st["done"],
+                   "ok": st["ok"], "fail": st["fail"], "unreachable": st["unreachable"],
+                   "elapsed_s": live["elapsed_s"],
+                   "rate_layers_per_s": live["rate_layers_per_s"]})
+        tmp = PROGRESS + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as fh:
+            json.dump(prog, fh, ensure_ascii=False, indent=1)
+        os.replace(tmp, PROGRESS)
+
+
+def _heartbeat(interval=30):
+    while not _stop.wait(interval):
+        try:
+            write_progress()
+        except Exception as e:  # noqa: BLE001
+            print(f"progress_err {type(e).__name__}: {e}", flush=True)
 
 
 def _j(b):
@@ -197,6 +249,16 @@ def main():
     print(f"todo={len(todo)} already_done={len(done)} concurrency={a.concurrency}", flush=True)
 
     t0 = time.time()
+    try:
+        _prev = json.load(open(PROGRESS, encoding="utf-8")).get("phase3", {}) or {}
+    except Exception:  # noqa: BLE001
+        _prev = {}
+    base = {k: int(_prev.get(k) or 0) for k in ("ok", "fail", "unreachable")}
+    STATE.update({"done": len(done), "done0": len(done), "total": len(todo) + len(done),
+                  "last_url": "", "pid": os.getpid(), "t0": t0,
+                  "ok": base["ok"], "fail": base["fail"], "unreachable": base["unreachable"]})
+    threading.Thread(target=_heartbeat, kwargs={"interval": 30}, daemon=True).start()
+    write_progress()
     existing = [int(f[6:11]) for f in os.listdir(SHARDS) if f.startswith("shard-") and f.endswith(".ndjson")]
     shard_no, buf, n_ok, n_fail = (max(existing) + 1 if existing else 0), [], 0, 0
     stats = collections.Counter()
@@ -221,14 +283,7 @@ def main():
         flush_csv(buf, first=new_file if shard_no == 0 else False)
         shard_no += 1
         buf = []
-        prog = json.load(open(PROGRESS, encoding="utf-8")) if os.path.exists(PROGRESS) else {}
-        prog["phase3"] = {"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                          "planned": len(todo) + len(done), "done": len(done) + n_ok + n_fail,
-                          "ok": stats["ok"], "fail": stats["fail"],
-                          "unreachable": stats["unreachable"],
-                          "elapsed_s": round(time.time() - t0, 1),
-                          "rate_layers_per_s": round((n_ok + n_fail) / max(1e-9, time.time() - t0), 3)}
-        json.dump(prog, open(PROGRESS, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+        write_progress()
 
     with ThreadPoolExecutor(max_workers=a.concurrency) as ex:
         futs = {ex.submit(probe, x): x for x in todo}
@@ -248,6 +303,11 @@ def main():
             with _lock:
                 buf.append(r)
                 n_ok, n_fail = stats["ok"], stats["fail"]
+                STATE["last_url"] = r.get("url", "")
+                STATE.update({"done": len(done) + n_ok + n_fail,
+                              "ok": base["ok"] + stats["ok"],
+                              "fail": base["fail"] + stats["fail"],
+                              "unreachable": base["unreachable"] + stats["unreachable"]})
                 flush_shard()
             if i % 500 == 0:
                 el = time.time() - t0
@@ -257,6 +317,8 @@ def main():
                 print("  TIME BUDGET reached", flush=True)
                 break
     flush_shard(force=True)
+    _stop.set()
+    write_progress()
     print(json.dumps({"probed": n_ok + n_fail, "ok": stats["ok"], "fail": stats["fail"],
                       "unreachable": stats["unreachable"],
                       "usable": {k: v for k, v in stats.items()

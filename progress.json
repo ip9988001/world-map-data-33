@@ -1,4 +1,17 @@
 {
+ "phase3_live": {
+  "done": 16456,
+  "total": 54812,
+  "pct": 30.02,
+  "last_url": "https://services.arcgis.com/GL0fWlNkwysZaKeV/arcgis/rest/services/New_Orleans_Boundary/FeatureServer/0",
+  "pid": 583907,
+  "updated_at": "2026-11-24T06:11:40Z",
+  "eta_utc": "2026-11-24T19:30:47Z",
+  "ok": 3955,
+  "fail": 12501,
+  "rate_layers_per_s": 0.8,
+  "elapsed_s": 270.0
+ },
  "phase": 0,
  "at": "2026-11-24T00:48:22Z",
  "ledger_freeze": "f836112",
@@ -38,13 +51,21 @@
   "concurrency_max": 8
  },
  "phase3": {
-  "at": "2026-11-24T01:25:08Z",
+  "at": "2026-11-24T06:11:40Z",
   "planned": 54812,
-  "done": 640,
-  "ok": 92,
-  "fail": 508,
-  "unreachable": 508,
-  "elapsed_s": 494.8,
-  "rate_layers_per_s": 1.213
+  "done": 16456,
+  "ok": 3955,
+  "fail": 12501,
+  "unreachable": 12501,
+  "elapsed_s": 270.0,
+  "rate_layers_per_s": 0.8
+ },
+ "phase3_scan_base": {
+  "at": "2026-11-24T06:08:00Z",
+  "note": "由 shards 全量重算的累计 ok/fail/unreachable（重启前真实基）",
+  "rows": 16240,
+  "ok": 3741,
+  "fail": 12499,
+  "unreachable": 12499
  }
 }
