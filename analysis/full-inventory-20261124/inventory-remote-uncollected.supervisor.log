@@ -1,1 +1,3 @@
 2026-11-24T06:11:19Z supervisor start pid=583968 pattern=^python3 -u analysis/full_inventory_remote\.py stall=600s max_restarts=24
+2026-11-24T09:12:26Z restart #1 reason=dead done=44953/54812
+2026-11-24T09:55:48Z plan complete done=54812 total=54812 -> supervisor exit

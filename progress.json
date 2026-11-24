@@ -1,16 +1,16 @@
 {
  "phase3_live": {
-  "done": 16456,
+  "done": 54812,
   "total": 54812,
-  "pct": 30.02,
-  "last_url": "https://services.arcgis.com/GL0fWlNkwysZaKeV/arcgis/rest/services/New_Orleans_Boundary/FeatureServer/0",
-  "pid": 583907,
-  "updated_at": "2026-11-24T06:11:40Z",
-  "eta_utc": "2026-11-24T19:30:47Z",
-  "ok": 3955,
-  "fail": 12501,
-  "rate_layers_per_s": 0.8,
-  "elapsed_s": 270.0
+  "pct": 100.0,
+  "last_url": "https://www.wpsgn.ca/s22/rest/services/wpsgnPublic/Parry_Sound_Area_Business_Directory/FeatureServer/0",
+  "pid": 586598,
+  "updated_at": "2026-11-24T09:55:38Z",
+  "eta_utc": "2026-11-24T09:55:38Z",
+  "ok": 41570,
+  "fail": 13355,
+  "rate_layers_per_s": 3.871,
+  "elapsed_s": 2575.9
  },
  "phase": 0,
  "at": "2026-11-24T00:48:22Z",
@@ -51,14 +51,14 @@
   "concurrency_max": 8
  },
  "phase3": {
-  "at": "2026-11-24T06:11:40Z",
+  "at": "2026-11-24T09:55:38Z",
   "planned": 54812,
-  "done": 16456,
-  "ok": 3955,
-  "fail": 12501,
-  "unreachable": 12501,
-  "elapsed_s": 270.0,
-  "rate_layers_per_s": 0.8
+  "done": 54812,
+  "ok": 41570,
+  "fail": 13355,
+  "unreachable": 13354,
+  "elapsed_s": 2575.9,
+  "rate_layers_per_s": 3.871
  },
  "phase3_scan_base": {
   "at": "2026-11-24T06:08:00Z",
