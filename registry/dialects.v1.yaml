@@ -1,0 +1,734 @@
+# 方言注册表 v1（生成物：python3 analysis/dialect-20261124/gen_registry.py）
+# 分母 16,010(D1) + 1,158(D2) = 17,168；D3(25,447 empty_shell) 只做 provider 聚类
+schema: dialects.v1/2026-11-24
+denominator:
+  d1_remote: 16010
+  d2_local: 1158
+  total: 17168
+  d3_observation: 25447
+  expected_d1: 16010
+  expected_d2: 1158
+  expected_total: 17168
+weekly_cap_layers: 200
+fallback:
+  dialect_id: minimal_safe
+  pool: manual
+  a_pool_eligible: false
+  rule: 只取『门牌 + 街名』两要素；任一缺失 → pool=manual，永不进 A 货池
+  reasons:
+  - template_unresolved
+  - share_below_1pct
+  - alias_conflict
+  - geom_unsupported
+  - no_golden_evidence
+dialects:
+- id: agol-t110101-buildingpoint
+  provider:
+    kind: agol
+    orgs:
+    - - Do88DoK2xjTUCXd1
+      - 29
+    - - fmL63zawJNFGptQt
+      - 2
+    - - ufOeQWjwz5JyJXKQ
+      - 2
+    - - NuWFvHYDMVmmxMeM
+      - 1
+    - - X3dmaNvzWUnemDAc
+      - 1
+    - - yEttF5DgvxltnFwP
+      - 1
+    - - w35z5FglrTpEhyQB
+      - 1
+    - - bcbi4lYRFOsss0F5
+      - 1
+    - - HFXT3ZVvUhhNGNnw
+      - 1
+    orgs_total: 9
+    note: orgs 只列前 15（层数降序），全量在 analysis/dialect-20261124/dialect.json
+  template:
+    number_aliases:
+    - addr_housenumber
+    - HouseNum
+    - STNUM
+    - OLD_STNUM
+    - maddrno
+    - House_num
+    - NUMBER
+    - NUMBER_
+    - Number
+    street_aliases:
+    - addr_street
+    - StreetName
+    - StreetType
+    - STREET
+    - OLD_STREET
+    - maddstname
+    - saddstname
+    - stname
+    - St_name
+    - St_type
+    - Street
+    - Street1
+    - Street1A
+    - Street1B
+    - Street1C
+    - Street2
+    - PostType
+    - PostTypeAbbr
+    - StName_EnerGov
+    - ROAD
+    unit_aliases: []
+    place_aliases:
+    - addr_city
+    - CityCode
+    - PLACENAME
+    - CITY
+    - PLACE_TYPE
+    - MSAGComm
+    - Placement
+    - mcity
+    - scity
+    - town
+    - Owner_City
+    - City_state
+    - MSAG_City
+    - PostalCity
+    state_aliases: []
+    zip_aliases:
+    - addr_postcode
+    - Zip
+    - ZIPCODE
+    - ZIP4
+    - mzip
+    - szip
+    - Owner_Zip
+    - ZIP_CODE
+    - ZipCode
+    - Zip4
+    signature: t110101
+    basis: probe:?f=json（真实上游字段名，见 analysis/dialect-20261124/probe-fields.ndjson）
+  geom:
+    type: esriGeometryUnknown
+    granularity: building_point
+  crs:
+    epsg: 2286
+    datum: declared_by_service
+    basis: declared
+    evidence: probe spatialReference 分布 [[2286, 29], [3857, 6], [4326, 2]]（不做‘美国默认 4326’假设）
+  mapping:
+    housenumber: $housenumber
+    street: $street
+    unit: $unit
+    city: $city
+    state: $state
+    zip: $zip
+  coverage:
+    layers_n: 39
+    rows: 82100352
+    share: 0.083374
+  anomaly:
+    rate: 0.0256
+    method: 组内 road_only 层占比（无门牌、只有街名）
+  status: active
+  a_pool_eligible: true
+  golden_cases:
+  - gc-001
+  - gc-002
+  - gc-003
+  - gc-004
+  - gc-005
+  notes: 模板签名 110101（number|street|unit|place|state|zip 依次）; 覆盖 provider 9 个; 样值层 31 个
+- id: agol-t110111-buildingpoint
+  provider:
+    kind: agol
+    orgs:
+    - - ilvOamkQCWQM5KB8
+      - 7
+    - - uFAr0LUPy14bDaLg
+      - 6
+    - - oJbAAWNInLrxvF0A
+      - 6
+    - - IxVN2oUE9EYLSnPE
+      - 5
+    - - qnjIrwR8z5Izc0ij
+      - 4
+    - - nJbIFHiSnaX0z0hS
+      - 3
+    - - LledJs8ADlUCS7Cz
+      - 3
+    - - xSEULKvB31odt3XQ
+      - 3
+    - - cuQhNeNcUrgLmYGD
+      - 2
+    - - DvFgDXTY4DS4ZXFx
+      - 2
+    - - n4v88Dv33V9Mhi0b
+      - 2
+    - - rJcpRneDUBgTeCT3
+      - 2
+    - - 91pLRT6NAIXyRhsy
+      - 2
+    - - H9hG4h4TwsT5qb1P
+      - 1
+    - - HvbabY0grzgZwGW1
+      - 1
+    orgs_total: 38
+    note: orgs 只列前 15（层数降序），全量在 analysis/dialect-20261124/dialect.json
+  template:
+    number_aliases:
+    - AddNumFull
+    - AddNum_Pre
+    - Add_Number
+    - AddNum_Suf
+    - HouseNum
+    - AddNumSuf
+    - SITEADDRESS
+    - ADDRESS_NUMBER
+    - ADDR_NUM
+    - PREADDRNUM
+    - ADDRNUM
+    - ADDRNUMSUF
+    - StreetNum
+    - AltStreetNum
+    - Add_Num
+    - Addr_Num
+    - ADDNUMSUF
+    - Number
+    - STNUM_H
+    - STNUM_L
+    - STNUM
+    - STNUMSUF
+    - SITUS_NUM
+    - PROPERTY_ADDR_NUM
+    - HOUSENUM
+    - LHN
+    - SITEADDR
+    - STREET_NUM
+    - ADDNUM
+    - Street_Number
+    - STREETNUMBER
+    - streetnum
+    - ADD_NUM
+    - NWS__HouseNumber
+    street_aliases:
+    - St_PreDir
+    - St_Name
+    - LSt_Name
+    - LSt_Type
+    - LSt_PreDir
+    - RD_NAME
+    - StName
+    - StType
+    - FullStreet
+    - AltStreetName1
+    - AltStreetName2
+    - FULL_STREET_NAME
+    - StreetName
+    - StreetType
+    - STREET_NAM
+    - ST_PRE_DIR
+    - ST_NAME
+    - LST_PREDIR
+    - LST_NAME
+    - ALT_ST_NAME
+    - St_Type
+    - STREETNAME
+    - RDNAME
+    - Street_Nam
+    - ST_TYPE
+    - StreetID
+    - RCL_Street
+    - Street
+    - Last_name
+    - First_Name
+    - SITUS_STREETNAME
+    - SITUS_STREETTYPE
+    - PROPERTY_ADDR_STREET
+    - STREET_NAME_UPPERCASE_1
+    - STREET_NAME_UPPERCASE_2
+    - STREET_SUF
+    - STNAME_TIB
+    - STTYPE_TIB
+    - STNAME_USP
+    - STTYPE_USP
+    - STREET
+    - Full_Street
+    - Street_Name
+    - STREETTYPE
+    - STREETSUFFIX
+    - LastName
+    - FirstName
+    - streetname
+    - hst_name
+    - hst_name1
+    - hst_name2
+    - hst_name3
+    - hst_name4
+    - StreetLabel
+    - LSt_PostDir
+    - NWS_StreetName
+    - NWS_PostType
+    unit_aliases: []
+    place_aliases:
+    - MSAGComm
+    - PLACENAME
+    - MUNICIPALITY
+    - PSTLCITY
+    - CITY
+    - PSTLCITYSTATEZIP
+    - USER_City
+    - Place_Type
+    - Placement
+    - CityStZip
+    - City
+    - POSTALCITY
+    - CITY_1
+    - MUNICIPALI
+    - Town_City
+    - cityname
+    - owncityname
+    - PLACEMENT
+    - MSAG
+    - PLACE_TYPE_JOIN
+    - cityname_1745608612121
+    - owncityname_1745608612121
+    - Town_City_1745608612121
+    - Fireplaces
+    - CityCD
+    - placement_
+    - PLACE_TYPE
+    - MSAGCODE
+    - TOWN
+    - MSAGCOMM
+    - MSAG_Comm
+    - PlaceID
+    - PlaceName
+    - PlaceDescr
+    - SITUS_CITY
+    - CITYCODE
+    - PROPERTY_ADDR_CITY
+    - VILLAGE
+    - USPS_CITY
+    - CityworksID
+    - CITYNAME
+    - MSAG_ADD
+    - Township_N
+    - LOCCITY
+    - POSTALCOMM
+    - MUNICIPAL
+    - NWS_PostalCity
+    state_aliases:
+    - State
+    - STATE
+    zip_aliases:
+    - Post_Code
+    - ZipName
+    - ZipCode
+    - PSTLZIP5
+    - PSTLZIP4
+    - ZIP
+    - ZIP_EXTENSION
+    - USER_Zip_Code
+    - Post_Code4
+    - Zipcode
+    - ZIPCODE
+    - zip1
+    - zip2
+    - ownzip1
+    - ownzip2
+    - ZIP4
+    - zip1_1745608612121
+    - zip2_1745608612121
+    - ownzip1_1745608612121
+    - ownzip2_1745608612121
+    - Zip
+    - ZIPPLUS4
+    - Zip_Code
+    - ZipExt
+    - SITUS_ZIP
+    - ZIP_1
+    - PROPERTY_ADDR_ZIP
+    - PROPERTY_ADDR_ZIP4
+    - ZIP1
+    - ZIP2
+    - Postalcode
+    - LOCZIP
+    - NWS_Zip
+    signature: t110111
+    basis: probe:?f=json（真实上游字段名，见 analysis/dialect-20261124/probe-fields.ndjson）
+  geom:
+    type: esriGeometryUnknown
+    granularity: building_point
+  crs:
+    epsg: 3857
+    datum: declared_by_service
+    basis: declared
+    evidence: probe spatialReference 分布 [[3857, 29], [3438, 7], [2227, 6]]（不做‘美国默认 4326’假设）
+  mapping:
+    housenumber: $housenumber
+    street: $street
+    unit: $unit
+    city: $city
+    state: $state
+    zip: $zip
+  coverage:
+    layers_n: 72
+    rows: 6468377
+    share: 0.006569
+  anomaly:
+    rate: 0.0278
+    method: 组内 road_only 层占比（无门牌、只有街名）
+  status: minimal_safe
+  a_pool_eligible: false
+  golden_cases:
+  - gc-006
+  - gc-007
+  - gc-008
+  - gc-009
+  - gc-010
+  notes: 模板签名 110111（number|street|unit|place|state|zip 依次）; 覆盖 provider 38 个; 样值层 51 个
+- id: agol-t110000-buildingpoint
+  provider:
+    kind: agol
+    orgs:
+    - - KUeKSLlMUcWvuPRM
+      - 3
+    - - uPb1UC2HwTkBAlth
+      - 1
+    - - R1JbITZvSQHJsl5r
+      - 1
+    - - NtAn3q92p40X6z9O
+      - 1
+    - - IVwtHDf2UjOF6PcX
+      - 1
+    - - ue5fMdTkPeHLCobS
+      - 1
+    - - wdQEqhSQSuYA89VW
+      - 1
+    - - 4UkreHBazssuvI82
+      - 1
+    - - ovypB8ighP2NPfFE
+      - 1
+    - - aJWfVFc3hKf5GLo2
+      - 1
+    orgs_total: 10
+    note: orgs 只列前 15（层数降序），全量在 analysis/dialect-20261124/dialect.json
+  template:
+    number_aliases:
+    - st_num
+    - ADDNUMB
+    - STREET_NUMBER
+    - ADDR_NOAPT
+    - NUMBER_
+    - ADDR_NUM
+    - ST_NUMBER
+    - Number
+    - FIRE_TEST_NUM
+    street_aliases:
+    - st_name
+    - ADDSTNAME
+    - STREET
+    - Full_Street_Name
+    - STREETNAME
+    - ST_NAME
+    - StreetName
+    - StreetType
+    - STNAME
+    - STTYPE
+    - Street_Add
+    unit_aliases: []
+    place_aliases: []
+    state_aliases: []
+    zip_aliases: []
+    signature: t110000
+    basis: probe:?f=json（真实上游字段名，见 analysis/dialect-20261124/probe-fields.ndjson）
+  geom:
+    type: esriGeometryUnknown
+    granularity: building_point
+  crs:
+    epsg: 3857
+    datum: declared_by_service
+    basis: declared
+    evidence: probe spatialReference 分布 [[3857, 7], [2229, 1]]（不做‘美国默认 4326’假设）
+  mapping:
+    housenumber: $housenumber
+    street: $street
+    unit: $unit
+    city: $city
+    state: $state
+    zip: $zip
+  coverage:
+    layers_n: 12
+    rows: 1789915
+    share: 0.001818
+  anomaly:
+    rate: 0.0833
+    method: 组内 road_only 层占比（无门牌、只有街名）
+  status: minimal_safe
+  a_pool_eligible: false
+  golden_cases:
+  - gc-011
+  - gc-012
+  - gc-013
+  - gc-014
+  notes: 模板签名 110000（number|street|unit|place|state|zip 依次）; 覆盖 provider 10 个; 样值层 9 个
+golden_cases:
+- id: gc-001
+  source_layer: /data/workspace/world-map-data-33/dist/intake-full/layers/TpEhyQB_arcgis_rest_services_Addresses_91024_FeatureServer_0
+  source_table: addr
+  source_fields:
+    housenumber: house_number
+    street: street_name
+    zip: zip5
+  input:
+    Number: '181'
+    StreetName: ALEGRIA
+    ZipCode: '91024'
+  expect:
+    housenumber: '181'
+    street: ALEGRIA
+    zip: '91024'
+  expect_flags:
+  - no_zip_ok
+  dialect_id: agol-t110101-buildingpoint
+- id: gc-002
+  source_layer: /data/workspace/world-map-data-33/dist/intake-full/layers/GptQt_arcgis_rest_services_Address_Points_RG_FeatureServer_0
+  source_table: addr
+  source_fields:
+    housenumber: house_number
+    street: street_name
+  input:
+    HouseNum: '0'
+    StreetName: MONACA
+  expect:
+    housenumber: '0'
+    street: MONACA
+  expect_flags:
+  - no_zip_ok
+  dialect_id: agol-t110101-buildingpoint
+- id: gc-003
+  source_layer: /data/workspace/world-map-data-33/dist/intake-full/layers/arcgis_rest_services_PSU_PEMA_ADDRESS_POINTS_FeatureServer_0
+  source_table: addr
+  source_fields:
+    housenumber: house_number
+    street: street_name
+  input:
+    HouseNum: '0'
+    StreetName: PARKMOUNT
+  expect:
+    housenumber: '0'
+    street: PARKMOUNT
+  expect_flags:
+  - no_zip_ok
+  dialect_id: agol-t110101-buildingpoint
+- id: gc-004
+  source_layer: /data/workspace/world-map-data-33/dist/intake-full/layers/s_Meade_Co_KY_Addresses_Roads_Lot_Lines_WFL1_FeatureServer_0
+  source_table: addr
+  source_fields:
+    housenumber: _house_num
+    street: street_name
+    zip: zip5
+  input:
+    STNUM: '0'
+    STREET: OLD STATE RD
+    ZIPCODE: '40108'
+  expect:
+    housenumber: '0'
+    street: OLD STATE RD
+    zip: '40108'
+  expect_flags:
+  - no_zip_ok
+  dialect_id: agol-t110101-buildingpoint
+- id: gc-005
+  source_layer: /data/workspace/world-map-data-33/dist/intake-full/layers/ervices_Meade_Co_KY_Addresses_and_Roads_WFL1_FeatureServer_1
+  source_table: addr
+  source_fields:
+    housenumber: _house_num
+    street: street_name
+    zip: zip5
+  input:
+    STNUM: '0'
+    STREET: OLD STATE RD
+    ZIPCODE: '40108'
+  expect:
+    housenumber: '0'
+    street: OLD STATE RD
+    zip: '40108'
+  expect_flags:
+  - no_zip_ok
+  dialect_id: agol-t110101-buildingpoint
+- id: gc-006
+  source_layer: /data/workspace/world-map-data-33/dist/intake-full/layers/ycSVzMEzm7ey_arcgis_rest_services_Addressing_FeatureServer_0
+  source_table: addr
+  source_fields:
+    housenumber: house_number
+    street: street_name
+    state: state_abbr
+  input:
+    ADD_NUM: '140'
+    NWS_StreetName: FLORES
+    STATE: TX
+  expect:
+    housenumber: '140'
+    street: FLORES
+    state: TX
+  expect_flags:
+  - no_zip_ok
+  dialect_id: agol-t110111-buildingpoint
+- id: gc-007
+  source_layer: /data/workspace/world-map-data-33/dist/intake-full/layers/InLrxvF0A_arcgis_rest_services_AddressR2_gdb_FeatureServer_0
+  source_table: addr
+  source_fields:
+    housenumber: house_number
+    street: street_name
+    city: postal_city
+    state: state_abbr
+    zip: zip5
+  input:
+    HouseNum: '0'
+    AltStreetName1: IRADELL
+    PLACENAME: T ITHACA
+    State: NY
+    ZipName: '14850'
+  expect:
+    housenumber: '0'
+    street: IRADELL
+    city: T ITHACA
+    state: NY
+    zip: '14850'
+  expect_flags:
+  - no_zip_ok
+  dialect_id: agol-t110111-buildingpoint
+- id: gc-008
+  source_layer: /data/workspace/world-map-data-33/dist/intake-full/layers/vF0A_arcgis_rest_services_AddressSearchLayer_FeatureServer_0
+  source_table: addr
+  source_fields:
+    housenumber: house_number
+    street: street_name
+    city: postal_city
+    state: state_abbr
+    zip: zip5
+  input:
+    HouseNum: '0'
+    AltStreetName1: WILLARD
+    PLACENAME: C ITHACA
+    State: NY
+    ZipName: '14850'
+  expect:
+    housenumber: '0'
+    street: WILLARD
+    city: C ITHACA
+    state: NY
+    zip: '14850'
+  expect_flags:
+  - no_zip_ok
+  dialect_id: agol-t110111-buildingpoint
+- id: gc-009
+  source_layer: /data/workspace/world-map-data-33/dist/intake-full/layers/WNInLrxvF0A_arcgis_rest_services_Address_gdb_FeatureServer_0
+  source_table: addr
+  source_fields:
+    housenumber: house_number
+    street: street_name
+    city: postal_city
+    state: state_abbr
+    zip: zip5
+  input:
+    HouseNum: '0'
+    AltStreetName1: IRADELL
+    PLACENAME: T ITHACA
+    State: NY
+    ZipName: '14850'
+  expect:
+    housenumber: '0'
+    street: IRADELL
+    city: T ITHACA
+    state: NY
+    zip: '14850'
+  expect_flags:
+  - no_zip_ok
+  dialect_id: agol-t110111-buildingpoint
+- id: gc-010
+  source_layer: /data/workspace/world-map-data-33/dist/intake-full/layers/AAWNInLrxvF0A_arcgis_rest_services_TCAddress_FeatureServer_0
+  source_table: addr
+  source_fields:
+    housenumber: house_number
+    street: street_name
+    city: postal_city
+    state: state_abbr
+    zip: zip5
+  input:
+    HouseNum: '0'
+    AltStreetName1: WILLARD
+    PLACENAME: C ITHACA
+    State: NY
+    ZipName: '14850'
+  expect:
+    housenumber: '0'
+    street: WILLARD
+    city: C ITHACA
+    state: NY
+    zip: '14850'
+  expect_flags:
+  - no_zip_ok
+  dialect_id: agol-t110111-buildingpoint
+- id: gc-011
+  source_layer: /data/workspace/world-map-data-33/dist/intake-full/layers/arcgis_rest_services_AddressQC_fieldmap_WFL1_FeatureServer_0
+  source_table: addr
+  source_fields:
+    housenumber: house_number
+    street: street_name
+  input:
+    ADDR_NUM: '0'
+    STREETNAME: PERSHING AVENUE
+  expect:
+    housenumber: '0'
+    street: PERSHING AVENUE
+  expect_flags:
+  - no_zip_ok
+  dialect_id: agol-t110000-buildingpoint
+- id: gc-012
+  source_layer: /data/workspace/world-map-data-33/dist/intake-full/layers/bS_arcgis_rest_services_Surry_E911_PSAP_View_FeatureServer_0
+  source_table: addr
+  source_fields:
+    housenumber: house_number
+    street: street_name
+  input:
+    NUMBER_: '0'
+    STREET: BEECHLAND
+  expect:
+    housenumber: '0'
+    street: BEECHLAND
+  expect_flags:
+  - no_zip_ok
+  dialect_id: agol-t110000-buildingpoint
+- id: gc-013
+  source_layer: /data/workspace/world-map-data-33/dist/intake-full/layers/gis_rest_services_E911Addresses_Inside_100Yr_FeatureServer_0
+  source_table: addr
+  source_fields:
+    housenumber: house_number
+    street: street_name
+  input:
+    Number: '1128'
+    StreetName: SCHOOL
+  expect:
+    housenumber: '1128'
+    street: SCHOOL
+  expect_flags:
+  - no_zip_ok
+  dialect_id: agol-t110000-buildingpoint
+- id: gc-014
+  source_layer: /data/workspace/world-map-data-33/dist/intake-full/layers/SQHJsl5r_arcgis_rest_services_Address_Labels_FeatureServer_0
+  source_table: addr
+  source_fields:
+    housenumber: _house_num
+    street: street_name
+  input:
+    STREET_NUMBER: '0'
+    STREET: N WILLARD WAY
+  expect:
+    housenumber: '0'
+    street: N WILLARD WAY
+  expect_flags:
+  - no_zip_ok
+  dialect_id: agol-t110000-buildingpoint
