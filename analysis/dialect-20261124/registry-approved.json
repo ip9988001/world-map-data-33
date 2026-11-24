@@ -1,0 +1,24 @@
+{
+ "groups": [
+  [
+   "agol",
+   "110101",
+   "building_point"
+  ],
+  [
+   "agol",
+   "110111",
+   "building_point"
+  ],
+  [
+   "agol",
+   "110000",
+   "building_point"
+  ]
+ ],
+ "ids": [
+  "agol-t110101-buildingpoint",
+  "agol-t110111-buildingpoint",
+  "agol-t110000-buildingpoint"
+ ]
+}
