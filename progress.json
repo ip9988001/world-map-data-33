@@ -1,0 +1,71 @@
+{
+ "phase3_live": {
+  "done": 54812,
+  "total": 54812,
+  "pct": 100.0,
+  "last_url": "https://www.wpsgn.ca/s22/rest/services/wpsgnPublic/Parry_Sound_Area_Business_Directory/FeatureServer/0",
+  "pid": 586598,
+  "updated_at": "2026-11-24T09:55:38Z",
+  "eta_utc": "2026-11-24T09:55:38Z",
+  "ok": 41570,
+  "fail": 13355,
+  "rate_layers_per_s": 3.871,
+  "elapsed_s": 2575.9
+ },
+ "phase": 0,
+ "at": "2026-11-24T00:48:22Z",
+ "ledger_freeze": "f836112",
+ "ledger_layers_total": 3709,
+ "ledger_layers_by_stage": {
+  "04b": 272,
+  "05b": 2770,
+  "07b": 667
+ },
+ "dist": "/data/workspace/world-map-data-33/dist/intake-full",
+ "local_dirs": 2364,
+ "local_readable_layers": 1158,
+ "local_dirs_no_assets": 1206,
+ "local_dirs_outside_baseline": 9,
+ "local_dirs_outside_baseline_readable": 9,
+ "baseline_local_readable": 105,
+ "baseline_local_readable_by_url": 105,
+ "reconcile_class_counts": {
+  "local_absent_assets_exist_not_downloaded": 3550,
+  "local_ok_readable": 105,
+  "local_absent_upstream_no_assets": 54
+ },
+ "release_snapshot_tags": 1426,
+ "release_index_layers": 3986,
+ "release_bytes_known_subset": 29551737172,
+ "survey_layers": 60694,
+ "survey_distinct_urls": 60693,
+ "collected_distinct_urls": 5881,
+ "remote_uncollected_layers": 54812,
+ "phase2_plan": {
+  "layers_to_scan": 1158,
+  "sample_per_layer": 200
+ },
+ "phase3_plan": {
+  "layers": 54812,
+  "requests_per_layer": 2,
+  "concurrency_max": 8
+ },
+ "phase3": {
+  "at": "2026-11-24T09:55:38Z",
+  "planned": 54812,
+  "done": 54812,
+  "ok": 41570,
+  "fail": 13355,
+  "unreachable": 13354,
+  "elapsed_s": 2575.9,
+  "rate_layers_per_s": 3.871
+ },
+ "phase3_scan_base": {
+  "at": "2026-11-24T06:08:00Z",
+  "note": "由 shards 全量重算的累计 ok/fail/unreachable（重启前真实基）",
+  "rows": 16240,
+  "ok": 3741,
+  "fail": 12499,
+  "unreachable": 12499
+ }
+}
