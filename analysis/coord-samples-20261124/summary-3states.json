@@ -1,0 +1,49 @@
+{
+ "denominator": 17168,
+ "layers_total": 177,
+ "layers_sampled_ge50": 143,
+ "layers_sampled_partial": 33,
+ "layers_unavailable": 1,
+ "rows_total": 7956,
+ "by_state": {
+  "DE": {
+   "layers": 41,
+   "ge50": 33,
+   "partial": 8,
+   "unavailable": 0,
+   "rows": 1876,
+   "files": [
+    "DE.csv"
+   ]
+  },
+  "IA": {
+   "layers": 83,
+   "ge50": 69,
+   "partial": 14,
+   "unavailable": 0,
+   "rows": 3751,
+   "files": [
+    "IA.csv"
+   ]
+  },
+  "NH": {
+   "layers": 53,
+   "ge50": 41,
+   "partial": 11,
+   "unavailable": 1,
+   "rows": 2329,
+   "files": [
+    "NH.csv"
+   ]
+  }
+ },
+ "target_rows_per_layer": 50,
+ "shard_layers_max": 1500,
+ "generated_utc": "2026-11-24T16:30:31Z",
+ "scope": "3STATES",
+ "states_in_scope": [
+  "DE",
+  "IA",
+  "NH"
+ ]
+}

@@ -1,0 +1,558 @@
+{
+ "denominator": 17168,
+ "layers_total": 17168,
+ "layers_sampled_ge50": 13532,
+ "layers_sampled_partial": 3210,
+ "layers_unavailable": 426,
+ "rows_total": 738174,
+ "by_state": {
+  "AK": {
+   "layers": 33,
+   "ge50": 31,
+   "partial": 2,
+   "unavailable": 0,
+   "rows": 1622,
+   "files": [
+    "AK.csv"
+   ]
+  },
+  "AL": {
+   "layers": 105,
+   "ge50": 86,
+   "partial": 19,
+   "unavailable": 0,
+   "rows": 4606,
+   "files": [
+    "AL.csv"
+   ]
+  },
+  "AR": {
+   "layers": 77,
+   "ge50": 70,
+   "partial": 7,
+   "unavailable": 0,
+   "rows": 3644,
+   "files": [
+    "AR.csv"
+   ]
+  },
+  "AZ": {
+   "layers": 257,
+   "ge50": 225,
+   "partial": 32,
+   "unavailable": 0,
+   "rows": 11726,
+   "files": [
+    "AZ.csv"
+   ]
+  },
+  "CA": {
+   "layers": 1072,
+   "ge50": 848,
+   "partial": 223,
+   "unavailable": 1,
+   "rows": 46325,
+   "files": [
+    "CA.csv"
+   ]
+  },
+  "CO": {
+   "layers": 222,
+   "ge50": 158,
+   "partial": 64,
+   "unavailable": 0,
+   "rows": 9388,
+   "files": [
+    "CO.csv"
+   ]
+  },
+  "CT": {
+   "layers": 54,
+   "ge50": 41,
+   "partial": 13,
+   "unavailable": 0,
+   "rows": 2246,
+   "files": [
+    "CT.csv"
+   ]
+  },
+  "DC": {
+   "layers": 664,
+   "ge50": 653,
+   "partial": 11,
+   "unavailable": 0,
+   "rows": 32924,
+   "files": [
+    "DC.csv"
+   ]
+  },
+  "DE": {
+   "layers": 41,
+   "ge50": 33,
+   "partial": 8,
+   "unavailable": 0,
+   "rows": 1876,
+   "files": [
+    "DE.csv"
+   ]
+  },
+  "FL": {
+   "layers": 534,
+   "ge50": 429,
+   "partial": 105,
+   "unavailable": 0,
+   "rows": 23488,
+   "files": [
+    "FL.csv"
+   ]
+  },
+  "GA": {
+   "layers": 324,
+   "ge50": 271,
+   "partial": 53,
+   "unavailable": 0,
+   "rows": 14526,
+   "files": [
+    "GA.csv"
+   ]
+  },
+  "HI": {
+   "layers": 78,
+   "ge50": 53,
+   "partial": 25,
+   "unavailable": 0,
+   "rows": 2898,
+   "files": [
+    "HI.csv"
+   ]
+  },
+  "IA": {
+   "layers": 83,
+   "ge50": 69,
+   "partial": 14,
+   "unavailable": 0,
+   "rows": 3751,
+   "files": [
+    "IA.csv"
+   ]
+  },
+  "ID": {
+   "layers": 105,
+   "ge50": 98,
+   "partial": 7,
+   "unavailable": 0,
+   "rows": 5066,
+   "files": [
+    "ID.csv"
+   ]
+  },
+  "IL": {
+   "layers": 260,
+   "ge50": 203,
+   "partial": 56,
+   "unavailable": 1,
+   "rows": 11019,
+   "files": [
+    "IL.csv"
+   ]
+  },
+  "IN": {
+   "layers": 86,
+   "ge50": 75,
+   "partial": 11,
+   "unavailable": 0,
+   "rows": 3909,
+   "files": [
+    "IN.csv"
+   ]
+  },
+  "KS": {
+   "layers": 76,
+   "ge50": 54,
+   "partial": 22,
+   "unavailable": 0,
+   "rows": 3127,
+   "files": [
+    "KS.csv"
+   ]
+  },
+  "KY": {
+   "layers": 46,
+   "ge50": 37,
+   "partial": 9,
+   "unavailable": 0,
+   "rows": 1936,
+   "files": [
+    "KY.csv"
+   ]
+  },
+  "LA": {
+   "layers": 102,
+   "ge50": 82,
+   "partial": 20,
+   "unavailable": 0,
+   "rows": 4614,
+   "files": [
+    "LA.csv"
+   ]
+  },
+  "MA": {
+   "layers": 303,
+   "ge50": 212,
+   "partial": 90,
+   "unavailable": 1,
+   "rows": 12096,
+   "files": [
+    "MA.csv"
+   ]
+  },
+  "MD": {
+   "layers": 253,
+   "ge50": 213,
+   "partial": 40,
+   "unavailable": 0,
+   "rows": 11415,
+   "files": [
+    "MD.csv"
+   ]
+  },
+  "ME": {
+   "layers": 86,
+   "ge50": 80,
+   "partial": 6,
+   "unavailable": 0,
+   "rows": 4105,
+   "files": [
+    "ME.csv"
+   ]
+  },
+  "MI": {
+   "layers": 262,
+   "ge50": 193,
+   "partial": 64,
+   "unavailable": 5,
+   "rows": 11034,
+   "files": [
+    "MI.csv"
+   ]
+  },
+  "MN": {
+   "layers": 230,
+   "ge50": 188,
+   "partial": 41,
+   "unavailable": 1,
+   "rows": 10307,
+   "files": [
+    "MN.csv"
+   ]
+  },
+  "MO": {
+   "layers": 189,
+   "ge50": 114,
+   "partial": 75,
+   "unavailable": 0,
+   "rows": 6415,
+   "files": [
+    "MO.csv"
+   ]
+  },
+  "MS": {
+   "layers": 20,
+   "ge50": 19,
+   "partial": 1,
+   "unavailable": 0,
+   "rows": 966,
+   "files": [
+    "MS.csv"
+   ]
+  },
+  "MT": {
+   "layers": 33,
+   "ge50": 27,
+   "partial": 6,
+   "unavailable": 0,
+   "rows": 1371,
+   "files": [
+    "MT.csv"
+   ]
+  },
+  "NC": {
+   "layers": 416,
+   "ge50": 349,
+   "partial": 67,
+   "unavailable": 0,
+   "rows": 18718,
+   "files": [
+    "NC.csv"
+   ]
+  },
+  "ND": {
+   "layers": 29,
+   "ge50": 26,
+   "partial": 3,
+   "unavailable": 0,
+   "rows": 1391,
+   "files": [
+    "ND.csv"
+   ]
+  },
+  "NE": {
+   "layers": 39,
+   "ge50": 31,
+   "partial": 8,
+   "unavailable": 0,
+   "rows": 1685,
+   "files": [
+    "NE.csv"
+   ]
+  },
+  "NH": {
+   "layers": 53,
+   "ge50": 41,
+   "partial": 11,
+   "unavailable": 1,
+   "rows": 2329,
+   "files": [
+    "NH.csv"
+   ]
+  },
+  "NJ": {
+   "layers": 235,
+   "ge50": 179,
+   "partial": 56,
+   "unavailable": 0,
+   "rows": 10351,
+   "files": [
+    "NJ.csv"
+   ]
+  },
+  "NM": {
+   "layers": 150,
+   "ge50": 130,
+   "partial": 20,
+   "unavailable": 0,
+   "rows": 6982,
+   "files": [
+    "NM.csv"
+   ]
+  },
+  "NV": {
+   "layers": 4,
+   "ge50": 3,
+   "partial": 1,
+   "unavailable": 0,
+   "rows": 199,
+   "files": [
+    "NV.csv"
+   ]
+  },
+  "NY": {
+   "layers": 632,
+   "ge50": 533,
+   "partial": 98,
+   "unavailable": 1,
+   "rows": 28364,
+   "files": [
+    "NY.csv"
+   ]
+  },
+  "OH": {
+   "layers": 167,
+   "ge50": 139,
+   "partial": 28,
+   "unavailable": 0,
+   "rows": 7666,
+   "files": [
+    "OH.csv"
+   ]
+  },
+  "OK": {
+   "layers": 110,
+   "ge50": 91,
+   "partial": 19,
+   "unavailable": 0,
+   "rows": 4902,
+   "files": [
+    "OK.csv"
+   ]
+  },
+  "OR": {
+   "layers": 212,
+   "ge50": 151,
+   "partial": 61,
+   "unavailable": 0,
+   "rows": 9139,
+   "files": [
+    "OR.csv"
+   ]
+  },
+  "PA": {
+   "layers": 98,
+   "ge50": 85,
+   "partial": 13,
+   "unavailable": 0,
+   "rows": 4583,
+   "files": [
+    "PA.csv"
+   ]
+  },
+  "PR": {
+   "layers": 5,
+   "ge50": 1,
+   "partial": 4,
+   "unavailable": 0,
+   "rows": 97,
+   "files": [
+    "PR.csv"
+   ]
+  },
+  "RI": {
+   "layers": 13,
+   "ge50": 12,
+   "partial": 1,
+   "unavailable": 0,
+   "rows": 609,
+   "files": [
+    "RI.csv"
+   ]
+  },
+  "SC": {
+   "layers": 31,
+   "ge50": 26,
+   "partial": 5,
+   "unavailable": 0,
+   "rows": 1353,
+   "files": [
+    "SC.csv"
+   ]
+  },
+  "SD": {
+   "layers": 1,
+   "ge50": 1,
+   "partial": 0,
+   "unavailable": 0,
+   "rows": 50,
+   "files": [
+    "SD.csv"
+   ]
+  },
+  "TN": {
+   "layers": 65,
+   "ge50": 51,
+   "partial": 14,
+   "unavailable": 0,
+   "rows": 2793,
+   "files": [
+    "TN.csv"
+   ]
+  },
+  "TX": {
+   "layers": 445,
+   "ge50": 381,
+   "partial": 64,
+   "unavailable": 0,
+   "rows": 20332,
+   "files": [
+    "TX.csv"
+   ]
+  },
+  "UT": {
+   "layers": 173,
+   "ge50": 135,
+   "partial": 37,
+   "unavailable": 1,
+   "rows": 7370,
+   "files": [
+    "UT.csv"
+   ]
+  },
+  "VA": {
+   "layers": 231,
+   "ge50": 189,
+   "partial": 42,
+   "unavailable": 0,
+   "rows": 10165,
+   "files": [
+    "VA.csv"
+   ]
+  },
+  "VT": {
+   "layers": 1,
+   "ge50": 1,
+   "partial": 0,
+   "unavailable": 0,
+   "rows": 50,
+   "files": [
+    "VT.csv"
+   ]
+  },
+  "WA": {
+   "layers": 212,
+   "ge50": 171,
+   "partial": 41,
+   "unavailable": 0,
+   "rows": 9454,
+   "files": [
+    "WA.csv"
+   ]
+  },
+  "WI": {
+   "layers": 4,
+   "ge50": 4,
+   "partial": 0,
+   "unavailable": 0,
+   "rows": 200,
+   "files": [
+    "WI.csv"
+   ]
+  },
+  "WV": {
+   "layers": 6,
+   "ge50": 6,
+   "partial": 0,
+   "unavailable": 0,
+   "rows": 300,
+   "files": [
+    "WV.csv"
+   ]
+  },
+  "WY": {
+   "layers": 29,
+   "ge50": 23,
+   "partial": 6,
+   "unavailable": 0,
+   "rows": 1199,
+   "files": [
+    "WY.csv"
+   ]
+  },
+  "_UNKNOWN": {
+   "layers": 410,
+   "ge50": 88,
+   "partial": 14,
+   "unavailable": 308,
+   "rows": 4640,
+   "files": [
+    "_UNKNOWN.csv"
+   ]
+  },
+  "_UNLOCATED": {
+   "layers": 7802,
+   "ge50": 6123,
+   "partial": 1573,
+   "unavailable": 106,
+   "rows": 336853,
+   "files": [
+    "_UNLOCATED-part1.csv",
+    "_UNLOCATED-part2.csv",
+    "_UNLOCATED-part3.csv",
+    "_UNLOCATED-part4.csv",
+    "_UNLOCATED-part5.csv",
+    "_UNLOCATED-part6.csv"
+   ]
+  }
+ },
+ "target_rows_per_layer": 50,
+ "shard_layers_max": 1500,
+ "generated_utc": "2026-11-24T16:30:48Z"
+}
