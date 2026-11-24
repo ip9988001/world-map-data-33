@@ -1,0 +1,342 @@
+{
+ "states": {
+  "DE": {
+   "rows_in": 1742369,
+   "deduped_rows": 635036,
+   "dup_rows": 795527,
+   "unkeyed_rows": 5437,
+   "dropped_low_grade": 1863,
+   "dropped_out_of_state": 377823,
+   "with_point": 635036,
+   "multi_source": 519723,
+   "interpolated": 0,
+   "coord_conflict": 6894,
+   "by_grade": {
+    "S": 634879,
+    "A": 14,
+    "B": 143,
+    "C": 0
+   },
+   "by_tier": {
+    "tier1": 0,
+    "tier2": 50,
+    "tier3": 0,
+    "unrated": 634986
+   },
+   "grid": {
+    "tier1": {
+     "S": 0,
+     "A": 0,
+     "B": 0,
+     "C": 0
+    },
+    "tier2": {
+     "S": 50,
+     "A": 0,
+     "B": 0,
+     "C": 0
+    },
+    "tier3": {
+     "S": 0,
+     "A": 0,
+     "B": 0,
+     "C": 0
+    },
+    "unrated": {
+     "S": 634829,
+     "A": 14,
+     "B": 143,
+     "C": 0
+    }
+   },
+   "samples_written": 12,
+   "sources": [
+    {
+     "id": "de_nad",
+     "family": "nad",
+     "dialect": "nad-v1",
+     "dialect_origin": "engine",
+     "adapter": "ndjson",
+     "files": 4,
+     "rows_in": 562290,
+     "range_only": false,
+     "secs": 153.6
+    },
+    {
+     "id": "de_oa",
+     "family": "oa",
+     "dialect": "oa-v1",
+     "dialect_origin": "engine",
+     "adapter": "zip_csv",
+     "files": 5,
+     "rows_in": 553848,
+     "range_only": false,
+     "secs": 129.7
+    },
+    {
+     "id": "de_tiger",
+     "family": "tiger",
+     "dialect": "tiger-addrfeat-v1",
+     "dialect_origin": "engine",
+     "adapter": "zip_shp",
+     "files": 3,
+     "rows_in": 62067,
+     "range_only": true,
+     "secs": 6.2
+    },
+    {
+     "id": "de_overture",
+     "family": "overture",
+     "dialect": "overture-v1",
+     "dialect_origin": "engine",
+     "adapter": "parquet",
+     "files": 1,
+     "rows_in": 562288,
+     "range_only": false,
+     "secs": 193.8
+    },
+    {
+     "id": "de_dialect",
+     "family": "dialect_layer",
+     "dialect": "engine-dialect-samples-v1",
+     "dialect_origin": "engine",
+     "adapter": "samples_csv",
+     "files": 1,
+     "rows_in": 1876,
+     "range_only": false,
+     "secs": 0.1
+    }
+   ],
+   "tiger_street_keys": 17280,
+   "by_family": {
+    "dialect_layer": 50,
+    "nad": 552390,
+    "overture": 78074,
+    "oa": 4522
+   }
+  },
+  "NH": {
+   "rows_in": 6473709,
+   "deduped_rows": 4215786,
+   "dup_rows": 2152111,
+   "unkeyed_rows": 103552,
+   "dropped_low_grade": 2260,
+   "dropped_out_of_state": 354804,
+   "with_point": 4215786,
+   "multi_source": 920951,
+   "interpolated": 3790500,
+   "coord_conflict": 819849,
+   "by_grade": {
+    "S": 50,
+    "A": 3790095,
+    "B": 425641,
+    "C": 0
+   },
+   "by_tier": {
+    "tier1": 0,
+    "tier2": 0,
+    "tier3": 100,
+    "unrated": 4215686
+   },
+   "grid": {
+    "tier1": {
+     "S": 0,
+     "A": 0,
+     "B": 0,
+     "C": 0
+    },
+    "tier2": {
+     "S": 0,
+     "A": 0,
+     "B": 0,
+     "C": 0
+    },
+    "tier3": {
+     "S": 50,
+     "A": 0,
+     "B": 50,
+     "C": 0
+    },
+    "unrated": {
+     "S": 0,
+     "A": 3790095,
+     "B": 425591,
+     "C": 0
+    }
+   },
+   "samples_written": 12,
+   "sources": [
+    {
+     "id": "nh_granit",
+     "family": "granit",
+     "dialect": "granit-parcel-v1",
+     "dialect_origin": "engine",
+     "adapter": "ndjson",
+     "files": 10,
+     "rows_in": 601355,
+     "range_only": false,
+     "secs": 122.1
+    },
+    {
+     "id": "nh_tiger",
+     "family": "tiger",
+     "dialect": "tiger-interp-v1",
+     "dialect_origin": "engine",
+     "adapter": "ndjson",
+     "files": 1,
+     "rows_in": 5870025,
+     "range_only": false,
+     "secs": 1248.7
+    },
+    {
+     "id": "nh_nad",
+     "family": "nad",
+     "dialect": "nad-v1",
+     "dialect_origin": "engine",
+     "adapter": "ndjson",
+     "files": 1,
+     "rows_in": 0,
+     "range_only": false,
+     "secs": 38.0
+    },
+    {
+     "id": "nh_dialect",
+     "family": "dialect_layer",
+     "dialect": "engine-dialect-samples-v1",
+     "dialect_origin": "engine",
+     "adapter": "samples_csv",
+     "files": 1,
+     "rows_in": 2329,
+     "range_only": false,
+     "secs": 0.2
+    }
+   ],
+   "tiger_street_keys": 0,
+   "by_family": {
+    "granit": 425186,
+    "dialect_layer": 100,
+    "tiger": 3790500
+   }
+  },
+  "IA": {
+   "rows_in": 6097989,
+   "deduped_rows": 1817677,
+   "dup_rows": 3329043,
+   "unkeyed_rows": 739,
+   "dropped_low_grade": 56114,
+   "dropped_out_of_state": 1271283,
+   "with_point": 1817677,
+   "multi_source": 1386229,
+   "interpolated": 0,
+   "coord_conflict": 133485,
+   "by_grade": {
+    "S": 1422912,
+    "A": 255418,
+    "B": 139347,
+    "C": 0
+   },
+   "by_tier": {
+    "tier1": 0,
+    "tier2": 100,
+    "tier3": 300,
+    "unrated": 1817277
+   },
+   "grid": {
+    "tier1": {
+     "S": 0,
+     "A": 0,
+     "B": 0,
+     "C": 0
+    },
+    "tier2": {
+     "S": 0,
+     "A": 0,
+     "B": 100,
+     "C": 0
+    },
+    "tier3": {
+     "S": 150,
+     "A": 0,
+     "B": 150,
+     "C": 0
+    },
+    "unrated": {
+     "S": 1422762,
+     "A": 255418,
+     "B": 139097,
+     "C": 0
+    }
+   },
+   "samples_written": 18,
+   "sources": [
+    {
+     "id": "ia_nad",
+     "family": "nad",
+     "dialect": "nad-v1",
+     "dialect_origin": "engine",
+     "adapter": "ndjson",
+     "files": 100,
+     "rows_in": 1586226,
+     "range_only": false,
+     "secs": 473.0
+    },
+    {
+     "id": "ia_oa",
+     "family": "oa",
+     "dialect": "oa-v1",
+     "dialect_origin": "engine",
+     "adapter": "zip_csv",
+     "files": 58,
+     "rows_in": 2466617,
+     "range_only": false,
+     "secs": 528.6
+    },
+    {
+     "id": "ia_tiger",
+     "family": "tiger",
+     "dialect": "tiger-addrfeat-v1",
+     "dialect_origin": "engine",
+     "adapter": "zip_shp",
+     "files": 99,
+     "rows_in": 455523,
+     "range_only": true,
+     "secs": 45.1
+    },
+    {
+     "id": "ia_overture",
+     "family": "overture",
+     "dialect": "overture-v1",
+     "dialect_origin": "engine",
+     "adapter": "parquet",
+     "files": 1,
+     "rows_in": 1585872,
+     "range_only": false,
+     "secs": 425.7
+    },
+    {
+     "id": "ia_dialect",
+     "family": "dialect_layer",
+     "dialect": "engine-dialect-samples-v1",
+     "dialect_origin": "engine",
+     "adapter": "samples_csv",
+     "files": 1,
+     "rows_in": 3751,
+     "range_only": false,
+     "secs": 0.3
+    }
+   ],
+   "tiger_street_keys": 33288,
+   "by_family": {
+    "nad": 1411908,
+    "dialect_layer": 400,
+    "oa": 64465,
+    "overture": 340904
+   }
+  }
+ },
+ "totals": {
+  "rows_in": 14314067,
+  "deduped_rows": 6668499,
+  "dup_rows": 6276681
+ }
+}

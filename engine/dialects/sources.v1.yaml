@@ -1,0 +1,116 @@
+# 引擎方言扩展表（registry 之外的源族）
+#
+# 解析顺序（engine/inlet.py: resolve_dialect）：
+#   1) registry/dialects.v1.yaml（第 4 步产物，冻结只读）—— 命中就用注册表口径
+#   2) engine/dialects/*.yaml（本表）—— 源族自带的方言定义
+#   3) 都没有 → 显式 unsupported，落清单，不猜
+#
+# 字段映射写法：`canonical: [候选字段名, ...]`，按顺序取第一个非空值；
+# 归一（大小写/标点/缩写/方向词/单元号）在 engine/outlet_clean.py，不在这里做。
+schema: engine-dialect.v1/2026-11-25
+dialects:
+  - id: nad-v1
+    family: nad
+    adapter: ndjson
+    crs: EPSG:4326
+    precision: address_point
+    fields:
+      number: [Add_Number, AddNo_Full]
+      number_suffix: [AddNum_Suf]
+      pre_dir: [St_PreDir]
+      street: [StNam_Full, St_Name]
+      post_type: [St_PosTyp]
+      post_dir: [St_PosDir]
+      unit: [Unit, SubAddress]
+      city: [Post_City, Inc_Muni]
+      state: [State]
+      zip: [Zip_Code]
+      lon: [Longitude, _lon]
+      lat: [Latitude, _lat]
+      id: [UUID, OBJECTID]
+  - id: oa-v1
+    family: oa
+    adapter: zip_csv
+    crs: EPSG:4326
+    precision: address_point
+    fields:
+      number: [NUMBER]
+      street: [STREET]
+      unit: [UNIT]
+      city: [CITY]
+      state: [REGION]
+      zip: [POSTCODE]
+      lon: [LON]
+      lat: [LAT]
+      id: [ID, HASH]
+  - id: tiger-addrfeat-v1
+    family: tiger
+    adapter: zip_shp
+    crs: EPSG:4269
+    precision: street_range          # 只有街段+门牌区间，没有点；不给坐标，不插值
+    fields:
+      street: [FULLNAME]
+      post_type: []
+      state: []
+      from_hn: [LFROMHN]
+      to_hn: [LTOHN]
+      id: [TLID]
+    range_only: true
+  - id: tiger-interp-v1
+    family: tiger
+    adapter: ndjson
+    crs: EPSG:4326
+    precision: range_interpolation   # 上游已插值，坐标是插出来的，标记 is_interpolated
+    is_interpolated: true
+    fields:
+      number: [number]
+      street: [street]
+      unit: [unit]
+      state: [source_state]
+      zip: [postcode]
+      lon: [lon]
+      lat: [lat]
+      id: [tlid]
+  - id: granit-parcel-v1
+    family: granit
+    adapter: ndjson
+    crs: EPSG:4326
+    precision: parcel_centroid      # 地块质心（不是门牌点），按 manifest 声明
+    fields:
+      combined: [streetaddress]     # "58 BARBARA DRIVE" → 门牌 + 街名，由 outlet_clean.split_combined 解析
+      state: [source_state]
+      city: [town]
+      lon: [_lon]
+      lat: [_lat]
+      id: [u_id, parceloid]
+  - id: overture-v1
+    family: overture
+    adapter: parquet
+    crs: EPSG:4326
+    precision: address_point
+    fields:
+      number: [number]
+      street: [street]
+      unit: [unit]
+      city: [postal_city]
+      zip: [postcode]
+      lon: []                      # 坐标在 geometry(WKB) 里，由 inlet 解出
+      lat: []
+      id: [id]
+    state_from: address_levels     # list<struct<value>>，第一个元素是州
+    geometry: wkb_point
+  - id: engine-dialect-samples-v1
+    family: dialect_layer
+    adapter: samples_csv
+    crs: EPSG:4326
+    precision: mixed               # 逐行取采样时的 geom_type
+    fields:
+      number: [house_number]
+      street: [street_full, street_name]
+      unit: [unit]
+      city: [postal_city]
+      state: [state_abbr]
+      zip: [zip5]
+      lon: [lon]
+      lat: [lat]
+      id: [layer_id]
