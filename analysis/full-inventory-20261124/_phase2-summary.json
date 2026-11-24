@@ -1,0 +1,49 @@
+{
+ "phase": 2,
+ "at": "2026-11-24T01:18:34Z",
+ "dist": "/data/workspace/world-map-data-33/dist/intake-full",
+ "sample_per_layer_per_table": 200,
+ "nonnull_rate_basis": "sample200",
+ "dirs_scanned": 2364,
+ "layers_with_data": 1158,
+ "layers_empty": 1206,
+ "fields_rows": 36750,
+ "class_counts": {
+  "": 1482,
+  "A": 777,
+  "B": 104,
+  "C": 1
+ },
+ "usable_counts": {
+  "sampled_zero_rows": 276,
+  "no_zip": 777,
+  "road_only": 104,
+  "empty_shell": 1
+ },
+ "unreadable_dirs": 1206,
+ "source_counts": {
+  "unknown": 1928,
+  "step04": 151,
+  "step07": 285
+ },
+ "state_top": {
+  "": 1616,
+  "CA": 65,
+  "FL": 47,
+  "VA": 45,
+  "TX": 44,
+  "CO": 32,
+  "MO": 30,
+  "NM": 27,
+  "GA": 27,
+  "IL": 25,
+  "NC": 23,
+  "AL": 21
+ },
+ "rows_total_from_ledgers": 278753145,
+ "wall_s": 19.6,
+ "outputs": [
+  "/data/workspace/wmd-inv24/analysis/full-inventory-20261124/inventory-local-all.csv",
+  "/data/workspace/wmd-inv24/analysis/full-inventory-20261124/inventory-local-fields.csv"
+ ]
+}

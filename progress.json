@@ -1,0 +1,50 @@
+{
+ "phase": 0,
+ "at": "2026-11-24T00:48:22Z",
+ "ledger_freeze": "f836112",
+ "ledger_layers_total": 3709,
+ "ledger_layers_by_stage": {
+  "04b": 272,
+  "05b": 2770,
+  "07b": 667
+ },
+ "dist": "/data/workspace/world-map-data-33/dist/intake-full",
+ "local_dirs": 2364,
+ "local_readable_layers": 1158,
+ "local_dirs_no_assets": 1206,
+ "local_dirs_outside_baseline": 9,
+ "local_dirs_outside_baseline_readable": 9,
+ "baseline_local_readable": 105,
+ "baseline_local_readable_by_url": 105,
+ "reconcile_class_counts": {
+  "local_absent_assets_exist_not_downloaded": 3550,
+  "local_ok_readable": 105,
+  "local_absent_upstream_no_assets": 54
+ },
+ "release_snapshot_tags": 1426,
+ "release_index_layers": 3986,
+ "release_bytes_known_subset": 29551737172,
+ "survey_layers": 60694,
+ "survey_distinct_urls": 60693,
+ "collected_distinct_urls": 5881,
+ "remote_uncollected_layers": 54812,
+ "phase2_plan": {
+  "layers_to_scan": 1158,
+  "sample_per_layer": 200
+ },
+ "phase3_plan": {
+  "layers": 54812,
+  "requests_per_layer": 2,
+  "concurrency_max": 8
+ },
+ "phase3": {
+  "at": "2026-11-24T01:16:34Z",
+  "planned": 40,
+  "done": 40,
+  "ok": 8,
+  "fail": 32,
+  "unreachable": 32,
+  "elapsed_s": 24.9,
+  "rate_layers_per_s": 1.607
+ }
+}

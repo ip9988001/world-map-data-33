@@ -1,0 +1,408 @@
+{
+ "at": "2026-11-24T01:04:58Z",
+ "n": 7,
+ "requests_total": 18,
+ "layers": [
+  {
+   "layer_truncated": "paca_wi_us_arcgis_rest_services_Public_OpenData_MapServer_24",
+   "state": "未定位",
+   "title": "Addresses",
+   "url": "https://public1.co.waupaca.wi.us/arcgis/rest/services/Public/OpenData/MapServer/24",
+   "ledger_declared": "None",
+   "ledger_rows_observed": "",
+   "survey_count": "28646",
+   "requests_n": 3,
+   "http_meta": 200,
+   "meta_err": "",
+   "meta_name": "Addresses",
+   "geometryType": "esriGeometryPoint",
+   "maxRecordCount": 50000,
+   "n_fields": 25,
+   "fields_named_number_like": [
+    "hsnp",
+    "hsn",
+    "hsns",
+    "hsn_w_pre",
+    "permit_num"
+   ],
+   "http_sample": 200,
+   "sample_err": "",
+   "sampled_n": 20,
+   "sample_nonnull_keys": 21,
+   "sample_keys_n": 24,
+   "number_field_candidates": [
+    "hsnp",
+    "hsn",
+    "hsns",
+    "hsn_w_pre",
+    "permit_num"
+   ],
+   "number_fields": {
+    "hsnp": {
+     "nonblank": 5,
+     "with_digit": 0,
+     "n": 20
+    },
+    "hsn": {
+     "nonblank": 20,
+     "with_digit": 20,
+     "n": 20
+    },
+    "hsns": {
+     "nonblank": 0,
+     "with_digit": 0,
+     "n": 20
+    },
+    "hsn_w_pre": {
+     "nonblank": 20,
+     "with_digit": 20,
+     "n": 20
+    },
+    "permit_num": {
+     "nonblank": 3,
+     "with_digit": 3,
+     "n": 20
+    }
+   },
+   "number_nonnull": {
+    "hsnp": 0,
+    "hsn": 20,
+    "hsns": 0,
+    "hsn_w_pre": 20,
+    "permit_num": 3
+   },
+   "sample1": {
+    "objectid": 392044,
+    "hsnp": "W",
+    "hsn": 8407,
+    "road_name": "RUSTIC",
+    "road_type": "DR",
+    "road": "RUSTIC DR",
+    "date_": 1234310400000,
+    "entry": "18",
+    "citycd": "14",
+    "hsn_w_pre": "W8407",
+    "permit_num": "1403121878",
+    "attr_source": 11,
+    "full_address": "W8407 RUSTIC DR",
+    "use_address": 1,
+    "zip": "54929",
+    "addrid": 27698,
+    "lastupdate": 1427155200000,
+    "CITY": "Clintonville",
+    "STATE": "WI"
+   },
+   "count": 28660,
+   "http_count": 200,
+   "verdict": "recovered_with_count",
+   "verdict_why": "服务恢复：count=28660，门牌字段非空 {'hsnp': 0, 'hsn': 20, 'hsns': 0, 'hsn_w_pre': 20, 'permit_num': 3}"
+  },
+  {
+   "layer_truncated": "tamonica_gov_server_rest_services_Address_Points_MapServer_0",
+   "state": "未定位",
+   "title": "Address Points",
+   "url": "https://gis.santamonica.gov/server/rest/services/Address_Points/MapServer/0",
+   "ledger_declared": "None",
+   "ledger_rows_observed": "",
+   "survey_count": "57063",
+   "requests_n": 3,
+   "http_meta": 200,
+   "meta_err": "",
+   "meta_name": "Address Points",
+   "geometryType": "esriGeometryPoint",
+   "maxRecordCount": 5000,
+   "n_fields": 13,
+   "fields_named_number_like": [
+    "parnum",
+    "house"
+   ],
+   "http_sample": 200,
+   "sample_err": "",
+   "sampled_n": 20,
+   "sample_nonnull_keys": 10,
+   "sample_keys_n": 12,
+   "number_field_candidates": [
+    "parnum",
+    "house"
+   ],
+   "number_fields": {
+    "parnum": {
+     "nonblank": 0,
+     "with_digit": 0,
+     "n": 20
+    },
+    "house": {
+     "nonblank": 20,
+     "with_digit": 20,
+     "n": 20
+    }
+   },
+   "number_nonnull": {
+    "parnum": 0,
+    "house": 20
+   },
+   "sample1": {
+    "objectid": 4470205,
+    "name": "BUSINESS OWNER",
+    "address": "1137 2ND ST 102",
+    "city": "SANTA MONICA",
+    "st": "CA",
+    "zip": "90403",
+    "house": "1137",
+    "unit": "102",
+    "street": "2ND",
+    "street_type": "ST"
+   },
+   "count": 57063,
+   "http_count": 200,
+   "verdict": "recovered_with_count",
+   "verdict_why": "服务恢复：count=57063，门牌字段非空 {'parnum': 0, 'house': 20}"
+  },
+  {
+   "layer_truncated": "untywi_gov_vilasgis_rest_services_V4_SiteAddress_MapServer_0",
+   "state": "未定位",
+   "title": "Site Address",
+   "url": "https://maps.vilascountywi.gov/vilasgis/rest/services/V4/SiteAddress/MapServer/0",
+   "ledger_declared": "None",
+   "ledger_rows_observed": "",
+   "survey_count": "48148",
+   "requests_n": 2,
+   "http_meta": 0,
+   "meta_err": "URLError: <urlopen error timed out>",
+   "meta_name": null,
+   "geometryType": null,
+   "maxRecordCount": null,
+   "n_fields": 0,
+   "fields_named_number_like": [],
+   "http_sample": 0,
+   "sample_err": "URLError: <urlopen error timed out>",
+   "sampled_n": 0,
+   "count": null,
+   "verdict": "upstream_still_unstable",
+   "verdict_why": "meta_http=0 sample_http=0 sampled_n=0 err=URLError: <urlopen error timed out>"
+  },
+  {
+   "layer_truncated": "almbeach_com_arcgis_rest_services_BaseData_Situs_MapServer_0",
+   "state": "未定位",
+   "title": "Situs",
+   "url": "https://gis.townofpalmbeach.com/arcgis/rest/services/BaseData/Situs/MapServer/0",
+   "ledger_declared": "None",
+   "ledger_rows_observed": "",
+   "survey_count": "13190",
+   "requests_n": 3,
+   "http_meta": 200,
+   "meta_err": "",
+   "meta_name": "Addresses",
+   "geometryType": "esriGeometryPoint",
+   "maxRecordCount": 2000,
+   "n_fields": 42,
+   "fields_named_number_like": [
+    "STREET_NO",
+    "SITUS_SEQ"
+   ],
+   "http_sample": 200,
+   "sample_err": "",
+   "sampled_n": 20,
+   "sample_nonnull_keys": 15,
+   "sample_keys_n": 41,
+   "number_field_candidates": [
+    "STREET_NO",
+    "SITUS_SEQ"
+   ],
+   "number_fields": {
+    "STREET_NO": {
+     "nonblank": 20,
+     "with_digit": 20,
+     "n": 20
+    },
+    "SITUS_SEQ": {
+     "nonblank": 0,
+     "with_digit": 0,
+     "n": 20
+    }
+   },
+   "number_nonnull": {
+    "STREET_NO": 20,
+    "SITUS_SEQ": 0
+   },
+   "sample1": {
+    "OBJECTID_12": 1,
+    "PCN": "50434314100050320",
+    "STREET_NO": "265",
+    "STREET_NAM": "Seminole",
+    "STREET_SUF": "Ave",
+    "APARTMENT": "GUESTHOUSE",
+    "CITY": "Palm Beach",
+    "ZIP_CODE": "33480",
+    "ZIP_CITY": "Palm Beach",
+    "GlobalID": "{B8D87ED1-CCB5-4DFC-9344-86CF7B1B7A00}",
+    "Address_Full": "265 Seminole Ave GUESTHOUSE",
+    "Visible_YN": "Yes",
+    "POINT_X": -80.04050134,
+    "POINT_Y": 26.72225207
+   },
+   "count": 13120,
+   "http_count": 200,
+   "verdict": "recovered_with_count",
+   "verdict_why": "服务恢复：count=13120，门牌字段非空 {'STREET_NO': 20, 'SITUS_SEQ': 0}"
+  },
+  {
+   "layer_truncated": "county_com_arcgis_rest_services_features_Address_MapServer_0",
+   "state": "未定位",
+   "title": "Address Points",
+   "url": "https://maps.laramiecounty.com/arcgis/rest/services/features/Address/MapServer/0",
+   "ledger_declared": "None",
+   "ledger_rows_observed": "",
+   "survey_count": "45670",
+   "requests_n": 3,
+   "http_meta": 200,
+   "meta_err": "",
+   "meta_name": "Address",
+   "geometryType": "esriGeometryPoint",
+   "maxRecordCount": 100000,
+   "n_fields": 59,
+   "fields_named_number_like": [
+    "bldg_no",
+    "lot_no",
+    "house"
+   ],
+   "http_sample": 200,
+   "sample_err": "",
+   "sampled_n": 20,
+   "sample_nonnull_keys": 55,
+   "sample_keys_n": 58,
+   "number_field_candidates": [
+    "bldg_no",
+    "lot_no",
+    "house"
+   ],
+   "number_fields": {
+    "bldg_no": {
+     "nonblank": 20,
+     "with_digit": 20,
+     "n": 20
+    },
+    "lot_no": {
+     "nonblank": 14,
+     "with_digit": 14,
+     "n": 20
+    },
+    "house": {
+     "nonblank": 20,
+     "with_digit": 20,
+     "n": 20
+    }
+   },
+   "number_nonnull": {
+    "bldg_no": 20,
+    "lot_no": 14,
+    "house": 20
+   },
+   "sample1": {
+    "objectid": 22395810,
+    "address": "909 W COLLEGE DR",
+    "bldg_no": 909,
+    "space": "A",
+    "units": 1,
+    "st_dir": "W",
+    "st_name": "COLLEGE",
+    "st_type": "DR",
+    "use": "RESIDENTIAL-SINGLE",
+    "remarks": "ORCHARD VALLEY MHP",
+    "zip": "82007",
+    "lot_no": "1",
+    "blk_tr": "001",
+    "sub_name": "ORCHARD VALLEY 01",
+    "sub_code": "ORV 01",
+    "plat_month": "05",
+    "plat_year": "1940",
+    "town": "COUNTY",
+    "qrtr_qrtr": "NE",
+    "quarter": "NE",
+    "section": 18,
+    "township": "T13N",
+    "range": "R66W",
+    "co_page": "D-132",
+    "zone_code": "URLD",
+    "zone_dist": "URBAN RESIDENTIAL-LOW DENSITY",
+    "zone_di": "N",
+    "zone_chr": "N",
+    "sfha": "N",
+    "firm_panel": "56021C1356F_REV_09_27_12",
+    "fire_resp": "FD1",
+    "vote_dist": "4-11",
+    "senate": "5",
+    "house": "12",
+    "historic": "N",
+    "source": "CNTY",
+    "assigned": 631152000000,
+    "easting": 754376.52425835,
+    "northing": 219570.21979512,
+    "latitude": "41 06 07.71794232N",
+    "longitude": "104 48 37.09591001W",
+    "legal_desc": "ORCHARD VALLEY ADDITION: LOTS 1 - 4, BLOCK 1",
+    "owner_name": "MORGAN FAMILY JOINT REV TR",
+    "ownr_addr2": "PO BOX 1658",
+    "ownr_addr3": "DUBOIS WY 82513",
+    "assmt_dt": "2024/01/01",
+    "statepidn": "13661810900700",
+    "addrid": 69052,
+    "created_user": "SDE",
+    "created_date": 1795134389000,
+    "last_edited_user": "SDE",
+    "last_edited_date": 1795134389000,
+    "globalid": "{000499FC-9570-4886-8F04-8A0429788C92}"
+   },
+   "count": 45713,
+   "http_count": 200,
+   "verdict": "recovered_with_count",
+   "verdict_why": "服务恢复：count=45713，门牌字段非空 {'bldg_no': 20, 'lot_no': 14, 'house': 20}"
+  },
+  {
+   "layer_truncated": "_services_NG911_ReadOnly_NG911_Addressing_Layers_MapServer_0",
+   "state": "未定位",
+   "title": "NG911 Addressing Layers",
+   "url": "https://gismaps.onslowcountync.gov/server/rest/services/NG911_ReadOnly/NG911_Addressing_Layers/MapServer/0",
+   "ledger_declared": "None",
+   "ledger_rows_observed": "",
+   "survey_count": "108836",
+   "requests_n": 2,
+   "http_meta": 0,
+   "meta_err": "URLError: <urlopen error timed out>",
+   "meta_name": null,
+   "geometryType": null,
+   "maxRecordCount": null,
+   "n_fields": 0,
+   "fields_named_number_like": [],
+   "http_sample": 0,
+   "sample_err": "URLError: <urlopen error timed out>",
+   "sampled_n": 0,
+   "count": null,
+   "verdict": "upstream_still_unstable",
+   "verdict_why": "meta_http=0 sample_http=0 sampled_n=0 err=URLError: <urlopen error timed out>"
+  },
+  {
+   "layer_truncated": "buncombecounty_org_arcgis_rest_services_opendata_MapServer_2",
+   "state": "未定位",
+   "title": "Buncombe County, NC - Addresses",
+   "url": "https://gis.buncombecounty.org/arcgis/rest/services/opendata/MapServer/2",
+   "ledger_declared": "None",
+   "ledger_rows_observed": "",
+   "survey_count": "187802",
+   "requests_n": 2,
+   "http_meta": 0,
+   "meta_err": "URLError: <urlopen error timed out>",
+   "meta_name": null,
+   "geometryType": null,
+   "maxRecordCount": null,
+   "n_fields": 0,
+   "fields_named_number_like": [],
+   "http_sample": 0,
+   "sample_err": "URLError: <urlopen error timed out>",
+   "sampled_n": 0,
+   "count": null,
+   "verdict": "upstream_still_unstable",
+   "verdict_why": "meta_http=0 sample_http=0 sampled_n=0 err=URLError: <urlopen error timed out>"
+  }
+ ]
+}

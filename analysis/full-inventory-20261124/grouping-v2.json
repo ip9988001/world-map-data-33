@@ -1,0 +1,484 @@
+{
+ "schema": "grouping-v2/2026-11-24",
+ "key": "url",
+ "source": "analysis/calib-inventory-20261123/inventory-ng911.json + survey/ng911/samples.csv.gz",
+ "denom": 20,
+ "class_counts": {
+  "A": 11,
+  "B": 2,
+  "C": 5,
+  "S": 2
+ },
+ "group_counts_first_sample": {
+  "empty_shell": 3,
+  "full_address": 2,
+  "no_city": 6,
+  "no_zip": 8,
+  "road_only": 1
+ },
+ "group_counts_majority_vote": {
+  "empty_shell": 2,
+  "full_address": 2,
+  "no_city": 6,
+  "no_number": 0,
+  "no_zip": 8,
+  "road_only": 2
+ },
+ "groups_majority_vote": {
+  "full_address": [
+   "https://services2.arcgis.com/gEFt9c3jUfWMXCEP/arcgis/rest/services/Address_Points_and_CPNs_Update/FeatureServer/3",
+   "https://services6.arcgis.com/beDkVEXisjZZmkuZ/arcgis/rest/services/Address_Points/FeatureServer/0"
+  ],
+  "no_zip": [
+   "https://vginmaps.vdem.virginia.gov/arcgis/rest/services/VA_Base_Layers/VA_Address_Points/FeatureServer/0",
+   "https://services6.arcgis.com/Do88DoK2xjTUCXd1/arcgis/rest/services/Sacramento_County_CA_Addresses/FeatureServer/0",
+   "https://services7.arcgis.com/piPfTFmrV9d1DIvN/arcgis/rest/services/SiteAddresses_public_84b35cee615045ffbebd93e11cdb072e/FeatureServer/0",
+   "https://services6.arcgis.com/Do88DoK2xjTUCXd1/arcgis/rest/services/Boston_MA_Addresses/FeatureServer/0",
+   "https://services3.arcgis.com/0OPQIK59PJJqLK0A/arcgis/rest/services/Address_1424300337393713068/FeatureServer/0",
+   "https://services2.arcgis.com/LJwIycC0yIuqCBxq/arcgis/rest/services/CNO_Addresses/FeatureServer/0",
+   "https://services2.arcgis.com/2rIG17xLqeJd2jOX/arcgis/rest/services/VC_Addresses/FeatureServer/0",
+   "https://services3.arcgis.com/9UdSzuxhN4jGcI9p/arcgis/rest/services/Site_Address_Points_Spokane_County_Map_View/FeatureServer/0"
+  ],
+  "no_city": [
+   "https://services1.arcgis.com/jjVcwHv9AQEq3DH3/arcgis/rest/services/SUSS_Address_Points/FeatureServer/132",
+   "https://services7.arcgis.com/vhU7TaevMOAtV9Qd/arcgis/rest/services/OC_Addresses_20260811/FeatureServer/0",
+   "https://services7.arcgis.com/uFAr0LUPy14bDaLg/arcgis/rest/services/Nashville_110623B_WFL1/FeatureServer/0",
+   "https://services2.arcgis.com/IxVN2oUE9EYLSnPE/arcgis/rest/services/SiteAddressPointsOD/FeatureServer/0",
+   "https://services1.arcgis.com/zsny8x7Yh9eajjke/arcgis/rest/services/Address_Points/FeatureServer/0",
+   "https://services.arcgis.com/afSMGVsC7QlRK1kZ/arcgis/rest/services/EAS_Addresses/FeatureServer/0"
+  ],
+  "no_number": [],
+  "road_only": [
+   "https://services2.arcgis.com/Q4NxsjNmWBIR4LYH/arcgis/rest/services/Address_Points/FeatureServer/0",
+   "https://services.arcgis.com/fGsbyIOAuxHnF97m/arcgis/rest/services/Address_Points_V/FeatureServer/0"
+  ],
+  "empty_shell": [
+   "https://services4.arcgis.com/ZFghKabnNJcV4IUj/arcgis/rest/services/OSM_Amenities_Fire_Stations/FeatureServer/0",
+   "https://services9.arcgis.com/WGUfikw6ahcG09qY/arcgis/rest/services/2022_Lightbox_Address_Points_Option_B/FeatureServer/0"
+  ]
+ },
+ "pre_f1_reproduction": {
+  "rules_rev": "b0a9587",
+  "denom": 20,
+  "class_counts": {
+   "A": 9,
+   "B": 3,
+   "C": 7,
+   "S": 1
+  },
+  "group_counts_first_sample": {
+   "empty_shell": 4,
+   "full_address": 1,
+   "no_city": 6,
+   "no_zip": 5,
+   "road_only": 4
+  },
+  "group_counts_majority_vote": {
+   "empty_shell": 3,
+   "full_address": 1,
+   "no_city": 6,
+   "no_number": 0,
+   "no_zip": 5,
+   "road_only": 5
+  },
+  "layers_moved_by_f1": [
+   {
+    "url": "https://services6.arcgis.com/Do88DoK2xjTUCXd1/arcgis/rest/services/Sacramento_County_CA_Addresses/FeatureServer/0",
+    "before_first_sample": "road_only",
+    "after_first_sample": "no_zip",
+    "before_class": "C",
+    "after_class": "A",
+    "layer": "Sacramento County, CA Addresses",
+    "state": "KS"
+   },
+   {
+    "url": "https://services6.arcgis.com/Do88DoK2xjTUCXd1/arcgis/rest/services/Boston_MA_Addresses/FeatureServer/0",
+    "before_first_sample": "road_only",
+    "after_first_sample": "no_zip",
+    "before_class": "C",
+    "after_class": "A",
+    "layer": "City of Boston, MA Addresses",
+    "state": "MA"
+   },
+   {
+    "url": "https://services2.arcgis.com/gEFt9c3jUfWMXCEP/arcgis/rest/services/Address_Points_and_CPNs_Update/FeatureServer/3",
+    "before_first_sample": "road_only",
+    "after_first_sample": "full_address",
+    "before_class": "B",
+    "after_class": "S",
+    "layer": "Address Points and CPNs",
+    "state": "MD"
+   },
+   {
+    "url": "https://services3.arcgis.com/0OPQIK59PJJqLK0A/arcgis/rest/services/Address_1424300337393713068/FeatureServer/0",
+    "before_first_sample": "empty_shell",
+    "after_first_sample": "no_zip",
+    "before_class": "C",
+    "after_class": "C",
+    "layer": "Address_1424300337393713068",
+    "state": "AZ"
+   }
+  ]
+ },
+ "reproduce_target_000205": {
+  "denom": 20,
+  "class_counts": {
+   "A": 9,
+   "B": 3,
+   "C": 7,
+   "S": 1
+  },
+  "group_counts": {
+   "full_address": 1,
+   "no_zip": 5,
+   "no_city": 6,
+   "road_only": 4,
+   "empty_shell": 4
+  },
+  "which_rule": "group_first_sample（rules.layer_profile().group，首条样值）"
+ },
+ "layers": {
+  "https://services1.arcgis.com/jjVcwHv9AQEq3DH3/arcgis/rest/services/SUSS_Address_Points/FeatureServer/132": {
+   "layer": "SUSS Address Points",
+   "state": "DE",
+   "rows": 184716,
+   "n_fields": 31,
+   "method": "local",
+   "sampled_n": 3,
+   "class": "A",
+   "class_counts": {
+    "A": 3
+   },
+   "group_first_sample": "no_city",
+   "group_majority_vote": "no_city",
+   "vote_counts": {
+    "no_city": 3
+   }
+  },
+  "https://services4.arcgis.com/ZFghKabnNJcV4IUj/arcgis/rest/services/OSM_Amenities_Fire_Stations/FeatureServer/0": {
+   "layer": "Fire_Stations",
+   "state": "NH",
+   "rows": true,
+   "n_fields": 18,
+   "method": "remote",
+   "sampled_n": 3,
+   "class": "C",
+   "class_counts": {
+    "C": 3
+   },
+   "group_first_sample": "empty_shell",
+   "group_majority_vote": "empty_shell",
+   "vote_counts": {
+    "empty_shell": 3
+   }
+  },
+  "https://services9.arcgis.com/WGUfikw6ahcG09qY/arcgis/rest/services/2022_Lightbox_Address_Points_Option_B/FeatureServer/0": {
+   "layer": "2022 Lightbox Address Points Option B",
+   "state": "IA",
+   "rows": 43835,
+   "n_fields": 27,
+   "method": "local",
+   "sampled_n": 3,
+   "class": "C",
+   "class_counts": {
+    "C": 3
+   },
+   "group_first_sample": "empty_shell",
+   "group_majority_vote": "empty_shell",
+   "vote_counts": {
+    "empty_shell": 3
+   }
+  },
+  "https://vginmaps.vdem.virginia.gov/arcgis/rest/services/VA_Base_Layers/VA_Address_Points/FeatureServer/0": {
+   "layer": "Virginia Address Points",
+   "state": "VA",
+   "rows": true,
+   "n_fields": 33,
+   "method": "remote",
+   "sampled_n": 3,
+   "class": "A",
+   "class_counts": {
+    "A": 3
+   },
+   "group_first_sample": "no_zip",
+   "group_majority_vote": "no_zip",
+   "vote_counts": {
+    "no_zip": 3
+   }
+  },
+  "https://services7.arcgis.com/vhU7TaevMOAtV9Qd/arcgis/rest/services/OC_Addresses_20260811/FeatureServer/0": {
+   "layer": "OC Addresses 20260811",
+   "state": "CA",
+   "rows": true,
+   "n_fields": 14,
+   "method": "remote",
+   "sampled_n": 3,
+   "class": "A",
+   "class_counts": {
+    "A": 3
+   },
+   "group_first_sample": "no_city",
+   "group_majority_vote": "no_city",
+   "vote_counts": {
+    "no_city": 3
+   }
+  },
+  "https://services2.arcgis.com/Q4NxsjNmWBIR4LYH/arcgis/rest/services/Address_Points/FeatureServer/0": {
+   "layer": "Address Points",
+   "state": "PA",
+   "rows": true,
+   "n_fields": 24,
+   "method": "remote",
+   "sampled_n": 3,
+   "class": "B",
+   "class_counts": {
+    "C": 1,
+    "B": 2
+   },
+   "group_first_sample": "empty_shell",
+   "group_majority_vote": "road_only",
+   "vote_counts": {
+    "empty_shell": 1,
+    "road_only": 2
+   }
+  },
+  "https://services6.arcgis.com/Do88DoK2xjTUCXd1/arcgis/rest/services/Sacramento_County_CA_Addresses/FeatureServer/0": {
+   "layer": "Sacramento County, CA Addresses",
+   "state": "KS",
+   "rows": true,
+   "n_fields": 7,
+   "method": "remote",
+   "sampled_n": 3,
+   "class": "A",
+   "class_counts": {
+    "A": 3
+   },
+   "group_first_sample": "no_zip",
+   "group_majority_vote": "no_zip",
+   "vote_counts": {
+    "no_zip": 3
+   }
+  },
+  "https://services7.arcgis.com/uFAr0LUPy14bDaLg/arcgis/rest/services/Nashville_110623B_WFL1/FeatureServer/0": {
+   "layer": "NG911 ESN",
+   "state": "TN",
+   "rows": true,
+   "n_fields": 27,
+   "method": "remote",
+   "sampled_n": 3,
+   "class": "C",
+   "class_counts": {
+    "C": 3
+   },
+   "group_first_sample": "no_city",
+   "group_majority_vote": "no_city",
+   "vote_counts": {
+    "no_city": 3
+   }
+  },
+  "https://services7.arcgis.com/piPfTFmrV9d1DIvN/arcgis/rest/services/SiteAddresses_public_84b35cee615045ffbebd93e11cdb072e/FeatureServer/0": {
+   "layer": "Site Addresses",
+   "state": "CO",
+   "rows": true,
+   "n_fields": 23,
+   "method": "remote",
+   "sampled_n": 3,
+   "class": "C",
+   "class_counts": {
+    "C": 3
+   },
+   "group_first_sample": "no_zip",
+   "group_majority_vote": "no_zip",
+   "vote_counts": {
+    "no_zip": 3
+   }
+  },
+  "https://services6.arcgis.com/Do88DoK2xjTUCXd1/arcgis/rest/services/Boston_MA_Addresses/FeatureServer/0": {
+   "layer": "City of Boston, MA Addresses",
+   "state": "MA",
+   "rows": true,
+   "n_fields": 10,
+   "method": "remote",
+   "sampled_n": 3,
+   "class": "A",
+   "class_counts": {
+    "A": 3
+   },
+   "group_first_sample": "no_zip",
+   "group_majority_vote": "no_zip",
+   "vote_counts": {
+    "no_zip": 3
+   }
+  },
+  "https://services2.arcgis.com/IxVN2oUE9EYLSnPE/arcgis/rest/services/SiteAddressPointsOD/FeatureServer/0": {
+   "layer": "Address Points",
+   "state": "GA",
+   "rows": true,
+   "n_fields": 38,
+   "method": "remote",
+   "sampled_n": 3,
+   "class": "A",
+   "class_counts": {
+    "A": 3
+   },
+   "group_first_sample": "no_city",
+   "group_majority_vote": "no_city",
+   "vote_counts": {
+    "no_city": 3
+   }
+  },
+  "https://services.arcgis.com/fGsbyIOAuxHnF97m/arcgis/rest/services/Address_Points_V/FeatureServer/0": {
+   "layer": "Address Points_V",
+   "state": "IL",
+   "rows": true,
+   "n_fields": 24,
+   "method": "remote",
+   "sampled_n": 3,
+   "class": "B",
+   "class_counts": {
+    "B": 3
+   },
+   "group_first_sample": "road_only",
+   "group_majority_vote": "road_only",
+   "vote_counts": {
+    "road_only": 3
+   }
+  },
+  "https://services2.arcgis.com/gEFt9c3jUfWMXCEP/arcgis/rest/services/Address_Points_and_CPNs_Update/FeatureServer/3": {
+   "layer": "Address Points and CPNs",
+   "state": "MD",
+   "rows": true,
+   "n_fields": 38,
+   "method": "remote",
+   "sampled_n": 3,
+   "class": "S",
+   "class_counts": {
+    "S": 3
+   },
+   "group_first_sample": "full_address",
+   "group_majority_vote": "full_address",
+   "vote_counts": {
+    "full_address": 3
+   }
+  },
+  "https://services3.arcgis.com/0OPQIK59PJJqLK0A/arcgis/rest/services/Address_1424300337393713068/FeatureServer/0": {
+   "layer": "Address_1424300337393713068",
+   "state": "AZ",
+   "rows": true,
+   "n_fields": 13,
+   "method": "remote",
+   "sampled_n": 3,
+   "class": "C",
+   "class_counts": {
+    "C": 3
+   },
+   "group_first_sample": "no_zip",
+   "group_majority_vote": "no_zip",
+   "vote_counts": {
+    "no_zip": 3
+   }
+  },
+  "https://services2.arcgis.com/LJwIycC0yIuqCBxq/arcgis/rest/services/CNO_Addresses/FeatureServer/0": {
+   "layer": "CNO_Addresses",
+   "state": "LA",
+   "rows": true,
+   "n_fields": 34,
+   "method": "remote",
+   "sampled_n": 3,
+   "class": "A",
+   "class_counts": {
+    "A": 3
+   },
+   "group_first_sample": "no_zip",
+   "group_majority_vote": "no_zip",
+   "vote_counts": {
+    "no_zip": 3
+   }
+  },
+  "https://services2.arcgis.com/2rIG17xLqeJd2jOX/arcgis/rest/services/VC_Addresses/FeatureServer/0": {
+   "layer": "VC Addresses",
+   "state": "FL",
+   "rows": true,
+   "n_fields": 27,
+   "method": "remote",
+   "sampled_n": 3,
+   "class": "A",
+   "class_counts": {
+    "A": 3
+   },
+   "group_first_sample": "no_zip",
+   "group_majority_vote": "no_zip",
+   "vote_counts": {
+    "no_zip": 3
+   }
+  },
+  "https://services6.arcgis.com/beDkVEXisjZZmkuZ/arcgis/rest/services/Address_Points/FeatureServer/0": {
+   "layer": "Address Points",
+   "state": "OH",
+   "rows": 256023,
+   "n_fields": 46,
+   "method": "local",
+   "sampled_n": 3,
+   "class": "S",
+   "class_counts": {
+    "S": 3
+   },
+   "group_first_sample": "full_address",
+   "group_majority_vote": "full_address",
+   "vote_counts": {
+    "full_address": 3
+   }
+  },
+  "https://services3.arcgis.com/9UdSzuxhN4jGcI9p/arcgis/rest/services/Site_Address_Points_Spokane_County_Map_View/FeatureServer/0": {
+   "layer": "Site Address Points Spokane County Map View",
+   "state": "WA",
+   "rows": 236210,
+   "n_fields": 7,
+   "method": "local",
+   "sampled_n": 3,
+   "class": "A",
+   "class_counts": {
+    "A": 3
+   },
+   "group_first_sample": "no_zip",
+   "group_majority_vote": "no_zip",
+   "vote_counts": {
+    "no_zip": 3
+   }
+  },
+  "https://services1.arcgis.com/zsny8x7Yh9eajjke/arcgis/rest/services/Address_Points/FeatureServer/0": {
+   "layer": "Address Points",
+   "state": "AR",
+   "rows": 236026,
+   "n_fields": 27,
+   "method": "local",
+   "sampled_n": 3,
+   "class": "A",
+   "class_counts": {
+    "A": 3
+   },
+   "group_first_sample": "no_city",
+   "group_majority_vote": "no_city",
+   "vote_counts": {
+    "no_city": 3
+   }
+  },
+  "https://services.arcgis.com/afSMGVsC7QlRK1kZ/arcgis/rest/services/EAS_Addresses/FeatureServer/0": {
+   "layer": "EAS_Addresses",
+   "state": "MN",
+   "rows": true,
+   "n_fields": 20,
+   "method": "remote",
+   "sampled_n": 3,
+   "class": "A",
+   "class_counts": {
+    "A": 3
+   },
+   "group_first_sample": "no_city",
+   "group_majority_vote": "no_city",
+   "vote_counts": {
+    "no_city": 3
+   }
+  }
+ }
+}
