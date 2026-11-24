@@ -221,8 +221,8 @@ fixture 明细（`spatial-findings.csv` 前 3 行）：
 | 合计 | **294 行**（200–300 区间内，守 300 行硬上限；`wc -l` 可验） |
 | `sandbox/spatial_thresholds.yaml` | 每条阈值带 `value/why/source` + 显式 `unavailable` 清单 |
 | `sandbox/fixtures/spatial_manifest.json` | 3 份 fixture 的坐标列名 / 声明 county_fips / 来源 / 抓取日 |
-| `sandbox/test_auto_recognize.py` | 45 用例 |
-| `sandbox/test_spatial_verify.py` | 20 用例 |
+| `sandbox/test_auto_recognize.py` | 47 用例 |
+| `sandbox/test_spatial_verify.py` | 21 用例 |
 | `analysis/auto-spatial-20261124/summarize.py` | 报告全部表格的复算脚本（只聚合，不加判据） |
 | `analysis/auto-spatial-20261124/auto-recognized.csv` | 17,168 行 × 31 列（含 `E1..E8_state` 与 `*_detail`） |
 | `analysis/auto-spatial-20261124/template-unresolved-moves.csv` | 11,056 行（TU 子集，同列） |
@@ -230,7 +230,7 @@ fixture 明细（`spatial-findings.csv` 前 3 行）：
 | `analysis/auto-spatial-20261124/sampling-list.csv` | 885 行抽样清单（含种子） |
 | `analysis/auto-spatial-20261124/summary.json` | 上述所有表的机器可读版（含闭合断言） |
 
-**测试与覆盖率**：`python3 -m pytest sandbox -q` → **85 passed / 0 failed**（含既有 `test_rules.py`）；
+**测试与覆盖率**：`python3 -m pytest sandbox -q` → **86 passed / 0 failed**（47 auto + 21 spatial + 18 既有 `test_rules.py`）；
 `coverage` 实测（`--include=sandbox/auto_recognize.py,sandbox/spatial_verify.py`）→
 **213 语句 / 未覆盖 3 / 覆盖率 99%**（未覆盖的 3 行是两个 `if __name__` 入口与 null 率分支的 `else`）。
 
