@@ -1,0 +1,36 @@
+# 空间验算阈值（第 5 步 · sandbox/spatial_verify.py 唯一读数入口）
+# 每条都写：数值 / 取值理由 / 数据来源。改数值只改本文件，代码里不许出现魔法数。
+schema: spatial-thresholds.v1/2026-11-24
+source_of_geometry: analysis/tiger_county/*.json.gz（TIGERweb State_County/1，fetched_at 2026-10-30，51 州 3.0MB）
+
+fuse:                                  # 绝对熔断红线：命中即该层立即降 Tier 3
+  max_outside_share:
+    value: 0.10
+    why: 同一层里越界行占比 >10% 时，最可能是「声明的 county/state 错了」而不是个别坐标脏；地址点的越界率经验上应是 0，留 10% 容差给县界裁剪误差与飞地。
+    source: 无外部标定数据；本仓库首次设定，冷启动值，待第 6 步用真实样本重标。
+  max_cross_boundary_dist_m:
+    value: 5000.0
+    why: 只对「落在声明县界外」的行量距——越界 5km 以上已超出县界裁剪/坐标精度可解释范围（TIGER 县界与地址点口径差通常数百米内）。县内点的『到边界距离』不参与熔断，只进 P95 相对判据。
+    source: TIGER 县界顶点精度 ~1e-4 度（约 11m）；5km = 该精度的 450 倍，足以排除精度因素。
+  max_top_point_share:
+    value: 0.50
+    why: 超过半数行共用同一坐标 = 整层坐标被「单点填充」（常见于未经地理编码的占位质心），该层空间证据不可用。
+    source: 本仓库 sandbox/fixtures 三份真实样本实测 top_point_share 均 ≤0.04（25 行 25 个唯一坐标），0.50 留足余量。
+  min_unique_coord_rate:
+    value: 0.05
+    why: 坐标唯一率 <5% 与上一条同源（聚集），两条一起把「伪坐标层」钉死。
+    source: 同上，fixtures 实测唯一率 = 1.0。
+  min_sample_rows:
+    value: 3
+    why: 层内有效坐标 <3 行时不判熔断、也不判绿——记 unavailable，避免用 1~2 行结论推翻整层。
+    source: 统计最小可判样本；与本轮「只跑抽样」口径一致。
+
+p95:                                   # 层内相对异常（不与红线混用）
+  boundary_dist_mult:
+    value: 3.0
+    why: 层内 P95 边界距离的 3 倍作为相对异常线，抓「同层里少数点飘得很远」，与绝对红线互补。
+    source: 无外部标定；冷启动值，随样本积累重标。
+
+unavailable:                           # 明确标注「未跑」的项（不许用占位值糊过去）
+  building_outline_distance: 仓库内无建筑轮廓数据源（无 building footprint 图层）；只实现函数接口与单测，全量算距离标 unavailable。
+  zip_zcta_table: 仓库内无 ZCTA/邮编表；本轮**未接入**（代码里没有 zip-table 参数，不许写成已实现），注册表层的邮编交叉校验一律记 unavailable，留第 6 步先定数据来源再做。
