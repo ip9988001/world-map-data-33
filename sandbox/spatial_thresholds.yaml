@@ -48,3 +48,19 @@ e7:                                    # E7 源间同址投票（sandbox/coord_e
     value: 3
     why: 跨源同址可比行 <3 时不投票（投不出票就记 unknown，不写 clear 冒充「无冲突」）。
     source: 与 fuse.min_sample_rows 一致的最小可判样本。
+
+e7_refpool:                            # E7 扩参照源（sandbox/e7_refpool.py）· 每层取前 N 行，绝不当全量
+  per_layer_cap:
+    value: 2000
+    why: 本地全表 1,158 个层目录 / 13.5GB（gz），全量读入需 1 小时以上且内存不可控；每层按文件顺序取前 2,000 行作参照池上限。这是**采样**，不是全量：实际取到的行数、被截断的层、跳过的层全部逐层落进 e7-refpool-stats.csv。
+    source: sandbox/e7_refpool.py 实测 1,158 层 × 2,000 上限 = 1,242,772 行（多数层不足 2,000 行），25.7 秒。
+  max_cmp_per_row:
+    value: 200
+    why: 同一地址键在参照池里可能有成百上千行（公寓同号），逐个算球面距离会把复杂度推到 O(n²)。每个自身行只对同键他源行按固定顺序取前 200 行算最小距离；这是距离比较的上限，不影响「同址跨源 >300m 记冲突」这条判据本身。
+    source: 本仓库实测：键桶超过 200 行的占全部键桶 0.4%，截断只影响极端同号聚集场景。
+
+e3_relax:                              # E3 口径开关（sandbox/tier_relax.py）
+  default:
+    value: "off"
+    why: 默认严格口径（粒度未定 → unknown → 直接 Tier3），保证 --e3-relax off 能原样复现第 5 步的 30 层；只有显式 --e3-relax on 才把「粒度未定但坐标样本有实测几何类型」记 na（与 E8「无模板即 na」同理）。
+    source: muse-000226 拍板；敏感性依据见 analysis/auto-spatial-rerun-20261125/REPORT.md §8。
