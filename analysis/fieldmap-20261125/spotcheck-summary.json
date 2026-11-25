@@ -1,0 +1,11 @@
+{
+ "layers_checked": 355,
+ "layers_total_mapped": 3100,
+ "coverage_pct": 11.45,
+ "rows_checked": 50179,
+ "rows_matched": 40286,
+ "match_pct": 80.28,
+ "invariants": {
+  "rows_seen": 69259
+ }
+}

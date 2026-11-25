@@ -1,0 +1,52 @@
+{
+ "global": {
+  "layers": 3550,
+  "layers_mapped": 3100,
+  "in_rows": 509776855,
+  "mapped": 305674428,
+  "dropped_below_c": 204102427,
+  "parse_error": 0,
+  "diff": 0,
+  "street_name_ok_pct": 100.0,
+  "house_number_ok_pct": 71.2,
+  "city_ok_pct": 39.77,
+  "zip5_valid_pct": 54.18,
+  "zip5_invalid_rows": 2053543,
+  "zip5_missing_rows": 137994205,
+  "coord_ok_pct": 99.96,
+  "coord_out_of_range_rows": 1691,
+  "grade": {
+   "S": 45282269,
+   "A": 8507672,
+   "B": 7042186
+  },
+  "out_bytes": 9764301040
+ },
+ "by_dialect": {
+  "minimal_safe|fallback": {
+   "layers": 3550,
+   "layers_mapped": 3100,
+   "in_rows": 509776855,
+   "mapped": 305674428,
+   "dropped_below_c": 204102427,
+   "parse_error": 0,
+   "diff": 0,
+   "street_name_ok_pct": 100.0,
+   "house_number_ok_pct": 71.2,
+   "city_ok_pct": 39.77,
+   "zip5_valid_pct": 54.18,
+   "zip5_invalid_rows": 2053543,
+   "zip5_missing_rows": 137994205,
+   "coord_ok_pct": 99.96,
+   "coord_out_of_range_rows": 1691,
+   "grade": {
+    "S": 45282269,
+    "A": 8507672,
+    "B": 7042186
+   },
+   "out_bytes": 9764301040
+  }
+ },
+ "by_state_null": "信封恒无 state 字段 → 按州分组不可用；state 只从 raw 显式州字段或组合串尾部取",
+ "notes": "行级质量指标的分母是 mapped（已映射行）；zip5_invalid/missing、coord_out_of_range 是 mapped 内部的细项"
+}

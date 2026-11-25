@@ -1,0 +1,33 @@
+{
+ "coverage_pct": 87.32,
+ "coverage_layers": "3100/3550",
+ "unusable": 450,
+ "unusable_by_reason": {
+  "grade_below_C": 450
+ },
+ "spotcheck_layers": 355,
+ "spotcheck_match_pct": 80.28,
+ "closing_diff_layers": 0,
+ "output_bytes": 9733021695,
+ "out_rows_bytes": 9764301040,
+ "free_gb": 21.9,
+ "in_rows": 509776855,
+ "mapped_rows": 305674428,
+ "dropped_below_c": 204102427,
+ "parse_error": 0,
+ "street_pct": 100.0,
+ "number_pct": 71.2,
+ "zip5_valid_pct": 54.18,
+ "coord_ok_pct": 99.96,
+ "coord_out_of_range_rows": 1691,
+ "grade": {
+  "S": 45282269,
+  "A": 8507672,
+  "B": 7042186
+ },
+ "shards": 8,
+ "shard_bytes": 9733021695,
+ "invariants": {
+  "rows_seen": 69259
+ }
+}
