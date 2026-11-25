@@ -1,0 +1,761 @@
+{
+ "generated_from": {
+  "per_layer": "_work/per_layer.json",
+  "layers": 1340
+ },
+ "total_layers": 1340,
+ "assert_sum_layers_equals_total": true,
+ "patterns": [
+  {
+   "pattern_id": "P1",
+   "name": "门牌+街名拼一格",
+   "rule": "存在字段，其 ≥60% 样例值匹配 ^\\s*(\\d{1,6})[-A-Za-z]?[\\s,]+([A-Za-z].{1,80})$ 且值内无州/邮编/分隔符（逗号、竖线、分号、斜杠）",
+   "layers": 431,
+   "rows_n": 28644662,
+   "pct_layers": 32.16,
+   "parseability": "可直接切出",
+   "fix_path": "切分算法",
+   "examples": [
+    {
+     "layer_id": "FeatureServer/2",
+     "url": "https://services.arcgis.com/HnPbdNoPBNAJ6Oel/arcgis/rest/services/Commissioner_District_And_Neighborhoods_Web_Map/FeatureServer/2",
+     "rows_n": 24955,
+     "state": "未定位",
+     "title": "Commissioner District And Neighborhoods Web Map",
+     "pattern_id": "P1",
+     "pattern": "门牌+街名拼一格",
+     "fields": "FULLADDR",
+     "example_values": "[\"5391 N Federal Hwy\", \"2080 NE 54 St\", \"2064 NE 54 St\"]",
+     "parseability": "可直接切出",
+     "fix_path": "切分算法",
+     "n_fields": 8,
+     "coord_rows": 50
+    },
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services.arcgis.com/tKsJAIiLjd90D5q2/arcgis/rest/services/Aggregation_of_incidents_to_Join_Use_of_Force_to_Tracts/FeatureServer/0",
+     "rows_n": 224,
+     "state": "未定位",
+     "title": "Aggregation_of_incidents_to_Join_Use_of_Force_to_Tracts",
+     "pattern_id": "P1",
+     "pattern": "门牌+街名拼一格",
+     "fields": "GC_Address",
+     "example_values": "[\"2800 E michigan Street\", \"3737 N Meridian Street\", \"902 N Bosart Avenue\"]",
+     "parseability": "可直接切出",
+     "fix_path": "切分算法",
+     "n_fields": 26,
+     "coord_rows": 50
+    },
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services1.arcgis.com/7iJyYTjCtKsZS1LR/arcgis/rest/services/DCRS_HardCourts_(editable)_view/FeatureServer/0",
+     "rows_n": 110,
+     "state": "未定位",
+     "title": "DCR Recreation Courts",
+     "pattern_id": "P1",
+     "pattern": "门牌+街名拼一格",
+     "fields": "Address",
+     "example_values": "[\"Education st\", \"Dilboy field\", \"682 Willard st\"]",
+     "parseability": "可直接切出",
+     "fix_path": "切分算法",
+     "n_fields": 17,
+     "coord_rows": 50
+    }
+   ]
+  },
+  {
+   "pattern_id": "P10",
+   "name": "无任何可识别地址字段（非地址图层 / 字段少或样例全空）",
+   "rule": "既无 list/门牌/街名/组合串/区间列，也无 id 类地址嫌疑字段；或该层样例值全空",
+   "layers": 224,
+   "rows_n": 4223214,
+   "pct_layers": 16.72,
+   "parseability": "不可切",
+   "fix_path": "排除",
+   "examples": [
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services.arcgis.com/ZOyb2t4B0UYuYNYH/arcgis/rest/services/ADUs/FeatureServer/0",
+     "rows_n": 7987,
+     "state": "未定位",
+     "title": "Accessory Dwelling Units (ADUs)",
+     "pattern_id": "P10",
+     "pattern": "无任何可识别地址字段（非地址图层 / 字段少或样例全空）",
+     "fields": "OBJECTID|LOT_SIZE|C_DISTRICT|MAF_ID",
+     "example_values": "[[], [], []]",
+     "parseability": "不可切",
+     "fix_path": "排除",
+     "n_fields": 58,
+     "coord_rows": 49
+    },
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services1.arcgis.com/X3lKekbdaBmNjCHu/arcgis/rest/services/BaltimoreCenterlinesSHA/FeatureServer/0",
+     "rows_n": 11765,
+     "state": "MD",
+     "title": "BaltimoreCenterlinesSHA",
+     "pattern_id": "P10",
+     "pattern": "无任何可识别地址字段（非地址图层 / 字段少或样例全空）",
+     "fields": "OBJECTID|ID_PREFIX_NAME|ID_PREFIX|ID_RTE_NO",
+     "example_values": "[[], [], []]",
+     "parseability": "不可切",
+     "fix_path": "排除",
+     "n_fields": 22,
+     "coord_rows": 50
+    },
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services2.arcgis.com/NfnoOkGMfd70pT04/arcgis/rest/services/BSD_ParcelsAug23/FeatureServer/0",
+     "rows_n": 9937,
+     "state": "未定位",
+     "title": "BSD_ParcelsAug23_Public",
+     "pattern_id": "P10",
+     "pattern": "无任何可识别地址字段（非地址图层 / 字段少或样例全空）",
+     "fields": "OBJECTID|REM_GIS_ID|LND_USE_CODE|LND_ZONE",
+     "example_values": "[[], [], []]",
+     "parseability": "不可切",
+     "fix_path": "排除",
+     "n_fields": 25,
+     "coord_rows": 50
+    }
+   ]
+  },
+  {
+   "pattern_id": "P11",
+   "name": "PO BOX / POST OFFICE BOX（邮政信箱，非街道地址）",
+   "rule": "组合串样例值 ≥50% 匹配 ^\\s*P\\.?\\s*O\\.?\\s*(BOX|B\\.?)\\s*\\d+ 或 POST OFFICE BOX，且没有独立的门牌列+街名列",
+   "layers": 9,
+   "rows_n": 82887,
+   "pct_layers": 0.67,
+   "parseability": "不可切",
+   "fix_path": "排除",
+   "examples": [
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services1.arcgis.com/ejcbAsQEUUGWEyzb/arcgis/rest/services/2025_Zoning_Code/FeatureServer/0",
+     "rows_n": 43995,
+     "state": "未定位",
+     "title": "2025 Zoning Code",
+     "pattern_id": "P11",
+     "pattern": "PO BOX / POST OFFICE BOX（邮政信箱，非街道地址）",
+     "fields": "MailADDRESS1",
+     "example_values": "[\"PO BOX 20000\", \"PO BOX 1747\", \"1800 MARQUESS\"]",
+     "parseability": "不可切",
+     "fix_path": "排除",
+     "n_fields": 32,
+     "coord_rows": 50
+    },
+    {
+     "layer_id": "FeatureServer/6",
+     "url": "https://services1.arcgis.com/nSnGtAgSmNZcvEzK/arcgis/rest/services/UCRC_-_Pilot_Project_Application_Locations_3_view/FeatureServer/6",
+     "rows_n": 6,
+     "state": "未定位",
+     "title": "UCRC - Pilot Project Application Locations (View)",
+     "pattern_id": "P11",
+     "pattern": "PO BOX / POST OFFICE BOX（邮政信箱，非街道地址）",
+     "fields": "Primary_Contact_Address",
+     "example_values": "[\"PO Box 779 Price, UT 84501\", \"PO 357 Cleveland, UT 84518\"]",
+     "parseability": "不可切",
+     "fix_path": "排除",
+     "n_fields": 101,
+     "coord_rows": 6
+    },
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services2.arcgis.com/3se0BGlhQU6MOZpW/arcgis/rest/services/Tax_Parcel_Public/FeatureServer/0",
+     "rows_n": 32240,
+     "state": "未定位",
+     "title": "Tax Parcel Public",
+     "pattern_id": "P11",
+     "pattern": "PO BOX / POST OFFICE BOX（邮政信箱，非街道地址）",
+     "fields": "Mailing_Address",
+     "example_values": "[\"PO BOX 87\", \"1630 E 2450 S UNIT 203\", \"PO BOX 114\"]",
+     "parseability": "不可切",
+     "fix_path": "排除",
+     "n_fields": 37,
+     "coord_rows": 50
+    }
+   ]
+  },
+  {
+   "pattern_id": "P12",
+   "name": "打码/占位门牌或路口名（3XX E 12TH ST、A ST / B AVE）",
+   "rule": "地址值 ≥30% 匹配打码门牌（^\\d{0,3}X{2,}、^XX、数字+?）或路口形态（A ST & / AVE / B RD）",
+   "layers": 11,
+   "rows_n": 887307,
+   "pct_layers": 0.82,
+   "parseability": "不可切",
+   "fix_path": "排除",
+   "examples": [
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services2.arcgis.com/ixRLoNIl4gmM9jgg/arcgis/rest/services/2013incidents_gdb/FeatureServer/0",
+     "rows_n": 78299,
+     "state": "MI",
+     "title": "2013 Ottawa County Sheriff Incident Responses",
+     "pattern_id": "P12",
+     "pattern": "打码/占位门牌或路口名（3XX E 12TH ST、A ST / B AVE）",
+     "fields": "IncidentAddress",
+     "example_values": "[\"1xx BALDWIN ST\", \"122xx FILLMORE ST\", \"5xx BUTTERNUT DR\"]",
+     "parseability": "不可切",
+     "fix_path": "排除",
+     "n_fields": 11,
+     "coord_rows": 50
+    },
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services2.arcgis.com/ixRLoNIl4gmM9jgg/arcgis/rest/services/2014incidents_gdb/FeatureServer/0",
+     "rows_n": 80487,
+     "state": "MI",
+     "title": "2014 Ottawa County Sheriff Incident Responses",
+     "pattern_id": "P12",
+     "pattern": "打码/占位门牌或路口名（3XX E 12TH ST、A ST / B AVE）",
+     "fields": "IncidentAddress",
+     "example_values": "[\"6xx BUTTERNUT DR\", \"94xx 72ND AVE\", \"RILEY ST & WEST SHORE DR\"]",
+     "parseability": "不可切",
+     "fix_path": "排除",
+     "n_fields": 11,
+     "coord_rows": 50
+    },
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services2.arcgis.com/ixRLoNIl4gmM9jgg/arcgis/rest/services/2015Incidents_gdb/FeatureServer/0",
+     "rows_n": 83256,
+     "state": "MI",
+     "title": "2015 Ottawa County Sheriff Incident Responses",
+     "pattern_id": "P12",
+     "pattern": "打码/占位门牌或路口名（3XX E 12TH ST、A ST / B AVE）",
+     "fields": "IncidentAddress",
+     "example_values": "[\"N STATE ST & W OAK AVE\", \"42ND AVE & LUCE ST\", \"x E 48TH ST\"]",
+     "parseability": "不可切",
+     "fix_path": "排除",
+     "n_fields": 11,
+     "coord_rows": 50
+    }
+   ]
+  },
+  {
+   "pattern_id": "P13",
+   "name": "业主名/联系人 + 完整地址混在一格（mailing label）",
+   "rule": "字段名命中 owner/mail/contact/taxpayer/applicant/name，且 ≥50% 样例值同时含 5 位邮编与「门牌 空格 词」形态",
+   "layers": 4,
+   "rows_n": 19783,
+   "pct_layers": 0.3,
+   "parseability": "需猜或NLP",
+   "fix_path": "切分算法",
+   "examples": [
+    {
+     "layer_id": "FeatureServer/1",
+     "url": "https://services1.arcgis.com/QoRIHE24lezkXmDS/arcgis/rest/services/MLG_Client_Parcels/FeatureServer/1",
+     "rows_n": 14692,
+     "state": "TX",
+     "title": "MLG_Client_Parcels",
+     "pattern_id": "P13",
+     "pattern": "业主名/联系人 + 完整地址混在一格（mailing label）",
+     "fields": "ownerAddress",
+     "example_values": "[\"TERRELL, J CRAIG & MARGO P 26035 GRAND PINES RD MAGNOLIA, TX 77355-2085 USA\", \"JANECEK, RAYMOND 23919 SANDERS CEMETERY RD MAGNOLIA, TX 77354 USA\", \"HOOPER, RONNIE & BARBARA 20319 SANDERS RD MAGNOLIA, TX 77355-4554 USA\"]",
+     "parseability": "需猜或NLP",
+     "fix_path": "切分算法",
+     "n_fields": 22,
+     "coord_rows": 50
+    },
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services5.arcgis.com/sAIkusr49a4Rnevi/arcgis/rest/services/175637_ComEd_IL_Greenleaf_Parcels/FeatureServer/0",
+     "rows_n": 987,
+     "state": "未定位",
+     "title": "175637_ComEd_IL_Greenleaf_Parcels",
+     "pattern_id": "P13",
+     "pattern": "业主名/联系人 + 完整地址混在一格（mailing label）",
+     "fields": "Own1_FullMailingAddress",
+     "example_values": "[\"{\\\"mailadd\\\":\\\"1 E BELVIDERE RD\\\",\\\"mail_city\\\":\\\"GRAYSLAKE\\\",\\\"mail_state2\\\":\\\"IL\\\",\\\"mail_zip\\\":\\\"60030\\\"}\", \"{\\\"mailadd\\\":\\\"12 S CENTER ST\\\",\\\"mail_city\\\":\\\"BENSENVILLE\\\",\\\"mail_state2\\\":\\\"IL\\\",\\\"mail_zip\\\":\\\"60106\\\"}\", \"{\\\"mailadd\\\":\\\"1100 LANDMEIER RD\\\",\\\"mail_city\\\":\\\"ELK GROVE VILL\\\",\\\"mail_state2\\\":\\\"IL\\\",\\\"mail_zip\\\":\\\"60007\\\"}\"]",
+     "parseability": "需猜或NLP",
+     "fix_path": "切分算法",
+     "n_fields": 90,
+     "coord_rows": 50
+    },
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services5.arcgis.com/sAIkusr49a4Rnevi/arcgis/rest/services/4217_IECA_TX_IECADemo_Parcel_View/FeatureServer/0",
+     "rows_n": 351,
+     "state": "未定位",
+     "title": "4217_IECA_TX_IECADemo_Parcel_View",
+     "pattern_id": "P13",
+     "pattern": "业主名/联系人 + 完整地址混在一格（mailing label）",
+     "fields": "Own1_FullMailingAddress",
+     "example_values": "[\"{\\\"mailadd\\\":\\\"180 HERBER\\\",\\\"mail_city\\\":\\\"NEW BRAUNFELS\\\",\\\"mail_state2\\\":\\\"TX\\\",\\\"mail_zip\\\":\\\"78130\\\"}\", \"{\\\"mailadd\\\":\\\"3614 TWIN DISH WAY\\\",\\\"mail_city\\\":\\\"NEW BRAUNFELS\\\",\\\"mail_state2\\\":\\\"TX\\\",\\\"mail_zip\\\":\\\"78130\\\"}\", \"{\\\"mailadd\\\":\\\"908 GRAY CLOUD DR\\\",\\\"mail_city\\\":\\\"NEW BRAUNFELS\\\",\\\"mail_state2\\\":\\\"TX\\\",\\\"mail_zip\\\":\\\"78130\\\"}\"]",
+     "parseability": "需猜或NLP",
+     "fix_path": "切分算法",
+     "n_fields": 111,
+     "coord_rows": 50
+    }
+   ]
+  },
+  {
+   "pattern_id": "P2",
+   "name": "街名+城市拼一格",
+   "rule": "存在字段值里同时含街名与城市名但无门牌号（本批 0 层：实测全部落到 P9 或 P3）",
+   "layers": 0,
+   "rows_n": 0,
+   "pct_layers": 0.0,
+   "parseability": "需猜或NLP",
+   "fix_path": "切分算法",
+   "examples": []
+  },
+  {
+   "pattern_id": "P3",
+   "name": "门牌+街名+城市/州/邮编全拼一格（无显式分隔符）",
+   "rule": "单字段 ≥60% 样例值 = 门牌+街名+城市/州/邮编，但分隔符（逗号/竖线/分号/斜杠）占比 <50%，只能靠空格与尾部州/邮编切",
+   "layers": 53,
+   "rows_n": 2238360,
+   "pct_layers": 3.96,
+   "parseability": "需猜或NLP",
+   "fix_path": "切分算法",
+   "examples": [
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services1.arcgis.com/OoHBsnqevYljcMGr/arcgis/rest/services/Erase_Parcels_20191028_with_Interior_Boundary_7M/FeatureServer/0",
+     "rows_n": 2037,
+     "state": "MD",
+     "title": "Erase_Parcels_20191028_with_Interior_Boundary_7M",
+     "pattern_id": "P3",
+     "pattern": "门牌+街名+城市/州/邮编全拼一格（无显式分隔符）",
+     "fields": "address_2",
+     "example_values": "[\"19561 MECHANICSVILLE RD\", \"18833 RUNIONS CREEK RD\", \"17042 LITTLE DRY RIVER RD\"]",
+     "parseability": "需猜或NLP",
+     "fix_path": "切分算法",
+     "n_fields": 51,
+     "coord_rows": 50
+    },
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services1.arcgis.com/MiBZ4u97DWldovjI/arcgis/rest/services/Parcels35/FeatureServer/0",
+     "rows_n": 111036,
+     "state": "FL",
+     "title": "Parcels35",
+     "pattern_id": "P3",
+     "pattern": "门牌+街名+城市/州/邮编全拼一格（无显式分隔符）",
+     "fields": "Address1",
+     "example_values": "[\"3900 COMMONWEALTH BLVD\", \"21208 NW 238TH AVE\", \"25508 OLD BELLAMY RD\"]",
+     "parseability": "需猜或NLP",
+     "fix_path": "切分算法",
+     "n_fields": 111,
+     "coord_rows": 50
+    },
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services5.arcgis.com/m711BZ7Df3seMOYp/arcgis/rest/services/AGOL_Service_LUZoning/FeatureServer/0",
+     "rows_n": 76085,
+     "state": "未定位",
+     "title": "AGOL_Service_LUZoning",
+     "pattern_id": "P3",
+     "pattern": "门牌+街名+城市/州/邮编全拼一格（无显式分隔符）",
+     "fields": "MailingAddress",
+     "example_values": "[\"1201 NEW HOPE CHURCH RD Chapel Hill NC 27516\", \"5401 SPRING HOUSE LANE CHAPEL HILL NC 27516\", \"1000 WOODLOT RIDGE RD CHAPEL HILL NC 27516\"]",
+     "parseability": "需猜或NLP",
+     "fix_path": "切分算法",
+     "n_fields": 11,
+     "coord_rows": 50
+    }
+   ]
+  },
+  {
+   "pattern_id": "P4",
+   "name": "全地址单串（带逗号/竖线等分隔符）",
+   "rule": "单字段 ≥60% 样例值 = 门牌+街名+城市/州/邮编，且分隔符占比 ≥50%（按分隔符切段即可）",
+   "layers": 8,
+   "rows_n": 35822,
+   "pct_layers": 0.6,
+   "parseability": "可直接切出",
+   "fix_path": "切分算法",
+   "examples": [
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services1.arcgis.com/LCWc46UbpFlCIbVN/arcgis/rest/services/CFN_1/FeatureServer/0",
+     "rows_n": 29,
+     "state": "未定位",
+     "title": "CFN_1",
+     "pattern_id": "P4",
+     "pattern": "全地址单串（带逗号/竖线等分隔符）",
+     "fields": "Address",
+     "example_values": "[\"603 Cedar Point Rd, Cedar Point\", \"1006 Cedar Point Rd, Cedar Point\", \"195 Guthrie Farm Rd, Bogue/ Newport\"]",
+     "parseability": "可直接切出",
+     "fix_path": "切分算法",
+     "n_fields": 18,
+     "coord_rows": 29
+    },
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services1.arcgis.com/LCWc46UbpFlCIbVN/arcgis/rest/services/CFN_2/FeatureServer/0",
+     "rows_n": 36,
+     "state": "未定位",
+     "title": "CFN_2",
+     "pattern_id": "P4",
+     "pattern": "全地址单串（带逗号/竖线等分隔符）",
+     "fields": "Address",
+     "example_values": "[\"603 Cedar Point Rd, Cedar Point\", \"1006 Cedar Point Rd, Cedar Point\", \"195 Guthrie Farm Rd, Bogue/ Newport\"]",
+     "parseability": "可直接切出",
+     "fix_path": "切分算法",
+     "n_fields": 20,
+     "coord_rows": 36
+    },
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services2.arcgis.com/NjMFCzThTMQy3AJa/arcgis/rest/services/San_Juan_Bautista_Historical_Resources/FeatureServer/0",
+     "rows_n": 333,
+     "state": "未定位",
+     "title": "San Juan Bautista Historical Resources",
+     "pattern_id": "P4",
+     "pattern": "全地址单串（带逗号/竖线等分隔符）",
+     "fields": "FullAddress",
+     "example_values": "[\"1131 Salinas Grade Road, San Juan Bautista, CA\", \"651-1 Salinas Road, San Juan Bautista, CA\", \"115 Fifth Street, San Juan Bautista, CA\"]",
+     "parseability": "可直接切出",
+     "fix_path": "切分算法",
+     "n_fields": 50,
+     "coord_rows": 50
+    }
+   ]
+  },
+  {
+   "pattern_id": "P5",
+   "name": "多字段分列且街名本身要 2+ 列拼（pre-dir/type/suffix 分列），字段名不在别名表",
+   "rule": "门牌列与街名列都过值形态校验，但街名还需 ≥1 个修饰列（pre/post dir、type、suffix）拼在一起才算完整街名",
+   "layers": 101,
+   "rows_n": 1418701,
+   "pct_layers": 7.54,
+   "parseability": "可直接切出",
+   "fix_path": "别名表+拼列",
+   "examples": [
+    {
+     "layer_id": "FeatureServer/3",
+     "url": "https://services6.arcgis.com/H9hG4h4TwsT5qb1P/arcgis/rest/services/911_Data_Layers/FeatureServer/3",
+     "rows_n": 232673,
+     "state": "未定位",
+     "title": "911_Data_Layers",
+     "pattern_id": "P5",
+     "pattern": "多字段分列且街名本身要 2+ 列拼（pre-dir/type/suffix 分列），字段名不在别名表",
+     "fields": "Addr_Num|Addr_St|St_Suffix",
+     "example_values": "[[\"421\", \"506\"], [\"FRANCIS\", \"FERN\"]]",
+     "parseability": "可直接切出",
+     "fix_path": "别名表+拼列",
+     "n_fields": 34,
+     "coord_rows": 50
+    },
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services7.arcgis.com/NbYh5dTYeFoc2wlO/arcgis/rest/services/Slidell_Permitting_Web_Map_WFL1/FeatureServer/0",
+     "rows_n": 13075,
+     "state": "LA",
+     "title": "Slidell Permitting Web Map_WFL1",
+     "pattern_id": "P5",
+     "pattern": "多字段分列且街名本身要 2+ 列拼（pre-dir/type/suffix 分列），字段名不在别名表",
+     "fields": "ADDRES_NUM|Street1|POST_DIR",
+     "example_values": "[[\"118\", \"116\"], [\"Port\", \"Chamale\"]]",
+     "parseability": "可直接切出",
+     "fix_path": "别名表+拼列",
+     "n_fields": 27,
+     "coord_rows": 50
+    },
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services.arcgis.com/4MdqIsNzxG7xyTvf/arcgis/rest/services/Black_Businesses_Matter_Map_WFL1/FeatureServer/0",
+     "rows_n": 215,
+     "state": "NC",
+     "title": "Black Businesses Matter Map_WFL1",
+     "pattern_id": "P5",
+     "pattern": "多字段分列且街名本身要 2+ 列拼（pre-dir/type/suffix 分列），字段名不在别名表",
+     "fields": "A_NUM|St_Name|St_Postype",
+     "example_values": "[[\"238\", \"256\"], [\"TARBORO\", \"ATLANTIC\"]]",
+     "parseability": "可直接切出",
+     "fix_path": "别名表+拼列",
+     "n_fields": 37,
+     "coord_rows": 50
+    }
+   ]
+  },
+  {
+   "pattern_id": "P6",
+   "name": "结构 ID / 地块 ID / 分区号冒充地址（根本不是地址）",
+   "rule": "无门牌列、无街名列、无组合串；被当成地址的字段名命中 id/pid/apn/pin/parcel/zone/lot/block/route/segment 且值形态不是门牌+街名",
+   "layers": 90,
+   "rows_n": 702896,
+   "pct_layers": 6.72,
+   "parseability": "不可切",
+   "fix_path": "排除",
+   "examples": [
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services1.arcgis.com/FxX0ybnXnF4EyInS/arcgis/rest/services/Enterprise_GIS_Form_Responses/FeatureServer/0",
+     "rows_n": 155,
+     "state": "未定位",
+     "title": "Enterprise GIS Form Responses",
+     "pattern_id": "P6",
+     "pattern": "结构 ID / 地块 ID / 分区号冒充地址（根本不是地址）",
+     "fields": "email_addr|OBJECTID|GlobalID",
+     "example_values": "[[\"peter.strand@co.eau-claire.wi.us\", \"geraldk@jeffersoncountywi.gov\", \"baker.megan@rigov.org\"], []]",
+     "parseability": "不可切",
+     "fix_path": "排除",
+     "n_fields": 87,
+     "coord_rows": 9
+    },
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services.arcgis.com/HQ0xoN0EzDPBOEci/arcgis/rest/services/Dam_NID/FeatureServer/0",
+     "rows_n": 124,
+     "state": "HI",
+     "title": "Dam NID",
+     "pattern_id": "P6",
+     "pattern": "结构 ID / 地块 ID / 分区号冒充地址（根本不是地址）",
+     "fields": "Url_Address|Record_ID|State_or_Federal_Agency_ID",
+     "example_values": "[[\"https://dams.hawaii.gov/DamInformation.aspx?id=818982DE-5FDA-4442-89F2-0D7E3EA2E1F4\", \"https://dams.hawaii.gov/DamInformation.aspx?id=C14EB5EC-E1CB-4304-B013-7AE2B1ED7167\", \"https://dams.hawaii.gov/DamInformation.aspx?id=A3F66D3E-27B3-454E-B3A4-C19FEA0E89B6\"], []]",
+     "parseability": "不可切",
+     "fix_path": "排除",
+     "n_fields": 72,
+     "coord_rows": 50
+    },
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services5.arcgis.com/tbnCzQ0iyXeEj5i5/arcgis/rest/services/Ludlow_Zoning_Map_DRAFT_2026_WFL1/FeatureServer/0",
+     "rows_n": 78638,
+     "state": "NH",
+     "title": "Ludlow Zoning Map DRAFT 2026_WFL1",
+     "pattern_id": "P6",
+     "pattern": "结构 ID / 地块 ID / 分区号冒充地址（根本不是地址）",
+     "fields": "SymbolLabel|OBJECTID|GlobalID",
+     "example_values": "[[], []]",
+     "parseability": "不可切",
+     "fix_path": "排除",
+     "n_fields": 72,
+     "coord_rows": 50
+    }
+   ]
+  },
+  {
+   "pattern_id": "P7",
+   "name": "门牌+街名两列分列、字段名不在 registry 别名表",
+   "rule": "门牌列 + 街名列各一列、都过值形态校验、街名不需拼列，且至少一列名不在 registry 别名表（城市/州/邮编另分列不影响判定）",
+   "layers": 321,
+   "rows_n": 5520975,
+   "pct_layers": 23.96,
+   "parseability": "可直接切出",
+   "fix_path": "别名表",
+   "examples": [
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services1.arcgis.com/rvD4Y1nm1VbVDxJv/arcgis/rest/services/FPA_parcels_area/FeatureServer/0",
+     "rows_n": 991,
+     "state": "CA",
+     "title": "FPA_parcels_area",
+     "pattern_id": "P7",
+     "pattern": "门牌+街名两列分列、字段名不在 registry 别名表",
+     "fields": "TRANUM|SITUS_SUFF|OWN_ADDR2|OWN_ZIP",
+     "example_values": "[[\"81004\", \"89000\", \"81066\"], [\"ST\", \"RD\", \"VW\"]]",
+     "parseability": "可直接切出",
+     "fix_path": "别名表",
+     "n_fields": 67,
+     "coord_rows": 50
+    },
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services5.arcgis.com/8tbZGzFP4ylTC7QO/arcgis/rest/services/Study_Area_Parcels/FeatureServer/0",
+     "rows_n": 119693,
+     "state": "CA",
+     "title": "Study_Area_Parcels",
+     "pattern_id": "P7",
+     "pattern": "门牌+街名两列分列、字段名不在 registry 别名表",
+     "fields": "TRANUM|SITUS_SUFF|OWN_ADDR1|OWN_ZIP",
+     "example_values": "[[\"08244\", \"08001\"], [\"ST\"]]",
+     "parseability": "可直接切出",
+     "fix_path": "别名表",
+     "n_fields": 66,
+     "coord_rows": 50
+    },
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services6.arcgis.com/PplY6LYxgLzp5J0L/arcgis/rest/services/Division_Map_2022/FeatureServer/0",
+     "rows_n": 35280,
+     "state": "CA",
+     "title": "Division Map 2022",
+     "pattern_id": "P7",
+     "pattern": "门牌+街名两列分列、字段名不在 registry 别名表",
+     "fields": "TRANUM|SITUS_SUFF|OWN_ADDR1|OWN_ZIP",
+     "example_values": "[[\"74120\", \"13115\", \"04230\"], [\"CT\", \"BLVD\", \"AVE\"]]",
+     "parseability": "可直接切出",
+     "fix_path": "别名表",
+     "n_fields": 70,
+     "coord_rows": 50
+    }
+   ]
+  },
+  {
+   "pattern_id": "P8",
+   "name": "路段门牌区间（from/to addr + 街名，中心线层）",
+   "rule": "存在字段名命中 from_addr/to_addr/from_num/to_num/hn_low/hn_high/range，值是门牌区间或起止门牌",
+   "layers": 22,
+   "rows_n": 184987,
+   "pct_layers": 1.64,
+   "parseability": "需猜或NLP",
+   "fix_path": "排除/专用逻辑",
+   "examples": [
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services2.arcgis.com/8uN5i97bMkq2Mzrt/arcgis/rest/services/Caltrans_Freeway_Centerline/FeatureServer/0",
+     "rows_n": 792,
+     "state": "未定位",
+     "title": "Caltrans Freeway Centerline",
+     "pattern_id": "P8",
+     "pattern": "路段门牌区间（from/to addr + 街名，中心线层）",
+     "fields": "fromaddr_l|toaddr_l|fromaddr_r|toaddr_r",
+     "example_values": "[[\"0\", \"4901\"], [\"0\", \"5049\"], [\"0\"]]",
+     "parseability": "需猜或NLP",
+     "fix_path": "排除/专用逻辑",
+     "n_fields": 41,
+     "coord_rows": 50
+    },
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services9.arcgis.com/AzdpqVmJ5GjGWCoI/arcgis/rest/services/Centerlines/FeatureServer/0",
+     "rows_n": 5359,
+     "state": "VA",
+     "title": "Centerlines",
+     "pattern_id": "P8",
+     "pattern": "路段门牌区间（from/to addr + 街名，中心线层）",
+     "fields": "V_TOADDR",
+     "example_values": "[[\"370\", \"318\"]]",
+     "parseability": "需猜或NLP",
+     "fix_path": "排除/专用逻辑",
+     "n_fields": 71,
+     "coord_rows": 50
+    },
+    {
+     "layer_id": "MapServer/6",
+     "url": "https://geodata.hawaii.gov/arcgis/rest/services/Transportation/MapServer/6",
+     "rows_n": 13821,
+     "state": "HI",
+     "title": "Roads - Hawaii County",
+     "pattern_id": "P8",
+     "pattern": "路段门牌区间（from/to addr + 街名，中心线层）",
+     "fields": "toaddr",
+     "example_values": "[[\"2318\", \"550580\"]]",
+     "parseability": "需猜或NLP",
+     "fix_path": "排除/专用逻辑",
+     "n_fields": 7,
+     "coord_rows": 50
+    }
+   ]
+  },
+  {
+   "pattern_id": "P9",
+   "name": "只有街名（或街名+城市分列），全层无门牌列",
+   "rule": "有街名列但无任何门牌列、无组合串、无区间列；构不出「门牌+街名」键是数据本身没有门牌",
+   "layers": 66,
+   "rows_n": 767980,
+   "pct_layers": 4.93,
+   "parseability": "不可切",
+   "fix_path": "排除",
+   "examples": [
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services6.arcgis.com/Mo4MddfRHpFwT7UF/arcgis/rest/services/Centerlines/FeatureServer/0",
+     "rows_n": 35740,
+     "state": "FL",
+     "title": "Centerlines",
+     "pattern_id": "P9",
+     "pattern": "只有街名（或街名+城市分列），全层无门牌列",
+     "fields": "FULL_STREET_NAME",
+     "example_values": "[[\"PLATHE ROAD\", \"LITTLE ROAD\", \"ALTERNATE HWY 19\"]]",
+     "parseability": "不可切",
+     "fix_path": "排除",
+     "n_fields": 27,
+     "coord_rows": 49
+    },
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services.arcgis.com/Zs2aNLFN00jrS4gG/arcgis/rest/services/Active_Streets_CNNs_from_DataSF_pulled_nightly_/FeatureServer/0",
+     "rows_n": 16378,
+     "state": "CA",
+     "title": "Active Streets (CNNs, from DataSF, pulled nightly)",
+     "pattern_id": "P9",
+     "pattern": "只有街名（或街名+城市分列），全层无门牌列",
+     "fields": "street_gc|streetname",
+     "example_values": "[[\"CROWN\", \"SAINT GERMAIN\", \"WASHINGTON\"]]",
+     "parseability": "不可切",
+     "fix_path": "排除",
+     "n_fields": 34,
+     "coord_rows": 50
+    },
+    {
+     "layer_id": "FeatureServer/0",
+     "url": "https://services6.arcgis.com/bIzGieeFHTpyftKm/arcgis/rest/services/AddressRange/FeatureServer/0",
+     "rows_n": 2317,
+     "state": "WA",
+     "title": "AddressRange",
+     "pattern_id": "P9",
+     "pattern": "只有街名（或街名+城市分列），全层无门牌列",
+     "fields": "StreetName",
+     "example_values": "[[\"LACONNER WHITNEY\", \"MARCHS POINT\", \"TEXAS\"]]",
+     "parseability": "不可切",
+     "fix_path": "排除",
+     "n_fields": 24,
+     "coord_rows": 50
+    }
+   ]
+  }
+ ],
+ "triage": {
+  "只加 registry 别名表即可": {
+   "layers": 321,
+   "rows_n": 5520975,
+   "pct_layers": 23.96,
+   "patterns": [
+    "P7"
+   ]
+  },
+  "必须靠切分（或拼列）算法": {
+   "layers": 597,
+   "rows_n": 32357328,
+   "pct_layers": 44.55,
+   "patterns": [
+    "P1",
+    "P3",
+    "P4",
+    "P5",
+    "P13"
+   ]
+  },
+  "根本不是地址 / 无法构成键": {
+   "layers": 422,
+   "rows_n": 6849271,
+   "pct_layers": 31.49,
+   "patterns": [
+    "P6",
+    "P8",
+    "P9",
+    "P10",
+    "P11",
+    "P12"
+   ]
+  },
+  "街名+城市拼一格": {
+   "layers": 0,
+   "rows_n": 0,
+   "pct_layers": 0.0,
+   "patterns": [
+    "P2"
+   ]
+  }
+ },
+ "parseability": {
+  "可直接切出": 861,
+  "不可切": 400,
+  "需猜或NLP": 79
+ },
+ "fix_path": {
+  "别名表+拼列": 101,
+  "别名表": 321,
+  "切分算法": 496,
+  "排除": 400,
+  "排除/专用逻辑": 22
+ },
+ "assert_triage_sum_equals_total": true
+}
