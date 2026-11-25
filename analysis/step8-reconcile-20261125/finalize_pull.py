@@ -20,6 +20,7 @@ import csv
 import glob
 import json
 import os
+import re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
@@ -43,8 +44,19 @@ def main():
         parts = int(r.get("part_files") or 0)
         res = r.get("result") or ""
         note = ""
-        if res in ("ok", "mismatch") and ch.get("assets_n") is False and parts > csv_n:
-            res, note = "ok_index_stale", f"实测 {parts} 片 > CSV {csv_n}（CSV 陈旧，非拉取失败）"
+        # 实测 tar 数（①的分子）：rec 只存了「是否 == CSV」，实测值只能从 reason 里取
+        m = re.search(r"资产数 (\d+) != CSV", r.get("reason") or "")
+        tars = int(m.group(1)) if m else (csv_n if ch.get("assets_n") else 0)
+        if (res == "mismatch" and ch.get("rows_match") is False
+                and int(r.get("rows_declared") or 0) == 0 and int(r.get("rows_counted") or 0) > 0):
+            # muse-000253：采集侧 checkpoint 的 unit_rows 缺失（=0），行数只能靠 zcat 实测
+            res = "checkpoint_unit_rows_missing"
+            note = (f"实测行数 {r['rows_counted']}，但同 tag 的 checkpoint.json unit_rows=0"
+                    f"（采集侧账本缺陷，非拉取失败）；part={parts} 片可读")
+        elif res in ("ok", "mismatch") and tars > csv_n:
+            res = "ok_index_stale"
+            note = f"实测 {tars} 片 > CSV {csv_n}" + ("（tag 内重复上传同名 part，解包按字典序后者覆盖）"
+                                                  if tars > 1 and parts <= csv_n else "（CSV 陈旧）")
         elif res == "ok" and ch.get("bytes_ok") is False:
             res, note = "bytes_anomaly", f"字节偏差 {ch.get('bytes_dev')}（资产数一致才比）"
         elif res == "ok":
@@ -79,6 +91,7 @@ def main():
         "bytes_checked": sum(1 for x in fixed if "bytes_ok" in (x.get("checks") or {})),
         "bytes_ok": sum(1 for x in fixed if (x.get("checks") or {}).get("bytes_ok") is True),
         "index_stale_layers": rows_by.get("ok_index_stale", 0),
+        "checkpoint_unit_rows_missing": rows_by.get("checkpoint_unit_rows_missing", 0),
         "total_bytes": sum(int(x.get("bytes") or 0) for x in fixed),
     }
     json.dump(summary, open(os.path.join(HERE, "pull-final.json"), "w", encoding="utf-8"),

@@ -1,17 +1,18 @@
 {
- "layers_in_manifest": 3000,
+ "layers_in_manifest": 3396,
  "by_result": {
-  "ok": 2991,
-  "ok_index_stale": 3,
-  "mismatch": 6
+  "ok": 3381,
+  "ok_index_stale": 14,
+  "checkpoint_unit_rows_missing": 1
  },
- "ok_layers": 2994,
- "failed_layers": 6,
- "rowcheck_layers": 296,
- "rowcheck_pass": 296,
- "rowcheck_fail": 0,
- "bytes_checked": 0,
- "bytes_ok": 0,
- "index_stale_layers": 3,
- "total_bytes": 10763285729
+ "ok_layers": 3395,
+ "failed_layers": 0,
+ "rowcheck_layers": 337,
+ "rowcheck_pass": 335,
+ "rowcheck_fail": 2,
+ "bytes_checked": 18,
+ "bytes_ok": 16,
+ "index_stale_layers": 14,
+ "checkpoint_unit_rows_missing": 1,
+ "total_bytes": 29637390199
 }

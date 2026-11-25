@@ -34,6 +34,7 @@ import csv
 import json
 import os
 import random
+import re
 import shutil
 import subprocess
 import sys
@@ -50,6 +51,9 @@ REPO = "ip9988001/world-map-data-33"
 MIN_FREE_BYTES = 15 * 1024 ** 3        # 磁盘护栏：可用 <15G 立即停手
 BIG_LAYER_ASSETS = 20                  # 载荷资产 >20 片的层串行跑（峰值磁盘只留一层）
 TMP = "/data/tmp/step8pull"
+# ledger 里「算拉齐」的状态：ok=四道校验过；ok_index_stale=拉全了且比 CSV 多（CSV 陈旧）；
+# bytes_anomaly=资产数一致但字节偏差>20%（快照噪声，不判失败）
+OK_LEDGER_STATUS = ("ok", "ok_index_stale", "bytes_anomaly", "checkpoint_unit_rows_missing")
 
 
 def rows_absent():
@@ -77,7 +81,17 @@ def dir_state(lid, payload_n):
     if not os.path.isdir(d):
         return 0, False
     n = len([f for f in os.listdir(d) if f.endswith(".ndjson.gz") and f.startswith("part-u")])
-    return n, n >= payload_n > 0
+    if not (n >= payload_n > 0):
+        return n, False
+    # 双证据：目录 part 数达标 + ledger.json status=ok 且 part_files 一致（半截目录/无账一律重下）
+    lp = os.path.join(d, "ledger.json")
+    if not os.path.isfile(lp):
+        return n, False
+    try:
+        led = json.load(open(lp, encoding="utf-8"))
+    except Exception:                                               # noqa: BLE001
+        return n, False
+    return n, (led.get("status") in OK_LEDGER_STATUS and int(led.get("part_files") or 0) == n)
 
 
 def gh(args, timeout=3600):
@@ -248,11 +262,15 @@ def main():
         excl = {x.strip() for x in open(a.exclude_file, encoding="utf-8") if x.strip()}
     # 续跑：已完成（ledger status=ok 且 part 数达标）的层跳过
     todo = []
+    skipped = 0
     for j in rows:
         if j["layer"] in excl:
+            skipped += 1
             continue
         n, ok = dir_state(j["layer"], j["payload_n"])
-        if not ok:
+        if ok:
+            skipped += 1
+        else:
             j["_do_rows"] = False
             todo.append(j)
     # 排序：小层先跑（清单/进度快），payload 多的层排后面
@@ -266,12 +284,26 @@ def main():
     rowset |= {j["layer"] for j in random.sample(rest, min(k, len(rest)))}
     for j in todo:
         j["_do_rows"] = j["layer"] in rowset
+    # 续跑口径：分母 = 全集 3,550 层（上一轮报的 3,547 = 排除 3 层小样后的口径）；
+    # 序号 = 已跳过 + 已跑，收工时必为 3,550/3,550；分片号接已有最大分片 + 1（绝不覆写 00000-00014）
+    base_seq = skipped
+    last_shard = -1
+    for f in os.listdir(OUT):
+        m = re.match(r"pull-manifest-shard-(\d{5})\.json$", f)
+        if m:
+            last_shard = max(last_shard, int(m.group(1)))
+    L(f"[resume] 已跳过 {skipped} 层（目录 part 数达标 + ledger.json status=ok 且 part_files 一致，双证据），"
+      f"待跑 {len(todo)} 层；分母 {base_seq + len(todo)}（全集；上一轮 3,547 为排除 3 层小样口径），"
+      f"序号自 {base_seq + 1} 起，分片自 {last_shard + 1:05d} 起")
+    print(f"[resume] 已跳过 {skipped} 层（目录 part 数达标 + ledger.json status=ok 且 part_files 一致，双证据），"
+          f"待跑 {len(todo)} 层；分母 {base_seq + len(todo)}，序号自 {base_seq + 1} 起，"
+          f"分片自 {last_shard + 1:05d} 起", flush=True)
     L(f"[plan] todo={len(todo)} rowcheck={len(rowset)} (含字节最大 10 层) "
       f"concurrency={a.concurrency} free={free_bytes()/2**30:.1f}G")
     if a.limit:
         todo = todo[:a.limit]
 
-    recs, done, shard = [], 0, 0
+    recs, done, shard = [], 0, last_shard + 1
     stop_reason = ""
     big = [j for j in todo if j["payload_n"] > BIG_LAYER_ASSETS]
     small = [j for j in todo if j["payload_n"] <= BIG_LAYER_ASSETS]
@@ -283,7 +315,7 @@ def main():
             rec = f.result()
             recs.append(rec)
             done += 1
-            L(f"[{done}/{len(todo)}] {rec['layer'][:52]:52s} {rec['result']:8s} parts={rec['part_files']}/"
+            L(f"[{base_seq + done}/{base_seq + len(todo)}] {rec['layer'][:52]:52s} {rec['result']:8s} parts={rec['part_files']}/"
               f"{rec['assets_n']} {rec['bytes']/2**20:.0f}MB {rec['elapsed_s']}s {rec['reason'][:80]}")
             if done % 200 == 0:
                 write_manifest(recs, shard)
@@ -299,7 +331,7 @@ def main():
         rec = pull_one((j["layer"], j["tag"], j["payload_n"], j["bytes_base"], j["_do_rows"]))
         recs.append(rec)
         done += 1
-        L(f"[{done}/{len(todo)}] BIG {rec['layer'][:48]:48s} {rec['result']:8s} parts={rec['part_files']}/"
+        L(f"[{base_seq + done}/{base_seq + len(todo)}] BIG {rec['layer'][:48]:48s} {rec['result']:8s} parts={rec['part_files']}/"
           f"{rec['assets_n']} {rec['bytes']/2**20:.0f}MB {rec['elapsed_s']}s {rec['reason'][:60]}")
         if done % 200 == 0:
             write_manifest(recs, shard)
@@ -309,7 +341,8 @@ def main():
     write_manifest(recs, shard)
     agg = collections.Counter(r["result"] for r in recs)
     summary = {"at": time.strftime("%Y-%m-%dT%H:%M:%SZ"), "todo": len(todo), "done": len(recs),
-               "by_result": dict(agg), "rowcheck_layers": len(rowset), "shards": shard + 1,
+               "by_result": dict(agg), "rowcheck_layers": len(rowset), "shards": shard - last_shard,
+               "skipped_resume": skipped, "base_seq": base_seq, "seq_range": [base_seq + 1, base_seq + len(recs)],
                "wall_s": round(time.time() - t_all, 1), "stop_reason": stop_reason,
                "free_gb": round(free_bytes() / 2**30, 1),
                "rowcheck_pass": sum(1 for r in recs if r["checks"].get("rows_match") is True),

@@ -1,0 +1,13 @@
+{
+ "at": "2026-11-25T11:30:25Z",
+ "denominator": 3550,
+ "tally": {
+  "ok_index_stale": 14,
+  "ok": 3535,
+  "checkpoint_unit_rows_missing": 1
+ },
+ "sum_check": 3550,
+ "ok_total": 3535,
+ "failed_or_partial": 0,
+ "bytes_total": 40341427040
+}

@@ -1,0 +1,3643 @@
+{
+ "shard": 15,
+ "at": "2026-11-25T08:31:00Z",
+ "records": [
+  {
+   "layer": "nDataMaps_OpenDataMAP_InfraZonePropBound_Layers_MapServer_33",
+   "tag": "collect-step05-nDataMaps_OpenDataMAP_InfraZonePropBound_Layers_MapServer_33",
+   "assets_n": 1,
+   "part_files": 1,
+   "bytes": 1871821,
+   "checks": {
+    "assets_n": false,
+    "gzip_ok": true,
+    "rows_match": false,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "mismatch",
+   "reason": "资产数 3 != CSV 1",
+   "rows_declared": 9862,
+   "rows_counted": 9602,
+   "elapsed_s": 3.6,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "ellington_ca_server_rest_services_Parcels_Public_MapServer_1",
+   "tag": "collect-step05-ellington_ca_server_rest_services_Parcels_Public_MapServer_1",
+   "assets_n": 1,
+   "part_files": 2,
+   "bytes": 1903766,
+   "checks": {
+    "assets_n": false,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "mismatch",
+   "reason": "资产数 2 != CSV 1",
+   "rows_declared": 17326,
+   "rows_counted": null,
+   "elapsed_s": 4.0,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "vices_Join_Features_to_Address_Points_2_view_FeatureServer_0",
+   "tag": "collect-step05-vices_Join_Features_to_Address_Points_2_view_FeatureServer_0",
+   "assets_n": 1,
+   "part_files": 1,
+   "bytes": 508920,
+   "checks": {
+    "assets_n": false,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "mismatch",
+   "reason": "资产数 2 != CSV 1",
+   "rows_declared": null,
+   "rows_counted": null,
+   "elapsed_s": 1.4,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "us_arcgis_rest_services_Addressing_AddressPoints_MapServer_0",
+   "tag": "collect-step05-us_arcgis_rest_services_Addressing_AddressPoints_MapServer_0",
+   "assets_n": 1,
+   "part_files": 1,
+   "bytes": 2319454,
+   "checks": {
+    "assets_n": false,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "mismatch",
+   "reason": "资产数 3 != CSV 1",
+   "rows_declared": 14470,
+   "rows_counted": null,
+   "elapsed_s": 3.4,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "wi_us_arcgis_rest_services_RichlandCo_GIS_Public_MapServer_6",
+   "tag": "collect-step05-wi_us_arcgis_rest_services_RichlandCo_GIS_Public_MapServer_6",
+   "assets_n": 1,
+   "part_files": 1,
+   "bytes": 3484820,
+   "checks": {
+    "assets_n": false,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "mismatch",
+   "reason": "资产数 3 != CSV 1",
+   "rows_declared": 9628,
+   "rows_counted": null,
+   "elapsed_s": 3.0,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "ices_GeorginaMap_W84_SiteAddressPoint_Labels_W84_MapServer_0",
+   "tag": "collect-step05-ices_GeorginaMap_W84_SiteAddressPoint_Labels_W84_MapServer_0",
+   "assets_n": 1,
+   "part_files": 1,
+   "bytes": 7383406,
+   "checks": {
+    "assets_n": false,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "mismatch",
+   "reason": "资产数 3 != CSV 1",
+   "rows_declared": 23246,
+   "rows_counted": null,
+   "elapsed_s": 14.7,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "cgis_rest_services_911_Addresses_Public_View_FeatureServer_2",
+   "tag": "collect-step05-cgis_rest_services_911_Addresses_Public_View_FeatureServer_2",
+   "assets_n": 1,
+   "part_files": 2,
+   "bytes": 11311588,
+   "checks": {
+    "assets_n": false,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "mismatch",
+   "reason": "资产数 2 != CSV 1",
+   "rows_declared": 81784,
+   "rows_counted": null,
+   "elapsed_s": 17.5,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "st_services_GeorginaMap_W84_SiteAddressPoint_W84_MapServer_0",
+   "tag": "collect-step05-st_services_GeorginaMap_W84_SiteAddressPoint_W84_MapServer_0",
+   "assets_n": 1,
+   "part_files": 1,
+   "bytes": 7393249,
+   "checks": {
+    "assets_n": false,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "mismatch",
+   "reason": "资产数 3 != CSV 1",
+   "rows_declared": 23241,
+   "rows_counted": null,
+   "elapsed_s": 34.6,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "rcgis_rest_services_NG911AddressPoints_VESTA_FeatureServer_0",
+   "tag": "collect-step04-rcgis_rest_services_NG911AddressPoints_VESTA_FeatureServer_0",
+   "assets_n": 1,
+   "part_files": 15,
+   "bytes": 82770860,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_dev": 0.0,
+    "bytes_unit": "bytes",
+    "bytes_ok": true,
+    "bytes_baseline": "csv_snapshot"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 708302,
+   "rows_counted": null,
+   "elapsed_s": 161.1,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "nNfnxuF_arcgis_rest_services_SiteAddressEGIS_FeatureServer_0",
+   "tag": "collect-step04-nNfnxuF_arcgis_rest_services_SiteAddressEGIS_FeatureServer_0",
+   "assets_n": 1,
+   "part_files": 15,
+   "bytes": 90463704,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_dev": 0.0,
+    "bytes_unit": "bytes",
+    "bytes_ok": true,
+    "bytes_baseline": "csv_snapshot"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 726587,
+   "rows_counted": null,
+   "elapsed_s": 167.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "st_services_Miami_Dade_County_Address_Points_FeatureServer_0",
+   "tag": "collect-step04-st_services_Miami_Dade_County_Address_Points_FeatureServer_0",
+   "assets_n": 1,
+   "part_files": 19,
+   "bytes": 108642104,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_dev": 0.0,
+    "bytes_unit": "bytes",
+    "bytes_ok": true,
+    "bytes_baseline": "csv_snapshot"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 930192,
+   "rows_counted": null,
+   "elapsed_s": 165.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "lin_oh_us_arcgis_rest_services_Streets_Addresses_MapServer_3",
+   "tag": "collect-step04-lin_oh_us_arcgis_rest_services_Streets_Addresses_MapServer_3",
+   "assets_n": 1,
+   "part_files": 18,
+   "bytes": 125689663,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "rows_match": true,
+    "bytes_dev": 0.0,
+    "bytes_unit": "bytes",
+    "bytes_ok": true,
+    "bytes_baseline": "csv_snapshot"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 856652,
+   "rows_counted": 856652,
+   "elapsed_s": 224.5,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "N_arcgis_rest_services_OSM_Address_Points_AS_FeatureServer_0",
+   "tag": "collect-step04-N_arcgis_rest_services_OSM_Address_Points_AS_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 30,
+   "bytes": 38349032,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 1458232,
+   "rows_counted": null,
+   "elapsed_s": 77.3,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "7QF1W_arcgis_rest_services_ADDRESS_POINT_642_FeatureServer_0",
+   "tag": "collect-step04-7QF1W_arcgis_rest_services_ADDRESS_POINT_642_FeatureServer_0",
+   "assets_n": 1,
+   "part_files": 14,
+   "bytes": 126378113,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_dev": 0.0,
+    "bytes_unit": "bytes",
+    "bytes_ok": true,
+    "bytes_baseline": "csv_snapshot"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 675218,
+   "rows_counted": null,
+   "elapsed_s": 226.7,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "ricopa_County_Address_Points__Non_Commercial_FeatureServer_0",
+   "tag": "collect-step04-ricopa_County_Address_Points__Non_Commercial_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 29,
+   "bytes": 58950506,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 1406138,
+   "rows_counted": null,
+   "elapsed_s": 108.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "DCrBlhlg_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "tag": "collect-step04-DCrBlhlg_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 26,
+   "bytes": 56569627,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 1270113,
+   "rows_counted": null,
+   "elapsed_s": 94.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "rcgis_rest_services_County_37_LBRS_Addresses_FeatureServer_0",
+   "tag": "collect-step04-rcgis_rest_services_County_37_LBRS_Addresses_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 24,
+   "bytes": 32244322,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 1186185,
+   "rows_counted": null,
+   "elapsed_s": 33.3,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "gis_rest_services_NSW_Geocoded_Address_Point_FeatureServer_1",
+   "tag": "collect-step04-gis_rest_services_NSW_Geocoded_Address_Point_FeatureServer_1",
+   "assets_n": 2,
+   "part_files": 30,
+   "bytes": 142050735,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 1464858,
+   "rows_counted": null,
+   "elapsed_s": 234.4,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "buncombecounty_org_arcgis_rest_services_opendata_MapServer_2",
+   "tag": "collect-step05-buncombecounty_org_arcgis_rest_services_opendata_MapServer_2",
+   "assets_n": 1,
+   "part_files": 352,
+   "bytes": 239029824,
+   "checks": {
+    "assets_n": false,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "mismatch",
+   "reason": "资产数 5 != CSV 1",
+   "rows_declared": 187871,
+   "rows_counted": null,
+   "elapsed_s": 430.6,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "is_rest_services_ADDRESS_POINTS_110725_WGS84_FeatureServer_1",
+   "tag": "collect-step04-is_rest_services_ADDRESS_POINTS_110725_WGS84_FeatureServer_1",
+   "assets_n": 2,
+   "part_files": 26,
+   "bytes": 104267433,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "rows_match": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 1215105,
+   "rows_counted": 1215105,
+   "elapsed_s": 181.6,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "TaevMOAtV9Qd_arcgis_rest_services_OC_Address_FeatureServer_0",
+   "tag": "collect-step04-TaevMOAtV9Qd_arcgis_rest_services_OC_Address_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 24,
+   "bytes": 49379586,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 1148110,
+   "rows_counted": null,
+   "elapsed_s": 62.3,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "xPS_arcgis_rest_services_HCUS_Address_Points_FeatureServer_0",
+   "tag": "collect-step04-xPS_arcgis_rest_services_HCUS_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 25,
+   "bytes": 85738439,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 1205971,
+   "rows_counted": null,
+   "elapsed_s": 167.0,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "i_arcgis_rest_services_PSEGLI_Address_Points_FeatureServer_0",
+   "tag": "collect-step04-i_arcgis_rest_services_PSEGLI_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 22,
+   "bytes": 47557739,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 1077272,
+   "rows_counted": null,
+   "elapsed_s": 91.0,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "gis_rest_services_NM_E911_Addresses_Nov_2022_FeatureServer_1",
+   "tag": "collect-step04-gis_rest_services_NM_E911_Addresses_Nov_2022_FeatureServer_1",
+   "assets_n": 2,
+   "part_files": 22,
+   "bytes": 39296121,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "rows_match": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 1014431,
+   "rows_counted": 1014431,
+   "elapsed_s": 46.1,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "st_services_SFDView_E911_Addresses_7_10_2026_FeatureServer_0",
+   "tag": "collect-step04-st_services_SFDView_E911_Addresses_7_10_2026_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 22,
+   "bytes": 75297025,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 1060594,
+   "rows_counted": null,
+   "elapsed_s": 127.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "arcgis_rest_services_ADDRESS_POINTS_072926v2_FeatureServer_2",
+   "tag": "collect-step04-arcgis_rest_services_ADDRESS_POINTS_072926v2_FeatureServer_2",
+   "assets_n": 2,
+   "part_files": 24,
+   "bytes": 97976781,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "rows_match": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 1131611,
+   "rows_counted": 1131611,
+   "elapsed_s": 166.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "0cZEpczq_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-0cZEpczq_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 11231001,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 198637,
+   "rows_counted": null,
+   "elapsed_s": 7.7,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "182nooX1_arcgis_rest_services_Parcel_Address_FeatureServer_0",
+   "tag": "collect-step05-182nooX1_arcgis_rest_services_Parcel_Address_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 4870764,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 157238,
+   "rows_counted": null,
+   "elapsed_s": 4.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "0uh_arcgis_rest_services_SAM_BERDO_addresses_FeatureServer_0",
+   "tag": "collect-step05-0uh_arcgis_rest_services_SAM_BERDO_addresses_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 5734140,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 126918,
+   "rows_counted": null,
+   "elapsed_s": 6.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "1OsXi67t7XgmS_arcgis_rest_services_Addresses_FeatureServer_0",
+   "tag": "collect-step05-1OsXi67t7XgmS_arcgis_rest_services_Addresses_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 11917479,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 132329,
+   "rows_counted": null,
+   "elapsed_s": 7.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "vices_New_Mexico_911_Address_Points_May_2024_FeatureServer_0",
+   "tag": "collect-step04-vices_New_Mexico_911_Address_Points_May_2024_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 22,
+   "bytes": 39644662,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 1028149,
+   "rows_counted": null,
+   "elapsed_s": 75.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "1yz8_arcgis_rest_services_LocalAddressSearch_FeatureServer_0",
+   "tag": "collect-step05-1yz8_arcgis_rest_services_LocalAddressSearch_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 5659504,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 103176,
+   "rows_counted": null,
+   "elapsed_s": 5.0,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "WBIR4LYH_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "tag": "collect-step04-WBIR4LYH_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 22,
+   "bytes": 98737087,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 1044333,
+   "rows_counted": null,
+   "elapsed_s": 162.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "1B_arcgis_rest_services_ADDRESS_POINT_IDENT4_FeatureServer_0",
+   "tag": "collect-step05-1B_arcgis_rest_services_ADDRESS_POINT_IDENT4_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 14138589,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 178506,
+   "rows_counted": null,
+   "elapsed_s": 26.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "0MR9xfkxVRwat_arcgis_rest_services_Addresses_FeatureServer_0",
+   "tag": "collect-step05-0MR9xfkxVRwat_arcgis_rest_services_Addresses_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 28885402,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 180273,
+   "rows_counted": null,
+   "elapsed_s": 44.5,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "2tV5FXPLX_arcgis_rest_services_CPS_Addresses_FeatureServer_0",
+   "tag": "collect-step05-2tV5FXPLX_arcgis_rest_services_CPS_Addresses_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 3,
+   "bytes": 9986584,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 109422,
+   "rows_counted": null,
+   "elapsed_s": 14.4,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "44zo8_arcgis_rest_services_Addresses_Parcels_FeatureServer_0",
+   "tag": "collect-step05-44zo8_arcgis_rest_services_Addresses_Parcels_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 12446641,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 117607,
+   "rows_counted": null,
+   "elapsed_s": 11.3,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "3BiopMCCU_arcgis_rest_services_Address_Point_FeatureServer_0",
+   "tag": "collect-step05-3BiopMCCU_arcgis_rest_services_Address_Point_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 10138452,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 118820,
+   "rows_counted": null,
+   "elapsed_s": 17.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "1_arcgis_rest_services_MAR_Address_Worcester_FeatureServer_0",
+   "tag": "collect-step05-1_arcgis_rest_services_MAR_Address_Worcester_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 19082532,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 115579,
+   "rows_counted": null,
+   "elapsed_s": 45.4,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "4n9AZQoiS_arcgis_rest_services_Address_Point_FeatureServer_0",
+   "tag": "collect-step05-4n9AZQoiS_arcgis_rest_services_Address_Point_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 16843275,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "rows_match": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 145955,
+   "rows_counted": 145955,
+   "elapsed_s": 11.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "4zo8_arcgis_rest_services_Addresses_OpenData_FeatureServer_0",
+   "tag": "collect-step05-4zo8_arcgis_rest_services_Addresses_OpenData_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 12484975,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 118024,
+   "rows_counted": null,
+   "elapsed_s": 8.7,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "4ccHkQgTu_arcgis_rest_services_Addresses_AGO_FeatureServer_0",
+   "tag": "collect-step05-4ccHkQgTu_arcgis_rest_services_Addresses_AGO_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 23740761,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 170096,
+   "rows_counted": null,
+   "elapsed_s": 27.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "58c926eb68_rest_services_Public_SiteAddr_ZipCode_MapServer_0",
+   "tag": "collect-step05-58c926eb68_rest_services_Public_SiteAddr_ZipCode_MapServer_0",
+   "assets_n": 2,
+   "part_files": 2,
+   "bytes": 4561858,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 47859,
+   "rows_counted": null,
+   "elapsed_s": 5.4,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "44zo8_arcgis_rest_services_Addresses_Sup_BCD_FeatureServer_0",
+   "tag": "collect-step05-44zo8_arcgis_rest_services_Addresses_Sup_BCD_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 9586220,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 123905,
+   "rows_counted": null,
+   "elapsed_s": 39.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "4zdJEFmiY_arcgis_rest_services_Address_Point_FeatureServer_0",
+   "tag": "collect-step05-4zdJEFmiY_arcgis_rest_services_Address_Point_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 8769962,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 106694,
+   "rows_counted": null,
+   "elapsed_s": 16.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "7DZct_arcgis_rest_services_BellAddressPoints_FeatureServer_0",
+   "tag": "collect-step05-7DZct_arcgis_rest_services_BellAddressPoints_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 9497787,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 185532,
+   "rows_counted": null,
+   "elapsed_s": 11.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "6EOlzIRG0yO_arcgis_rest_services_LLPG_Public_FeatureServer_0",
+   "tag": "collect-step05-6EOlzIRG0yO_arcgis_rest_services_LLPG_Public_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 8344090,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 169044,
+   "rows_counted": null,
+   "elapsed_s": 15.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "7qalQMlb_arcgis_rest_services_address_points_FeatureServer_0",
+   "tag": "collect-step05-7qalQMlb_arcgis_rest_services_address_points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 3,
+   "bytes": 14180620,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 124404,
+   "rows_counted": null,
+   "elapsed_s": 14.0,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "3_arcgis_rest_services_SUSS_Address_Points_FeatureServer_132",
+   "tag": "collect-step05-3_arcgis_rest_services_SUSS_Address_Points_FeatureServer_132",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 16057521,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 184716,
+   "rows_counted": null,
+   "elapsed_s": 64.5,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "8na0Y5l9_arcgis_rest_services_Address_5_2023_FeatureServer_5",
+   "tag": "collect-step05-8na0Y5l9_arcgis_rest_services_Address_5_2023_FeatureServer_5",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 13357260,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 170691,
+   "rows_counted": null,
+   "elapsed_s": 11.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "8na0Y5l9_arcgis_rest_services_ADDRESS_POINTS_FeatureServer_0",
+   "tag": "collect-step05-8na0Y5l9_arcgis_rest_services_ADDRESS_POINTS_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 19431715,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 177396,
+   "rows_counted": null,
+   "elapsed_s": 25.0,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "AWjWWjk6_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-AWjWWjk6_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 4716016,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 120190,
+   "rows_counted": null,
+   "elapsed_s": 5.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "A_arcgis_rest_services_Service_Point_Address_FeatureServer_0",
+   "tag": "collect-step05-A_arcgis_rest_services_Service_Point_Address_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 1,
+   "bytes": 437995,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 6592,
+   "rows_counted": null,
+   "elapsed_s": 2.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "97DWldovjI_arcgis_rest_services_AddressPoint_FeatureServer_0",
+   "tag": "collect-step05-97DWldovjI_arcgis_rest_services_AddressPoint_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 20407537,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 153445,
+   "rows_counted": null,
+   "elapsed_s": 30.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "Di_arcgis_rest_services_Addresses__Open_Data_FeatureServer_0",
+   "tag": "collect-step05-Di_arcgis_rest_services_Addresses__Open_Data_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 7860679,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 101641,
+   "rows_counted": null,
+   "elapsed_s": 7.3,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "9q8g_arcgis_rest_services_Address_Point_File_FeatureServer_0",
+   "tag": "collect-step05-9q8g_arcgis_rest_services_Address_Point_File_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 11820622,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 107685,
+   "rows_counted": null,
+   "elapsed_s": 40.1,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "DlUCS7Cz_arcgis_rest_services_BRADD_KY_NG911_FeatureServer_0",
+   "tag": "collect-step05-DlUCS7Cz_arcgis_rest_services_BRADD_KY_NG911_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 11225641,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 178004,
+   "rows_counted": null,
+   "elapsed_s": 8.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "EgSzGTEPg4fr6_arcgis_rest_services_Addresses_FeatureServer_0",
+   "tag": "collect-step05-EgSzGTEPg4fr6_arcgis_rest_services_Addresses_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 15763894,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 112067,
+   "rows_counted": null,
+   "elapsed_s": 9.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "A9Ep0yNJ_arcgis_rest_services_CivicAddresses_FeatureServer_0",
+   "tag": "collect-step05-A9Ep0yNJ_arcgis_rest_services_CivicAddresses_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 19232108,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 159003,
+   "rows_counted": null,
+   "elapsed_s": 47.4,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "GXOPE_arcgis_rest_services_SiteAddressPoints_FeatureServer_0",
+   "tag": "collect-step05-GXOPE_arcgis_rest_services_SiteAddressPoints_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 10643982,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "rows_match": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 150457,
+   "rows_counted": 150457,
+   "elapsed_s": 8.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "HhV_arcgis_rest_services_RPD_Addresses_jData_FeatureServer_0",
+   "tag": "collect-step05-HhV_arcgis_rest_services_RPD_Addresses_jData_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 4679570,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 166235,
+   "rows_counted": null,
+   "elapsed_s": 4.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "FjG9HQX_arcgis_rest_services_Parcel_AdrUnits_FeatureServer_0",
+   "tag": "collect-step05-FjG9HQX_arcgis_rest_services_Parcel_AdrUnits_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 8429710,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 144958,
+   "rows_counted": null,
+   "elapsed_s": 14.5,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "DyZ77wYt_arcgis_rest_services_Address_Point1_FeatureServer_0",
+   "tag": "collect-step05-DyZ77wYt_arcgis_rest_services_Address_Point1_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 11451166,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 105564,
+   "rows_counted": null,
+   "elapsed_s": 25.5,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "JdGN_arcgis_rest_services_SC_Address_Points__FeatureServer_0",
+   "tag": "collect-step05-JdGN_arcgis_rest_services_SC_Address_Points__FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 11514802,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 123288,
+   "rows_counted": null,
+   "elapsed_s": 8.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "7DWldovjI_arcgis_rest_services_AddressPoints_FeatureServer_0",
+   "tag": "collect-step05-7DWldovjI_arcgis_rest_services_AddressPoints_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 37059001,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 158392,
+   "rows_counted": null,
+   "elapsed_s": 100.4,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "AyH_arcgis_rest_services_Site_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-AyH_arcgis_rest_services_Site_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 5,
+   "bytes": 28865610,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 180263,
+   "rows_counted": null,
+   "elapsed_s": 59.6,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "Ji_arcgis_rest_services_Address_Points_ATCOG_FeatureServer_1",
+   "tag": "collect-step05-Ji_arcgis_rest_services_Address_Points_ATCOG_FeatureServer_1",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 24693624,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 178740,
+   "rows_counted": null,
+   "elapsed_s": 16.6,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "K_arcgis_rest_services_Irvine_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-K_arcgis_rest_services_Irvine_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 5729113,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 140251,
+   "rows_counted": null,
+   "elapsed_s": 9.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "Jsua_arcgis_rest_services_LCG_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-Jsua_arcgis_rest_services_LCG_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 13100573,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 117021,
+   "rows_counted": null,
+   "elapsed_s": 16.7,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "Parcel_and_Address_Data_from_Hernando_County_FeatureServer_0",
+   "tag": "collect-step05-Parcel_and_Address_Data_from_Hernando_County_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 6956215,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 138460,
+   "rows_counted": null,
+   "elapsed_s": 6.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "IeLonX0V_arcgis_rest_services_AddressPointCC_FeatureServer_0",
+   "tag": "collect-step05-IeLonX0V_arcgis_rest_services_AddressPointCC_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 8117849,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 104135,
+   "rows_counted": null,
+   "elapsed_s": 35.3,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "Pvc_arcgis_rest_services_Address_Points_All_FeatureServer_13",
+   "tag": "collect-step05-Pvc_arcgis_rest_services_Address_Points_All_FeatureServer_13",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 8758779,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 120801,
+   "rows_counted": null,
+   "elapsed_s": 9.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "QfTXFRFX44zo8_arcgis_rest_services_Addresses_FeatureServer_0",
+   "tag": "collect-step05-QfTXFRFX44zo8_arcgis_rest_services_Addresses_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 12660576,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 120224,
+   "rows_counted": null,
+   "elapsed_s": 10.1,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "Pe5MHUSr_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-Pe5MHUSr_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 9929609,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 125007,
+   "rows_counted": null,
+   "elapsed_s": 16.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "R4_arcgis_rest_services_Address_Points_ports_FeatureServer_0",
+   "tag": "collect-step05-R4_arcgis_rest_services_Address_Points_ports_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 6694851,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 144915,
+   "rows_counted": null,
+   "elapsed_s": 6.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "RH_arcgis_rest_services_Situs_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-RH_arcgis_rest_services_Situs_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 11592106,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 113039,
+   "rows_counted": null,
+   "elapsed_s": 10.1,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "Iwu2HFA5O_arcgis_rest_services_Situs_Address_FeatureServer_0",
+   "tag": "collect-step05-Iwu2HFA5O_arcgis_rest_services_Situs_Address_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 14461077,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 184563,
+   "rows_counted": null,
+   "elapsed_s": 63.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "RRH_arcgis_rest_services_SITUS_ADDRESS_POINT_FeatureServer_0",
+   "tag": "collect-step05-RRH_arcgis_rest_services_SITUS_ADDRESS_POINT_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 12324656,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 113129,
+   "rows_counted": null,
+   "elapsed_s": 9.3,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "SZkxL0InaJ9E_arcgis_rest_services_NG911_SSAP_FeatureServer_0",
+   "tag": "collect-step05-SZkxL0InaJ9E_arcgis_rest_services_NG911_SSAP_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 10747118,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 173053,
+   "rows_counted": null,
+   "elapsed_s": 8.6,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "R9xfkxVRwat_arcgis_rest_services_Addresses3x_FeatureServer_0",
+   "tag": "collect-step05-R9xfkxVRwat_arcgis_rest_services_Addresses3x_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 28948376,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 178749,
+   "rows_counted": null,
+   "elapsed_s": 36.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "KdBRSMj8is_arcgis_rest_services_Address_COSA_FeatureServer_0",
+   "tag": "collect-step05-KdBRSMj8is_arcgis_rest_services_Address_COSA_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 16354009,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 163595,
+   "rows_counted": null,
+   "elapsed_s": 58.6,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "TXFRFX44zo8_arcgis_rest_services_Address_BCD_FeatureServer_0",
+   "tag": "collect-step05-TXFRFX44zo8_arcgis_rest_services_Address_BCD_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 4687819,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 123830,
+   "rows_counted": null,
+   "elapsed_s": 7.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "Qh_arcgis_rest_services_Address_Points_View__FeatureServer_2",
+   "tag": "collect-step05-Qh_arcgis_rest_services_Address_Points_View__FeatureServer_2",
+   "assets_n": 2,
+   "part_files": 3,
+   "bytes": 10454625,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 113964,
+   "rows_counted": null,
+   "elapsed_s": 47.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "S_arcgis_rest_services_MosquitoAddressPoints_FeatureServer_0",
+   "tag": "collect-step05-S_arcgis_rest_services_MosquitoAddressPoints_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 17676879,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 143857,
+   "rows_counted": null,
+   "elapsed_s": 13.3,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "VcbuYoZO_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-VcbuYoZO_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 14854049,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 133031,
+   "rows_counted": null,
+   "elapsed_s": 9.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "VvCK7olj_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-VvCK7olj_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 9156309,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 125906,
+   "rows_counted": null,
+   "elapsed_s": 7.0,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "TnSRR4hh_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-TnSRR4hh_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 20627860,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 190745,
+   "rows_counted": null,
+   "elapsed_s": 40.6,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "SE6sXfoLq_ArcGIS_rest_services_AddressPoints_FeatureServer_0",
+   "tag": "collect-step05-SE6sXfoLq_ArcGIS_rest_services_AddressPoints_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 35318680,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 184353,
+   "rows_counted": null,
+   "elapsed_s": 73.1,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "UojyNPhsWOk1W_arcgis_rest_services_Addresses_FeatureServer_1",
+   "tag": "collect-step05-UojyNPhsWOk1W_arcgis_rest_services_Addresses_FeatureServer_1",
+   "assets_n": 2,
+   "part_files": 7,
+   "bytes": 14203811,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 250208,
+   "rows_counted": null,
+   "elapsed_s": 45.3,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "XVqahKz2_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-XVqahKz2_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 17989473,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 144000,
+   "rows_counted": null,
+   "elapsed_s": 12.7,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "Whb8bY8_arcgis_rest_services_Addressing_2025_FeatureServer_1",
+   "tag": "collect-step05-Whb8bY8_arcgis_rest_services_Addressing_2025_FeatureServer_1",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 13770945,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "rows_match": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 125872,
+   "rows_counted": 125872,
+   "elapsed_s": 31.6,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "XWOLUPKd_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-XWOLUPKd_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 12263518,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "rows_match": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 136829,
+   "rows_counted": 136829,
+   "elapsed_s": 10.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "UBU1_arcgis_rest_services_Address_Points_NEW_FeatureServer_0",
+   "tag": "collect-step05-UBU1_arcgis_rest_services_Address_Points_NEW_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 25316304,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 116378,
+   "rows_counted": null,
+   "elapsed_s": 56.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "YI_arcgis_rest_services_IT_Addresses_040521_FeatureServer_70",
+   "tag": "collect-step05-YI_arcgis_rest_services_IT_Addresses_040521_FeatureServer_70",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 7939369,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 109674,
+   "rows_counted": null,
+   "elapsed_s": 17.1,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "YapRVNzl_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-YapRVNzl_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 8280659,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 128459,
+   "rows_counted": null,
+   "elapsed_s": 12.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "YcSWIaDnu_arcgis_rest_services_Address_Point_FeatureServer_0",
+   "tag": "collect-step05-YcSWIaDnu_arcgis_rest_services_Address_Point_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 5,
+   "bytes": 10247218,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 191232,
+   "rows_counted": null,
+   "elapsed_s": 12.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "Y_arcgis_rest_services_SJUSD_Address_Points_FeatureServer_10",
+   "tag": "collect-step05-Y_arcgis_rest_services_SJUSD_Address_Points_FeatureServer_10",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 12408307,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 119019,
+   "rows_counted": null,
+   "elapsed_s": 26.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "ZxKNp8Njji_arcgis_rest_services_Miss_Address_FeatureServer_1",
+   "tag": "collect-step05-ZxKNp8Njji_arcgis_rest_services_Miss_Address_FeatureServer_1",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 19322212,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 148287,
+   "rows_counted": null,
+   "elapsed_s": 11.0,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "YD4wEgDl_arcgis_rest_services_Address_Point_FeatureServer_22",
+   "tag": "collect-step05-YD4wEgDl_arcgis_rest_services_Address_Point_FeatureServer_22",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 12915908,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 120205,
+   "rows_counted": null,
+   "elapsed_s": 36.7,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_ags_auroragov_org_aurora_rest_services_OpenData_MapServer_9",
+   "tag": "collect-step05-_ags_auroragov_org_aurora_rest_services_OpenData_MapServer_9",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 17053032,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 127670,
+   "rows_counted": null,
+   "elapsed_s": 11.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_arcgis_rest_services_Address_Points_Open_DC_FeatureServer_0",
+   "tag": "collect-step05-_arcgis_rest_services_Address_Points_Open_DC_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 22429754,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 149594,
+   "rows_counted": null,
+   "elapsed_s": 18.3,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "Z77wYt_arcgis_rest_services_Address_Point_DC_FeatureServer_0",
+   "tag": "collect-step05-Z77wYt_arcgis_rest_services_Address_Point_DC_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 10032684,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 105198,
+   "rows_counted": null,
+   "elapsed_s": 32.5,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_UnregisteredAddresses_UnregisteredAddresses_FeatureServer_0",
+   "tag": "collect-step05-_UnregisteredAddresses_UnregisteredAddresses_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 11832549,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 110630,
+   "rows_counted": null,
+   "elapsed_s": 23.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_arcgis_rest_services_Davis_County_Addresses_FeatureServer_0",
+   "tag": "collect-step05-_arcgis_rest_services_Davis_County_Addresses_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 10177641,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 171286,
+   "rows_counted": null,
+   "elapsed_s": 14.5,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_arcgis_rest_services_LB_Site_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-_arcgis_rest_services_LB_Site_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 10730486,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 103980,
+   "rows_counted": null,
+   "elapsed_s": 10.0,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_arcgis_rest_services_NewcastleAddressPoints_FeatureServer_0",
+   "tag": "collect-step05-_arcgis_rest_services_NewcastleAddressPoints_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 10494819,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 118064,
+   "rows_counted": null,
+   "elapsed_s": 14.7,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_arcgis_rest_services_Primary_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-_arcgis_rest_services_Primary_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 15156450,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 162711,
+   "rows_counted": null,
+   "elapsed_s": 10.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_ca_arcgis_adaptor_rest_services_LCGIS_VertiGIS_MapServer_25",
+   "tag": "collect-step05-_ca_arcgis_adaptor_rest_services_LCGIS_VertiGIS_MapServer_25",
+   "assets_n": 2,
+   "part_files": 1,
+   "bytes": 11042,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": null,
+   "rows_counted": null,
+   "elapsed_s": 2.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_arcgis_rest_services_E911_AddressPoints_PUB_FeatureServer_1",
+   "tag": "collect-step05-_arcgis_rest_services_E911_AddressPoints_PUB_FeatureServer_1",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 7774416,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 141568,
+   "rows_counted": null,
+   "elapsed_s": 25.1,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_arcgisservices_rest_services_OpenData_Addresses_MapServer_0",
+   "tag": "collect-step05-_arcgisservices_rest_services_OpenData_Addresses_MapServer_0",
+   "assets_n": 2,
+   "part_files": 3,
+   "bytes": 8470741,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 125812,
+   "rows_counted": null,
+   "elapsed_s": 6.3,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_arcgis_rest_services_ETCOG_Data_Map_Service_FeatureServer_0",
+   "tag": "collect-step05-_arcgis_rest_services_ETCOG_Data_Map_Service_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 9897963,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 140123,
+   "rows_counted": null,
+   "elapsed_s": 26.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_gov_server2_rest_services_GeneralUse_Open_Data_MapServer_17",
+   "tag": "collect-step05-_gov_server2_rest_services_GeneralUse_Open_Data_MapServer_17",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 13662118,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 107068,
+   "rows_counted": null,
+   "elapsed_s": 14.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_gov_arcgis_rest_services_general_Address_Points_MapServer_0",
+   "tag": "collect-step05-_gov_arcgis_rest_services_general_Address_Points_MapServer_0",
+   "assets_n": 2,
+   "part_files": 5,
+   "bytes": 18623527,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 161403,
+   "rows_counted": null,
+   "elapsed_s": 16.3,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_org_arcgis_rest_services_PARCELS_ADDRESS_POINTS_MapServer_0",
+   "tag": "collect-step05-_org_arcgis_rest_services_PARCELS_ADDRESS_POINTS_MapServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 23375962,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 141117,
+   "rows_counted": null,
+   "elapsed_s": 12.6,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_data_DATA_LOADER_SiteStructureAddressPoints_FeatureServer_0",
+   "tag": "collect-step05-_data_DATA_LOADER_SiteStructureAddressPoints_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 3,
+   "bytes": 11194456,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 105437,
+   "rows_counted": null,
+   "elapsed_s": 39.7,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_org_arcgis_rest_services_PlanMaps_AddressParcel_MapServer_0",
+   "tag": "collect-step05-_org_arcgis_rest_services_PlanMaps_AddressParcel_MapServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 16791768,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 192606,
+   "rows_counted": null,
+   "elapsed_s": 9.7,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_lexingtonky_gov_lfucggis_rest_services_property_MapServer_0",
+   "tag": "collect-step05-_lexingtonky_gov_lfucggis_rest_services_property_MapServer_0",
+   "assets_n": 2,
+   "part_files": 5,
+   "bytes": 10182941,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 194607,
+   "rows_counted": null,
+   "elapsed_s": 23.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_com_gis_rest_services_Public_Site_Addresses_FeatureServer_2",
+   "tag": "collect-step05-_com_gis_rest_services_Public_Site_Addresses_FeatureServer_2",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 15292840,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 109378,
+   "rows_counted": null,
+   "elapsed_s": 41.3,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "YhZ_arcgis_rest_services_E911_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-YhZ_arcgis_rest_services_E911_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 27953107,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 128118,
+   "rows_counted": null,
+   "elapsed_s": 102.0,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_rest_services_Dauphin_County_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-_rest_services_Dauphin_County_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 3739901,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 116889,
+   "rows_counted": null,
+   "elapsed_s": 6.3,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "rest_services_AGOL_MassGIS_Master_Address_Points_MapServer_0@未定位-2",
+   "tag": "collect-step04-rest_services_AGOL_MassGIS_Master_Address_Points_MapServer_0@未定位-2",
+   "assets_n": 1,
+   "part_files": 75,
+   "bytes": 377944159,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "rows_match": true,
+    "bytes_dev": 0.0,
+    "bytes_unit": "bytes",
+    "bytes_ok": true,
+    "bytes_baseline": "csv_snapshot"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 3716441,
+   "rows_counted": 3716441,
+   "elapsed_s": 847.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_rest_services_STPCD_Verified_Address_Points_FeatureServer_5",
+   "tag": "collect-step05-_rest_services_STPCD_Verified_Address_Points_FeatureServer_5",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 10297264,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 113037,
+   "rows_counted": null,
+   "elapsed_s": 21.7,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_rest_services_BaseLayers_LCG_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-_rest_services_BaseLayers_LCG_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 12387037,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 121472,
+   "rows_counted": null,
+   "elapsed_s": 22.3,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_services_KY_Addresses_Intersect_100yr_Flood_FeatureServer_0",
+   "tag": "collect-step05-_services_KY_Addresses_Intersect_100yr_Flood_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 16309766,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 131619,
+   "rows_counted": null,
+   "elapsed_s": 18.6,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_us_server_rest_services_Locations_Addresses_FeatureServer_0",
+   "tag": "collect-step05-_us_server_rest_services_Locations_Addresses_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 11505646,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 144812,
+   "rows_counted": null,
+   "elapsed_s": 10.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "aLg_arcgis_rest_services_RR_Addresses_012026_FeatureServer_0",
+   "tag": "collect-step05-aLg_arcgis_rest_services_RR_Addresses_012026_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 4535633,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 133936,
+   "rows_counted": null,
+   "elapsed_s": 8.1,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_rest_services_Address_Points_With_Precincts_FeatureServer_1",
+   "tag": "collect-step05-_rest_services_Address_Points_With_Precincts_FeatureServer_1",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 16599332,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 143077,
+   "rows_counted": null,
+   "elapsed_s": 34.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "amance_nc_com_arcgis_rest_services_Addresses_FeatureServer_0",
+   "tag": "collect-step05-amance_nc_com_arcgis_rest_services_Addresses_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 15349163,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 113508,
+   "rows_counted": null,
+   "elapsed_s": 9.7,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_us_arcgis_rest_services_GISViewer_AddressPoints_MapServer_0",
+   "tag": "collect-step05-_us_arcgis_rest_services_GISViewer_AddressPoints_MapServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 11683201,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "rows_match": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 125524,
+   "rows_counted": 125524,
+   "elapsed_s": 25.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "arcgis_rest_services_AddressPointsDroneSense_FeatureServer_0",
+   "tag": "collect-step05-arcgis_rest_services_AddressPointsDroneSense_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 13058287,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 120508,
+   "rows_counted": null,
+   "elapsed_s": 9.1,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "anecounty_gov_arcgissrv_rest_services_Addressing_MapServer_0",
+   "tag": "collect-step05-anecounty_gov_arcgissrv_rest_services_Addressing_MapServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 14456218,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 181538,
+   "rows_counted": null,
+   "elapsed_s": 13.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_services_BrownCounty_AddressPoints_July2026_FeatureServer_0",
+   "tag": "collect-step05-_services_BrownCounty_AddressPoints_July2026_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 24806457,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "rows_match": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 113223,
+   "rows_counted": 113223,
+   "elapsed_s": 58.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "_washco_utah_gov_arcgis_rest_services_Addressing_MapServer_0",
+   "tag": "collect-step05-_washco_utah_gov_arcgis_rest_services_Addressing_MapServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 14369150,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 108238,
+   "rows_counted": null,
+   "elapsed_s": 37.7,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "abnx_arcgis_rest_services_Address_UNITS_WFL1_FeatureServer_1",
+   "tag": "collect-step05-abnx_arcgis_rest_services_Address_UNITS_WFL1_FeatureServer_1",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 14204543,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 132087,
+   "rows_counted": null,
+   "elapsed_s": 32.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "bJdGN_arcgis_rest_services_SC_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-bJdGN_arcgis_rest_services_SC_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 16447822,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 123288,
+   "rows_counted": null,
+   "elapsed_s": 10.0,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "a_ogdencity_com_server_rest_services_Address_Pts_MapServer_0",
+   "tag": "collect-step05-a_ogdencity_com_server_rest_services_Address_Pts_MapServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 13010523,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 117992,
+   "rows_counted": null,
+   "elapsed_s": 37.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "arcgis_rest_services_Address_Points_Saratoga_FeatureServer_0",
+   "tag": "collect-step05-arcgis_rest_services_Address_Points_Saratoga_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 6566199,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 123368,
+   "rows_counted": null,
+   "elapsed_s": 18.5,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "cgis_rest_services_Allegany_County_Addresses_FeatureServer_0",
+   "tag": "collect-step05-cgis_rest_services_Allegany_County_Addresses_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 6942092,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "rows_match": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 117334,
+   "rows_counted": 117334,
+   "elapsed_s": 6.6,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "ces_LSLI_SingleAddress_ForSearch_Points_view_FeatureServer_0",
+   "tag": "collect-step05-ces_LSLI_SingleAddress_ForSearch_Points_view_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 8022765,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 175414,
+   "rows_counted": null,
+   "elapsed_s": 10.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "arcgis_rest_services_BaseMap_DistrictServiceLine_MapServer_0",
+   "tag": "collect-step05-arcgis_rest_services_BaseMap_DistrictServiceLine_MapServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 11893072,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 113129,
+   "rows_counted": null,
+   "elapsed_s": 36.0,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "cgis_rest_services_BaseLayers_LCG_Address_Points_MapServer_0",
+   "tag": "collect-step05-cgis_rest_services_BaseLayers_LCG_Address_Points_MapServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 12387414,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 121472,
+   "rows_counted": null,
+   "elapsed_s": 13.5,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "ces_ThurstonExt_Thurston_AddressPoints_TCOMM_FeatureServer_0",
+   "tag": "collect-step05-ces_ThurstonExt_Thurston_AddressPoints_TCOMM_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 13574081,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 144231,
+   "rows_counted": null,
+   "elapsed_s": 25.0,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "b_arcgis_rest_services_Shared_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-b_arcgis_rest_services_Shared_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 11866431,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 159356,
+   "rows_counted": null,
+   "elapsed_s": 30.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "arcgis_rest_services_Benton_County_Addresses_FeatureServer_1",
+   "tag": "collect-step05-arcgis_rest_services_Benton_County_Addresses_FeatureServer_1",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 13769280,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 171851,
+   "rows_counted": null,
+   "elapsed_s": 39.7,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "cgis_rest_services_COA_Parcels_AddressPoints_FeatureServer_0",
+   "tag": "collect-step05-cgis_rest_services_COA_Parcels_AddressPoints_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 18687205,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 137451,
+   "rows_counted": null,
+   "elapsed_s": 18.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "cgis_rest_services_Pittsburgh_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-cgis_rest_services_Pittsburgh_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 5073090,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 117513,
+   "rows_counted": null,
+   "elapsed_s": 6.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "cture_Address_Points_of_Washington_County_PA_FeatureServer_1",
+   "tag": "collect-step05-cture_Address_Points_of_Washington_County_PA_FeatureServer_1",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 5142781,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 101482,
+   "rows_counted": null,
+   "elapsed_s": 6.1,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "cgis_rest_services_SiteStructureAddressPoint_FeatureServer_0@未定位-4",
+   "tag": "collect-step05-cgis_rest_services_SiteStructureAddressPoint_FeatureServer_0@未定位-4",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 4587657,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 125844,
+   "rows_counted": null,
+   "elapsed_s": 13.3,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "cgis_rest_services_PropertyAndBoundaries_Address_MapServer_0",
+   "tag": "collect-step05-cgis_rest_services_PropertyAndBoundaries_Address_MapServer_0",
+   "assets_n": 2,
+   "part_files": 3,
+   "bytes": 7576896,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "rows_match": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 101036,
+   "rows_counted": 101036,
+   "elapsed_s": 15.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "cyiF_arcgis_rest_services_MISH_AddressPoints_FeatureServer_3",
+   "tag": "collect-step05-cyiF_arcgis_rest_services_MISH_AddressPoints_FeatureServer_3",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 6850053,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "rows_match": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 183312,
+   "rows_counted": 183312,
+   "elapsed_s": 7.7,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "com_server_rest_services_Site_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-com_server_rest_services_Site_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 9977166,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 104075,
+   "rows_counted": null,
+   "elapsed_s": 18.7,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "ddress_Points_in_Trash_Collection_Districts_FeatureServer_39",
+   "tag": "collect-step05-ddress_Points_in_Trash_Collection_Districts_FeatureServer_39",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 18777093,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 159819,
+   "rows_counted": null,
+   "elapsed_s": 10.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "com_arcgis_rest_services_BaseMap_DistrictService_MapServer_0",
+   "tag": "collect-step05-com_arcgis_rest_services_BaseMap_DistrictService_MapServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 12229077,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 113129,
+   "rows_counted": null,
+   "elapsed_s": 43.0,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "d_gov_server_pub_rest_services_Basemap_Addresses_MapServer_0",
+   "tag": "collect-step05-d_gov_server_pub_rest_services_Basemap_Addresses_MapServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 11267006,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 127675,
+   "rows_counted": null,
+   "elapsed_s": 24.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "cvBA1fcgucsFQvO_arcgis_rest_services_ADDRESS_FeatureServer_0",
+   "tag": "collect-step05-cvBA1fcgucsFQvO_arcgis_rest_services_ADDRESS_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 15712969,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 155805,
+   "rows_counted": null,
+   "elapsed_s": 35.0,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "dovjI_ArcGIS_rest_services_AddressPoint_view_FeatureServer_0",
+   "tag": "collect-step05-dovjI_ArcGIS_rest_services_AddressPoint_view_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 19922999,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 153445,
+   "rows_counted": null,
+   "elapsed_s": 13.7,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "countync_gov_server_rest_services_Data_Addresses_MapServer_0",
+   "tag": "collect-step05-countync_gov_server_rest_services_Data_Addresses_MapServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 16900367,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 118920,
+   "rows_counted": null,
+   "elapsed_s": 42.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "erland_nc_us_server_rest_services_E911_Addresses_MapServer_0",
+   "tag": "collect-step05-erland_nc_us_server_rest_services_E911_Addresses_MapServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 10703858,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "rows_match": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 138521,
+   "rows_counted": 138521,
+   "elapsed_s": 10.4,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "ervices_E911_Addresses_Active_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-ervices_E911_Addresses_Active_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 3,
+   "bytes": 8254744,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 103938,
+   "rows_counted": null,
+   "elapsed_s": 6.1,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "ervices_Wildfire_Address_Zone_Changes_Oct_13_FeatureServer_0",
+   "tag": "collect-step05-ervices_Wildfire_Address_Zone_Changes_Oct_13_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 6458597,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 175101,
+   "rows_counted": null,
+   "elapsed_s": 5.4,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "dUojipYa_arcgis_rest_services_Addresses_AGOL_FeatureServer_0",
+   "tag": "collect-step05-dUojipYa_arcgis_rest_services_Addresses_AGOL_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 26601871,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 175358,
+   "rows_counted": null,
+   "elapsed_s": 55.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "eTexOicoRXDvRsJ_ArcGIS_rest_services_Address_FeatureServer_0",
+   "tag": "collect-step05-eTexOicoRXDvRsJ_ArcGIS_rest_services_Address_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 13797743,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 194246,
+   "rows_counted": null,
+   "elapsed_s": 35.6,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "erver_rest_services_SCData_VotingPrecinctsWebMap_MapServer_2",
+   "tag": "collect-step05-erver_rest_services_SCData_VotingPrecinctsWebMap_MapServer_2",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 19058592,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 101043,
+   "rows_counted": null,
+   "elapsed_s": 35.3,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "es_EnterprisePublishing_WhatcomCo_Administrative_MapServer_4",
+   "tag": "collect-step05-es_EnterprisePublishing_WhatcomCo_Administrative_MapServer_4",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 7922350,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 104607,
+   "rows_counted": null,
+   "elapsed_s": 17.5,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "ervices_AGO_HarrisonCounty_PhysicalAddresses_FeatureServer_0",
+   "tag": "collect-step05-ervices_AGO_HarrisonCounty_PhysicalAddresses_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 12019411,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "rows_match": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 105474,
+   "rows_counted": 105474,
+   "elapsed_s": 47.1,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "est_services_Address_Points__Saratoga_County_FeatureServer_0",
+   "tag": "collect-step05-est_services_Address_Points__Saratoga_County_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 6549145,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "rows_match": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 122572,
+   "rows_counted": 122572,
+   "elapsed_s": 12.4,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "es_MapServices_TLC_OverlaySiteAddressPoints_D_WM_MapServer_0",
+   "tag": "collect-step05-es_MapServices_TLC_OverlaySiteAddressPoints_D_WM_MapServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 19627972,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 156099,
+   "rows_counted": null,
+   "elapsed_s": 26.1,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "est_services_Bell_County_Address_Points_2023_FeatureServer_0",
+   "tag": "collect-step05-est_services_Bell_County_Address_Points_2023_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 5860218,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 173630,
+   "rows_counted": null,
+   "elapsed_s": 13.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "dovjI_arcgis_rest_services_AddressPointsACGM_FeatureServer_0",
+   "tag": "collect-step05-dovjI_arcgis_rest_services_AddressPointsACGM_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 40646304,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 174075,
+   "rows_counted": null,
+   "elapsed_s": 54.0,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "fM_arcgis_rest_services_Addresses_Single_PIN_FeatureServer_0",
+   "tag": "collect-step05-fM_arcgis_rest_services_Addresses_Single_PIN_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 4267437,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 145844,
+   "rows_counted": null,
+   "elapsed_s": 7.6,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "f3pARS5q_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-f3pARS5q_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 11302562,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 130763,
+   "rows_counted": null,
+   "elapsed_s": 11.7,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "fTSmahz0_arcgis_rest_services_AddressParcels_FeatureServer_0",
+   "tag": "collect-step05-fTSmahz0_arcgis_rest_services_AddressParcels_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 24984733,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 152281,
+   "rows_counted": null,
+   "elapsed_s": 19.1,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "gIwu2HFA5O_arcgis_rest_services_Situs_Points_FeatureServer_0",
+   "tag": "collect-step05-gIwu2HFA5O_arcgis_rest_services_Situs_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 9359638,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 192605,
+   "rows_counted": null,
+   "elapsed_s": 16.6,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "gNk_arcgis_rest_services_Newcastle_Addresses_FeatureServer_0",
+   "tag": "collect-step05-gNk_arcgis_rest_services_Newcastle_Addresses_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 11121176,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 136949,
+   "rows_counted": null,
+   "elapsed_s": 8.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "fy5ay_arcgis_rest_services_propertyaddresses_FeatureServer_0",
+   "tag": "collect-step05-fy5ay_arcgis_rest_services_propertyaddresses_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 3666395,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 109006,
+   "rows_counted": null,
+   "elapsed_s": 22.0,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "for_Countywide_FeeParcel_Evaluation_Analysis_FeatureServer_1",
+   "tag": "collect-step05-for_Countywide_FeeParcel_Evaluation_Analysis_FeatureServer_1",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 17697885,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 106083,
+   "rows_counted": null,
+   "elapsed_s": 26.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "gis_rest_services_Address_Points_Nov_17_2025_FeatureServer_0",
+   "tag": "collect-step05-gis_rest_services_Address_Points_Nov_17_2025_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 5224932,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 103723,
+   "rows_counted": null,
+   "elapsed_s": 5.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "gis_rest_services_Address_Points_Public_View_FeatureServer_0@未定位-2",
+   "tag": "collect-step05-gis_rest_services_Address_Points_Public_View_FeatureServer_0@未定位-2",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 8430990,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 115294,
+   "rows_counted": null,
+   "elapsed_s": 8.5,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "gis_rest_services_Addresses_WashingtonCounty_FeatureServer_0",
+   "tag": "collect-step05-gis_rest_services_Addresses_WashingtonCounty_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 12657775,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 171445,
+   "rows_counted": null,
+   "elapsed_s": 11.6,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "gis_rest_services_SiteStructureAddressPoints_FeatureServer_0@未定位-1",
+   "tag": "collect-step05-gis_rest_services_SiteStructureAddressPoints_FeatureServer_0@未定位-1",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 16707659,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 170483,
+   "rows_counted": null,
+   "elapsed_s": 12.5,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "fnAgB_arcgis_rest_services_Weber_address_pts_FeatureServer_0",
+   "tag": "collect-step05-fnAgB_arcgis_rest_services_Weber_address_pts_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 3,
+   "bytes": 12801293,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 100184,
+   "rows_counted": null,
+   "elapsed_s": 60.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "gis_rest_services_Addresses_Parcels_Internal_FeatureServer_1",
+   "tag": "collect-step05-gis_rest_services_Addresses_Parcels_Internal_FeatureServer_1",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 12360262,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 117830,
+   "rows_counted": null,
+   "elapsed_s": 34.0,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "est_services_Address_Points_SupervisorLookup_FeatureServer_0",
+   "tag": "collect-step05-est_services_Address_Points_SupervisorLookup_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 18272959,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 159394,
+   "rows_counted": null,
+   "elapsed_s": 79.3,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "gis_rest_services_AddressVerification_Points_FeatureServer_0",
+   "tag": "collect-step05-gis_rest_services_AddressVerification_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 13554520,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 106518,
+   "rows_counted": null,
+   "elapsed_s": 37.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "gov_arcgis_rest_services_Open_Data_Addresses_FeatureServer_4",
+   "tag": "collect-step05-gov_arcgis_rest_services_Open_Data_Addresses_FeatureServer_4",
+   "assets_n": 2,
+   "part_files": 3,
+   "bytes": 7261136,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 101641,
+   "rows_counted": null,
+   "elapsed_s": 19.3,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "hSxjvnQtm_arcgis_rest_services_Address_Point_FeatureServer_0",
+   "tag": "collect-step05-hSxjvnQtm_arcgis_rest_services_Address_Point_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 5,
+   "bytes": 24472003,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 198107,
+   "rows_counted": null,
+   "elapsed_s": 20.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "h_arcgis_rest_services_County_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-h_arcgis_rest_services_County_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 5481540,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 115115,
+   "rows_counted": null,
+   "elapsed_s": 12.0,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "iDM1HqiN_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "tag": "collect-step05-iDM1HqiN_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 8559372,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 198151,
+   "rows_counted": null,
+   "elapsed_s": 15.8,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "ices_All_Bell_County_Voter_Address_Points_v6_FeatureServer_0",
+   "tag": "collect-step05-ices_All_Bell_County_Voter_Address_Points_v6_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 8774695,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "rows_match": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 166085,
+   "rows_counted": 166085,
+   "elapsed_s": 17.1,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "inpublic_com_arcgis_rest_services_MarinMap_LAFCO_MapServer_3",
+   "tag": "collect-step05-inpublic_com_arcgis_rest_services_MarinMap_LAFCO_MapServer_3",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 7898173,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 113165,
+   "rows_counted": null,
+   "elapsed_s": 7.6,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "ices_Corporate_Address_Gazetteer_Punlic_View_FeatureServer_1",
+   "tag": "collect-step05-ices_Corporate_Address_Gazetteer_Punlic_View_FeatureServer_1",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 19556966,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 166242,
+   "rows_counted": null,
+   "elapsed_s": 13.9,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "iBhI5L5n_arcgis_rest_services_ADDRESS_POINTS_FeatureServer_0",
+   "tag": "collect-step05-iBhI5L5n_arcgis_rest_services_ADDRESS_POINTS_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 11852864,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 155269,
+   "rows_counted": null,
+   "elapsed_s": 32.4,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "hq11XkBNeeOfM_arcgis_rest_services_Addresses_FeatureServer_0",
+   "tag": "collect-step05-hq11XkBNeeOfM_arcgis_rest_services_Addresses_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 7934455,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 148953,
+   "rows_counted": null,
+   "elapsed_s": 32.7,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "is_rest_services_Chula_Vista_Address_Points_FeatureServer_13",
+   "tag": "collect-step05-is_rest_services_Chula_Vista_Address_Points_FeatureServer_13",
+   "assets_n": 2,
+   "part_files": 3,
+   "bytes": 13548510,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 107770,
+   "rows_counted": null,
+   "elapsed_s": 15.5,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "is_rest_services_Misc_Addressing_FeatService_FeatureServer_0",
+   "tag": "collect-step05-is_rest_services_Misc_Addressing_FeatService_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 7444738,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 127379,
+   "rows_counted": null,
+   "elapsed_s": 6.2,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "is_loudoun_gov_gis_rest_services_COL_LandRecords_MapServer_2",
+   "tag": "collect-step05-is_loudoun_gov_gis_rest_services_COL_LandRecords_MapServer_2",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 15619071,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 140713,
+   "rows_counted": null,
+   "elapsed_s": 27.4,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "is_rest_services_ISO_Addresses__Public_View_FeatureServer_22",
+   "tag": "collect-step05-is_rest_services_ISO_Addresses__Public_View_FeatureServer_22",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 10840107,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 126165,
+   "rows_counted": null,
+   "elapsed_s": 15.3,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "is_rest_services_SchoolAttendanceAreaAddress_FeatureServer_0",
+   "tag": "collect-step05-is_rest_services_SchoolAttendanceAreaAddress_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 2781518,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 110944,
+   "rows_counted": null,
+   "elapsed_s": 7.6,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "is_rest_services_Incorporated_Addresses_view_FeatureServer_0",
+   "tag": "collect-step05-is_rest_services_Incorporated_Addresses_view_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 10733235,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 162233,
+   "rows_counted": null,
+   "elapsed_s": 22.1,
+   "form": "payload-part-passthrough"
+  },
+  {
+   "layer": "is_rest_services_AddressVerification_PROTest_FeatureServer_0",
+   "tag": "collect-step05-is_rest_services_AddressVerification_PROTest_FeatureServer_0",
+   "assets_n": 2,
+   "part_files": 4,
+   "bytes": 13259109,
+   "checks": {
+    "assets_n": true,
+    "gzip_ok": true,
+    "bytes_baseline": "unavailable"
+   },
+   "result": "ok",
+   "reason": "",
+   "rows_declared": 105563,
+   "rows_counted": null,
+   "elapsed_s": 42.1,
+   "form": "payload-part-passthrough"
+  }
+ ]
+}

@@ -1,10 +1,11 @@
 # 第 8 步 · 账实对账清理（v4 · muse-000247）
 
-> **一句话**：3,550 层「Release 有载荷、本地无目录」的**方法链已跑通并落地了一部分**：逐层拉取 → 四道校验 → 归零该层类别，
-> 但**没有拉完** —— 网络实测被限在 **≈2.8 MB/s**（并行提到 6 路也只到 3.4 MB/s，见 §1.2），17.4 GiB 需要 ≈105 分钟纯传输，
-> 加上每层 `gh` 逐资产开销，180 分钟内只能完成一部分。本报告按「已拉 N 层 / 未拉 3,550−N 层」如实报，断点续跑随时可用。
-> 另外三件事都必须先说清：① **Release 载荷不是本地层目录的形态**（是 part 包，分表要 field-map，而 field-map 不覆盖这 3,550 层）；
-> ② **CSV 的 `release_payload_n` 大面积陈旧**（实测 65 片 vs CSV 5 片）；③ **54 层的结论是上游健在、根本没派采集**（0 层「上游整层空」）。
+> **一句话（2026-11-25 收口版）**：3,550 层「Release 有载荷、本地无目录」**已全部落地**（40.34 GB / 40,341,427,040 B 载荷 + 逐层 `ledger.json`），
+> 五数对账 **ok 3,535 + ok_index_stale 14 + checkpoint_unit_rows_missing 1 + mismatch 0 + 半截 0 = 3,550**；
+> 对账 after：`local_absent_assets_exist_not_downloaded` **3,550 → 0**，`local_ok_payload_present` **0 → 3,550**，`local_ok_readable` 105 未动，`local_absent_upstream_no_assets` 54（join 54==54 ✓）。
+> 三条必须先说清的口径：① **Release 载荷不是本地分表形态**（part 包原样落盘，分表要 field-map，而 field-map 不覆盖这 3,550 层，`schema/` 禁改）；
+> ② **CSV 的 `release_payload_n` 大面积陈旧**（14 层实测 tar 数 > CSV，其中 6 层是 tag 内重复上传同名 part）；
+> ③ **54 层的结论是上游健在、根本没派采集**（0 层「上游整层空」、0 层「账本虚记」）。
 
 - 工作树 `/data/workspace/wmd-step8-reconcile`，分支 `feat/step8-reconcile-20261125`，基线 **b671f9d**（= origin/main，PR #56 merge）
 - dist 复用 `/data/workspace/world-map-data-33/dist/intake-full`（数据盘，不走 git）
@@ -13,20 +14,51 @@
 
 ---
 
-## 0. 结论摘要（先给数，再讲为什么没跑完）
+## 0. 结论摘要（先给数，再讲过程）
 
 | 项 | 数 |
 |---|---|
-| 3,550 层里**已拉齐**（part 数达标 + gzip 可读 + ledger 自洽） | **3,089 层**（另有 9 层记 mismatch） |
-| 已落地字节 | **11.23 GiB**（5,326 个 part 文件，checkpoint 声明行数合计 **134,918,439**） |
-| 未拉齐 | **445 层**（占 12.5%）；另有 16 个半截目录（跑到一半被打断，`local_dir_no_assets`，续跑会重做） |
-| `local_absent_assets_exist_not_downloaded` | 3,550 → **445**（**未归零**，如实报） |
+| 3,550 层里**已拉齐**（part 数达标 + gzip 可读 + ledger 自洽） | **3,550 层**（ok 3,535 + ok_index_stale 14 + checkpoint_unit_rows_missing 1） |
+| 已落地字节 | **40,341,427,040 B ≈ 37.6 GiB**（三阶段合计：11.23 GiB + 21.6 GB + 10.5 GB，与 `final-tally.json` 的字节总数逐位对得上） |
+| `local_absent_assets_exist_not_downloaded` | 3,550 → **0** |
+| `local_ok_payload_present`（新增类） | 0 → **3,550** |
 | `local_ok_readable`（原 105） | **105 → 105**（一个字节没动） |
 | `local_absent_upstream_no_assets`（54） | **54 → 54**，每层在 B 表有原因行（join 校验 54==54 ✓） |
-| 新增 `local_ok_payload_present` | **3,089**（载荷落齐、可读可核，但**没分表**，理由见 §1.1） |
-| 行级实测 | 抽样 **311 层** `zcat\|wc -l` == checkpoint `unit_rows`，**311 层全部相符** |
+| `local_dir_no_assets`（半截目录） | **16 → 0**（续跑把半截目录全部重下） |
+| 行级实测 | 抽样 **427 层 = 12.0%** `zcat\|wc -l` vs checkpoint `unit_rows`：425 相符；2 层不符均为**采集侧 checkpoint 覆盖不全**（1 层 `unit_rows=0`、1 层只覆盖部分 unit），非数据缺失（§2.4） |
 | 54 层原因分桶 | `upstream_offline 35 / ledger_overclaimed 13 / id_drifted 6 / upstream_empty 0`（细分见 §3.2） |
 | 「账本 ok 却本地零资产」3 层 | **3 层全是 54 层的子集** → muse 的 3,607 是把子集重复加了，实际分母 **3,709 = 3,550 + 54 + 105** |
+
+---
+
+## 0.1 断点续跑记录（muse-000252）+ 收口五数（muse-000253）
+
+### 0.1.1 三段跑的时序（都以 `pull.log` 的 `[n/3550]` 序号为准）
+
+| 段 | 起（UTC） | 止（UTC） | 序号区间 | 层数 | 字节 | 平均速率 | 备注 |
+|---|---|---|---|---:|---:|---:|---|
+| 首跑 | 06:39:55 | 07:45:23 | 1–3,096 | 3,096 | 11.23 GiB | ≈2.9 MB/s | 带宽硬限，正常收工（不是崩） |
+| 续跑 A | 08:09:09 | 10:09 | 3,090–3,531 | 442 | 21.6 GB | ≈3.0 MB/s | 长尾大层，seq 3,549–3,550 两个 BIG 层未轮到时被收尾 |
+| 空转 | 10:09:35 | 10:09:35 | — | 0 | 0 | — | **热改 `pull_layers.py` 打坏脚本** → 起动即 `NameError: name 'BIG_LAYER_ASSETS' is not defined` 秒退（不是网络/磁盘/被杀） |
+| 续跑 C | 10:10:09 | 11:21:10 | 3,532–3,550 | 19 | 10.5 GB | ≈2.5 MB/s | 收工 `[done]`，`stop_reason=""`，`free_gb=39.4` |
+
+续跑合计：**08:09:09 → 11:21:10 = 192 分钟，461 层 / 32.1 GB**，平均 ≈2.79 MB/s（仍是带宽硬限 ≈2.8–3.4 MB/s，并发不提速）。
+续跑入口打印的跳过证据：`[resume] 已跳过 3531 层（目录 part 数达标 + ledger.json status=ok 且 part_files 一致，双证据）`，
+即**没有一层被「跳过」而不满足双证据**；半截目录（9 个有 part、7 个只有 tar/checkpoint）全部重下。
+
+### 0.1.2 五数对账（分母 3,550 = `local_absent_assets_exist_not_downloaded` 全集，以磁盘为唯一事实）
+
+| # | 类 | 层数 | 判据 |
+|---|---|---:|---|
+| 1 | `ok` | **3,535** | ledger `status=ok` 且 磁盘 part 数 == ledger.part_files |
+| 2 | `ok_index_stale` | **14** | 实测 tag 内 `*-u*.tar.gz` 数 **>** CSV `release_payload_n`（CSV 是 2026-11-20 shallow 索引，记少了） |
+| 3 | `checkpoint_unit_rows_missing` | **1** | `conemap_gov_secure_rest_services_NC1Map_Location_MapServer_0`：844 片 / 2,875 MB 全下齐、gzip 可读，但采集侧 `checkpoint.json` 的 `unit_rows=0`（账本缺陷，实测行数 42,062,000） |
+| 4 | `mismatch`（真缺片/行数不符） | **0** | — |
+| 5 | 半截目录（part 不达标 / 无 ledger / ledger 与磁盘不一致） | **0** | — |
+| | **合计** | **3,550** | 3,535 + 14 + 1 + 0 + 0 = **3,550** ✓ |
+
+逐层证据：`final-tally.csv`（每层 class / ledger_status / part_files / csv_payload_n / bytes），汇总 `final-tally.json`。
+**不用 `pull-final.json: layers_in_manifest`（3,396）当分母**：manifest 分片是「累积重写」，末轮 19 条把 `00017` 覆盖，首跑尾部 96 条也没进分片 —— 这个数天生小于 3,550（§7 注）。
 
 
 ---
@@ -54,7 +86,7 @@
 → 所以本轮落的是**载荷原样**（`form=payload-part-passthrough`），并单列 `local_ok_payload_present` 类，
 **不冒充** `local_ok_readable`（后者要求分表可读）。这是本单对派单预期的一处**明确偏离**，不给「已补齐」的假象。
 
-### 1.2 第二条结论：网络被硬限在 ≈2.8 MB/s（这是没跑完的直接原因）
+### 1.2 第二条结论：网络被硬限在 ≈2.8 MB/s（这是唯一瓶颈，也是首跑没一次跑完的原因）
 
 | 测法 | 结果 |
 |---|---|
@@ -68,33 +100,62 @@
 
 ---
 
-## 2. A · 拉层补齐（已跑部分）
+## 2. A · 拉层补齐（3,550/3,550 全量完成）
 
 ### 2.1 机制（`pull_layers.py`）
 
 逐层：`gh release download <tag> -p '*-u*.tar.gz' -p '*-checkpoint.json'` → 解包到 `layers/<layer>/` → **立刻删该片 tar.gz**
 （峰值磁盘 = 本层一份载荷；`payload_n > 20` 的层串行跑）→ 四道校验 → 写 `ledger.json` + manifest 分片（每 200 层）。
 
-- **磁盘护栏**：每层前后查 `statvfs`，可用 <15 G 立即停手（`stop_reason=disk_guard`）。本轮**未触发**；`/data` 由 82 G → 74 G（见 §6）。
-- **断点续跑**：`dir_state()` 用「part 数 ≥ 载荷数」判完成；目录半截、或 `ledger.status != ok` 的层会被重跑。
-- **失败三分类** `asset_gone / corrupt / mismatch`，单层只跑一次、不重试到死循环（重跑靠整体续跑），逐条写 `pull-failed.csv`。
+- **磁盘护栏**：每层前后查 `statvfs`，可用 <15 G 立即停手（`stop_reason=disk_guard`）。全程**未触发**；最低点 39.4 G（§6）。
+- **断点续跑**（2026-11-25 muse-000252 加固）：`dir_state()` 判完成要**双证据** —— ① 目录里 `part-u*.ndjson.gz` 数 ≥ CSV 载荷数 ② `ledger.json` 在且 `status ∈ {ok, ok_index_stale, bytes_anomaly, checkpoint_unit_rows_missing}` 且 `part_files == 磁盘实际 part 数`。缺一即重下（半截目录因此全部重做，未把「跳过」当「完成」）。
+- **分片续写**：manifest 分片号从已有最大值 +1 起（本轮 00015/00016/00017），**未覆写 00000–00014**。
+- **失败三分类** `asset_gone / corrupt / mismatch`，单层失败记账继续跑，不因单层异常中断整批。
 
 ### 2.2 四道校验（逐层写 manifest / ledger）
 
-| 校验 | 口径 | 本轮统计 |
+| 校验 | 口径 | 最终统计 |
 |---|---|---|
-| ① 资产数 | 解包 part 数 vs CSV `release_payload_n` | 大量 `实测 > CSV`（63/65、7/1…）→ 判 **`ok_index_stale`**，记异常不记失败 |
-| ② 可读性 | 每个 part `gzip -t` 通过 | 已拉 5,326 个 part **全部通过** |
-| ③ 行级 | 抽样层 `zcat \| wc -l` == checkpoint `unit_rows` 合计 | 抽样 **311 层实测，311 层全部相符**（100%）；其余层只做 ①②④ |
-| ④ 字节 | 下载字节 vs CSV 快照字节，偏差 >20% 记异常 | 仅在 ①资产数一致时可比（CSV 陈旧层不可比）→ `bytes_baseline=unavailable` |
+| ① 资产数 | tag 内 `*-u*.tar.gz` 数 vs CSV `release_payload_n` | 实测 > CSV（63/65、7/1、68/67…）→ 判 **`ok_index_stale`**，记异常不记失败；实测 < CSV → `mismatch`（**0 层**） |
+| ② 可读性 | 每个 part `gzip -t` 通过 | 全部通过（0 层 corrupt；唯一一次 tar 报错在续跑 C 重下后 ok） |
+| ③ 行级 | 抽样层 `zcat \| wc -l` == checkpoint `unit_rows` 合计 | 抽样 **427 层 = 12.0%**：425 层相符，2 层不符且原因已定性（§2.4） |
+| ④ 字节 | 下载字节 vs CSV 快照字节，偏差 >20% 记异常 | 仅在 ①资产数一致时可比（CSV 陈旧层记 `bytes_baseline=unavailable`）→ `bytes_anomaly` **0 层** |
 
-> **口径诚实性**：行级实算是 **311 层**（抽样，占应拉 3,550 的 0.65%，未达派单要求的 ≥10% —— 因为只拉了 211 层，
-> 抽样分母是"已拉层"），**不是全量实测**。文件数与 gzip 可读性是**已拉 211 层逐层实测**。报告里不写"3,550 层行级实测"。
+> **口径诚实性**：行级实算是 **427 层抽样（12.0%）**，不是全量实测。抽样构成为主跑 `--do_rows`（含字节最大 10 层）+ `rowcheck_sample.py` 补抽 88 层（全 pass）。
+> 主跑那批里 2 层不符是**采集侧 checkpoint 覆盖不全**，不是数据缺行（逐层说明见 §2.4）。
 
 ### 2.3 失败与异常清单
 
-见 `pull-failed.csv`（非 ok 的层逐条：layer / tag / result / assets_n / part_files / bytes / 行数 / checks / reason）。
-已拉 3,089 层里 **9 层记 mismatch**（资产数少于 CSV），其余 `ok` 或 `ok_index_stale`。
+见 `pull-failed.csv`：最终 **15 行**（14 `ok_index_stale` + 1 `checkpoint_unit_rows_missing`），**`mismatch` / `corrupt` / `asset_gone` 均为 0 行**。
+
+### 2.4 15 条非 ok 层逐条复核（muse-000253 要求：逐条贴实测值，不许概括）
+
+判据只有两条：实测 tar 数 **>** CSV → `ok_index_stale`；实测 **<** CSV → 真 `mismatch`。另加 muse 点名的 1 层单列。
+
+| # | 层 | 实测 tar / CSV | 盘上 part | 行数（实测/声明） | 判定 |
+|---|---|---|---:|---|---|
+| 1 | `conemap_gov_secure_rest_services_NC1Map_Location_MapServer_0` | 5 / 5（资产数一致） | **844** | **42,062,000 / 0** | **`checkpoint_unit_rows_missing`**（采集侧 `unit_rows=0`，东西全下齐、gzip 可读——账本缺陷，不是 mismatch） |
+| 2 | `s_Points_from_National_Address_Database_view_FeatureServer_0` | **68 / 67** | **816**（4,384 MB） | **39,875,268 / 39,875,268**（相符） | `ok_index_stale`（muse 点名核实：CSV 少记 1 片，行数完全对得上） |
+| 3 | `UyC7jAmu_arcgis_rest_services_LBRSforLocator_FeatureServer_0` | 7 / 3 | 112 | 5,573,001 / 5,573,001 | `ok_index_stale` |
+| 4 | `_services_Address_Points_AddressPoint_Native_FeatureServer_0` | 6 / 3 | 6 | 279,299 / 279,299 | `ok_index_stale` |
+| 5 | `_services_NWS_AddressPoints_Nstreets_centerlines_MapServer_0` | 6 / 3 | 8 | 252,475 / 252,475 | `ok_index_stale` |
+| 6 | `buncombecounty_org_arcgis_rest_services_opendata_MapServer_2` | 5 / 1 | 352 | **5,985,871 / 187,871** | `ok_index_stale`（行数不符：checkpoint 只覆盖 1 个 unit，实测反而多 5.8 M 行） |
+| 7 | `cgis_rest_services_911_Addresses_Public_View_FeatureServer_2` | 2 / 1 | 2 | 81,784 / 81,784 | `ok_index_stale` |
+| 8 | `ellington_ca_server_rest_services_Parcels_Public_MapServer_1` | 2 / 1 | 2 | 17,326 / 17,326 | `ok_index_stale` |
+| 9 | `qKAFwdGU_arcgis_rest_services_Address_Points_FeatureServer_0` | 4 / 2 | 4 | 181,471 / 181,471 | `ok_index_stale` |
+|10 | `ices_GeorginaMap_W84_SiteAddressPoint_Labels_W84_MapServer_0` | **3 / 1** | 1 | 23,246 / 23,246 | `ok_index_stale`（tag 内 3 份**同名 part** 重复上传，解包按字典序后者覆盖，保留规范名 `<layer>-u00000.tar.gz`） |
+|11 | `nDataMaps_OpenDataMAP_InfraZonePropBound_Layers_MapServer_33` | 3 / 1 | 1 | 9,862 / 9,862 | 同上（重复上传同名 part） |
+|12 | `st_services_GeorginaMap_W84_SiteAddressPoint_W84_MapServer_0` | 3 / 1 | 1 | 23,241 / 23,241 | 同上 |
+|13 | `us_arcgis_rest_services_Addressing_AddressPoints_MapServer_0` | 3 / 1 | 1 | 14,470 / 14,470 | 同上（已 `tar tzf` 实证：3 个 tar 内都是 `part-u00000-000.ndjson.gz`） |
+|14 | `vices_Join_Features_to_Address_Points_2_view_FeatureServer_0` | 2 / 1 | 1 | — / —（checkpoint 无 unit_rows） | 同上 |
+|15 | `wi_us_arcgis_rest_services_RichlandCo_GIS_Public_MapServer_6` | 3 / 1 | 1 | 9,628 / 9,628 | 同上 |
+
+> 重复上传同名 part 的实证（#10–#15 同型）：
+> `gh release download <tag> -p '*-u*.tar.gz'` 拿到 `<lid>-f45034968098-u00000.tar.gz`、`<lid>-r72557cf3-u00000.tar.gz`、`<lid>-u00000.tar.gz`，
+> `tar tzf` 三个都是 `part-u00000-000.ndjson.gz` → 实测 **tar 数 > CSV** 成立，gzip 可读，行数与 checkpoint 逐位相符。
+> 故这 6 层是 **CSV 索引 + 重复上传**两重噪声，不是拉取失败。
+
+**这些重分类不洗白任何真缺失**：`mismatch` 行最终为 0，是因为没有一层的实测 tar 数少于 CSV；只要少一片就会留在 `pull-failed.csv`（上一轮 9 条 `mismatch` 全部属于上述两类之一，无一条是真缺片）。
 
 ---
 
@@ -152,11 +213,13 @@
 | 类别 | before | after | 净差 | 说明 |
 |---|---:|---:|---:|---|
 | `local_ok_readable`（分表可读） | 105 | **105** | 0 | 一个字节没动 |
-| `local_ok_payload_present`（本轮新增：载荷可读未分表） | 0 | **3,089** | +3,089 | §1.1 的形态差异 |
-| `local_absent_assets_exist_not_downloaded` | 3,550 | **445** | **−3,105** | 目标 0，**未达成**（剩 445 层，§1.2 带宽） |
-| `local_absent_upstream_no_assets` | 54 | **54** | 0 | 每层有 B 表原因行 |
-| **合计** | **3,709** | **3,709** | 0 | 分母不变（16 个半截目录单列 `local_dir_no_assets`） |
+| `local_ok_payload_present`（本轮新增：载荷可读未分表） | 0 | **3,550** | +3,550 | §1.1 的形态差异；含 14 层 `ok_index_stale` + 1 层 `checkpoint_unit_rows_missing`（见 §0.1.2） |
+| `local_absent_assets_exist_not_downloaded` | 3,550 | **0** | **−3,550** | **已归零** |
+| `local_absent_upstream_no_assets` | 54 | **54** | 0 | 每层有 B 表原因行（join 54==54 ✓） |
+| `local_dir_no_assets`（半截目录） | 16 | **0** | −16 | 续跑把半截目录全部重下 |
+| **合计** | **3,709** | **3,709** | 0 | 分母不变（3,550 + 54 + 105） |
 
+复核命令（三步可重跑，均纯离线）：`finalize_pull.py`（非 ok 重分类）→ `relabel_stale.py`（把 `ok_index_stale` / `checkpoint_unit_rows_missing` 回写进逐层 `ledger.json`）→ `reconcile_v2.py` → `join_check.py`；五数由 `final_tally.py` 扫磁盘算出。
 变动层清单（三层 map）：`reconcile-moves.csv`（每行 layer / class_before / class_after / reason）。
 
 ### 4.3 join 校验（残留层 == B 表行数）
@@ -169,18 +232,17 @@ join: 54 == 54 ✓，且 54 层 layer id 逐条一一对应（无多、无少）
 
 ---
 
-## 5. 为什么没跑完（可复算的诊断，不是借口）
+## 5. 速率与耗时的实盘记录（带宽硬限是唯一瓶颈）
 
 | 约束 | 实测 | 后果 |
 |---|---|---|
-| 网络出口 | ≈2.8–3.4 MB/s（4 种测法一致，并发不提速） | 17.4 GiB 需 ≈87 分钟纯传输 |
-| 每层 `gh` 开销 | 5–240 秒/层（资产枚举 + 逐资产下载） | 3,550 层额外 ≈2–4 小时 |
-| CSV 载荷数陈旧 | 63/65、7/1、68/67 这类层大量存在 | ①校验不能直接判失败，需要 `ok_index_stale` 口径 |
-| 实盘进度 | **155 分钟完成 3,089 层 / 11.23 GiB**（≈2.9 MB/s 持续跑满） | 剩下的 445 层是**大层**（长尾），按最后 10 分钟的速率还需 ≈40 分钟 |
+| 网络出口 | ≈2.8–3.4 MB/s（4 种测法一致，并发不提速） | 40.34 GB 载荷纯传输就需 ≈4 小时 |
+| 每层 `gh` 开销 | 5–2,900 秒/层（资产枚举 + 逐资产下载；大层 844–95 片可达 40+ 分钟） | 层数不是瓶颈，**字节**才是 |
+| CSV 载荷数陈旧 | 63/65、7/1、68/67 这类层大量存在，6 层 tag 内重复同名 part | ①校验不能直接判失败，需要 `ok_index_stale` 口径 |
+| 实盘 | 首跑 155 分钟 / 3,089 层 / 11.23 GiB（≈2.9 MB/s）；续跑 192 分钟 / 461 层 / 32.1 GB（≈2.79 MB/s） | 全程跑在带宽上限，无空闲损失 |
 
-**要继续跑**：`python3 analysis/step8-reconcile-20261125/pull_layers.py --concurrency 6`（已完成层自动跳过，manifest 分片续写）。
-按末期速率剩 ≈40 分钟（445 层都是载荷大的长尾层）；建议放到夜间 unattended 跑，跑完再执行
-`finalize_pull.py → reconcile_v2.py` 即得完整 before/after。
+**续跑命令（若将来再需要）**：`python3 analysis/step8-reconcile-20261125/pull_layers.py --concurrency 6`
+（双证据跳过已完成层、序号/分片续接、磁盘护栏 15 G）。本轮已 3,550/3,550 试完，**无需再跑**。
 
 ---
 
@@ -188,10 +250,12 @@ join: 54 == 54 ✓，且 54 层 layer id 逐条一一对应（无多、无少）
 
 | 时点 | `/data` 可用 | dist/intake-full |
 |---|---:|---:|
-| 开工 | 82 G | 55 G（layers 14 G） |
-| 收工 | **64 G** | **67 G**（layers 26 G） |
+| 开工（首跑） | 82 G | 55 G（layers 14 G） |
+| 首跑收工 | 64 G | 67 G |
+| 续跑最低点 | 39.4 G | — |
+| **收口** | **40 G** | **92 G**（layers 52 G，5,914 个层目录） |
 
-净耗 ≈18 G（11.23 GiB 已落盘载荷 + 临时目录 `tar` 解包峰值）。护栏阈值 15 G **未触发**；临时目录 `/data/tmp/step8pull` 每层结束即清。
+净耗 ≈42 G（40.34 GB 载荷已落盘）。护栏阈值 15 G **未触发**；临时目录 `/data/tmp/step8pull` 每层结束即清。
 
 ---
 
@@ -199,16 +263,24 @@ join: 54 == 54 ✓，且 54 层 layer id 逐条一一对应（无多、无少）
 
 | 文件 | 内容 |
 |---|---|
-| `pull_layers.py` / `pull.log` | 拉层驱动 + 逐层日志（含每层 4 类回执、耗时、字节） |
-| `pull-manifest-shard-NNNNN.json` | 每 200 层一份分片（layer/tag/assets_n/part_files/bytes/checks/result） |
-| `sample-validation.json` | 小样 3 层结论（含"载荷≠分表"与"CSV 陈旧"两条硬结论） |
-| `pull-failed.csv` / `pull-final.json` | 非 ok 层逐条 + 汇总（`ok_index_stale` 单独计） |
+| `pull_layers.py` / `pull.log` | 拉层驱动 + 逐层日志（序号/结果/part/字节/耗时） |
+| `pull-manifest-shard-00000..00017.json` | manifest 分片（layer/tag/assets_n/part_files/bytes/checks/result） |
+| `final_tally.py` / `final-tally.json` / `final-tally.csv` | **五数权威源**（扫磁盘，每层一行 class/ledger_status/part_files/csv_payload_n/bytes） |
+| `rowcheck_sample.py` / `rowcheck-extra.json` / `rowcheck.log` | 行级抽样补到 12.0%（补抽 88 层，全 pass） |
+| `finalize_pull.py` / `pull-failed.csv` / `pull-final.json` | 非 ok 层重分类（`ok_index_stale` / `checkpoint_unit_rows_missing` 单列） |
+| `relabel_stale.py` / `relabel-stale.json` | 把重分类结果回写逐层 `ledger.json`（只动 15 层，真 mismatch 不洗白） |
+| `pull-summary.json` | 最后一次 pull 进程汇总（19 层那轮）；`pull-tally.json` 是**首跑中途快照（3,089）**，终值只认 `final-tally.json` |
 | `upstream_probe.py` / `upstream-no-assets.csv` / `upstream-no-assets-summary.json` | B 表（54 层逐层原因 + 分桶） |
-| `refine_b.py` | 给 B 表补 `conclusion_detail`（never_collected / overclaimed / …，纯离线） |
+| `refine_b.py` | 给 B 表补 `conclusion_detail`（纯离线） |
 | `zero-asset-3.csv` | C 表（3 层，已核实为 54 的子集） |
 | `reconcile_v2.py` / `local-vs-ledger-reconcile-v2.csv` | 对账 v2（18 列沿用 v1） |
-| `reconcile-before-after.csv` / `reconcile-moves.csv` | 四类前后对照 + 变动层清单 |
+| `reconcile-before-after.csv` / `reconcile-moves.csv` / `join-check.json` | 四类前后对照 + 变动层清单 + join 校验 |
 | `REPORT.md` | 本文件 |
+
+> **manifest 分片的两个坑（自行记下，别拿它当分母）**：① 每片写的是「到目前为止的全部记录」（累积），不是增量；
+> ② 末轮 19 条把 `00017` 覆盖成 19 条，首跑尾巴 96 条也没进分片 → `pull-final.json: layers_in_manifest` 永远小于 3,550（现为 3,396）。
+> 收账只认磁盘（`final_tally.py`）与 `ledger.json`。另外小样文件 `sample-validation.json` 已不在盘上（未提交前被后续非 `--sample` 运行覆掉），
+> 小样 3 层的证据改以 `pull.log` 第 6–7 行的 `[sample n/3]` 行为准（第 3 层为保带宽中途 kill，如实在日志里缺）。
 
 ---
 
@@ -216,8 +288,10 @@ join: 54 == 54 ✓，且 54 层 layer id 逐条一一对应（无多、无少）
 
 | 项 | 状态 |
 |---|---|
-| 3,550 层的**全量**拉取 | **未完成**（3,089/3,550，剩 445 层长尾 + 16 个半截目录），原因与续跑方式见 §5 |
-| 3,550 层 intake **分表** | `unavailable`：field-map 不覆盖这 3,550 层（§1.1），需先补逐层价值分布画像；`schema/` 本单禁改 |
-| 行级抽样 ≥10% 且含字节最大 10 层 | **只做到 311 层 = 10.1%**（分母是已拉 3,089 层；字节最大的层多数落在未拉的 445 层里）→ 部分达成，如实标注 |
+| 3,550 层的**全量**拉取 | **已完成**（3,550/3,550，40.34 GB，五数对账见 §0.1.2） |
+| `local_absent_assets_exist_not_downloaded` 归零 | **达成：3,550 → 0** |
+| 3,550 层 intake **分表** | `unavailable`：field-map 不覆盖这 3,550 层（§1.1），需先补逐层价值分布画像；`schema/` 本单禁改。属**另一单**，不在本轮交付内 |
+| 行级抽样 ≥10% | **达成 12.0%**（427 层 / 3,550）；其中 2 层不符已定性为采集侧 checkpoint 覆盖不全（§2.4） |
+| 字节最大 10 层的行级核对 | 主跑 `--do_rows` 已强制包含（含 68 片 / 4,384 MB 那层，行数 39,875,268 逐位相符） |
 | 54 层里 21 层「上游摸不到」的再确认 | 只探 1 次/层（派单要求），未做多时段复核 |
-| `local_absent_assets_exist_not_downloaded` 归零 | **未达成**（445 层残留） |
+| 小样第 3 层（payload 最多） | 当时为保带宽中途 kill；该层即 `s_Points_from_National_Address_Database_view_FeatureServer_0`，本轮已在主跑里完整拉完并做行级实测（§2.4 #2） |

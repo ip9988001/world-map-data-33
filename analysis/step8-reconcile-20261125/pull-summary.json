@@ -1,0 +1,22 @@
+{
+ "at": "2026-11-25T11:21:10Z",
+ "todo": 19,
+ "done": 19,
+ "by_result": {
+  "mismatch": 15,
+  "ok": 4
+ },
+ "rowcheck_layers": 3,
+ "shards": 1,
+ "skipped_resume": 3531,
+ "base_seq": 3531,
+ "seq_range": [
+  3532,
+  3550
+ ],
+ "wall_s": 4261.0,
+ "stop_reason": "",
+ "free_gb": 39.4,
+ "rowcheck_pass": 1,
+ "rowcheck_fail": 2
+}

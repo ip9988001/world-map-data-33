@@ -99,7 +99,11 @@ def scan_local(dist):
                       "bytes": total_b, "readable": bool(files) and bool(tables),
                       # 载荷形态要 **ledger.json 在 + part 数达标** 才算拉齐（半截目录不算，
                       # 否则「拉了一半」会被当成「已补齐」——这是最容易自欺的一步）
-                      "payload_ok": bool(parts) and bool(led) and led.get("status") == "ok"
+                      # 计入「算拉齐」的 ledger 状态：ok / ok_index_stale（实测>CSV，CSV 陈旧）/
+                      # bytes_anomaly（资产数一致、字节偏差>20%，快照噪声）——三者都要求 part 数对得上
+                      "payload_ok": bool(parts) and bool(led)
+                                    and led.get("status") in ("ok", "ok_index_stale", "bytes_anomaly",
+                                                            "checkpoint_unit_rows_missing")
                                     and int(led.get("part_files") or 0) == len(parts),
                       "lid_from_file": lid_from_file, "ledger": led}
     return dirs
