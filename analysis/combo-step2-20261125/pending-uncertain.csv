@@ -1,0 +1,99 @@
+role,alias,as_number_layers,as_street_layers,sample_values,reason
+street,ADDRESS,,,7170 US HWY 54|5896 CO RD 6|36625 Brookside Ave,值形态像街名，但列名语义不明确（未过白名单）
+street,ADDRESS1,,,1150 O ST|1324 N 7TH AVE|C O SUMMER HILL INC,值形态像街名，但列名语义不明确（未过白名单）
+street,ADDRESS_LI,,,9052 SW 38 ST|11201 SW 55 ST BOX 1|1650 NW 87 AVE,值形态像街名，但列名语义不明确（未过白名单）
+street,ADDRESS_LINE1,,,2009 Market Street|2851 Perry Street|1355 Pennsylvania Street (original location),值形态像街名，但列名语义不明确（未过白名单）
+street,ADDRESS_ST,,,Complete,值形态像街名，但列名语义不明确（未过白名单）
+number,ADDRNUMTT,,,210,后缀 TT 含义不明（total?），不敢认定门牌
+street,ADDR_LINE2,,,5 WOODHAVEN CT|802 SHERRY LN S,值形态像街名，但列名语义不明确（未过白名单）
+street,ADDR_SN,,,PACIFIC|MILTON|BEATIE,值形态像街名，但列名语义不明确（未过白名单）
+street,ADDR_ST,,,HWY|RD|ST,值形态像街名，但列名语义不明确（未过白名单）
+street,Address,,,17O1 D STREET ALLEY|19 TOWPATH DR|2191 JOHNSON AVE,值形态像街名，但列名语义不明确（未过白名单）
+street,AddressStreet,,,Center Dr.,值形态像街名，但列名语义不明确（未过白名单）
+street,Address_Attention,,,"COUNTY OF SAN LUIS OBISPO|JOYNER, ARLENE M, A DENTAL C",值形态像街名，但列名语义不明确（未过白名单）
+number,BEGNUMB,,,1450|314,门牌区间/起止列（P8 型，单点地址不适用）
+number,BLDG_NUM_O,,,1|0|2,值形态像门牌，但列名语义不明确（未过白名单）
+number,BLD_NUM,,,21900|12336,值形态像门牌，但列名语义不明确（未过白名单）
+number,BLKNUM_T,,,5999|17999|14999,值形态像门牌，但列名语义不明确（未过白名单）
+number,CumulativeHouseholds_12,,,0|433,值形态像门牌，但列名语义不明确（未过白名单）
+street,FULLADDR,,,210 HILLWOOD BLVD APT 1036|210 HILLWOOD BLVD APT 911|376 S 800 EAST ST PAYSON UT 84651,值形态像街名，但列名语义不明确（未过白名单）
+street,FULLADDRESN,,,210 HILLWOOD BLVD APT 1036 261|210 HILLWOOD BLVD APT 911 261,值形态像街名，但列名语义不明确（未过白名单）
+street,FULL_ADDR,,,100 TEAL LN # 43|308 LOIRE AVE|29236 MITCHELL HOLLOW RD,值形态像街名，但列名语义不明确（未过白名单）
+street,FullAddress,,,1430 Lake Mary Road|144 Madera Street,值形态像街名，但列名语义不明确（未过白名单）
+street,Full_Address,,,1960 Bermuda Drive|1495 SE 16th place|508 E Adelaide St,值形态像街名，但列名语义不明确（未过白名单）
+street,GEE_Addr_Data_Statute,,,no,值形态像街名，但列名语义不明确（未过白名单）
+number,HOUSENO_R_,,,11200|9432|3000,门牌区间/起止列（P8 型，单点地址不适用）
+number,HOUSENO_R_TO,,,4298|4198,门牌区间/起止列（P8 型，单点地址不适用）
+number,House_Apartment_Number,,,110|108,值形态像门牌，但列名语义不明确（未过白名单）
+number,LOCATION_NUMBER,,,1,值形态像门牌，但列名语义不明确（未过白名单）
+street,LST_NAME,,,Jay West|Broadway|340TH,值形态像街名，但列名语义不明确（未过白名单）
+street,Last_Name,,,YOUNG|LEFEVER|CRAMER,值形态像街名，但列名语义不明确（未过白名单）
+number,Leaf_On_Ortho_Num,,,5|10,值形态像门牌，但列名语义不明确（未过白名单）
+number,Loc_Number,,,50102|26759,值形态像门牌，但列名语义不明确（未过白名单）
+number,MVPC_CrashData_KSI_Person_Numbe,,,1,值形态像门牌，但列名语义不明确（未过白名单）
+street,MVPC_CrashData_KSI_To_Street_Na,,,RAMP-RT 110 TO RT 495 NB|NORTH STREET,值形态像街名，但列名语义不明确（未过白名单）
+number,NUM,,,1005|1006|1000,值形态像门牌，但列名语义不明确（未过白名单）
+number,NUMBER_1,,,8180|8380,值形态像门牌，但列名语义不明确（未过白名单）
+number,NUMB_NONFATAL_INJR,,,1|0,值形态像门牌，但列名语义不明确（未过白名单）
+number,Number,,,613462|201902895|25260,值形态像门牌，但列名语义不明确（未过白名单）
+number,Number_Tra,,,1|4,值形态像门牌，但列名语义不明确（未过白名单）
+street,OWN_ADDR1,,,5500 CAMPANILE DR|4835 62ND ST|1260 SYBIL CT,值形态像街名，但列名语义不明确（未过白名单）
+street,PRCL_ADDR,,,245 PINE ST|0,值形态像街名，但列名语义不明确（未过白名单）
+street,PROPERTYADDRESS,,,HILAND AVE|5TH AVE,值形态像街名，但列名语义不明确（未过白名单）
+number,PropertyClassNum,,,100,值形态像门牌，但列名语义不明确（未过白名单）
+number,RD_NUMB,,,13|1190|288,值形态像门牌，但列名语义不明确（未过白名单）
+number,RD_NUMBER,,,4,值形态像门牌，但列名语义不明确（未过白名单）
+street,REM_PRCL_LOCN_STREET,,,ALEWIVE ROAD|DAYS MILL ROAD|ASHLEE DR,值形态像街名，但列名语义不明确（未过白名单）
+number,ROADNUMBER,,,283|444|346,值形态像门牌，但列名语义不明确（未过白名单）
+number,ROAD_NUM,,,0,值形态像门牌，但列名语义不明确（未过白名单）
+number,ROW_NUM,,,17|183|37363,值形态像门牌，但列名语义不明确（未过白名单）
+number,RTE_NUM,,,0,值形态像门牌，但列名语义不明确（未过白名单）
+number,RT_NUM,,,H3-243|J6-083|343,值形态像门牌，但列名语义不明确（未过白名单）
+number,RoadNumber,,,100|600,值形态像门牌，但列名语义不明确（未过白名单）
+number,Road_Num,,,1325,值形态像门牌，但列名语义不明确（未过白名单）
+number,Rte_Num,,,0,值形态像门牌，但列名语义不明确（未过白名单）
+number,SITE_NUM_COMPLETE,,,6353|4930,值形态像门牌，但列名语义不明确（未过白名单）
+street,STREETSUF,,,AVE|ST|LN,值形态像街名，但列名语义不明确（未过白名单）
+street,STREET_NAM,,,BROOKSIDE|1|FRONT,有层样本值纯数字，语义混杂（同族 STREET_NAME 已在别名表）
+street,STREET_OWN,,,Public,值形态像街名，但列名语义不明确（未过白名单）
+street,STREET_SOU,,,taxroll|muni,值形态像街名，但列名语义不明确（未过白名单）
+street,STREET_SUF,,,Ct,值形态像街名，但列名语义不明确（未过白名单）
+number,STRUCTURE_NUM,,,179|4,值形态像门牌，但列名语义不明确（未过白名单）
+number,STRUCT_NUM,,,3|4|6913,值形态像门牌，但列名语义不明确（未过白名单）
+number,STRU_NUM,,,45846|45848,值形态像门牌，但列名语义不明确（未过白名单）
+street,ST_ADDRESS,,,US HWY 71|200TH ST,值形态像街名，但列名语义不明确（未过白名单）
+number,SUB_NUM,,,9999,值形态像门牌，但列名语义不明确（未过白名单）
+number,S_NUM,,,1859|1883,值形态像门牌，但列名语义不明确（未过白名单）
+number,Service_Location_Number,,,1|2,值形态像门牌，但列名语义不明确（未过白名单）
+number,SiteNumber,,,63744|34527,值形态像门牌，但列名语义不明确（未过白名单）
+street,Site_Addre,,,1859 FLORENCE AVE|1883 FLORENCE AVE,值形态像街名，但列名语义不明确（未过白名单）
+number,Site_Number,,,0441|1682|288-01,值形态像门牌，但列名语义不明确（未过白名单）
+street,Site_Street_Address1,,,1000 DUNSON RD|411 N FLORIDA AVE,值形态像街名，但列名语义不明确（未过白名单）
+number,Start_Numb,,,433|436,门牌区间/起止列（P8 型，单点地址不适用）
+number,Start_Number,,,29|27,门牌区间/起止列（P8 型，单点地址不适用）
+street,StreetAddress,,,15101 W DIVISION RD|VACANT LAND S CR 800 W,值形态像街名，但列名语义不明确（未过白名单）
+street,Street_Address,,,1701 S Commons|4732 Brooklyn Ave NE|2094 Pitkin Ave Bsmt,值形态像街名，但列名语义不明确（未过白名单）
+street,Street_Nam,,,28|32|ARROWOOD,样本值 98% 是纯数字，实为门牌或错列
+street,Street___Location,,,Airport Rd,值形态像街名，但列名语义不明确（未过白名单）
+street,TO_STREET,,,THIRD|CIRCLE CITY,值形态像街名，但列名语义不明确（未过白名单）
+street,UP_ADDR,,,1000 NEW HAVEN AVE|70 GULF ST,值形态像街名，但列名语义不明确（未过白名单）
+street,USER_Combined_Address,,,Alaska|California,值形态像街名，但列名语义不明确（未过白名单）
+number,VC_NUM,,,0,值形态像门牌，但列名语义不明确（未过白名单）
+number,VNS_SECT_NUM,,,1,值形态像门牌，但列名语义不明确（未过白名单）
+street,V_StName,,,Michael|Ashton,样本值是人名（Michael/Ashton），不是街名
+number,YR_EFF_NUM,,,25|45,值形态像门牌，但列名语义不明确（未过白名单）
+street,addr_line2,,,GARZA CHRISTINA & TURNER MISTY|5041 RABBIT TRL|2123 SANDI LN,值形态像街名，但列名语义不明确（未过白名单）
+street,addr_st,,,ORCHIDLAND DR,值形态像街名，但列名语义不明确（未过白名单）
+street,addr_state,,,TX|UT,值形态像街名，但列名语义不明确（未过白名单）
+street,asr_SITE_ADDR,,,1250 ACHY BACK LN|2221 ACHY BACK LN,值形态像街名，但列名语义不明确（未过白名单）
+number,old_num,,,0,值形态像门牌，但列名语义不明确（未过白名单）
+number,prop_num,,,302|31900,值形态像门牌，但列名语义不明确（未过白名单）
+number,roadnumber,,,40B|40A,值形态像门牌，但列名语义不明确（未过白名单）
+number,HouseNumber,,,,回归不通过：非 P7 层旧键被改 211 行（增益 37330 行也不行）
+number,STREETNO,,,,回归不通过：非 P7 层旧键被改 27 行（增益 1531 行也不行）
+number,HOUSE_NO,,,,回归不通过：非 P7 层旧键被改 240 行（增益 1351 行也不行）
+number,AddressNum,,,,回归不通过：非 P7 层旧键被改 31 行（增益 1252 行也不行）
+number,House,,,,回归不通过：非 P7 层旧键被改 105 行（增益 683 行也不行）
+number,HouseNumbe,,,,回归不通过：非 P7 层旧键被改 82 行（增益 664 行也不行）
+number,HSE_NUM,,,,回归不通过：非 P7 层旧键被改 150 行（增益 450 行也不行）
+street,situs_street,,,,回归不通过：非 P7 层旧键被改 178 行（增益 328 行也不行）
