@@ -133,10 +133,12 @@ def clean(raw: dict, spec: dict | None = None, include_unit: bool = True) -> dic
         "source_family": raw.get("source_family", ""),
         "source_ref": raw.get("source_ref", ""),
         "record_id": _s(raw.get("id")),
+        "geom_type_raw": raw.get("geom_type") or "",
     }
     rec["street"] = _strip_type(rec["street"], rec["post_type"])
     rec["point_ok"] = point_ok(rec["lon"], rec["lat"])
     rec["addrkey"] = addrkey_v3(rec, include_unit)
+    apply_geometry(rec, raw, spec)
     rec["features"] = {
         "number": bool(rec["number"]),
         "street": bool(rec["street"].strip()),
@@ -160,3 +162,42 @@ def grade_of(features: dict, rules: dict) -> str:
         if need and all(features.get(k) for k in need):
             return g
     return "X"
+
+
+# ---------------------------------------------------------------- 几何口径（第 7 步）
+GEOM_TYPES = ("point", "polygon", "polyline", "multipoint", "none", "unknown")
+_GEOM_ALIAS = {"esrigeometrypoint": "point", "esrigeometrypolygon": "polygon",
+               "esrigeometrypolyline": "polyline", "esrigeometrymultipoint": "multipoint",
+               "point(lat/lon fields)": "point", "point": "point", "polygon": "polygon",
+               "polyline": "polyline", "multipoint": "multipoint", "none": "none"}
+
+
+def geom_type_of(v, spec: dict) -> str:
+    """行级实测优先（样本/parquet WKB），否则用方言声明；都没有记 unknown（不猜）。"""
+    raw = re.sub(r"[^a-z0-9()/ ]", "", str(v or "").strip().lower())
+    if raw in _GEOM_ALIAS:
+        return _GEOM_ALIAS[raw]
+    decl = str((spec or {}).get("geom_type") or "").strip().lower()
+    return decl if decl in GEOM_TYPES else ("unknown" if not raw else "unknown")
+
+
+def point_kind_of(rec: dict) -> str:
+    """point / vertex（面线真实顶点）/ interpolated（街段插值）/ parcel_centroid（源侧地块质心）。
+
+    绝不用质心替代面线坐标：面线行的 lon/lat 一定是真实顶点（inlet 取 rings[0][0] / paths[0][0]）。
+    """
+    if not rec.get("point_ok"):
+        return ""
+    if rec.get("is_interpolated"):
+        return "interpolated"
+    if (rec.get("precision") or "") == "parcel_centroid":
+        return "parcel_centroid"
+    return "vertex" if rec.get("geom_type") in ("polygon", "polyline", "multipoint") else "point"
+
+
+def apply_geometry(rec: dict, raw: dict, spec: dict) -> dict:
+    """把 geom_type / point_kind / pos_estimated 三个口径字段挂到清洗后的记录上。"""
+    rec["geom_type"] = geom_type_of(raw.get("geom_type"), spec)
+    rec["point_kind"] = point_kind_of(rec)
+    rec["pos_estimated"] = bool(rec.get("is_interpolated"))   # 插值位置=估算值（地块质心按源侧声明，不算估算）
+    return rec

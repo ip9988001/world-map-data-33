@@ -1,0 +1,107 @@
+{
+ "DE": {
+  "state": "DE",
+  "db": "analysis/engine-pilot-rerun-20261125/_work/DE.sqlite",
+  "db_available": true,
+  "rows_in": 1742369,
+  "range_only_rows": 62067,
+  "low_grade": 1863,
+  "dup_rows": 795527,
+  "unkeyed_rows_reported": 5437,
+  "out_of_state_rows": 377823,
+  "exported_rows": 635036,
+  "fused_total": 876581,
+  "fused_state": {
+   "": 241545,
+   "DE": 635036
+  },
+  "unkeyed_total": 6331,
+  "unkeyed_state": {
+   "": 894,
+   "DE": 5437
+  },
+  "no_state_fused": 241545,
+  "no_state_unkeyed": 894,
+  "check": {
+   "lhs": 1680302,
+   "rhs": 1680302,
+   "diff": 0,
+   "identity": "rows_in - range_only_rows = low_grade + unkeyed_total + fused_total + dup_rows"
+  },
+  "no_state_note": "州为空的行仍在库里（可与同键行合并），但按州导出时被排除：fused 241545 行 + unkeyed 894 行"
+ },
+ "NH": {
+  "state": "NH",
+  "db": "analysis/engine-pilot-rerun-20261125/_work/NH.sqlite",
+  "db_available": true,
+  "rows_in": 6473709,
+  "range_only_rows": 0,
+  "low_grade": 2260,
+  "dup_rows": 2152111,
+  "unkeyed_rows_reported": 103552,
+  "out_of_state_rows": 354804,
+  "exported_rows": 4215786,
+  "fused_total": 4215786,
+  "fused_state": {
+   "NH": 4215786
+  },
+  "unkeyed_total": 103552,
+  "unkeyed_state": {
+   "NH": 103552
+  },
+  "no_state_fused": 0,
+  "no_state_unkeyed": 0,
+  "check": {
+   "lhs": 6473709,
+   "rhs": 6473709,
+   "diff": 0,
+   "identity": "rows_in - range_only_rows = low_grade + unkeyed_total + fused_total + dup_rows"
+  },
+  "no_state_note": "州为空的行仍在库里（可与同键行合并），但按州导出时被排除：fused 0 行 + unkeyed 0 行"
+ },
+ "IA": {
+  "state": "IA",
+  "db": "analysis/engine-pilot-rerun-20261125/_work/IA.sqlite",
+  "db_available": true,
+  "rows_in": 6097989,
+  "range_only_rows": 455523,
+  "low_grade": 56114,
+  "dup_rows": 3329043,
+  "unkeyed_rows_reported": 739,
+  "out_of_state_rows": 1271283,
+  "exported_rows": 1817677,
+  "fused_total": 2253882,
+  "fused_state": {
+   "": 436205,
+   "IA": 1817677
+  },
+  "unkeyed_total": 3427,
+  "unkeyed_state": {
+   "": 2688,
+   "IA": 739
+  },
+  "no_state_fused": 436205,
+  "no_state_unkeyed": 2688,
+  "check": {
+   "lhs": 5642466,
+   "rhs": 5642466,
+   "diff": 0,
+   "identity": "rows_in - range_only_rows = low_grade + unkeyed_total + fused_total + dup_rows"
+  },
+  "no_state_note": "州为空的行仍在库里（可与同键行合并），但按州导出时被排除：fused 436205 行 + unkeyed 2688 行"
+ },
+ "totals": {
+  "rows_in": 14314067,
+  "range_only_rows": 517590,
+  "low_grade": 60237,
+  "dup_rows": 6276681,
+  "exported_rows": 6668499,
+  "fused_total": 7346249,
+  "unkeyed_total": 113310,
+  "no_state_fused": 677750,
+  "no_state_unkeyed": 3582,
+  "check": {
+   "diff": 0
+  }
+ }
+}

@@ -1,0 +1,134 @@
+{
+ "state": "IA",
+ "sources": [
+  {
+   "id": "ia_nad",
+   "family": "nad",
+   "dialect": "nad-v1",
+   "dialect_origin": "engine",
+   "adapter": "ndjson",
+   "files": 100,
+   "rows_in": 1586226,
+   "tier_basis_ambiguous_rows": 0,
+   "range_only": false,
+   "secs": 505.7
+  },
+  {
+   "id": "ia_oa",
+   "family": "oa",
+   "dialect": "oa-v1",
+   "dialect_origin": "engine",
+   "adapter": "zip_csv",
+   "files": 58,
+   "rows_in": 2466617,
+   "tier_basis_ambiguous_rows": 0,
+   "range_only": false,
+   "secs": 545.2
+  },
+  {
+   "id": "ia_tiger",
+   "family": "tiger",
+   "dialect": "tiger-addrfeat-v1",
+   "dialect_origin": "engine",
+   "adapter": "zip_shp",
+   "files": 99,
+   "rows_in": 455523,
+   "tier_basis_ambiguous_rows": 0,
+   "range_only": true,
+   "secs": 46.6
+  },
+  {
+   "id": "ia_overture",
+   "family": "overture",
+   "dialect": "overture-v1",
+   "dialect_origin": "engine",
+   "adapter": "parquet",
+   "files": 1,
+   "rows_in": 1585872,
+   "tier_basis_ambiguous_rows": 0,
+   "range_only": false,
+   "secs": 510.3
+  },
+  {
+   "id": "ia_dialect",
+   "family": "dialect_layer",
+   "dialect": "engine-dialect-samples-v1",
+   "dialect_origin": "engine",
+   "adapter": "samples_csv",
+   "files": 1,
+   "rows_in": 3751,
+   "tier_basis_ambiguous_rows": 0,
+   "range_only": false,
+   "secs": 0.3
+  }
+ ],
+ "started_utc": "2026-11-24T23:31:43+00:00",
+ "rows_in": 6097989,
+ "deduped_rows": 1817677,
+ "dup_rows": 3329043,
+ "coord_conflict": 133485,
+ "unkeyed_rows": 739,
+ "dropped_low_grade": 56114,
+ "dropped_out_of_state": 1271283,
+ "by_tier": {
+  "tier2": 100,
+  "tier3": 300,
+  "unrated": 1817277
+ },
+ "by_grade": {
+  "A": 255418,
+  "B": 139347,
+  "S": 1422912
+ },
+ "by_tier_grade": {
+  "tier2": {
+   "B": 100,
+   "S": 0,
+   "A": 0,
+   "C": 0
+  },
+  "tier3": {
+   "B": 150,
+   "S": 150,
+   "A": 0,
+   "C": 0
+  },
+  "unrated": {
+   "A": 255418,
+   "B": 139097,
+   "S": 1422762,
+   "C": 0
+  },
+  "tier1": {
+   "S": 0,
+   "A": 0,
+   "B": 0,
+   "C": 0
+  }
+ },
+ "by_geom_type": {
+  "point": {
+   "rows": 1817677,
+   "with_point": 1817677
+  }
+ },
+ "geom_type_in": {
+  "point": 5640814,
+  "polyline": 1095,
+  "polygon": 557
+ },
+ "by_point_kind": {
+  "point": 1817677
+ },
+ "point_kind_in": {
+  "point": 5640814,
+  "vertex": 1652
+ },
+ "pos_estimated_in": 0,
+ "pos_estimated_rows": 0,
+ "s_with_pos_estimated": 0,
+ "with_point": 1817677,
+ "multi_source": 1386229,
+ "tiger_street_keys": 33288,
+ "finished_utc": "2026-11-25T00:01:36+00:00"
+}

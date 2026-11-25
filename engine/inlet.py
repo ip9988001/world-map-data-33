@@ -87,9 +87,17 @@ def map_row(row: dict, spec: dict, source: dict) -> dict:
         v = row.get(spec["state_from"])
         if isinstance(v, list) and v:
             out["state"] = str((v[0] or {}).get("value") or "")
-    if spec.get("geometry") == "wkb_point":
-        lon, lat = wkb_point(row.get("geometry"))
+    gmode = spec.get("geometry")
+    if gmode in ("wkb_point", "wkb_any"):
+        if gmode == "wkb_any":                       # 面/线取真实顶点，绝不用质心
+            lon, lat, gtype = wkb_vertex(row.get("geometry"))
+        else:
+            lon, lat, gtype = (*wkb_point(row.get("geometry")), wkb_geom_type(row.get("geometry")))
         out["lon"], out["lat"] = ("" if lon is None else str(lon)), ("" if lat is None else str(lat))
+        if gtype:
+            out["geom_type"] = gtype
+    elif row.get("geom_type"):                       # 样本 CSV 自带实测几何类型
+        out["geom_type"] = str(row.get("geom_type"))
     out["source_id"], out["source_family"], out["source_ref"] = source["id"], source["family"], source.get("_ref", "")
     out["source_ref_url"] = str(row.get("layer_url") or "")     # 方言层样本：按 url 找实测 Tier
     out["is_interpolated"] = spec.get("is_interpolated", False)
@@ -106,6 +114,54 @@ def wkb_point(blob):
         return None, None
     x, y = struct.unpack(order + "dd", blob[5:21])
     return x, y
+
+
+WKB_KIND = {1: "point", 2: "polyline", 3: "polygon", 4: "multipoint", 5: "polyline", 6: "polygon", 7: "polygon"}
+
+
+def _wkb_head(blob):
+    """WKB 头 → (order, 基础类型号, 维度偏移)。类型号取 %1000 去掉 Z/M 标记（1002=LineStringZ）。"""
+    if not isinstance(blob, (bytes, bytearray)) or len(blob) < 5:
+        return None
+    order = "<" if blob[0] == 1 else ">"
+    typ = struct.unpack(order + "I", blob[1:5])[0]
+    dim = typ // 1000
+    return order, typ % 1000, (3 if dim in (1, 3) else 2)      # Z / ZM 多一个 z 分量
+
+
+def wkb_geom_type(blob) -> str:
+    """WKB 几何类型名（point/polygon/polyline/multipoint）；解不了返回空串。"""
+    h = _wkb_head(blob)
+    return WKB_KIND.get(h[1], "") if h else ""
+
+
+def wkb_vertex(blob):
+    """任意 WKB 几何 → (lon, lat, geom_type)：点取自身坐标，面/线取**真实顶点**（rings[0][0] / paths[0][0]）。
+
+    只取真实顶点，不做质心、不做插值；解不了返回 (None, None, "")，不猜。
+    """
+    h = _wkb_head(blob)
+    if not h:
+        return None, None, ""
+    order, typ, ndim = h
+    kind = WKB_KIND.get(typ, "")
+    pos, off = 5, 5
+    try:
+        if typ in (5, 6):                                   # MultiLineString / MultiPolygon：先跳到第 1 个成员
+            off += 4
+            order2 = "<" if blob[off] == 1 else ">"
+            typ2 = struct.unpack(order2 + "I", blob[off + 1:off + 5])[0] % 1000
+            order, off = order2, off + 5
+            if typ2 != {5: 2, 6: 3}.get(typ):
+                return None, None, kind
+        if typ in (2, 3, 5, 6, 7):                          # 线/面/多线/多面：跳 numX（member 已是单几何）
+            off += 4
+            if typ in (3, 6, 7):
+                off += 4                                    # 跳 rings/points 数量 → 第一个环的第一个点
+        x, y = struct.unpack(order + "dd", blob[off:off + 16])
+    except (struct.error, IndexError):
+        return None, None, kind
+    return x, y, kind
 
 
 def _open_text(path: str):

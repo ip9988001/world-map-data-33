@@ -1,0 +1,444 @@
+{
+ "states": {
+  "DE": {
+   "table": {
+    "coord_conflict": {
+     "prev": 6894,
+     "cur": 6894,
+     "delta": 0
+    },
+    "deduped_rows": {
+     "prev": 635036,
+     "cur": 635036,
+     "delta": 0
+    },
+    "dropped_low_grade": {
+     "prev": 1863,
+     "cur": 1863,
+     "delta": 0
+    },
+    "dropped_out_of_state": {
+     "prev": 377823,
+     "cur": 377823,
+     "delta": 0
+    },
+    "dup_rows": {
+     "prev": 795527,
+     "cur": 795527,
+     "delta": 0
+    },
+    "grade_A": {
+     "prev": 14,
+     "cur": 14,
+     "delta": 0
+    },
+    "grade_B": {
+     "prev": 143,
+     "cur": 143,
+     "delta": 0
+    },
+    "grade_C": {
+     "prev": 0,
+     "cur": 0,
+     "delta": 0
+    },
+    "grade_S": {
+     "prev": 634879,
+     "cur": 634879,
+     "delta": 0
+    },
+    "multi_source": {
+     "prev": 519723,
+     "cur": 519723,
+     "delta": 0
+    },
+    "pos_estimated_rows": {
+     "prev": null,
+     "cur": 0,
+     "delta": 0
+    },
+    "rows_in": {
+     "prev": 1742369,
+     "cur": 1742369,
+     "delta": 0
+    },
+    "s_with_pos_estimated": {
+     "prev": null,
+     "cur": 0,
+     "delta": 0
+    },
+    "tier1_rows": {
+     "prev": 0,
+     "cur": 0,
+     "delta": 0
+    },
+    "tier2_rows": {
+     "prev": 50,
+     "cur": 50,
+     "delta": 0
+    },
+    "tier3_rows": {
+     "prev": 0,
+     "cur": 0,
+     "delta": 0
+    },
+    "unkeyed_rows": {
+     "prev": 5437,
+     "cur": 5437,
+     "delta": 0
+    },
+    "unrated_rows": {
+     "prev": 634986,
+     "cur": 634986,
+     "delta": 0
+    },
+    "with_point": {
+     "prev": 635036,
+     "cur": 635036,
+     "delta": 0
+    }
+   },
+   "attribution": {
+    "db": "analysis/engine-pilot-rerun-20261125/_work/DE.sqlite",
+    "available": true,
+    "rows": 876581,
+    "moved_basis_rows": 0,
+    "moved_contrib_rows": 0,
+    "interp_takeover_rows": 0,
+    "vertex_rows": 0,
+    "parcel_centroid_rows": 0,
+    "interpolated_rows": 0,
+    "by_geom_type": {
+     "point": {
+      "rows": 876581,
+      "with_point": 876581
+     }
+    },
+    "by_point_kind": {
+     "point": 876581
+    },
+    "by_tier_basis_ambiguous": 0
+   }
+  },
+  "NH": {
+   "table": {
+    "coord_conflict": {
+     "prev": 819849,
+     "cur": 819849,
+     "delta": 0
+    },
+    "deduped_rows": {
+     "prev": 4215786,
+     "cur": 4215786,
+     "delta": 0
+    },
+    "dropped_low_grade": {
+     "prev": 2260,
+     "cur": 2260,
+     "delta": 0
+    },
+    "dropped_out_of_state": {
+     "prev": 354804,
+     "cur": 354804,
+     "delta": 0
+    },
+    "dup_rows": {
+     "prev": 2152111,
+     "cur": 2152111,
+     "delta": 0
+    },
+    "grade_A": {
+     "prev": 3790095,
+     "cur": 3790095,
+     "delta": 0
+    },
+    "grade_B": {
+     "prev": 425641,
+     "cur": 425641,
+     "delta": 0
+    },
+    "grade_C": {
+     "prev": 0,
+     "cur": 0,
+     "delta": 0
+    },
+    "grade_S": {
+     "prev": 50,
+     "cur": 50,
+     "delta": 0
+    },
+    "multi_source": {
+     "prev": 920951,
+     "cur": 920951,
+     "delta": 0
+    },
+    "pos_estimated_rows": {
+     "prev": null,
+     "cur": 3790500,
+     "delta": 3790500
+    },
+    "rows_in": {
+     "prev": 6473709,
+     "cur": 6473709,
+     "delta": 0
+    },
+    "s_with_pos_estimated": {
+     "prev": null,
+     "cur": 0,
+     "delta": 0
+    },
+    "tier1_rows": {
+     "prev": 0,
+     "cur": 0,
+     "delta": 0
+    },
+    "tier2_rows": {
+     "prev": 0,
+     "cur": 0,
+     "delta": 0
+    },
+    "tier3_rows": {
+     "prev": 100,
+     "cur": 100,
+     "delta": 0
+    },
+    "unkeyed_rows": {
+     "prev": 103552,
+     "cur": 103552,
+     "delta": 0
+    },
+    "unrated_rows": {
+     "prev": 4215686,
+     "cur": 4215686,
+     "delta": 0
+    },
+    "with_point": {
+     "prev": 4215786,
+     "cur": 4215786,
+     "delta": 0
+    }
+   },
+   "attribution": {
+    "db": "analysis/engine-pilot-rerun-20261125/_work/NH.sqlite",
+    "available": true,
+    "rows": 4215786,
+    "moved_basis_rows": 0,
+    "moved_contrib_rows": 0,
+    "interp_takeover_rows": 351378,
+    "vertex_rows": 0,
+    "parcel_centroid_rows": 425186,
+    "interpolated_rows": 3790500,
+    "by_geom_type": {
+     "point": {
+      "rows": 4215786,
+      "with_point": 4215786
+     }
+    },
+    "by_point_kind": {
+     "interpolated": 3790500,
+     "parcel_centroid": 425186,
+     "point": 100
+    },
+    "by_tier_basis_ambiguous": 0
+   }
+  },
+  "IA": {
+   "table": {
+    "coord_conflict": {
+     "prev": 133485,
+     "cur": 133485,
+     "delta": 0
+    },
+    "deduped_rows": {
+     "prev": 1817677,
+     "cur": 1817677,
+     "delta": 0
+    },
+    "dropped_low_grade": {
+     "prev": 56114,
+     "cur": 56114,
+     "delta": 0
+    },
+    "dropped_out_of_state": {
+     "prev": 1271283,
+     "cur": 1271283,
+     "delta": 0
+    },
+    "dup_rows": {
+     "prev": 3329043,
+     "cur": 3329043,
+     "delta": 0
+    },
+    "grade_A": {
+     "prev": 255418,
+     "cur": 255418,
+     "delta": 0
+    },
+    "grade_B": {
+     "prev": 139347,
+     "cur": 139347,
+     "delta": 0
+    },
+    "grade_C": {
+     "prev": 0,
+     "cur": 0,
+     "delta": 0
+    },
+    "grade_S": {
+     "prev": 1422912,
+     "cur": 1422912,
+     "delta": 0
+    },
+    "multi_source": {
+     "prev": 1386229,
+     "cur": 1386229,
+     "delta": 0
+    },
+    "pos_estimated_rows": {
+     "prev": null,
+     "cur": 0,
+     "delta": 0
+    },
+    "rows_in": {
+     "prev": 6097989,
+     "cur": 6097989,
+     "delta": 0
+    },
+    "s_with_pos_estimated": {
+     "prev": null,
+     "cur": 0,
+     "delta": 0
+    },
+    "tier1_rows": {
+     "prev": 0,
+     "cur": 0,
+     "delta": 0
+    },
+    "tier2_rows": {
+     "prev": 100,
+     "cur": 100,
+     "delta": 0
+    },
+    "tier3_rows": {
+     "prev": 300,
+     "cur": 300,
+     "delta": 0
+    },
+    "unkeyed_rows": {
+     "prev": 739,
+     "cur": 739,
+     "delta": 0
+    },
+    "unrated_rows": {
+     "prev": 1817277,
+     "cur": 1817277,
+     "delta": 0
+    },
+    "with_point": {
+     "prev": 1817677,
+     "cur": 1817677,
+     "delta": 0
+    }
+   },
+   "attribution": {
+    "db": "analysis/engine-pilot-rerun-20261125/_work/IA.sqlite",
+    "available": true,
+    "rows": 2253882,
+    "moved_basis_rows": 0,
+    "moved_contrib_rows": 0,
+    "interp_takeover_rows": 0,
+    "vertex_rows": 0,
+    "parcel_centroid_rows": 0,
+    "interpolated_rows": 0,
+    "by_geom_type": {
+     "point": {
+      "rows": 2253882,
+      "with_point": 2253882
+     }
+    },
+    "by_point_kind": {
+     "point": 2253882
+    },
+    "by_tier_basis_ambiguous": 0
+   }
+  }
+ },
+ "moves": {
+  "rows": 20,
+  "by_state": {
+   "DE": {
+    "layers": 3,
+    "rows_n": 19037
+   },
+   "IA": {
+    "layers": 10,
+    "rows_n": 87475
+   },
+   "NH": {
+    "layers": 7,
+    "rows_n": 94715
+   }
+  }
+ },
+ "notes": [
+  "差值只有两类来源：① 分档换了（tier3→tier2 的 20 层，只动 tier 分布与 best_tier）② 点位口径（面/线顶点入坐标、真实点优先于插值）——逐州计数见 attribution"
+ ],
+ "totals": {
+  "rows_in": {
+   "prev": 14314067,
+   "cur": 14314067
+  },
+  "deduped_rows": {
+   "prev": 6668499,
+   "cur": 6668499
+  },
+  "grade_S": {
+   "prev": 2057841,
+   "cur": 2057841
+  },
+  "grade_A": {
+   "prev": 4045527,
+   "cur": 4045527
+  },
+  "grade_B": {
+   "prev": 565131,
+   "cur": 565131
+  },
+  "grade_C": {
+   "prev": 0,
+   "cur": 0
+  },
+  "with_point": {
+   "prev": 6668499,
+   "cur": 6668499
+  },
+  "deduped_delta": 0
+ },
+ "summary_rounds": {
+  "prev_generated": "2026-11-24T19:59:44Z",
+  "cur_generated": "2026-11-25T00:01:36Z",
+  "prev_tiers": {},
+  "cur_tiers": {
+   "relax": {
+    "path": "analysis/auto-spatial-relax-20261125/auto-recognized.csv",
+    "rows": 17168,
+    "skipped_no_url": 417,
+    "pairs": 16751,
+    "key": "(url,dialect_id)"
+   },
+   "strict": {
+    "path": "analysis/auto-spatial-rerun-20261125/auto-recognized.csv"
+   }
+  },
+  "cur_totals": {
+   "rows_in": 14314067,
+   "deduped_rows": 6668499,
+   "dup_rows": 6276681,
+   "unkeyed_rows": 109728,
+   "coord_conflict": 960228,
+   "dropped_low_grade": 60237,
+   "dropped_out_of_state": 2003910
+  },
+  "unsupported": 0
+ }
+}
