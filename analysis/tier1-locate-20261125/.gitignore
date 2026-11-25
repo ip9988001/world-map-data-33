@@ -1,0 +1,4 @@
+# 中间件：抓取明细 / 日志 / 分州工作文件，可由 locate.py + assign.py 复算生成
+_work/
+# 采样几何原始件（80MB）：仓里只留 ref/geom1000.tar.gz，assign.py 会按需解压
+ref/agol/*_geom1000.json

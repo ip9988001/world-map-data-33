@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services3.arcgis.com/Ln79nASXXta396ZQ/arcgis/rest/services/NorthWilkesboro_TownWebMap/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -81.29680070849514, "ymin": 36.06916916289795, "xmax": -81.05612449025007, "ymax": 36.221905587670896, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

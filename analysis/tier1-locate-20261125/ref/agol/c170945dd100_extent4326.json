@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services2.arcgis.com/1BOMy3PNdECswnJ5/arcgis/rest/services/WALCO_Parcels_Master_V2_ReadOnly/FeatureServer/5/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -88.77768674957146, "ymin": 42.81110622596741, "xmax": -88.6887433042992, "ymax": 42.84359183834098, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

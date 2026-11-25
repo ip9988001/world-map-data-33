@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services1.arcgis.com/AQDHTHDrZzfsFsB5/arcgis/rest/services/LSLI/FeatureServer/1/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -84.82838020270466, "ymin": 33.49881484699343, "xmax": -84.10544095672017, "ymax": 34.186033254274726, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

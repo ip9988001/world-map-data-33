@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services2.arcgis.com/1BOMy3PNdECswnJ5/arcgis/rest/services/JEFCO_Parcels_Master_V2_ReadOnly/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -88.76327477367361, "ymin": 42.841915294052576, "xmax": -88.69839580708197, "ymax": 42.86503729411941, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://gis.co.pierce.wi.us/arcgis/rest/services/Pierce_Data_Other/MapServer/4/query?where=1%3D1&outFields=COUNTY&returnDistinctValues=true&returnGeometry=false&resultRecordCount=200&f=json", "error": {"code": 400, "message": "Failed to execute query.", "details": []}}

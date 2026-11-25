@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services1.arcgis.com/JvqluhO0W86g4m6C/arcgis/rest/services/Operational_Layers/FeatureServer/34/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -83.3665263070345, "ymin": 35.00618215886992, "xmax": -82.88149237534086, "ymax": 35.53550508066847, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

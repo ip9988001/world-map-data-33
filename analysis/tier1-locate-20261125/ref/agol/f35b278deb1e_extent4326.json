@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services.arcgis.com/36I6IHIdr660pAyH/arcgis/rest/services/Homeless_Count_dashboard2/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -86.564560219207, "ymin": 35.750850983249535, "xmax": -86.21752895364499, "ymax": 36.012017216479784, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

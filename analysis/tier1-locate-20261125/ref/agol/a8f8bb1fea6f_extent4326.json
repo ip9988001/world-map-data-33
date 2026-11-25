@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services9.arcgis.com/NtAn3q92p40X6z9O/arcgis/rest/services/GeoType_SAR/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -118.42818586448742, "ymin": 33.90210915802707, "xmax": -118.37478993603584, "ymax": 33.931176390256574, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

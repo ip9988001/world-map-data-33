@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services8.arcgis.com/36tOt5wOeEMz3tyS/arcgis/rest/services/JimWellsCADWebService/FeatureServer/6/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -98.2385901352168, "ymin": 27.2592500771231, "xmax": -97.79671898539254, "ymax": 28.059026710870576, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

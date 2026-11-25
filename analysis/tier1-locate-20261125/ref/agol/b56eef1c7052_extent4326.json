@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services.arcgis.com/7ZWi1K9jN4pVNWq3/arcgis/rest/services/VPRA_Roles_and_Responsibilities_/FeatureServer/1/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -79.95149982497631, "ymin": 36.53920879511511, "xmax": -76.18553538518532, "ymax": 38.92273830146574, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services2.arcgis.com/LvWGAAhHwbCJ2GMP/arcgis/rest/services/Air_Transportation_Locations/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -82.25883100987352, "ymin": 26.417248216091473, "xmax": -81.57100787304583, "ymax": 26.742406615596238, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services9.arcgis.com/gcJrJcPpHyVRGU0T/arcgis/rest/services/City_of_Shawano_Parcels_2019/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -88.62105737454779, "ymin": 44.75623992619609, "xmax": -88.54222564223157, "ymax": 44.79318213835064, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

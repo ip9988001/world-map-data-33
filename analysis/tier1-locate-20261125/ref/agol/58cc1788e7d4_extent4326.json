@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services6.arcgis.com/pET3krhY1T0smsXf/arcgis/rest/services/Envirolink/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -78.51616665430251, "ymin": 36.16806758608825, "xmax": -78.27521911507213, "ymax": 36.54491916846912, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

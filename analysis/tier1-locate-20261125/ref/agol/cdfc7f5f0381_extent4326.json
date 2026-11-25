@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services1.arcgis.com/bF44QtfoYZDGo7TK/arcgis/rest/services/Centerlines/FeatureServer/1/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -117.6359247538427, "ymin": 34.0758560493012, "xmax": -117.47528388825337, "ymax": 34.172858415962494, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

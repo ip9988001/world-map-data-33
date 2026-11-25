@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services3.arcgis.com/9nfxWATFamVUTTGb/arcgis/rest/services/Fire_All_Eaton/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -118.16365971675776, "ymin": 34.1608938620021, "xmax": -118.01833137273613, "ymax": 34.23218992063695, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

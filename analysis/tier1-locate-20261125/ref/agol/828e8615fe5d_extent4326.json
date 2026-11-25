@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services3.arcgis.com/QyE2WGV7PbLkjLWW/arcgis/rest/services/Existing_Land_Use_Dover_Borough/FeatureServer/3/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -76.96177198001374, "ymin": 39.94279382919957, "xmax": -76.79778365803588, "ymax": 40.09556286610368, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

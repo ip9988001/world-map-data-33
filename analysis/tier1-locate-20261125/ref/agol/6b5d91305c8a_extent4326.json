@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services8.arcgis.com/36tOt5wOeEMz3tyS/arcgis/rest/services/JimWellsCADAdditionalData/FeatureServer/3/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -98.2385901352168, "ymin": 27.259250077132307, "xmax": -97.79671898639913, "ymax": 28.05902671177282, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

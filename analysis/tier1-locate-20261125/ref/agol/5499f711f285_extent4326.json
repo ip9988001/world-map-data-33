@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services5.arcgis.com/tEvkdB384rqq9Ook/arcgis/rest/services/OpenDataHubLayers/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -97.20522975989475, "ymin": 47.842448378043706, "xmax": -96.98828872793216, "ymax": 48.00691114133523, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

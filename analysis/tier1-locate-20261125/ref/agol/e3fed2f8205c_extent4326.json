@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services3.arcgis.com/xb2qUX5xzfQSbb1s/arcgis/rest/services/Wilkesboro_PublicTownWebMap/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -81.29680070849352, "ymin": 36.0691691628949, "xmax": -81.05612449024846, "ymax": 36.22190558766785, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services7.arcgis.com/uFAr0LUPy14bDaLg/arcgis/rest/services/AddPts_020724/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -122.13266420033986, "ymin": 37.917417878763835, "xmax": -121.91239881388559, "ymax": 38.025214182801655, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

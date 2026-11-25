@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://gis.co.pierce.wi.us/arcgis/rest/services/Pierce_Data_Other/MapServer/4/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -92.81141743888328, "ymin": 44.52579351639329, "xmax": -92.12542172020306, "ymax": 44.91246181853061, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}
