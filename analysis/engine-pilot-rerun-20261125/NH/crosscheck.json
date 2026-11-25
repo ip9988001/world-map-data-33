@@ -1,0 +1,23 @@
+{
+ "both_sources_keys": 351361,
+ "only_interpolated_keys": 3790500,
+ "real_point_keys": 425286,
+ "compared_keys": 351361,
+ "conflict_m": 100.0,
+ "conflict_keys": 172989,
+ "conflict_share": 0.4923,
+ "dist_p50_m": 98.0,
+ "dist_p90_m": 407.1,
+ "dist_p99_m": 45841.0,
+ "dist_max_m": 254550.6,
+ "dist_mean_m": 1308.0,
+ "over_100m_share": 0.4923,
+ "rows_fused": 4215786,
+ "parcel_centroid_rows": 425186,
+ "parcel_centroid_share": 0.1009,
+ "interpolated_rows": 3790500,
+ "interpolated_share": 0.8991,
+ "seed": 20261125,
+ "sample_n": 200,
+ "note": "距离=GRANIT 点与 TIGER 插值点在同 addrkey 下的最小球面距离；冲突行 provenance 保留，未丢弃"
+}

@@ -9,8 +9,9 @@ roots:
   nh: /data/workspace/nh-collect-both
 repo:
   samples: analysis/coord-samples-20261124/samples
-  tiers: analysis/auto-spatial-rerun-20261125/auto-recognized.csv   # 逐层 tier（url → tier1/2/3）
-outdir: analysis/engine-pilot-20261125
+  tiers: analysis/auto-spatial-relax-20261125/auto-recognized.csv    # 第 7 步放宽分档（键 = (url, dialect_id)）
+  tiers_strict: analysis/auto-spatial-rerun-20261125/auto-recognized.csv   # 第 5 步严格分档，只用于挪动表对比
+outdir: analysis/engine-pilot-rerun-20261125
 
 addrkey:                    # addrkey v3（engine/outlet_clean.py 实现，此处只配开关）
   version: v3

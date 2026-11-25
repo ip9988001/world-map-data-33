@@ -20,15 +20,16 @@ CREATE TABLE IF NOT EXISTS fused (
   addrkey TEXT PRIMARY KEY,
   number TEXT, street TEXT, post_type TEXT, pre_dir TEXT, post_dir TEXT, unit TEXT,
   city TEXT, state TEXT, zip5 TEXT, lon REAL, lat REAL,
-  precision TEXT, is_interpolated INTEGER, tier TEXT, tier_rank INTEGER,
+  precision TEXT, is_interpolated INTEGER, geom_type TEXT, point_kind TEXT, pos_estimated INTEGER,
+  tier TEXT, tier_rank INTEGER, tier_basis TEXT,
   grade TEXT, source_id TEXT, source_family TEXT, record_id TEXT,
   n_sources INTEGER, contributors TEXT, coord_conflict INTEGER
 );
 CREATE TABLE IF NOT EXISTS unkeyed (
   rowid_ INTEGER PRIMARY KEY AUTOINCREMENT,
   number TEXT, street TEXT, unit TEXT, city TEXT, state TEXT, zip5 TEXT, lon REAL, lat REAL,
-  precision TEXT, is_interpolated INTEGER, tier TEXT, grade TEXT,
-  source_id TEXT, source_family TEXT, record_id TEXT
+  precision TEXT, is_interpolated INTEGER, geom_type TEXT, point_kind TEXT, pos_estimated INTEGER,
+  tier TEXT, tier_basis TEXT, grade TEXT, source_id TEXT, source_family TEXT, record_id TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_fused_state ON fused(state);
 CREATE INDEX IF NOT EXISTS idx_unkeyed_state ON unkeyed(state);
@@ -57,7 +58,8 @@ class Fusion:
         self.db.executescript(DDL)
         self.cols = [d[0] for d in self.db.execute("SELECT * FROM fused LIMIT 0").description]
         self.stats = {"in_rows": 0, "kept": 0, "dup": 0, "conflict": 0, "unkeyed": 0,
-                      "low_grade": 0, "out_of_state": 0, "source_rows": {}}
+                      "low_grade": 0, "out_of_state": 0, "source_rows": {},
+                      "geom_type_in": {}, "point_kind_in": {}, "pos_estimated_in": 0}
 
     # ------------------------------------------------------------------ 分级
     def grade(self, rec: dict) -> str:
@@ -65,16 +67,27 @@ class Fusion:
         return grade_of(rec["features"], self.grades)
 
     def better(self, a: dict, b: dict) -> bool:
-        """a 是否应替换库里已有的 b：源优先级更高，或同源但完整度更高。"""
+        """a 是否应替换库里已有的 b：真实点/顶点永远优先于插值，其次源优先级，再次完整度。
+
+        「插值行永远不能盖掉真实点/顶点」是硬约束，放在优先级之前判（第 7 步口径 2.3）。
+        """
+        real_a, real_b = not a.get("is_interpolated"), not b.get("is_interpolated")
+        if real_a != real_b:
+            return real_a
         pa, pb = self.priority.get(a["source_family"], 999), self.priority.get(b["source_family"], 999)
         ga, gb = self.grade_order.get(a["grade"], 9), self.grade_order.get(b["grade"], 9)
         return (pa, ga) < (pb, gb)
 
     # ------------------------------------------------------------------ 主流程
-    def add(self, rec: dict, tier: str = "unrated") -> None:
+    def add(self, rec: dict, tier: str = "unrated", tier_basis: str = "") -> None:
         self.stats["in_rows"] += 1
         fam = rec.get("source_family", "")
         self.stats["source_rows"][fam] = self.stats["source_rows"].get(fam, 0) + 1
+        gtype = rec.get("geom_type") or "unknown"
+        self.stats["geom_type_in"][gtype] = self.stats["geom_type_in"].get(gtype, 0) + 1
+        pkind = rec.get("point_kind") or "none"
+        self.stats["point_kind_in"][pkind] = self.stats["point_kind_in"].get(pkind, 0) + 1
+        self.stats["pos_estimated_in"] += int(bool(rec.get("pos_estimated")))
         g = self.grade(rec)
         if self.grade_order.get(g, 9) > self.grade_order.get(self.min_grade, 3):
             self.stats["low_grade"] += 1
@@ -85,24 +98,30 @@ class Fusion:
             self.stats["unkeyed"] += 1
             self.db.execute(
                 "INSERT INTO unkeyed (number,street,unit,city,state,zip5,lon,lat,precision,is_interpolated,"
-                "tier,grade,source_id,source_family,record_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                "geom_type,point_kind,pos_estimated,tier,tier_basis,grade,source_id,source_family,record_id) "
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 (rec["number"], rec["street"], rec["unit"], rec["city"], rec["state"], rec["zip5"],
-                 rec["lon"], rec["lat"], rec["precision"], int(rec["is_interpolated"]), tier, g,
-                 rec["source_id"], fam, rec["record_id"]))
+                 rec["lon"], rec["lat"], rec["precision"], int(rec["is_interpolated"]),
+                 gtype, rec.get("point_kind") or "", int(bool(rec.get("pos_estimated"))), tier, tier_basis,
+                 g, rec["source_id"], fam, rec["record_id"]))
             return
         row = self.db.execute("SELECT * FROM fused WHERE addrkey=?", (key,)).fetchone()
-        prov = {"src": rec["source_id"], "fam": fam, "tier": tier, "grade": g,
+        prov = {"src": rec["source_id"], "fam": fam, "tier": tier, "tier_basis": tier_basis, "grade": g,
                 "lon": rec["lon"], "lat": rec["lat"], "precision": rec["precision"],
-                "interp": rec["is_interpolated"], "rid": rec["record_id"]}
+                "interp": rec["is_interpolated"], "rid": rec["record_id"],
+                "geom_type": gtype, "point_kind": rec.get("point_kind") or "",
+                "pos_estimated": bool(rec.get("pos_estimated"))}
         if row is None:
             self.stats["kept"] += 1
             self.db.execute(
                 "INSERT INTO fused (addrkey,number,street,post_type,pre_dir,post_dir,unit,city,state,zip5,lon,"
-                "lat,precision,is_interpolated,tier,tier_rank,grade,source_id,source_family,record_id,"
-                "n_sources,contributors,coord_conflict) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                "lat,precision,is_interpolated,geom_type,point_kind,pos_estimated,tier,tier_rank,tier_basis,"
+                "grade,source_id,source_family,record_id,n_sources,contributors,coord_conflict) "
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 (key, rec["number"], rec["street"], rec["post_type"], rec["pre_dir"], rec["post_dir"],
                  rec["unit"], rec["city"], rec["state"], rec["zip5"], rec["lon"], rec["lat"],
-                 rec["precision"], int(rec["is_interpolated"]), tier, rank, g, rec["source_id"], fam,
+                 rec["precision"], int(rec["is_interpolated"]), gtype, rec.get("point_kind") or "",
+                 int(bool(rec.get("pos_estimated"))), tier, rank, tier_basis, g, rec["source_id"], fam,
                  rec["record_id"], 1, json.dumps([prov], ensure_ascii=False), 0))
             return
         cur = dict(zip(self.cols, row))
@@ -113,7 +132,8 @@ class Fusion:
                 conflict = 1
         self.stats["dup"] += 1
         self.stats["conflict"] += conflict
-        keeping_cur = not self.better({"source_family": fam, "grade": g}, cur)
+        keeping_cur = not self.better({"source_family": fam, "grade": g,
+                                       "is_interpolated": rec["is_interpolated"]}, cur)
         best_tier = cur["tier"] if self.tier_rank.get(cur["tier"], 9) <= rank else tier
         if keeping_cur:
             self.db.execute("UPDATE fused SET n_sources=n_sources+1, contributors=?, coord_conflict=?, "
@@ -126,13 +146,15 @@ class Fusion:
             self.stats["kept"] -= 1        # 替换不是新增，抵消
             self.db.execute(
                 "UPDATE fused SET number=?,street=?,post_type=?,pre_dir=?,post_dir=?,unit=?,city=?,state=?,"
-                "zip5=?,lon=?,lat=?,precision=?,is_interpolated=?,tier=?,tier_rank=?,grade=?,source_id=?,"
-                "source_family=?,record_id=?,n_sources=n_sources+1,contributors=?,coord_conflict=? "
-                "WHERE addrkey=?",
+                "zip5=?,lon=?,lat=?,precision=?,is_interpolated=?,geom_type=?,point_kind=?,pos_estimated=?,"
+                "tier=?,tier_rank=?,tier_basis=?,grade=?,source_id=?,source_family=?,record_id=?,"
+                "n_sources=n_sources+1,"
+                "contributors=?,coord_conflict=? WHERE addrkey=?",
                 (rec["number"], rec["street"], rec["post_type"], rec["pre_dir"], rec["post_dir"],
                  rec["unit"], rec["city"], rec["state"], rec["zip5"], rec["lon"], rec["lat"],
-                 rec["precision"], int(rec["is_interpolated"]), best_tier,
-                 self.tier_rank.get(best_tier, 9), g, rec["source_id"], fam, rec["record_id"],
+                 rec["precision"], int(rec["is_interpolated"]), gtype, rec.get("point_kind") or "",
+                 int(bool(rec.get("pos_estimated"))), best_tier,
+                 self.tier_rank.get(best_tier, 9), tier_basis, g, rec["source_id"], fam, rec["record_id"],
                  json.dumps(provs + [prov], ensure_ascii=False), max(conflict, cur["coord_conflict"]), key))
 
     # ------------------------------------------------------------------ 输出
@@ -153,7 +175,24 @@ class Fusion:
         for t in ("tier1", "tier2", "tier3", "unrated"):
             for g in ("S", "A", "B", "C"):
                 grid.setdefault(t, {}).setdefault(g, 0)
+        by_geom = {}
+        for gt, n, wp in self.db.execute(
+                "SELECT geom_type, COUNT(*), SUM(CASE WHEN lon IS NOT NULL THEN 1 ELSE 0 END) FROM fused "
+                + (where or "WHERE 1=1") + " GROUP BY geom_type", args).fetchall():
+            by_geom[gt or "unknown"] = {"rows": n, "with_point": wp or 0}
+        by_kind = dict(self.db.execute(
+            "SELECT point_kind, COUNT(*) FROM fused " + (where or "WHERE 1=1") + " GROUP BY point_kind",
+            args).fetchall())
+        s_est = self.db.execute("SELECT COUNT(*) FROM fused " + (where or "WHERE 1=1")
+                                + " AND grade='S' AND pos_estimated=1", args).fetchone()[0]
         return {"deduped_rows": total, "by_grade": by_grade, "by_tier_grade": grid,
+                "by_geom_type": by_geom, "geom_type_in": self.stats["geom_type_in"],
+                "by_point_kind": by_kind, "point_kind_in": self.stats["point_kind_in"],
+                "pos_estimated_in": self.stats["pos_estimated_in"],
+                "pos_estimated_rows": self.db.execute(
+                    "SELECT COUNT(*) FROM fused " + (where or "WHERE 1=1") + " AND pos_estimated=1",
+                    args).fetchone()[0],
+                "s_with_pos_estimated": s_est,
                 "with_point": (self.db.execute(
                     "SELECT COUNT(*) FROM fused " + (where or "WHERE 1=1") + " AND lon IS NOT NULL", args)
                     .fetchone()[0] if total else 0),
@@ -170,7 +209,8 @@ class Fusion:
         """导出为 `prefix.partNN.ndjson.gz` 分片（每片 ≤shard_mb 未压缩，避免单文件撞 GitHub 100MB 上限）。"""
         import gzip
         cols = ("addrkey,number,street,post_type,pre_dir,post_dir,unit,city,state,zip5,lon,lat,precision,"
-                "is_interpolated,tier,grade,source_id,source_family,record_id,n_sources,coord_conflict")
+                "is_interpolated,geom_type,point_kind,pos_estimated,tier,grade,source_id,source_family,"
+                "record_id,n_sources,coord_conflict,tier_basis")
         sql = f"SELECT {cols}, contributors FROM fused" + (" WHERE state=?" if state else "")
         limit, n, part = shard_mb * 1024 * 1024, 0, 0
         fh = gzip.open(f"{prefix}.part{part:02d}.ndjson.gz", "wt", encoding="utf-8")

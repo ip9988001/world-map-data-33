@@ -14,6 +14,7 @@ dialects:
     adapter: ndjson
     crs: EPSG:4326
     precision: address_point
+    geom_type: point
     fields:
       number: [Add_Number, AddNo_Full]
       number_suffix: [AddNum_Suf]
@@ -33,6 +34,7 @@ dialects:
     adapter: zip_csv
     crs: EPSG:4326
     precision: address_point
+    geom_type: point
     fields:
       number: [NUMBER]
       street: [STREET]
@@ -48,6 +50,7 @@ dialects:
     adapter: zip_shp
     crs: EPSG:4269
     precision: street_range          # 只有街段+门牌区间，没有点；不给坐标，不插值
+    geom_type: none
     fields:
       street: [FULLNAME]
       post_type: []
@@ -61,6 +64,7 @@ dialects:
     adapter: ndjson
     crs: EPSG:4326
     precision: range_interpolation   # 上游已插值，坐标是插出来的，标记 is_interpolated
+    geom_type: point
     is_interpolated: true
     fields:
       number: [number]
@@ -76,6 +80,7 @@ dialects:
     adapter: ndjson
     crs: EPSG:4326
     precision: parcel_centroid      # 地块质心（不是门牌点），按 manifest 声明
+    geom_type: point
     fields:
       combined: [streetaddress]     # "58 BARBARA DRIVE" → 门牌 + 街名，由 outlet_clean.split_combined 解析
       state: [source_state]
@@ -88,6 +93,7 @@ dialects:
     adapter: parquet
     crs: EPSG:4326
     precision: address_point
+    geom_type: point               # 兜底声明；实际按 WKB 几何类型（点取自身、面线取真实顶点）
     fields:
       number: [number]
       street: [street]
@@ -98,12 +104,13 @@ dialects:
       lat: []
       id: [id]
     state_from: address_levels     # list<struct<value>>，第一个元素是州
-    geometry: wkb_point
+    geometry: wkb_any              # 面/线不许当质心：取 rings[0][0] / paths[0][0] 真实顶点
   - id: engine-dialect-samples-v1
     family: dialect_layer
     adapter: samples_csv
     crs: EPSG:4326
     precision: mixed               # 逐行取采样时的 geom_type
+    geom_type: unknown             # 行级实测优先（样本自带 geom_type）
     fields:
       number: [house_number]
       street: [street_full, street_name]

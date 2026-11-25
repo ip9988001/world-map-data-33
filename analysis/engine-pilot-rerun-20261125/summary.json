@@ -1,0 +1,533 @@
+{
+ "generated_utc": "2026-11-25T00:01:36Z",
+ "config": "engine/config/pilot.yaml",
+ "tier_tables": {
+  "relax": {
+   "path": "analysis/auto-spatial-relax-20261125/auto-recognized.csv",
+   "rows": 17168,
+   "skipped_no_url": 417,
+   "pairs": 16751,
+   "key": "(url,dialect_id)"
+  },
+  "strict": {
+   "path": "analysis/auto-spatial-rerun-20261125/auto-recognized.csv"
+  }
+ },
+ "tier_moves": {
+  "strict_table": "analysis/auto-spatial-rerun-20261125/auto-recognized.csv",
+  "relax_table": "analysis/auto-spatial-relax-20261125/auto-recognized.csv",
+  "rows": 20,
+  "by_state": {
+   "DE": {
+    "layers": 3,
+    "rows_n": 19037,
+    "transitions": {
+     "tier3->tier2": 3
+    }
+   },
+   "IA": {
+    "layers": 10,
+    "rows_n": 87475,
+    "transitions": {
+     "tier3->tier2": 10
+    }
+   },
+   "NH": {
+    "layers": 7,
+    "rows_n": 94715,
+    "transitions": {
+     "tier3->tier2": 7
+    }
+   }
+  }
+ },
+ "addrkey": {
+  "version": "v3",
+  "prefix": "a3",
+  "include_unit": true,
+  "hash": "sha1-20hex"
+ },
+ "dialects": {
+  "registry": [
+   "agol-t110000-buildingpoint",
+   "agol-t110101-buildingpoint",
+   "agol-t110111-buildingpoint"
+  ],
+  "engine": [
+   "engine-dialect-samples-v1",
+   "granit-parcel-v1",
+   "nad-v1",
+   "oa-v1",
+   "overture-v1",
+   "tiger-addrfeat-v1",
+   "tiger-interp-v1"
+  ]
+ },
+ "grades": {
+  "S": [
+   "number",
+   "street",
+   "city",
+   "state",
+   "zip5",
+   "point"
+  ],
+  "A": [
+   "number",
+   "street",
+   "state",
+   "zip5",
+   "point_any"
+  ],
+  "B": [
+   "number",
+   "street",
+   "state"
+  ],
+  "C": [
+   "street"
+  ]
+ },
+ "priority": {
+  "dialect_layer": 5,
+  "granit": 10,
+  "nad": 20,
+  "overture": 30,
+  "tiger": 40,
+  "oa": 50
+ },
+ "tier_rank": {
+  "tier1": 1,
+  "tier2": 2,
+  "tier3": 3,
+  "unrated": 9
+ },
+ "states": [
+  {
+   "state": "DE",
+   "sources": [
+    {
+     "id": "de_nad",
+     "family": "nad",
+     "dialect": "nad-v1",
+     "dialect_origin": "engine",
+     "adapter": "ndjson",
+     "files": 4,
+     "rows_in": 562290,
+     "tier_basis_ambiguous_rows": 0,
+     "range_only": false,
+     "secs": 163.8
+    },
+    {
+     "id": "de_oa",
+     "family": "oa",
+     "dialect": "oa-v1",
+     "dialect_origin": "engine",
+     "adapter": "zip_csv",
+     "files": 5,
+     "rows_in": 553848,
+     "tier_basis_ambiguous_rows": 0,
+     "range_only": false,
+     "secs": 146.9
+    },
+    {
+     "id": "de_tiger",
+     "family": "tiger",
+     "dialect": "tiger-addrfeat-v1",
+     "dialect_origin": "engine",
+     "adapter": "zip_shp",
+     "files": 3,
+     "rows_in": 62067,
+     "tier_basis_ambiguous_rows": 0,
+     "range_only": true,
+     "secs": 6.4
+    },
+    {
+     "id": "de_overture",
+     "family": "overture",
+     "dialect": "overture-v1",
+     "dialect_origin": "engine",
+     "adapter": "parquet",
+     "files": 1,
+     "rows_in": 562288,
+     "tier_basis_ambiguous_rows": 0,
+     "range_only": false,
+     "secs": 238.9
+    },
+    {
+     "id": "de_dialect",
+     "family": "dialect_layer",
+     "dialect": "engine-dialect-samples-v1",
+     "dialect_origin": "engine",
+     "adapter": "samples_csv",
+     "files": 1,
+     "rows_in": 1876,
+     "tier_basis_ambiguous_rows": 0,
+     "range_only": false,
+     "secs": 0.1
+    }
+   ],
+   "started_utc": "2026-11-24T22:50:47+00:00",
+   "rows_in": 1742369,
+   "deduped_rows": 635036,
+   "dup_rows": 795527,
+   "coord_conflict": 6894,
+   "unkeyed_rows": 5437,
+   "dropped_low_grade": 1863,
+   "dropped_out_of_state": 377823,
+   "by_tier": {
+    "tier2": 50,
+    "unrated": 634986
+   },
+   "by_grade": {
+    "A": 14,
+    "B": 143,
+    "S": 634879
+   },
+   "by_tier_grade": {
+    "tier2": {
+     "S": 50,
+     "A": 0,
+     "B": 0,
+     "C": 0
+    },
+    "unrated": {
+     "A": 14,
+     "B": 143,
+     "S": 634829,
+     "C": 0
+    },
+    "tier1": {
+     "S": 0,
+     "A": 0,
+     "B": 0,
+     "C": 0
+    },
+    "tier3": {
+     "S": 0,
+     "A": 0,
+     "B": 0,
+     "C": 0
+    }
+   },
+   "by_geom_type": {
+    "point": {
+     "rows": 635036,
+     "with_point": 635036
+    }
+   },
+   "geom_type_in": {
+    "point": 1679706,
+    "polyline": 496,
+    "polygon": 50,
+    "multipoint": 50
+   },
+   "by_point_kind": {
+    "point": 635036
+   },
+   "point_kind_in": {
+    "point": 1679706,
+    "vertex": 596
+   },
+   "pos_estimated_in": 0,
+   "pos_estimated_rows": 0,
+   "s_with_pos_estimated": 0,
+   "with_point": 635036,
+   "multi_source": 519723,
+   "tiger_street_keys": 17280,
+   "finished_utc": "2026-11-24T23:00:57+00:00"
+  },
+  {
+   "state": "NH",
+   "sources": [
+    {
+     "id": "nh_granit",
+     "family": "granit",
+     "dialect": "granit-parcel-v1",
+     "dialect_origin": "engine",
+     "adapter": "ndjson",
+     "files": 10,
+     "rows_in": 601355,
+     "tier_basis_ambiguous_rows": 0,
+     "range_only": false,
+     "secs": 130.9
+    },
+    {
+     "id": "nh_tiger",
+     "family": "tiger",
+     "dialect": "tiger-interp-v1",
+     "dialect_origin": "engine",
+     "adapter": "ndjson",
+     "files": 1,
+     "rows_in": 5870025,
+     "tier_basis_ambiguous_rows": 0,
+     "range_only": false,
+     "secs": 1353.8
+    },
+    {
+     "id": "nh_nad",
+     "family": "nad",
+     "dialect": "nad-v1",
+     "dialect_origin": "engine",
+     "adapter": "ndjson",
+     "files": 1,
+     "rows_in": 0,
+     "tier_basis_ambiguous_rows": 0,
+     "range_only": false,
+     "secs": 39.5
+    },
+    {
+     "id": "nh_dialect",
+     "family": "dialect_layer",
+     "dialect": "engine-dialect-samples-v1",
+     "dialect_origin": "engine",
+     "adapter": "samples_csv",
+     "files": 1,
+     "rows_in": 2329,
+     "tier_basis_ambiguous_rows": 0,
+     "range_only": false,
+     "secs": 0.2
+    }
+   ],
+   "started_utc": "2026-11-24T23:00:57+00:00",
+   "rows_in": 6473709,
+   "deduped_rows": 4215786,
+   "dup_rows": 2152111,
+   "coord_conflict": 819849,
+   "unkeyed_rows": 103552,
+   "dropped_low_grade": 2260,
+   "dropped_out_of_state": 354804,
+   "by_tier": {
+    "tier3": 100,
+    "unrated": 4215686
+   },
+   "by_grade": {
+    "A": 3790095,
+    "B": 425641,
+    "S": 50
+   },
+   "by_tier_grade": {
+    "tier3": {
+     "B": 50,
+     "S": 50,
+     "A": 0,
+     "C": 0
+    },
+    "unrated": {
+     "A": 3790095,
+     "B": 425591,
+     "S": 0,
+     "C": 0
+    },
+    "tier1": {
+     "S": 0,
+     "A": 0,
+     "B": 0,
+     "C": 0
+    },
+    "tier2": {
+     "S": 0,
+     "A": 0,
+     "B": 0,
+     "C": 0
+    }
+   },
+   "by_geom_type": {
+    "point": {
+     "rows": 4215786,
+     "with_point": 4215786
+    }
+   },
+   "geom_type_in": {
+    "point": 6472564,
+    "polygon": 695,
+    "polyline": 450
+   },
+   "by_point_kind": {
+    "interpolated": 3790500,
+    "parcel_centroid": 425186,
+    "point": 100
+   },
+   "point_kind_in": {
+    "parcel_centroid": 601355,
+    "interpolated": 5870025,
+    "point": 1184,
+    "vertex": 1145
+   },
+   "pos_estimated_in": 5870025,
+   "pos_estimated_rows": 3790500,
+   "s_with_pos_estimated": 0,
+   "with_point": 4215786,
+   "multi_source": 920951,
+   "tiger_street_keys": 0,
+   "finished_utc": "2026-11-24T23:30:39+00:00",
+   "crosscheck": {
+    "both_sources_keys": 351361,
+    "only_interpolated_keys": 3790500,
+    "real_point_keys": 425286,
+    "compared_keys": 351361,
+    "conflict_m": 100.0,
+    "conflict_keys": 172989,
+    "conflict_share": 0.4923,
+    "dist_p50_m": 98.0,
+    "dist_p90_m": 407.1,
+    "dist_p99_m": 45841.0,
+    "dist_max_m": 254550.6,
+    "dist_mean_m": 1308.0,
+    "over_100m_share": 0.4923,
+    "rows_fused": 4215786,
+    "parcel_centroid_rows": 425186,
+    "parcel_centroid_share": 0.1009,
+    "interpolated_rows": 3790500,
+    "interpolated_share": 0.8991,
+    "seed": 20261125,
+    "sample_n": 200,
+    "note": "距离=GRANIT 点与 TIGER 插值点在同 addrkey 下的最小球面距离；冲突行 provenance 保留，未丢弃"
+   }
+  },
+  {
+   "state": "IA",
+   "sources": [
+    {
+     "id": "ia_nad",
+     "family": "nad",
+     "dialect": "nad-v1",
+     "dialect_origin": "engine",
+     "adapter": "ndjson",
+     "files": 100,
+     "rows_in": 1586226,
+     "tier_basis_ambiguous_rows": 0,
+     "range_only": false,
+     "secs": 505.7
+    },
+    {
+     "id": "ia_oa",
+     "family": "oa",
+     "dialect": "oa-v1",
+     "dialect_origin": "engine",
+     "adapter": "zip_csv",
+     "files": 58,
+     "rows_in": 2466617,
+     "tier_basis_ambiguous_rows": 0,
+     "range_only": false,
+     "secs": 545.2
+    },
+    {
+     "id": "ia_tiger",
+     "family": "tiger",
+     "dialect": "tiger-addrfeat-v1",
+     "dialect_origin": "engine",
+     "adapter": "zip_shp",
+     "files": 99,
+     "rows_in": 455523,
+     "tier_basis_ambiguous_rows": 0,
+     "range_only": true,
+     "secs": 46.6
+    },
+    {
+     "id": "ia_overture",
+     "family": "overture",
+     "dialect": "overture-v1",
+     "dialect_origin": "engine",
+     "adapter": "parquet",
+     "files": 1,
+     "rows_in": 1585872,
+     "tier_basis_ambiguous_rows": 0,
+     "range_only": false,
+     "secs": 510.3
+    },
+    {
+     "id": "ia_dialect",
+     "family": "dialect_layer",
+     "dialect": "engine-dialect-samples-v1",
+     "dialect_origin": "engine",
+     "adapter": "samples_csv",
+     "files": 1,
+     "rows_in": 3751,
+     "tier_basis_ambiguous_rows": 0,
+     "range_only": false,
+     "secs": 0.3
+    }
+   ],
+   "started_utc": "2026-11-24T23:31:43+00:00",
+   "rows_in": 6097989,
+   "deduped_rows": 1817677,
+   "dup_rows": 3329043,
+   "coord_conflict": 133485,
+   "unkeyed_rows": 739,
+   "dropped_low_grade": 56114,
+   "dropped_out_of_state": 1271283,
+   "by_tier": {
+    "tier2": 100,
+    "tier3": 300,
+    "unrated": 1817277
+   },
+   "by_grade": {
+    "A": 255418,
+    "B": 139347,
+    "S": 1422912
+   },
+   "by_tier_grade": {
+    "tier2": {
+     "B": 100,
+     "S": 0,
+     "A": 0,
+     "C": 0
+    },
+    "tier3": {
+     "B": 150,
+     "S": 150,
+     "A": 0,
+     "C": 0
+    },
+    "unrated": {
+     "A": 255418,
+     "B": 139097,
+     "S": 1422762,
+     "C": 0
+    },
+    "tier1": {
+     "S": 0,
+     "A": 0,
+     "B": 0,
+     "C": 0
+    }
+   },
+   "by_geom_type": {
+    "point": {
+     "rows": 1817677,
+     "with_point": 1817677
+    }
+   },
+   "geom_type_in": {
+    "point": 5640814,
+    "polyline": 1095,
+    "polygon": 557
+   },
+   "by_point_kind": {
+    "point": 1817677
+   },
+   "point_kind_in": {
+    "point": 5640814,
+    "vertex": 1652
+   },
+   "pos_estimated_in": 0,
+   "pos_estimated_rows": 0,
+   "s_with_pos_estimated": 0,
+   "with_point": 1817677,
+   "multi_source": 1386229,
+   "tiger_street_keys": 33288,
+   "finished_utc": "2026-11-25T00:01:36+00:00"
+  }
+ ],
+ "totals": {
+  "rows_in": 14314067,
+  "deduped_rows": 6668499,
+  "dup_rows": 6276681,
+  "unkeyed_rows": 109728,
+  "coord_conflict": 960228,
+  "dropped_low_grade": 60237,
+  "dropped_out_of_state": 2003910
+ },
+ "unsupported": 0
+}
