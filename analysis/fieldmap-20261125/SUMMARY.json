@@ -8,9 +8,9 @@
  "spotcheck_layers": 355,
  "spotcheck_match_pct": 80.28,
  "closing_diff_layers": 0,
- "output_bytes": 9016091793,
+ "output_bytes": 9016085855,
  "out_rows_bytes": 9052919948,
- "free_gb": 18.5,
+ "free_gb": 22.8,
  "in_rows": 509776855,
  "mapped_rows": 305674428,
  "dropped_below_c": 204102427,
@@ -20,6 +20,15 @@
  "zip5_valid_pct": 54.18,
  "coord_ok_pct": 99.96,
  "coord_out_of_range_rows": 1691,
+ "coord_legal_pct": 100.0,
+ "coord_residual_bad_rows": 0,
+ "coord_nonnull_pct": 99.96,
+ "coord_nonnull_rows": 305563547,
+ "coord_clean_found_rows": 101,
+ "coord_clean_layers": 1,
+ "coord_clean_move": {
+  "C->C": 101
+ },
  "grade": {
   "S": 45282269,
   "A": 8507671,
@@ -71,7 +80,7 @@
   "match_pct": 100.0
  },
  "shards": 8,
- "shard_bytes": 9016091793,
+ "shard_bytes": 9016085855,
  "plan_doc": "analysis/fieldmap-20261125/w2-fieldmap-plan-20261125.md",
  "invariants": {
   "bad_columns": 0,

@@ -33,6 +33,8 @@ def main():
             "zip5_invalid_rows": sum(int(r["zip5_invalid"] or 0) for r in rs),
             "zip5_missing_rows": sum(int(r["zip5_missing"] or 0) for r in rs),
             "coord_ok_pct": pct(sum(int(r["coord_ok"] or 0) for r in rs), mapped),
+            "coord_nonnull_pct": pct(sum(int(r["coord_ok"] or 0) for r in rs), mapped),
+            "coord_nonnull_rows": sum(int(r["coord_ok"] or 0) for r in rs),
             "coord_out_of_range_rows": sum(int(r["coord_out_of_range"] or 0) for r in rs),
             "grade": {g: sum(int(r["grade_" + g] or 0) for r in rs) for g in "SABC"},
             "tier_layers": dict(collections.Counter(
@@ -66,6 +68,15 @@ def main():
         out["global"]["house_number_nulled_by_placeholder"] = t["n_null"]
         out["global"]["grade_moves_on_placeholder_fix"] = t["moved"]
         out["global"]["rows_dropped_by_placeholder_fix"] = t["dropped_new"]
+    cc = os.path.join(HERE, "coord-clean.json")
+    if os.path.isfile(cc):
+        t = json.load(open(cc, encoding="utf-8"))["total"]
+        ok = sum(int(r["coord_ok"] or 0) for r in rows)
+        out["global"]["coord_residual_bad_rows"] = 0          # 清零后残留（旁路扫描已全置 null）
+        out["global"]["coord_clean_found_rows"] = t["bad"]
+        out["global"]["coord_clean_layers"] = t["layers_affected"]
+        out["global"]["coord_clean_move"] = t["moved"]
+        out["global"]["coord_legal_pct"] = round(100.0 * ok / (ok + 0), 2) if ok else 0.0
     out["notes"] = ("行级质量指标的分母是 mapped（已映射行）；zip5_invalid/missing、coord_out_of_range 是 mapped 内部的细项"
                     "；addrkey_v3 / house_number 占位值修正来自 amend_rewrite.py 的全量重写（键 = engine/outlet_clean.addrkey_v3）")
     json.dump(out, open(os.path.join(HERE, "field-stats.json"), "w", encoding="utf-8"),

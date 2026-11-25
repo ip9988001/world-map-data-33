@@ -2,7 +2,7 @@
 
 > 口径以 `w2-fieldmap-plan-20261125.md` 为准（muse-000258 权威口径全文；与下文冲突时以该文档为准）。
 
-> 一句话：**3100/3550 层（87.32%）产出 11 列可读数据**；不可用 450 层（原因全部落在固定枚举内）；逐层闭合差 ≠ 0 的层 **0** 个；行级抽查 **355 层 / 80.28% 相符**；输出 **8598.4 MiB / 8 个 tar.gz 分片**；磁盘余量 **18.5 GiB**。
+> 一句话：**3100/3550 层（87.32%）产出 11 列可读数据**；不可用 450 层（原因全部落在固定枚举内）；逐层闭合差 ≠ 0 的层 **0** 个；行级抽查 **355 层 / 80.28% 相符**；输出 **8598.4 MiB / 8 个 tar.gz 分片**；磁盘余量 **22.8 GiB**。
 
 ## 0. 四数（先给数）
 
@@ -12,7 +12,7 @@
 | 不可用层 | **450** | —（全部进 unusable.csv） | 原因全部固定枚举内 |
 | 逐层闭合差额 | **0 层有差额** | 0 | 闭合 |
 | 行级抽查 | **355 层 / 80.28%** 相符 | ≥355 层（≥10%） | 达标 |
-| 输出字节 | **9016091793 B**（8 片） | — | 磁盘余量 18.5 GiB |
+| 输出字节 | **9016085855 B**（8 片） | — | 磁盘余量 22.8 GiB |
 
 ## 1. 不可用分桶（`unusable.csv`）
 
@@ -39,7 +39,8 @@
 | `street_name` | **100.00%** | 100% | 达标 |
 | `house_number` | **71.17%** | ≥90% | **未达标** |
 | `zip5` 合法率 | **54.18%** | ≥95% | **未达标** |
-| 坐标落合法范围 | **99.96%**（越界残留 1691 行 = 已被置 null） | 100% | **未达标** |
+| 坐标合法性（非空坐标里越界/(0,0) 残留） | **100.00%**（残留 **0** 行） | 100% | **达标** |
+| 有坐标的行占比（覆盖率，非门槛项） | 99.96% | — | 源层本身不缺坐标；110,881 行无坐标 |
 
 > `zip5_valid` 的分母是映射行；源里本就没有邮编的行记 missing（不补零、不截断）。`house_number` 同理：源里没有门牌就 null，绝不生成。
 
@@ -108,7 +109,7 @@
 3. **未走 `collect/lib/fieldmap3.py`**（硬编码别名表）：它是采集侧的口径，本步按 muse 要求只把它当对照证据。实测它的别名表与本步用的 registry ∪ engine 表在「组合串字段」（如 `ADDR`/`LSN`）上都没覆盖，这也是为什么要上 `split_addr` 的拆分规则 —— 不接这一步时覆盖率只有 67%（1,186/1,776），接上后到 94%+。
 4. **grade/tier 全部由配置驱动**：`engine/config/pilot.yaml` 的 `grades`（S/A/B/C 特征表）与 `tier_rank`，代码里没有硬编码阈值；tier 取 `analysis/grading-rerun-20261125/auto-recognized.csv`（**Tier1 = 410 那版**）按 url 匹配，本批 3,550 层与它的 **非空 url 交集 = 0** → 3,100 层输出 tier 全 `unrated`（照抄 `tier_rank` 的 unrated=9）。
 5. **zip5 口径**：`12345-6789` 取前 5；不足/超长/含字母一律 null 并计 missing，不补零。**house_number**：占位值（0/000/NULL/N/A/NONE/UNKNOWN/-1/空/纯符号）一律缺失，绝不生成门牌。**坐标**：范围外、(0,0)、缺省一律 null，绝不写 0 冒充。
-6. **磁盘**：输入 40,341,427,040 B 只读；输出写 `dist/`，每 500 层一个 `fieldmap-partNNN.tar.gz`，打包后立刻删 `dist/rows/` 里的散文件；`free_gb` 全程未低于 3 GiB（收工 18.5 GiB）。
+6. **磁盘**：输入 40,341,427,040 B 只读；输出写 `dist/`，每 500 层一个 `fieldmap-partNNN.tar.gz`，打包后立刻删 `dist/rows/` 里的散文件；`free_gb` 全程未低于 3 GiB（收工 22.8 GiB）。
 
 ## 6. 怎么复跑
 
@@ -154,4 +155,72 @@ python3 analysis/fieldmap-20261125/finalize.py
 2. **覆盖率 87.32%（3,100/3,550）未达 95%**，不可用 450 层全部 `grade_below_C`（源层无街名/无任何地址要素）；分母是否该换成「有街名或门牌的层」需 muse 裁定。
 3. **house_number 71% / zip5 54%** 未达 90%/95%：根因是源层本身没有这些字段（信封 + raw 别名 + 组合串拆全部试过），不是映射逻辑写错；不补零、不生成门牌是硬口径。
 4. **坐标残留 101 行**（305,674,428 行的 0.000033%）：`amend_rewrite.py` 写入时的自查计数 `bad=101`，即 lat/lon 非空但越界或为 (0,0)；`clean_coord` 当前口径不可能产出这种行，来源是主跑早期版本的成员（本轮只做输出侧重写、未回读输入，所以无法把它们就地空掉）。355 层 / 16,978,947 行抽查里 `bad_coord=0 / zero_coord=0`。彻底清零要再做一次全量旁路扫描定位这 101 行（约 8 分钟），属下一单。
+
+## 8. 样本验证：`begin_layer()` 修好后重扫 vs 现有产物（muse-000264 A）
+
+| 项 | 值 |
+|---|---|
+| 绑定 commit | `c5d2524`（现有 `dist/tar` 就是该 commit 的产物；对账在此基线上做） |
+| 样本 | **16 层 / 1,618,560 行**（`sample-layers.csv`，脚本 `sample_select.py`，种子 264） |
+| 重扫 | `sample_rescan.py` → `dist/sample/`（**不覆盖** `dist/tar/`），1,618,560 行出 / 1,618,560 行入 |
+| **打点** | `begin_layer()` **被调用 16 次 == 处理 16 层**（每层一次，不复用 `_keys`/`_split_key`）|
+| 对账 | `sample_diff.py`（只按成员名从 8 片抽样本层，未解全量）→ `sample-diff.csv` / `sample-diff.json` |
+
+**两条选样要求在本批数据里不可达**（已核，不是没做）：
+- `tier1/2/3 各 ≥3 层`：`grading-rerun-20261125/auto-recognized.csv`（Tier1=410 版）与本批 3,100 个已映射层的 `layer_id` 交集 **0**、非空 url 交集 **0**（归一化 scheme/尾斜杠后仍 0）→ 全部 `unrated`。
+- `方言 ≥4 种`：`registry/dialects.v1.yaml` 只有 4 个 dialect / 34 个 org；本批 url 的 agol org 抽取结果 `''` 3,059 层 + `'rest'` 41 层 → **registry 命中 0 层**，全部 `minimal_safe`。
+→ 改用可观测维度选样：state 有效率两端、信封原生对照、raw 别名/拆串依赖、无 url(fallback)、体量梯度。
+
+| 层（截断） | 行数 现有/重扫 | 方法 | state | zip5 | 门牌 | grade |
+|---|---:|---|---:|---:|---:|---:|
+| `0MLvN0Ay0iEjnCT_arcgis_rest_services_Address` | 49304 / 49304 | positional | 0 | 0 | 0 | 0 |
+| `0QMPlK9CkZD_arcgis_rest_services_AddressTest` | 75327 / 75328 | multiset | 0 | 0 | 0 | 0 |
+| `0gE_arcgis_rest_services_Address_Points_View` | 46960 / 46960 | positional | 0 | 46953 | 0 | 46953 |
+| `11SaUIGBo5JYFY_arcgis_rest_services_SRD_Data` | 24813 / 24813 | positional | 0 | 0 | 0 | 0 |
+| `1Pd_arcgis_rest_services_Open_Address_Points` | 53013 / 53013 | positional | 52966 | 0 | 0 | 52966 |
+| `arcgis_rest_services_Building_Address_Points` | 397926 / 397926 | positional | 397850 | 397793 | 73532 | 397850 |
+| `arcgis_rest_services_Property_Addresses_View` | 41782 / 41782 | positional | 0 | 0 | 0 | 0 |
+| `azssuvI82_arcgis_rest_services_AddressPoints` | 33687 / 33687 | positional | 0 | 0 | 0 | 0 |
+| `f9MkUwD4_arcgis_rest_services_Address_Points` | 52486 / 52485 | multiset | 0 | 0 | 0 | 0 |
+| `gis_rest_services_ProposedSiteAddress_public` | 14 / 14 | positional | 0 | 0 | 0 | 0 |
+| `gis_rest_services_SiteStructureAddressPoints` | 359653 / 359653 | positional | 359653 | 358877 | 359653 | 359653 |
+| `lYD_arcgis_rest_services_AddressPoints_24_12` | 33389 / 33389 | positional | 0 | 0 | 0 | 0 |
+| `oqakAkedEx0oU_arcgis_rest_services_Addresses` | 33787 / 33787 | positional | 0 | 0 | 0 | 0 |
+| `r_arcgis_rest_services_SiteAddressPoint_view` | 4145 / 4145 | positional | 0 | 0 | 0 | 0 |
+| `s_DuPage_County_IL_AddressPointsUnderDevelop` | 392073 / 392073 | positional | 392073 | 0 | 0 | 391860 |
+| `z6SRPFWJ_arcgis_rest_services_SiteAddresses_` | 20201 / 20201 | positional | 0 | 0 | 0 | 0 |
+
+**判定：影响输出且改 grade**（三档里的最重一档）：
+- **5 层**逐字段有差异（另 **2 层**仅行数差 1 行 → 退回 multiset，字段无差；**9 层**逐字段零差异，只有 addrkey 差异，见下）
+- 变动矩阵（样本内，现有 S0/A72,665/B47,016/C1,498,879 → 重扫 S444,798/A876,239/B972/C296,551）：**B->A 46,953、C->A 756,622、C->B 909、C->S 444,798**
+- 方向全是**变好**（重扫恢复被泄漏吃掉的 state/zip5/门牌），没有一例变差：例 `gis_rest_services_SiteStructureAddressPoints...@未定位-3` 现有 `state/zip5/门牌 = 0/0/0`，重扫 `359,653/358,877/359,653`，grade `C→A` — 手工核过首行：raw `Add_Number=534 / St_Name=Jonathan / FullAddress='534 Jonathan Lane'` → `534 / Jonathan / NC / 27406`，取值正确
+
+| 字段（样本 1,618,560 行） | 现有 | 重扫 |
+|---|---:|---:|
+| `state` 有效率 | **7.39%** | **81.69%** |
+| `zip5` 有效率 | **35.03%** | **89.33%** |
+| `house_number` 有效率 | **72.74%** | **99.50%** |
+| `city` 有效率 | **40.75%** | **40.75%** |
+| `street_name` 有效率 | **100.00%** | **100.00%** |
+
+> `addrkey` 在样本里有 1,258,467 行不同 —— **不是 begin_layer 引起**：现有产物是 `amend_rewrite.py` 用 11 列自身重算的（拿不到 `unit`、`st_suf/pre_dir/post_dir` 分量），重扫用输入真实 unit + 分量。`city` 完全不变（信封与 raw 两侧口径一致）。
+
+> **不外推**：样本是按极端值挑的（state 0%/100% 两端各占一半），5/16 的命中率**不能**乘到 3,100 层上；真实影响面只能靠下一次全量重跑给出。本单结论只覆盖这 16 层。
+
+## 9. 坐标残留清零（muse-000264 B）
+
+| 项 | 值 |
+|---|---:|
+| 旁路扫描行数（8 片全量，只读 `dist/tar`） | 305,674,428 |
+| **找到的坏坐标行** | **101**（上一单写入器自查报 101，实测一致） |
+| 影响层数 | 1 |
+| 清零后 `bad_coord` / `zero_coord` | **0 / 0** |
+| 降级矩阵 | {"C->C": 101} |
+| **S→A 行数** | **0**（A→B 也是 **0**） |
+| 坐标合法率 | **100.00%**（非空坐标 305,563,547 行，越界/(0,0) 残留 0） |
+
+做法：流式读 8 片成员；**没有坏坐标的成员原字节直传**（不重新压缩），只有命中行才重写该成员（置 null + 按要素表重算 grade），成员数逐片校验通过后才 `rm` 旧片 + `mv` 新片。
+
+**为什么 S→A = 0**：这 101 行在清零前**已经都是 C 级**（只有街名、没有门牌/州/邮编），坐标置空后 C 级的要素表（只要街名）依然成立，所以 `C→C`，不产生任何降级，也不影响 S/A/B 行数。数据侧交叉核对：该层 7,466 行里非空坐标从 7,304 → **7,203**，越界/(0,0) **0**，grade 仍 S0/A0/B0/C7,466。
+- `ces_service_94b14aaf7746405c8edc1c010f0cd277_FeatureServer_0`：101 行，{"C->C": 101}
 

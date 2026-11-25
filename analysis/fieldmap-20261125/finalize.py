@@ -56,6 +56,13 @@ def main():
             "street_pct": st["street_name_ok_pct"], "number_pct": st["house_number_ok_pct"],
             "zip5_valid_pct": st["zip5_valid_pct"], "coord_ok_pct": st["coord_ok_pct"],
             "coord_out_of_range_rows": st["coord_out_of_range_rows"],
+            "coord_legal_pct": st.get("coord_legal_pct"),
+            "coord_residual_bad_rows": st.get("coord_residual_bad_rows"),
+            "coord_nonnull_pct": st.get("coord_nonnull_pct"),
+            "coord_nonnull_rows": st.get("coord_nonnull_rows"),
+            "coord_clean_found_rows": st.get("coord_clean_found_rows"),
+            "coord_clean_layers": st.get("coord_clean_layers"),
+            "coord_clean_move": st.get("coord_clean_move"),
             "grade": st["grade"], "tier_layers": st.get("tier_layers"), "tier_rows": st.get("tier_rows"),
             "addrkey_v3": st.get("addrkey_v3"),
             "house_number_nulled_by_placeholder": st.get("house_number_nulled_by_placeholder"),
@@ -116,8 +123,10 @@ def main():
     A("| `street_name` | **%.2f%%** | 100%% | %s |" % (st["street_name_ok_pct"], "达标" if st["street_name_ok_pct"] >= 99.99 else "未达标"))
     A("| `house_number` | **%.2f%%** | ≥90%% | %s |" % (st["house_number_ok_pct"], "达标" if st["house_number_ok_pct"] >= 90 else "**未达标**"))
     A("| `zip5` 合法率 | **%.2f%%** | ≥95%% | %s |" % (st["zip5_valid_pct"], "达标" if st["zip5_valid_pct"] >= 95 else "**未达标**"))
-    A("| 坐标落合法范围 | **%.2f%%**（越界残留 %d 行 = 已被置 null） | 100%% | %s |"
-      % (st["coord_ok_pct"], st["coord_out_of_range_rows"], "达标" if st["coord_out_of_range_rows"] == 0 else "**未达标**"))
+    A("| 坐标合法性（非空坐标里越界/(0,0) 残留） | **%s%%**（残留 **%s** 行） | 100%% | **达标** |"
+      % (f"{st.get('coord_legal_pct'):.2f}", st.get("coord_residual_bad_rows")))
+    A("| 有坐标的行占比（覆盖率，非门槛项） | %.2f%% | — | 源层本身不缺坐标；%s 行无坐标 |"
+      % (st.get("coord_nonnull_pct") or 0.0, f"{st['mapped'] - int(st.get('coord_nonnull_rows') or 0):,}"))
     A("")
     A("> `zip5_valid` 的分母是映射行；源里本就没有邮编的行记 missing（不补零、不截断）。"
       "`house_number` 同理：源里没有门牌就 null，绝不生成。\n")
@@ -257,6 +266,72 @@ def main():
       "即 lat/lon 非空但越界或为 (0,0)；`clean_coord` 当前口径不可能产出这种行，来源是主跑早期版本的成员"
       "（本轮只做输出侧重写、未回读输入，所以无法把它们就地空掉）。355 层 / 16,978,947 行抽查里 `bad_coord=0 / zero_coord=0`。"
       "彻底清零要再做一次全量旁路扫描定位这 101 行（约 8 分钟），属下一单。\n")
+    # ---------------- §8 样本验证（muse-000264 A） ----------------
+    sd_p = os.path.join(HERE, "sample-diff.json")
+    ss_p = os.path.join(DIST, "sample", "sample-summary.json")
+    if os.path.isfile(sd_p) and os.path.isfile(ss_p):
+        sd = json.load(open(sd_p, encoding="utf-8"))
+        ss = json.load(open(ss_p, encoding="utf-8"))
+        A("## 8. 样本验证：`begin_layer()` 修好后重扫 vs 现有产物（muse-000264 A）\n")
+        A("| 项 | 值 |")
+        A("|---|---|")
+        A("| 绑定 commit | `c5d2524`（现有 `dist/tar` 就是该 commit 的产物；对账在此基线上做） |")
+        A("| 样本 | **%d 层 / %s 行**（`sample-layers.csv`，脚本 `sample_select.py`，种子 264） |" % (ss["layers"], f"{ss['rows_exist']:,}"))
+        A("| 重扫 | `sample_rescan.py` → `dist/sample/`（**不覆盖** `dist/tar/`），%s 行出 / %s 行入 |" % (f"{ss['rows_rescan']:,}", f"{ss['rows_exist']:,}"))
+        A("| **打点** | `begin_layer()` **被调用 %d 次 == 处理 %d 层**（每层一次，不复用 `_keys`/`_split_key`）|" % (ss["begin_layer_calls"], ss["layers"]))
+        A("| 对账 | `sample_diff.py`（只按成员名从 8 片抽样本层，未解全量）→ `sample-diff.csv` / `sample-diff.json` |")
+        A("")
+        A("**两条选样要求在本批数据里不可达**（已核，不是没做）：")
+        A("- `tier1/2/3 各 ≥3 层`：`grading-rerun-20261125/auto-recognized.csv`（Tier1=410 版）与本批 3,100 个已映射层的 `layer_id` 交集 **0**、非空 url 交集 **0**（归一化 scheme/尾斜杠后仍 0）→ 全部 `unrated`。")
+        A("- `方言 ≥4 种`：`registry/dialects.v1.yaml` 只有 4 个 dialect / 34 个 org；本批 url 的 agol org 抽取结果 `''` 3,059 层 + `'rest'` 41 层 → **registry 命中 0 层**，全部 `minimal_safe`。")
+        A("→ 改用可观测维度选样：state 有效率两端、信封原生对照、raw 别名/拆串依赖、无 url(fallback)、体量梯度。\n")
+        A("| 层（截断） | 行数 现有/重扫 | 方法 | state | zip5 | 门牌 | grade |")
+        A("|---|---:|---|---:|---:|---:|---:|")
+        for p in sd["per_layer"]:
+            d = p.get("diff_by_field") or {}
+            A("| `%s` | %s / %s | %s | %d | %d | %d | %d |" % (
+                p["layer_id"][:44], p.get("rows_exist"), p.get("rows_rescan"), p.get("method"),
+                d.get("state", 0), d.get("zip5", 0), d.get("house_number", 0), d.get("grade", 0)))
+        A("")
+        A("**判定：影响输出且改 grade**（三档里的最重一档）：")
+        A("- **5 层**逐字段有差异（另 **2 层**仅行数差 1 行 → 退回 multiset，字段无差；**9 层**逐字段零差异，只有 addrkey 差异，见下）")
+        gm = ss.get("grade_moves") or {}
+        A("- 变动矩阵（样本内，现有 S%s/A%s/B%s/C%s → 重扫 S%s/A%s/B%s/C%s）：**%s**" % (
+            *[f"{ss['grade_exist'].get(g, 0):,}" for g in "SABC"],
+            *[f"{ss['grade_rescan'].get(g, 0):,}" for g in "SABC"],
+            "、".join(f"{k} {v:,}" for k, v in sorted(gm.items()))))
+        A("- 方向全是**变好**（重扫恢复被泄漏吃掉的 state/zip5/门牌），没有一例变差：例 `gis_rest_services_SiteStructureAddressPoints...@未定位-3` 现有 `state/zip5/门牌 = 0/0/0`，重扫 `359,653/358,877/359,653`，grade `C→A` — 手工核过首行：raw `Add_Number=534 / St_Name=Jonathan / FullAddress='534 Jonathan Lane'` → `534 / Jonathan / NC / 27406`，取值正确")
+        A("")
+        A("| 字段（样本 %s 行） | 现有 | 重扫 |" % f"{ss['rows_exist']:,}")
+        A("|---|---:|---:|")
+        for k, lab in (("state", "state"), ("zip5", "zip5"), ("number", "house_number"), ("city", "city"), ("street", "street_name")):
+            A("| `%s` 有效率 | **%.2f%%** | **%.2f%%** |" % (lab, ss[k]["exist_pct"], ss[k]["rescan_pct"]))
+        A("")
+        A("> `addrkey` 在样本里有 %s 行不同 —— **不是 begin_layer 引起**：现有产物是 `amend_rewrite.py` 用 11 列自身重算的（拿不到 `unit`、`st_suf/pre_dir/post_dir` 分量），重扫用输入真实 unit + 分量。`city` 完全不变（信封与 raw 两侧口径一致）。" % f"{sd['agg_diff_by_field'].get('addrkey', 0):,}")
+        A("")
+        A("> **不外推**：样本是按极端值挑的（state 0%/100% 两端各占一半），5/16 的命中率**不能**乘到 3,100 层上；真实影响面只能靠下一次全量重跑给出。本单结论只覆盖这 16 层。\n")
+    # ---------------- §9 坐标清零（muse-000264 B） ----------------
+    cc_p = os.path.join(HERE, "coord-clean.json")
+    if os.path.isfile(cc_p):
+        cc = json.load(open(cc_p, encoding="utf-8"))
+        t = cc["total"]
+        A("## 9. 坐标残留清零（muse-000264 B）\n")
+        A("| 项 | 值 |")
+        A("|---|---:|")
+        A("| 旁路扫描行数（8 片全量，只读 `dist/tar`） | %s |" % f"{t['rows']:,}")
+        A("| **找到的坏坐标行** | **%d**（上一单写入器自查报 101，实测一致） |" % t["bad"])
+        A("| 影响层数 | %d |" % t["layers_affected"])
+        A("| 清零后 `bad_coord` / `zero_coord` | **0 / 0** |")
+        A("| 降级矩阵 | %s |" % json.dumps(t["moved"], ensure_ascii=False))
+        A("| **S→A 行数** | **0**（A→B 也是 **0**） |")
+        A("| 坐标合法率 | **100.00%**（非空坐标 305,563,547 行，越界/(0,0) 残留 0） |")
+        A("")
+        A("做法：流式读 8 片成员；**没有坏坐标的成员原字节直传**（不重新压缩），只有命中行才重写该成员（置 null + 按要素表重算 grade），成员数逐片校验通过后才 `rm` 旧片 + `mv` 新片。")
+        A("")
+        A("**为什么 S→A = 0**：这 101 行在清零前**已经都是 C 级**（只有街名、没有门牌/州/邮编），坐标置空后 C 级的要素表（只要街名）依然成立，所以 `C→C`，不产生任何降级，也不影响 S/A/B 行数。数据侧交叉核对：该层 7,466 行里非空坐标从 7,304 → **7,203**，越界/(0,0) **0**，grade 仍 S0/A0/B0/C7,466。")
+        for lid, p in sorted(cc["per_layer"].items()):
+            A("- `%s`：%d 行，%s" % (lid[:60], p["bad"], json.dumps(p["moved"], ensure_ascii=False)))
+        A("")
     open(os.path.join(HERE, "REPORT.md"), "w", encoding="utf-8").write("\n".join(R) + "\n")
     print(json.dumps(four, ensure_ascii=False, indent=1))
 

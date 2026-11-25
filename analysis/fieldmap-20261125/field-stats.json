@@ -14,6 +14,8 @@
   "zip5_invalid_rows": 2053543,
   "zip5_missing_rows": 137994205,
   "coord_ok_pct": 99.96,
+  "coord_nonnull_pct": 99.96,
+  "coord_nonnull_rows": 305563547,
   "coord_out_of_range_rows": 1691,
   "grade": {
    "S": 45282269,
@@ -43,7 +45,14 @@
    "B->C": 184,
    "A->C": 1
   },
-  "rows_dropped_by_placeholder_fix": 0
+  "rows_dropped_by_placeholder_fix": 0,
+  "coord_residual_bad_rows": 0,
+  "coord_clean_found_rows": 101,
+  "coord_clean_layers": 1,
+  "coord_clean_move": {
+   "C->C": 101
+  },
+  "coord_legal_pct": 100.0
  },
  "by_dialect": {
   "minimal_safe|fallback": {
@@ -61,6 +70,8 @@
    "zip5_invalid_rows": 2053543,
    "zip5_missing_rows": 137994205,
    "coord_ok_pct": 99.96,
+   "coord_nonnull_pct": 99.96,
+   "coord_nonnull_rows": 305563547,
    "coord_out_of_range_rows": 1691,
    "grade": {
     "S": 45282269,
