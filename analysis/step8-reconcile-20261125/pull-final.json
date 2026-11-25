@@ -1,0 +1,18 @@
+{
+ "layers_in_manifest": 3396,
+ "by_result": {
+  "ok": 3381,
+  "ok_index_stale": 14,
+  "checkpoint_unit_rows_missing": 1
+ },
+ "ok_layers": 3395,
+ "failed_layers": 0,
+ "rowcheck_layers": 337,
+ "rowcheck_pass": 335,
+ "rowcheck_fail": 2,
+ "bytes_checked": 18,
+ "bytes_ok": 16,
+ "index_stale_layers": 14,
+ "checkpoint_unit_rows_missing": 1,
+ "total_bytes": 29637390199
+}

@@ -1,0 +1,720 @@
+{
+ "summary": {
+  "at": "2026-11-25T11:33:16Z",
+  "denominator": 3550,
+  "already_sampled_before": 427,
+  "added": 0,
+  "extra_samples_total": 88,
+  "extra_by_verdict": {
+   "pass": 88
+  },
+  "coverage_after": 0.1203,
+  "wall_s": 0.2
+ },
+ "records": [
+  {
+   "layer": "fHyvr_arcgis_rest_services_AD_address_points_FeatureServer_0",
+   "parts": 26,
+   "rows_counted": 1254346,
+   "rows_declared": 1254346,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "cgis_rest_services_Addresses_in_service_area_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 32145,
+   "rows_declared": 32145,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "lle_il_us_arcgis_rest_services_GTX_YourPlaceLite_MapServer_0",
+   "parts": 2,
+   "rows_counted": 53113,
+   "rows_declared": 53113,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "services_KaneCounty_AddressPoints_SouthElgin_FeatureServer_2",
+   "parts": 1,
+   "rows_counted": 10667,
+   "rows_declared": 10667,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "_rest_services_Goodlettsville_Address_Points_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 6963,
+   "rows_declared": 6963,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "0_arcgis_rest_services_Munis_Point_Addresses_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 16489,
+   "rows_declared": 16489,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "rest_services_South_Kingstown_Address_Points_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 13576,
+   "rows_declared": 13576,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "gis_rest_services_TownAddressSearchandLabels_FeatureServer_1",
+   "parts": 1,
+   "rows_counted": 5800,
+   "rows_declared": 5800,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "UBU1_arcgis_rest_services_Address_Points_OLD_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 49506,
+   "rows_declared": 49506,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "ElDOMEad_arcgis_rest_services_Ohio_AddressFZ_FeatureServer_1",
+   "parts": 1,
+   "rows_counted": 3153,
+   "rows_declared": 3153,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "pBdd_arcgis_rest_services_Address_Points_Hub_FeatureServer_0",
+   "parts": 2,
+   "rows_counted": 60492,
+   "rows_declared": 60492,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "ervices_CJH_OntarioColleges_GeocodeAddresses_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 25,
+   "rows_declared": 25,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "Hunxj6eq_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 19812,
+   "rows_declared": 19812,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "azssuvI82_arcgis_rest_services_AddressPoints_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 33777,
+   "rows_declared": 33777,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "xP11I9o3OS7Krz9_arcgis_rest_services_Address_FeatureServer_0",
+   "parts": 6,
+   "rows_counted": 240508,
+   "rows_declared": 240508,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "lle_ca_arcgis_rest_services_Location_SiteAddress_MapServer_0",
+   "parts": 1,
+   "rows_counted": 12040,
+   "rows_declared": 12040,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "s_survey123_e23b26f4146349958e1cd3b9ce01b928_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 77,
+   "rows_declared": 77,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "42byMw3LmPYCN_arcgis_rest_services_Addresses_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 29253,
+   "rows_declared": 29253,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "ver_rest_services_Hosted_Address_Points_view_FeatureServer_0",
+   "parts": 3,
+   "rows_counted": 115298,
+   "rows_declared": 115298,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "ynHDNPRX7w_arcgis_rest_services_Raleigh_SAMB_FeatureServer_8",
+   "parts": 1,
+   "rows_counted": 45321,
+   "rows_declared": 45321,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "al_911_E911_Fees_Collected_2017_to_2025_WFL1_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 56,
+   "rows_declared": 56,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "cgis_rest_services_AddressPoints_public_view_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 37707,
+   "rows_declared": 37707,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "zoqoB28p9t3a7_arcgis_rest_services_Addresses_FeatureServer_0",
+   "parts": 2,
+   "rows_counted": 55550,
+   "rows_declared": 55550,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "9Xs_arcgis_rest_services_AddressPts_OwensTwp_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 180,
+   "rows_declared": 180,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "1p_arcgis_rest_services_ADDRESS__pts_CoBarea_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 34327,
+   "rows_declared": 34327,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "_rest_services_Address_Points_Wake_County_NC_FeatureServer_0",
+   "parts": 9,
+   "rows_counted": 429008,
+   "rows_declared": 429008,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "wBs_arcgis_rest_services_Address_Pnts_2022_FeatureServer_143",
+   "parts": 1,
+   "rows_counted": 7533,
+   "rows_declared": 7533,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "arcgis_rest_services_Decatur_Address_Points_FeatureServer_12",
+   "parts": 1,
+   "rows_counted": 26714,
+   "rows_declared": 26714,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "eatures_to_Great_Brook_Valley_Address_Points_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 559,
+   "rows_declared": 559,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "arcgis_rest_services_Address_Points_09292026_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 4043,
+   "rows_declared": 4043,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "st_services_Address_Points_Public_Evacuation_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 6596,
+   "rows_declared": 6596,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "TBM5OU_arcgis_rest_services_Addresses_County_FeatureServer_0",
+   "parts": 2,
+   "rows_counted": 68269,
+   "rows_declared": 68269,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "wdHlO_arcgis_rest_services_FullAddressPoints_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 40256,
+   "rows_declared": 40256,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "9yF1a7pM_arcgis_rest_services_Addresses_FULL_FeatureServer_1",
+   "parts": 2,
+   "rows_counted": 68491,
+   "rows_declared": 68491,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "_rest_services_CityCounty_addresspoints_view_FeatureServer_0",
+   "parts": 2,
+   "rows_counted": 98399,
+   "rows_declared": 98399,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "arcgis_rest_services_Address_Pnts_OpenForms_FeatureServer_28",
+   "parts": 1,
+   "rows_counted": 43271,
+   "rows_declared": 43271,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "j3sLGHNL_arcgis_rest_services_Address_Points_FeatureServer_1",
+   "parts": 2,
+   "rows_counted": 66406,
+   "rows_declared": 66406,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "est_services_Address_Pnts_Parcel_2023_view_FeatureServer_319",
+   "parts": 1,
+   "rows_counted": 3259,
+   "rows_declared": 3259,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "cgis_rest_services_Utica_BOA_Interactive_Map_FeatureServer_3",
+   "parts": 1,
+   "rows_counted": 19832,
+   "rows_declared": 19832,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "vf_arcgis_rest_services_Publix_Address_Point_FeatureServer_3",
+   "parts": 1,
+   "rows_counted": 1,
+   "rows_declared": 1,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "_rest_services_Clay_County_Address_Points_v2_FeatureServer_0",
+   "parts": 2,
+   "rows_counted": 90217,
+   "rows_declared": 90217,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "fbh5z_arcgis_rest_services_Code_Address_Data_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 22853,
+   "rows_declared": 22853,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "ff35goFar_arcgis_rest_services_Address_Point_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 5425,
+   "rows_declared": 5425,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "services_VillageAddressPoint_PublicViewLayer_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 1617,
+   "rows_declared": 1617,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "a7sFJ5_arcgis_rest_services_Address_Location_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 42383,
+   "rows_declared": 42383,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "rvices_Ruby_Ranch_Addresses__Parcels___Roads_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 72,
+   "rows_declared": 72,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "t_services_YoloCounty_OpenData_AddressPoints_FeatureServer_3",
+   "parts": 3,
+   "rows_counted": 102821,
+   "rows_declared": 102821,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "cgis_rest_services_York_Address_Alias_Points_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 15901,
+   "rows_declared": 15901,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "is_rest_services_King_Co_Address_Points_View_FeatureServer_0",
+   "parts": 14,
+   "rows_counted": 667280,
+   "rows_declared": 667280,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "1_arcgis_rest_services_WV_CAI_Locations_IPv1_FeatureServer_7",
+   "parts": 1,
+   "rows_counted": 54,
+   "rows_declared": 54,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "cgis_rest_services_SiteStructureAddressPoint_FeatureServer_0@未定位-3",
+   "parts": 1,
+   "rows_counted": 15545,
+   "rows_declared": 15545,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "CK8921_arcgis_rest_services_AddressPoints_IW_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 4995,
+   "rows_declared": 4995,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "w7mPQj_arcgis_rest_services_AddressPoints_VS_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 13137,
+   "rows_declared": 13137,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "Bw887SUK_arcgis_rest_services_Mailing_Labels_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 473,
+   "rows_declared": 473,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "kQCWQM5KB8_arcgis_rest_services_E911_Newport_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 10366,
+   "rows_declared": 10366,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "gis_rest_services_NovatoAddressPoints_033026_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 27111,
+   "rows_declared": 27111,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "nhsUu_arcgis_rest_services_Canmore_Addresses_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 15005,
+   "rows_declared": 15005,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "HWs_arcgis_rest_services_BrazosAddressPoints_FeatureServer_0",
+   "parts": 2,
+   "rows_counted": 67262,
+   "rows_declared": 67262,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "yWb5_arcgis_rest_services_Historic_Addresses_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 1283,
+   "rows_declared": 1283,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "kx_chatham_county_georgia_address_points_SHP_FeatureServer_0",
+   "parts": 4,
+   "rows_counted": 147670,
+   "rows_declared": 147670,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "ONZ3C_arcgis_rest_services_Site_Address_View_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 21898,
+   "rows_declared": 21898,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "_arcgis_rest_services_Routt_County_Addresses_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 8495,
+   "rows_declared": 8495,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "ices_Find_Locations_in_Address_Points_filt_2_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 41800,
+   "rows_declared": 41800,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "jlqdhhFKP9_arcgis_rest_services_Address_view_FeatureServer_0",
+   "parts": 2,
+   "rows_counted": 92396,
+   "rows_declared": 92396,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "YJiVZwF_arcgis_rest_services_Address_Parcels_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 41850,
+   "rows_declared": 41850,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "toca_gov_server_rest_services_Address_Points_FeatureServer_2",
+   "parts": 1,
+   "rows_counted": 16224,
+   "rows_declared": 16224,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "jia0CW_arcgis_rest_services_Address_Points_FeatureServer_340",
+   "parts": 1,
+   "rows_counted": 37635,
+   "rows_declared": 37635,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "2ya6FnSK_arcgis_rest_services_Addresses_Test_FeatureServer_1",
+   "parts": 2,
+   "rows_counted": 56795,
+   "rows_declared": 56795,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "v_server_pub_rest_services_Basemap_AddressLabels_MapServer_0",
+   "parts": 4,
+   "rows_counted": 127675,
+   "rows_declared": 127675,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "lg_arcgis_rest_services_KAddress_Points_view_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 228,
+   "rows_declared": 228,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "s_rest_services_PHU_CK_SecondaryZone_Address_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 4614,
+   "rows_declared": 4614,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "YNa7sFJ5_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 39359,
+   "rows_declared": 39359,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "cGGUWJh_arcgis_rest_services_WBT_SiteAddress_FeatureServer_1",
+   "parts": 1,
+   "rows_counted": 27569,
+   "rows_declared": 27569,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "r8_arcgis_rest_services_AddressPoints_Active_FeatureServer_0",
+   "parts": 4,
+   "rows_counted": 134645,
+   "rows_declared": 134645,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "7ey_arcgis_rest_services_Addresses_Parcel_00_FeatureServer_6",
+   "parts": 1,
+   "rows_counted": 46764,
+   "rows_declared": 46764,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "I6Qk_arcgis_rest_services_Address_Point_Test_FeatureServer_1",
+   "parts": 1,
+   "rows_counted": 11442,
+   "rows_declared": 11442,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "HNsfQqK_arcgis_rest_services_Civic_Addresses_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 35121,
+   "rows_declared": 35121,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "s_org_server_rest_services_JCAdmin_SITUS_Static__MapServer_0",
+   "parts": 1,
+   "rows_counted": 43853,
+   "rows_declared": 43853,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "rtUP3FpWpuez_arcgis_rest_services_Addresses_FeatureServer_55",
+   "parts": 1,
+   "rows_counted": 2860,
+   "rows_declared": 2860,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "hOza2U_arcgis_rest_services_Civic_Addresses_FeatureServer_16",
+   "parts": 1,
+   "rows_counted": 25111,
+   "rows_declared": 25111,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "ces_Master_Address_Points__Public_View_Layer_FeatureServer_3",
+   "parts": 1,
+   "rows_counted": 1959,
+   "rows_declared": 1959,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "s_rest_services_AOI_E911_Commercial_Main_St_FeatureServer_83",
+   "parts": 1,
+   "rows_counted": 6140,
+   "rows_declared": 6140,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "VCGI_OPENDATA_Emergency_HYDRANTS_point_SP_v1_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 14960,
+   "rows_declared": 14960,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "tEo7N6_arcgis_rest_services_banner_addresses_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 10730,
+   "rows_declared": 10730,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "srDo0QMPlK9CkZD_arcgis_rest_services_Address_FeatureServer_0",
+   "parts": 2,
+   "rows_counted": 75526,
+   "rows_declared": 75526,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "9_arcgis_rest_services_Address_Points_Public_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 1676,
+   "rows_declared": 1676,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "vices_EnerGOV_Parcel_Addresses_Service_Layer_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 4288,
+   "rows_declared": 4288,
+   "verdict": "pass",
+   "note": ""
+  },
+  {
+   "layer": "kiBaYsUIhK1wEpz_arcgis_rest_services_Address_FeatureServer_0",
+   "parts": 1,
+   "rows_counted": 7268,
+   "rows_declared": 7268,
+   "verdict": "pass",
+   "note": ""
+  }
+ ]
+}

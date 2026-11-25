@@ -1,0 +1,13 @@
+{
+ "reconcile_rows": 3709,
+ "class_counts": {
+  "local_ok_payload_present": 3550,
+  "local_ok_readable": 105,
+  "local_absent_upstream_no_assets": 54
+ },
+ "residual_layers": 54,
+ "b_table_rows": 54,
+ "only_in_residual": [],
+ "only_in_b_table": [],
+ "join_ok": true
+}

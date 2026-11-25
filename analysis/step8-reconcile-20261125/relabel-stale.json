@@ -1,0 +1,8 @@
+{
+ "at": "2026-11-25T11:30:16Z",
+ "candidates": 15,
+ "relabeled": {
+  "ok_index_stale": 14,
+  "checkpoint_unit_rows_missing": 1
+ }
+}

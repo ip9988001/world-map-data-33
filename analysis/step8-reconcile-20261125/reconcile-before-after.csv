@@ -1,0 +1,5 @@
+reconcile_class,before,after,net,move_list
+local_absent_assets_exist_not_downloaded,3550,0,-3550,reconcile-moves.csv
+local_absent_upstream_no_assets,54,54,0,
+local_ok_payload_present,0,3550,3550,reconcile-moves.csv
+local_ok_readable,105,105,0,
