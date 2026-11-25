@@ -294,7 +294,12 @@ def main():
                 d.get("state", 0), d.get("zip5", 0), d.get("house_number", 0), d.get("grade", 0)))
         A("")
         A("**判定：影响输出且改 grade**（三档里的最重一档）：")
-        A("- **5 层**逐字段有差异（另 **2 层**仅行数差 1 行 → 退回 multiset，字段无差；**9 层**逐字段零差异，只有 addrkey 差异，见下）")
+        npos = sum(1 for x in sd["per_layer"] if x.get("method") == "positional" and (x.get("diff_rows") or 0) > 0)
+        nmul = sum(1 for x in sd["per_layer"] if x.get("method") == "multiset" and (x.get("diff_rows") or 0) > 0)
+        nzero = sum(1 for x in sd["per_layer"] if not (x.get("diff_rows") or 0))
+        A("- **%d 层位置对齐下逐字段有差异**；**%d 层行数差 1 行 → 退回 multiset（键=除 addrkey 外的字段）**"
+          "（`...AddressTest` 成片 zip5 差异 75,159/75,160；`...Address_Points...f9MkUwD4` 仅 ~34 行差）；"
+          "**%d 层零差异**（只有 addrkey 差异，见下）" % (npos, nmul, nzero))
         gm = ss.get("grade_moves") or {}
         A("- 变动矩阵（样本内，现有 S%s/A%s/B%s/C%s → 重扫 S%s/A%s/B%s/C%s）：**%s**" % (
             *[f"{ss['grade_exist'].get(g, 0):,}" for g in "SABC"],

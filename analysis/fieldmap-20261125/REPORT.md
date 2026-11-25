@@ -191,7 +191,7 @@ python3 analysis/fieldmap-20261125/finalize.py
 | `z6SRPFWJ_arcgis_rest_services_SiteAddresses_` | 20201 / 20201 | positional | 0 | 0 | 0 | 0 |
 
 **判定：影响输出且改 grade**（三档里的最重一档）：
-- **5 层**逐字段有差异（另 **2 层**仅行数差 1 行 → 退回 multiset，字段无差；**9 层**逐字段零差异，只有 addrkey 差异，见下）
+- **5 层位置对齐下逐字段有差异**；**2 层行数差 1 行 → 退回 multiset（键=除 addrkey 外的字段）**（`...AddressTest` 成片 zip5 差异 75,159/75,160；`...Address_Points...f9MkUwD4` 仅 ~34 行差）；**9 层零差异**（只有 addrkey 差异，见下）
 - 变动矩阵（样本内，现有 S0/A72,665/B47,016/C1,498,879 → 重扫 S444,798/A876,239/B972/C296,551）：**B->A 46,953、C->A 756,622、C->B 909、C->S 444,798**
 - 方向全是**变好**（重扫恢复被泄漏吃掉的 state/zip5/门牌），没有一例变差：例 `gis_rest_services_SiteStructureAddressPoints...@未定位-3` 现有 `state/zip5/门牌 = 0/0/0`，重扫 `359,653/358,877/359,653`，grade `C→A` — 手工核过首行：raw `Add_Number=534 / St_Name=Jonathan / FullAddress='534 Jonathan Lane'` → `534 / Jonathan / NC / 27406`，取值正确
 

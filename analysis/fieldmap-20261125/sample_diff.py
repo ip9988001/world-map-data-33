@@ -74,20 +74,28 @@ def cmp_layer(lid):
                                             "rescan": mask(b.get(f)) if f != "latitude" else b.get(f)})
     else:
         res["method"] = "multiset"
-        ca = collections.Counter(tuple(a.get(f) for f in FIELDS) for a in A)
-        cb = collections.Counter(tuple(b.get(f) for f in FIELDS) for b in B)
+        # multiset 用「除 addrkey 外的字段」做键：addrkey 差异是已知偏差（amend 用 11 列重算、无 unit/分量），
+        # 放进键里会让每一行都算不同行，掩盖真正的行级差。
+        KF = [f for f in FIELDS if f != "addrkey"]
+        ca = collections.Counter(tuple(a.get(f) for f in KF) for a in A)
+        cb = collections.Counter(tuple(b.get(f) for f in KF) for b in B)
         only_a = ca - cb
         only_b = cb - ca
         diff["rows_only_in_exist"] = sum(only_a.values())
         diff["rows_only_in_rescan"] = sum(only_b.values())
         for tup, cnt in list(only_a.items())[:3]:
-            examples["only_exist"].append({"n": cnt, "row": {f: mask(v) for f, v in zip(FIELDS, tup)}})
+            examples["only_exist"].append({"n": cnt, "row": {f: mask(v) for f, v in zip(KF, tup)}})
         for tup, cnt in list(only_b.items())[:3]:
-            examples["only_rescan"].append({"n": cnt, "row": {f: mask(v) for f, v in zip(FIELDS, tup)}})
+            examples["only_rescan"].append({"n": cnt, "row": {f: mask(v) for f, v in zip(KF, tup)}})
     res["diff_by_field"] = {f: diff.get(f, 0) for f in FIELDS}
     res["diff_by_field"]["rows_only_in_exist"] = diff.get("rows_only_in_exist", 0)
     res["diff_by_field"]["rows_only_in_rescan"] = diff.get("rows_only_in_rescan", 0)
-    res["diff_rows"] = max(diff.values()) if diff else 0
+    if res.get("method") == "multiset":
+        res["diff_rows"] = diff.get("rows_only_in_exist", 0) + diff.get("rows_only_in_rescan", 0)
+    else:
+        # diff_rows 只算「地址值/grade」层面：addrkey 差异是已知偏差，单独列在 diff_addrkey
+        res["diff_rows"] = max([v for k, v in diff.items() if k not in
+                                ("rows_only_in_exist", "rows_only_in_rescan", "addrkey")] or [0])
     res["examples"] = {k: v for k, v in examples.items() if v}
     return res
 
@@ -127,6 +135,7 @@ def main():
             agg[k] += v
     json.dump({"layers": len(res), "per_layer": res, "agg_diff_by_field": dict(agg),
                "fields_compared": FIELDS,
+               "multiset_key_fields": [f for f in FIELDS if f != "addrkey"],
                "note": "addrkey 差异来自已知偏差：现有产物由 amend_rewrite.py 用 11 列自身重算（无 unit、无 "
                        "st_suf/pre_dir/post_dir 分量），重扫用输入真实 unit + 分量；不是 begin_layer 引起"},
               open(os.path.join(HERE, "sample-diff.json"), "w"), ensure_ascii=False, indent=1)
