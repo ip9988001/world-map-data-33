@@ -1,0 +1,3 @@
+layer_id,url,n_fields_patterns,fields_patterns,n_fields_remote,remote_http_meta,remote_sampled_n,remote_addr_core_hit,remote_usable,sample_rows,nonempty_values,verdict
+MapServer/0,https://mdgeodata.md.gov/imap/rest/services/Transportation/MD_RoadCenterlinesComprehensive/MapServer/0,3,RAMP_NUMBER|EXIT_NUMBER|MP_SUFFIX,19,200,20,11000,no_zip,50,102,采集漏字段：远端 ?f=json 报 n_fields=19，patterns 只看到 3 个
+MapServer/0,https://mdgeodata.md.gov/imap/rest/services/Transportation/MD_RoadCenterlines/MapServer/0,3,MP_SUFFIX|RAMP_NUMBER|EXIT_NUMBER,19,200,20,11000,no_zip,50,102,采集漏字段：远端 ?f=json 报 n_fields=19，patterns 只看到 3 个
