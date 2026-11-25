@@ -99,7 +99,11 @@ def main():
         recs.append({**r, "tier_strict": t00, "tier_e3": t10, "tier_e7": t01, "tier_both": t11,
                      "tier": final, "bucket": bucket_of(t00, t10, t01) if final == "tier1" else "",
                      "e3_relax_state": e3["E3"], "e7_relax_state": e7s["E7"],
-                     "move": mv, "verdict": mv, "reason_evidence": why,
+                     "move": mv, "verdict": mv,
+                     # 证据列：保留 strict 阶段的「可验分母剔除」标记（只加标记，不改档位）
+                     "reason_evidence": ",".join(x for x in (why, (
+                         f"excluded_from_verifiable_denominator: {r['denominator_excluded']}"
+                         if r.get("denominator_excluded") else "")) if x),
                      "reason_detail": r.get("reason_detail", ""),
                      "relax_detail": f"E3: {det['E3']} | E7: {det['E7']}" if (det["E3"] or det["E7"]) else ""})
 

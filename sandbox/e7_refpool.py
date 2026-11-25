@@ -23,7 +23,8 @@ NUM_RE = re.compile(r"[^0-9A-Za-z-]")
 
 def thresholds():
     doc = yaml.safe_load(open(THRESHOLDS, encoding="utf-8"))
-    return ({k: v["value"] for k, v in doc["e7"].items()},
+    # e7 区段里还有 denominator_excluded 这种「非阈值子段」，取 value 时跳过（不把层数当阈值用）
+    return ({k: v["value"] for k, v in doc["e7"].items() if isinstance(v, dict) and "value" in v},
             {k: v["value"] for k, v in doc["e7_refpool"].items()})
 
 

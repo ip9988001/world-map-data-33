@@ -1,0 +1,60 @@
+{
+ "tiers": {
+  "tier3": 13649,
+  "tier2": 3109,
+  "tier1": 410
+ },
+ "tier_rows": {
+  "tier1": 27305991,
+  "tier2": 135476441,
+  "tier3": 821936932
+ },
+ "verifiable_denominator": 16970,
+ "tier1_share_of_verifiable": 2.416,
+ "checks": {
+  "layers_total": 17168,
+  "layers_equal_17168": true,
+  "tier_sum_layers": 17168,
+  "tier_sum_equals_total": true,
+  "rows_total": 984719364,
+  "declared_rows": 984719364,
+  "rows_equals_declared": true,
+  "excluded_rows": 198,
+  "excluded_expected": 198,
+  "excluded_equals_total": true,
+  "excluded_by_class": {
+   "P6": 90,
+   "P11": 9,
+   "P9": 66,
+   "P8": 22,
+   "P12": 11
+  },
+  "excluded_by_class_matches_yaml": true,
+  "excluded_all_tagged": true,
+  "excluded_note_verbatim": true,
+  "excluded_tier1": 2,
+  "verifiable_denominator": 16970,
+  "e7_pairs": 16742,
+  "e7_delta_kind": {
+   "same": 8444,
+   "gained-key": 8186,
+   "placeholder-skip": 112
+  },
+  "e7_lost_key": 0,
+  "e7_delta_kind_matches_json": true,
+  "e7_delta_kind_sum_equals_pairs": true,
+  "e7_addr_rows_before": 98251,
+  "e7_addr_rows_after": 343157,
+  "baseline_tier1": 176,
+  "new_tier1": 410,
+  "up_layers": 235,
+  "down_layers": 1,
+  "net": 234,
+  "up_and_excluded": 2,
+  "down_and_excluded": 0,
+  "baseline_tier1_excluded": 0,
+  "merged_tier1_verifiable": 408,
+  "cancellation_identity": true
+ },
+ "all_checks_pass": true
+}

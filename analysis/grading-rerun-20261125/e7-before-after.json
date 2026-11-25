@@ -1,0 +1,23 @@
+{
+ "urls": 16742,
+ "delta_kind": {
+  "same": 8444,
+  "gained-key": 8186,
+  "placeholder-skip": 112
+ },
+ "e7_flips": {
+  "unknown->unknown": 13263,
+  "unknown->clear": 2311,
+  "clear->clear": 779,
+  "unknown->hit": 327,
+  "hit->hit": 51,
+  "clear->hit": 4,
+  "hit->unknown": 3,
+  "hit->clear": 2,
+  "clear->unknown": 2
+ },
+ "addr_rows_before": 98251,
+ "addr_rows_after": 343157,
+ "before_csv": "analysis/auto-spatial-rerun-20261125/coord-evidence.csv",
+ "after_csv": "analysis/grading-rerun-20261125/coord-evidence.csv"
+}

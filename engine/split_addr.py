@@ -11,12 +11,24 @@
 3. `split_city_tail(raw)` —— P3「门牌+街名+城市+州+ZIP 全拼一格」。尾部锚定 ZIP5(+4)、州缩写，
    街名以「街道类型词」为右锚点切；找不到类型词锚点就降 confidence 并给 reason。
 
-4. `addr_key(af, roles, state)` —— 与 `sandbox/coord_evidence.py:addr_key()` **同契约**（返回
+4. `addr_key(af, roles, state)` —— 与旧 `sandbox/coord_evidence.py:addr_key()` **同契约**（返回
    `state|number|street|zip` 字符串，构不出返回空串），差别只在于：占位缺失值一律跳过，
-   且**不许覆盖已有真值**。③ 只在 engine 侧落地；`sandbox/` 的副本要由 ④ 换过来（本单边界外）。
+   且**不许覆盖已有真值**。
+
+5. `addr_key_split(af, roles, state)` —— ④ 新增：先走 `addr_key`；构不出时把「门牌+街名拼一格」
+   （组合拳① P1 / P3 形态）的**真实原值**切分后建键。仍然取原值，不猜不补，切不出就返回空串。
+
+6. `roles_of(registry_path, engine_dir)` —— 角色表的**唯一装载口**：`registry/dialects.v1.yaml`
+   （分档真源，含组合拳② 合并进来的 27 条别名）∪ `engine/dialects/*.yaml`（引擎方言表）的
+   number/street/zip 字段名。两个数据源在内存里合成一张表，避免 registry / engine 各维护一份
+   而口径漂移。
+
+IO 只有第 6 条一处（读两个 YAML），1–5 全是纯函数、不联网。
 """
 from __future__ import annotations
 
+import glob as _glob
+import os as _os
 import re
 
 # ---------------------------------------------------------------- 占位缺失值
@@ -295,6 +307,7 @@ def addr_key(af, roles, state):
 _SUFFIX = {"st": "street", "ave": "avenue", "av": "avenue", "rd": "road", "blvd": "boulevard",
            "dr": "drive", "ln": "lane", "ct": "court", "pl": "place", "hwy": "highway",
            "pkwy": "parkway", "cir": "circle", "ter": "terrace", "trl": "trail"}
+SUFFIX = _SUFFIX          # 对外别名（sandbox/e7_refpool.py 用同一张表做街名归一）
 
 
 def _norm(f):
@@ -304,3 +317,81 @@ def _norm(f):
 def _street_norm(s):
     w = [_SUFFIX.get(x, x) for x in re.findall(r"[a-z0-9]+", (s or "").lower())]
     return "".join(w)
+
+
+street_norm = _street_norm      # 对外别名（与 sandbox 旧名一致，e7_refpool.py 复用）
+
+
+# ---------------------------------------------------------------- ① 拆串建键（P1 形态）
+SPLIT_MIN_CONFIDENCE = 0.95   # 只要「街名带街道类型词 / 以方向词开头」那一档（0.85 那档街名可能只有一个词）
+ROLE_FIELDS = ("number", "street", "zip")
+
+
+def addr_key_split(af, roles, state):
+    """`addr_key` 的 P1 形态扩展：字段级构不出键时，把拼在一格的真实地址串切开再试。
+
+    只试**字符串型**、以数字开头且含字母的字段（纯数字/编号串切不出街名）；占位值跳过。
+    **不按角色跳过 number 字段**：P1 的典型列 `SITE_ADDR` 在注册表里就是 number 别名，
+    而它装的整串「1049 61ST ST」正是要切的对象。切分必须 `reason == "ok"`、
+    `confidence >= 0.95`、街名 ≥2 个词 —— 拿不到就返回空串，不猜不补。
+    """
+    k = addr_key(af, roles, state)
+    if k:
+        return k
+    z = ""
+    for f, v in af.items():
+        if is_placeholder(v) or not isinstance(v, str):
+            continue
+        if not z and "zip" in (roles.get(_norm(f)) or ()):
+            m = re.search(r"\b(\d{5})\b", v)
+            z = m.group(1) if m else ""
+    for f, v in af.items():
+        if is_placeholder(v) or not isinstance(v, str):
+            continue
+        if "zip" in (roles.get(_norm(f)) or ()):     # 邮编字段不可能是「门牌+街名」整串
+            continue
+        if not re.search(r"[A-Za-z]", v) or not re.match(r"^\s*\d", v):
+            continue
+        sp = split_number_street(v)
+        if sp["reason"] != "ok" or sp["confidence"] < SPLIT_MIN_CONFIDENCE:
+            continue
+        if len(_tokens(sp["street_name"])) < 2:
+            continue
+        n = re.sub(r"[^0-9A-Za-z-]", "", sp["house_number"])
+        if n and sp["street_name"]:
+            return f"{state}|{n}|{_street_norm(sp['street_name'])}|{z}"
+    return ""
+
+
+def roles_of(registry_path=None, engine_dir=None):
+    """角色表（归一字段名 → {number,street,zip}）装载：registry ∪ engine 方言表。
+
+    :param registry_path: 默认 `<repo>/registry/dialects.v1.yaml`（分档唯一真源，只读）
+    :param engine_dir: 默认 `<repo>/engine/dialects`（引擎方言表，编号/街名/邮编字段）
+    """
+    import yaml
+
+    root = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))
+    registry_path = registry_path or _os.path.join(root, "registry", "dialects.v1.yaml")
+    engine_dir = engine_dir or _os.path.join(root, "engine", "dialects")
+
+    out = {}
+
+    def add(name, role):
+        out.setdefault(_norm(name), set()).add(role)
+
+    if _os.path.isfile(registry_path):
+        doc = yaml.safe_load(open(registry_path, encoding="utf-8")) or {}
+        for d in doc.get("dialects") or []:
+            tpl = d.get("template") or {}
+            for role in ROLE_FIELDS:
+                for a in tpl.get(role + "_aliases") or []:
+                    add(a, role)
+    for p in sorted(_glob.glob(_os.path.join(engine_dir, "*.yaml"))):
+        doc = yaml.safe_load(open(p, encoding="utf-8")) or {}
+        for d in doc.get("dialects") or []:
+            fields = d.get("fields") or {}
+            for role in ROLE_FIELDS:
+                for a in fields.get(role) or []:
+                    add(a, role)
+    return out
