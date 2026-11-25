@@ -126,17 +126,20 @@ dialects:
   # 来源：analysis/combo-step2-20261125/（patterns.csv 的 P7 321 层 → 逐层行级共同成立校验 → 去重 → 逐别名回归筛查）
   # 说明：这批层是任意 ArcGIS 图层，不属于任何源族；本条目只作「别名来源」，不带几何/精度声明。
   # 边界 1（语义）：只收明确是门牌列 / 街名列的字段名；OWN_*/MAIL_*/整串地址列不进（见 pending-uncertain.csv）。
-  # 边界 2（回归）：逐个别名在 coord-samples 695,706 条非 P7 行上单测，旧键被改 / 被丢的一律剔除
-  #                （27 个候选里 8 个因此剔除，含增益最大的 HouseNumber —— 见 report.md §5）。
-  # 生效范围：被赋 dialect_id=p7-alias-ext-v1 时由 inlet.map_row 使用；
-  #           sandbox/coord_evidence.py:roles_of() 目前只读 registry，要让 E7 吃到需另批（本轮未改代码）。
+  # 边界 2（回归）：逐别名在 coord-samples 695,706 条非 P7 行上单测 —— 27 条候选零键丢失；
+  #                Muse 2026-11-25 拍板（b 路）：registry 是分档唯一真源，旧键「同语义更完整列名替换」
+  #                按 improved/questionable 逐层审计（见 analysis/combo-step2-close-20261125/old-key-changes.csv）。
+  # 生效范围：本条目是「别名来源」，由 analysis/dialect-20261124/gen_registry.py 合并进
+  #           registry/dialects.v1.yaml（id=alias-ext-p7-v1），E7 的 roles_of() 从 registry 取并集即吃到。
+  #           27 条：19 门牌 + 8 街名（去重后恰好 27，两边逐条一致）。
   - id: p7-alias-ext-v1
     family: alias_extension
     adapter: none                  # 只提供别名，不做适配
     precision: unknown
     geom_type: unknown
     fields:
-      number: [ADDRNUM_1, ADDR_NUMB, ADDR_STR_NBR, ANUMBER, Addr_Number, GM_HSE_NUM, HOUSE_NUMB,
-               HSE_NUMB, PROPERTYHOUSENUM2, SA_House_N, STREETNUMBER1, addr_numbe]
+      number: [ADDRNUM_1, ADDR_NUMB, ADDR_STR_NBR, ANUMBER, Addr_Number, AddressNum, GM_HSE_NUM,
+               HOUSE_NO, HOUSE_NUMB, HSE_NUM, HSE_NUMB, House, HouseNumbe, HouseNumber,
+               PROPERTYHOUSENUM2, SA_House_N, STREETNO, STREETNUMBER1, addr_numbe]   # 19
       street: [CC_ST_NAME, Loc_Street, PWA_FULLSTREET, SA_Street_, STREETALL, ST_NAME_COMPLETE,
-               Street_Road_Name]
+               Street_Road_Name, situs_street]                                       # 8

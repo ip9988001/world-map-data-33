@@ -388,6 +388,78 @@ dialects:
   - gc-009
   - gc-010
   notes: 模板签名 110111（number|street|unit|place|state|zip 依次）; 覆盖 provider 38 个; 样值层 51 个
+- id: p7-alias-ext-v1
+  provider:
+    kind: alias_extension
+    orgs: []
+    orgs_total: 0
+    note: 别名扩展（非采集源族）：engine/dialects/sources.v1.yaml:p7-alias-ext-v1；由 P7 组 321 层的真实列名去重而来
+  template:
+    number_aliases:
+    - ADDRNUM_1
+    - ADDR_NUMB
+    - ADDR_STR_NBR
+    - ANUMBER
+    - Addr_Number
+    - AddressNum
+    - GM_HSE_NUM
+    - HOUSE_NO
+    - HOUSE_NUMB
+    - HSE_NUM
+    - HSE_NUMB
+    - House
+    - HouseNumbe
+    - HouseNumber
+    - PROPERTYHOUSENUM2
+    - SA_House_N
+    - STREETNO
+    - STREETNUMBER1
+    - addr_numbe
+    street_aliases:
+    - CC_ST_NAME
+    - Loc_Street
+    - PWA_FULLSTREET
+    - SA_Street_
+    - STREETALL
+    - ST_NAME_COMPLETE
+    - Street_Road_Name
+    - situs_street
+    unit_aliases: []
+    place_aliases: []
+    state_aliases: []
+    zip_aliases: []
+    signature: ext-19n-8s
+    basis: engine/dialects/sources.v1.yaml:p7-alias-ext-v1（组合拳② 别名扩展，生成时合并，不二次维护）
+  geom:
+    type: esriGeometryUnknown
+    granularity: unknown
+  crs:
+    epsg: unknown
+    datum: unknown
+    basis: unknown
+    evidence: 别名扩展条目不带几何/CRS；几何由被赋该方言的源自身声明
+  mapping:
+    housenumber: $housenumber
+    street: $street
+    unit: $unit
+    city: $city
+    state: $state
+    zip: $zip
+  coverage:
+    layers_n: 321
+    rows: 5520975
+    share: 0.018698
+  anomaly:
+    rate: 0.0
+    method: 别名来源层已逐层做过值形态校验（门牌纯数字 + 街名有字母）
+  status: minimal_safe
+  a_pool_eligible: false
+  golden_cases:
+  - gc-015
+  - gc-016
+  - gc-017
+  - gc-018
+  notes: 组合拳②：27 条别名（19 门牌 + 8 街名）。只扩大 minimal_safe / E7 的别名并集，不改任何既有方言的 template，因此不影响已有层的方言归属。
 - id: agol-t110000-buildingpoint
   provider:
     kind: agol
@@ -732,3 +804,75 @@ golden_cases:
   expect_flags:
   - no_zip_ok
   dialect_id: agol-t110000-buildingpoint
+- id: gc-015
+  dialect_id: p7-alias-ext-v1
+  source_layer: analysis/coord-samples-20261124/samples
+  source_table: analysis/coord-samples-20261124/samples/MN.csv
+  source_row_index: '0'
+  source_url: https://gis.co.polk.mn.us/arcgis/rest/services/Addressing/Addressing_public/FeatureServer/0
+  source_fields:
+    housenumber: ANUMBER
+    street: PWA_FULLSTREET
+  input:
+    ANUMBER: '13595'
+    PWA_FULLSTREET: 340th Street Southeast
+  expect:
+    housenumber: '13595'
+    street: 340th Street Southeast
+  expect_flags:
+  - no_city_ok
+  - no_zip_ok
+- id: gc-016
+  dialect_id: p7-alias-ext-v1
+  source_layer: analysis/coord-samples-20261124/samples
+  source_table: analysis/coord-samples-20261124/samples/MN.csv
+  source_row_index: '1'
+  source_url: https://gis.co.polk.mn.us/arcgis/rest/services/Addressing/Addressing_public/FeatureServer/0
+  source_fields:
+    housenumber: ANUMBER
+    street: PWA_FULLSTREET
+  input:
+    ANUMBER: '14117'
+    PWA_FULLSTREET: 330th Street Southeast
+  expect:
+    housenumber: '14117'
+    street: 330th Street Southeast
+  expect_flags:
+  - no_city_ok
+  - no_zip_ok
+- id: gc-017
+  dialect_id: p7-alias-ext-v1
+  source_layer: analysis/coord-samples-20261124/samples
+  source_table: analysis/coord-samples-20261124/samples/_UNLOCATED-part5.csv
+  source_row_index: '0'
+  source_url: https://services8.arcgis.com/WV8ogNubjFL2BKPt/arcgis/rest/services/DowntownPlanUpdate/FeatureServer/0
+  source_fields:
+    housenumber: SA_House_N
+    street: SA_Street_
+  input:
+    SA_House_N: '450'
+    SA_Street_: GLENDORA AVE
+  expect:
+    housenumber: '450'
+    street: GLENDORA AVE
+  expect_flags:
+  - no_city_ok
+  - no_zip_ok
+- id: gc-018
+  dialect_id: p7-alias-ext-v1
+  source_layer: analysis/coord-samples-20261124/samples
+  source_table: analysis/coord-samples-20261124/samples/_UNLOCATED-part5.csv
+  source_row_index: '1'
+  source_url: https://services8.arcgis.com/WV8ogNubjFL2BKPt/arcgis/rest/services/DowntownPlanUpdate/FeatureServer/0
+  source_fields:
+    housenumber: SA_House_N
+    street: SA_Street_
+  input:
+    SA_House_N: '550'
+    SA_Street_: GLENDORA AVE
+  expect:
+    housenumber: '550'
+    street: GLENDORA AVE
+  expect_flags:
+  - no_city_ok
+  - no_zip_ok

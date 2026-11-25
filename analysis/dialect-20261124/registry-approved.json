@@ -14,11 +14,17 @@
    "agol",
    "110000",
    "building_point"
+  ],
+  [
+   "alias_extension",
+   "xt-19n-8s",
+   "unknown"
   ]
  ],
  "ids": [
   "agol-t110101-buildingpoint",
   "agol-t110111-buildingpoint",
-  "agol-t110000-buildingpoint"
+  "agol-t110000-buildingpoint",
+  "p7-alias-ext-v1"
  ]
 }
