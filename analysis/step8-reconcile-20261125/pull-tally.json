@@ -1,0 +1,12 @@
+{
+ "payload_dirs": 3098,
+ "by_status": {
+  "ok": 3089,
+  "mismatch": 9
+ },
+ "complete_ok": 3089,
+ "bytes": 12061037688,
+ "parts": 5326,
+ "rows_total": 134918439,
+ "rowcheck_sampled": 311
+}

@@ -1,0 +1,17 @@
+{
+ "layers_in_manifest": 3000,
+ "by_result": {
+  "ok": 2991,
+  "ok_index_stale": 3,
+  "mismatch": 6
+ },
+ "ok_layers": 2994,
+ "failed_layers": 6,
+ "rowcheck_layers": 296,
+ "rowcheck_pass": 296,
+ "rowcheck_fail": 0,
+ "bytes_checked": 0,
+ "bytes_ok": 0,
+ "index_stale_layers": 3,
+ "total_bytes": 10763285729
+}

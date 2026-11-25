@@ -1,0 +1,18 @@
+{
+ "rows": 54,
+ "by_conclusion": {
+  "upstream_offline": 35,
+  "ledger_overclaimed": 13,
+  "id_drifted": 6
+ },
+ "by_conclusion_detail": {
+  "declared_but_unreachable": 14,
+  "unreachable": 21,
+  "never_collected": 4,
+  "count_differs": 6,
+  "no_declared": 9
+ },
+ "declared_positive": 24,
+ "declared_zero": 20,
+ "declared_empty": 10
+}

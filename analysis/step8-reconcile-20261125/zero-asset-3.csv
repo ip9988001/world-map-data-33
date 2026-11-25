@@ -1,0 +1,4 @@
+layer,stage,ledger_declared,ledger_rows,ledger_status,local_bytes,reconcile_class_v1,in_3550,in_54,upstream_conclusion,note
+vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0,04b,3618012,3618012,ok,0,local_absent_upstream_no_assets,False,True,ledger_overclaimed,账本 ok 与上游无资产冲突：属 54 层（并入 B 原因表）
+ervices_us_mn_state_mngeo_loc_addresses_open_FeatureServer_0@未定位-1,04b,2220021,2220021,ok,0,local_absent_upstream_no_assets,False,True,upstream_offline,账本 ok 与上游无资产冲突：属 54 层（并入 B 原因表）
+_cog_server_rest_services_test_Address_Point_FeatureServer_0,05b,9046,9046,ok,0,local_absent_upstream_no_assets,False,True,upstream_offline,账本 ok 与上游无资产冲突：属 54 层（并入 B 原因表）
