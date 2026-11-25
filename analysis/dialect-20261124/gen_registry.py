@@ -30,6 +30,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 DIAL = os.path.join(ROOT, "analysis", "dialect-20261124")
 INV = os.path.join(ROOT, "analysis", "full-inventory-20261124")
 OUT = os.path.join(ROOT, "registry", "dialects.v1.yaml")
+ENGINE_DIR = os.path.join(ROOT, "engine", "dialects")
+ALIAS_SAMPLES = os.path.join(ROOT, "analysis", "combo-step2-close-20261125", "p7-samples.csv")
 
 CANON = {"number": ("house_number", "_house_num"), "street": ("street_name", "street_full"),
          "unit": ("unit",), "place": ("postal_city",), "state": ("state_abbr",), "zip": ("zip5",)}
@@ -84,6 +86,69 @@ def family_aliases(fields):
         if fam:
             out[fam].append(f)
     return dict(out)
+
+
+def engine_alias_extensions():
+    """engine/dialects/*.yaml 里 `family: alias_extension` 的条目（别名来源；registry 不重复维护别名）。
+
+    组合拳②（2026-11-25）Muse 口径：registry 是分档唯一真源，engine 表只是「别名来源」，
+    生成时合并进来，避免两处各写一份 27 条。合并后 registry 里出现的 id 与 engine 表一致，可逐条对照。
+    """
+    import glob
+    out = []
+    for p in sorted(glob.glob(os.path.join(ENGINE_DIR, "*.yaml"))):
+        for d in (yaml.safe_load(open(p, encoding="utf-8")) or {}).get("dialects") or []:
+            if d.get("family") == "alias_extension":
+                out.append(dict(d, _from=os.path.relpath(p, ROOT)))
+    return out
+
+
+def alias_ext_dialect(ext, gid):
+    """别名扩展条目 → registry 方言 + 3–5 条真实样值 golden case（样值来自 coord-samples，不编）。"""
+    if not os.path.exists(ALIAS_SAMPLES):
+        print(f"SKIP {ext['id']}: 缺 {os.path.relpath(ALIAS_SAMPLES, ROOT)}", file=sys.stderr)
+        return None, [], gid
+    cases, ids = [], []
+    for r in list(csv.DictReader(open(ALIAS_SAMPLES, encoding="utf-8")))[:5]:
+        gid += 1
+        cid = f"gc-{gid:03d}"
+        cases.append({"id": cid, "dialect_id": ext["id"],
+                      # 该批层是远程 D1 层，dist/ 下没有 layer 目录；样值证据是仓库内 committed 的坐标样本 CSV 目录
+                      "source_layer": os.path.dirname(r["csv_file"]) or ".",
+                      "source_table": r["csv_file"], "source_row_index": r["row_index"],
+                      "source_url": r["url"],
+                      "source_fields": {"housenumber": r["number_field"], "street": r["street_field"]},
+                      "input": {r["number_field"]: r["number_value"],
+                                r["street_field"]: r["street_value"]},
+                      "expect": {"housenumber": r["number_value"], "street": r["street_value"]},
+                      "expect_flags": ["no_city_ok", "no_zip_ok"]})
+        ids.append(cid)
+    if len(ids) < 3:
+        print(f"SKIP {ext['id']}: golden cases={len(ids)} < 3", file=sys.stderr)
+        return None, [], gid
+    num, st = list(ext["fields"].get("number") or []), list(ext["fields"].get("street") or [])
+    d = {
+        "id": ext["id"],
+        "provider": {"kind": "alias_extension", "orgs": [], "orgs_total": len(ext.get("source_layers") or []),
+                     "note": f"别名扩展（非采集源族）：{ext.get('_from')}:{ext['id']}；"
+                             f"由 P7 组 321 层的真实列名去重而来"},
+        "template": {"number_aliases": num, "street_aliases": st, "unit_aliases": [],
+                     "place_aliases": [], "state_aliases": [], "zip_aliases": [],
+                     "signature": f"ext-{len(num)}n-{len(st)}s",
+                     "basis": f"{ext.get('_from')}:{ext['id']}（组合拳② 别名扩展，生成时合并，不二次维护）"},
+        "geom": {"type": "esriGeometryUnknown", "granularity": "unknown"},
+        "crs": {"epsg": "unknown", "datum": "unknown", "basis": "unknown",
+                "evidence": "别名扩展条目不带几何/CRS；几何由被赋该方言的源自身声明"},
+        "mapping": {k: f"${k}" for k in ("housenumber", "street", "unit", "city", "state", "zip")},
+        "coverage": {"layers_n": 321, "rows": 5520975, "share": round(321 / 17168, 6)},
+        "anomaly": {"rate": 0.0, "method": "别名来源层已逐层做过值形态校验（门牌纯数字 + 街名有字母）"},
+        "status": "minimal_safe",
+        "a_pool_eligible": False,
+        "golden_cases": ids,
+        "notes": "组合拳②：27 条别名（19 门牌 + 8 街名）。只扩大 minimal_safe / E7 的别名并集，"
+                 "不改任何既有方言的 template，因此不影响已有层的方言归属。",
+    }
+    return d, cases, gid
 
 
 def main():
@@ -236,6 +301,13 @@ def main():
             "notes": (f"模板签名 {row['template_bits']}（number|street|unit|place|state|zip 依次）; "
                       f"覆盖 provider {len(row['providers'])} 个; 样值层 {row['sample_layers']} 个"),
         })
+
+    # ---- 别名扩展方言（合并 engine 表；registry 唯一真源）----
+    for ext in engine_alias_extensions():
+        alias_dialect, cases, gid = alias_ext_dialect(ext, gid)
+        if alias_dialect:
+            dialects.append(alias_dialect)
+            gcs.extend(cases)
 
     json.dump({"groups": [[d["provider"]["kind"], d["template"]["signature"][1:],
                            d["geom"]["granularity"]] for d in dialects],

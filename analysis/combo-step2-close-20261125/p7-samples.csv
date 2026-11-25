@@ -1,0 +1,5 @@
+url,layer_id,state,csv_file,row_index,number_field,number_value,street_field,street_value
+https://gis.co.polk.mn.us/arcgis/rest/services/Addressing/Addressing_public/FeatureServer/0,FeatureServer/0,MN,analysis/coord-samples-20261124/samples/MN.csv,0,ANUMBER,13595,PWA_FULLSTREET,340th Street Southeast
+https://gis.co.polk.mn.us/arcgis/rest/services/Addressing/Addressing_public/FeatureServer/0,FeatureServer/0,MN,analysis/coord-samples-20261124/samples/MN.csv,1,ANUMBER,14117,PWA_FULLSTREET,330th Street Southeast
+https://services8.arcgis.com/WV8ogNubjFL2BKPt/arcgis/rest/services/DowntownPlanUpdate/FeatureServer/0,FeatureServer/0,_UNLOCATED,analysis/coord-samples-20261124/samples/_UNLOCATED-part5.csv,0,SA_House_N,450,SA_Street_,GLENDORA AVE
+https://services8.arcgis.com/WV8ogNubjFL2BKPt/arcgis/rest/services/DowntownPlanUpdate/FeatureServer/0,FeatureServer/0,_UNLOCATED,analysis/coord-samples-20261124/samples/_UNLOCATED-part5.csv,1,SA_House_N,550,SA_Street_,GLENDORA AVE
