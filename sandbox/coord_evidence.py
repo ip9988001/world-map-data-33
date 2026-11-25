@@ -1,6 +1,7 @@
 """坐标证据（沙盒）：把第 6 步前置的坐标样本转成 E6（空间验算）/ E7（源间同址投票）/ 实测 geom_type。
 
-只读：analysis/coord-samples-20261124/samples/*.csv（738,174 行）、analysis/tiger_county/*.json.gz。
+只读：analysis/coord-samples-20261124/samples/*.csv（738,174 行）、analysis/tiger_county/*.json.gz、
+registry/dialects.v1.yaml（只读）+ engine/dialects/*.yaml（角色表，与 registry 口径合一）。
 不联网、不估算、不插值：没坐标或没地址键的层一律 unknown，并在 detail 里写清缺什么。
 几何一律按样本里的真实顶点/真实经纬度算（面/线取的是 rings[0][0]/paths[0][0] 的真实顶点，
 不是质心，见 analysis/coord-samples-20261124/REPORT-ALL.md §4）。
@@ -13,55 +14,22 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 from sandbox.spatial_verify import (COUNTY_DIR, boundary_dist_m, load_thresholds,  # noqa: E402
                                     point_in_ring, rings_of)
+# ④ 口径统一：角色表与建键**只有 engine 一份实现**，sandbox 不再自带副本。
+#   addr_key  = engine.split_addr.addr_key_split（addr_key + P1 拆串）；
+#   roles_of  = registry/dialects.v1.yaml ∪ engine/dialects/*.yaml（两数据源合一）；
+#   SUFFIX / street_norm 也来自 engine，供 e7_refpool.py 的同一套键归一复用。
+# 导出名保持原样（addr_key / roles_of / street_norm / SUFFIX），下游 summarize.py、
+# e7_refpool.py、tier_relax.py 的调用约定一个字节不改。
+from engine.split_addr import (SUFFIX, addr_key_split, roles_of,  # noqa: E402
+                               street_norm)
+addr_key = addr_key_split        # 对外名仍是 addr_key；实现只在 engine/split_addr.py 一份
 
 SAMPLES = os.environ.get("COORD_SAMPLES") or os.path.join(ROOT, "analysis", "coord-samples-20261124", "samples")
 THRESHOLDS = os.path.join(ROOT, "sandbox", "spatial_thresholds.yaml")
 CELL = 0.5
-SUFFIX = {"st": "street", "ave": "avenue", "av": "avenue", "rd": "road", "blvd": "boulevard",
-          "dr": "drive", "ln": "lane", "ct": "court", "pl": "place", "hwy": "highway",
-          "pkwy": "parkway", "cir": "circle", "ter": "terrace", "trl": "trail"}
-NUM_RE, ZIP_RE = re.compile(r"^\s*(\d+)\s*[A-Za-z]?\s+(.*)$"), re.compile(r"\b(\d{5})\b")
-norm = lambda f: re.sub(r"[^a-z0-9]", "", (f or "").lower())
 FIELDS = ("url,state_scope,geom_type,n_coords,n_uniq,unique_rate,top_point_share,outside_share_us,"
           "outside_share_near_boundary,outside_share_declared_state,e6,e6_detail,sample_fields,"
           "n_addr_rows,n_cmp,n_conflict,conflict_share,e7,e7_detail").split(",")
-
-
-def roles_of():
-    """注册表别名 → 角色（number/street/zip），只在内存里用，registry/ 只读。"""
-    out = collections.defaultdict(set)
-    for d in yaml.safe_load(open(os.path.join(ROOT, "registry", "dialects.v1.yaml"), encoding="utf-8"))["dialects"]:
-        for role in ("number", "street", "zip"):
-            for a in (d.get("template") or {}).get(role + "_aliases") or []:
-                out[norm(a)].add(role)
-    return out
-
-
-def street_norm(s):
-    w = [SUFFIX.get(x, x) for x in re.findall(r"[a-z0-9]+", (s or "").lower())]
-    return "".join(w)
-
-
-def addr_key(af, ROLES, state):
-    """门牌+街名（有邮编加邮编）。取字段原值；字段名兜底用合并地址串解析，不猜不补。"""
-    n = s = z = ""
-    for k, v in af.items():
-        v = str(v).strip() if isinstance(v, (int, float, str)) else ""
-        r = ROLES.get(norm(k)) or ()
-        if v and "number" in r and not n:
-            n = re.sub(r"[^0-9A-Za-z-]", "", v)
-        elif v and "street" in r and not s:
-            s = v
-        elif v and "zip" in r and not z:
-            z = (ZIP_RE.search(v) or [None, ""])[1]
-    if not (n and s):
-        for v in af.values():
-            v = v if isinstance(v, str) else ""
-            m = NUM_RE.match(v.split(",")[0]) if "," in v else None
-            if m and ZIP_RE.search(v):
-                n, s, z = m.group(1), m.group(2), ZIP_RE.search(v).group(1)
-                break
-    return f"{state}|{n}|{street_norm(s)}|{z}" if (n and s) else ""
 
 
 def county_index(states):
@@ -120,7 +88,7 @@ def main():
     args = ap.parse_args()
     fuse, _ = load_thresholds()
     doc = yaml.safe_load(open(THRESHOLDS, encoding="utf-8"))["e7"]
-    e7t = {k: v["value"] for k, v in doc.items()}
+    e7t = {k: v["value"] for k, v in doc.items() if isinstance(v, dict) and "value" in v}
     ROLES = roles_of()
     states = sorted(os.path.basename(p)[:2] for p in glob.glob(os.path.join(COUNTY_DIR, "*.json.gz")))
     us_idx = county_index(states)

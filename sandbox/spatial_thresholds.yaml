@@ -48,6 +48,31 @@ e7:                                    # E7 源间同址投票（sandbox/coord_e
     value: 3
     why: 跨源同址可比行 <3 时不投票（投不出票就记 unknown，不写 clear 冒充「无冲突」）。
     source: 与 fuse.min_sample_rows 一致的最小可判样本。
+  denominator_excluded:                # 可验分母剔除（只改分母，不动数据；第 9 步 2026-11-25）
+    P8:
+      value: 22
+      why: 路段门牌区间（from/to addr + 街名、中心线层）。一条记录覆盖 100-198 这样的整段，**造不出单个门牌号键**，E7 的「同址投票」对它不适用；补采也改变不了这一点，故从可验分母剔除，判归因「数据性质如此，不是缺陷」。
+      source: analysis/combo-step1-20261125/patterns.csv pattern_id=P8（逐层清单 analysis/grading-rerun-20261125/denominator-excluded.csv）
+    P6:
+      value: 90
+      why: 结构 ID / 地块 ID / 分区号冒充地址（OBJECTID、PID、Zone 之类根本不是地址）。全层没有任何门牌+街名字段，E7 无从投票。
+      source: 同上 pattern_id=P6
+    P9:
+      value: 66
+      why: 只有街名（或街名+城市分列），全层无门牌列。缺「门牌号」这一半，键必然构不出；这是数据发布方的粒度选择，不是采集缺陷。
+      source: 同上 pattern_id=P9
+    P11:
+      value: 9
+      why: PO BOX / POST OFFICE BOX 邮政信箱。信箱号不是街道地址，无法与地址点同址比对。
+      source: 同上 pattern_id=P11
+    P12:
+      value: 11
+      why: 打码/占位门牌或路口名（3XX E 12TH ST、A ST / B AVE）。门牌被抹掉或本来就没有，判据不成立。
+      source: 同上 pattern_id=P12
+    total:
+      value: 198
+      why: 五类合计（P8 22 + P6/P9/P11/P12 176）。剔除只作用于「E7 可验分母」，层仍留在 17,168 行分母里、三档照样给，只是不再拿 E7 的可验性去扣它们。
+      source: 上述五条之和；断言由 analysis/grading-rerun-20261125/reconcile.py 校验
 
 e7_refpool:                            # E7 扩参照源（sandbox/e7_refpool.py）· 每层取前 N 行，绝不当全量
   per_layer_cap:

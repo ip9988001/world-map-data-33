@@ -1,0 +1,122 @@
+[
+ {
+  "variant": "A_placeholder_only",
+  "tiers": {
+   "tier1": 211,
+   "tier2": 3308,
+   "tier3": 13649
+  },
+  "rows_total": 984719364,
+  "tier1_rows": 23286741,
+  "e7": {
+   "clear->hit": 6,
+   "clear->clear": 1035,
+   "unknown->clear": 134,
+   "unknown->unknown": 15351,
+   "unknown->hit": 52,
+   "hit->hit": 52,
+   "hit->clear": 3
+  },
+  "checks": {
+   "tiers_layers": 17168,
+   "tiers_rows": 984719364,
+   "tiers_diff_layers": 0,
+   "tiers_diff_rows": 0,
+   "moves_layers": 11056,
+   "moves_rows": 297519308,
+   "tu_layers": 11056,
+   "tu_rows": 297519308,
+   "bucket_sum_layers": 211,
+   "bucket_sum_rows": 23286741,
+   "tier1_layers": 211,
+   "tier1_rows": 23286741,
+   "buckets_equal_tier1": true,
+   "strict_reproduced_layers": 17168,
+   "moves_diff_layers": 0,
+   "moves_diff_rows": 0,
+   "tiers_closed": true,
+   "moves_closed": true,
+   "minimal_safe_unchanged": true
+  }
+ },
+ {
+  "variant": "B_plus_split",
+  "tiers": {
+   "tier1": 412,
+   "tier2": 3107,
+   "tier3": 13649
+  },
+  "rows_total": 984719364,
+  "tier1_rows": 27321745,
+  "e7": {
+   "clear->hit": 10,
+   "clear->clear": 3084,
+   "unknown->clear": 152,
+   "unknown->unknown": 12932,
+   "hit->hit": 387,
+   "unknown->hit": 65,
+   "hit->clear": 3
+  },
+  "checks": {
+   "tiers_layers": 17168,
+   "tiers_rows": 984719364,
+   "tiers_diff_layers": 0,
+   "tiers_diff_rows": 0,
+   "moves_layers": 11056,
+   "moves_rows": 297519308,
+   "tu_layers": 11056,
+   "tu_rows": 297519308,
+   "bucket_sum_layers": 412,
+   "bucket_sum_rows": 27321745,
+   "tier1_layers": 412,
+   "tier1_rows": 27321745,
+   "buckets_equal_tier1": true,
+   "strict_reproduced_layers": 17168,
+   "moves_diff_layers": 0,
+   "moves_diff_rows": 0,
+   "tiers_closed": true,
+   "moves_closed": true,
+   "minimal_safe_unchanged": true
+  }
+ },
+ {
+  "variant": "C_plus_engine_roles",
+  "tiers": {
+   "tier1": 410,
+   "tier2": 3109,
+   "tier3": 13649
+  },
+  "rows_total": 984719364,
+  "tier1_rows": 27305991,
+  "e7": {
+   "clear->hit": 6,
+   "clear->clear": 3080,
+   "unknown->clear": 132,
+   "unknown->unknown": 12971,
+   "hit->hit": 379,
+   "unknown->hit": 62,
+   "hit->clear": 3
+  },
+  "checks": {
+   "tiers_layers": 17168,
+   "tiers_rows": 984719364,
+   "tiers_diff_layers": 0,
+   "tiers_diff_rows": 0,
+   "moves_layers": 11056,
+   "moves_rows": 297519308,
+   "tu_layers": 11056,
+   "tu_rows": 297519308,
+   "bucket_sum_layers": 410,
+   "bucket_sum_rows": 27305991,
+   "tier1_layers": 410,
+   "tier1_rows": 27305991,
+   "buckets_equal_tier1": true,
+   "strict_reproduced_layers": 17168,
+   "moves_diff_layers": 0,
+   "moves_diff_rows": 0,
+   "tiers_closed": true,
+   "moves_closed": true,
+   "minimal_safe_unchanged": true
+  }
+ }
+]

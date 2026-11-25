@@ -133,3 +133,62 @@ def test_coord_evidence_covers_every_sampled_url():
     assert need <= set(ev)                                  # 每条实测结论都能追到坐标证据行
     assert sum(1 for r in ev.values() if r["e6"] == "clear") > 0
     assert sum(1 for r in ev.values() if r["e7"] == "hit") > 0
+
+
+# ---------------------------------------------------------------- ④ 口径统一（2026-11-25）
+def test_impl_is_single_source_in_engine():
+    """sandbox 里不许再出现第二份 addr_key 实现，且必须从 engine.split_addr 导入。"""
+    src = open(os.path.join(ROOT, "sandbox", "coord_evidence.py"), encoding="utf-8").read()
+    assert "engine.split_addr" in src
+    assert "def addr_key(" not in src and "def roles_of(" not in src
+    assert "def street_norm(" not in src
+
+
+def test_placeholder_layer_rows_are_skipped():
+    """占位值层：门牌/街名是 -1 / NULL / 0 这类占位值时，必须判 skip（建不出键），不许拿占位值拼垃圾键。"""
+    R = E.roles_of()
+    for af in ({"HOUSE_NUM": "-1", "STREET_NAME": "MAIN ST"},
+               {"HOUSE_NUM": "12", "STREET_NAME": "NULL", "ZIP": "03301"},
+               {"addrnum": "0", "streetname": "ELM ST"},
+               {"addrnum": "-999", "streetname": "-999", "zip": "00000"}):
+        assert E.addr_key(af, R, "NH") == "", af
+
+
+def test_normal_layer_key_unchanged():
+    """正常层：非占位值的键必须与旧契约逐字节一致（换 impl 不放宽、也不改写法）。"""
+    R = E.roles_of()
+    assert E.addr_key({"HOUSE_NUM": "12", "STREET_NAME": "Main St", "ZIP": "03301"}, R, "NH") == \
+        "NH|12|mainstreet|03301"
+    assert E.addr_key({"HOUSE_NUM": "12A", "STREET_NAME": "Elm Road"}, R, "NH") == "NH|12A|elmroad|"
+    assert E.addr_key({"STREET_NAME": "Elm Rd"}, R, "NH") == ""      # 缺门牌 → 仍构不出
+
+
+def test_p1_combined_field_only_builds_key_via_split():
+    """P1 形态：单字段「门牌+街名」整串 —— 老口径构不出键，新口径拆串后建键（这就是「拆串变化」的来源）。"""
+    from engine.split_addr import addr_key as plain
+    R = E.roles_of()
+    af = {"SITE_ADDR": "1049 61ST ST", "ZIP": "90001"}
+    assert plain(af, R, "CA") == ""
+    assert E.addr_key(af, R, "CA") == "CA|1049|61ststreet|90001"
+    for junk in ("TASSAJARA RD", "11145-0", "P O BOX 55"):          # 纯街名 / 编号 / 信箱 → 一律不建键
+        assert E.addr_key({"SITE_ADDR": junk, "ZIP": "90001"}, R, "CA") == "", junk
+
+
+def test_placeholder_layer_end_to_end_is_e7_unknown(tmp_path):
+    """整层占位值 → n_addr_rows=0 → E7 unknown（不是 clear 冒充「无冲突」）。"""
+    d = tmp_path / "ph"
+    d.mkdir()
+    rows = [dict(row("https://t/P/0", lon, lat, "-1", "MAIN ST")) for lon, lat in NH_INSIDE]
+    write_samples(d, "PH.csv", rows)
+    old = sys.argv
+    try:
+        sys.argv = ["coord_evidence.py", "--outdir", str(d)]
+        os.environ["COORD_SAMPLES"] = str(d)
+        assert E.main() == 0
+    finally:
+        sys.argv = old
+        os.environ.pop("COORD_SAMPLES", None)
+    ev = {r["url"]: r for r in csv.DictReader(open(d / "coord-evidence.csv", encoding="utf-8"))}
+    r = ev["https://t/P/0"]
+    assert int(r["n_addr_rows"]) == 0
+    assert r["e7"] == "unknown" and "无『门牌+街名』键" in r["e7_detail"]

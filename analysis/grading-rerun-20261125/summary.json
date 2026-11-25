@@ -1,0 +1,174 @@
+{
+ "generated_utc": "2026-11-25T06:01:19Z",
+ "inputs": {
+  "strict_dir": "analysis/grading-rerun-20261125",
+  "relax_evidence": "analysis/grading-rerun-20261125/coord-evidence-relax.csv",
+  "thresholds": "sandbox/spatial_thresholds.yaml"
+ },
+ "e3_relax_default": "on",
+ "denominator": 17168,
+ "rows_total": 984719364,
+ "tiers": {
+  "tier1": {
+   "layers": 410,
+   "rows": 27305991,
+   "pct_layers": 2.39
+  },
+  "tier2": {
+   "layers": 3109,
+   "rows": 135476441,
+   "pct_layers": 18.11
+  },
+  "tier3": {
+   "layers": 13649,
+   "rows": 821936932,
+   "pct_layers": 79.5
+  }
+ },
+ "buckets": {
+  "strict": {
+   "layers": 78,
+   "rows": 2005347,
+   "granularity": {
+    "parcel_centroid": 67,
+    "apartment_unit_point": 7,
+    "building_point": 3,
+    "centerline_midpoint": 1
+   },
+   "e3_off_e7_off": 78,
+   "e3_on_e7_off": 78,
+   "e3_off_e7_on": 78
+  },
+  "e3_only": {
+   "layers": 329,
+   "rows": 25040232,
+   "granularity": {
+    "unknown": 329
+   },
+   "e3_off_e7_off": 0,
+   "e3_on_e7_off": 329,
+   "e3_off_e7_on": 0
+  },
+  "e7_only": {
+   "layers": 1,
+   "rows": 114638,
+   "granularity": {
+    "parcel_centroid": 1
+   },
+   "e3_off_e7_off": 0,
+   "e3_on_e7_off": 0,
+   "e3_off_e7_on": 1
+  },
+  "both": {
+   "layers": 2,
+   "rows": 145774,
+   "granularity": {
+    "unknown": 2
+   },
+   "e3_off_e7_off": 0,
+   "e3_on_e7_off": 0,
+   "e3_off_e7_on": 0
+  }
+ },
+ "moves": {
+  "active": {
+   "layers": 346,
+   "rows": 22930974
+  },
+  "minimal_safe": {
+   "layers": 3756,
+   "rows": 136405617
+  },
+  "unavailable": {
+   "layers": 6954,
+   "rows": 138182717
+  }
+ },
+ "checks": {
+  "tiers_layers": 17168,
+  "tiers_rows": 984719364,
+  "tiers_diff_layers": 0,
+  "tiers_diff_rows": 0,
+  "moves_layers": 11056,
+  "moves_rows": 297519308,
+  "tu_layers": 11056,
+  "tu_rows": 297519308,
+  "bucket_sum_layers": 410,
+  "bucket_sum_rows": 27305991,
+  "tier1_layers": 410,
+  "tier1_rows": 27305991,
+  "buckets_equal_tier1": true,
+  "strict_reproduced_layers": 14683,
+  "moves_diff_layers": 0,
+  "moves_diff_rows": 0,
+  "tiers_closed": true,
+  "moves_closed": true,
+  "minimal_safe_unchanged": true
+ },
+ "target_1831": {
+  "target": 1831,
+  "actual": 410,
+  "diff": -1421,
+  "pct_diff": -77.61,
+  "beyond_5pct": true
+ },
+ "e3": {
+  "unknown_to_na_layers": 12065,
+  "detail": "granularity=unknown 且有实测 geom_type 的层记 na；E3 仍 FATAL"
+ },
+ "e7": {
+  "evaluated_urls": 16742,
+  "newly_verifiable_layers": 194,
+  "resolved_any_layers": 3669,
+  "flips": {
+   "clear->hit": 6,
+   "clear->clear": 3080,
+   "unknown->clear": 132,
+   "unknown->unknown": 12971,
+   "hit->hit": 379,
+   "unknown->hit": 62,
+   "hit->clear": 3
+  },
+  "still_unknown_not_tier1": {
+   "无可投票行（样本 0 行 + 本地全表无 addr 行 / 无门牌+街名键）": 6264,
+   "n_cmp<3（有键但跨源同址行不足）": 6707,
+   "无坐标样本（url 不在坐标样本里）": 535
+  },
+  "detail": "参照池 = 738,174 行坐标样本 + 本地全表每层前 N 行；冲突线 300.0m、min_cmp_rows=3"
+ },
+ "minimal_safe_regression": {
+  "layers": 3756,
+  "rows": 136405617,
+  "strict_layers": 3756,
+  "promoted_to_active": 0,
+  "new_minimal_safe_not_in_strict": 0,
+  "bits_11_all": true,
+  "a_pool_eligible": "false（registry/evaluator.py L84-86 硬编码，本轮未改一个字节）",
+  "unchanged": true
+ },
+ "attribution": {
+  "hypothetical_both_relax_tier1": 1557,
+  "achieved": 410,
+  "blocked": {
+   "E7 unknown：样本/本地全表都构不出门牌+街名键": 594,
+   "E7 unknown：n_cmp=0 < 3": 859,
+   "E7 unknown：n_cmp=2 < 3": 30,
+   "E7 unknown：n_cmp=1 < 3": 70,
+   "已进 Tier1（E7 放宽兑现）": 3,
+   "E7 unknown：其他": 1
+  },
+  "combo_cells_rest_clear": {
+   "E3=hit|E7=unknown": 69,
+   "E3=clear|E7=unknown": 328,
+   "E3=clear|E7=clear": 78,
+   "E3=E3_na|E7=clear": 329,
+   "E3=clear|E7=hit": 20,
+   "E3=E3_na|E7=unknown": 1229,
+   "E3=E3_na|E7=hit": 23,
+   "E3=hit|E7=clear": 18,
+   "E3=hit|E7=hit": 2
+  },
+  "note": "1,831 = 1,438(E3 未定+E7 未定) + 393(仅 E7 未定)，是「E7 完全可验」假设下**被 E7 挡住的层数**，不含本来就靠 E3 放宽进 Tier1 的 166 层；同假设下 Tier1 总数应为 1,997。实算 176 → E7 放宽只兑现 10 层，其余按上面 blocked 逐证据归因（不含调参）。"
+ },
+ "demoted_by_e7_relax": []
+}
