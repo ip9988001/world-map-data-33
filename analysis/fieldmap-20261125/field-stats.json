@@ -8,7 +8,7 @@
   "parse_error": 0,
   "diff": 0,
   "street_name_ok_pct": 100.0,
-  "house_number_ok_pct": 71.2,
+  "house_number_ok_pct": 71.17,
   "city_ok_pct": 39.77,
   "zip5_valid_pct": 54.18,
   "zip5_invalid_rows": 2053543,
@@ -17,10 +17,33 @@
   "coord_out_of_range_rows": 1691,
   "grade": {
    "S": 45282269,
-   "A": 8507672,
-   "B": 7042186
+   "A": 8507671,
+   "B": 7042002,
+   "C": 244842486
   },
-  "out_bytes": 9764301040
+  "tier_layers": {
+   "unrated": 3100
+  },
+  "tier_rows": {
+   "unrated": 305674428
+  },
+  "source_layer_url_layers": 3038,
+  "source_layer_fallback_layers": 62,
+  "out_bytes": 9052919948,
+  "addrkey_v3": {
+   "rows": 305674428,
+   "key_changed_vs_v1": 305674428,
+   "rows_unkeyed": 88405291,
+   "unkeyed_pct": 28.92,
+   "include_unit": true
+  },
+  "house_number_nulled_by_placeholder": 64259,
+  "grade_moves_on_placeholder_fix": {
+   "C->C": 64074,
+   "B->C": 184,
+   "A->C": 1
+  },
+  "rows_dropped_by_placeholder_fix": 0
  },
  "by_dialect": {
   "minimal_safe|fallback": {
@@ -32,7 +55,7 @@
    "parse_error": 0,
    "diff": 0,
    "street_name_ok_pct": 100.0,
-   "house_number_ok_pct": 71.2,
+   "house_number_ok_pct": 71.17,
    "city_ok_pct": 39.77,
    "zip5_valid_pct": 54.18,
    "zip5_invalid_rows": 2053543,
@@ -41,12 +64,21 @@
    "coord_out_of_range_rows": 1691,
    "grade": {
     "S": 45282269,
-    "A": 8507672,
-    "B": 7042186
+    "A": 8507671,
+    "B": 7042002,
+    "C": 244842486
    },
-   "out_bytes": 9764301040
+   "tier_layers": {
+    "unrated": 3100
+   },
+   "tier_rows": {
+    "unrated": 305674428
+   },
+   "source_layer_url_layers": 3038,
+   "source_layer_fallback_layers": 62,
+   "out_bytes": 9052919948
   }
  },
  "by_state_null": "信封恒无 state 字段 → 按州分组不可用；state 只从 raw 显式州字段或组合串尾部取",
- "notes": "行级质量指标的分母是 mapped（已映射行）；zip5_invalid/missing、coord_out_of_range 是 mapped 内部的细项"
+ "notes": "行级质量指标的分母是 mapped（已映射行）；zip5_invalid/missing、coord_out_of_range 是 mapped 内部的细项；addrkey_v3 / house_number 占位值修正来自 amend_rewrite.py 的全量重写（键 = engine/outlet_clean.addrkey_v3）"
 }

@@ -6,16 +6,20 @@
 输出：11 列 ndjson（house_number/street_name/city/state/zip5/lat/lon/source_layer/tier/grade/addrkey）
 
 口径（全部落在这里，不散落在 runner 里）：
-- house_number：占位值（0/000/NULL/N/A/NONE/UNKNOWN/-1/空/纯符号）= 缺失；**绝不生成门牌**
+- house_number：占位值（0/000/-1/-9/NULL/N/A/NONE/UNKNOWN/空/纯符号）= 缺失；**绝不生成门牌**
+  （plan §二：`-9` 必须算缺失 —— muse-000258 增量第 6 条）
 - street_name：pre_dir + st_name + st_suf + post_dir 按序拼接（原生字段，不猜）
 - city：信封 city 原样（不补、不猜）
 - state：合法 2 字母大写州码（含 DC/PR/VI/GU/AS/MP），否则 null
 - zip5：`12345-6789` 取前 5；**恰好 5 位数字**才算有效，否则 null（不补零、不截断）
 - lat/lon：范围校验；(0,0)/缺省 → null，绝不写 0 冒充
-- source_layer：信封 src_layer
-- tier：按 pilot.yaml tier_rank；无分档表命中 → unrated
+- source_layer：**url**（plan §二；不是 layer_id；无 url 的层退回 layer_id 并在覆盖表标注）
+- tier：分档表 `analysis/grading-rerun-20261125/auto-recognized.csv`（Tier1 = 410 那版）按 url 取；未命中 → unrated
 - grade：按 pilot.yaml grades（特征全为真才命中，S→C 依次试）；阈值为空（无硬编码阈值）
-- addrkey：outlet_clean.addrkey v3 = "a3:"+sha1(parts)[:20]
+- grade 封顶：邮编非法/缺失 → 不许落需要 zip5 的级（配置里就是 S/A）→ 自动落到 B/C（plan §二 封顶 B）
+- addrkey：**engine 档 v3**（`engine/outlet_clean.py:addrkey_v3`）
+  parts = [state2, zip5, num_key, street_key(TYPE|CORE|DIR), unit_key]，include_unit 读 pilot.yaml
+  num 或 street 缺 → 不可键 → null（engine 口径，进 unkeyed）
 
 方言：registry/dialects.v1.yaml 按 agol org 匹配（本批 3,550 层不在 17,168 分档分母内，url/layer_id 命中 0，
 org 命中 115）→ 未命中一律 dialect_id=minimal_safe（pool=manual，a_pool_eligible=false，永不进 A 货池）。
@@ -32,12 +36,15 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 sys.path.insert(0, ROOT)
 sys.path.insert(0, os.path.join(ROOT, "engine"))
 import split_addr as SA  # noqa: E402  （唯一角色表装载口：registry ∪ engine/dialects）
+import outlet_clean as OC  # noqa: E402  （addrkey v3 唯一实现口，不重写）
 
 STATES_OK = {"AL","AK","AZ","AR","CA","CO","CT","DE","DC","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA",
              "ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR",
              "PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY","PR","VI","GU","AS","MP"}
 STATE_KEYS = {"state", "st", "stateabbr", "state_abbr", "statecode", "state_code", "stabb", "statealpha"}
-PLACEHOLDERS = {"", "0", "000", "NULL", "NONE", "N/A", "NA", "UNKNOWN", "-1", "-", "--", ".", "?"}
+# 占位值（plan §二 清单 + muse-000258 增量第 6 条补 -9；数值化变体一并算缺失）
+PLACEHOLDERS = {"", "0", "000", "NULL", "NONE", "N/A", "NA", "UNKNOWN", "-1", "-9", "-", "--", ".", "?",
+                "0.0", "-1.0", "-9.0", "0000", "-09"}
 RX_DIGITS5 = re.compile(r"^(\d{5})(?:-\d{4})?$")
 RX_ONLY_SYMBOLS = re.compile(r"^[^0-9A-Za-z]+$")
 
@@ -122,10 +129,16 @@ def clean_coord(lat, lon):
     return round(la, 7), round(lo, 7), ""
 
 
-def addrkey_v3(number, street, city, state, zip5, unit="", cfg=None):
-    parts = [number or "", street or "", city or "", state or "", zip5 or "", unit or ""]
-    h = hashlib.sha1("\x1f".join(p.strip().upper() for p in parts).encode("utf-8")).hexdigest()[:20]
-    return "a3:" + h
+def addrkey_v3(number, street, state, zip5, unit="", include_unit=True,
+              post_type="", pre_dir="", post_dir=""):
+    """千一下不自己算：全部交给 engine/outlet_clean.addrkey_v3（v3 = a3 + include_unit + sha1-20hex）。
+
+    num 或 street 缺 → 返回 ""（engine 口径：不可键、进 unkeyed）。
+    """
+    return OC.addrkey_v3({"state": state, "zip": zip5, "number": number,
+                          "street": street, "post_type": post_type,
+                          "pre_dir": pre_dir, "post_dir": post_dir, "unit": unit},
+                         include_unit=include_unit)
 
 
 def features_of(rec):
@@ -168,22 +181,49 @@ def _raw_get(raw, names, ban=()):
     return hits
 
 
+def load_tier_map(path=None):
+    """分档表 → {url: tier}。版本锁定：plan §一「Tier1 = 410 层那版」= grading-rerun-20261125。"""
+    import csv as _csv
+    p = path or os.path.join(ROOT, "analysis", "grading-rerun-20261125", "auto-recognized.csv")
+    rank = {"tier1": 1, "tier2": 2, "tier3": 3}
+    best = {}
+    with open(p, encoding="utf-8") as fh:
+        for r in _csv.DictReader(fh):
+            t, u = r.get("tier"), r.get("url")
+            if not u or t not in rank:
+                continue
+            if u not in best or rank[t] < rank[best[u]]:
+                best[u] = t
+    return best
+
+
 class LayerMapper:
     """单层：信封行 → 11 列，带逐层计数（in/mapped/dropped_*）与字段质量计数。"""
 
-    def __init__(self, cfg, org2dial, dialect_meta):
+    def __init__(self, cfg, org2dial, dialect_meta, tier_map=None):
         self.cfg = cfg
         self.org2dial = org2dial
         self.meta = dialect_meta
         self.grades = cfg["grades"]
+        ak = cfg.get("addrkey") or {}
+        self.ak_version = ak.get("version")
+        self.ak_hash = ak.get("hash")
+        self.include_unit = bool(ak.get("include_unit", True))
+        if self.ak_version != "v3" or self.ak_hash != "sha1-20hex":
+            raise SystemExit(f"addrkey 配置与 engine 实现不一致：{ak}")
+        self.tiers = tier_map if tier_map is not None else load_tier_map()
         self.roles = load_roles()
-        self.begin_layer()
+        self.begin_layer("")
 
-    def begin_layer(self):
-        """每层重置字段名缓存：首次命中后按 key 复用，避免逐行扫 raw（这是性能关键）。"""
+    def begin_layer(self, url=""):
+        """每层开始：重置字段名缓存（**必须每层调**）+ 记住本层 url（喂 source_layer / tier）。"""
+        self._url = url or ""
         self._keys = None            # {"number": [...], "street": [...], "zip": [...], "state": [...]}
         self._split_key = ""
         self._split_tried = False
+
+    def tier_for(self, url):
+        return self.tiers.get(url or "", "unrated")
 
     def _probe_keys(self, raw):
         """第一行时确定本层 raw 的字段名映射（role → [key...]），之后整层复用。"""
@@ -292,16 +332,28 @@ class LayerMapper:
         lat, lon, creason = clean_coord(row.get("lat"), row.get("lon"))
         rec = {"house_number": num or None, "street_name": street or None, "city": city or None,
                "state": state or None, "zip5": zip5 or None, "lat": lat, "lon": lon,
-               "source_layer": row.get("src_layer") or None, "tier": None, "grade": None,
+               "source_layer": self._url or row.get("src_layer") or None, "tier": None, "grade": None,
                "addrkey": None, "_interp": bool(row.get("pos_estimated"))}
         g = grade_of({k: v for k, v in rec.items() if k != "tier"}, self.grades)
         if g == "S" and prov == "split":
             g = "A"                     # split/推断来的值一律降级，S 级只许全原生
+        g = self.cap_no_zip(g, rec)      # 邮编非法/缺失 → 封顶 B（plan §二）
         rec["grade"] = g
         rec["_prov"] = prov
         rec["_zreason"] = zreason
         rec["_creason"] = creason
         if g is None:                                     # 低于 C：丢弃（记 dropped_low_grade）
             return None, "below_c", rec
-        rec["addrkey"] = addrkey_v3(num, street, city, state, zip5, row.get("unit") or "")
+        rec["addrkey"] = addrkey_v3(num, street, state, zip5, row.get("unit") or "",
+                                    include_unit=self.include_unit,
+                                    post_type=row.get("st_suf") or "",
+                                    pre_dir=row.get("pre_dir") or "",
+                                    post_dir=row.get("post_dir") or "") or None
         return rec, "", rec
+
+    def cap_no_zip(self, g, rec):
+        """邮编非法/缺失 → 不许命中「需要 zip5」的级（由配置推出，不硬编码 S/A）。"""
+        req = {k for k, need in self.grades.items() if "zip5" in need}
+        if g in req and not rec.get("zip5"):
+            return grade_of(rec, {k: v for k, v in self.grades.items() if k not in req})
+        return g

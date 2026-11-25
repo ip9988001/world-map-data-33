@@ -39,7 +39,7 @@ _G = {}
 def _init():
     cfg = C.load_pilot_cfg()
     org2dial, meta, fb = C.load_registry_orgs()
-    _G["m"] = C.LayerMapper(cfg, org2dial, meta)
+    _G["m"] = C.LayerMapper(cfg, org2dial, meta, C.load_tier_map())
     _G["cfg"] = cfg
 
 
@@ -69,6 +69,8 @@ def map_layer(job):
         st["dialect_id"], st["dialect_origin"], st["a_pool_eligible"] = "minimal_safe", "fallback", False
         return st
     dialect, origin, apool = m.dialect_for(url)
+    m.begin_layer(url)          # 逐层重置字段名缓存（不调会把上一层的 raw 键名带到本层）
+    tier_hint = m.tier_for(url)
     os.makedirs(ROWS, exist_ok=True)
     op = os.path.join(ROWS, lid + ".ndjson.gz")
     with gzip.open(op, "wb", compresslevel=1) as out:

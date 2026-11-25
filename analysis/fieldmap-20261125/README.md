@@ -14,6 +14,21 @@ python3 analysis/fieldmap-20261125/health_probe.py 10                           
 python3 analysis/fieldmap-20261125/finalize.py                                     # unusable.csv + REPORT.md + SUMMARY.json
 ```
 
+### 只改口径、不重扫 40 G 输入的增量重写（muse-000258）
+
+```bash
+python3 analysis/fieldmap-20261125/amend_rewrite.py --workers 7   # dist/tar → dist/tar2
+mv dist/tar2/* dist/tar/ && rmdir dist/tar2
+python3 analysis/fieldmap-20261125/amend_apply_stats.py          # 回填 layer-coverage.csv（v1 → layer-coverage.v1.csv）
+python3 analysis/fieldmap-20261125/fieldstats.py
+python3 analysis/fieldmap-20261125/amend_verify.py --layers 355   # anchor-check.json/.csv
+python3 analysis/fieldmap-20261125/finalize.py
+```
+
+## 口径权威源
+
+**`w2-fieldmap-plan-20261125.md`**（muse-000258 全文，原样落盘）= 分级/字段/验收的唯一口径。
+
 输出：`dist/rows/<layer>.ndjson.gz`（打包后即删）→ `dist/tar/fieldmap-part%03d.tar.gz`（每 500 层一片）。
 `dist/intake-full` 一个字节都不动；`free_gb < 3` 会立即停手。
 
@@ -21,6 +36,9 @@ python3 analysis/fieldmap-20261125/finalize.py                                  
 
 - 取值优先级：**信封原生值** → `raw` 角色别名（`engine/split_addr.py: roles_of()` = registry ∪ engine/dialects，约 200 个别名）→ **组合串拆分**（`split_number_street` / `split_city_tail`）。
 - 组合串拆出来的值 `provenance=split`，**一律不许进 S**。
-- `zip5` 恰好 5 位才算有效（`12345-6789` 取前 5）；`house_number` 占位值一律缺失、**绝不生成门牌**；坐标越界/(0,0)/缺省一律 null。
+- `zip5` 恰好 5 位才算有效（`12345-6789` 取前 5）；`house_number` 占位值（`-1/0/-9/NULL/NA`…）一律缺失、**绝不生成门牌**；坐标越界/(0,0)/缺省一律 null。
+- `source_layer` = **url**（无 url 的 71 层 `@未定位` 退回 layer_id）。
+- `addrkey` = **engine 档 v3**：`engine/outlet_clean.addrkey_v3`（parts = state2 / zip5 / num_key / street_key / unit_key；`include_unit` 读 `pilot.yaml`；num 或 street 缺 → null）。
+- `tier` 取 `analysis/grading-rerun-20261125/auto-recognized.csv`（**Tier1 = 410 那版**）按 url 匹配，未命中 = `unrated`。
 - `grade` / `tier` 完全由 `engine/config/pilot.yaml` 的 `grades` / `tier_rank` 驱动，代码里没有硬编码阈值。
 - 方言：registry 按 agol org 命中 115 层，其余 `minimal_safe`（`pool=manual`、`a_pool_eligible=false`）。
