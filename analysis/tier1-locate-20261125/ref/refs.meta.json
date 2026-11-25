@@ -1,0 +1,29 @@
+{
+ "counties": {
+  "file": "counties-index.json",
+  "n_files": 50,
+  "n_names": 1834,
+  "sha256": "e4ac0ffc3a0f893a984ac650af7d8e2e91b04938561f5d118b1b071acbb048ed",
+  "source": "repo:analysis/tiger_county/*.json.gz (51 \u5dde, TIGERweb State_County/1 \u6d3e\u751f)"
+ },
+ "inrepo_states": {
+  "file": "repo:survey/ng911/us_states.json",
+  "role": "\u5bf9\u7167\uff08\u7ea6 1:20m \u7c97\u8fb9\u754c\uff0c\u6d77\u5cb8\u7ebf\u5916\u70b9\u4f1a\u5224 OUT\uff09",
+  "sha256": "6f23ed91fce2c25d57c01d83225342ba40258e9571c486c3999bd827c80d193b"
+ },
+ "places": {
+  "file": "places-index.json",
+  "n_names": 20711,
+  "n_rows": 32642,
+  "sha256": "575717a96d9c663119ab03590ea71240fbb8eb74f7a544107e5af14a8daccb8c",
+  "source": "TIGERweb Places_CouSub_ConCity_SubMCD/4 + /5 (Incorporated Places + CDP)"
+ },
+ "states": {
+  "file": "tigerweb-states.geojson.gz",
+  "n_features": 51,
+  "note": "\u53ea\u4fdd\u7559 50 \u5dde + DC\uff08\u53bb\u6389 PR/VI/GU/AS/MP\uff09",
+  "sha256": "e28e9f8af7a88b7152ab1015ec541e62dcfe94f87ccf761924f66d2a57315b89",
+  "simplify": "maxAllowableOffset=0.002 deg (~200m), outSR=4326",
+  "source_url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/State_County/MapServer/0/query?where=1%3D1&outFields=STATE%2CNAME&returnGeometry=true&outSR=4326&geometryPrecision=5&maxAllowableOffset=0.002&resultRecordCount=60&f=geojson"
+ }
+}

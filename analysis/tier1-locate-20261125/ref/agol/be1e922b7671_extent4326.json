@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services3.arcgis.com/V9X64JtIU4jwNlTJ/arcgis/rest/services/Parcels_050621/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -75.60249468145003, "ymin": 40.01509347862741, "xmax": -75.50603447062032, "ymax": 40.075364547248725, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

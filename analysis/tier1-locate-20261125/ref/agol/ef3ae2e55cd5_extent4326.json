@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services.arcgis.com/GXwOsvnLQI6EDOp7/arcgis/rest/services/Minnesota_School_Program_Locations_2026/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -97.25663263288084, "ymin": 43.44496507676063, "xmax": -89.5902911662334, "ymax": 49.32135915690378, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

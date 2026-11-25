@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services3.arcgis.com/YwCuPGYdQw7hiTj1/arcgis/rest/services/Zoning_2026/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -90.50565274726497, "ymin": 42.68402170195114, "xmax": -90.42951349564072, "ymax": 42.7550240715718, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

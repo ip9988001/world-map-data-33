@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services1.arcgis.com/GsfaWLUi0ztysmyW/arcgis/rest/services/AwareMap/FeatureServer/3/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -78.46295606600967, "ymin": 39.39408408288459, "xmax": -78.02851511022654, "ymax": 39.69620105462003, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

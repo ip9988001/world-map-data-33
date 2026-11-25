@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services1.arcgis.com/KUeKSLlMUcWvuPRM/arcgis/rest/services/All_TH_Lots/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -71.17363719776986, "ymin": 42.23875095756314, "xmax": -71.04018454123133, "ymax": 42.32411021598044, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

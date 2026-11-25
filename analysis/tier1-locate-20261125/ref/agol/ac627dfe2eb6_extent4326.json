@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services6.arcgis.com/UfXcKlfRMOLiWRIE/arcgis/rest/services/pbBaseMap_View/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -71.28012357229147, "ymin": 42.73935189551225, "xmax": -71.16656335429926, "ymax": 42.85116383752558, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

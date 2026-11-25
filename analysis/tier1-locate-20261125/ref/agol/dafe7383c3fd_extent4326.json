@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://gis.jacksonnc.org/jcgis/rest/services/GIS/Collector_Base_Layers_GIS_STAGE/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -83.49604194537933, "ymin": 35.014163270254784, "xmax": -82.89502294073851, "ymax": 35.61173473378514, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

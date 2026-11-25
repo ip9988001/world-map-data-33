@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://gis.jacksonnc.org/jcgis/rest/services/GIS/Collector_Base_Layers_GIS_STAGE/FeatureServer/0/query?where=1%3D1&outFields=STATE&returnDistinctValues=true&returnGeometry=false&resultRecordCount=200&f=json", "error": {"code": 400, "message": "Unable to complete operation.", "details": ["Unable to perform query operation."]}}

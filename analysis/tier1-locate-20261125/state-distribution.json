@@ -1,0 +1,94 @@
+{
+ "input": {
+  "file": "tier1-unlocated.csv",
+  "n_layers": 85,
+  "rows_n_sum": 20766446
+ },
+ "by_state_final": {
+  "NC": 14,
+  "PA": 13,
+  "WI": 11,
+  "SC": 9,
+  "CA": 7,
+  "MN": 4,
+  "VA": 4,
+  "CO": 3,
+  "TN": 3,
+  "TX": 3,
+  "NH": 2,
+  "VT": 2,
+  "WA": 2,
+  "unresolved": 2,
+  "FL": 1,
+  "GA": 1,
+  "MA": 1,
+  "ME": 1,
+  "ND": 1,
+  "WV": 1
+ },
+ "pilot_states": {
+  "DE": {
+   "n_layers": 0,
+   "urls": []
+  },
+  "NH": {
+   "n_layers": 2,
+   "urls": [
+    "https://services6.arcgis.com/UfXcKlfRMOLiWRIE/arcgis/rest/services/VW_Base_Map_(View)/FeatureServer/0",
+    "https://services6.arcgis.com/UfXcKlfRMOLiWRIE/arcgis/rest/services/pbBaseMap_View/FeatureServer/0"
+   ]
+  },
+  "IA": {
+   "n_layers": 0,
+   "urls": []
+  }
+ },
+ "unresolved": {
+  "n_layers": 2,
+  "urls": [
+   "https://services2.arcgis.com/kvaALmlpNtqlsVfa/arcgis/rest/services/service_76dad3d0ee7846aeb514cb27afb72727/FeatureServer/1",
+   "https://services2.arcgis.com/kvaALmlpNtqlsVfa/arcgis/rest/services/survey123_7d6d08601847441f966e7f0a679f6bf7_stakeholder/FeatureServer/2"
+  ]
+ },
+ "confidence": {
+  "very_high": 33,
+  "high": 33,
+  "medium": 17,
+  "conflict": 2
+ },
+ "multi_state": {
+  "n_layers": 2,
+  "urls": [
+   "https://services6.arcgis.com/RUXG8JzUbZvRVIxG/arcgis/rest/services/Generic_Photos_and_Captions_Survey_VIEW_LAYER/FeatureServer/0",
+   "https://services6.arcgis.com/RUXG8JzUbZvRVIxG/arcgis/rest/services/service_48189ad1d7074d58856d07727687d617/FeatureServer/0"
+  ]
+ },
+ "path_coverage": {
+  "E1_metadata_hit": 52,
+  "E2_attribute_hit": 55,
+  "E3_geometry_available": 85,
+  "E3_used_in_vote": 83
+ },
+ "rows_n_by_state": {
+  "NC": 19212042,
+  "CA": 532832,
+  "GA": 481847,
+  "TX": 148889,
+  "PA": 106869,
+  "ME": 55592,
+  "WI": 43891,
+  "MN": 42238,
+  "VA": 37765,
+  "NH": 30014,
+  "SC": 24324,
+  "ND": 19640,
+  "VT": 13009,
+  "WV": 12717,
+  "CO": 3076,
+  "TN": 837,
+  "MA": 659,
+  "WA": 128,
+  "unresolved": 50,
+  "FL": 27
+ }
+}

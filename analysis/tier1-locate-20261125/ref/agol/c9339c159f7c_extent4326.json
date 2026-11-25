@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services2.arcgis.com/kvaALmlpNtqlsVfa/arcgis/rest/services/survey123_7d6d08601847441f966e7f0a679f6bf7_stakeholder/FeatureServer/2/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -106.93707399393296, "ymin": 0, "xmax": 0, "ymax": 44.08130299024344, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

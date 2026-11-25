@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services3.arcgis.com/x68DaqVkReQwi0Vd/arcgis/rest/services/City_Owned_Parcels_(View)/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -117.66666185634375, "ymin": 33.386362632229684, "xmax": -117.57012147751999, "ymax": 33.49092781223804, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

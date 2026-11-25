@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services6.arcgis.com/PArfeTGcwA9RGNzN/arcgis/rest/services/Public_Parcels/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -121.48463582776718, "ymin": 38.69903527176131, "xmax": -120.00312771945835, "ymax": 39.332212045060395, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

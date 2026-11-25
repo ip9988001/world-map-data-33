@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services5.arcgis.com/OMDIQXm11z4wcK26/arcgis/rest/services/UST_Phase1_Releases_(Active_View)/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -83.09310390478323, "ymin": 32.115806122598585, "xmax": -78.6147024285802, "ymax": 35.17910695006951, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services6.arcgis.com/RUXG8JzUbZvRVIxG/arcgis/rest/services/Generic_Photos_and_Captions_Survey_VIEW_LAYER/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -124.21989603438216, "ymin": 0, "xmax": 0, "ymax": 47.64569851, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

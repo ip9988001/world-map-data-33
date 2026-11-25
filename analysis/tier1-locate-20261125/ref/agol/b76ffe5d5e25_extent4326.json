@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services5.arcgis.com/RmXXW3PwBZGOxlSe/arcgis/rest/services/FireBoundaries/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -95.61151090108085, "ymin": 32.115440549957036, "xmax": -94.93310355170553, "ymax": 32.67258474838393, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

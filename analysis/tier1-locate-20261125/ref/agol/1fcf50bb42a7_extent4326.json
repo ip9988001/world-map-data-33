@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services8.arcgis.com/ZO3I3GzsL2ntjwG2/arcgis/rest/services/CivicRec/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -76.72373124269708, "ymin": 39.95089556810915, "xmax": -76.61506499567454, "ymax": 40.03156231645245, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

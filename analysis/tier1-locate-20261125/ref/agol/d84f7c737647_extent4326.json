@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services6.arcgis.com/pET3krhY1T0smsXf/arcgis/rest/services/ADP_CTR/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -78.5161666543024, "ymin": 36.168067586088334, "xmax": -78.27521593333242, "ymax": 36.5452708037192, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

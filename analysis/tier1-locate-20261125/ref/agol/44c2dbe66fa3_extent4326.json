@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services3.arcgis.com/OvFcVUsTtqEiQ1SJ/arcgis/rest/services/Androscoggin_County_District_Notes/FeatureServer/3/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -70.48295882591572, "ymin": 43.907981039592734, "xmax": -69.995495880511, "ymax": 44.483730848969614, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

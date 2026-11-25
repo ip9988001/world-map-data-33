@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services5.arcgis.com/OMDIQXm11z4wcK26/arcgis/rest/services/Phase_1_Assessment_Brownfields/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -83.10620390746699, "ymin": 32.158606131718194, "xmax": -78.66500244538878, "ymax": 35.158806943934735, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

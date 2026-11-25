@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services8.arcgis.com/sEe3VebDimVZYa0g/arcgis/rest/services/FAR2025_Basemap/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -106.99819691846815, "ymin": 38.86380723595698, "xmax": -106.9739758750885, "ymax": 38.87585277666387, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

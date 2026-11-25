@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://enterprise.gisdata.mn.gov/aghost/rest/services/us_mn_state_mde/struc_school_program_locs/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -97.22872340365143, "ymin": 43.50490899986513, "xmax": -89.68043187215062, "ymax": 49.35293668869326, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

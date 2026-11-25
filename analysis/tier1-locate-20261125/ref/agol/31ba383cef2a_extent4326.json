@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services1.arcgis.com/1bO0c7PxQdsGidPK/arcgis/rest/services/RL_Parcels_NC_WebMap/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -73.27733952257601, "ymin": 44.44596332587701, "xmax": -73.17535424172749, "ymax": 44.531454219091216, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

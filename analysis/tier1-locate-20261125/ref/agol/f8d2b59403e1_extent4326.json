@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services9.arcgis.com/NENkjkswKTzMfG3A/arcgis/rest/services/County_Parcels_-_Public_View/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -121.48463582754123, "ymin": 38.699035272076685, "xmax": -120.00312771898953, "ymax": 39.33221204547631, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

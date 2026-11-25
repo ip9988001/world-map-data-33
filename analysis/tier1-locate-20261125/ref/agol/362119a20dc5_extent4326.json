@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services5.arcgis.com/OMDIQXm11z4wcK26/arcgis/rest/services/UST_Phase1_Releases_(NFA_View)/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -83.2707039574236, "ymin": 32.11580611668762, "xmax": -78.60960242705713, "ymax": 35.18890695237067, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

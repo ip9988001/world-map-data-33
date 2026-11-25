@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services9.arcgis.com/7sXuW6a1uvpvu9pU/arcgis/rest/services/Base_Layers_View/FeatureServer/5/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -74.87335684852653, "ymin": 40.124119999901, "xmax": -74.72829267078077, "ymax": 40.21880490175833, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

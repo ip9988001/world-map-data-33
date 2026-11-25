@@ -1,0 +1,42 @@
+{
+ "a6a3c38ec47f": {
+  "state_final": "unresolved",
+  "confidence": "conflict",
+  "why": "人工复核：几何散列（NM 3/25=12%、MD 2/25=8%、CO/PA 各 1，OUT 60%），样本 5 条里只有 2 条地址在 NM；这是全国性调研点层（NG State Hosted Training Locations），非单州数据 → 无多数，不定州"
+ },
+ "c9339c159f7c": {
+  "state_final": "unresolved",
+  "confidence": "conflict",
+  "why": "人工复核：与上一层同源（survey123 stakeholder 副本），几何散列 NM 12%/MD 8%，样本 2/5 在 NM；E1 的 SC 来自 serviceDescription 'View Feature Service' 字样，属误命中 → 无多数，不定州"
+ },
+ "c930b5bc51ec": {
+  "state_final": "VT",
+  "confidence": "medium",
+  "why": "人工复核：E1 的 NC 来自 serviceDescription/item.snippet 里的 'NC Parcel Data' 表述（命名沿用），但几何 1000/1000 点落在 Burlington VT（样本首点 44.446446,-73.216376；属性 siteaddress='378 QUEEN CITY PARK RD'、maplotno='060-2-003-000'）；E2 无州字段 → 按几何定 VT"
+ },
+ "31ba383cef2a": {
+  "state_final": "VT",
+  "confidence": "medium",
+  "why": "人工复核：同上（RL_Parcels_NC_WebMap 与 Neighborhood_Code_Parcel_Data_Updated 同源同坐标 Burlington VT），E1 'NC' 属命名沿用"
+ },
+ "33c8e455152c": {
+  "state_final": "SC",
+  "confidence": "medium",
+  "why": "人工复核：E1 的 TX 来自 serviceDescription 'Tyler Parcel'/'Tyler Data' 字样（属误命中）；样本属性为 Kiawah Island SC 物业（PID=2070000018、GPIN=2288540948），几何 SC 1000/1000 → 按几何定 SC"
+ },
+ "a8f8bb1fea6f": {
+  "state_final": "CA",
+  "confidence": "high",
+  "why": "人工复核：E1 的 NY 来自 'Central Square'（同名 14 州）、CO 来自 owner 串里的 'Segundo' 误切；owner 域名为 ElSegundo.org（El Segundo, CA）、样本街道 228 1/2 W ACACIA AVE 属 El Segundo CA，几何 CA 1000/1000"
+ },
+ "1fcf50bb42a7": {
+  "state_final": "PA",
+  "confidence": "medium",
+  "why": "人工复核：E1 的 KS/OK 来自 owner 'HarperB@3Phillies' 里的 Harper（同名多州，已降级）；几何 PA 1000/1000"
+ },
+ "5ab75816c38c": {
+  "state_final": "PA",
+  "confidence": "medium",
+  "why": "人工复核：E1 的 TX 来自 item.snippet 'Falls Twp'（同名多州）；几何 PA 1000/1000、bbox PA 86.2%/NJ 13.8%（边界外扩）"
+ }
+}

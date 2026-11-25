@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services2.arcgis.com/QNHNk0Cmg2csuv9p/arcgis/rest/services/EnerGov/FeatureServer/0/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -80.15241994674872, "ymin": 32.58085842630596, "xmax": -80.00984441819027, "ymax": 32.6353375467474, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}

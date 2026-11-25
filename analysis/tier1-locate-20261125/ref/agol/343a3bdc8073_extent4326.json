@@ -1,0 +1,1 @@
+{"_http": 200, "_url": "https://services9.arcgis.com/7sXuW6a1uvpvu9pU/arcgis/rest/services/HistoricLocations_view/FeatureServer/3/query?where=1%3D1&returnExtentOnly=true&outSR=4326&f=json", "extent": {"xmin": -74.87335684852658, "ymin": 40.124119999900955, "xmax": -74.72829267078083, "ymax": 40.2188049017583, "spatialReference": {"wkid": 4326, "latestWkid": 4326}}}
