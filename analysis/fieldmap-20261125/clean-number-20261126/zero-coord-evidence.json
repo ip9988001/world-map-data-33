@@ -1,0 +1,29 @@
+{
+ "countymd_gov_server_rest_services_Public_Primary_MapServer_2": {
+  "zero_coord_before": 2,
+  "zero_coord_after": 2,
+  "rows_where_flag_same": 59083,
+  "sample": {
+   "raw_lat": "NaN",
+   "raw_lon": "NaN"
+  }
+ },
+ "ervices_AGO_HarrisonCounty_PhysicalAddresses_FeatureServer_0": {
+  "zero_coord_before": 30,
+  "zero_coord_after": 30,
+  "rows_where_flag_same": 105396,
+  "sample": {
+   "raw_lat": "NaN",
+   "raw_lon": "NaN"
+  }
+ },
+ "rdco_org_arcgis_rest_services_Address_Points_FeatureServer_0": {
+  "zero_coord_before": 8,
+  "zero_coord_after": 8,
+  "rows_where_flag_same": 39594,
+  "sample": {
+   "raw_lat": "NaN",
+   "raw_lon": "NaN"
+  }
+ }
+}

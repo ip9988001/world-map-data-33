@@ -971,56 +971,55 @@ golden_cases:
   - no_zip_ok
 - id: gc-019
   dialect_id: fix58-alias-ext-v1
-  source_layer: /data/workspace/world-map-data-33/dist/intake-full/layers/gyrE4_arcgis_rest_services_Address_Point_911_FeatureServer_0
-  source_table: addr
-  source_row_index: '0'          # part-u00000-000.ndjson.gz 第 1 行（原值，未改写）
-  source_url: https://services3.arcgis.com/MgO4asRLgB9gyrE4/arcgis/rest/services/Address_Point_911/FeatureServer/0
-  source_fields:
-    housenumber: st_num
-    street: feanme+featyp
-  input:
-    st_num: '7870'
-    feanme: STATE
-    featyp: ST
-  expect:
-    housenumber: '7870'
-    street: STATE ST
-  expect_flags:
-  - no_city_ok
-- id: gc-020
-  dialect_id: fix58-alias-ext-v1
-  source_layer: /data/workspace/world-map-data-33/dist/intake-full/layers/5OXNGFDn_arcgis_rest_services_Address_Points_FeatureServer_2
-  source_table: addr
-  source_row_index: '0'          # part-u00000-000.ndjson.gz 第 1 行（原值，未改写）
-  source_url: https://services1.arcgis.com/C2LPusZs5OXNGFDn/arcgis/rest/services/Address_Points/FeatureServer/2
-  source_fields:
-    housenumber: ADDRESSNUM
-    street: sfeanme+sfeatyp
-  input:
-    ADDRESSNUM: '835366'
-    SFEANME: PAINTED CHURCH
-    SFEATYP: RD
-  expect:
-    housenumber: '835366'
-    street: PAINTED CHURCH RD
-  expect_flags:
-  - no_city_ok
-- id: gc-021
-  dialect_id: fix58-alias-ext-v1
   source_layer: /data/workspace/world-map-data-33/dist/intake-full/layers/shlD6Twu_arcgis_rest_services_Street_Address_FeatureServer_0
   source_table: addr
   source_row_index: '0'          # part-u00000-000.ndjson.gz 第 1 行（原值，未改写）
   source_url: https://services3.arcgis.com/HO0zfySJshlD6Twu/arcgis/rest/services/Street_Address/FeatureServer/0
   source_fields:
     housenumber: STRNUM
-    street: strname+strtype
-  input:
-    STRNUM: '130'
-    STRNAME: GREENVALE
-    STRTYPE: AVENUE
+    street: STRNAME
+  input:                          # 键 = 本条目声明的别名拼写（evaluator 按别名精确匹配；
+    STRNUM: '130'                 # 生产侧 fm_core 走 SA._norm 大小写归一，两者等价）
+    strname: GREENVALE
   expect:
     housenumber: '130'
-    street: GREENVALE AVENUE
+    street: GREENVALE
+  expect_flags:
+  - no_city_ok
+  - no_zip_ok
+- id: gc-020
+  dialect_id: fix58-alias-ext-v1
+  source_layer: /data/workspace/world-map-data-33/dist/intake-full/layers/est_services_BASE_BASE_NS_CivicAddress_File_UT83_MapServer_0
+  source_table: addr
+  source_row_index: '0'          # part-u00000-000.ndjson.gz 第 1 行（原值，未改写）
+  source_url: https://services2.arcgis.com/OV1OaZ0CQV5XyzN4/arcgis/rest/services/BASE/BASE_NS_CivicAddress_File_UT83/MapServer/0
+  source_fields:
+    housenumber: CIVICNUM
+    street: STRNAME
+  input:
+    CIVICNUM: '8'
+    strname: Aberdeen
+  expect:
+    housenumber: '8'
+    street: Aberdeen
+  expect_flags:
+  - no_city_ok
+  - no_zip_ok
+- id: gc-021
+  dialect_id: fix58-alias-ext-v1
+  source_layer: /data/workspace/world-map-data-33/dist/intake-full/layers/arcgis_rest_services_CB_Civic_Addresses_WFL1_FeatureServer_0
+  source_table: addr
+  source_row_index: '0'          # part-u00000-000.ndjson.gz 第 1 行（原值，未改写）
+  source_url: https://services6.arcgis.com/oB0eX5FvNFBzUmii/arcgis/rest/services/CB_Civic_Addresses_WFL1/FeatureServer/0
+  source_fields:
+    housenumber: CIVICNUM
+    street: STRNAME
+  input:
+    CIVICNUM: '75'
+    strname: Chimney Corner Beach
+  expect:
+    housenumber: '75'
+    street: Chimney Corner Beach
   expect_flags:
   - no_city_ok
   - no_zip_ok

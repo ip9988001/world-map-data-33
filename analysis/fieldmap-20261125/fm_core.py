@@ -8,6 +8,8 @@
 口径（全部落在这里，不散落在 runner 里）：
 - house_number：占位值（0/000/-1/-9/NULL/N/A/NONE/UNKNOWN/空/纯符号）= 缺失；**绝不生成门牌**
   （plan §二：`-9` 必须算缺失 —— muse-000258 增量第 6 条）
+- house_number 浮点整形（muse-000275）：`1009.0` / `"1009.00"` / float `1009.0` → `1009`（**只改写法不改数值**）；
+  非零小数（`1009.5`）**原样保留**（不四舍五入）；`0.0` 仍走占位值分支判缺失（占位语义优先，见 clean_number 注释）
 - street_name：pre_dir + st_name + st_suf + post_dir 按序拼接（原生字段，不猜）
 - city：信封 city 原样（不补、不猜）
 - state：合法 2 字母大写州码（含 DC/PR/VI/GU/AS/MP），否则 null
@@ -46,6 +48,7 @@ STATE_KEYS = {"state", "st", "stateabbr", "state_abbr", "statecode", "state_code
 PLACEHOLDERS = {"", "0", "000", "NULL", "NONE", "N/A", "NA", "UNKNOWN", "-1", "-9", "-", "--", ".", "?",
                 "0.0", "-1.0", "-9.0", "0000", "-09"}
 RX_DIGITS5 = re.compile(r"^(\d{5})(?:-\d{4})?$")
+RX_FLOAT_INT = re.compile(r"^(\d+)\.0+$")   # 1009.0 / "1009.00"：整数值的浮点写法（muse-000275）
 RX_ONLY_SYMBOLS = re.compile(r"^[^0-9A-Za-z]+$")
 
 FIELDS = ["house_number", "street_name", "city", "state", "zip5", "lat", "lon",
@@ -82,9 +85,23 @@ def agol_org(url: str) -> str:
 
 
 def clean_number(v) -> str:
+    """门牌清洗：占位值/纯符号 → 空；整数值的浮点写法归一成整数字面（muse-000275）。
+
+    归一规则（**只改字符串写法，不改数值、不改判定口径**）：
+      `"1009.0"` → `"1009"`；`1009.0`(float) → `"1009"`；`" 1009.0 "` → `"1009"`；`"1009.00"` → `"1009"`
+      非零小数 `"1009.5"` → **原样返回**（不四舍五入；调用方如需统计自行判定）
+      `"0.0"` / `0.0`(float) → **空串**：`0` / `0.0` / `000` 是既定占位值（PLACEHOLDERS），
+        占位语义优先于浮点整形 —— 若归一成 `"0"` 就会写出 `house_number="0"` 并凭空把 grade 从 C 抬到 B，
+        违反「不改数值、不改分级」；故 2.3「不碰 placeholder 语义」优先于 2.1 里 `"0.0"→"0"` 的示例。
+    """
     s = "" if v is None else str(v).strip()
     if s.upper() in PLACEHOLDERS or RX_ONLY_SYMBOLS.match(s):
         return ""
+    m = RX_FLOAT_INT.match(s)
+    if m:
+        n = m.group(1)
+        # 归一后再判一次占位值："0.00" → "0" 仍是占位值（0/000），绝不许变成真门牌
+        return "" if (n.upper() in PLACEHOLDERS or RX_ONLY_SYMBOLS.match(n)) else n
     return s
 
 
