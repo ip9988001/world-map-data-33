@@ -1,0 +1,566 @@
+[
+ {
+  "layer": "erycountymd_gov_arcgis_rest_services_General_BAR_MapServer_0",
+  "src_field": "add_num(env)",
+  "chunks": 1,
+  "in_rows": 294680,
+  "parse_error": 0,
+  "before_mapped": 294680,
+  "after_mapped": 294680,
+  "before_dirty": 294680,
+  "after_dirty": 0,
+  "before_grade": {
+   "C": 294680
+  },
+  "after_grade": {
+   "C": 294680
+  },
+  "before_deci": 0,
+  "after_deci": 0,
+  "before_closed_diff": 0,
+  "after_closed_diff": 0,
+  "bad_empty": 0,
+  "bad_grade": 0,
+  "zero_coord": 0,
+  "pairs_checked": 294680,
+  "pair_mismatch": 0,
+  "addrkey_changed": 294680
+ },
+ {
+  "layer": "ountymd_gov_arcgis_rest_services_General_BAR_FeatureServer_0",
+  "src_field": "add_num(env)",
+  "chunks": 1,
+  "in_rows": 294680,
+  "parse_error": 0,
+  "before_mapped": 294680,
+  "after_mapped": 294680,
+  "before_dirty": 294680,
+  "after_dirty": 0,
+  "before_grade": {
+   "C": 294680
+  },
+  "after_grade": {
+   "C": 294680
+  },
+  "before_deci": 0,
+  "after_deci": 0,
+  "before_closed_diff": 0,
+  "after_closed_diff": 0,
+  "bad_empty": 0,
+  "bad_grade": 0,
+  "zero_coord": 0,
+  "pairs_checked": 294680,
+  "pair_mismatch": 0,
+  "addrkey_changed": 294680
+ },
+ {
+  "layer": "land_ca_server_rest_services_civic_addresses_FeatureServer_0",
+  "src_field": "STREET_NO",
+  "chunks": 1,
+  "in_rows": 82901,
+  "parse_error": 0,
+  "before_mapped": 82901,
+  "after_mapped": 82901,
+  "before_dirty": 82901,
+  "after_dirty": 0,
+  "before_grade": {
+   "C": 82901
+  },
+  "after_grade": {
+   "C": 82901
+  },
+  "before_deci": 0,
+  "after_deci": 0,
+  "before_closed_diff": 0,
+  "after_closed_diff": 0,
+  "bad_empty": 0,
+  "bad_grade": 0,
+  "zero_coord": 0,
+  "pairs_checked": 82901,
+  "pair_mismatch": 0,
+  "addrkey_changed": 82901
+ },
+ {
+  "layer": "v_com_server_rest_services_ACC_Address_Point_FeatureServer_0",
+  "src_field": "add_num(env)",
+  "chunks": 1,
+  "in_rows": 78093,
+  "parse_error": 0,
+  "before_mapped": 78064,
+  "after_mapped": 78064,
+  "before_dirty": 77411,
+  "after_dirty": 0,
+  "before_grade": {
+   "B": 77395,
+   "C": 669
+  },
+  "after_grade": {
+   "B": 77395,
+   "C": 669
+  },
+  "before_deci": 0,
+  "after_deci": 0,
+  "before_closed_diff": 0,
+  "after_closed_diff": 0,
+  "bad_empty": 0,
+  "bad_grade": 0,
+  "zero_coord": 0,
+  "pairs_checked": 77411,
+  "pair_mismatch": 0,
+  "addrkey_changed": 77411
+ },
+ {
+  "layer": "_gov_host_rest_services_PublicAccess_LandData_MapServer_1054",
+  "src_field": "add_num(env)",
+  "chunks": 1,
+  "in_rows": 73569,
+  "parse_error": 0,
+  "before_mapped": 73569,
+  "after_mapped": 73569,
+  "before_dirty": 73569,
+  "after_dirty": 0,
+  "before_grade": {
+   "C": 73569
+  },
+  "after_grade": {
+   "C": 73569
+  },
+  "before_deci": 0,
+  "after_deci": 0,
+  "before_closed_diff": 0,
+  "after_closed_diff": 0,
+  "bad_empty": 0,
+  "bad_grade": 0,
+  "zero_coord": 0,
+  "pairs_checked": 73569,
+  "pair_mismatch": 0,
+  "addrkey_changed": 73569
+ },
+ {
+  "layer": "rcgis_rest_services_OpenData_General_Reference_MapServer_100",
+  "src_field": "add_num(env)",
+  "chunks": 1,
+  "in_rows": 68811,
+  "parse_error": 0,
+  "before_mapped": 68811,
+  "after_mapped": 68811,
+  "before_dirty": 67843,
+  "after_dirty": 0,
+  "before_grade": {
+   "C": 968,
+   "B": 67843
+  },
+  "after_grade": {
+   "C": 968,
+   "B": 67843
+  },
+  "before_deci": 0,
+  "after_deci": 0,
+  "before_closed_diff": 0,
+  "after_closed_diff": 0,
+  "bad_empty": 0,
+  "bad_grade": 0,
+  "zero_coord": 0,
+  "pairs_checked": 67843,
+  "pair_mismatch": 0,
+  "addrkey_changed": 67843
+ },
+ {
+  "layer": "services_Address_Planning_AddressPoints_Planning_MapServer_0",
+  "src_field": "add_num(env)",
+  "chunks": 1,
+  "in_rows": 56737,
+  "parse_error": 0,
+  "before_mapped": 56733,
+  "after_mapped": 56733,
+  "before_dirty": 56733,
+  "after_dirty": 0,
+  "before_grade": {
+   "A": 56642,
+   "B": 88,
+   "C": 3
+  },
+  "after_grade": {
+   "A": 56642,
+   "B": 88,
+   "C": 3
+  },
+  "before_deci": 0,
+  "after_deci": 0,
+  "before_closed_diff": 0,
+  "after_closed_diff": 0,
+  "bad_empty": 0,
+  "bad_grade": 0,
+  "zero_coord": 0,
+  "pairs_checked": 56733,
+  "pair_mismatch": 0,
+  "addrkey_changed": 56733
+ },
+ {
+  "layer": "countymd_gov_server_rest_services_Public_Primary_MapServer_2",
+  "src_field": "add_num(env)",
+  "chunks": 1,
+  "in_rows": 59087,
+  "parse_error": 0,
+  "before_mapped": 59083,
+  "after_mapped": 59083,
+  "before_dirty": 51767,
+  "after_dirty": 0,
+  "before_grade": {
+   "C": 59083
+  },
+  "after_grade": {
+   "C": 59083
+  },
+  "before_deci": 0,
+  "after_deci": 0,
+  "before_closed_diff": 0,
+  "after_closed_diff": 0,
+  "bad_empty": 0,
+  "bad_grade": 0,
+  "zero_coord": 2,
+  "pairs_checked": 51767,
+  "pair_mismatch": 0,
+  "addrkey_changed": 51767
+ },
+ {
+  "layer": "58c926eb68_rest_services_Public_SiteAddr_ZipCode_MapServer_0",
+  "src_field": "HOUSE_NO",
+  "chunks": 1,
+  "in_rows": 49859,
+  "parse_error": 0,
+  "before_mapped": 49859,
+  "after_mapped": 49859,
+  "before_dirty": 49858,
+  "after_dirty": 0,
+  "before_grade": {
+   "S": 49859
+  },
+  "after_grade": {
+   "S": 49859
+  },
+  "before_deci": 1,
+  "after_deci": 1,
+  "before_closed_diff": 0,
+  "after_closed_diff": 0,
+  "bad_empty": 0,
+  "bad_grade": 0,
+  "zero_coord": 0,
+  "pairs_checked": 49858,
+  "pair_mismatch": 0,
+  "addrkey_changed": 49858
+ },
+ {
+  "layer": "s_org_server_rest_services_JCAdmin_SITUS_Static__MapServer_0",
+  "src_field": "Number",
+  "chunks": 1,
+  "in_rows": 43853,
+  "parse_error": 0,
+  "before_mapped": 43851,
+  "after_mapped": 43851,
+  "before_dirty": 43824,
+  "after_dirty": 0,
+  "before_grade": {
+   "S": 43237,
+   "C": 609,
+   "B": 5
+  },
+  "after_grade": {
+   "S": 43237,
+   "C": 609,
+   "B": 5
+  },
+  "before_deci": 0,
+  "after_deci": 0,
+  "before_closed_diff": 0,
+  "after_closed_diff": 0,
+  "bad_empty": 0,
+  "bad_grade": 0,
+  "zero_coord": 0,
+  "pairs_checked": 43824,
+  "pair_mismatch": 0,
+  "addrkey_changed": 43824
+ },
+ {
+  "layer": "s_gscplanning_com_arcgis_rest_services_Addresses_MapServer_0",
+  "src_field": "AddNum",
+  "chunks": 1,
+  "in_rows": 32599,
+  "parse_error": 0,
+  "before_mapped": 30809,
+  "after_mapped": 30809,
+  "before_dirty": 30561,
+  "after_dirty": 0,
+  "before_grade": {
+   "A": 30632,
+   "C": 154,
+   "B": 23
+  },
+  "after_grade": {
+   "A": 30632,
+   "C": 154,
+   "B": 23
+  },
+  "before_deci": 1,
+  "after_deci": 1,
+  "before_closed_diff": 0,
+  "after_closed_diff": 0,
+  "bad_empty": 0,
+  "bad_grade": 0,
+  "zero_coord": 0,
+  "pairs_checked": 30561,
+  "pair_mismatch": 0,
+  "addrkey_changed": 30561
+ },
+ {
+  "layer": "rvices_Assessor_Data_Bossier_City_Address_Points_MapServer_0",
+  "src_field": "NUMBER_",
+  "chunks": 1,
+  "in_rows": 23728,
+  "parse_error": 0,
+  "before_mapped": 23722,
+  "after_mapped": 23722,
+  "before_dirty": 23722,
+  "after_dirty": 0,
+  "before_grade": {
+   "C": 23722
+  },
+  "after_grade": {
+   "C": 23722
+  },
+  "before_deci": 0,
+  "after_deci": 0,
+  "before_closed_diff": 0,
+  "after_closed_diff": 0,
+  "bad_empty": 0,
+  "bad_grade": 0,
+  "zero_coord": 0,
+  "pairs_checked": 23722,
+  "pair_mismatch": 0,
+  "addrkey_changed": 23722
+ },
+ {
+  "layer": "leycity_ca_server_rest_services_Maps_Open_Data_MapServer_182",
+  "src_field": "HOUSE",
+  "chunks": 1,
+  "in_rows": 12321,
+  "parse_error": 0,
+  "before_mapped": 12320,
+  "after_mapped": 12320,
+  "before_dirty": 12316,
+  "after_dirty": 0,
+  "before_grade": {
+   "C": 12320
+  },
+  "after_grade": {
+   "C": 12320
+  },
+  "before_deci": 0,
+  "after_deci": 0,
+  "before_closed_diff": 0,
+  "after_closed_diff": 0,
+  "bad_empty": 0,
+  "bad_grade": 0,
+  "zero_coord": 0,
+  "pairs_checked": 12316,
+  "pair_mismatch": 0,
+  "addrkey_changed": 12316
+ },
+ {
+  "layer": "58_rest_services_Clive_Clive_Land_Record_Service_MapServer_0",
+  "src_field": "HouseNumber",
+  "chunks": 1,
+  "in_rows": 9257,
+  "parse_error": 0,
+  "before_mapped": 9257,
+  "after_mapped": 9257,
+  "before_dirty": 9198,
+  "after_dirty": 0,
+  "before_grade": {
+   "S": 9198,
+   "C": 59
+  },
+  "after_grade": {
+   "S": 9198,
+   "C": 59
+  },
+  "before_deci": 0,
+  "after_deci": 0,
+  "before_closed_diff": 0,
+  "after_closed_diff": 0,
+  "bad_empty": 0,
+  "bad_grade": 0,
+  "zero_coord": 0,
+  "pairs_checked": 9198,
+  "pair_mismatch": 0,
+  "addrkey_changed": 9198
+ },
+ {
+  "layer": "TUCXd1_arcgis_rest_services_OSM_Addresses_NA_FeatureServer_0",
+  "src_field": "addr_housenumber(str)",
+  "chunks": 1,
+  "in_rows": 15765750,
+  "parse_error": 0,
+  "before_mapped": 15765731,
+  "after_mapped": 15765731,
+  "before_dirty": 109,
+  "after_dirty": 0,
+  "before_grade": {
+   "C": 15765731
+  },
+  "after_grade": {
+   "C": 15765731
+  },
+  "before_deci": 316,
+  "after_deci": 316,
+  "before_closed_diff": 0,
+  "after_closed_diff": 0,
+  "bad_empty": 0,
+  "bad_grade": 0,
+  "zero_coord": 0,
+  "pairs_checked": 109,
+  "pair_mismatch": 0,
+  "addrkey_changed": 109
+ },
+ {
+  "layer": "rdco_org_arcgis_rest_services_Address_Points_FeatureServer_0",
+  "src_field": "NUMBER(float)",
+  "chunks": 1,
+  "in_rows": 39604,
+  "parse_error": 0,
+  "before_mapped": 39594,
+  "after_mapped": 39594,
+  "before_dirty": 38,
+  "after_dirty": 0,
+  "before_grade": {
+   "S": 39036,
+   "A": 1,
+   "B": 422,
+   "C": 135
+  },
+  "after_grade": {
+   "S": 39036,
+   "A": 1,
+   "B": 422,
+   "C": 135
+  },
+  "before_deci": 0,
+  "after_deci": 0,
+  "before_closed_diff": 0,
+  "after_closed_diff": 0,
+  "bad_empty": 0,
+  "bad_grade": 0,
+  "zero_coord": 8,
+  "pairs_checked": 38,
+  "pair_mismatch": 0,
+  "addrkey_changed": 38
+ },
+ {
+  "layer": "ervices_AGO_HarrisonCounty_PhysicalAddresses_FeatureServer_0",
+  "src_field": "ADDR_NUM(float)",
+  "chunks": 1,
+  "in_rows": 105474,
+  "parse_error": 0,
+  "before_mapped": 105396,
+  "after_mapped": 105396,
+  "before_dirty": 33,
+  "after_dirty": 0,
+  "before_grade": {
+   "C": 105396
+  },
+  "after_grade": {
+   "C": 105396
+  },
+  "before_deci": 0,
+  "after_deci": 0,
+  "before_closed_diff": 0,
+  "after_closed_diff": 0,
+  "bad_empty": 0,
+  "bad_grade": 0,
+  "zero_coord": 30,
+  "pairs_checked": 33,
+  "pair_mismatch": 0,
+  "addrkey_changed": 33
+ },
+ {
+  "layer": "1Hv4I6Qk_arcgis_rest_services_Address_Points_FeatureServer_4",
+  "src_field": "Address_Number(str)",
+  "chunks": 1,
+  "in_rows": 11466,
+  "parse_error": 0,
+  "before_mapped": 11466,
+  "after_mapped": 11466,
+  "before_dirty": 24,
+  "after_dirty": 0,
+  "before_grade": {
+   "C": 11466
+  },
+  "after_grade": {
+   "C": 11466
+  },
+  "before_deci": 97,
+  "after_deci": 97,
+  "before_closed_diff": 0,
+  "after_closed_diff": 0,
+  "bad_empty": 0,
+  "bad_grade": 0,
+  "zero_coord": 0,
+  "pairs_checked": 24,
+  "pair_mismatch": 0,
+  "addrkey_changed": 24
+ },
+ {
+  "layer": "N_arcgis_rest_services_OSM_Address_Points_AS_FeatureServer_0",
+  "src_field": "addr_housenumber(str)",
+  "chunks": 1,
+  "in_rows": 1458232,
+  "parse_error": 0,
+  "before_mapped": 1458222,
+  "after_mapped": 1458222,
+  "before_dirty": 2,
+  "after_dirty": 0,
+  "before_grade": {
+   "C": 1458222
+  },
+  "after_grade": {
+   "C": 1458222
+  },
+  "before_deci": 39,
+  "after_deci": 39,
+  "before_closed_diff": 0,
+  "after_closed_diff": 0,
+  "bad_empty": 0,
+  "bad_grade": 0,
+  "zero_coord": 0,
+  "pairs_checked": 2,
+  "pair_mismatch": 0,
+  "addrkey_changed": 0
+ },
+ {
+  "layer": "N_arcgis_rest_services_OSM_Address_Points_EU_FeatureServer_0",
+  "src_field": "addr_housenumber(str)",
+  "chunks": 6,
+  "in_rows": 32730200,
+  "parse_error": 0,
+  "before_mapped": 32730193,
+  "after_mapped": 32730193,
+  "before_dirty": 2,
+  "after_dirty": 0,
+  "before_grade": {
+   "C": 32730193
+  },
+  "after_grade": {
+   "C": 32730193
+  },
+  "before_deci": 527,
+  "after_deci": 527,
+  "before_closed_diff": 0,
+  "after_closed_diff": 0,
+  "bad_empty": 0,
+  "bad_grade": 0,
+  "zero_coord": 0,
+  "pairs_checked": 2,
+  "pair_mismatch": 0,
+  "addrkey_changed": 2
+ }
+]

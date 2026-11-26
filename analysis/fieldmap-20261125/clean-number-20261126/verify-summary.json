@@ -1,0 +1,95 @@
+{
+ "layers": 20,
+ "rows_in_scope": 51290901,
+ "dirty_before": 1169271,
+ "dirty_after": 0,
+ "deci_kept_before": 981,
+ "deci_kept_after": 981,
+ "pairs_checked": 1169271,
+ "pair_mismatch": 0,
+ "addrkey_changed": 1169269,
+ "v1_dirty_zero": {
+  "pass": true,
+  "fails": []
+ },
+ "v2_coverage": {
+  "pass": true,
+  "fails": [],
+  "mapped_layers": 3413,
+  "total_layers": 3550,
+  "pct": 96.14,
+  "note": "清单外 3,413 层未重跑/未改；clean_number 只在命中 ^\\d+\\.0+$ 时生效，而 3,413 层全量扫描（483,239,197 行）只在清单内 20 层发现该形态"
+ },
+ "v3_rows_closed": {
+  "pass": true,
+  "fails": [],
+  "before_mapped_total": 51288941,
+  "after_mapped_total": 51288941,
+  "layers_lost": 0
+ },
+ "v4_bad_and_grade": {
+  "pass": true,
+  "fails": [],
+  "bad_empty_total": 0,
+  "bad_grade_total": 0,
+  "zero_coord_total": 40,
+  "zero_coord_note": "40 行缺坐标是**源侧**（raw lat/lon = \"NaN\"），before/after 逐层相等（zero-coord-evidence.json：2/30/8 行，且每行『有无坐标』标志完全相同）",
+  "zero_coord_evidence": {
+   "countymd_gov_server_rest_services_Public_Primary_MapServer_2": {
+    "zero_coord_before": 2,
+    "zero_coord_after": 2,
+    "rows_where_flag_same": 59083,
+    "sample": {
+     "raw_lat": "NaN",
+     "raw_lon": "NaN"
+    }
+   },
+   "ervices_AGO_HarrisonCounty_PhysicalAddresses_FeatureServer_0": {
+    "zero_coord_before": 30,
+    "zero_coord_after": 30,
+    "rows_where_flag_same": 105396,
+    "sample": {
+     "raw_lat": "NaN",
+     "raw_lon": "NaN"
+    }
+   },
+   "rdco_org_arcgis_rest_services_Address_Points_FeatureServer_0": {
+    "zero_coord_before": 8,
+    "zero_coord_after": 8,
+    "rows_where_flag_same": 39594,
+    "sample": {
+     "raw_lat": "NaN",
+     "raw_lon": "NaN"
+    }
+   }
+  },
+  "grade_net_worse_layers": 0
+ },
+ "spot_check": {
+  "sampled": 1000,
+  "layers_with_samples": 17,
+  "checked_rows_total": 1352,
+  "mismatch": 0,
+  "mismatch_detail": [],
+  "addrkey_changed": 1000,
+  "per_layer": {
+   "1Hv4I6Qk_arcgis_rest_services_Address_Points_FeatureServer_4": 24,
+   "58_rest_services_Clive_Clive_Land_Record_Service_MapServer_0": 90,
+   "58c926eb68_rest_services_Public_SiteAddr_ZipCode_MapServer_0": 90,
+   "_gov_host_rest_services_PublicAccess_LandData_MapServer_1054": 90,
+   "countymd_gov_server_rest_services_Public_Primary_MapServer_2": 90,
+   "ervices_AGO_HarrisonCounty_PhysicalAddresses_FeatureServer_0": 30,
+   "erycountymd_gov_arcgis_rest_services_General_BAR_MapServer_0": 90,
+   "land_ca_server_rest_services_civic_addresses_FeatureServer_0": 90,
+   "leycity_ca_server_rest_services_Maps_Open_Data_MapServer_182": 90,
+   "ountymd_gov_arcgis_rest_services_General_BAR_FeatureServer_0": 90,
+   "rcgis_rest_services_OpenData_General_Reference_MapServer_100": 90,
+   "rdco_org_arcgis_rest_services_Address_Points_FeatureServer_0": 38,
+   "rvices_Assessor_Data_Bossier_City_Address_Points_MapServer_0": 90,
+   "s_gscplanning_com_arcgis_rest_services_Addresses_MapServer_0": 90,
+   "s_org_server_rest_services_JCAdmin_SITUS_Static__MapServer_0": 90,
+   "services_Address_Planning_AddressPoints_Planning_MapServer_0": 90,
+   "v_com_server_rest_services_ACC_Address_Point_FeatureServer_0": 90
+  }
+ }
+}
