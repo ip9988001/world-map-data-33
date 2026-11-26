@@ -1,0 +1,105 @@
+{
+ "schema": "collect-plan/v1",
+ "stage": "04b",
+ "size": 4,
+ "layers_n": 36,
+ "shards_n": 9,
+ "declared_rows": 163816810,
+ "unit_rows": 1000000,
+ "workers": 4,
+ "done_from": "04",
+ "tag": "collect-step04-{layer}",
+ "order": null,
+ "forced_layers": [
+  "s_Points_from_National_Address_Database_view_FeatureServer_0",
+  "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2",
+  "UyC7jAmu_arcgis_rest_services_LBRSforLocator_FeatureServer_0",
+  "conemap_gov_secure_rest_services_NC1Map_Location_MapServer_0",
+  "rvices_Hosted_Address_Points_of_Indiana_2021_FeatureServer_1",
+  "ces_Ky_911_Site_Structure_Address_Points_WGS84WM_MapServer_0",
+  "is4_ocfl_net_arcgis_rest_services_AGOL_Open_Data_MapServer_0"
+ ],
+ "shards": [
+  {
+   "shard": 0,
+   "layers": [
+    "s_Points_from_National_Address_Database_view_FeatureServer_0",
+    "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-2",
+    "UyC7jAmu_arcgis_rest_services_LBRSforLocator_FeatureServer_0",
+    "ces_Ky_911_Site_Structure_Address_Points_WGS84WM_MapServer_0"
+   ]
+  },
+  {
+   "shard": 1,
+   "layers": [
+    "conemap_gov_secure_rest_services_NC1Map_Location_MapServer_0",
+    "vices_AGOL_AddressPts_for_NG911AddressFinder_FeatureServer_0",
+    "ervices_us_mn_state_mngeo_loc_addresses_open_FeatureServer_0@未定位-1",
+    "rvices_location_Address_Points_Modifications_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 2,
+   "layers": [
+    "rcgis_rest_services_County_37_LBRS_Addresses_FeatureServer_0",
+    "st_services_SFDView_E911_Addresses_7_10_2026_FeatureServer_0",
+    "_arcgis_rest_services_OwnerMailAddressPoints_FeatureServer_0",
+    "_arcgis1_rest_services_FLEXMOBILE_Address_Points_MapServer_0"
+   ]
+  },
+  {
+   "shard": 3,
+   "layers": [
+    "_rgv911_org_server_rest_services_RGV911_OPS_MIL1_MapServer_0",
+    "g_rest_services_Basemap_Address_Points_EagleView_MapServer_0",
+    "_secure_rest_services_AddressNC_NC1Map_Addresses_MapServer_0@未定位-1",
+    "tyil_gov_traditional_rest_services_cookVwrDynmc_MapServer_63"
+   ]
+  },
+  {
+   "shard": 4,
+   "layers": [
+    "wY_arcgis_rest_services_DSUSD_Address_Points_FeatureServer_0",
+    "yil_gov_traditional_rest_services_addressZipCode_MapServer_0",
+    "is4_ocfl_net_arcgis_rest_services_AGOL_Open_Data_MapServer_0",
+    "rest_services_Countywide_Layers_Cagis_Map_Labels_MapServer_5"
+   ]
+  },
+  {
+   "shard": 5,
+   "layers": [
+    "cgis_rest_services_SAM_Address_Points_Symbolized_MapServer_0",
+    "rvices_Hosted_Address_Points_of_Indiana_2021_FeatureServer_1",
+    "s_ny_gov_arcgis_rest_services_SAM_Address_Points_MapServer_0",
+    "ountytx_gov_arcgis_rest_services_AdMas_AdMas_FeatureServer_0"
+   ]
+  },
+  {
+   "shard": 6,
+   "layers": [
+    "tync_gov_arcgis_rest_services_GISDV_Base_Map_FeatureServer_1",
+    "UGfPrN7o_arcgis_rest_services_Address_Labels_FeatureServer_0",
+    "ricopa_County_Address_Points__Non_Commercial_FeatureServer_0",
+    "_rgv911_org_server_rest_services_Public_Map_MIL1_MapServer_1"
+   ]
+  },
+  {
+   "shard": 7,
+   "layers": [
+    "agsext_rest_services_Theme_Based_ODP_SPLIT_6_FeatureServer_1",
+    "rvices_Address_Points_Search_and_Labels_VIEW_FeatureServer_0",
+    "Wf5_arcgis_rest_services_MunicipalCodeAppPts_FeatureServer_0",
+    "tyohio_gov_hosting_rest_services_Addressing_LBRS_MapServer_0"
+   ]
+  },
+  {
+   "shard": 8,
+   "layers": [
+    "s_rest_services_msdi_structures_addresses_map_v1_MapServer_0",
+    "DKC97XHbtyzbfkd_arcgis_rest_services_RKC_Map_FeatureServer_1",
+    "cgis_rest_services_Master_Address_Repository_FeatureServer_0",
+    "pG5Xodq0_arcgis_rest_services_Address_Points_FeatureServer_0"
+   ]
+  }
+ ]
+}
