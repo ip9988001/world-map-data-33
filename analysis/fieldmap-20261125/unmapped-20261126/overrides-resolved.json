@@ -1,0 +1,354 @@
+{
+ "overrides_total": 56,
+ "resolved": [
+  {
+   "layer_id": "is_rest_services_EXP_national_address_points_FeatureServer_0",
+   "matched_override_key": "is_rest_services_EXP_national_address_points",
+   "class": "A",
+   "reason_code": "addr_attrs_not_collected"
+  },
+  {
+   "layer_id": "sidential_Commercial_and_Mixed_Use_Buildings_FeatureServer_0",
+   "matched_override_key": "sidential_Commercial_and_Mixed_Use_Buildings",
+   "class": "A",
+   "reason_code": "addr_attrs_not_collected"
+  },
+  {
+   "layer_id": "rcgis_rest_services_County_37_LBRS_Addresses_FeatureServer_0",
+   "matched_override_key": "rcgis_rest_services_County_37_LBRS_Addresses",
+   "class": "A",
+   "reason_code": "addr_attrs_not_collected"
+  },
+  {
+   "layer_id": "DKC97XHbtyzbfkd_arcgis_rest_services_RKC_Map_FeatureServer_1",
+   "matched_override_key": "DKC97XHbtyzbfkd_arcgis_rest_services_RKC_Map",
+   "class": "A",
+   "reason_code": "no_street_field"
+  },
+  {
+   "layer_id": "UGfPrN7o_arcgis_rest_services_Address_Labels_FeatureServer_0",
+   "matched_override_key": "UGfPrN7o_arcgis_rest_services_Address_Labels",
+   "class": "A",
+   "reason_code": "label_or_annotation_only"
+  },
+  {
+   "layer_id": "vYeDEj7_arcgis_rest_services_zs_sub_poc_bytu_FeatureServer_0",
+   "matched_override_key": "vYeDEj7_arcgis_rest_services_zs_sub_poc_bytu",
+   "class": "A",
+   "reason_code": "non_us_dataset_no_usable_field"
+  },
+  {
+   "layer_id": "tK4vdg_arcgis_rest_services_DW_AddressPoints_FeatureServer_0",
+   "matched_override_key": "tK4vdg_arcgis_rest_services_DW_AddressPoints",
+   "class": "A",
+   "reason_code": "addr_attrs_not_collected"
+  },
+  {
+   "layer_id": "FjG9HQX_arcgis_rest_services_Parcel_AdrUnits_FeatureServer_0",
+   "matched_override_key": "FjG9HQX_arcgis_rest_services_Parcel_AdrUnits",
+   "class": "A",
+   "reason_code": "no_street_field"
+  },
+  {
+   "layer_id": "_arcgis_rest_services_E911_AddressPoints_PUB_FeatureServer_1",
+   "matched_override_key": "_arcgis_rest_services_E911_AddressPoints_PUB",
+   "class": "A",
+   "reason_code": "street_field_all_null"
+  },
+  {
+   "layer_id": "s_com_arcgis_rest_services_GIS_App_GIS_App_BASE_MapServer_23",
+   "matched_override_key": "s_com_arcgis_rest_services_GIS_App_GIS_App_BASE_MapServer_23",
+   "class": "B",
+   "reason_code": "alias_generic_fieldname_layer_scoped"
+  },
+  {
+   "layer_id": "nH5x_arcgis_rest_services_Address__Elections_FeatureServer_0",
+   "matched_override_key": "nH5x_arcgis_rest_services_Address__Elections",
+   "class": "B",
+   "reason_code": "alias_generic_fieldname_layer_scoped"
+  },
+  {
+   "layer_id": "arcgis_rest_services_Buildings_and_Addresses_FeatureServer_0",
+   "matched_override_key": "arcgis_rest_services_Buildings_and_Addresses",
+   "class": "A",
+   "reason_code": "non_us_dataset_no_usable_field"
+  },
+  {
+   "layer_id": "ZNxUvTUh8_arcgis_rest_services_adresni_mista_FeatureServer_0",
+   "matched_override_key": "ZNxUvTUh8_arcgis_rest_services_adresni_mista",
+   "class": "A",
+   "reason_code": "non_us_dataset_no_usable_field"
+  },
+  {
+   "layer_id": "_rest_services_Corax_Cadastral_Address_Label_FeatureServer_1",
+   "matched_override_key": "_rest_services_Corax_Cadastral_Address_Label",
+   "class": "A",
+   "reason_code": "no_street_field"
+  },
+  {
+   "layer_id": "lxcdnZjF_arcgis_rest_services_Voting_Address_FeatureServer_0",
+   "matched_override_key": "lxcdnZjF_arcgis_rest_services_Voting_Address",
+   "class": "B",
+   "reason_code": "split_first_row_only"
+  },
+  {
+   "layer_id": "WhklwVA3_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "matched_override_key": "WhklwVA3_arcgis_rest_services_Address_Points",
+   "class": "A",
+   "reason_code": "no_street_field"
+  },
+  {
+   "layer_id": "wbhPOszb_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "matched_override_key": "wbhPOszb_arcgis_rest_services_Address_Points",
+   "class": "A",
+   "reason_code": "no_street_field"
+  },
+  {
+   "layer_id": "ia_wi_us_server_rest_services_Address_points_FeatureServer_0",
+   "matched_override_key": "ia_wi_us_server_rest_services_Address_points",
+   "class": "A",
+   "reason_code": "no_street_field"
+  },
+  {
+   "layer_id": "qxHA_arcgis_rest_services_E911_Intersections_FeatureServer_7",
+   "matched_override_key": "qxHA_arcgis_rest_services_E911_Intersections",
+   "class": "A",
+   "reason_code": "intersection_no_number"
+  },
+  {
+   "layer_id": "rN7o_arcgis_rest_services_Coq_Address_Labels_FeatureServer_0",
+   "matched_override_key": "rN7o_arcgis_rest_services_Coq_Address_Labels",
+   "class": "A",
+   "reason_code": "label_or_annotation_only"
+  },
+  {
+   "layer_id": "Zw5lplW9PO_arcgis_rest_services_CivicAddress_FeatureServer_1",
+   "matched_override_key": "Zw5lplW9PO_arcgis_rest_services_CivicAddress",
+   "class": "A",
+   "reason_code": "label_or_annotation_only"
+  },
+  {
+   "layer_id": "IQDOsXnGaTxj2_arcgis_rest_services_Addresses_FeatureServer_0",
+   "matched_override_key": "IQDOsXnGaTxj2_arcgis_rest_services_Addresses",
+   "class": "A",
+   "reason_code": "no_street_field"
+  },
+  {
+   "layer_id": "S7cpxnJP_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "matched_override_key": "S7cpxnJP_arcgis_rest_services_Address_Points",
+   "class": "B",
+   "reason_code": "alias_generic_fieldname_layer_scoped"
+  },
+  {
+   "layer_id": "city_ca_arcgis_rest_services_Public_OpenData_FeatureServer_0",
+   "matched_override_key": "city_ca_arcgis_rest_services_Public_OpenData",
+   "class": "B",
+   "reason_code": "alias_generic_fieldname_layer_scoped"
+  },
+  {
+   "layer_id": "YSp_arcgis_rest_services_Address_type_points_FeatureServer_0",
+   "matched_override_key": "YSp_arcgis_rest_services_Address_type_points",
+   "class": "B",
+   "reason_code": "derived_geocoder_output"
+  },
+  {
+   "layer_id": "t_services_AddressPoints_forSANITARYSEWERAPP_FeatureServer_0",
+   "matched_override_key": "t_services_AddressPoints_forSANITARYSEWERAPP",
+   "class": "A",
+   "reason_code": "addr_attrs_not_collected"
+  },
+  {
+   "layer_id": "_ca_server_rest_services_OpenData_OpenData_Land_MapServer_10",
+   "matched_override_key": "_ca_server_rest_services_OpenData_OpenData_Land_MapServer_10",
+   "class": "A",
+   "reason_code": "label_or_annotation_only"
+  },
+  {
+   "layer_id": "B5z0_arcgis_rest_services_AddressPoints_view_FeatureServer_0",
+   "matched_override_key": "B5z0_arcgis_rest_services_AddressPoints_view",
+   "class": "A",
+   "reason_code": "no_street_field"
+  },
+  {
+   "layer_id": "poec_arcgis_rest_services_AddressPoints_view_FeatureServer_0",
+   "matched_override_key": "poec_arcgis_rest_services_AddressPoints_view",
+   "class": "B",
+   "reason_code": "alias_generic_fieldname_layer_scoped"
+  },
+  {
+   "layer_id": "cgis_rest_services_IN_Civic_Address_Points_FeatureServer_328",
+   "matched_override_key": "cgis_rest_services_IN_Civic_Address_Points",
+   "class": "A",
+   "reason_code": "no_street_field"
+  },
+  {
+   "layer_id": "XIgKq7Rz_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "matched_override_key": "XIgKq7Rz_arcgis_rest_services_Address_Points",
+   "class": "A",
+   "reason_code": "no_street_field"
+  },
+  {
+   "layer_id": "xn1R_arcgis_rest_services_Annotation_Address_FeatureServer_0",
+   "matched_override_key": "xn1R_arcgis_rest_services_Annotation_Address",
+   "class": "A",
+   "reason_code": "label_or_annotation_only"
+  },
+  {
+   "layer_id": "est_services_Address_points_black_Feb2019MXD_FeatureServer_0",
+   "matched_override_key": "est_services_Address_points_black_Feb2019MXD",
+   "class": "B",
+   "reason_code": "alias_missing_street"
+  },
+  {
+   "layer_id": "ervices_RI_Civic_Address_Points__Oct_2025__FeatureServer_325",
+   "matched_override_key": "ervices_RI_Civic_Address_Points",
+   "class": "A",
+   "reason_code": "no_street_field"
+  },
+  {
+   "layer_id": "cgis_rest_services_VI_Civic_Address_Points_FeatureServer_327",
+   "matched_override_key": "cgis_rest_services_VI_Civic_Address_Points",
+   "class": "A",
+   "reason_code": "no_street_field"
+  },
+  {
+   "layer_id": "oEc3tdJ8TphG_arcgis_rest_services_Addresses_FeatureServer_37",
+   "matched_override_key": "oEc3tdJ8TphG_arcgis_rest_services_Addresses",
+   "class": "A",
+   "reason_code": "label_or_annotation_only"
+  },
+  {
+   "layer_id": "l_arcgis_rest_services_AddressPoints_SP_view_FeatureServer_0",
+   "matched_override_key": "l_arcgis_rest_services_AddressPoints_SP_view",
+   "class": "A",
+   "reason_code": "no_street_field"
+  },
+  {
+   "layer_id": "est_services_PYLA_GEOCODING_ADDRESS_08122017_FeatureServer_0",
+   "matched_override_key": "est_services_PYLA_GEOCODING_ADDRESS",
+   "class": "A",
+   "reason_code": "non_us_dataset_no_usable_field"
+  },
+  {
+   "layer_id": "is_rest_services_Blat_Street_Addressing_WFL1_FeatureServer_1",
+   "matched_override_key": "is_rest_services_Blat_Street_Addressing",
+   "class": "A",
+   "reason_code": "non_us_dataset_no_usable_field"
+  },
+  {
+   "layer_id": "rcgis_rest_services_911_Trail_Address_Marker_FeatureServer_0",
+   "matched_override_key": "rcgis_rest_services_911_Trail_Address_Marker",
+   "class": "A",
+   "reason_code": "unparseable_concat"
+  },
+  {
+   "layer_id": "r1_arcgis_rest_services_Bahas_Web_GIS_mapang_FeatureServer_0",
+   "matched_override_key": "mapang",
+   "class": "A",
+   "reason_code": "non_us_point_or_poi"
+  },
+  {
+   "layer_id": "s_survey123_991cee66d77d4aa780a066dbde11a260_FeatureServer_0",
+   "matched_override_key": "s_survey123_991cee66d77d4aa780a066dbde11a260",
+   "class": "A",
+   "reason_code": "admin_or_survey_table"
+  },
+  {
+   "layer_id": "u_arcgis_rest_services_Address_Map_Base_clip_FeatureServer_2",
+   "matched_override_key": "u_arcgis_rest_services_Address_Map_Base_clip",
+   "class": "A",
+   "reason_code": "no_street_field"
+  },
+  {
+   "layer_id": "bc8717c958f1a655_rest_services_ADDRESS_POINT_FeatureServer_0",
+   "matched_override_key": "bc8717c958f1a655_rest_services_ADDRESS_POINT",
+   "class": "A",
+   "reason_code": "no_street_field"
+  },
+  {
+   "layer_id": "9Xs_arcgis_rest_services_AddressPts_OwensTwp_FeatureServer_0",
+   "matched_override_key": "9Xs_arcgis_rest_services_AddressPts_OwensTwp",
+   "class": "B",
+   "reason_code": "alias_missing_street"
+  },
+  {
+   "layer_id": "publicgis1_rest_services_Addressing_AddressRange_MapServer_0",
+   "matched_override_key": "publicgis1_rest_services_Addressing_AddressRange",
+   "class": "A",
+   "reason_code": "grid_range_no_street_name"
+  },
+  {
+   "layer_id": "_server_rest_services_ParcelViewer_Parcel_Extras_MapServer_0",
+   "matched_override_key": "_server_rest_services_ParcelViewer_Parcel_Extras",
+   "class": "A",
+   "reason_code": "no_street_field"
+  },
+  {
+   "layer_id": "s_survey123_2291cde80c3a4ea184021c50fbf324a3_FeatureServer_0",
+   "matched_override_key": "2291cde80c3a4ea184021c50fbf324a3",
+   "class": "A",
+   "reason_code": "admin_or_survey_table"
+  },
+  {
+   "layer_id": "123_2291cde80c3a4ea184021c50fbf324a3_results_FeatureServer_0",
+   "matched_override_key": "2291cde80c3a4ea184021c50fbf324a3",
+   "class": "A",
+   "reason_code": "admin_or_survey_table"
+  },
+  {
+   "layer_id": "123_69927fe3de7343b4b5f3dca25d6a16d9_results_FeatureServer_0",
+   "matched_override_key": "69927fe3de7343b4b5f3dca25d6a16d9",
+   "class": "A",
+   "reason_code": "admin_or_survey_table"
+  },
+  {
+   "layer_id": "s_survey123_69927fe3de7343b4b5f3dca25d6a16d9_FeatureServer_0",
+   "matched_override_key": "69927fe3de7343b4b5f3dca25d6a16d9",
+   "class": "A",
+   "reason_code": "admin_or_survey_table"
+  },
+  {
+   "layer_id": "es_CHOOSEYOURCYPRUS_GEOCODING_ADDRESS_POINTS_FeatureServer_0",
+   "matched_override_key": "es_CHOOSEYOURCYPRUS_GEOCODING_ADDRESS_POINTS",
+   "class": "A",
+   "reason_code": "non_us_dataset_no_usable_field"
+  },
+  {
+   "layer_id": "ces_service_2e4eb9c8d5bf46f996a02a6caf6470ce_FeatureServer_0",
+   "matched_override_key": "ces_service_2e4eb9c8d5bf46f996a02a6caf6470ce",
+   "class": "A",
+   "reason_code": "admin_or_survey_table"
+  },
+  {
+   "layer_id": "F_arcgis_rest_services_Address_Point_Request_FeatureServer_0",
+   "matched_override_key": "F_arcgis_rest_services_Address_Point_Request",
+   "class": "A",
+   "reason_code": "admin_or_survey_table"
+  },
+  {
+   "layer_id": "ces_service_0457fe7d655c42378475435a8d85b96c_FeatureServer_0",
+   "matched_override_key": "0457fe7d655c42378475435a8d85b96c",
+   "class": "A",
+   "reason_code": "admin_or_survey_table"
+  },
+  {
+   "layer_id": "123_7fdcd38409074303bc3e2ac3850db315_results_FeatureServer_0",
+   "matched_override_key": "7fdcd38409074303bc3e2ac3850db315",
+   "class": "A",
+   "reason_code": "admin_or_survey_table"
+  },
+  {
+   "layer_id": "ervices_E911_Location_Address_Grid_27_250130_FeatureServer_0",
+   "matched_override_key": "ervices_E911_Location_Address_Grid_27_250130",
+   "class": "A",
+   "reason_code": "grid_range_no_street_name"
+  },
+  {
+   "layer_id": "xjrB05UV_arcgis_rest_services_Riv_Co_Address_FeatureServer_0",
+   "matched_override_key": "xjrB05UV_arcgis_rest_services_Riv_Co_Address",
+   "class": "UNKNOWN",
+   "reason_code": "sample_too_small"
+  }
+ ],
+ "unused_override_keys": []
+}
