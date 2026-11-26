@@ -1,0 +1,23 @@
+{
+ "layers": 20,
+ "rows_dirty": 1169262,
+ "rows_total_in_scope": 51288896,
+ "rows_total_scanned": 483239197,
+ "layers_scanned": 3413,
+ "scope_sha256": "9f495a9697af696d87d0b537380f1bc9b9b1c43ba2af367619442de7029aa26e",
+ "scope_sha256_16": "9f495a9697af696d",
+ "src_field_buckets": {
+  "Address_Number(str)": 1,
+  "HouseNumber": 1,
+  "HOUSE_NO": 1,
+  "addr_housenumber(str)": 3,
+  "add_num(env)": 7,
+  "ADDR_NUM(float)": 1,
+  "STREET_NO": 1,
+  "HOUSE": 1,
+  "NUMBER(float)": 1,
+  "NUMBER_": 1,
+  "AddNum": 1,
+  "Number": 1
+ }
+}
