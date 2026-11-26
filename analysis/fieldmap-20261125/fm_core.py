@@ -158,14 +158,57 @@ def grade_of(rec, grades_cfg):
     return None
 
 
+LAYER_ALIASES_PATH = os.path.join(ROOT, "registry", "layer-aliases.v1.yaml")
+_LAYER_ALIAS_CACHE = {}
+
+
+def load_layer_aliases(path=None):
+    """层级别名（registry/layer-aliases.v1.yaml）→ {("id"|"url", key): entry}。
+
+    只对「字段名过泛」（NAME/TYPE/STR/PARCEL_LOC/Street_derived…）的少数层生效，**不进全局角色表**。
+    文件不存在时返回空表（不影响既有行为）。
+    """
+    p = path or LAYER_ALIASES_PATH
+    if p in _LAYER_ALIAS_CACHE:
+        return _LAYER_ALIAS_CACHE[p]
+    import yaml
+    idx = {}
+    if os.path.isfile(p):
+        doc = yaml.safe_load(open(p, encoding="utf-8")) or {}
+        for e in doc.get("layers") or []:
+            if e.get("layer_id"):
+                idx[("id", e["layer_id"])] = e
+            if e.get("url"):
+                idx[("url", e["url"])] = e
+    _LAYER_ALIAS_CACHE[p] = idx
+    return idx
+
+
 def load_roles():
-    """raw 字段别名表（registry ∪ engine/dialects 合并；不新增、不猜）。"""
-    roles = SA.roles_of(os.path.join(ROOT, "registry", "dialects.v1.yaml"),
-                        os.path.join(ROOT, "engine", "dialects"))
+    """raw 字段别名表（registry ∪ engine/dialects 合并；不新增、不猜）。
+
+    muse-000271 起分“强 / 弱”两档：
+      · 强（street/number/zip）= 既有方言 + 既有别名扩展条目，取值优先级同旧版（在 split 之前）；
+      · 弱（street_weak/number_weak）= registry 里 `alias_strength: weak` 的新增别名，
+        **只在 split 也没给出 street/number 时才兑底**——否则新别名会把原本靠拆串拿到
+        门牌+完整街名的行（grade A/B）压成只有街名的 C，等于反向退化。
+    """
+    import yaml
+    reg = os.path.join(ROOT, "registry", "dialects.v1.yaml")
+    roles = SA.roles_of(reg, os.path.join(ROOT, "engine", "dialects"))
     num = {k for k, v in roles.items() if "number" in v}
     st = {k for k, v in roles.items() if "street" in v}
     zp = {k for k, v in roles.items() if "zip" in v}
-    return {"number": num, "street": st, "zip": zp}
+    weak = set()
+    doc = yaml.safe_load(open(reg, encoding="utf-8")) or {}
+    for d in doc.get("dialects") or []:
+        if d.get("alias_strength") != "weak":
+            continue
+        tpl = d.get("template") or {}
+        weak |= {SA._norm(a) for a in (tpl.get("street_aliases") or [])}
+        weak |= {SA._norm(a) for a in (tpl.get("number_aliases") or [])}
+    return {"number": num - weak, "street": st - weak, "zip": zp,
+            "number_weak": num & weak, "street_weak": st & weak}
 
 
 def _raw_get(raw, names, ban=()):
@@ -214,27 +257,43 @@ class LayerMapper:
             raise SystemExit(f"addrkey 配置与 engine 实现不一致：{ak}")
         self.tiers = tier_map if tier_map is not None else load_tier_map()
         self.roles = load_roles()
+        self._laliases = load_layer_aliases()
         self.begin_layer("")
 
-    def begin_layer(self, url=""):
-        """每层开始：重置字段名缓存（**必须每层调**）+ 记住本层 url（喂 source_layer / tier）。"""
+    def begin_layer(self, url="", layer_id=""):
+        """每层开始：重置字段名缓存（**必须每层调**）+ 记住本层 url（喂 source_layer / tier）。
+
+        layer_id 只用于匹配层级别名（registry/layer-aliases.v1.yaml）；不传时退回 url 匹配。
+        """
         self._url = url or ""
         self._keys = None            # {"number": [...], "street": [...], "zip": [...], "state": [...]}
         self._split_key = ""
-        self._split_tried = False
+        self._split_tried = False    # 已弃用（muse-000271 取消首行短路）；保留字段只为旧调用兼容
+        self._lalias = (self._laliases.get(("id", layer_id or ""))
+                        or self._laliases.get(("url", url or "")) or {})
+        self._lsplit = list(self._lalias.get("split_fields") or [])
+        self._ldrop = {str(x).strip().lower() for x in (self._lalias.get("drop_values") or [])}
 
     def tier_for(self, url):
         return self.tiers.get(url or "", "unrated")
 
     def _probe_keys(self, raw):
         """第一行时确定本层 raw 的字段名映射（role → [key...]），之后整层复用。"""
-        k = {"number": [], "street": [], "zip": [], "state": []}
+        k = {"number": [], "street": [], "zip": [], "state": [],
+             "number_weak": [], "street_weak": [],
+             # 层级别名：只对本层生效，顺序按 registry 里声明（不参与长度排序）
+             "number_l": list(self._lalias.get("number_fields") or []),
+             "street_l": list(self._lalias.get("street_fields") or [])}
         for name in raw.keys():
             nk = SA._norm(name)
             if nk in self.roles["number"]:
                 k["number"].append(name)
             if nk in self.roles["street"]:
                 k["street"].append(name)
+            if nk in self.roles.get("number_weak", ()):
+                k["number_weak"].append(name)
+            if nk in self.roles.get("street_weak", ()):
+                k["street_weak"].append(name)
             if nk in self.roles["zip"]:
                 k["zip"].append(name)
             if nk in STATE_KEYS:
@@ -299,13 +358,22 @@ class LayerMapper:
                     if z:
                         zip5, zreason, used = z, "", used | {k}
                         break
-        if not street and raw and not (self._split_tried and not self._split_key):
-            # 组合串（一整串含门牌+街名）：按 engine/split_addr.py 拆；拆不出不猜
+        if not street and raw:
+            # 组合串（一整串含门牌+街名）：按 engine/split_addr.py 拆；拆不出不猜。
+            # muse-000271：① 取消「首行拆不出→整层永久不试」的短路（逐行都试）；
+            #             ② 候选键从「前 40 键」扩到全部字段（层级别名 split_fields 排最前）。
             best = None
-            cand_keys = [self._split_key] if self._split_key else list(raw.keys())[:40]
+            if self._split_key:
+                cand_keys = [self._split_key]     # 已找到可在全层复用的组合列：先试它、成则跳出
+            else:
+                head = [k for k in self._lsplit if k in raw]
+                seen = set(head)
+                cand_keys = head + [k for k in raw.keys() if k not in seen]
             for k in cand_keys:
                 v = raw.get(k)
                 if not isinstance(v, str) or len(v) < 4 or len(v) > 160:
+                    continue
+                if self._ldrop and v.strip().lower() in self._ldrop:
                     continue
                 r = SA.split_number_street(v)
                 if r["reason"] == "ok" and r["street_name"] and r["confidence"] > 0:
@@ -313,7 +381,6 @@ class LayerMapper:
                         best = (k, r)
                         if self._split_key:
                             break
-            self._split_tried = True
             if best:
                 self._split_key = best[0]
             if best:
@@ -330,6 +397,45 @@ class LayerMapper:
                         zip5 = z or zip5
                     if not city and t.get("city"):
                         city = clean_city(t["city"])
+        if raw:
+            # 弱源（muse-000271）：registry 里 alias_strength=weak 的新增别名 + 层级别名。
+            # 只在「强别名与拆串都没给出」时兜底 —— 否则新别名会把原本靠拆串拿到门牌+完整街名
+            # 的行（grade A/B）压成只有街名的 C，属反向退化（muse-000271 回归专项查出过 4 层）。
+            keys = self._keys if self._keys is not None else self._probe_keys(raw)
+            if not num and keys.get("number_weak"):
+                for k in keys["number_weak"]:
+                    cand = clean_number(raw.get(k))
+                    if cand:
+                        num, used = cand, used | {k}
+                        break
+            if not street and keys.get("street_weak"):
+                got = []
+                for k in keys["street_weak"]:
+                    if k in used:
+                        continue
+                    v = raw.get(k)
+                    sv = "" if v is None else str(v).strip()
+                    if sv and not SA.is_placeholder(sv):
+                        got.append((k, sv))
+                if got:
+                    got.sort(key=lambda x: -len(x[1]))
+                    street, used = " ".join(v for _, v in got[:4]), used | {k for k, _ in got}
+            if not num and keys.get("number_l"):
+                for k in keys["number_l"]:
+                    cand = clean_number(raw.get(k))
+                    if cand:
+                        num, used = cand, used | {k}
+                        break
+            if not street and keys.get("street_l"):
+                vals = []
+                for k in keys["street_l"]:
+                    v = raw.get(k)
+                    sv = "" if v is None else str(v).strip()
+                    if sv and not SA.is_placeholder(sv) and sv.lower() not in self._ldrop:
+                        vals.append(sv)
+                if vals:
+                    street = " ".join(vals)
+                    used = used | set(keys["street_l"])
         lat, lon, creason = clean_coord(row.get("lat"), row.get("lon"))
         rec = {"house_number": num or None, "street_name": street or None, "city": city or None,
                "state": state or None, "zip5": zip5 or None, "lat": lat, "lon": lon,

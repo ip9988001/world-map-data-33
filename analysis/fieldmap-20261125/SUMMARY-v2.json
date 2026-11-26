@@ -53,5 +53,14 @@
   "zip5_pct": 71.14,
   "state_pct": 54.38,
   "coord_pct": 99.9
+ },
+ "provisional": {
+  "since": "muse-000271",
+  "date": "2026-11-26",
+  "reason": "58 层 B 类修复已落地并逐层验证，但未重跑全量 3,550 层",
+  "coverage_pct_after_fix": 96.14,
+  "coverage_layers_after_fix": "3413/3550",
+  "historical_numbers_untouched": true,
+  "detail": "analysis/fieldmap-20261125/fix58-20261126/REPORT-fix58.md"
  }
 }

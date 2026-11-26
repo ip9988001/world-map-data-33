@@ -545,6 +545,99 @@ dialects:
   - gc-013
   - gc-014
   notes: 模板签名 110000（number|street|unit|place|state|zip 依次）; 覆盖 provider 10 个; 样值层 9 个
+# ---------------------------------------------------------------- muse-000271 / fix58 别名扩展
+# 195 层归因（analysis/fieldmap-20261125/unmapped-20261126/REPORT-unmapped.md §4.1 + §5）里
+# 有 38 层属于「街名/街型列不在角色表」。本条目只把**一眼就是街名**的列并进 street 角色，
+# 不改任何既有方言的 template、不删任何既有别名、不碰 firstname/lastname/fullname；
+# provider 里不带 org（orgs: []）→ dialect_for() 的方言归属不受影响（这些层仍是 minimal_safe/fallback）。
+# 过泛字段名（NAME/TYPE/STR/PARCEL_LOC 等）**不进本表**，走 registry/layer-aliases.v1.yaml 层级别名。
+- id: fix58-alias-ext-v1
+  provider:
+    kind: alias_extension
+    orgs: []
+    orgs_total: 0
+    note: 别名扩展（非采集源族）：muse-000271 修 1；每条别名的层号出处见行内注释（= REPORT-unmapped.md §5 表行号）
+  template:
+    number_aliases:
+    - STRNUM      # §5 #2 shlD6Twu_arcgis_rest_services_Street_Address（南非：STRNUM=130 / STRNAME=GREENVALE / STRTYPE=AVENUE）
+    - CIVICNUM    # §5 #1 BASE_NS_CivicAddress_File_UT83、#16 CB_Civic_Addresses_WFL1（加拿大 civic number）
+    street_aliases:
+    # ---- NENA 911 的 FeatureName/FeatureType ----
+    - feanme                    # §5 #4 gyrE4_...Address_Point_911、#7 Dauphin_County_Address_Points
+    - featyp                    # §5 #4、#7
+    - sfeanme                   # §5 #9 5OXNGFDn_...Address_Points（夏威夷 911 变体）
+    - sfeatyp                   # §5 #9
+    # ---- 加拿大 civic address 的 strname 族 ----
+    - strname                   # §5 #1、#2、#10 v_server_...Hosted_Address_Points、#16、#28 fbh5z_...Code_Address_Data
+    - strtype                   # §5 #2、#28
+    - strsuffix                 # §5 #1、#16
+    - strsuf                    # §5 #10
+    # ---- roadname 族（新西兰 / 加拿大 / 美国多源通用）----
+    - roadname                  # §5 #5 vt_nz_...OpenData_Property、#22 qvET_...GSY、#30、#31 Accela、#34 luOy5R3S、#35 ygis_PowHUB、#42 BaseLayers_Address_Access_Point、#51 Very_High_Fire、#53 JuEecY0、#57 E911_Fire_Water_Sources
+    - roadnamesuffix            # §5 #5
+    - roadtype                  # §5 #35、#42
+    - roadnm                    # 同类列（dispatch 第三条最小集；§5 #30/#31/#34 的 roadname 系列同族命名）
+    - roadsuffixdir             # §5 #51
+    # ---- 其它一眼是街名的专名列 ----
+    - gcstname                  # §5 #12 Ngd_...Imperial_County_EPL
+    - streetnm                  # §5 #13 land_ca_...civic_addresses
+    - ostreetnm                 # §5 #13
+    - addressroadname           # §5 #14 QdwKY6yp_...Search_Address
+    - addrsn                    # §5 #15 Fontana_Parcels_and_Address_Points
+    - streetdescription         # §5 #17 LNJBeDlAk_...All_Addresses（street_description 归一后同此名）
+    - thoroughfare              # §5 #17
+    - thorofare                 # §5 #20 KtMulHM03_...Address_Point
+    - landbasedbotblstreetnamesstr   # §5 #21 UHl6XumF_...R_AddressPoint
+    - sitestreetname            # §5 #23 cgis_...Address_20Points_20Mark43
+    - sitestreet                # §5 #48 IO5iK52h_...Address_Points
+    - fullstnm                  # §5 #24 co_columbia_wi_us_...Open_GIS
+    - locstnam                  # §5 #33 rcgis_...Address_Points_Only_WFL1（loc_st_nam 归一后同此名）
+    - locstsuf                  # §5 #33
+    - msagroute                 # §5 #40 rxOA_...CivicAddressPoints、#43 AC_CivicAddressPoints_Sept14_2021（msag_route 归一后同此名）
+    - stnameps                  # §5 #41 icQLS_...Address_GSPJ_view
+    - stdstreet                 # §5 #44 OQp_...Vancouver_Addresses（std_street 归一后同此名）
+    - propstreet                # §5 #46 VOC_Address_Points_view
+    - propsuffix                # §5 #46
+    - civicstreet               # §5 #47 dlcsde_spatial_cadAddressPoints（civic_street 归一后同此名）
+    - streettho                 # §5 #50 DiamondVale_Addresses
+    - lstconcat                 # §5 #56 9Xs_...AddressPts_OwensTwp（实测 street 100%，ANUMBER 门牌同时非空 100%；报告明示可进全局表）
+    unit_aliases: []
+    place_aliases: []
+    state_aliases: []
+    zip_aliases: []
+    signature: ext-2n-35s
+    basis: analysis/fieldmap-20261125/unmapped-20261126/REPORT-unmapped.md §4.1 + §5（58 层逐层修法表）
+  geom:
+    type: esriGeometryUnknown
+    granularity: unknown
+  crs:
+    epsg: unknown
+    datum: unknown
+    basis: unknown
+    evidence: 别名扩展条目不带几何/CRS；几何由被赋该方言的源自身声明
+  mapping:
+    housenumber: $housenumber
+    street: $street
+    unit: $unit
+    city: $city
+    state: $state
+    zip: $zip
+  coverage:
+    layers_n: 0
+    rows: 0
+    share: 0.0
+  anomaly:
+    rate: 0.0
+    method: 别名来源层已逐层做过值形态校验（门牌纯数字 + 街名有字母），见 REPORT-unmapped.md §5 命中率列
+  alias_strength: weak   # muse-000271：本条目别名是「弱源」——只在强别名/拆串都没给出时兜底（见 fm_core.load_roles）
+  status: minimal_safe
+  a_pool_eligible: false
+  golden_cases:
+  - gc-019
+  - gc-020
+  - gc-021
+  notes: 组合拳④（muse-000271）：2 条门牌别名 + 35 条街名别名，全部按 REPORT-unmapped.md §5 逐层出处登记；只扩大角色表并集，不改任何既有方言 template，因此不影响既有层的方言归属与既有别名取值
+
 golden_cases:
 - id: gc-001
   source_layer: /data/workspace/world-map-data-33/dist/intake-full/layers/TpEhyQB_arcgis_rest_services_Addresses_91024_FeatureServer_0
@@ -873,6 +966,61 @@ golden_cases:
   expect:
     housenumber: '550'
     street: GLENDORA AVE
+  expect_flags:
+  - no_city_ok
+  - no_zip_ok
+- id: gc-019
+  dialect_id: fix58-alias-ext-v1
+  source_layer: /data/workspace/world-map-data-33/dist/intake-full/layers/gyrE4_arcgis_rest_services_Address_Point_911_FeatureServer_0
+  source_table: addr
+  source_row_index: '0'          # part-u00000-000.ndjson.gz 第 1 行（原值，未改写）
+  source_url: https://services3.arcgis.com/MgO4asRLgB9gyrE4/arcgis/rest/services/Address_Point_911/FeatureServer/0
+  source_fields:
+    housenumber: st_num
+    street: feanme+featyp
+  input:
+    st_num: '7870'
+    feanme: STATE
+    featyp: ST
+  expect:
+    housenumber: '7870'
+    street: STATE ST
+  expect_flags:
+  - no_city_ok
+- id: gc-020
+  dialect_id: fix58-alias-ext-v1
+  source_layer: /data/workspace/world-map-data-33/dist/intake-full/layers/5OXNGFDn_arcgis_rest_services_Address_Points_FeatureServer_2
+  source_table: addr
+  source_row_index: '0'          # part-u00000-000.ndjson.gz 第 1 行（原值，未改写）
+  source_url: https://services1.arcgis.com/C2LPusZs5OXNGFDn/arcgis/rest/services/Address_Points/FeatureServer/2
+  source_fields:
+    housenumber: ADDRESSNUM
+    street: sfeanme+sfeatyp
+  input:
+    ADDRESSNUM: '835366'
+    SFEANME: PAINTED CHURCH
+    SFEATYP: RD
+  expect:
+    housenumber: '835366'
+    street: PAINTED CHURCH RD
+  expect_flags:
+  - no_city_ok
+- id: gc-021
+  dialect_id: fix58-alias-ext-v1
+  source_layer: /data/workspace/world-map-data-33/dist/intake-full/layers/shlD6Twu_arcgis_rest_services_Street_Address_FeatureServer_0
+  source_table: addr
+  source_row_index: '0'          # part-u00000-000.ndjson.gz 第 1 行（原值，未改写）
+  source_url: https://services3.arcgis.com/HO0zfySJshlD6Twu/arcgis/rest/services/Street_Address/FeatureServer/0
+  source_fields:
+    housenumber: STRNUM
+    street: strname+strtype
+  input:
+    STRNUM: '130'
+    STRNAME: GREENVALE
+    STRTYPE: AVENUE
+  expect:
+    housenumber: '130'
+    street: GREENVALE AVENUE
   expect_flags:
   - no_city_ok
   - no_zip_ok
