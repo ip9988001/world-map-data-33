@@ -349,7 +349,13 @@ def main():
     A("| 脚本 | `map_layers.py`（逐层 `begin_layer` + 片级校验 + resume 拾回）/ `verify_v2.py` / `verify_v2_post.py` / "
       "`diff_v1_v2.py` / `probe_pm1.py` / `coord_fix_v2.py` / `coord_fix_v2_shard.py` / `finalize_v2.py` |")
     A("")
-    A("> 旧 `dist/`（v1，8.6 GB）在新产物全量校验通过后才处理；处理方式与释放字节数见本单回执与 PR body。\n")
+    A("> 字节口径说明：`dist-v2/shards/shard-*.json` 里的 `bytes` 是**映射当时**的片大小"
+      "（合计 %s B）；坐标收口把 part000–005 重打了一遍（成员逐字节 passthrough，仅 107 行重写），"
+      "所以**当前磁盘上的片合计 %s B**，差 %s B 是 tar.gz 重压的字节差，行数与成员数完全一致。"
+      % (f"{sum(s['bytes'] for s in shards):,}", f"{shard_bytes:,}",
+         f"{shard_bytes - sum(s['bytes'] for s in shards):,}"))
+    A("> 旧 `dist/`（v1，8.6 GiB / 9,225,507,402 B，8 片）在新产物全量校验通过后才删除；"
+      "删除后 `/data` free 23 GiB → **32 GiB**。\n")
     open(os.path.join(HERE, "REPORT-v2.md"), "w", encoding="utf-8").write("\n".join(R) + "\n")
     print(json.dumps({k: four[k] for k in ("coverage_pct", "coverage_layers", "unusable",
                                            "closing_diff_layers", "rows_total", "grade",

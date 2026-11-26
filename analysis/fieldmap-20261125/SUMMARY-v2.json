@@ -35,7 +35,7 @@
  "affected_layers": 1428,
  "shards": 7,
  "shard_bytes": 16342610945,
- "free_gb": 22.8,
+ "free_gb": 31.3,
  "run": {
   "layers": 3550,
   "out_bytes": 16363319504,

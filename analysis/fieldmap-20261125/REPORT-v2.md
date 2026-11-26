@@ -12,7 +12,7 @@
 | 不可用层 | **195**（全部 `grade_below_C`） | 固定枚举 | 达标 |
 | 逐层闭合差额 | **0** 层非零 | 0 | 闭合 |
 | 坐标/要素四项 | `bad_coord=0, zero_coord=0, grade_missing_element=0, S_city_null=0` | 全 0 | 达标 |
-| 输出 | **7 片 / 16342610945 B**（480,039,285 行） | — | 磁盘余量 22.8 GiB |
+| 输出 | **7 片 / 16342610945 B**（480,039,285 行） | — | 磁盘余量 31.3 GiB |
 
 ## 1. 本轮点名回显
 
@@ -211,5 +211,6 @@ python3 analysis/fieldmap-20261125/finalize_v2.py                # 本报告
 | 受影响层清单 | `grade-affected-layers.csv`（1428 层） |
 | 脚本 | `map_layers.py`（逐层 `begin_layer` + 片级校验 + resume 拾回）/ `verify_v2.py` / `verify_v2_post.py` / `diff_v1_v2.py` / `probe_pm1.py` / `coord_fix_v2.py` / `coord_fix_v2_shard.py` / `finalize_v2.py` |
 
-> 旧 `dist/`（v1，8.6 GB）在新产物全量校验通过后才处理；处理方式与释放字节数见本单回执与 PR body。
+> 字节口径说明：`dist-v2/shards/shard-*.json` 里的 `bytes` 是**映射当时**的片大小（合计 16,337,825,563 B）；坐标收口把 part000–005 重打了一遍（成员逐字节 passthrough，仅 107 行重写），所以**当前磁盘上的片合计 16,342,610,945 B**，差 4,785,382 B 是 tar.gz 重压的字节差，行数与成员数完全一致。
+> 旧 `dist/`（v1，8.6 GiB / 9,225,507,402 B，8 片）在新产物全量校验通过后才删除；删除后 `/data` free 23 GiB → **32 GiB**。
 
