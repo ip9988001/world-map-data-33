@@ -31,6 +31,7 @@ LAYERS = os.environ.get("INTAKE_LAYERS", "/data/workspace/world-map-data-33/dist
 DIST = os.environ.get("FM_DIST", "/data/workspace/wmd-fieldmap/dist")
 ROWS = os.path.join(DIST, "rows")
 TARS = os.path.join(DIST, "tar")
+SHARDS = os.path.join(DIST, "shards")
 MIN_FREE = 3 * 1024 ** 3
 
 _G = {}
@@ -97,6 +98,7 @@ def map_layer(job):
                         else:
                             tier = tier_hint or "unrated"
                             rec["tier"] = tier
+                            rec["source_layer"] = url or lid   # plan §二：url；无 url（@未定位）退回 layer_id
                             out.write((json.dumps({k: rec[k] for k in C.FIELDS}, ensure_ascii=False,
                                                   separators=(",", ":")) + "\n").encode("utf-8"))
                             st["mapped"] += 1
@@ -155,14 +157,85 @@ def load_jobs():
     return jobs
 
 
-def write_tar(shard_idx, rows_files):
+def _count_file_lines(path):
+    """数 gz 文件行数；读不动（截断）返回 0。"""
+    n = 0
+    try:
+        with gzip.open(path, "rb") as gz:
+            while True:
+                b = gz.read(1 << 20)
+                if not b:
+                    break
+                n += b.count(b"\n")
+    except (OSError, EOFError):
+        return 0
+    return n
+
+
+def _count_member_lines(tf, m):
+    n = 0
+    with gzip.GzipFile(fileobj=tf.extractfile(m)) as gz:
+        while True:
+            b = gz.read(1 << 20)
+            if not b:
+                break
+            n += b.count(b"\n")
+    return n
+
+
+def validate_tar(path, expect_members, expect_rows):
+    """片级校验：成员数 + 逐成员行数（= 覆盖表 mapped 之和）+ 可解（外层 gz 完整性随流读完验）。"""
+    import tarfile
+    n_mem, rows, bad = 0, 0, []
+    with tarfile.open(path, "r|gz") as tf:
+        for m in tf:
+            if not m.isfile() or not m.name.endswith(".ndjson.gz"):
+                bad.append("nonfile:" + m.name)
+                continue
+            n_mem += 1
+            try:
+                k = _count_member_lines(tf, m)
+            except Exception as e:                                  # noqa: BLE001
+                bad.append(f"{m.name}:{type(e).__name__}")
+                continue
+            if k <= 0:
+                bad.append("empty:" + m.name)
+            rows += k
+    ok = (n_mem == expect_members) and (rows == expect_rows) and not bad
+    return {"members": n_mem, "members_expected": expect_members,
+            "rows": rows, "rows_expected": expect_rows, "ok": ok, "bad": bad[:5]}
+
+
+def write_tar(shard_idx, rows_files, stats=None, wall_t0=None):
+    """打片 → 立刻校验 → 落 shards/shard-{idx}.json（校验不过就抛错，不许进下片）。"""
     os.makedirs(TARS, exist_ok=True)
+    os.makedirs(SHARDS, exist_ok=True)
+    stats = stats or []
     p = os.path.join(TARS, f"fieldmap-part{shard_idx:03d}.tar.gz")
     members = [os.path.relpath(f, ROWS) for f in rows_files]
+    t_pack = time.time()
     subprocess.run(["tar", "-czf", p, "-C", ROWS] + members, check=True)
     for f in rows_files:
         os.unlink(f)
-    return p, os.path.getsize(p)
+    sz = os.path.getsize(p)
+    exp_rows = sum(int(s.get("mapped") or 0) for s in stats)
+    v = validate_tar(p, len(members), exp_rows)
+    doc = {"shard": shard_idx, "tar": os.path.basename(p), "bytes": sz,
+           "layers": len(stats), "rows": exp_rows,
+           "in_rows": sum(int(s.get("in_rows") or 0) for s in stats),
+           "dropped_below_c": sum(int(s.get("dropped_below_c") or 0) for s in stats),
+           "pack_s": round(time.time() - t_pack, 1),
+           "elapsed_s": round(time.time() - (wall_t0 or t_pack), 1),
+           "free_gb": round(free_gb(), 1), "validation": v,
+           "layer_ids": [s.get("layer") for s in stats]}
+    json.dump(doc, open(os.path.join(SHARDS, f"shard-{shard_idx:03d}.json"), "w", encoding="utf-8"),
+              ensure_ascii=False, indent=1)
+    print(f"[shard {shard_idx:03d}] {os.path.basename(p)} {sz/2**20:.1f}MB layers={len(members)} "
+          f"rows={exp_rows} validate={'OK' if v['ok'] else 'FAIL' + str(v['bad'])} "
+          f"free={free_gb():.1f}G", flush=True)
+    if not v["ok"]:
+        raise SystemExit(f"shard {shard_idx} 校验不通过：{v}")
+    return p, sz, v
 
 
 def main():
@@ -193,27 +266,63 @@ def main():
     os.makedirs(TARS, exist_ok=True)
     out_csv = a.out_csv or os.path.join(HERE, "layer-coverage.csv")
     done_before = []
+    shard_idx = 0
+    orphans = []
     if a.resume and os.path.isfile(out_csv):
         with open(out_csv, encoding="utf-8") as fh:
             done_before = list(csv.DictReader(fh))
-        _done = {r["layer"] for r in done_before}
+        _done = {r["layer"]: r for r in done_before}
+        # 上次中断时已记录、但还没进片的散文件：行数对得上就拾回进下一片；对不上（写一半被杀）就删掉该层重跑
+        dropped = []
+        for f in (sorted(os.listdir(ROWS)) if os.path.isdir(ROWS) else []):
+            if not f.endswith(".ndjson.gz"):
+                continue
+            fp = os.path.join(ROWS, f)
+            lid = f[:-len(".ndjson.gz")]
+            n = _count_file_lines(fp)
+            if n and n == int((_done.get(lid) or {}).get("mapped") or 0):
+                orphans.append((fp, lid, n))
+            else:
+                dropped.append(lid)
+                try:
+                    os.unlink(fp)
+                except OSError:
+                    pass
+                _done.pop(lid, None)
+        if dropped:
+            done_before = [r for r in done_before if r["layer"] not in set(dropped)]
+        if dropped and done_before:
+            with open(out_csv, "w", newline="", encoding="utf-8") as fh:
+                ww = csv.DictWriter(fh, fieldnames=list(done_before[0].keys()))
+                ww.writeheader()
+                for r in done_before:
+                    ww.writerow(r)
+            print(f"[resume] {len(dropped)} 层散文件不完整（已删并从覆盖表移除，本轮重跑）", flush=True)
         jobs = [j for j in jobs if j[0] not in _done]
         shard_idx = len([f for f in os.listdir(TARS) if f.endswith(".tar.gz")])
-        print(f"[resume] 已记录 {len(_done)} 层，待跑 {len(jobs)} 层，分片从 {shard_idx:03d} 续", flush=True)
+        print(f"[resume] 已记录 {len(_done)} 层，拾回散文件 {len(orphans)} 个，待跑 {len(jobs)} 层，"
+              f"分片从 {shard_idx:03d} 续", flush=True)
     mode = "a" if (a.resume and done_before) else "w"
     cols = ["layer", "dialect_id", "dialect_origin", "a_pool_eligible", "class", "part_files",
             "in_rows", "mapped", "dropped_below_c", "parse_error", "diff", "in_bytes", "out_bytes",
-            "out_file", "grade_S", "grade_A", "grade_B", "zip5_ok", "zip5_invalid", "zip5_missing",
-            "state_ok", "state_invalid", "coord_ok", "coord_out_of_range", "coord_missing",
-            "number_ok", "street_ok", "city_ok", "tier", "reason"]
-    results, pending, shard, shard_idx = [], [], 0, 0
+            "out_file", "grade_S", "grade_A", "grade_B", "grade_C", "zip5_ok", "zip5_invalid",
+            "zip5_missing", "state_ok", "state_invalid", "coord_ok", "coord_out_of_range", "coord_missing",
+            "number_ok", "street_ok", "city_ok", "tier", "reason", "source_layer_kind"]
+    results, pending, pending_stats, shard = [], [], [], 0
     t0 = time.time()
     done = 0
-    cov_path = os.path.join(HERE, "progress.json")
+    min_free = float(os.environ.get("FM_MIN_FREE", "8"))
+    shard_t0 = time.time()
+    cov_path = os.path.join(DIST, "progress.json")
     with open(out_csv, mode, newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=cols)
         if mode == "w":
             w.writeheader()
+        if orphans:                       # 已记录、但还没进片的散文件不能丢
+            for fp, lid, n in orphans:
+                pending.append(fp)
+                pending_stats.append({"layer": lid, "mapped": n, "in_rows": n,
+                                      "dropped_below_c": 0})
         with mp.Pool(a.workers, initializer=_init) as pool:
             for st in pool.imap_unordered(map_layer, jobs, chunksize=4):
                 done += 1
@@ -221,36 +330,40 @@ def main():
                 g = st.get("grade") or {}
                 row = {k: st.get(k, "") for k in cols}
                 row.update({"grade_S": g.get("S", 0), "grade_A": g.get("A", 0), "grade_B": g.get("B", 0),
+                            "grade_C": g.get("C", 0),
                             "tier": json.dumps(st.get("tier") or {}, ensure_ascii=False),
-                            "a_pool_eligible": st.get("a_pool_eligible")})
+                            "a_pool_eligible": st.get("a_pool_eligible"),
+                            "source_layer_kind": ("url" if st.get("url") else "layer_id_fallback")
+                            if (st.get("mapped") or 0) > 0 else "n/a"})
                 w.writerow(row)
                 fh.flush()
                 if st.get("out_file") and (st.get("out_bytes") or 0) > 0:
                     pending.append(os.path.join(ROWS, st["out_file"]))
+                    pending_stats.append(st)
                 if len(pending) >= a.shard:
-                    p, sz = write_tar(shard_idx, pending)
-                    pending = []
+                    write_tar(shard_idx, pending, pending_stats, shard_t0)
+                    pending, pending_stats = [], []
                     shard_idx += 1
-                    print(f"[shard] {p} {sz/2**20:.1f}MB layers={len(pending)} free={free_gb():.1f}G "
-                          f"done={done}/{len(jobs)} {time.time()-t0:.0f}s", flush=True)
+                    shard_t0 = time.time()
                 if done % 50 == 0:
                     json.dump({"done": done, "total": len(jobs), "free_gb": round(free_gb(), 1),
-                               "elapsed_s": round(time.time() - t0, 1),
+                               "elapsed_s": round(time.time() - t0, 1), "shards_done": shard_idx,
                                "mapped": sum(1 for x in results if (x.get("mapped") or 0) > 0),
                                "out_bytes": sum(x.get("out_bytes") or 0 for x in results)},
                               open(cov_path, "w"), ensure_ascii=False)
-                    print(f"[{done}/{len(jobs)}] free={free_gb():.1f}G {time.time()-t0:.0f}s", flush=True)
-                if free_gb() < 3:
-                    print("[stop] free_gb<3 磁盘护栏", flush=True)
+                    print(f"[{done}/{len(jobs)}] shard={shard_idx} free={free_gb():.1f}G "
+                          f"{time.time()-t0:.0f}s", flush=True)
+                if free_gb() < min_free:
+                    print(f"[stop] free_gb<{min_free} 磁盘护栏", flush=True)
                     pool.terminate()
                     break
     if pending:
-        p, sz = write_tar(shard_idx, pending)
-        print(f"[shard] {p} {sz/2**20:.1f}MB", flush=True)
+        write_tar(shard_idx, pending, pending_stats, shard_t0)
+        shard_idx += 1
     json.dump({"layers": len(results), "out_bytes": sum(x.get("out_bytes") or 0 for x in results),
                "in_bytes": sum(x.get("in_bytes") or 0 for x in results),
                "elapsed_s": round(time.time() - t0, 1), "free_gb": round(free_gb(), 1),
-               "shards": shard_idx + (1 if pending else 0)},
+               "shards": shard_idx, "completed_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())},
               open(os.path.join(DIST, "run-summary.json"), "w"), ensure_ascii=False, indent=1)
     print(json.dumps({"layers": len(results), "done": done,
                       "mapped_layers": sum(1 for x in results if (x.get("mapped") or 0) > 0),

@@ -337,6 +337,29 @@ def main():
         for lid, p in sorted(cc["per_layer"].items()):
             A("- `%s`：%d 行，%s" % (lid[:60], p["bad"], json.dumps(p["moved"], ensure_ascii=False)))
         A("")
+    # ---------------- §10 全量重扫（v2）指针 ----------------
+    import glob as _glob
+    _v2 = os.path.join(HERE, "SUMMARY-v2.json")
+    if os.path.isfile(_v2):
+        v2s = json.load(open(_v2, encoding="utf-8"))
+        A("## 10. 全量重扫（v2）—— 本报告之后又跑了一轮，见 `REPORT-v2.md`\n")
+        A("本文件 §0–§9 描述的仍是 **v1** 产物（`dist/`）：它是 `c5d2524` 那版数据，其中 `LayerMapper.begin_layer()` "
+          "**未逐层调用**（§7.1 的附加发现）→ `_keys`/`_split_key` 跨层泄漏，把大批行的 state/zip5/门牌压低，"
+          "连带把等级压低（muse 亲核：样本 16 层里 7 层对不上，1,249,282 行等级漂移，降级 0 行）。\n")
+        A("修复已在分支代码里（`map_layer()` 内逐层 `m.begin_layer(url)`），并已用 muse-000266 全量重扫落到数据层：\n")
+        A("| 项 | v1（本报告） | v2（全量重扫） |")
+        A("|---|---:|---:|")
+        A("| 覆盖率 | %.2f%% | **%.2f%%** |" % (cov, v2s.get("coverage_pct") or 0))
+        A("| 映射行数 | %s | **%s** |" % (f"{st['mapped']:,}", f"{v2s.get('rows_total', 0):,}"))
+        gg, g2 = st["grade"], v2s.get("grade") or {}
+        for k in "SABC":
+            A("| %s 级 | %s | **%s** |" % (k, f"{gg.get(k, 0):,}", f"{g2.get(k, 0):,}"))
+        A("| 输出分片/字节 | %d 片 / %s B | %s 片 / %s B |"
+          % (len(shards), f"{shard_bytes:,}", v2s.get("shards"), f"{v2s.get('shard_bytes', 0):,}"))
+        A("")
+        A("细节（分片校验、grade 变动矩阵、坐标四项终检、#2/#9 行数偏差、耗时）全部在 `REPORT-v2.md`；"
+          "机器可读汇总在 `SUMMARY-v2.json` / `verify-v2.json` / `diff-v1-v2.json`。")
+        A("")
     open(os.path.join(HERE, "REPORT.md"), "w", encoding="utf-8").write("\n".join(R) + "\n")
     print(json.dumps(four, ensure_ascii=False, indent=1))
 

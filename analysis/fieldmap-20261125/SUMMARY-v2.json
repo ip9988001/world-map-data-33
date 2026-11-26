@@ -1,0 +1,57 @@
+{
+ "coverage_pct": 94.51,
+ "coverage_layers": "3355/3550",
+ "unusable": 195,
+ "unusable_by_reason": {
+  "grade_below_C": 195
+ },
+ "closing_diff_layers": 0,
+ "rows_total": 480039285,
+ "rows_total_old": 305674428,
+ "grade": {
+  "S": 84453151,
+  "A": 149974993,
+  "B": 19410470,
+  "C": 226200671
+ },
+ "grade_old": {
+  "S": 45282269,
+  "A": 8507671,
+  "B": 7042002,
+  "C": 244842486
+ },
+ "members_in_tars": 3355,
+ "layer_rowcount_mismatch": 0,
+ "invariants": {
+  "coord_ok": 479564649,
+  "number_ok": 440708096,
+  "street_ok": 480039285,
+  "city_ok": 159678682,
+  "zip5_ok": 341485422,
+  "state_ok": 261050648,
+  "addrkey_null": 42221854,
+  "zero_coord": 0
+ },
+ "affected_layers": 1428,
+ "shards": 7,
+ "shard_bytes": 16342610945,
+ "free_gb": 22.8,
+ "run": {
+  "layers": 3550,
+  "out_bytes": 16363319504,
+  "in_bytes": 40341427040,
+  "elapsed_s": 14839.1,
+  "free_gb": 20.2,
+  "shards": 7,
+  "completed_utc": "2026-11-26T01:14:01Z"
+ },
+ "spotcheck_v2": {},
+ "field_pct": {
+  "number_pct": 91.81,
+  "street_pct": 100.0,
+  "city_pct": 33.26,
+  "zip5_pct": 71.14,
+  "state_pct": 54.38,
+  "coord_pct": 99.9
+ }
+}

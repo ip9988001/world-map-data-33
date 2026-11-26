@@ -124,9 +124,10 @@ def clean_coord(lat, lon):
         return None, None, "missing"
     if not (-90.0 <= la <= 90.0) or not (-180.0 <= lo <= 180.0):
         return None, None, "out_of_range"
-    if la == 0.0 and lo == 0.0:
-        return None, None, "null_island"
-    return round(la, 7), round(lo, 7), ""
+    la, lo = round(la, 7), round(lo, 7)
+    if la == 0.0 and lo == 0.0:      # 先 round 再判 (0,0)：|v|<5e-7 的坐标会被 round 成 0.0，
+        return None, None, "null_island"   # 旧写法先判后 round，会在输出里漏出 107 行 (0,0)（muse-000266 修）
+    return la, lo, ""
 
 
 def addrkey_v3(number, street, state, zip5, unit="", include_unit=True,

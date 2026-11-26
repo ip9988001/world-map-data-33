@@ -1,0 +1,17 @@
+layer,method,rows_v1,rows_v2,delta_rows,grade_moves,diff_by_field
+gis_rest_services_SiteStructureAddressPoints_FeatureServer_0@未定位-3,positional,359653,359653,0,"{""C->A"": 358877, ""C->B"": 776}","{""state"": 359653, ""zip5"": 358877, ""house_number"": 359653, ""grade"": 359653, ""addrkey"": 359653}"
+gis_rest_services_ProposedSiteAddress_public_FeatureServer_0@未定位-1,positional,14,14,0,{},"{""addrkey"": 2}"
+0gE_arcgis_rest_services_Address_Points_View_FeatureServer_4,positional,46960,46960,0,"{""B->A"": 46953}","{""zip5"": 46953, ""grade"": 46953, ""addrkey"": 46958}"
+z6SRPFWJ_arcgis_rest_services_SiteAddresses_FeatureServer_15,positional,20201,20201,0,{},"{""addrkey"": 719}"
+arcgis_rest_services_Building_Address_Points_FeatureServer_0,positional,397926,397926,0,"{""C->A"": 397717, ""C->B"": 133}","{""state"": 397850, ""zip5"": 397793, ""grade"": 397850, ""addrkey"": 397926, ""house_number"": 73532}"
+s_DuPage_County_IL_AddressPointsUnderDevelopment_MapServer_0,positional,392073,392073,0,"{""C->S"": 391860}","{""state"": 392073, ""grade"": 391860, ""addrkey"": 391860}"
+0MLvN0Ay0iEjnCT_arcgis_rest_services_Address_FeatureServer_0,positional,49304,49304,0,{},{}
+1Pd_arcgis_rest_services_Open_Address_Points_FeatureServer_0,positional,53013,53013,0,"{""C->S"": 52938, ""C->A"": 28}","{""state"": 52966, ""grade"": 52966, ""addrkey"": 52964}"
+11SaUIGBo5JYFY_arcgis_rest_services_SRD_Data_FeatureServer_0,positional,24813,24813,0,{},"{""addrkey"": 3856}"
+0QMPlK9CkZD_arcgis_rest_services_AddressTest_FeatureServer_0,multiset,75327,75328,1,"{""C:75327->75328"": 1}","{""rows_only_in_v1"": 75159, ""rows_only_in_v2"": 75160, ""addrkey"": 75272}"
+f9MkUwD4_arcgis_rest_services_Address_Points_FeatureServer_0,multiset,52486,52485,-1,"{""A:52483->52482"": 1}","{""rows_only_in_v1"": 35, ""rows_only_in_v2"": 34, ""addrkey"": 36326}"
+r_arcgis_rest_services_SiteAddressPoint_view_FeatureServer_0,positional,4145,4145,0,{},"{""addrkey"": 2}"
+arcgis_rest_services_Property_Addresses_View_FeatureServer_0,positional,41782,41782,0,{},"{""addrkey"": 1631}"
+lYD_arcgis_rest_services_AddressPoints_24_12_FeatureServer_0,positional,33389,33389,0,{},{}
+oqakAkedEx0oU_arcgis_rest_services_Addresses_FeatureServer_0,positional,33787,33787,0,{},"{""addrkey"": 2896}"
+azssuvI82_arcgis_rest_services_AddressPoints_FeatureServer_0,positional,33687,33687,0,{},{}

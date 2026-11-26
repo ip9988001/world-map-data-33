@@ -20,3 +20,5 @@ dist/
 
 # county 逐层判县结果（可重跑；汇总进 analysis/county-assign-summary.json）
 analysis/tiger_county/rows-*.json
+dist-v2/
+dist-v2-*.log

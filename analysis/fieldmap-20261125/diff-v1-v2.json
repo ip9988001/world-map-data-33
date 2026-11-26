@@ -1,0 +1,354 @@
+{
+ "layers": 16,
+ "per_layer": [
+  {
+   "layer_id": "gis_rest_services_SiteStructureAddressPoints_FeatureServer_0@未定位-3",
+   "status": "ok",
+   "method": "positional",
+   "rows_v1": 359653,
+   "rows_v2": 359653,
+   "delta_rows": 0,
+   "diff_by_field": {
+    "state": 359653,
+    "zip5": 358877,
+    "house_number": 359653,
+    "grade": 359653,
+    "addrkey": 359653
+   },
+   "grade_moves": {
+    "C->A": 358877,
+    "C->B": 776
+   },
+   "grade_v1": {
+    "C": 359653
+   },
+   "grade_v2": {
+    "A": 358877,
+    "B": 776
+   }
+  },
+  {
+   "layer_id": "gis_rest_services_ProposedSiteAddress_public_FeatureServer_0@未定位-1",
+   "status": "ok",
+   "method": "positional",
+   "rows_v1": 14,
+   "rows_v2": 14,
+   "delta_rows": 0,
+   "diff_by_field": {
+    "addrkey": 2
+   },
+   "grade_moves": {},
+   "grade_v1": {
+    "C": 14
+   },
+   "grade_v2": {
+    "C": 14
+   }
+  },
+  {
+   "layer_id": "0gE_arcgis_rest_services_Address_Points_View_FeatureServer_4",
+   "status": "ok",
+   "method": "positional",
+   "rows_v1": 46960,
+   "rows_v2": 46960,
+   "delta_rows": 0,
+   "diff_by_field": {
+    "zip5": 46953,
+    "grade": 46953,
+    "addrkey": 46958
+   },
+   "grade_moves": {
+    "B->A": 46953
+   },
+   "grade_v1": {
+    "B": 46960
+   },
+   "grade_v2": {
+    "A": 46953,
+    "B": 7
+   }
+  },
+  {
+   "layer_id": "z6SRPFWJ_arcgis_rest_services_SiteAddresses_FeatureServer_15",
+   "status": "ok",
+   "method": "positional",
+   "rows_v1": 20201,
+   "rows_v2": 20201,
+   "delta_rows": 0,
+   "diff_by_field": {
+    "addrkey": 719
+   },
+   "grade_moves": {},
+   "grade_v1": {
+    "A": 20182,
+    "B": 19
+   },
+   "grade_v2": {
+    "A": 20182,
+    "B": 19
+   }
+  },
+  {
+   "layer_id": "arcgis_rest_services_Building_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "method": "positional",
+   "rows_v1": 397926,
+   "rows_v2": 397926,
+   "delta_rows": 0,
+   "diff_by_field": {
+    "state": 397850,
+    "zip5": 397793,
+    "grade": 397850,
+    "addrkey": 397926,
+    "house_number": 73532
+   },
+   "grade_moves": {
+    "C->A": 397717,
+    "C->B": 133
+   },
+   "grade_v1": {
+    "C": 397926
+   },
+   "grade_v2": {
+    "A": 397717,
+    "C": 76,
+    "B": 133
+   }
+  },
+  {
+   "layer_id": "s_DuPage_County_IL_AddressPointsUnderDevelopment_MapServer_0",
+   "status": "ok",
+   "method": "positional",
+   "rows_v1": 392073,
+   "rows_v2": 392073,
+   "delta_rows": 0,
+   "diff_by_field": {
+    "state": 392073,
+    "grade": 391860,
+    "addrkey": 391860
+   },
+   "grade_moves": {
+    "C->S": 391860
+   },
+   "grade_v1": {
+    "C": 392073
+   },
+   "grade_v2": {
+    "S": 391860,
+    "C": 213
+   }
+  },
+  {
+   "layer_id": "0MLvN0Ay0iEjnCT_arcgis_rest_services_Address_FeatureServer_0",
+   "status": "ok",
+   "method": "positional",
+   "rows_v1": 49304,
+   "rows_v2": 49304,
+   "delta_rows": 0,
+   "diff_by_field": {},
+   "grade_moves": {},
+   "grade_v1": {
+    "C": 49304
+   },
+   "grade_v2": {
+    "C": 49304
+   }
+  },
+  {
+   "layer_id": "1Pd_arcgis_rest_services_Open_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "method": "positional",
+   "rows_v1": 53013,
+   "rows_v2": 53013,
+   "delta_rows": 0,
+   "diff_by_field": {
+    "state": 52966,
+    "grade": 52966,
+    "addrkey": 52964
+   },
+   "grade_moves": {
+    "C->S": 52938,
+    "C->A": 28
+   },
+   "grade_v1": {
+    "C": 52976,
+    "B": 37
+   },
+   "grade_v2": {
+    "S": 52938,
+    "A": 28,
+    "B": 37,
+    "C": 10
+   }
+  },
+  {
+   "layer_id": "11SaUIGBo5JYFY_arcgis_rest_services_SRD_Data_FeatureServer_0",
+   "status": "ok",
+   "method": "positional",
+   "rows_v1": 24813,
+   "rows_v2": 24813,
+   "delta_rows": 0,
+   "diff_by_field": {
+    "addrkey": 3856
+   },
+   "grade_moves": {},
+   "grade_v1": {
+    "C": 24813
+   },
+   "grade_v2": {
+    "C": 24813
+   }
+  },
+  {
+   "layer_id": "0QMPlK9CkZD_arcgis_rest_services_AddressTest_FeatureServer_0",
+   "status": "ok",
+   "method": "multiset",
+   "rows_v1": 75327,
+   "rows_v2": 75328,
+   "delta_rows": 1,
+   "diff_by_field": {
+    "rows_only_in_v1": 75159,
+    "rows_only_in_v2": 75160,
+    "addrkey": 75272
+   },
+   "grade_moves": {
+    "C:75327->75328": 1
+   },
+   "grade_v1": {
+    "C": 75327
+   },
+   "grade_v2": {
+    "C": 75328
+   }
+  },
+  {
+   "layer_id": "f9MkUwD4_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "status": "ok",
+   "method": "multiset",
+   "rows_v1": 52486,
+   "rows_v2": 52485,
+   "delta_rows": -1,
+   "diff_by_field": {
+    "rows_only_in_v1": 35,
+    "rows_only_in_v2": 34,
+    "addrkey": 36326
+   },
+   "grade_moves": {
+    "A:52483->52482": 1
+   },
+   "grade_v1": {
+    "A": 52483,
+    "C": 3
+   },
+   "grade_v2": {
+    "A": 52482,
+    "C": 3
+   }
+  },
+  {
+   "layer_id": "r_arcgis_rest_services_SiteAddressPoint_view_FeatureServer_0",
+   "status": "ok",
+   "method": "positional",
+   "rows_v1": 4145,
+   "rows_v2": 4145,
+   "delta_rows": 0,
+   "diff_by_field": {
+    "addrkey": 2
+   },
+   "grade_moves": {},
+   "grade_v1": {
+    "C": 4145
+   },
+   "grade_v2": {
+    "C": 4145
+   }
+  },
+  {
+   "layer_id": "arcgis_rest_services_Property_Addresses_View_FeatureServer_0",
+   "status": "ok",
+   "method": "positional",
+   "rows_v1": 41782,
+   "rows_v2": 41782,
+   "delta_rows": 0,
+   "diff_by_field": {
+    "addrkey": 1631
+   },
+   "grade_moves": {},
+   "grade_v1": {
+    "C": 41782
+   },
+   "grade_v2": {
+    "C": 41782
+   }
+  },
+  {
+   "layer_id": "lYD_arcgis_rest_services_AddressPoints_24_12_FeatureServer_0",
+   "status": "ok",
+   "method": "positional",
+   "rows_v1": 33389,
+   "rows_v2": 33389,
+   "delta_rows": 0,
+   "diff_by_field": {},
+   "grade_moves": {},
+   "grade_v1": {
+    "C": 33389
+   },
+   "grade_v2": {
+    "C": 33389
+   }
+  },
+  {
+   "layer_id": "oqakAkedEx0oU_arcgis_rest_services_Addresses_FeatureServer_0",
+   "status": "ok",
+   "method": "positional",
+   "rows_v1": 33787,
+   "rows_v2": 33787,
+   "delta_rows": 0,
+   "diff_by_field": {
+    "addrkey": 2896
+   },
+   "grade_moves": {},
+   "grade_v1": {
+    "C": 33787
+   },
+   "grade_v2": {
+    "C": 33787
+   }
+  },
+  {
+   "layer_id": "azssuvI82_arcgis_rest_services_AddressPoints_FeatureServer_0",
+   "status": "ok",
+   "method": "positional",
+   "rows_v1": 33687,
+   "rows_v2": 33687,
+   "delta_rows": 0,
+   "diff_by_field": {},
+   "grade_moves": {},
+   "grade_v1": {
+    "C": 33687
+   },
+   "grade_v2": {
+    "C": 33687
+   }
+  }
+ ],
+ "agg_diff_by_field": {
+  "state": 1202542,
+  "zip5": 803623,
+  "house_number": 433185,
+  "grade": 1249282,
+  "addrkey": 1370065,
+  "rows_only_in_v1": 75194,
+  "rows_only_in_v2": 75194
+ },
+ "agg_grade_moves": {
+  "C->A": 756622,
+  "C->B": 909,
+  "B->A": 46953,
+  "C->S": 444798,
+  "C:75327->75328": 1,
+  "A:52483->52482": 1
+ },
+ "rows_v1": 1618560,
+ "rows_v2": 1618560
+}

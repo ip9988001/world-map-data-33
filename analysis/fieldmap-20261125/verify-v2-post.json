@@ -1,0 +1,39 @@
+{
+ "rows_total": 480039285,
+ "rows_expected": 480039285,
+ "rows_match": true,
+ "zero_coord_hits_after_fix": 0,
+ "part000_005_invariants": {
+  "coord_ok": 96296809,
+  "coord_null": 473998
+ },
+ "part006_bytescan": {
+  "rows": 383268478,
+  "zero_hits": 0,
+  "lat_null_rows": 638
+ },
+ "grade_after_fix": {
+  "S": 84453261,
+  "A": 149975173,
+  "B": 19410489,
+  "C": 226200913
+ },
+ "grade_before_fix": {
+  "S": 84453151,
+  "A": 149975001,
+  "B": 19410462,
+  "C": 226200671
+ },
+ "grade_delta": {
+  "S": 110,
+  "A": 172,
+  "B": 27,
+  "C": 242
+ },
+ "phase_secs": {
+  "json_part000_005": 422.1,
+  "bytes_part006": 289.6
+ },
+ "elapsed_s": 711.7,
+ "checked_utc": "2026-11-26T03:41:03Z"
+}

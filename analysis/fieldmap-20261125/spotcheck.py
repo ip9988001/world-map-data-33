@@ -17,7 +17,11 @@ sys.path.insert(0, os.path.join(ROOT, "engine"))
 import split_addr as SA  # noqa: E402
 
 LAYERS = "/data/workspace/world-map-data-33/dist/intake-full/layers"
-TARS = "/data/workspace/wmd-fieldmap/dist/tar"
+TARS = os.environ.get("SC_TARS", "/data/workspace/wmd-fieldmap/dist/tar")
+SC_ROWS = os.environ.get("SC_ROWS", "/data/workspace/wmd-fieldmap/dist/rows")
+SC_COV = os.environ.get("SC_COV", os.path.join(HERE, "layer-coverage.csv"))
+SC_CSV = os.environ.get("SC_CSV", os.path.join(HERE, "spotcheck.csv"))
+SC_JSON = os.environ.get("SC_JSON", os.path.join(HERE, "spotcheck-summary.json"))
 FIELDS = ["house_number", "street_name", "city", "state", "zip5", "lat", "lon",
           "source_layer", "tier", "grade", "addrkey"]
 STATES = set("AL AK AZ AR CA CO CT DE DC FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY PR VI GU AS MP".split())
@@ -29,7 +33,7 @@ def out_rows(lid, fps):
     import tarfile
     p = os.path.join(os.environ.get("SC_DIR", "/tmp/sc"), lid + ".ndjson.gz")
     if not os.path.isfile(p):
-        p = os.path.join("/data/workspace/wmd-fieldmap/dist/rows", lid + ".ndjson.gz")
+        p = os.path.join(SC_ROWS, lid + ".ndjson.gz")
     if os.path.isfile(p):
         with gzip.open(p, "rt", encoding="utf-8") as fh:
             for line in fh:
@@ -69,7 +73,7 @@ def main():
     ap.add_argument("--layers", type=int, default=355)
     ap.add_argument("--rows", type=int, default=200)
     a = ap.parse_args()
-    cov = list(csv.DictReader(open(os.path.join(HERE, "layer-coverage.csv"), encoding="utf-8")))
+    cov = list(csv.DictReader(open(SC_COV, encoding="utf-8")))
     cand = [r for r in cov if int(r["mapped"] or 0) > 0]
     cand.sort(key=lambda r: -int(r["in_bytes"] or 0))
     pick = cand[:10]                                   # 字节最大 10 层必查
@@ -137,7 +141,7 @@ def main():
                     "match_pct": round(100.0 * n_ok / n_chk, 2) if n_chk else None,
                     "mismatch_sample": json.dumps(mismatch, ensure_ascii=False) if mismatch else ""})
         print(f"{lid[:50]:50s} chk={n_chk} ok={n_ok}", flush=True)
-    with open(os.path.join(HERE, "spotcheck.csv"), "w", newline="", encoding="utf-8") as fh:
+    with open(SC_CSV, "w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=["layer", "in_bytes", "mapped", "checked", "matched",
                                           "match_pct", "mismatch_sample"])
         w.writeheader()
@@ -150,7 +154,7 @@ def main():
             "rows_checked": tot_chk, "rows_matched": tot_ok,
             "match_pct": round(100.0 * tot_ok / tot_chk, 2) if tot_chk else None,
             "invariants": dict(overall)}
-    json.dump(summ, open(os.path.join(HERE, "spotcheck-summary.json"), "w", encoding="utf-8"),
+    json.dump(summ, open(SC_JSON, "w", encoding="utf-8"),
               ensure_ascii=False, indent=1)
     print(json.dumps(summ, ensure_ascii=False, indent=1))
     return 0

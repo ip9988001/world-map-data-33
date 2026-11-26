@@ -1,0 +1,37 @@
+{
+ "tars": 7,
+ "members_in_tars": 3355,
+ "members_expected": 3355,
+ "missing_from_tars": [],
+ "extra_in_tars": [],
+ "rows_total": 480039285,
+ "rows_total_csv_mapped": 480039285,
+ "layer_rowcount_mismatch": 0,
+ "mismatch_detail": [],
+ "grade": {
+  "S": 84453151,
+  "A": 149975001,
+  "B": 19410462,
+  "C": 226200671
+ },
+ "invariants": {
+  "coord_ok": 479564649,
+  "number_ok": 440708096,
+  "street_ok": 480039285,
+  "city_ok": 159678682,
+  "zip5_ok": 341485422,
+  "state_ok": 261050648,
+  "addrkey_null": 42221854,
+  "zero_coord": 107
+ },
+ "field_pct": {
+  "number_pct": 91.81,
+  "street_pct": 100.0,
+  "city_pct": 33.26,
+  "zip5_pct": 71.14,
+  "state_pct": 54.38,
+  "coord_pct": 99.9
+ },
+ "elapsed_s": 2950.9,
+ "checked_utc": "2026-11-26T02:27:13Z"
+}
