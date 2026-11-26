@@ -1,0 +1,160 @@
+{
+ "task": "w2-20261126-fieldmap-fullrescan",
+ "qid": "muse-000266",
+ "dispatch_echo": {
+  "layers": 3550,
+  "tally_commit": "87b5e4bdaadba8d7f83cceae5b597d2c38dd5cca",
+  "code_base": "bd55cc7"
+ },
+ "utc": {
+  "start": "2026-11-25T21:06:41Z",
+  "map_done": "2026-11-26T01:14:00Z",
+  "verify_done": "2026-11-26T02:27:00Z",
+  "coord_fix_done": "2026-11-26T03:28:00Z",
+  "post_verify_done": "2026-11-26T03:42:00Z",
+  "report_committed": "2026-11-26T04:05:00Z"
+ },
+ "elapsed": {
+  "map_s": 14839.1,
+  "map_min": 247.3,
+  "verify_s": 2950.9,
+  "verify_min": 49.2,
+  "coord_fix_s": 1620,
+  "coord_fix_min": 27.0,
+  "post_verify_s": 713,
+  "post_verify_min": 11.9,
+  "diff_s": 180,
+  "diff_min": 3.0
+ },
+ "shards": [
+  {
+   "tar": "fieldmap-part000.tar.gz",
+   "layers": 500,
+   "rows": 833117,
+   "bytes": 26264814,
+   "elapsed_s": 29.7,
+   "pack_s": 2.4,
+   "free_gb": 22.8,
+   "validate_ok": true,
+   "members": 500
+  },
+  {
+   "tar": "fieldmap-part001.tar.gz",
+   "layers": 500,
+   "rows": 4156148,
+   "bytes": 128171499,
+   "elapsed_s": 137.8,
+   "pack_s": 11.9,
+   "free_gb": 22.6,
+   "validate_ok": true,
+   "members": 500
+  },
+  {
+   "tar": "fieldmap-part002.tar.gz",
+   "layers": 500,
+   "rows": 7990531,
+   "bytes": 255292607,
+   "elapsed_s": 258.7,
+   "pack_s": 24.0,
+   "free_gb": 22.3,
+   "validate_ok": true,
+   "members": 500
+  },
+  {
+   "tar": "fieldmap-part003.tar.gz",
+   "layers": 500,
+   "rows": 14021134,
+   "bytes": 451524972,
+   "elapsed_s": 424.1,
+   "pack_s": 39.0,
+   "free_gb": 21.8,
+   "validate_ok": true,
+   "members": 500
+  },
+  {
+   "tar": "fieldmap-part004.tar.gz",
+   "layers": 500,
+   "rows": 22953747,
+   "bytes": 756962539,
+   "elapsed_s": 752.1,
+   "pack_s": 70.8,
+   "free_gb": 20.8,
+   "validate_ok": true,
+   "members": 500
+  },
+  {
+   "tar": "fieldmap-part005.tar.gz",
+   "layers": 500,
+   "rows": 46816130,
+   "bytes": 1613860890,
+   "elapsed_s": 1513.1,
+   "pack_s": 176.4,
+   "free_gb": 18.9,
+   "validate_ok": true,
+   "members": 500
+  },
+  {
+   "tar": "fieldmap-part006.tar.gz",
+   "layers": 355,
+   "rows": 383268478,
+   "bytes": 13105748242,
+   "elapsed_s": 11723.6,
+   "pack_s": 949.4,
+   "free_gb": 20.2,
+   "validate_ok": true,
+   "members": 355
+  }
+ ],
+ "run_summary": {
+  "layers": 3550,
+  "out_bytes": 16363319504,
+  "in_bytes": 40341427040,
+  "elapsed_s": 14839.1,
+  "free_gb": 20.2,
+  "shards": 7,
+  "completed_utc": "2026-11-26T01:14:01Z"
+ },
+ "output": {
+  "tars": 7,
+  "bytes": 16337825563,
+  "rows": 480039285,
+  "members": 3355
+ },
+ "coverage": {
+  "layers_mapped": 3355,
+  "layers_total": 3550,
+  "pct": 94.51,
+  "gate_95pct": "FAIL(差 18 层)"
+ },
+ "rows": {
+  "in": 509776855,
+  "mapped": 480039285,
+  "dropped_below_c": 29737570,
+  "parse_error": 0,
+  "diff_nonzero_layers": 0
+ },
+ "grade_post_fix": {
+  "S": 84453151,
+  "A": 149974993,
+  "B": 19410470,
+  "C": 226200671
+ },
+ "grade_v1": {
+  "S": 45282269,
+  "A": 8507671,
+  "B": 7042002,
+  "C": 244842486
+ },
+ "source_layer_kind": {
+  "url": 3291,
+  "layer_id_fallback": 64,
+  "n/a": 195
+ },
+ "old_dist_removed": {
+  "bytes": 9225507402,
+  "path": "/data/workspace/wmd-fieldmap/dist",
+  "free_gb_before": 23,
+  "free_gb_after": 32
+ },
+ "heartbeat_checkpoints": "见 /root/pi-work/heartbeat 记录（每 5 分钟一次，状态 running，总层数 3550）"
+}

@@ -1,0 +1,1046 @@
+{
+ "layers": 16,
+ "per_layer": [
+  {
+   "layer_id": "0MLvN0Ay0iEjnCT_arcgis_rest_services_Address_FeatureServer_0",
+   "rows_exist": 49304,
+   "rows_rescan": 49304,
+   "rowcount_equal": true,
+   "method": "positional",
+   "diff_by_field": {
+    "state": 0,
+    "city": 0,
+    "zip5": 0,
+    "house_number": 0,
+    "street_name": 0,
+    "lat": 0,
+    "lon": 0,
+    "grade": 0,
+    "tier": 0,
+    "addrkey": 0,
+    "source_layer": 0,
+    "rows_only_in_exist": 0,
+    "rows_only_in_rescan": 0
+   },
+   "diff_rows": 0,
+   "examples": {}
+  },
+  {
+   "layer_id": "0QMPlK9CkZD_arcgis_rest_services_AddressTest_FeatureServer_0",
+   "rows_exist": 75327,
+   "rows_rescan": 75328,
+   "rowcount_equal": false,
+   "method": "multiset",
+   "diff_by_field": {
+    "state": 0,
+    "city": 0,
+    "zip5": 0,
+    "house_number": 0,
+    "street_name": 0,
+    "lat": 0,
+    "lon": 0,
+    "grade": 0,
+    "tier": 0,
+    "addrkey": 0,
+    "source_layer": 0,
+    "rows_only_in_exist": 75159,
+    "rows_only_in_rescan": 75160
+   },
+   "diff_rows": 150319,
+   "examples": {
+    "only_exist": [
+     {
+      "n": 1,
+      "row": {
+       "state": null,
+       "city": "H**A",
+       "zip5": null,
+       "house_number": "1***0",
+       "street_name": "H******Y",
+       "lat": "2********6",
+       "lon": "-**********8",
+       "grade": "C",
+       "tier": "u*****d",
+       "source_layer": "h********************************************************************************************0"
+      }
+     },
+     {
+      "n": 1,
+      "row": {
+       "state": null,
+       "city": "H**A",
+       "zip5": null,
+       "house_number": "1***1",
+       "street_name": "H******Y",
+       "lat": "2********4",
+       "lon": "-**********4",
+       "grade": "C",
+       "tier": "u*****d",
+       "source_layer": "h********************************************************************************************0"
+      }
+     },
+     {
+      "n": 1,
+      "row": {
+       "state": null,
+       "city": "H**A",
+       "zip5": null,
+       "house_number": "1***5",
+       "street_name": "H******Y",
+       "lat": "2********1",
+       "lon": "-**********4",
+       "grade": "C",
+       "tier": "u*****d",
+       "source_layer": "h********************************************************************************************0"
+      }
+     }
+    ],
+    "only_rescan": [
+     {
+      "n": 1,
+      "row": {
+       "state": null,
+       "city": "H**A",
+       "zip5": "9***3",
+       "house_number": "1***0",
+       "street_name": "H******Y",
+       "lat": "2********6",
+       "lon": "-**********8",
+       "grade": "C",
+       "tier": "u*****d",
+       "source_layer": "h********************************************************************************************0"
+      }
+     },
+     {
+      "n": 1,
+      "row": {
+       "state": null,
+       "city": "H**A",
+       "zip5": "9***3",
+       "house_number": "1***1",
+       "street_name": "H******Y",
+       "lat": "2********4",
+       "lon": "-**********4",
+       "grade": "C",
+       "tier": "u*****d",
+       "source_layer": "h********************************************************************************************0"
+      }
+     },
+     {
+      "n": 1,
+      "row": {
+       "state": null,
+       "city": "H**A",
+       "zip5": "9***3",
+       "house_number": "1***5",
+       "street_name": "H******Y",
+       "lat": "2********1",
+       "lon": "-**********4",
+       "grade": "C",
+       "tier": "u*****d",
+       "source_layer": "h********************************************************************************************0"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "layer_id": "0gE_arcgis_rest_services_Address_Points_View_FeatureServer_4",
+   "rows_exist": 46960,
+   "rows_rescan": 46960,
+   "rowcount_equal": true,
+   "method": "positional",
+   "diff_by_field": {
+    "state": 0,
+    "city": 0,
+    "zip5": 46953,
+    "house_number": 0,
+    "street_name": 0,
+    "lat": 0,
+    "lon": 0,
+    "grade": 46953,
+    "tier": 0,
+    "addrkey": 46958,
+    "source_layer": 0,
+    "rows_only_in_exist": 0,
+    "rows_only_in_rescan": 0
+   },
+   "diff_rows": 46953,
+   "examples": {
+    "zip5": [
+     {
+      "row": 0,
+      "exist": null,
+      "rescan": "5***4"
+     },
+     {
+      "row": 1,
+      "exist": null,
+      "rescan": "5***4"
+     },
+     {
+      "row": 2,
+      "exist": null,
+      "rescan": "5***4"
+     }
+    ],
+    "grade": [
+     {
+      "row": 0,
+      "exist": "B",
+      "rescan": "A"
+     },
+     {
+      "row": 1,
+      "exist": "B",
+      "rescan": "A"
+     },
+     {
+      "row": 2,
+      "exist": "B",
+      "rescan": "A"
+     }
+    ],
+    "addrkey": [
+     {
+      "row": 0,
+      "exist": "a*********************8",
+      "rescan": "a*********************e"
+     },
+     {
+      "row": 1,
+      "exist": "a*********************4",
+      "rescan": "a*********************b"
+     },
+     {
+      "row": 2,
+      "exist": "a*********************f",
+      "rescan": "a*********************6"
+     }
+    ]
+   }
+  },
+  {
+   "layer_id": "11SaUIGBo5JYFY_arcgis_rest_services_SRD_Data_FeatureServer_0",
+   "rows_exist": 24813,
+   "rows_rescan": 24813,
+   "rowcount_equal": true,
+   "method": "positional",
+   "diff_by_field": {
+    "state": 0,
+    "city": 0,
+    "zip5": 0,
+    "house_number": 0,
+    "street_name": 0,
+    "lat": 0,
+    "lon": 0,
+    "grade": 0,
+    "tier": 0,
+    "addrkey": 3856,
+    "source_layer": 0,
+    "rows_only_in_exist": 0,
+    "rows_only_in_rescan": 0
+   },
+   "diff_rows": 0,
+   "examples": {
+    "addrkey": [
+     {
+      "row": 16136,
+      "exist": "a*********************0",
+      "rescan": "a*********************7"
+     },
+     {
+      "row": 18677,
+      "exist": "a*********************9",
+      "rescan": "a*********************9"
+     },
+     {
+      "row": 19728,
+      "exist": "a*********************d",
+      "rescan": "a*********************3"
+     }
+    ]
+   }
+  },
+  {
+   "layer_id": "1Pd_arcgis_rest_services_Open_Address_Points_FeatureServer_0",
+   "rows_exist": 53013,
+   "rows_rescan": 53013,
+   "rowcount_equal": true,
+   "method": "positional",
+   "diff_by_field": {
+    "state": 52966,
+    "city": 0,
+    "zip5": 0,
+    "house_number": 0,
+    "street_name": 0,
+    "lat": 0,
+    "lon": 0,
+    "grade": 52966,
+    "tier": 0,
+    "addrkey": 52964,
+    "source_layer": 0,
+    "rows_only_in_exist": 0,
+    "rows_only_in_rescan": 0
+   },
+   "diff_rows": 52966,
+   "examples": {
+    "state": [
+     {
+      "row": 0,
+      "exist": null,
+      "rescan": "I*"
+     },
+     {
+      "row": 1,
+      "exist": null,
+      "rescan": "I*"
+     },
+     {
+      "row": 2,
+      "exist": null,
+      "rescan": "I*"
+     }
+    ],
+    "grade": [
+     {
+      "row": 0,
+      "exist": "C",
+      "rescan": "S"
+     },
+     {
+      "row": 1,
+      "exist": "C",
+      "rescan": "S"
+     },
+     {
+      "row": 2,
+      "exist": "C",
+      "rescan": "S"
+     }
+    ],
+    "addrkey": [
+     {
+      "row": 0,
+      "exist": "a*********************c",
+      "rescan": "a*********************b"
+     },
+     {
+      "row": 1,
+      "exist": "a*********************6",
+      "rescan": "a*********************f"
+     },
+     {
+      "row": 2,
+      "exist": "a*********************5",
+      "rescan": "a*********************0"
+     }
+    ]
+   }
+  },
+  {
+   "layer_id": "arcgis_rest_services_Building_Address_Points_FeatureServer_0",
+   "rows_exist": 397926,
+   "rows_rescan": 397926,
+   "rowcount_equal": true,
+   "method": "positional",
+   "diff_by_field": {
+    "state": 397850,
+    "city": 0,
+    "zip5": 397793,
+    "house_number": 73532,
+    "street_name": 0,
+    "lat": 0,
+    "lon": 0,
+    "grade": 397850,
+    "tier": 0,
+    "addrkey": 397926,
+    "source_layer": 0,
+    "rows_only_in_exist": 0,
+    "rows_only_in_rescan": 0
+   },
+   "diff_rows": 397850,
+   "examples": {
+    "state": [
+     {
+      "row": 0,
+      "exist": null,
+      "rescan": "W*"
+     },
+     {
+      "row": 1,
+      "exist": null,
+      "rescan": "W*"
+     },
+     {
+      "row": 2,
+      "exist": null,
+      "rescan": "W*"
+     }
+    ],
+    "zip5": [
+     {
+      "row": 0,
+      "exist": null,
+      "rescan": "9***8"
+     },
+     {
+      "row": 1,
+      "exist": null,
+      "rescan": "9***3"
+     },
+     {
+      "row": 2,
+      "exist": null,
+      "rescan": "9***8"
+     }
+    ],
+    "grade": [
+     {
+      "row": 0,
+      "exist": "C",
+      "rescan": "A"
+     },
+     {
+      "row": 1,
+      "exist": "C",
+      "rescan": "A"
+     },
+     {
+      "row": 2,
+      "exist": "C",
+      "rescan": "A"
+     }
+    ],
+    "addrkey": [
+     {
+      "row": 0,
+      "exist": "a*********************8",
+      "rescan": "a*********************c"
+     },
+     {
+      "row": 1,
+      "exist": "a*********************b",
+      "rescan": "a*********************9"
+     },
+     {
+      "row": 2,
+      "exist": "a*********************6",
+      "rescan": "a*********************1"
+     }
+    ],
+    "house_number": [
+     {
+      "row": 304175,
+      "exist": null,
+      "rescan": "1**0"
+     },
+     {
+      "row": 304176,
+      "exist": null,
+      "rescan": "2**0"
+     },
+     {
+      "row": 304177,
+      "exist": null,
+      "rescan": "2**0"
+     }
+    ]
+   }
+  },
+  {
+   "layer_id": "arcgis_rest_services_Property_Addresses_View_FeatureServer_0",
+   "rows_exist": 41782,
+   "rows_rescan": 41782,
+   "rowcount_equal": true,
+   "method": "positional",
+   "diff_by_field": {
+    "state": 0,
+    "city": 0,
+    "zip5": 0,
+    "house_number": 0,
+    "street_name": 0,
+    "lat": 0,
+    "lon": 0,
+    "grade": 0,
+    "tier": 0,
+    "addrkey": 1631,
+    "source_layer": 0,
+    "rows_only_in_exist": 0,
+    "rows_only_in_rescan": 0
+   },
+   "diff_rows": 0,
+   "examples": {
+    "addrkey": [
+     {
+      "row": 27882,
+      "exist": "a*********************6",
+      "rescan": "a*********************1"
+     },
+     {
+      "row": 28327,
+      "exist": "a*********************e",
+      "rescan": "a*********************a"
+     },
+     {
+      "row": 35063,
+      "exist": "a*********************3",
+      "rescan": "a*********************6"
+     }
+    ]
+   }
+  },
+  {
+   "layer_id": "azssuvI82_arcgis_rest_services_AddressPoints_FeatureServer_0",
+   "rows_exist": 33687,
+   "rows_rescan": 33687,
+   "rowcount_equal": true,
+   "method": "positional",
+   "diff_by_field": {
+    "state": 0,
+    "city": 0,
+    "zip5": 0,
+    "house_number": 0,
+    "street_name": 0,
+    "lat": 0,
+    "lon": 0,
+    "grade": 0,
+    "tier": 0,
+    "addrkey": 0,
+    "source_layer": 0,
+    "rows_only_in_exist": 0,
+    "rows_only_in_rescan": 0
+   },
+   "diff_rows": 0,
+   "examples": {}
+  },
+  {
+   "layer_id": "f9MkUwD4_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "rows_exist": 52486,
+   "rows_rescan": 52485,
+   "rowcount_equal": false,
+   "method": "multiset",
+   "diff_by_field": {
+    "state": 0,
+    "city": 0,
+    "zip5": 0,
+    "house_number": 0,
+    "street_name": 0,
+    "lat": 0,
+    "lon": 0,
+    "grade": 0,
+    "tier": 0,
+    "addrkey": 0,
+    "source_layer": 0,
+    "rows_only_in_exist": 35,
+    "rows_only_in_rescan": 34
+   },
+   "diff_rows": 69,
+   "examples": {
+    "only_exist": [
+     {
+      "n": 1,
+      "row": {
+       "state": "M*",
+       "city": "P*********y",
+       "zip5": "6***9",
+       "house_number": "1***5",
+       "street_name": "S*",
+       "lat": "3********4",
+       "lon": "-*********4",
+       "grade": "A",
+       "tier": "u*****d",
+       "source_layer": "h**********************************************************************************************0"
+      }
+     },
+     {
+      "n": 1,
+      "row": {
+       "state": "M*",
+       "city": "P*********y",
+       "zip5": "6***9",
+       "house_number": "1***5",
+       "street_name": "S*",
+       "lat": "3********2",
+       "lon": "-*********4",
+       "grade": "A",
+       "tier": "u*****d",
+       "source_layer": "h**********************************************************************************************0"
+      }
+     },
+     {
+      "n": 1,
+      "row": {
+       "state": "M*",
+       "city": "P*********y",
+       "zip5": "6***9",
+       "house_number": "1***5",
+       "street_name": "S*",
+       "lat": "3********8",
+       "lon": "-*********7",
+       "grade": "A",
+       "tier": "u*****d",
+       "source_layer": "h**********************************************************************************************0"
+      }
+     }
+    ],
+    "only_rescan": [
+     {
+      "n": 1,
+      "row": {
+       "state": "M*",
+       "city": "P*********y",
+       "zip5": "6***9",
+       "house_number": "1***5",
+       "street_name": "N*************R",
+       "lat": "3********4",
+       "lon": "-*********4",
+       "grade": "A",
+       "tier": "u*****d",
+       "source_layer": "h**********************************************************************************************0"
+      }
+     },
+     {
+      "n": 1,
+      "row": {
+       "state": "M*",
+       "city": "P*********y",
+       "zip5": "6***9",
+       "house_number": "1***5",
+       "street_name": "N*************R",
+       "lat": "3********2",
+       "lon": "-*********4",
+       "grade": "A",
+       "tier": "u*****d",
+       "source_layer": "h**********************************************************************************************0"
+      }
+     },
+     {
+      "n": 1,
+      "row": {
+       "state": "M*",
+       "city": "P*********y",
+       "zip5": "6***9",
+       "house_number": "1***5",
+       "street_name": "N*************R",
+       "lat": "3********8",
+       "lon": "-*********7",
+       "grade": "A",
+       "tier": "u*****d",
+       "source_layer": "h**********************************************************************************************0"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "layer_id": "gis_rest_services_ProposedSiteAddress_public_FeatureServer_0@未定位-1",
+   "rows_exist": 14,
+   "rows_rescan": 14,
+   "rowcount_equal": true,
+   "method": "positional",
+   "diff_by_field": {
+    "state": 0,
+    "city": 0,
+    "zip5": 0,
+    "house_number": 0,
+    "street_name": 0,
+    "lat": 0,
+    "lon": 0,
+    "grade": 0,
+    "tier": 0,
+    "addrkey": 2,
+    "source_layer": 0,
+    "rows_only_in_exist": 0,
+    "rows_only_in_rescan": 0
+   },
+   "diff_rows": 0,
+   "examples": {
+    "addrkey": [
+     {
+      "row": 12,
+      "exist": "a*********************4",
+      "rescan": "a*********************1"
+     },
+     {
+      "row": 13,
+      "exist": "a*********************8",
+      "rescan": "a*********************2"
+     }
+    ]
+   }
+  },
+  {
+   "layer_id": "gis_rest_services_SiteStructureAddressPoints_FeatureServer_0@未定位-3",
+   "rows_exist": 359653,
+   "rows_rescan": 359653,
+   "rowcount_equal": true,
+   "method": "positional",
+   "diff_by_field": {
+    "state": 359653,
+    "city": 0,
+    "zip5": 358877,
+    "house_number": 359653,
+    "street_name": 0,
+    "lat": 0,
+    "lon": 0,
+    "grade": 359653,
+    "tier": 0,
+    "addrkey": 359653,
+    "source_layer": 0,
+    "rows_only_in_exist": 0,
+    "rows_only_in_rescan": 0
+   },
+   "diff_rows": 359653,
+   "examples": {
+    "state": [
+     {
+      "row": 0,
+      "exist": null,
+      "rescan": "N*"
+     },
+     {
+      "row": 1,
+      "exist": null,
+      "rescan": "N*"
+     },
+     {
+      "row": 2,
+      "exist": null,
+      "rescan": "N*"
+     }
+    ],
+    "zip5": [
+     {
+      "row": 0,
+      "exist": null,
+      "rescan": "2***6"
+     },
+     {
+      "row": 1,
+      "exist": null,
+      "rescan": "2***0"
+     },
+     {
+      "row": 2,
+      "exist": null,
+      "rescan": "2***0"
+     }
+    ],
+    "house_number": [
+     {
+      "row": 0,
+      "exist": null,
+      "rescan": "5*4"
+     },
+     {
+      "row": 1,
+      "exist": null,
+      "rescan": "3**0"
+     },
+     {
+      "row": 2,
+      "exist": null,
+      "rescan": "1**2"
+     }
+    ],
+    "grade": [
+     {
+      "row": 0,
+      "exist": "C",
+      "rescan": "A"
+     },
+     {
+      "row": 1,
+      "exist": "C",
+      "rescan": "A"
+     },
+     {
+      "row": 2,
+      "exist": "C",
+      "rescan": "A"
+     }
+    ],
+    "addrkey": [
+     {
+      "row": 0,
+      "exist": null,
+      "rescan": "a*********************f"
+     },
+     {
+      "row": 1,
+      "exist": null,
+      "rescan": "a*********************b"
+     },
+     {
+      "row": 2,
+      "exist": null,
+      "rescan": "a*********************d"
+     }
+    ]
+   }
+  },
+  {
+   "layer_id": "lYD_arcgis_rest_services_AddressPoints_24_12_FeatureServer_0",
+   "rows_exist": 33389,
+   "rows_rescan": 33389,
+   "rowcount_equal": true,
+   "method": "positional",
+   "diff_by_field": {
+    "state": 0,
+    "city": 0,
+    "zip5": 0,
+    "house_number": 0,
+    "street_name": 0,
+    "lat": 0,
+    "lon": 0,
+    "grade": 0,
+    "tier": 0,
+    "addrkey": 0,
+    "source_layer": 0,
+    "rows_only_in_exist": 0,
+    "rows_only_in_rescan": 0
+   },
+   "diff_rows": 0,
+   "examples": {}
+  },
+  {
+   "layer_id": "oqakAkedEx0oU_arcgis_rest_services_Addresses_FeatureServer_0",
+   "rows_exist": 33787,
+   "rows_rescan": 33787,
+   "rowcount_equal": true,
+   "method": "positional",
+   "diff_by_field": {
+    "state": 0,
+    "city": 0,
+    "zip5": 0,
+    "house_number": 0,
+    "street_name": 0,
+    "lat": 0,
+    "lon": 0,
+    "grade": 0,
+    "tier": 0,
+    "addrkey": 2896,
+    "source_layer": 0,
+    "rows_only_in_exist": 0,
+    "rows_only_in_rescan": 0
+   },
+   "diff_rows": 0,
+   "examples": {
+    "addrkey": [
+     {
+      "row": 15,
+      "exist": "a*********************4",
+      "rescan": "a*********************5"
+     },
+     {
+      "row": 73,
+      "exist": "a*********************5",
+      "rescan": "a*********************a"
+     },
+     {
+      "row": 74,
+      "exist": "a*********************d",
+      "rescan": "a*********************3"
+     }
+    ]
+   }
+  },
+  {
+   "layer_id": "r_arcgis_rest_services_SiteAddressPoint_view_FeatureServer_0",
+   "rows_exist": 4145,
+   "rows_rescan": 4145,
+   "rowcount_equal": true,
+   "method": "positional",
+   "diff_by_field": {
+    "state": 0,
+    "city": 0,
+    "zip5": 0,
+    "house_number": 0,
+    "street_name": 0,
+    "lat": 0,
+    "lon": 0,
+    "grade": 0,
+    "tier": 0,
+    "addrkey": 2,
+    "source_layer": 0,
+    "rows_only_in_exist": 0,
+    "rows_only_in_rescan": 0
+   },
+   "diff_rows": 0,
+   "examples": {
+    "addrkey": [
+     {
+      "row": 995,
+      "exist": "a*********************3",
+      "rescan": "a*********************7"
+     },
+     {
+      "row": 1028,
+      "exist": "a*********************b",
+      "rescan": "a*********************6"
+     }
+    ]
+   }
+  },
+  {
+   "layer_id": "s_DuPage_County_IL_AddressPointsUnderDevelopment_MapServer_0",
+   "rows_exist": 392073,
+   "rows_rescan": 392073,
+   "rowcount_equal": true,
+   "method": "positional",
+   "diff_by_field": {
+    "state": 392073,
+    "city": 0,
+    "zip5": 0,
+    "house_number": 0,
+    "street_name": 0,
+    "lat": 0,
+    "lon": 0,
+    "grade": 391860,
+    "tier": 0,
+    "addrkey": 391860,
+    "source_layer": 0,
+    "rows_only_in_exist": 0,
+    "rows_only_in_rescan": 0
+   },
+   "diff_rows": 392073,
+   "examples": {
+    "state": [
+     {
+      "row": 0,
+      "exist": null,
+      "rescan": "I*"
+     },
+     {
+      "row": 1,
+      "exist": null,
+      "rescan": "I*"
+     },
+     {
+      "row": 2,
+      "exist": null,
+      "rescan": "I*"
+     }
+    ],
+    "grade": [
+     {
+      "row": 0,
+      "exist": "C",
+      "rescan": "S"
+     },
+     {
+      "row": 1,
+      "exist": "C",
+      "rescan": "S"
+     },
+     {
+      "row": 2,
+      "exist": "C",
+      "rescan": "S"
+     }
+    ],
+    "addrkey": [
+     {
+      "row": 0,
+      "exist": "a*********************0",
+      "rescan": "a*********************9"
+     },
+     {
+      "row": 1,
+      "exist": "a*********************a",
+      "rescan": "a*********************5"
+     },
+     {
+      "row": 2,
+      "exist": "a*********************9",
+      "rescan": "a*********************b"
+     }
+    ]
+   }
+  },
+  {
+   "layer_id": "z6SRPFWJ_arcgis_rest_services_SiteAddresses_FeatureServer_15",
+   "rows_exist": 20201,
+   "rows_rescan": 20201,
+   "rowcount_equal": true,
+   "method": "positional",
+   "diff_by_field": {
+    "state": 0,
+    "city": 0,
+    "zip5": 0,
+    "house_number": 0,
+    "street_name": 0,
+    "lat": 0,
+    "lon": 0,
+    "grade": 0,
+    "tier": 0,
+    "addrkey": 719,
+    "source_layer": 0,
+    "rows_only_in_exist": 0,
+    "rows_only_in_rescan": 0
+   },
+   "diff_rows": 0,
+   "examples": {
+    "addrkey": [
+     {
+      "row": 117,
+      "exist": "a*********************e",
+      "rescan": "a*********************9"
+     },
+     {
+      "row": 121,
+      "exist": "a*********************b",
+      "rescan": "a*********************5"
+     },
+     {
+      "row": 215,
+      "exist": "a*********************9",
+      "rescan": "a*********************e"
+     }
+    ]
+   }
+  }
+ ],
+ "agg_diff_by_field": {
+  "state": 1202542,
+  "city": 0,
+  "zip5": 803623,
+  "house_number": 433185,
+  "street_name": 0,
+  "lat": 0,
+  "lon": 0,
+  "grade": 1249282,
+  "tier": 0,
+  "addrkey": 1258467,
+  "source_layer": 0,
+  "rows_only_in_exist": 75194,
+  "rows_only_in_rescan": 75194
+ },
+ "fields_compared": [
+  "state",
+  "city",
+  "zip5",
+  "house_number",
+  "street_name",
+  "lat",
+  "lon",
+  "grade",
+  "tier",
+  "addrkey",
+  "source_layer"
+ ],
+ "multiset_key_fields": [
+  "state",
+  "city",
+  "zip5",
+  "house_number",
+  "street_name",
+  "lat",
+  "lon",
+  "grade",
+  "tier",
+  "source_layer"
+ ],
+ "note": "addrkey 差异来自已知偏差：现有产物由 amend_rewrite.py 用 11 列自身重算（无 unit、无 st_suf/pre_dir/post_dir 分量），重扫用输入真实 unit + 分量；不是 begin_layer 引起"
+}

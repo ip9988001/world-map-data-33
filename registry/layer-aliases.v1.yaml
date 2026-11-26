@@ -1,0 +1,59 @@
+# 层级别名（layer-scoped aliases）v1 —— muse-000271 / fix58 修 3
+#
+# 为什么要有这一层：REPORT-unmapped.md §4.3 的 6 层地址在**字段名过泛**的列里
+# （NAME / TYPE / STR / PARCEL_LOC / LST_CONCAT / Street_derived）。这类列名放进
+# registry/dialects.v1.yaml 的全局角色表会误伤（NAME 可能是人名、场所名、业主名），
+# 所以只按 **层**（url 或 layer_id 精确匹配）生效，全局最小安全表一条都不加。
+#
+# 语义（实现见 analysis/fieldmap-20261125/fm_core.py:LayerMapper.map_row）：
+#   street_fields  只在本行 **没有原生街名**、且全局角色表也没取到街名时才用；
+#                  按**声明顺序**拼接（不做长度排序），占位值跳过。
+#   number_fields  同理，只在门牌为空时按声明顺序取第一个非空。
+#   split_fields   组合串候选键的**优先序**（排在全字段之前）；用于「整串地址」列。
+#   drop_values    该层专属占位值（大小写不敏感，整值匹配），只作用于 split_fields。
+# 不改任何分级口径（grade_of / cap_no_zip 不动），也不改全局角色表。
+schema: layer-aliases.v1/2026-11-26
+basis: analysis/fieldmap-20261125/unmapped-20261126/REPORT-unmapped.md §4.3 表 + §5 #6 #11 #29 #32 #36 #49
+layers:
+- layer_id: s_com_arcgis_rest_services_GIS_App_GIS_App_BASE_MapServer_23
+  url: https://www.rdcogis.com/arcgis/rest/services/GIS_App/GIS_App_BASE/MapServer/23
+  reason_code: alias_generic_fieldname_layer_scoped
+  street_fields: [NAME, TYPE]        # 实测 300/300：NAME=Northview + TYPE=Road
+  number_fields: [CIVIC_TEXT, ADDR_NBR]
+  note: §5 #6 / §4.3；Coquitlam（BC）civic 地址层
+- layer_id: nH5x_arcgis_rest_services_Address__Elections_FeatureServer_0
+  url: https://services1.arcgis.com/UQRxibT91qYLnH5x/arcgis/rest/services/Address_(Elections)/FeatureServer/0
+  reason_code: alias_generic_fieldname_layer_scoped
+  street_fields: [NAME, TYPE]        # 实测 300/300：NAME=NORTHVIEW + TYPE=RD
+  number_fields: [CIVIC_TEXT, ADDR_NBR]
+  note: §5 #11 / §4.3；与上一行同 org（Coquitlam）的另一层
+- layer_id: city_ca_arcgis_rest_services_Public_OpenData_FeatureServer_0
+  url: https://gis.westkelownacity.ca/arcgis/rest/services/Public/OpenData/FeatureServer/0
+  reason_code: alias_generic_fieldname_layer_scoped
+  street_fields: [NAME, TYPE]        # 实测 300/300：NAME=BOWES + TYPE=RD
+  number_fields: [CIVIC_TEXT, ADDR_NBR]
+  note: §5 #32 / §4.3；Kelowna（BC）CWK
+- layer_id: S7cpxnJP_arcgis_rest_services_Address_Points_FeatureServer_0
+  url: https://services3.arcgis.com/PvkAiSMFS7cpxnJP/arcgis/rest/services/Address_Points/FeatureServer/0
+  reason_code: alias_generic_fieldname_layer_scoped
+  street_fields: [PARCEL_LOC]        # 实测 300/300：PARCEL_LOC=Broad St（无门牌列，最高只到 grade C）
+  number_fields: []
+  note: §5 #29 / §4.3；NY（Tioga）
+- layer_id: poec_arcgis_rest_services_AddressPoints_view_FeatureServer_0
+  url: https://services1.arcgis.com/NbEF7l0gBsrypoec/arcgis/rest/services/AddressPoints_view/FeatureServer/0
+  reason_code: alias_generic_fieldname_layer_scoped
+  street_fields: [STR]               # 实测 300/300：STR=REPUBLIC（STR_SFX=DR 未纳入，严格按报告 §5 #36）
+  number_fields: [STR_NUM]
+  note: §5 #36 / §4.3；Jacksonville Beach（FL）
+- layer_id: 9Xs_arcgis_rest_services_AddressPts_OwensTwp_FeatureServer_0
+  url: https://services3.arcgis.com/PBz5hDp35DPCX9Xs/arcgis/rest/services/AddressPts_OwensTwp/FeatureServer/0
+  reason_code: alias_missing_street
+  street_fields: [LST_CONCAT]        # 实测 300/300：LST_CONCAT=Wakely Rd；ANUMBER 门牌同时非空 100%
+  number_fields: []
+  note: §5 #56 —— 该别名已按报告明示同时并入全局表（fix58-alias-ext-v1），此处保留层级别名作为显式登记
+- layer_id: YSp_arcgis_rest_services_Address_type_points_FeatureServer_0
+  url: https://services1.arcgis.com/PwrabBhZHUggYYSp/arcgis/rest/services/Address_type_points/FeatureServer/0
+  reason_code: derived_geocoder_output
+  split_fields: [Street_derived, Street_raw]   # 实测 27/150 行可拆（18%），其余 Street_derived 是 '<Null>' 占位
+  drop_values: ["<Null>"]                      # 该层把缺失写成 '<Null>'，必须过滤，不许当街名
+  note: §5 #49 —— 只救 ~18% 行，如实报，不放宽判定凑数

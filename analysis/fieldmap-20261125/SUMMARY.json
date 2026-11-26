@@ -1,0 +1,102 @@
+{
+ "coverage_pct": 87.32,
+ "coverage_layers": "3100/3550",
+ "unusable": 450,
+ "unusable_by_reason": {
+  "grade_below_C": 450
+ },
+ "spotcheck_layers": 355,
+ "spotcheck_match_pct": 80.28,
+ "closing_diff_layers": 0,
+ "output_bytes": 9016085855,
+ "out_rows_bytes": 9052919948,
+ "free_gb": 22.8,
+ "in_rows": 509776855,
+ "mapped_rows": 305674428,
+ "dropped_below_c": 204102427,
+ "parse_error": 0,
+ "street_pct": 100.0,
+ "number_pct": 71.17,
+ "zip5_valid_pct": 54.18,
+ "coord_ok_pct": 99.96,
+ "coord_out_of_range_rows": 1691,
+ "coord_legal_pct": 100.0,
+ "coord_residual_bad_rows": 0,
+ "coord_nonnull_pct": 99.96,
+ "coord_nonnull_rows": 305563547,
+ "coord_clean_found_rows": 101,
+ "coord_clean_layers": 1,
+ "coord_clean_move": {
+  "C->C": 101
+ },
+ "grade": {
+  "S": 45282269,
+  "A": 8507671,
+  "B": 7042002,
+  "C": 244842486
+ },
+ "tier_layers": {
+  "unrated": 3100
+ },
+ "tier_rows": {
+  "unrated": 305674428
+ },
+ "addrkey_v3": {
+  "rows": 305674428,
+  "key_changed_vs_v1": 305674428,
+  "rows_unkeyed": 88405291,
+  "unkeyed_pct": 28.92,
+  "include_unit": true
+ },
+ "house_number_nulled_by_placeholder": 64259,
+ "grade_moves_on_placeholder_fix": {
+  "C->C": 64074,
+  "B->C": 184,
+  "A->C": 1
+ },
+ "rows_dropped_by_placeholder_fix": 0,
+ "anchor_check": {
+  "layers_checked": 355,
+  "rows_checked": 16978947,
+  "layers_with_issue": 19,
+  "invariants": {
+   "bad_columns": 0,
+   "bad_source_layer": 0,
+   "bad_tier": 0,
+   "bad_addrkey": 0,
+   "bad_addrkey_fmt": 0,
+   "bad_number": 0,
+   "bad_zip5": 0,
+   "bad_state": 0,
+   "bad_coord": 0,
+   "zero_coord": 0,
+   "zip_null_high_grade": 0,
+   "grade_missing_element": 0,
+   "S_city_null": 0,
+   "layer_rowcount_mismatch": 0,
+   "bad_grade": 0
+  },
+  "invariant_violations": 0,
+  "match_pct": 100.0
+ },
+ "shards": 8,
+ "shard_bytes": 9016085855,
+ "plan_doc": "analysis/fieldmap-20261125/w2-fieldmap-plan-20261125.md",
+ "invariants": {
+  "bad_columns": 0,
+  "bad_source_layer": 0,
+  "bad_tier": 0,
+  "bad_addrkey": 0,
+  "bad_addrkey_fmt": 0,
+  "bad_number": 0,
+  "bad_zip5": 0,
+  "bad_state": 0,
+  "bad_coord": 0,
+  "zero_coord": 0,
+  "zip_null_high_grade": 0,
+  "grade_missing_element": 0,
+  "S_city_null": 0,
+  "layer_rowcount_mismatch": 0,
+  "bad_grade": 0
+ }
+}

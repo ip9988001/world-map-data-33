@@ -1,0 +1,716 @@
+{
+ "layers": 16,
+ "rows_in": 1618817,
+ "rows_out": 1618560,
+ "dropped_below_c": 257,
+ "begin_layer_calls": 16,
+ "seconds_wall": 54.0,
+ "seconds_sum": 217.5,
+ "calls_equal_layers": true,
+ "per_layer": [
+  {
+   "layer_id": "0MLvN0Ay0iEjnCT_arcgis_rest_services_Address_FeatureServer_0",
+   "url": "https://services1.arcgis.com/L0MLvN0Ay0iEjnCT/arcgis/rest/services/Address/FeatureServer/0",
+   "tier_hint": "unrated",
+   "part_files": 1,
+   "rows_in": 49304,
+   "rows_out": 49304,
+   "dropped_below_c": 0,
+   "parse_error": 0,
+   "split_rows": 0,
+   "nonenv_state": 0,
+   "nonenv_zip5": 0,
+   "nonenv_number": 49304,
+   "nonenv_city": 0,
+   "state_ok": 0,
+   "zip5_ok": 49304,
+   "number_ok": 49304,
+   "city_ok": 49304,
+   "street_ok": 49304,
+   "grade": {
+    "C": 49304
+   },
+   "tier": {
+    "unrated": 49304
+   },
+   "seconds": 9.0,
+   "begin_layer_calls_this_layer": 1,
+   "keys_probed": {
+    "number": [
+     "ADDR_NUMBER"
+    ],
+    "street": [
+     "RD_NAME"
+    ],
+    "zip": [
+     "ZIP"
+    ],
+    "state": []
+   },
+   "out_bytes": 1516735
+  },
+  {
+   "layer_id": "0QMPlK9CkZD_arcgis_rest_services_AddressTest_FeatureServer_0",
+   "url": "https://services3.arcgis.com/fsrDo0QMPlK9CkZD/arcgis/rest/services/AddressTest/FeatureServer/0",
+   "tier_hint": "unrated",
+   "part_files": 2,
+   "rows_in": 75341,
+   "rows_out": 75328,
+   "dropped_below_c": 13,
+   "parse_error": 0,
+   "split_rows": 0,
+   "nonenv_state": 0,
+   "nonenv_zip5": 75160,
+   "nonenv_number": 2,
+   "nonenv_city": 0,
+   "state_ok": 0,
+   "zip5_ok": 75160,
+   "number_ok": 75240,
+   "city_ok": 75325,
+   "street_ok": 75328,
+   "grade": {
+    "C": 75328
+   },
+   "tier": {
+    "unrated": 75328
+   },
+   "seconds": 8.4,
+   "begin_layer_calls_this_layer": 1,
+   "keys_probed": {
+    "number": [
+     "PREADDRNUM",
+     "ADDRNUMSUF",
+     "HOUSENUMBER"
+    ],
+    "street": [
+     "FULLNAME",
+     "STREETTYPE",
+     "STREETNAME"
+    ],
+    "zip": [
+     "POSTALCODE"
+    ],
+    "state": []
+   },
+   "out_bytes": 2133352
+  },
+  {
+   "layer_id": "0gE_arcgis_rest_services_Address_Points_View_FeatureServer_4",
+   "url": "https://services1.arcgis.com/XxHmL09eFqJWI0gE/arcgis/rest/services/Address_Points_View/FeatureServer/4",
+   "tier_hint": "unrated",
+   "part_files": 1,
+   "rows_in": 46960,
+   "rows_out": 46960,
+   "dropped_below_c": 0,
+   "parse_error": 0,
+   "split_rows": 0,
+   "nonenv_state": 46960,
+   "nonenv_zip5": 46953,
+   "nonenv_number": 0,
+   "nonenv_city": 0,
+   "state_ok": 46960,
+   "zip5_ok": 46953,
+   "number_ok": 46960,
+   "city_ok": 0,
+   "street_ok": 46960,
+   "grade": {
+    "A": 46953,
+    "B": 7
+   },
+   "tier": {
+    "unrated": 46960
+   },
+   "seconds": 5.8,
+   "begin_layer_calls_this_layer": 1,
+   "keys_probed": {
+    "number": [
+     "AddNum_Pre",
+     "Add_Number",
+     "AddNum_Suf"
+    ],
+    "street": [
+     "St_PreDir",
+     "St_Name",
+     "LSt_PreDir",
+     "LSt_Name",
+     "LSt_Type"
+    ],
+    "zip": [
+     "Post_Code",
+     "Post_Code4"
+    ],
+    "state": [
+     "State"
+    ]
+   },
+   "out_bytes": 1659296
+  },
+  {
+   "layer_id": "11SaUIGBo5JYFY_arcgis_rest_services_SRD_Data_FeatureServer_0",
+   "url": "https://services1.arcgis.com/Uj11SaUIGBo5JYFY/arcgis/rest/services/SRD_Data/FeatureServer/0",
+   "tier_hint": "unrated",
+   "part_files": 1,
+   "rows_in": 24813,
+   "rows_out": 24813,
+   "dropped_below_c": 0,
+   "parse_error": 0,
+   "split_rows": 0,
+   "nonenv_state": 0,
+   "nonenv_zip5": 0,
+   "nonenv_number": 0,
+   "nonenv_city": 0,
+   "state_ok": 0,
+   "zip5_ok": 0,
+   "number_ok": 17663,
+   "city_ok": 0,
+   "street_ok": 24813,
+   "grade": {
+    "C": 24813
+   },
+   "tier": {
+    "unrated": 24813
+   },
+   "seconds": 2.4,
+   "begin_layer_calls_this_layer": 1,
+   "keys_probed": {
+    "number": [],
+    "street": [
+     "Street",
+     "StreetName"
+    ],
+    "zip": [],
+    "state": []
+   },
+   "out_bytes": 693761
+  },
+  {
+   "layer_id": "1Pd_arcgis_rest_services_Open_Address_Points_FeatureServer_0",
+   "url": "https://services1.arcgis.com/rXJ6QApc2sOtl1Pd/arcgis/rest/services/Open_Address_Points/FeatureServer/0",
+   "tier_hint": "unrated",
+   "part_files": 2,
+   "rows_in": 53081,
+   "rows_out": 53013,
+   "dropped_below_c": 68,
+   "parse_error": 0,
+   "split_rows": 0,
+   "nonenv_state": 53003,
+   "nonenv_zip5": 0,
+   "nonenv_number": 0,
+   "nonenv_city": 0,
+   "state_ok": 53003,
+   "zip5_ok": 52976,
+   "number_ok": 53013,
+   "city_ok": 52984,
+   "street_ok": 53013,
+   "grade": {
+    "S": 52938,
+    "A": 28,
+    "B": 37,
+    "C": 10
+   },
+   "tier": {
+    "unrated": 53013
+   },
+   "seconds": 8.5,
+   "begin_layer_calls_this_layer": 1,
+   "keys_probed": {
+    "number": [
+     "ADD_NUM"
+    ],
+    "street": [
+     "STREET_NAME",
+     "STREET_SUFFIX"
+    ],
+    "zip": [
+     "ZIP"
+    ],
+    "state": [
+     "STATE"
+    ]
+   },
+   "out_bytes": 2190764
+  },
+  {
+   "layer_id": "arcgis_rest_services_Building_Address_Points_FeatureServer_0",
+   "url": "https://services6.arcgis.com/z6WYi9VRHfgwgtyW/arcgis/rest/services/Building_Address_Points/FeatureServer/0",
+   "tier_hint": "unrated",
+   "part_files": 8,
+   "rows_in": 397926,
+   "rows_out": 397926,
+   "dropped_below_c": 0,
+   "parse_error": 0,
+   "split_rows": 0,
+   "nonenv_state": 397850,
+   "nonenv_zip5": 397793,
+   "nonenv_number": 73532,
+   "nonenv_city": 0,
+   "state_ok": 397850,
+   "zip5_ok": 397793,
+   "number_ok": 397926,
+   "city_ok": 0,
+   "street_ok": 397926,
+   "grade": {
+    "A": 397717,
+    "C": 76,
+    "B": 133
+   },
+   "tier": {
+    "unrated": 397926
+   },
+   "seconds": 53.3,
+   "begin_layer_calls_this_layer": 1,
+   "keys_probed": {
+    "number": [
+     "AddNum_Pre",
+     "Add_Number",
+     "AddNum_Suf"
+    ],
+    "street": [
+     "LSt_PreDir",
+     "LSt_Name",
+     "LSt_Type",
+     "LSt_PostDir",
+     "St_PreDir",
+     "St_Name"
+    ],
+    "zip": [
+     "Post_Code",
+     "Post_Code4"
+    ],
+    "state": [
+     "State"
+    ]
+   },
+   "out_bytes": 14881358
+  },
+  {
+   "layer_id": "arcgis_rest_services_Property_Addresses_View_FeatureServer_0",
+   "url": "https://services3.arcgis.com/fOViEAUKl91t9cT6/arcgis/rest/services/Property_Addresses_View/FeatureServer/0",
+   "tier_hint": "unrated",
+   "part_files": 1,
+   "rows_in": 41783,
+   "rows_out": 41782,
+   "dropped_below_c": 1,
+   "parse_error": 0,
+   "split_rows": 0,
+   "nonenv_state": 0,
+   "nonenv_zip5": 0,
+   "nonenv_number": 0,
+   "nonenv_city": 0,
+   "state_ok": 0,
+   "zip5_ok": 0,
+   "number_ok": 41714,
+   "city_ok": 0,
+   "street_ok": 41782,
+   "grade": {
+    "C": 41782
+   },
+   "tier": {
+    "unrated": 41782
+   },
+   "seconds": 7.0,
+   "begin_layer_calls_this_layer": 1,
+   "keys_probed": {
+    "number": [
+     "PREADDRNUM",
+     "ADDRNUMSUF",
+     "ADDRNUM"
+    ],
+    "street": [
+     "FULLNAME"
+    ],
+    "zip": [],
+    "state": []
+   },
+   "out_bytes": 1429293
+  },
+  {
+   "layer_id": "azssuvI82_arcgis_rest_services_AddressPoints_FeatureServer_0",
+   "url": "https://services3.arcgis.com/4UkreHBazssuvI82/arcgis/rest/services/AddressPoints/FeatureServer/0",
+   "tier_hint": "unrated",
+   "part_files": 1,
+   "rows_in": 33777,
+   "rows_out": 33687,
+   "dropped_below_c": 90,
+   "parse_error": 0,
+   "split_rows": 0,
+   "nonenv_state": 0,
+   "nonenv_zip5": 0,
+   "nonenv_number": 55,
+   "nonenv_city": 0,
+   "state_ok": 0,
+   "zip5_ok": 0,
+   "number_ok": 33687,
+   "city_ok": 0,
+   "street_ok": 33687,
+   "grade": {
+    "C": 33687
+   },
+   "tier": {
+    "unrated": 33687
+   },
+   "seconds": 4.6,
+   "begin_layer_calls_this_layer": 1,
+   "keys_probed": {
+    "number": [
+     "Number"
+    ],
+    "street": [
+     "StreetName",
+     "StreetType"
+    ],
+    "zip": [],
+    "state": []
+   },
+   "out_bytes": 1141216
+  },
+  {
+   "layer_id": "f9MkUwD4_arcgis_rest_services_Address_Points_FeatureServer_0",
+   "url": "https://services.arcgis.com/KP64F8Xif9MkUwD4/arcgis/rest/services/Address_Points/FeatureServer/0",
+   "tier_hint": "unrated",
+   "part_files": 2,
+   "rows_in": 52542,
+   "rows_out": 52485,
+   "dropped_below_c": 57,
+   "parse_error": 0,
+   "split_rows": 52485,
+   "nonenv_state": 52482,
+   "nonenv_zip5": 0,
+   "nonenv_number": 52485,
+   "nonenv_city": 0,
+   "state_ok": 52482,
+   "zip5_ok": 52485,
+   "number_ok": 52485,
+   "city_ok": 52481,
+   "street_ok": 52485,
+   "grade": {
+    "A": 52482,
+    "C": 3
+   },
+   "tier": {
+    "unrated": 52485
+   },
+   "seconds": 11.7,
+   "begin_layer_calls_this_layer": 1,
+   "keys_probed": {
+    "number": [
+     "AddNUM"
+    ],
+    "street": [],
+    "zip": [
+     "ZIP"
+    ],
+    "state": [
+     "State"
+    ]
+   },
+   "out_bytes": 1588574
+  },
+  {
+   "layer_id": "gis_rest_services_ProposedSiteAddress_public_FeatureServer_0@未定位-1",
+   "url": "",
+   "tier_hint": "unrated",
+   "part_files": 1,
+   "rows_in": 14,
+   "rows_out": 14,
+   "dropped_below_c": 0,
+   "parse_error": 0,
+   "split_rows": 0,
+   "nonenv_state": 0,
+   "nonenv_zip5": 0,
+   "nonenv_number": 0,
+   "nonenv_city": 0,
+   "state_ok": 0,
+   "zip5_ok": 0,
+   "number_ok": 14,
+   "city_ok": 14,
+   "street_ok": 14,
+   "grade": {
+    "C": 14
+   },
+   "tier": {
+    "unrated": 14
+   },
+   "seconds": 0.0,
+   "begin_layer_calls_this_layer": 1,
+   "keys_probed": {
+    "number": [
+     "preaddrnum",
+     "addrnumsuf",
+     "addrnum"
+    ],
+    "street": [
+     "fullname"
+    ],
+    "zip": [],
+    "state": []
+   },
+   "out_bytes": 745
+  },
+  {
+   "layer_id": "gis_rest_services_SiteStructureAddressPoints_FeatureServer_0@未定位-3",
+   "url": "",
+   "tier_hint": "unrated",
+   "part_files": 8,
+   "rows_in": 359653,
+   "rows_out": 359653,
+   "dropped_below_c": 0,
+   "parse_error": 0,
+   "split_rows": 0,
+   "nonenv_state": 359653,
+   "nonenv_zip5": 358877,
+   "nonenv_number": 359653,
+   "nonenv_city": 0,
+   "state_ok": 359653,
+   "zip5_ok": 358877,
+   "number_ok": 359653,
+   "city_ok": 0,
+   "street_ok": 359653,
+   "grade": {
+    "A": 358877,
+    "B": 776
+   },
+   "tier": {
+    "unrated": 359653
+   },
+   "seconds": 45.8,
+   "begin_layer_calls_this_layer": 1,
+   "keys_probed": {
+    "number": [
+     "AddNum_Pre",
+     "Add_Number",
+     "AddNum_Suf"
+    ],
+    "street": [
+     "St_PreDir",
+     "St_Name",
+     "LSt_PreDir",
+     "LSt_Name",
+     "LSt_Type",
+     "FullName"
+    ],
+    "zip": [
+     "Post_Code",
+     "Post_Code4"
+    ],
+    "state": [
+     "State"
+    ]
+   },
+   "out_bytes": 15605682
+  },
+  {
+   "layer_id": "lYD_arcgis_rest_services_AddressPoints_24_12_FeatureServer_0",
+   "url": "https://services2.arcgis.com/gyfpgFh2Wj2gglYD/arcgis/rest/services/AddressPoints_24_12/FeatureServer/0",
+   "tier_hint": "unrated",
+   "part_files": 1,
+   "rows_in": 33401,
+   "rows_out": 33389,
+   "dropped_below_c": 12,
+   "parse_error": 0,
+   "split_rows": 5,
+   "nonenv_state": 0,
+   "nonenv_zip5": 0,
+   "nonenv_number": 0,
+   "nonenv_city": 0,
+   "state_ok": 0,
+   "zip5_ok": 0,
+   "number_ok": 33366,
+   "city_ok": 33305,
+   "street_ok": 33389,
+   "grade": {
+    "C": 33389
+   },
+   "tier": {
+    "unrated": 33389
+   },
+   "seconds": 3.4,
+   "begin_layer_calls_this_layer": 1,
+   "keys_probed": {
+    "number": [
+     "ADDRNUM"
+    ],
+    "street": [],
+    "zip": [],
+    "state": []
+   },
+   "out_bytes": 1110176
+  },
+  {
+   "layer_id": "oqakAkedEx0oU_arcgis_rest_services_Addresses_FeatureServer_0",
+   "url": "https://services7.arcgis.com/JMIoqakAkedEx0oU/arcgis/rest/services/Addresses/FeatureServer/0",
+   "tier_hint": "unrated",
+   "part_files": 1,
+   "rows_in": 33791,
+   "rows_out": 33787,
+   "dropped_below_c": 4,
+   "parse_error": 0,
+   "split_rows": 0,
+   "nonenv_state": 0,
+   "nonenv_zip5": 0,
+   "nonenv_number": 0,
+   "nonenv_city": 0,
+   "state_ok": 0,
+   "zip5_ok": 0,
+   "number_ok": 33787,
+   "city_ok": 0,
+   "street_ok": 33787,
+   "grade": {
+    "C": 33787
+   },
+   "tier": {
+    "unrated": 33787
+   },
+   "seconds": 3.5,
+   "begin_layer_calls_this_layer": 1,
+   "keys_probed": {
+    "number": [],
+    "street": [
+     "STREETNAME"
+    ],
+    "zip": [],
+    "state": []
+   },
+   "out_bytes": 1164598
+  },
+  {
+   "layer_id": "r_arcgis_rest_services_SiteAddressPoint_view_FeatureServer_0",
+   "url": "https://services6.arcgis.com/1XjIDBVnDQpTiqmr/arcgis/rest/services/SiteAddressPoint_view/FeatureServer/0",
+   "tier_hint": "unrated",
+   "part_files": 1,
+   "rows_in": 4157,
+   "rows_out": 4145,
+   "dropped_below_c": 12,
+   "parse_error": 0,
+   "split_rows": 0,
+   "nonenv_state": 0,
+   "nonenv_zip5": 0,
+   "nonenv_number": 2,
+   "nonenv_city": 0,
+   "state_ok": 0,
+   "zip5_ok": 0,
+   "number_ok": 3574,
+   "city_ok": 4127,
+   "street_ok": 4145,
+   "grade": {
+    "C": 4145
+   },
+   "tier": {
+    "unrated": 4145
+   },
+   "seconds": 0.7,
+   "begin_layer_calls_this_layer": 1,
+   "keys_probed": {
+    "number": [
+     "PREADDRNUM",
+     "ADDRNUMSUF",
+     "ADDRNUM"
+    ],
+    "street": [
+     "FULLNAME"
+    ],
+    "zip": [],
+    "state": []
+   },
+   "out_bytes": 139171
+  },
+  {
+   "layer_id": "s_DuPage_County_IL_AddressPointsUnderDevelopment_MapServer_0",
+   "url": "https://gis.dupageco.org/arcgis/rest/services/DuPage_County_IL/AddressPointsUnderDevelopment/MapServer/0",
+   "tier_hint": "unrated",
+   "part_files": 8,
+   "rows_in": 392073,
+   "rows_out": 392073,
+   "dropped_below_c": 0,
+   "parse_error": 0,
+   "split_rows": 0,
+   "nonenv_state": 392073,
+   "nonenv_zip5": 0,
+   "nonenv_number": 0,
+   "nonenv_city": 0,
+   "state_ok": 392073,
+   "zip5_ok": 392073,
+   "number_ok": 391860,
+   "city_ok": 392073,
+   "street_ok": 392073,
+   "grade": {
+    "S": 391860,
+    "C": 213
+   },
+   "tier": {
+    "unrated": 392073
+   },
+   "seconds": 49.4,
+   "begin_layer_calls_this_layer": 1,
+   "keys_probed": {
+    "number": [
+     "STREET_NUM",
+     "ADDRESS_NUM"
+    ],
+    "street": [
+     "STREET_NAME",
+     "STREET_TYPE"
+    ],
+    "zip": [
+     "ZIPCODE"
+    ],
+    "state": [
+     "STATE"
+    ]
+   },
+   "out_bytes": 13375873
+  },
+  {
+   "layer_id": "z6SRPFWJ_arcgis_rest_services_SiteAddresses_FeatureServer_15",
+   "url": "https://services1.arcgis.com/23uf7jKvz6SRPFWJ/arcgis/rest/services/SiteAddresses/FeatureServer/15",
+   "tier_hint": "unrated",
+   "part_files": 1,
+   "rows_in": 20201,
+   "rows_out": 20201,
+   "dropped_below_c": 0,
+   "parse_error": 0,
+   "split_rows": 0,
+   "nonenv_state": 20201,
+   "nonenv_zip5": 20182,
+   "nonenv_number": 0,
+   "nonenv_city": 0,
+   "state_ok": 20201,
+   "zip5_ok": 20182,
+   "number_ok": 20201,
+   "city_ok": 0,
+   "street_ok": 20201,
+   "grade": {
+    "A": 20182,
+    "B": 19
+   },
+   "tier": {
+    "unrated": 20201
+   },
+   "seconds": 4.0,
+   "begin_layer_calls_this_layer": 1,
+   "keys_probed": {
+    "number": [
+     "Add_Number",
+     "AddNum_Pre",
+     "AddNum_Suf"
+    ],
+    "street": [
+     "St_PreDir",
+     "St_Name",
+     "FULL_STREET_NAME",
+     "LSt_PreDir",
+     "LSt_Name",
+     "LSt_Type"
+    ],
+    "zip": [
+     "Post_Code",
+     "Post_Code4"
+    ],
+    "state": [
+     "State"
+    ]
+   },
+   "out_bytes": 729904
+  }
+ ]
+}

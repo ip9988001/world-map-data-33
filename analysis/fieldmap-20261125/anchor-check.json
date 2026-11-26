@@ -1,0 +1,24 @@
+{
+ "layers_checked": 355,
+ "rows_checked": 16978947,
+ "layers_with_issue": 19,
+ "invariants": {
+  "bad_columns": 0,
+  "bad_source_layer": 0,
+  "bad_tier": 0,
+  "bad_addrkey": 0,
+  "bad_addrkey_fmt": 0,
+  "bad_number": 0,
+  "bad_zip5": 0,
+  "bad_state": 0,
+  "bad_coord": 0,
+  "zero_coord": 0,
+  "zip_null_high_grade": 0,
+  "grade_missing_element": 0,
+  "S_city_null": 0,
+  "layer_rowcount_mismatch": 0,
+  "bad_grade": 0
+ },
+ "invariant_violations": 0,
+ "match_pct": 100.0
+}

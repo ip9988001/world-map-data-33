@@ -1,0 +1,386 @@
+{
+ "qid": "muse-000271",
+ "task_id": "w2-20261126-fieldmap-fix58",
+ "scope": "58 层（REPORT-unmapped.md §5 的 B 类全量）",
+ "layers_total": 58,
+ "layers_mapped_after": 58,
+ "layers_still_zero": 0,
+ "still_zero": [],
+ "rows": {
+  "in_rows_total": 3698915,
+  "mapped_before_total": 0,
+  "mapped_after_total": 3199912,
+  "est_rows_recoverable_from_report": 3192659,
+  "dropped_below_c_total": 499003,
+  "parse_error_total": 0
+ },
+ "acceptance": {
+  "closed_diff_zero_layers": 58,
+  "bad_empty_total": 0,
+  "bad_grade_total": 0,
+  "zero_coord_total": 2,
+  "zero_coord_layers": [
+   {
+    "layer_id": "_rest_services_Dauphin_County_Address_Points_FeatureServer_0",
+    "zero_coord": 1,
+    "mapped": 116889
+   },
+   {
+    "layer_id": "rxOA_arcgis_rest_services_CivicAddressPoints_FeatureServer_0",
+    "zero_coord": 1,
+    "mapped": 12256
+   }
+  ],
+  "mapped_gt0_layers": 58
+ },
+ "baseline_crosscheck": {
+  "note": "before 跑（4c3a6a3 的 fm_core.py + 同提交 dialects.v1.yaml）必须与 layer-coverage.v2.csv 一致",
+  "mismatch_layers": [],
+  "before_mapped_total": 0
+ },
+ "coverage": {
+  "mapped_layers": 3413,
+  "total_layers": 3550,
+  "pct": 96.14,
+  "gate_layers_needed": 3373,
+  "pass_95pct": true,
+  "pass_96_14pct": true
+ },
+ "regression": {
+  "type": "alias-hit 全量 A/B + 未命中集分层抽样 A/B（未做全量重扫，见 limits）",
+  "alias_hit_census": {
+   "layers_scanned": 3550,
+   "layers_alias_hit": 616,
+   "alias_hit_layers_ab": 615,
+   "mapped_before_total": 63404997,
+   "mapped_after_total": 66054083,
+   "decreased_layers": [],
+   "increased_layers": 206,
+   "increased_rows": 2649086,
+   "value_changed_same_mapped_layers": 23,
+   "value_changed_detail": [
+    {
+     "layer_id": "hSxjvnQtm_arcgis_rest_services_Address_Point_FeatureServer_0",
+     "mapped": 198107,
+     "num_ok_before": 198104,
+     "num_ok_after": 198105,
+     "grade_before": "S:157279/A:40825/B:0/C:3",
+     "grade_after": "S:157279/A:40826/B:0/C:2"
+    },
+    {
+     "layer_id": "TnSRR4hh_arcgis_rest_services_Address_Points_FeatureServer_0",
+     "mapped": 190740,
+     "num_ok_before": 190636,
+     "num_ok_after": 190737,
+     "grade_before": "S:150694/A:39940/B:2/C:104",
+     "grade_after": "S:150794/A:39941/B:2/C:3"
+    },
+    {
+     "layer_id": "aNxg1PvwI_arcgis_rest_services_CityAddresses_FeatureServer_0",
+     "mapped": 92587,
+     "num_ok_before": 0,
+     "num_ok_after": 92587,
+     "grade_before": "S:0/A:0/B:0/C:92587",
+     "grade_after": "S:92587/A:0/B:0/C:0"
+    },
+    {
+     "layer_id": "va_gov_arcgis_rest_services_Public_Addresses_FeatureServer_0",
+     "mapped": 59559,
+     "num_ok_before": 0,
+     "num_ok_after": 59559,
+     "grade_before": "S:0/A:0/B:0/C:59559",
+     "grade_after": "S:58954/A:0/B:605/C:0"
+    },
+    {
+     "layer_id": "hLxWQwF_arcgis_rest_services_Situs_Addresses_FeatureServer_6",
+     "mapped": 56764,
+     "num_ok_before": 56695,
+     "num_ok_after": 56763,
+     "grade_before": "S:49511/A:7182/B:2/C:69",
+     "grade_after": "S:49579/A:7182/B:2/C:1"
+    },
+    {
+     "layer_id": "7S72bcD7R8_arcgis_rest_services_CivicAddress_FeatureServer_0",
+     "mapped": 54251,
+     "num_ok_before": 0,
+     "num_ok_after": 54249,
+     "grade_before": "S:0/A:0/B:0/C:54251",
+     "grade_after": "S:0/A:0/B:0/C:54251"
+    },
+    {
+     "layer_id": "rcgis_rest_services_Full_Structure_Addresses_FeatureServer_0",
+     "mapped": 48180,
+     "num_ok_before": 0,
+     "num_ok_after": 48180,
+     "grade_before": "S:0/A:0/B:0/C:48180",
+     "grade_after": "S:48177/A:0/B:1/C:2"
+    },
+    {
+     "layer_id": "_arcgis_rest_services_Airdrie_Address_Points_FeatureServer_0",
+     "mapped": 41632,
+     "num_ok_before": 0,
+     "num_ok_after": 41632,
+     "grade_before": "S:0/A:0/B:0/C:41632",
+     "grade_after": "S:0/A:0/B:0/C:41632"
+    },
+    {
+     "layer_id": "smt_gov_arcgis_rest_services_Base_City_Addresses_MapServer_0",
+     "mapped": 35111,
+     "num_ok_before": 0,
+     "num_ok_after": 35111,
+     "grade_before": "S:0/A:0/B:0/C:35111",
+     "grade_after": "S:35110/A:0/B:1/C:0"
+    },
+    {
+     "layer_id": "_varina_org_server_rest_services_Public_Property_MapServer_0",
+     "mapped": 30510,
+     "num_ok_before": 0,
+     "num_ok_after": 30509,
+     "grade_before": "S:0/A:0/B:0/C:30510",
+     "grade_after": "S:0/A:0/B:0/C:30510"
+    },
+    {
+     "layer_id": "f3JdTAkI_arcgis_rest_services_address_points_FeatureServer_0",
+     "mapped": 22699,
+     "num_ok_before": 22099,
+     "num_ok_after": 22699,
+     "grade_before": "S:0/A:0/B:0/C:22699",
+     "grade_after": "S:0/A:0/B:0/C:22699"
+    },
+    {
+     "layer_id": "rcgis_rest_services_Address_Points_Open_Data_FeatureServer_0@未定位-1",
+     "mapped": 22257,
+     "num_ok_before": 0,
+     "num_ok_after": 22257,
+     "grade_before": "S:0/A:0/B:0/C:22257",
+     "grade_after": "S:0/A:0/B:0/C:22257"
+    },
+    {
+     "layer_id": "3u_arcgis_rest_services_Address_NonCollector_FeatureServer_0",
+     "mapped": 22257,
+     "num_ok_before": 22249,
+     "num_ok_after": 22257,
+     "grade_before": "S:0/A:22249/B:0/C:8",
+     "grade_after": "S:0/A:22250/B:0/C:7"
+    },
+    {
+     "layer_id": "Utd_arcgis_rest_services_Civic_Address__od_FeatureServer_152",
+     "mapped": 21900,
+     "num_ok_before": 0,
+     "num_ok_after": 21900,
+     "grade_before": "S:0/A:0/B:0/C:21900",
+     "grade_after": "S:0/A:0/B:0/C:21900"
+    },
+    {
+     "layer_id": "2hyb0Af_arcgis_rest_services_Address_Parcels_FeatureServer_0",
+     "mapped": 21753,
+     "num_ok_before": 0,
+     "num_ok_after": 21730,
+     "grade_before": "S:0/A:0/B:0/C:21753",
+     "grade_after": "S:0/A:0/B:0/C:21753"
+    },
+    {
+     "layer_id": "nSi6by_arcgis_rest_services_Address_Points_FeatureServer_242",
+     "mapped": 16278,
+     "num_ok_before": 15888,
+     "num_ok_after": 15955,
+     "grade_before": "S:0/A:15888/B:0/C:390",
+     "grade_after": "S:0/A:15955/B:0/C:323"
+    },
+    {
+     "layer_id": "_rest_services_EXISTING_ADDRESS_POINTS_view2_FeatureServer_0",
+     "mapped": 15626,
+     "num_ok_before": 1,
+     "num_ok_after": 15625,
+     "grade_before": "S:0/A:0/B:0/C:15626",
+     "grade_after": "S:0/A:0/B:15137/C:489"
+    },
+    {
+     "layer_id": "mflZV1DVFSE2G_arcgis_rest_services_ADDRESSES_FeatureServer_0",
+     "mapped": 10196,
+     "num_ok_before": 5,
+     "num_ok_after": 10196,
+     "grade_before": "S:0/A:5/B:0/C:10191",
+     "grade_after": "S:10135/A:5/B:56/C:0"
+    },
+    {
+     "layer_id": "Jkj1aWl_arcgis_rest_services_E911_AddressPts_FeatureServer_0",
+     "mapped": 9234,
+     "num_ok_before": 5,
+     "num_ok_after": 9234,
+     "grade_before": "S:0/A:5/B:0/C:9229",
+     "grade_after": "S:9172/A:5/B:57/C:0"
+    },
+    {
+     "layer_id": "_services_Brock_Addresses_Wards_Intersection_FeatureServer_0",
+     "mapped": 5353,
+     "num_ok_before": 2550,
+     "num_ok_after": 5353,
+     "grade_before": "S:0/A:0/B:0/C:5353",
+     "grade_after": "S:0/A:0/B:0/C:5353"
+    },
+    {
+     "layer_id": "GZhi_arcgis_rest_services_GranbyAddresses_VW_FeatureServer_5",
+     "mapped": 3941,
+     "num_ok_before": 0,
+     "num_ok_after": 3933,
+     "grade_before": "S:0/A:0/B:0/C:3941",
+     "grade_after": "S:3933/A:0/B:0/C:8"
+    },
+    {
+     "layer_id": "gis_rest_services_AS_Address_Points_no_join_FeatureServer_44",
+     "mapped": 2725,
+     "num_ok_before": 2724,
+     "num_ok_after": 2725,
+     "grade_before": "S:0/A:2722/B:2/C:1",
+     "grade_after": "S:0/A:2722/B:3/C:0"
+    },
+    {
+     "layer_id": "HZWpWI9KS_arcgis_rest_services_AddressPoints_FeatureServer_0",
+     "mapped": 1576,
+     "num_ok_before": 0,
+     "num_ok_after": 1576,
+     "grade_before": "S:0/A:0/B:0/C:1576",
+     "grade_after": "S:0/A:0/B:0/C:1576"
+    }
+   ],
+   "grade_net_worse_layers": []
+  },
+  "sample": {
+   "layers": 236,
+   "layers_with_dropped": 126,
+   "rows": 8661332,
+   "states_covered": 52,
+   "states": {
+    "": 5,
+    "AK": 2,
+    "AL": 5,
+    "AR": 3,
+    "AZ": 5,
+    "BC": 4,
+    "CA": 5,
+    "CO": 5,
+    "CT": 2,
+    "DC": 3,
+    "FL": 5,
+    "GA": 5,
+    "IA": 5,
+    "ID": 5,
+    "IL": 5,
+    "IN": 5,
+    "KS": 5,
+    "KY": 5,
+    "LA": 5,
+    "MA": 5,
+    "MD": 5,
+    "ME": 4,
+    "MI": 5,
+    "MN": 5,
+    "MO": 5,
+    "MS": 5,
+    "MT": 5,
+    "NC": 5,
+    "ND": 4,
+    "NE": 4,
+    "NH": 2,
+    "NJ": 5,
+    "NM": 5,
+    "NV": 1,
+    "NY": 5,
+    "OH": 5,
+    "OK": 5,
+    "ON": 2,
+    "OR": 5,
+    "PA": 5,
+    "RI": 5,
+    "SC": 5,
+    "SD": 5,
+    "TN": 5,
+    "TX": 5,
+    "UT": 5,
+    "VA": 5,
+    "VT": 5,
+    "WA": 5,
+    "WI": 5,
+    "WV": 5,
+    "WY": 4,
+    "YT": 1
+   },
+   "dialect_origin": {
+    "fallback": 236,
+    "note": "v2 的 3,550 层 dialect_origin 全是 fallback（dialect_id 全为 minimal_safe），因此 origination 类型只有 1 种，抽样自然全覆盖"
+   },
+   "decreased_layers": [],
+   "increased_layers": 16,
+   "increased_rows": 9942,
+   "value_changed_same_mapped_layers": 0,
+   "bad_empty_total_after": 0
+  },
+  "big_layer_partial": {
+   "before": {
+    "layer_id": "conemap_gov_secure_rest_services_NC1Map_Location_MapServer_0",
+    "reason_code": "alias_hit:addrsn",
+    "in_rows": 1250000,
+    "mapped": 1250000,
+    "dropped_below_c": 0,
+    "parse_error": 0,
+    "bad_empty": 0,
+    "bad_grade": 0,
+    "zero_coord": 0,
+    "num_ok": 1250000,
+    "street_ok": 1250000,
+    "zip5_ok": 1250000,
+    "state_ok": 1250000,
+    "parts_read": 25,
+    "grade": {
+     "A": 1250000
+    },
+    "diff": 0,
+    "street_hash": "0d5c6e126ddf5737",
+    "addrkey_hash": "f91792e96a18230f",
+    "n_hashed": 400000
+   },
+   "after": {
+    "layer_id": "conemap_gov_secure_rest_services_NC1Map_Location_MapServer_0",
+    "reason_code": "alias_hit:addrsn",
+    "in_rows": 1250000,
+    "mapped": 1250000,
+    "dropped_below_c": 0,
+    "parse_error": 0,
+    "bad_empty": 0,
+    "bad_grade": 0,
+    "zero_coord": 0,
+    "num_ok": 1250000,
+    "street_ok": 1250000,
+    "zip5_ok": 1250000,
+    "state_ok": 1250000,
+    "parts_read": 25,
+    "grade": {
+     "A": 1250000
+    },
+    "diff": 0,
+    "street_hash": "0d5c6e126ddf5737",
+    "addrkey_hash": "f91792e96a18230f",
+    "n_hashed": 400000
+   }
+  }
+ },
+ "artifacts": {
+  "REPORT-fix58.md": 19734,
+  "after-affected.jsonl": 281334,
+  "after-b58.jsonl": 26098,
+  "after-miss-partial.jsonl": 467,
+  "after-regression.jsonl": 108268,
+  "before-affected.jsonl": 270744,
+  "before-b58.jsonl": 25296,
+  "before-miss-partial.jsonl": 467,
+  "before-regression.jsonl": 108247,
+  "fix58-before-after.csv": 8362,
+  "fix58-summary.json": 10516,
+  "jobs-affected.jsonl": 140985,
+  "jobs-b58.jsonl": 15153,
+  "jobs-regression.jsonl": 62672,
+  "perf-ab.json": 502,
+  "rows-census.jsonl": 2484717
+ }
+}

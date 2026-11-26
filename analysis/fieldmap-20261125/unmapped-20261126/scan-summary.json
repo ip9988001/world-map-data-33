@@ -1,0 +1,11 @@
+{
+ "generated_utc": "2026-11-26T04:16:22Z",
+ "layers": 195,
+ "total_in_rows": 26530339,
+ "unusable_match_coverage_mapped0": 195,
+ "coverage_mapped0_not_in_unusable": [],
+ "unusable_not_mapped0": [],
+ "sample_rows_total": 25465,
+ "rows_per_file": 150,
+ "wall_s": 17.3
+}

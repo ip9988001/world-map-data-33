@@ -1,0 +1,22 @@
+{
+ "total": {
+  "rows": 305674428,
+  "bad": 101,
+  "layers_affected": 1,
+  "moved": {
+   "C->C": 101
+  }
+ },
+ "per_layer": {
+  "ces_service_94b14aaf7746405c8edc1c010f0cd277_FeatureServer_0": {
+   "rows": 7466,
+   "bad": 101,
+   "grade": {
+    "C": 101
+   },
+   "moved": {
+    "C->C": 101
+   }
+  }
+ }
+}

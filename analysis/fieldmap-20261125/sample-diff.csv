@@ -1,0 +1,17 @@
+layer_id,tier,dialect,rows_exist,rows_rescan,method,diff_rows,diff_state,diff_city,diff_zip5,diff_house_number,diff_street_name,diff_lat,diff_lon,diff_grade,diff_tier,diff_addrkey,diff_source_layer,diff_rows_only_in_exist,diff_rows_only_in_rescan
+0MLvN0Ay0iEjnCT_arcgis_rest_services_Address_FeatureServer_0,unrated,minimal_safe,49304,49304,positional,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+0QMPlK9CkZD_arcgis_rest_services_AddressTest_FeatureServer_0,unrated,minimal_safe,75327,75328,multiset,150319,0,0,0,0,0,0,0,0,0,0,0,75159,75160
+0gE_arcgis_rest_services_Address_Points_View_FeatureServer_4,unrated,minimal_safe,46960,46960,positional,46953,0,0,46953,0,0,0,0,46953,0,46958,0,0,0
+11SaUIGBo5JYFY_arcgis_rest_services_SRD_Data_FeatureServer_0,unrated,minimal_safe,24813,24813,positional,0,0,0,0,0,0,0,0,0,0,3856,0,0,0
+1Pd_arcgis_rest_services_Open_Address_Points_FeatureServer_0,unrated,minimal_safe,53013,53013,positional,52966,52966,0,0,0,0,0,0,52966,0,52964,0,0,0
+arcgis_rest_services_Building_Address_Points_FeatureServer_0,unrated,minimal_safe,397926,397926,positional,397850,397850,0,397793,73532,0,0,0,397850,0,397926,0,0,0
+arcgis_rest_services_Property_Addresses_View_FeatureServer_0,unrated,minimal_safe,41782,41782,positional,0,0,0,0,0,0,0,0,0,0,1631,0,0,0
+azssuvI82_arcgis_rest_services_AddressPoints_FeatureServer_0,unrated,minimal_safe,33687,33687,positional,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+f9MkUwD4_arcgis_rest_services_Address_Points_FeatureServer_0,unrated,minimal_safe,52486,52485,multiset,69,0,0,0,0,0,0,0,0,0,0,0,35,34
+gis_rest_services_ProposedSiteAddress_public_FeatureServer_0@未定位-1,unrated,minimal_safe,14,14,positional,0,0,0,0,0,0,0,0,0,0,2,0,0,0
+gis_rest_services_SiteStructureAddressPoints_FeatureServer_0@未定位-3,unrated,minimal_safe,359653,359653,positional,359653,359653,0,358877,359653,0,0,0,359653,0,359653,0,0,0
+lYD_arcgis_rest_services_AddressPoints_24_12_FeatureServer_0,unrated,minimal_safe,33389,33389,positional,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+oqakAkedEx0oU_arcgis_rest_services_Addresses_FeatureServer_0,unrated,minimal_safe,33787,33787,positional,0,0,0,0,0,0,0,0,0,0,2896,0,0,0
+r_arcgis_rest_services_SiteAddressPoint_view_FeatureServer_0,unrated,minimal_safe,4145,4145,positional,0,0,0,0,0,0,0,0,0,0,2,0,0,0
+s_DuPage_County_IL_AddressPointsUnderDevelopment_MapServer_0,unrated,minimal_safe,392073,392073,positional,392073,392073,0,0,0,0,0,0,391860,0,391860,0,0,0
+z6SRPFWJ_arcgis_rest_services_SiteAddresses_FeatureServer_15,unrated,minimal_safe,20201,20201,positional,0,0,0,0,0,0,0,0,0,0,719,0,0,0

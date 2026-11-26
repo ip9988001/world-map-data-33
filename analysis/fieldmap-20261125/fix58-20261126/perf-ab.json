@@ -1,0 +1,8 @@
+{
+ "basis": "4 层（SECTO_NBI 530,776 行 / Address_Points_Public_View 115,294 行 / Fontana 77,971 行 / F2rCsQjt0P3e 13,245 行），--workers 4，不写输出行",
+ "cmd": "python3 run_fix58.py --mode {before|after} --jobs /tmp/jobs-perf.jsonl --workers 4",
+ "before_elapsed_s": 14.589,
+ "after_elapsed_s": 28.344,
+ "ratio": 1.94,
+ "note": "after 慢的部分全部来自「原先 street 恒空、现在逐行试拆」的层；已映射层的 street 非空 → 不进拆分分支，耗时不变"
+}
