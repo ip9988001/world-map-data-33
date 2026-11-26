@@ -18,8 +18,7 @@ import re
 import sys
 from collections import Counter, defaultdict
 
-from shapely.geometry import Point, box, shape
-from shapely.prepared import prep
+# 禁 shapely / rtree（docs/DEPENDENCY-VERDICT-20261122.md）：几何全部自研，见下方「自研几何」块。
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REF = os.path.join(HERE, "ref")
@@ -77,6 +76,206 @@ def norm(s: str) -> str:
     return re.sub(r"\s+", " ", s).strip()
 
 
+# ---------------------------------------------------------------- 自研几何（纯标准库）
+# 裁决：docs/DEPENDENCY-VERDICT-20261122.md —— shapely / rtree 永不用作运行时依赖。
+# 口径与 collect/county_tiger.py（射线法 pip）+ collect/county_index.py（bbox 预筛）一致。
+# 数据结构：polys = [ [外环, 洞环...], ... ]，环 = [(x, y), ...]（首尾点只留一个）。
+
+
+def _clean_ring(ring) -> list | None:
+    """环点清洗：非数值/NaN 直接判废；<4 点（含闭合点）或 <3 个不同顶点 = 退化环 → None。"""
+    raw = list(ring or [])
+    if len(raw) < 4:
+        return None
+    out = []
+    for p in raw:
+        try:
+            x, y = float(p[0]), float(p[1])
+        except (TypeError, ValueError, IndexError):
+            return None
+        if x != x or y != y:                       # NaN
+            return None
+        if out and out[-1][0] == x and out[-1][1] == y:
+            continue                                # 连续重复点
+        out.append((x, y))
+    if len(out) >= 2 and out[0] == out[-1]:
+        out = out[:-1]                              # 去掉闭合点
+    if len(out) < 3 or len(set(out)) < 3:
+        return None
+    return out
+
+
+def _load_geom(g: dict) -> list:
+    """GeoJSON geometry → polys；外环退化则丢整个多边形，洞环退化则丢该洞。"""
+    if not isinstance(g, dict):
+        return []
+    t, c = g.get("type"), g.get("coordinates") or []
+    if t == "Polygon":
+        raw_polys = [c]
+    elif t == "MultiPolygon":
+        raw_polys = c
+    else:
+        return []
+    polys = []
+    for raw in raw_polys or []:
+        rings = []
+        for i, ring in enumerate(raw or []):
+            r = _clean_ring(ring)
+            if r is None:
+                if i == 0:                          # 外环不够 3 点 → 跳过该多边形
+                    rings = []
+                    break
+                continue                            # 洞环退化 → 丢洞，保留外环
+            rings.append(r)
+        if rings:
+            polys.append(rings)
+    return polys
+
+
+def _bbox(polys) -> tuple | None:
+    """外环整体包围盒。只当粗筛用（永不误排除）；AK 的阿留申环跨 ±180，
+    其 bbox 会横跨 359°，因此**不参与**面积/占比判断。"""
+    xs, ys = [], []
+    for rings in polys:
+        for x, y in rings[0]:
+            xs.append(x)
+            ys.append(y)
+    if not xs:
+        return None
+    return (min(xs), min(ys), max(xs), max(ys))
+
+
+def _pip(polys, x: float, y: float) -> bool:
+    """偶奇射线法。遍历该州**全部环**（外环 + 洞环）：穿外环一次进、穿洞环一次出，天然处理洞。"""
+    inside = False
+    for rings in polys:
+        for ring in rings:
+            n = len(ring)
+            j = n - 1
+            for i in range(n):
+                xi, yi = ring[i]
+                xj, yj = ring[j]
+                if (yi > y) != (yj > y) and x < (xj - xi) * (y - yi) / (yj - yi) + xi:
+                    inside = not inside
+                j = i
+    return inside
+
+
+def _seg_dist(px: float, py: float, ax: float, ay: float, bx: float, by: float) -> float:
+    dx, dy = bx - ax, by - ay
+    if dx == 0.0 and dy == 0.0:
+        return ((px - ax) ** 2 + (py - ay) ** 2) ** 0.5
+    t = ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy)
+    t = 0.0 if t < 0.0 else (1.0 if t > 1.0 else t)
+    cx, cy = ax + t * dx, ay + t * dy
+    return ((px - cx) ** 2 + (py - cy) ** 2) ** 0.5
+
+
+def _dist_to_rings(polys, x: float, y: float) -> float:
+    """点到州界（各环各线段）的最小距离，单位 = 度（与 buffer(0.002) 同口径）。"""
+    best = float("inf")
+    for rings in polys:
+        for ring in rings:
+            n = len(ring)
+            j = n - 1
+            for i in range(n):
+                xi, yi = ring[i]
+                xj, yj = ring[j]
+                d = _seg_dist(x, y, xj, yj, xi, yi)
+                if d < best:
+                    best = d
+                j = i
+    return best
+
+
+def _ring_area_centroid(ring):
+    """扇形三角化：返回 (有向面积, 质心x, 质心y)；退化为 (0,0,0)。"""
+    x0, y0 = ring[0]
+    a = cx = cy = 0.0
+    for i in range(1, len(ring) - 1):
+        x1, y1 = ring[i]
+        x2, y2 = ring[i + 1]
+        sa = ((x1 - x0) * (y2 - y0) - (x2 - x0) * (y1 - y0)) / 2.0
+        a += sa
+        cx += sa * (x0 + x1 + x2) / 3.0
+        cy += sa * (y0 + y1 + y2) / 3.0
+    if a == 0.0:
+        return (0.0, 0.0, 0.0)
+    return (a, cx / a, cy / a)
+
+
+def _centroid(polys):
+    """按环面积加权求质心：外环权重取正、洞环取负，多面累加；总面积 ≈ 0 → None。"""
+    tot = sx = sy = 0.0
+    for rings in polys:
+        for i, ring in enumerate(rings):
+            a, cx, cy = _ring_area_centroid(ring)
+            if a == 0.0:
+                continue
+            w = abs(a) * (1.0 if i == 0 else -1.0)
+            tot += w
+            sx += w * cx
+            sy += w * cy
+    if abs(tot) < 1e-12:
+        return None
+    return (sx / tot, sy / tot)
+
+
+def _ring_signed_area(ring) -> float:
+    return _ring_area_centroid(ring)[0]
+
+
+def _clip_ring(ring, xmin: float, ymin: float, xmax: float, ymax: float) -> list:
+    """Sutherland–Hodgman：用矩形四条边逐边裁环。"""
+    pts = list(ring)
+
+    def clip(ps, keep, inter):
+        if not ps:
+            return []
+        out = []
+        prev = ps[-1]
+        prev_in = keep(prev)
+        for cur in ps:
+            cur_in = keep(cur)
+            if cur_in:
+                if not prev_in:
+                    out.append(inter(prev, cur))
+                out.append(cur)
+            elif prev_in:
+                out.append(inter(prev, cur))
+            prev, prev_in = cur, cur_in
+        return out
+
+    def ix(a, b, xv):
+        d = b[0] - a[0]
+        t = 0.0 if d == 0.0 else (xv - a[0]) / d
+        return (xv, a[1] + t * (b[1] - a[1]))
+
+    def iy(a, b, yv):
+        d = b[1] - a[1]
+        t = 0.0 if d == 0.0 else (yv - a[1]) / d
+        return (a[0] + t * (b[0] - a[0]), yv)
+
+    pts = clip(pts, lambda p: p[0] >= xmin, lambda a, b: ix(a, b, xmin))
+    pts = clip(pts, lambda p: p[0] <= xmax, lambda a, b: ix(a, b, xmax))
+    pts = clip(pts, lambda p: p[1] >= ymin, lambda a, b: iy(a, b, ymin))
+    pts = clip(pts, lambda p: p[1] <= ymax, lambda a, b: iy(a, b, ymax))
+    return pts if len(pts) >= 3 else []
+
+
+def _rect_area_in_polygon(polys, xmin: float, ymin: float, xmax: float, ymax: float) -> float:
+    """矩形 ∩ 多边形 的面积（外环裁剪面积 − 洞环裁剪面积，逐面累加，负数截 0）。"""
+    tot = 0.0
+    for rings in polys:
+        for i, ring in enumerate(rings):
+            clipped = _clip_ring(ring, xmin, ymin, xmax, ymax)
+            if not clipped:
+                continue
+            a = abs(_ring_signed_area(clipped))
+            tot += a if i == 0 else -a
+    return tot if tot > 0 else 0.0
+
+
 def load_state_geoms(primary=True) -> dict:
     """primary=True → TIGERweb 200m 简化；False → 仓内 1:20m（对照）。"""
     if primary:
@@ -92,10 +291,10 @@ def load_state_geoms(primary=True) -> dict:
         ab = NAME2AB.get(nm) if name_key == "name" else fips2ab(p["STATE"])
         if not ab:
             continue
-        g = shape(ft["geometry"])
-        if not g.is_valid:
-            g = g.buffer(0)
-        out[ab] = g
+        polys = _load_geom(ft["geometry"])
+        if not polys:
+            continue
+        out[ab] = polys
     return out
 
 
@@ -238,15 +437,13 @@ def geom_stats(slug: str, S: dict, which: str):
     if os.path.exists(ep):
         e = (json.load(open(ep, encoding="utf-8")) or {}).get("extent") or {}
         if {"xmin", "ymin", "xmax", "ymax"} <= set(e):
-            bb = box(e["xmin"], e["ymin"], e["xmax"], e["ymax"])
-            if bb.area > 0:
-                for ab, g in S.items():
-                    try:
-                        inter = bb.intersection(g).area
-                    except Exception:
-                        continue
+            xmin, ymin, xmax, ymax = e["xmin"], e["ymin"], e["xmax"], e["ymax"]
+            rect_area = (xmax - xmin) * (ymax - ymin)
+            if rect_area > 0:
+                for ab, polys in S.items():
+                    inter = _rect_area_in_polygon(polys, xmin, ymin, xmax, ymax)
                     if inter > 0:
-                        bs[ab] = inter / bb.area
+                        bs[ab] = inter / rect_area
     purity = max([v for k, v in shares.items() if k != "_OUT"], default=0.0)
     return shares, purity, n, bs
 
@@ -265,44 +462,49 @@ def rep_point(g: dict):
     if t == "MultiLineString" and c and c[0]:
         return c[0][len(c[0]) // 2]
     if t == "Polygon" and c and c[0]:
-        try:
-            gg = shape(g)
-            if not gg.is_valid:
-                gg = gg.buffer(0)
-            pt = gg.centroid
-            return [pt.x, pt.y]
-        except Exception:
-            ring = c[0]
-            xs = [p[0] for p in ring[:-1]] or [ring[0][0]]
-            ys = [p[1] for p in ring[:-1]] or [ring[0][1]]
-            return [sum(xs) / len(xs), sum(ys) / len(ys)]
+        pt = _centroid(_load_geom(g))
+        if pt:
+            return [pt[0], pt[1]]
+        ring = c[0]
+        xs = [p[0] for p in ring[:-1]] or [ring[0][0]]
+        ys = [p[1] for p in ring[:-1]] or [ring[0][1]]
+        return [sum(xs) / len(xs), sum(ys) / len(ys)]
     if t == "MultiPolygon" and c and c[0] and c[0][0]:
-        try:
-            gg = shape(g)
-            if not gg.is_valid:
-                gg = gg.buffer(0)
-            pt = gg.centroid
-            return [pt.x, pt.y]
-        except Exception:
-            return rep_point({"type": "Polygon", "coordinates": c[0]})
+        pt = _centroid(_load_geom(g))
+        if pt:
+            return [pt[0], pt[1]]
+        return rep_point({"type": "Polygon", "coordinates": c[0]})
     return None
 
 
-_PREP = {}
+_GEOM: dict = {}          # id(S) → [(ab, polys, bbox)]，保持 S 的插入顺序（结果确定性）
+
+
+def _state_index(S: dict) -> list:
+    """按 S 建索引：只算一次 bbox 预筛，之后复用（S / S20 两份各自缓存）。"""
+    key = id(S)
+    idx = _GEOM.get(key)
+    if idx is None:
+        idx = []
+        for ab, polys in S.items():
+            bb = _bbox(polys)
+            if bb:
+                idx.append((ab, polys, bb))
+        _GEOM[key] = idx
+    return idx
 
 
 def which_state(x: float, y: float, S: dict) -> str:
     if not (-180 <= x <= -60 and 15 <= y <= 75):
         return ""
-    pt = Point(x, y)
-    if not _PREP:
-        _PREP.update({k: prep(v) for k, v in S.items()})
-    for ab, pg in _PREP.items():
-        if pg.contains(pt):
+    idx = _state_index(S)
+    for ab, polys, (x0, y0, x1, y1) in idx:
+        if x0 <= x <= x1 and y0 <= y <= y1 and _pip(polys, x, y):
             return ab
-    # 近岸/边界点：取 200m 容差再判一次
-    for ab, pg in _PREP.items():
-        if pg.contains(pt.buffer(0.002)):
+    # 近岸/边界点：容差 0.002°（原点在州界外侧 0.002° 内仍归该州；外扩 bbox 预筛后再算点到环距离）
+    for ab, polys, (x0, y0, x1, y1) in idx:
+        if x0 - 0.002 <= x <= x1 + 0.002 and y0 - 0.002 <= y <= y1 + 0.002 \
+                and _dist_to_rings(polys, x, y) < 0.002:
             return ab
     return ""
 
